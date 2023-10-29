@@ -4,8 +4,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from utils.common_functions import snake_case
 Base = declarative_base()
-class Flavor(Base):
-    __tablename__ = snake_case('Flavor')
+class TriStateFilter(Base):
+    __tablename__ = snake_case('TriStateFilter')
     id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
     last_change_code = Column(UUID(as_uuid=True))
@@ -15,6 +15,7 @@ class Flavor(Base):
     lookup_enum_name = Column(String)
     name = Column(String)
     pac_id = Column(Integer, ForeignKey(snake_case('Pac') + '.id'))
+    state_int_value = Column(Integer)
     pac_code_peek = uuid.UUID #PacID
     insert_utc_date_time = Column(DateTime, default=func.now())
     last_update_utc_date_time = Column(DateTime, onupdate=func.now())
@@ -25,12 +26,12 @@ class Flavor(Base):
         'version_id_col': last_change_code
     }
 # Define the index separately from the column
-Index('index_code', Flavor.code)
-Index('index_pac_id', Flavor.pac_id) #PacID
-@event.listens_for(Flavor, 'before_insert')
+Index('index_code', TriStateFilter.code)
+Index('index_pac_id', TriStateFilter.pac_id) #PacID
+@event.listens_for(TriStateFilter, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = func.now()
-@event.listens_for(Flavor, 'before_update')
+@event.listens_for(TriStateFilter, 'before_update')
 def set_updated_on(mapper, connection, target):
     target.last_update_utc_date_time = func.now()
     target.last_change_code = uuid.uuid4()

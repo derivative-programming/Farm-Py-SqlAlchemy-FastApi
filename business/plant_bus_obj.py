@@ -1,7 +1,6 @@
 import uuid
-from main import AsyncSessionLocal
 from sqlalchemy.ext.asyncio import AsyncSession
-from managers.flavor_manager import FlavorManager as FlavorForeignKeyIDManager #FlvrForeignKeyID
+from managers.flavor_manager import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
 from managers.land_manager import LandManager as LandIDManager #LandID
 from managers.plant_manager import PlantManager
 from models.plant import Plant
@@ -39,7 +38,7 @@ class PlantBusObj:
     
     
     async def get_flvr_foreign_key_id_rel_obj(self, flvr_foreign_key_id: int): #FlvrForeignKeyID 
-        flavor_manager = FlavorForeignKeyIDManager(self.session)
+        flavor_manager = FlvrForeignKeyIDManager(self.session)
         return flavor_manager.get_by_id(self.plant.flvr_foreign_key_id)
      
     

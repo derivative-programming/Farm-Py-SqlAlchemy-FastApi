@@ -1,7 +1,5 @@
 import uuid
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import GUID
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from utils.common_functions import snake_case
@@ -33,8 +31,8 @@ class Plant(Base):
     some_uniqueidentifier_val = Column(UUID(as_uuid=True))
     some_utc_date_time_val = Column(DateTime)
     some_varchar_val = Column(String)
-    flvr_foreign_key_code_peek = Uuid.UUID #FlvrForeignKeyID
-    land_code_peek = Uuid.UUID #LandID
+    flvr_foreign_key_code_peek = uuid.UUID #FlvrForeignKeyID
+    land_code_peek = uuid.UUID #LandID
     insert_utc_date_time = Column(DateTime, default=func.now())
     last_update_utc_date_time = Column(DateTime, onupdate=func.now())
 

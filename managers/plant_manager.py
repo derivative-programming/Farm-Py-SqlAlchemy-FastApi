@@ -1,8 +1,6 @@
 import uuid
-from sqlalchemy import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from main import AsyncSessionLocal
+from sqlalchemy.future import select 
 from models.plant import Plant
 
 class PlantManager:
