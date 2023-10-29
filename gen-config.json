@@ -1,0 +1,30 @@
+{
+    "ignore":[
+        "dist",
+        ".git", 
+        ".pytest_cache",
+        ".vscode",
+        "build",
+        ".DS_Store",
+        "TODO.md",
+        "__pycache__",
+        "migrations"
+    ],
+    "templateSet":
+    {
+        "name": "Pythos SqlAlchemy FastApi API",
+        "internalName" : "api_py_sqlalchemy_fastapi",
+        "versionNumber" : {
+            "major": "1",
+            "minor": "0",
+            "build": "0",
+            "revision": "*"
+        }
+    },
+    "modelFile" : "gen-model.json",
+    "SupressTemplateLanguageSubstitution": [
+        "package*.json",
+        "*.svg",
+        "*.ico"
+    ]
+}
