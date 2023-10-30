@@ -6,7 +6,7 @@ from utils.common_functions import snake_case
 Base = declarative_base()
 class OrgApiKey(Base):
     __tablename__ = snake_case('OrgApiKey')
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    org_api_key_id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
     last_change_code = Column(UUID(as_uuid=True))
     api_key_value = Column(String)

@@ -9,7 +9,7 @@ Base = declarative_base()
 class Plant(Base):
     __tablename__ = snake_case('Plant')
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    plant_id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
     last_change_code = Column(UUID(as_uuid=True))
     flvr_foreign_key_id = Column(Integer, ForeignKey(snake_case('Flavor') + '.id'))

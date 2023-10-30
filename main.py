@@ -1,8 +1,9 @@
 from fastapi import FastAPI 
 from sqlalchemy.ext.asyncio import AsyncSession,create_async_engine
 from sqlalchemy.orm import sessionmaker 
-from managers.land_manager import LandManager
-from managers.flavor_manager import FlavorManager
+from managers import LandManager
+from managers import FlavorManager
+from models import Plant
 import configparser
 
 

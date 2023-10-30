@@ -6,7 +6,7 @@ from utils.common_functions import snake_case
 Base = declarative_base()
 class Organization(Base):
     __tablename__ = snake_case('Organization')
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    organization_id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
     last_change_code = Column(UUID(as_uuid=True))
     name = Column(String)

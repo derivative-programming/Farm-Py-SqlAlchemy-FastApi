@@ -1,9 +1,9 @@
 import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
-from managers.flavor_manager import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
-from managers.land_manager import LandManager as LandIDManager #LandID
-from managers.plant_manager import PlantManager
-from models.plant import Plant
+from managers import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
+from managers import LandManager as LandIDManager #LandID
+from managers import PlantManager
+from models import Plant
 
 
 class PlantBusObj:

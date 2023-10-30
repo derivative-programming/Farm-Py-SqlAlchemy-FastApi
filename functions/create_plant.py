@@ -1,6 +1,6 @@
 from uuid import uuid4
 from sqlalchemy.orm import Session
-from managers.plant_manager import PlantManager
+from managers.plant import PlantManager
 
 def create_plant(session: Session, land_id: int, flavor_id: int):
     plant_manager = PlantManager(session)

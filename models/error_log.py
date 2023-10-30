@@ -6,7 +6,7 @@ from utils.common_functions import snake_case
 Base = declarative_base()
 class ErrorLog(Base):
     __tablename__ = snake_case('ErrorLog')
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    error_log_id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
     last_change_code = Column(UUID(as_uuid=True))
     browser_code = Column(UUID(as_uuid=True))
