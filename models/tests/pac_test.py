@@ -1,0 +1,146 @@
+import pytest
+import uuid
+from datetime import datetime
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.future import select
+from models import Base, Pac
+from models.factory import PacFactory
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+@pytest.fixture(scope="module")
+async def async_engine():
+    engine = create_async_engine(DATABASE_URL, echo=True)
+    yield engine
+    await engine.dispose()
+@pytest.fixture
+async def session(async_engine):
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    SessionLocal = sessionmaker(
+        bind=async_engine, class_=AsyncSession, expire_on_commit=False
+    )
+    async with SessionLocal() as session:
+        yield session
+@pytest.mark.asyncio
+async def test_pac_creation(session):
+    pac = PacFactory(session=session)
+    assert pac.pac_id is not None
+# @pytest.mark.asyncio
+# async def test_code_default(session):
+#     pac = PacFactory(session=session)
+#     assert isinstance(pac.code, uuid.UUID)
+# @pytest.mark.asyncio
+# async def test_last_change_code_default(session):
+#     pac = PacFactory(session=session)
+#     assert isinstance(pac.last_change_code, uuid.UUID)
+# @pytest.mark.asyncio
+# async def test_last_change_code_changes_on_update(session):
+#     # Create a pac and commit it to the database
+#     pac = PacFactory(session=session)
+#     # Store the initial last_change_code
+#     initial_last_change_code = pac.last_change_code
+#     # Update the code property of the pac
+#     pac.code = uuid.uuid4()  # Generating a new UUID for the code
+#     # Commit the update
+#     await session.commit()
+#     # Assert that the last_change_code has changed after the update
+#     assert pac.last_change_code != initial_last_change_code
+#     assert isinstance(pac.last_change_code, uuid.UUID)
+# @pytest.mark.asyncio
+# async def test_date_inserted(session):
+#     pac = PacFactory(session=session).build()
+#     assert pac.insert_utc_date_time is None
+#     session.add(pac)
+#     await session.commit()
+#     assert isinstance(pac.insert_utc_date_time, datetime)
+# @pytest.mark.asyncio
+# async def test_date_updated(session):
+#     pac = PacFactory(session=session)
+#     initial_time = pac.last_update_utc_date_time
+#     assert pac.description == ""
+#     assert pac.display_order == 0
+#     assert pac.is_active == False
+#     assert pac.lookup_enum_name == ""
+#     assert pac.name == ""
+# # @pytest.mark.asyncio
+# # async def test_string_length_limits(session):
+# #     long_string = "a" * 300
+# #     pac = PacFactory(some_varchar_val=long_string, some_text_val=long_string)
+# #     session.add(pac)
+# #     # Adjust this for the specific DB limit exception you'd expect if these fields are too long
+# #     with pytest.raises(Exception):
+# #         await session.commit()
+# @pytest.mark.asyncio
+# async def test_model_deletion(session):
+#     pac = PacFactory(session=session)
+#     session.delete(pac)
+#     await session.commit()
+#     deleted_pac = await session.get(Pac, pac.pac_id)
+#     assert deleted_pac is None
+# @pytest.mark.asyncio
+# async def test_data_types(session):
+#     pac = PacFactory(session=session,some_int_val="12345", some_float_val="123.45")
+#     # Check the data types for each property
+#     assert isinstance(pac.pac_id, int)
+#     assert isinstance(pac.code, uuid.UUID)
+#     assert isinstance(pac.last_change_code, uuid.UUID)
+#     assert isinstance(pac.insert_user_id, uuid.UUID)
+#     assert isinstance(pac.last_update_user_id, uuid.UUID)
+#     assert isinstance(pac.insert_utc_date_time, datetime.datetime)
+#     assert isinstance(pac.last_update_utc_date_time, datetime.datetime)
+#     assert pac.other_flavor == "" or isinstance(pac.other_flavor, str)
+#     assert isinstance(pac.some_big_int_val, int)
+#     pac.some_varchar_val = "Changed"
+#     await session.commit()
+#     assert pac.last_update_utc_date_time > initial_time
+# @pytest.mark.asyncio
+# async def test_unique_code_constraint(session):
+#     pac_1 = PacFactory(session=session)
+#     pac_2 = PacFactory(session=session)
+#     pac_2.code = pac_1.code  # Intentionally set the same code
+#     session.add_all([pac_1, pac_2])
+#     with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
+#         await session.commit()
+# @pytest.mark.asyncio
+# async def test_boolean_fields_default(session):
+#     pac = PacFactory(session=session)
+#     assert pac.code is not None
+#     assert pac.last_change_code is not None
+#     assert pac.insert_user_id is not None
+#     assert pac.last_update_user_id is not None
+#     assert pac.insert_utc_date_time is not None
+#     assert pac.last_update_utc_date_time is not None
+#     assert isinstance(pac.some_utc_date_time_val, datetime.datetime)
+#     assert pac.some_varchar_val == "" or isinstance(pac.some_varchar_val, str)
+# @pytest.mark.asyncio
+# async def test_last_change_code_concurrency(session):
+#     # Step 1: Create a Pac instance and commit
+#     pac = PacFactory(session=session)
+#     # Store the original last_change_code
+#     original_last_change_code = pac.last_change_code
+#     # Step 2: Fetch the Pac instance in a new session and modify it
+#     session_1 = session  # Using the existing session
+#     pac_1 = await session_1.execute(select(Pac).filter_by(pac_id=pac.pac_id))
+#     pac_1 = pac_1.scalar_one()
+#     pac_1.some_varchar_val = "Change1"
+#     await session_1.commit()
+#     # Step 3: Fetch the same Pac instance in another session and modify it
+#     session_2 = session  # Using the same session object, but it's a new transaction after commit
+#     pac_2 = await session_2.execute(select(Pac).filter_by(pac_id=pac.pac_id))
+#     pac_2 = pac_2.scalar_one()
+#     pac_2.some_varchar_val = "Change2"
+#     # Step 4: Commit changes in session_2 and check the last_change_code
+#     await session_2.commit()
+#     assert pac_2.last_change_code != original_last_change_code
+# @pytest.mark.asyncio #FlvrForeignKeyID
+# async def test_invalid_flvr_foreign_key_id(session):
+#     pac = PacFactory(session=session,flvr_foreign_key_id=99999)  # Assume no Flavor with ID 99999
+#     session.add(pac)
+#     with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
+#         await session.commit()
+# @pytest.mark.asyncio #ID
+# async def test_invalid__id(session):
+#     pac = PacFactory(session=session,_id=99999)  # Assume no  with ID 99999
+#     session.add(pac)
+#     with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
+#         await session.commit()

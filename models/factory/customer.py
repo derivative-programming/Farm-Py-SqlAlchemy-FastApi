@@ -1,26 +1,14 @@
 # farm/models/factories.py
-from datetime import timezone
+import datetime
 import uuid
 import factory
-import random
-from factory.alchemy import SQLAlchemyModelFactory
 from factory import Faker, SubFactory
 import pytz
 from models import Customer
-from managers import CustomerEnum
-from tac import TacFactory #tac_id
-class CustomerFactory(SQLAlchemyModelFactory):
+from .tac import TacFactory #tac_id
+class CustomerFactory(factory.Factory):
     class Meta:
         model = Customer
-        sqlalchemy_session_persistence = "commit"  # Use "commit" or "flush".
-    tac = SubFactory(TacFactory) #tac_id
-#endset
-    code = factory.LazyFunction(uuid.uuid4)
-    insert_utc_date_time = factory.LazyFunction(timezone.now)
-    last_update_utc_date_time = factory.LazyFunction(timezone.now)
-    insert_user_id = factory.LazyFunction(uuid.uuid4)
-    last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    last_change_code = factory.LazyFunction(uuid.uuid4)
     active_organization_id = Faker('random_int')
     email = Faker('email')
     email_confirmed_utc_date_time = Faker('date_time', tzinfo=pytz.utc)
@@ -41,6 +29,13 @@ class CustomerFactory(SQLAlchemyModelFactory):
     phone = Faker('phone_number')
     province = Faker('sentence', nb_words=4)
     registration_utc_date_time = Faker('date_time', tzinfo=pytz.utc)
-    tac_id = tac.id # factory.SelfAttribute('tac.id')
+    tac = SubFactory(TacFactory, session=factory.SelfAttribute('..session')) #tac_id
     utc_offset_in_minutes = Faker('random_int')
     zip = Faker('sentence', nb_words=4)
+    @classmethod
+    def _create(cls, model_class, session, *args, **kwargs):
+        """Override the _create method to use the provided session."""
+        obj = model_class(*args, **kwargs)
+        session.add(obj)
+        session.commit()
+        return obj

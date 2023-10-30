@@ -13,3 +13,4 @@ from .plant import PlantFactory
 from .role import RoleFactory
 from .tac import TacFactory
 from .tri_state_filter import TriStateFilterFactory
+from .base import SessionLocal

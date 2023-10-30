@@ -1,27 +1,30 @@
+from datetime import datetime
 import uuid
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from utils.common_functions import snake_case
-Base = declarative_base()
+from .base import Base  # Importing the Base from central module
 class OrgApiKey(Base):
     __tablename__ = snake_case('OrgApiKey')
     org_api_key_id = Column(Integer, primary_key=True, autoincrement=True)
-    code = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
-    last_change_code = Column(UUID(as_uuid=True))
-    api_key_value = Column(String)
-    created_by = Column(String)
-    created_utc_date_time = Column(DateTime)
-    expiration_utc_date_time = Column(DateTime)
-    is_active = Column(Boolean)
-    is_temp_user_key = Column(Boolean)
-    name = Column(String)
-    organization_id = Column(Integer, ForeignKey(snake_case('Organization') + '.id'))
-    org_customer_id = Column(Integer, ForeignKey(snake_case('OrgCustomer') + '.id'))
-    organization_code_peek = uuid.UUID #OrganizationID
-    org_customer_code_peek = uuid.UUID #OrgCustomerID
-    insert_utc_date_time = Column(DateTime, default=func.now())
-    last_update_utc_date_time = Column(DateTime, onupdate=func.now())
+    code = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4, nullable=True)
+    last_change_code = Column(UUID(as_uuid=True), default=uuid.uuid4, nullable=True)
+    insert_user_id = Column(UUID(as_uuid=True), default=uuid.uuid4, nullable=True)
+    last_update_user_id = Column(UUID(as_uuid=True), default=uuid.uuid4, nullable=True)
+    api_key_value = Column(String, default="", nullable=True)
+    created_by = Column(String, default="", nullable=True)
+    created_utc_date_time = Column(DateTime, default=datetime(1753, 1, 1), nullable=True)
+    expiration_utc_date_time = Column(DateTime, default=datetime(1753, 1, 1), nullable=True)
+    is_active = Column(Boolean, default=False, nullable=True)
+    is_temp_user_key = Column(Boolean, default=False, nullable=True)
+    name = Column(String, default="", nullable=True)
+    organization_id = Column(Integer, ForeignKey(snake_case('Organization') + '.id'), nullable=True)
+    org_customer_id = Column(Integer, ForeignKey(snake_case('OrgCustomer') + '.id'), nullable=True)
+    organization_code_peek = uuid.UUID  # OrganizationID
+    org_customer_code_peek = uuid.UUID  # OrgCustomerID
+    insert_utc_date_time = Column(DateTime, default=func.now(), nullable=True)
+    last_update_utc_date_time = Column(DateTime, onupdate=func.now(), nullable=True)
     #no relationsip properties. they are not updated immediately if the id prop is updated directly
     # organization = relationship('Organization', back_populates=snake_case('Organization'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
@@ -35,6 +38,7 @@ Index('index_org_customer_id', OrgApiKey.org_customer_id) #OrgCustomerID
 @event.listens_for(OrgApiKey, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = func.now()
+    target.last_update_utc_date_time = func.now()
 @event.listens_for(OrgApiKey, 'before_update')
 def set_updated_on(mapper, connection, target):
     target.last_update_utc_date_time = func.now()
