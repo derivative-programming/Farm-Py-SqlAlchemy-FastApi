@@ -9,16 +9,58 @@ from .pac import PacFactory #pac_id
 class LandFactory(factory.Factory):
     class Meta:
         model = Land
+    # land_id = factory.Sequence(lambda n: n)
+    code = factory.LazyFunction(uuid.uuid4)
+    insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
+    last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
+    insert_user_id = factory.LazyFunction(uuid.uuid4)
+    last_update_user_id = factory.LazyFunction(uuid.uuid4)
+    last_change_code = factory.LazyFunction(uuid.uuid4)
     description = Faker('sentence', nb_words=4)
     display_order = Faker('random_int')
     is_active = Faker('boolean')
     lookup_enum_name = Faker('sentence', nb_words=4)
     name = Faker('sentence', nb_words=4)
-    pac = SubFactory(PacFactory, session=factory.SelfAttribute('..session')) #pac_id
+    pac_id = factory.LazyAttribute(lambda obj: obj.pac.pac_id)
+    @classmethod
+    def _build(cls, model_class, session, *args, **kwargs):
+        pac_instance = PacFactory.create(session)  #PacID
+        kwargs["pac"] = pac_instance
+        kwargs["flavor"] = flavor_instance
+#endset
+        obj = model_class(*args, **kwargs)
+        session.add(obj)
+        # session.commit()
+        return obj
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs):
-        """Override the _create method to use the provided session."""
+        pac_instance = PacFactory.create(session)  #PacID
+        kwargs["pac"] = pac_instance
+        kwargs["flavor"] = flavor_instance
+#endset
         obj = model_class(*args, **kwargs)
         session.add(obj)
         session.commit()
+        return obj
+    @classmethod
+    async def create_async(cls, model_class, session, *args, **kwargs):
+        pac_instance = await PacFactory.create_async(session)  #PacID
+        kwargs["pac"] = pac_instance
+        kwargs["flavor"] = flavor_instance
+#endset
+        obj = model_class(*args, **kwargs)
+        async with session.begin():
+            session.add(obj)
+        await session.flush()
+        return obj
+    @classmethod
+    async def build_async(cls, model_class, session, *args, **kwargs):
+        pac_instance = await PacFactory.create_async(session)  #PacID
+        kwargs["pac"] = pac_instance
+        kwargs["flavor"] = flavor_instance
+#endset
+        obj = model_class(*args, **kwargs)
+        async with session.begin():
+            session.add(obj)
+        # await session.flush()
         return obj

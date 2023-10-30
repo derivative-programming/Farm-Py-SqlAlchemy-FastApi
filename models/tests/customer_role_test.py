@@ -23,44 +23,36 @@ async def session(async_engine):
         yield session
 @pytest.mark.asyncio
 async def test_customer_role_creation(session):
-    customer_role = CustomerRoleFactory(session=session)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     assert customer_role.customer_role_id is not None
 @pytest.mark.asyncio
 async def test_code_default(session):
-    customer_role = CustomerRoleFactory(session=session)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     assert isinstance(customer_role.code, uuid.UUID)
 @pytest.mark.asyncio
-async def test_last_change_code_default(session):
-    customer_role = CustomerRoleFactory(session=session)
+async def test_last_change_code_default_on_creation(session):
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     assert isinstance(customer_role.last_change_code, uuid.UUID)
 @pytest.mark.asyncio
-async def test_last_change_code_changes_on_update(session):
-    # Create a customer_role and commit it to the database
-    customer_role = CustomerRoleFactory(session=session)
-    # Store the initial last_change_code
-    initial_last_change_code = customer_role.last_change_code
-    # Update the code property of the customer_role
-    customer_role.code = uuid.uuid4()  # Generating a new UUID for the code
-    # Commit the update
+async def test_last_change_code_default_on_update(session):
+    customer_role = await CustomerRoleFactory.create_async(session=session)
+    initial_code = customer_role.last_change_code
+    customer_role.code = uuid.uuid4()
     await session.commit()
-    # Assert that the last_change_code has changed after the update
-    assert customer_role.last_change_code != initial_last_change_code
-    assert isinstance(customer_role.last_change_code, uuid.UUID)
+    assert customer_role.last_change_code != initial_code
 @pytest.mark.asyncio
 async def test_date_inserted(session):
-    customer_role = CustomerRoleFactory(session=session).build()
+    customer_role = CustomerRoleFactory.build_async(session=session)
     assert customer_role.insert_utc_date_time is None
-    session.add(customer_role)
     await session.commit()
     assert isinstance(customer_role.insert_utc_date_time, datetime)
 @pytest.mark.asyncio
 async def test_date_updated(session):
-    customer_role = CustomerRoleFactory(session=session)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     initial_time = customer_role.last_update_utc_date_time
-    assert customer_role.customer_id > 0
-    assert customer_role.is_placeholder == False
-    assert customer_role.placeholder == False
-    assert customer_role.role_id > 0
+    customer_role.code = uuid.uuid4()
+    await session.commit()
+    assert customer_role.last_update_utc_date_time > initial_time
 # @pytest.mark.asyncio
 # async def test_string_length_limits(session):
 #     long_string = "a" * 300
@@ -71,81 +63,84 @@ async def test_date_updated(session):
 #         await session.commit()
 @pytest.mark.asyncio
 async def test_model_deletion(session):
-    customer_role = CustomerRoleFactory(session=session)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     session.delete(customer_role)
     await session.commit()
     deleted_customer_role = await session.get(CustomerRole, customer_role.customer_role_id)
     assert deleted_customer_role is None
 @pytest.mark.asyncio
 async def test_data_types(session):
-    customer_role = CustomerRoleFactory(session=session,some_int_val="12345", some_float_val="123.45")
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     # Check the data types for each property
     assert isinstance(customer_role.customer_role_id, int)
     assert isinstance(customer_role.code, uuid.UUID)
     assert isinstance(customer_role.last_change_code, uuid.UUID)
     assert isinstance(customer_role.insert_user_id, uuid.UUID)
     assert isinstance(customer_role.last_update_user_id, uuid.UUID)
+    assert isinstance(customer_role.customer_id, int)
+    assert isinstance(customer_role.is_placeholder, bool)
+    assert isinstance(customer_role.placeholder, bool)
+    assert isinstance(customer_role.role_id, int)
+    # Check for the peek values, assuming they are UUIDs based on your model
+    assert isinstance(customer_role.flvr_foreign_key_code_peek, uuid.UUID)
+    assert isinstance(customer_role.customer_code_peek, uuid.UUID)
     assert isinstance(customer_role.insert_utc_date_time, datetime.datetime)
     assert isinstance(customer_role.last_update_utc_date_time, datetime.datetime)
-    assert isinstance(customer_role.customer_id, int)
-    assert isinstance(customer_role.role_id, int)
-    assert isinstance(customer_role.is_delete_allowed, bool)
-    assert isinstance(customer_role.is_edit_allowed, bool)
-    assert customer_role.other_flavor == "" or isinstance(customer_role.other_flavor, str)
-    assert isinstance(customer_role.some_big_int_val, int)
-    customer_role.some_varchar_val = "Changed"
-    await session.commit()
-    assert customer_role.last_update_utc_date_time > initial_time
+#endset
 @pytest.mark.asyncio
 async def test_unique_code_constraint(session):
-    customer_role_1 = CustomerRoleFactory(session=session)
-    customer_role_2 = CustomerRoleFactory(session=session)
+    customer_role_1 = await CustomerRoleFactory.create_async(session=session)
+    customer_role_2 = await CustomerRoleFactory.create_async(session=session)
     customer_role_2.code = customer_role_1.code  # Intentionally set the same code
     session.add_all([customer_role_1, customer_role_2])
     with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
         await session.commit()
 @pytest.mark.asyncio
 async def test_boolean_fields_default(session):
-    customer_role = CustomerRoleFactory(session=session)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     assert customer_role.code is not None
     assert customer_role.last_change_code is not None
     assert customer_role.insert_user_id is not None
     assert customer_role.last_update_user_id is not None
     assert customer_role.insert_utc_date_time is not None
     assert customer_role.last_update_utc_date_time is not None
-    assert isinstance(customer_role.some_utc_date_time_val, datetime.datetime)
-    assert customer_role.some_varchar_val == "" or isinstance(customer_role.some_varchar_val, str)
     assert isinstance(customer_role.customer_code_peek, uuid.UUID) #CustomerID
+    assert customer_role.flvr_foreign_key_id > 0
+    assert customer_role.is_placeholder == False
+    assert customer_role.placeholder == False
     assert isinstance(customer_role.role_code_peek, uuid.UUID) #RoleID
+    assert customer_role.some_utc_date_time_val == datetime(1753, 1, 1)
+    assert customer_role.some_varchar_val == ""
+#endset
 @pytest.mark.asyncio
 async def test_last_change_code_concurrency(session):
     # Step 1: Create a CustomerRole instance and commit
-    customer_role = CustomerRoleFactory(session=session)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
     # Store the original last_change_code
     original_last_change_code = customer_role.last_change_code
     # Step 2: Fetch the CustomerRole instance in a new session and modify it
     session_1 = session  # Using the existing session
     customer_role_1 = await session_1.execute(select(CustomerRole).filter_by(customer_role_id=customer_role.customer_role_id))
     customer_role_1 = customer_role_1.scalar_one()
-    customer_role_1.some_varchar_val = "Change1"
+    customer_role_1.code = uuid.uuid4()
     await session_1.commit()
     # Step 3: Fetch the same CustomerRole instance in another session and modify it
     session_2 = session  # Using the same session object, but it's a new transaction after commit
     customer_role_2 = await session_2.execute(select(CustomerRole).filter_by(customer_role_id=customer_role.customer_role_id))
     customer_role_2 = customer_role_2.scalar_one()
-    customer_role_2.some_varchar_val = "Change2"
+    customer_role_2.code = uuid.uuid4()
     # Step 4: Commit changes in session_2 and check the last_change_code
     await session_2.commit()
     assert customer_role_2.last_change_code != original_last_change_code
 @pytest.mark.asyncio #FlvrForeignKeyID
 async def test_invalid_flvr_foreign_key_id(session):
-    customer_role = CustomerRoleFactory(session=session,flvr_foreign_key_id=99999)  # Assume no Flavor with ID 99999
-    session.add(customer_role)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
+    customer_role.flvr_foreign_key_id=99999
     with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
         await session.commit()
 @pytest.mark.asyncio #CustomerID
 async def test_invalid_customer_id(session):
-    customer_role = CustomerRoleFactory(session=session,customer_id=99999)  # Assume no Customer with ID 99999
-    session.add(customer_role)
+    customer_role = await CustomerRoleFactory.create_async(session=session)
+    customer_role.customer_id=99999
     with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
         await session.commit()
