@@ -25,7 +25,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
     
-class TestPlant:
+class TestPlantFactory:
 
     @pytest.fixture(scope="module")
     def engine(self):
