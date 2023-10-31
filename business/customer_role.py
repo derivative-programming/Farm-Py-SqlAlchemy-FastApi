@@ -17,13 +17,13 @@ class CustomerRoleBusObj:
             customer_role_obj = self.manager.get_by_code(code)
             self.customer_role = customer_role_obj
     async def save(self):
-        if self.customer_role.id > 0:
+        if self.customer_role.customer_role_id > 0:
             self.customer_role = await self.manager.update(self.customer_role)
-        if self.customer_role.id == 0:
+        if self.customer_role.customer_role_id == 0:
             self.customer_role = await self.manager.add(self.customer_role)
     async def delete(self):
-        if self.customer_role.id > 0:
-            self.customer_role = await self.manager.delete(self.customer_role.id)
+        if self.customer_role.customer_role_id > 0:
+            self.customer_role = await self.manager.delete(self.customer_role.customer_role_id)
     async def get_customer_id_rel_obj(self, customer_id: int): #CustomerID
         customer_manager = CustomerIDManager(self.session)
         return customer_manager.get_by_id(self.customer_role.customer_id)

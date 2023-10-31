@@ -5,6 +5,7 @@
         "name":"Plant"
     },
     "ignoreDimensionPropertyList": [
+        "prop.calculatedisFKObjectParentOFOwnerObject",
         "prop.isNotPublishedToSubscriptions",
         "prop.isFKLookup",
         "prop.isQueryByAvailable",

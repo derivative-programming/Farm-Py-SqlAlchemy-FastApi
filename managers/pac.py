@@ -11,7 +11,7 @@ class PacManager:
         await self.session.commit()
         return pac
     async def get_by_id(self, pac_id: int):
-        result = await self.session.execute(select(Pac).filter(Pac.id == pac_id))
+        result = await self.session.execute(select(Pac).filter(Pac.pac_id == pac_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(Pac).filter_by(code=code))
@@ -32,3 +32,4 @@ class PacManager:
     async def get_list(self):
         result = await self.session.execute(select(Pac))
         return result.scalars().all()
+

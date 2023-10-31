@@ -16,13 +16,13 @@ class TriStateFilterBusObj:
             tri_state_filter_obj = self.manager.get_by_code(code)
             self.tri_state_filter = tri_state_filter_obj
     async def save(self):
-        if self.tri_state_filter.id > 0:
+        if self.tri_state_filter.tri_state_filter_id > 0:
             self.tri_state_filter = await self.manager.update(self.tri_state_filter)
-        if self.tri_state_filter.id == 0:
+        if self.tri_state_filter.tri_state_filter_id == 0:
             self.tri_state_filter = await self.manager.add(self.tri_state_filter)
     async def delete(self):
-        if self.tri_state_filter.id > 0:
-            self.tri_state_filter = await self.manager.delete(self.tri_state_filter.id)
+        if self.tri_state_filter.tri_state_filter_id > 0:
+            self.tri_state_filter = await self.manager.delete(self.tri_state_filter.tri_state_filter_id)
     async def get_pac_id_rel_obj(self, pac_id: int): #PacID
         pac_manager = PacIDManager(self.session)
         return pac_manager.get_by_id(self.tri_state_filter.pac_id)

@@ -1,5 +1,6 @@
 import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from managers import PacManager
 from models import Pac
 class PacBusObj:
@@ -15,10 +16,11 @@ class PacBusObj:
             pac_obj = self.manager.get_by_code(code)
             self.pac = pac_obj
     async def save(self):
-        if self.pac.id > 0:
+        if self.pac.pac_id > 0:
             self.pac = await self.manager.update(self.pac)
-        if self.pac.id == 0:
+        if self.pac.pac_id == 0:
             self.pac = await self.manager.add(self.pac)
     async def delete(self):
-        if self.pac.id > 0:
-            self.pac = await self.manager.delete(self.pac.id)
+        if self.pac.pac_id > 0:
+            self.pac = await self.manager.delete(self.pac.pac_id)
+

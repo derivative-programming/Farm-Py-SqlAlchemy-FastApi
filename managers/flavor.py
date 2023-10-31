@@ -11,7 +11,7 @@ class FlavorManager:
         await self.session.commit()
         return flavor
     async def get_by_id(self, flavor_id: int):
-        result = await self.session.execute(select(Flavor).filter(Flavor.id == flavor_id))
+        result = await self.session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(Flavor).filter_by(code=code))

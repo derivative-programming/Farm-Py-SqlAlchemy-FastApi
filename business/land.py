@@ -16,13 +16,13 @@ class LandBusObj:
             land_obj = self.manager.get_by_code(code)
             self.land = land_obj
     async def save(self):
-        if self.land.id > 0:
+        if self.land.land_id > 0:
             self.land = await self.manager.update(self.land)
-        if self.land.id == 0:
+        if self.land.land_id == 0:
             self.land = await self.manager.add(self.land)
     async def delete(self):
-        if self.land.id > 0:
-            self.land = await self.manager.delete(self.land.id)
+        if self.land.land_id > 0:
+            self.land = await self.manager.delete(self.land.land_id)
     async def get_pac_id_rel_obj(self, pac_id: int): #PacID
         pac_manager = PacIDManager(self.session)
         return pac_manager.get_by_id(self.land.pac_id)

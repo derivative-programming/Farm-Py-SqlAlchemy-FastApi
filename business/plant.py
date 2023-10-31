@@ -22,15 +22,15 @@ class PlantBusObj:
             self.plant = plant_obj 
 
     async def save(self):
-        if self.plant.id > 0:
+        if self.plant.plant_id > 0:
             self.plant = await self.manager.update(self.plant)
-        if self.plant.id == 0:
+        if self.plant.plant_id == 0:
             self.plant = await self.manager.add(self.plant)
 
     
     async def delete(self):
-        if self.plant.id > 0:
-            self.plant = await self.manager.delete(self.plant.id)
+        if self.plant.plant_id > 0:
+            self.plant = await self.manager.delete(self.plant.plant_id)
 
     async def get_land_id_rel_obj(self, land_id: int): #LandID 
         land_manager = LandIDManager(self.session)

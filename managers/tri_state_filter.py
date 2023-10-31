@@ -11,7 +11,7 @@ class TriStateFilterManager:
         await self.session.commit()
         return tri_state_filter
     async def get_by_id(self, tri_state_filter_id: int):
-        result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.id == tri_state_filter_id))
+        result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == tri_state_filter_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(TriStateFilter).filter_by(code=code))

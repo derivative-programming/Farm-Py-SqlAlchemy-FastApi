@@ -11,7 +11,7 @@ class OrgCustomerManager:
         await self.session.commit()
         return org_customer
     async def get_by_id(self, org_customer_id: int):
-        result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.id == org_customer_id))
+        result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(OrgCustomer).filter_by(code=code))

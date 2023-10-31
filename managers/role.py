@@ -11,7 +11,7 @@ class RoleManager:
         await self.session.commit()
         return role
     async def get_by_id(self, role_id: int):
-        result = await self.session.execute(select(Role).filter(Role.id == role_id))
+        result = await self.session.execute(select(Role).filter(Role.role_id == role_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(Role).filter_by(code=code))

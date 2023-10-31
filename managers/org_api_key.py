@@ -11,7 +11,7 @@ class OrgApiKeyManager:
         await self.session.commit()
         return org_api_key
     async def get_by_id(self, org_api_key_id: int):
-        result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.id == org_api_key_id))
+        result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(OrgApiKey).filter_by(code=code))

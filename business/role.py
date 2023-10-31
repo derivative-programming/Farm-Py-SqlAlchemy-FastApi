@@ -16,13 +16,13 @@ class RoleBusObj:
             role_obj = self.manager.get_by_code(code)
             self.role = role_obj
     async def save(self):
-        if self.role.id > 0:
+        if self.role.role_id > 0:
             self.role = await self.manager.update(self.role)
-        if self.role.id == 0:
+        if self.role.role_id == 0:
             self.role = await self.manager.add(self.role)
     async def delete(self):
-        if self.role.id > 0:
-            self.role = await self.manager.delete(self.role.id)
+        if self.role.role_id > 0:
+            self.role = await self.manager.delete(self.role.role_id)
     async def get_pac_id_rel_obj(self, pac_id: int): #PacID
         pac_manager = PacIDManager(self.session)
         return pac_manager.get_by_id(self.role.pac_id)

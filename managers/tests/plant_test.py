@@ -36,15 +36,15 @@ async def test_add(plant_manager):
     added_plant = await plant_manager.add(**plant_data)
     
     assert added_plant
-    assert added_plant.id
+    assert added_plant.plant_id
 
 @pytest.mark.asyncio
 async def test_get_by_id(plant_manager):
     plant_data = factory.build(dict, FACTORY_CLASS=PlantFactory)
     added_plant = await plant_manager.add(**plant_data)
 
-    fetched_plant = await plant_manager.get_by_id(added_plant.id)
-    assert fetched_plant.id == added_plant.id
+    fetched_plant = await plant_manager.get_by_id(added_plant.plant_id)
+    assert fetched_plant.plant_id == added_plant.plant_id
 
 @pytest.mark.asyncio
 async def test_get_by_code(plant_manager):
@@ -59,9 +59,9 @@ async def test_update(plant_manager):
     plant_data = factory.build(dict, FACTORY_CLASS=PlantFactory)
     added_plant = await plant_manager.add(**plant_data)
     new_code = uuid.uuid4()  # Generate a new UUID
-    await plant_manager.update(added_plant.id, code=new_code)
+    await plant_manager.update(added_plant.plant_id, code=new_code)
     
-    fetched_plant = await plant_manager.get_by_id(added_plant.id)
+    fetched_plant = await plant_manager.get_by_id(added_plant.plant_id)
     assert fetched_plant.code == new_code
 
 @pytest.mark.asyncio
@@ -69,8 +69,8 @@ async def test_delete(plant_manager):
     plant_data = factory.build(dict, FACTORY_CLASS=PlantFactory)
     added_plant = await plant_manager.add(**plant_data)
 
-    await plant_manager.delete(added_plant.id)
-    fetched_plant = await plant_manager.get_by_id(added_plant.id)
+    await plant_manager.delete(added_plant.plant_id)
+    fetched_plant = await plant_manager.get_by_id(added_plant.plant_id)
     assert not fetched_plant
 
 @pytest.mark.asyncio

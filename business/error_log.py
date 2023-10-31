@@ -16,13 +16,13 @@ class ErrorLogBusObj:
             error_log_obj = self.manager.get_by_code(code)
             self.error_log = error_log_obj
     async def save(self):
-        if self.error_log.id > 0:
+        if self.error_log.error_log_id > 0:
             self.error_log = await self.manager.update(self.error_log)
-        if self.error_log.id == 0:
+        if self.error_log.error_log_id == 0:
             self.error_log = await self.manager.add(self.error_log)
     async def delete(self):
-        if self.error_log.id > 0:
-            self.error_log = await self.manager.delete(self.error_log.id)
+        if self.error_log.error_log_id > 0:
+            self.error_log = await self.manager.delete(self.error_log.error_log_id)
     async def get_pac_id_rel_obj(self, pac_id: int): #PacID
         pac_manager = PacIDManager(self.session)
         return pac_manager.get_by_id(self.error_log.pac_id)

@@ -16,13 +16,13 @@ class FlavorBusObj:
             flavor_obj = self.manager.get_by_code(code)
             self.flavor = flavor_obj
     async def save(self):
-        if self.flavor.id > 0:
+        if self.flavor.flavor_id > 0:
             self.flavor = await self.manager.update(self.flavor)
-        if self.flavor.id == 0:
+        if self.flavor.flavor_id == 0:
             self.flavor = await self.manager.add(self.flavor)
     async def delete(self):
-        if self.flavor.id > 0:
-            self.flavor = await self.manager.delete(self.flavor.id)
+        if self.flavor.flavor_id > 0:
+            self.flavor = await self.manager.delete(self.flavor.flavor_id)
     async def get_pac_id_rel_obj(self, pac_id: int): #PacID
         pac_manager = PacIDManager(self.session)
         return pac_manager.get_by_id(self.flavor.pac_id)

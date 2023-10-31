@@ -16,13 +16,13 @@ class TacBusObj:
             tac_obj = self.manager.get_by_code(code)
             self.tac = tac_obj
     async def save(self):
-        if self.tac.id > 0:
+        if self.tac.tac_id > 0:
             self.tac = await self.manager.update(self.tac)
-        if self.tac.id == 0:
+        if self.tac.tac_id == 0:
             self.tac = await self.manager.add(self.tac)
     async def delete(self):
-        if self.tac.id > 0:
-            self.tac = await self.manager.delete(self.tac.id)
+        if self.tac.tac_id > 0:
+            self.tac = await self.manager.delete(self.tac.tac_id)
     async def get_pac_id_rel_obj(self, pac_id: int): #PacID
         pac_manager = PacIDManager(self.session)
         return pac_manager.get_by_id(self.tac.pac_id)

@@ -11,7 +11,7 @@ class PlantManager:
         await self.session.commit()
         return plant
     async def get_by_id(self, plant_id: int):
-        result = await self.session.execute(select(Plant).filter(Plant.id == plant_id))
+        result = await self.session.execute(select(Plant).filter(Plant.plant_id == plant_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(Plant).filter_by(code=code))

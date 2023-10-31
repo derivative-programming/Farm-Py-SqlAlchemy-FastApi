@@ -17,13 +17,13 @@ class OrgApiKeyBusObj:
             org_api_key_obj = self.manager.get_by_code(code)
             self.org_api_key = org_api_key_obj
     async def save(self):
-        if self.org_api_key.id > 0:
+        if self.org_api_key.org_api_key_id > 0:
             self.org_api_key = await self.manager.update(self.org_api_key)
-        if self.org_api_key.id == 0:
+        if self.org_api_key.org_api_key_id == 0:
             self.org_api_key = await self.manager.add(self.org_api_key)
     async def delete(self):
-        if self.org_api_key.id > 0:
-            self.org_api_key = await self.manager.delete(self.org_api_key.id)
+        if self.org_api_key.org_api_key_id > 0:
+            self.org_api_key = await self.manager.delete(self.org_api_key.org_api_key_id)
     async def get_organization_id_rel_obj(self, organization_id: int): #OrganizationID
         organization_manager = OrganizationIDManager(self.session)
         return organization_manager.get_by_id(self.org_api_key.organization_id)

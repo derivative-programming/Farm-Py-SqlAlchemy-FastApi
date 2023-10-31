@@ -11,7 +11,7 @@ class LandManager:
         await self.session.commit()
         return land
     async def get_by_id(self, land_id: int):
-        result = await self.session.execute(select(Land).filter(Land.id == land_id))
+        result = await self.session.execute(select(Land).filter(Land.land_id == land_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(Land).filter_by(code=code))

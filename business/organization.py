@@ -16,13 +16,13 @@ class OrganizationBusObj:
             organization_obj = self.manager.get_by_code(code)
             self.organization = organization_obj
     async def save(self):
-        if self.organization.id > 0:
+        if self.organization.organization_id > 0:
             self.organization = await self.manager.update(self.organization)
-        if self.organization.id == 0:
+        if self.organization.organization_id == 0:
             self.organization = await self.manager.add(self.organization)
     async def delete(self):
-        if self.organization.id > 0:
-            self.organization = await self.manager.delete(self.organization.id)
+        if self.organization.organization_id > 0:
+            self.organization = await self.manager.delete(self.organization.organization_id)
     async def get_tac_id_rel_obj(self, tac_id: int): #TacID
         tac_manager = TacIDManager(self.session)
         return tac_manager.get_by_id(self.organization.tac_id)

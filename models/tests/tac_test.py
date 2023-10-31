@@ -1,150 +1,213 @@
 import pytest
 import uuid
+import time
 from datetime import datetime
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.future import select
 from models import Base, Tac
 from models.factory import TacFactory
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-@pytest.fixture(scope="module")
-async def async_engine():
-    engine = create_async_engine(DATABASE_URL, echo=True)
-    yield engine
-    await engine.dispose()
-@pytest.fixture
-async def session(async_engine):
-    async with async_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    SessionLocal = sessionmaker(
-        bind=async_engine, class_=AsyncSession, expire_on_commit=False
-    )
-    async with SessionLocal() as session:
-        yield session
-@pytest.mark.asyncio
-async def test_tac_creation(session):
-    tac = await TacFactory.create_async(session=session)
-    assert tac.tac_id is not None
-@pytest.mark.asyncio
-async def test_code_default(session):
-    tac = await TacFactory.create_async(session=session)
-    assert isinstance(tac.code, uuid.UUID)
-@pytest.mark.asyncio
-async def test_last_change_code_default_on_creation(session):
-    tac = await TacFactory.create_async(session=session)
-    assert isinstance(tac.last_change_code, uuid.UUID)
-@pytest.mark.asyncio
-async def test_last_change_code_default_on_update(session):
-    tac = await TacFactory.create_async(session=session)
-    initial_code = tac.last_change_code
-    tac.code = uuid.uuid4()
-    await session.commit()
-    assert tac.last_change_code != initial_code
-@pytest.mark.asyncio
-async def test_date_inserted(session):
-    tac = TacFactory.build_async(session=session)
-    assert tac.insert_utc_date_time is None
-    await session.commit()
-    assert isinstance(tac.insert_utc_date_time, datetime)
-@pytest.mark.asyncio
-async def test_date_updated(session):
-    tac = await TacFactory.create_async(session=session)
-    initial_time = tac.last_update_utc_date_time
-    tac.code = uuid.uuid4()
-    await session.commit()
-    assert tac.last_update_utc_date_time > initial_time
-# @pytest.mark.asyncio
-# async def test_string_length_limits(session):
-#     long_string = "a" * 300
-#     tac = TacFactory(some_varchar_val=long_string, some_text_val=long_string)
-#     session.add(tac)
-#     # Adjust this for the specific DB limit exception you'd expect if these fields are too long
-#     with pytest.raises(Exception):
-#         await session.commit()
-@pytest.mark.asyncio
-async def test_model_deletion(session):
-    tac = await TacFactory.create_async(session=session)
-    session.delete(tac)
-    await session.commit()
-    deleted_tac = await session.get(Tac, tac.tac_id)
-    assert deleted_tac is None
-@pytest.mark.asyncio
-async def test_data_types(session):
-    tac = await TacFactory.create_async(session=session)
-    # Check the data types for each property
-    assert isinstance(tac.tac_id, int)
-    assert isinstance(tac.code, uuid.UUID)
-    assert isinstance(tac.last_change_code, uuid.UUID)
-    assert isinstance(tac.insert_user_id, uuid.UUID)
-    assert isinstance(tac.last_update_user_id, uuid.UUID)
-    assert tac.description == "" or isinstance(tac.description, str)
-    assert isinstance(tac.display_order, int)
-    assert isinstance(tac.is_active, bool)
-    assert tac.lookup_enum_name == "" or isinstance(tac.lookup_enum_name, str)
-    assert tac.name == "" or isinstance(tac.name, str)
-    assert isinstance(tac.pac_id, int)
-    # Check for the peek values, assuming they are UUIDs based on your model
-    assert isinstance(tac.flvr_foreign_key_code_peek, uuid.UUID)
-    assert isinstance(tac.pac_code_peek, uuid.UUID)
-    assert isinstance(tac.insert_utc_date_time, datetime.datetime)
-    assert isinstance(tac.last_update_utc_date_time, datetime.datetime)
-#endset
-@pytest.mark.asyncio
-async def test_unique_code_constraint(session):
-    tac_1 = await TacFactory.create_async(session=session)
-    tac_2 = await TacFactory.create_async(session=session)
-    tac_2.code = tac_1.code  # Intentionally set the same code
-    session.add_all([tac_1, tac_2])
-    with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
-        await session.commit()
-@pytest.mark.asyncio
-async def test_boolean_fields_default(session):
-    tac = await TacFactory.create_async(session=session)
-    assert tac.code is not None
-    assert tac.last_change_code is not None
-    assert tac.insert_user_id is not None
-    assert tac.last_update_user_id is not None
-    assert tac.insert_utc_date_time is not None
-    assert tac.last_update_utc_date_time is not None
-    assert tac.description == ""
-    assert tac.display_order == 0
-    assert tac.is_active == False
-    assert tac.lookup_enum_name == ""
-    assert tac.name == ""
-    assert isinstance(tac.pac_code_peek, uuid.UUID) #PacID
-    assert tac.flvr_foreign_key_id > 0
-    assert tac.some_utc_date_time_val == datetime(1753, 1, 1)
-    assert tac.some_varchar_val == ""
-#endset
-@pytest.mark.asyncio
-async def test_last_change_code_concurrency(session):
-    # Step 1: Create a Tac instance and commit
-    tac = await TacFactory.create_async(session=session)
-    # Store the original last_change_code
-    original_last_change_code = tac.last_change_code
-    # Step 2: Fetch the Tac instance in a new session and modify it
-    session_1 = session  # Using the existing session
-    tac_1 = await session_1.execute(select(Tac).filter_by(tac_id=tac.tac_id))
-    tac_1 = tac_1.scalar_one()
-    tac_1.code = uuid.uuid4()
-    await session_1.commit()
-    # Step 3: Fetch the same Tac instance in another session and modify it
-    session_2 = session  # Using the same session object, but it's a new transaction after commit
-    tac_2 = await session_2.execute(select(Tac).filter_by(tac_id=tac.tac_id))
-    tac_2 = tac_2.scalar_one()
-    tac_2.code = uuid.uuid4()
-    # Step 4: Commit changes in session_2 and check the last_change_code
-    await session_2.commit()
-    assert tac_2.last_change_code != original_last_change_code
-@pytest.mark.asyncio #FlvrForeignKeyID
-async def test_invalid_flvr_foreign_key_id(session):
-    tac = await TacFactory.create_async(session=session)
-    tac.flvr_foreign_key_id=99999
-    with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
-        await session.commit()
-@pytest.mark.asyncio #PacID
-async def test_invalid_pac_id(session):
-    tac = await TacFactory.create_async(session=session)
-    tac.pac_id=99999
-    with pytest.raises(Exception):  # Adjust for the specific DB exception you'd expect
-        await session.commit()
+from services.db_config import db_dialect
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+DATABASE_URL = "sqlite:///:memory:"
+db_dialect = "sqlite"
+# Conditionally set the UUID column type
+if db_dialect == 'postgresql':
+    UUIDType = UUID(as_uuid=True)
+elif db_dialect == 'mssql':
+    UUIDType = UNIQUEIDENTIFIER
+else:  # This will cover SQLite, MySQL, and other databases
+    UUIDType = String(36)
+class TestTac:
+    @pytest.fixture(scope="module")
+    def engine(self):
+        engine = create_engine(DATABASE_URL, echo=True)
+        yield engine
+        engine.dispose()
+    @pytest.fixture
+    def session(self, engine):
+        Base.metadata.create_all(engine)
+        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+        session_instance = SessionLocal()
+        yield session_instance
+        session_instance.close()
+    def test_tac_creation(self, session):
+        tac = TacFactory.create(session=session)
+        assert tac.tac_id is not None
+    def test_code_default(self, session):
+        tac = TacFactory.create(session=session)
+        if db_dialect == 'postgresql':
+            assert isinstance(tac.code, UUID)
+        elif db_dialect == 'mssql':
+            assert isinstance(tac.code, UNIQUEIDENTIFIER)
+        else:  # This will cover SQLite, MySQL, and other databases
+            assert isinstance(tac.code, str)
+    def test_last_change_code_default_on_build(self, session):
+        tac:Tac = TacFactory.build(session=session)
+        assert tac.last_change_code == 0
+    def test_last_change_code_default_on_creation(self, session):
+        tac:Tac = TacFactory.create(session=session)
+        assert tac.last_change_code == 1
+    def test_last_change_code_default_on_update(self, session):
+        tac = TacFactory.create(session=session)
+        initial_code = tac.last_change_code
+        tac.code = generate_uuid()
+        session.commit()
+        assert tac.last_change_code != initial_code
+    def test_date_inserted_on_build(self, session):
+        tac = TacFactory.build(session=session)
+        assert tac.insert_utc_date_time is not None
+        assert isinstance(tac.insert_utc_date_time, datetime)
+    def test_date_inserted_on_initial_save(self, session):
+        tac = TacFactory.build(session=session)
+        assert tac.insert_utc_date_time is not None
+        assert isinstance(tac.insert_utc_date_time, datetime)
+        initial_time = tac.insert_utc_date_time
+        tac.code = generate_uuid()
+        time.sleep(2)
+        session.commit()
+        assert tac.insert_utc_date_time > initial_time
+    def test_date_inserted_on_second_save(self, session):
+        tac = TacFactory(session=session)
+        assert tac.insert_utc_date_time is not None
+        assert isinstance(tac.insert_utc_date_time, datetime)
+        initial_time = tac.insert_utc_date_time
+        tac.code = generate_uuid()
+        time.sleep(2)
+        session.commit()
+        assert tac.insert_utc_date_time == initial_time
+    def test_date_updated_on_build(self, session):
+        tac = TacFactory.build(session=session)
+        assert tac.last_update_utc_date_time is not None
+        assert isinstance(tac.last_update_utc_date_time, datetime)
+    def test_date_updated_on_initial_save(self, session):
+        tac = TacFactory.build(session=session)
+        assert tac.last_update_utc_date_time is not None
+        assert isinstance(tac.last_update_utc_date_time, datetime)
+        initial_time = tac.last_update_utc_date_time
+        tac.code = generate_uuid()
+        time.sleep(2)
+        session.commit()
+        assert tac.last_update_utc_date_time > initial_time
+    def test_date_updated_on_second_save(self, session):
+        tac = TacFactory(session=session)
+        assert tac.last_update_utc_date_time is not None
+        assert isinstance(tac.last_update_utc_date_time, datetime)
+        initial_time = tac.last_update_utc_date_time
+        tac.code = generate_uuid()
+        time.sleep(2)
+        session.commit()
+        assert tac.last_update_utc_date_time > initial_time
+    def test_model_deletion(self, session):
+        tac = TacFactory.create(session=session)
+        session.delete(tac)
+        session.commit()
+        deleted_tac = session.query(Tac).filter_by(tac_id=tac.tac_id).first()
+        assert deleted_tac is None
+    def test_data_types(self, session):
+        tac = TacFactory.create(session=session)
+        assert isinstance(tac.tac_id, int)
+        if db_dialect == 'postgresql':
+            assert isinstance(tac.code, UUID)
+        elif db_dialect == 'mssql':
+            assert isinstance(tac.code, UNIQUEIDENTIFIER)
+        else:  # This will cover SQLite, MySQL, and other databases
+            assert isinstance(tac.code, str)
+        assert isinstance(tac.last_change_code, int)
+        if db_dialect == 'postgresql':
+            assert isinstance(tac.insert_user_id, UUID)
+        elif db_dialect == 'mssql':
+            assert isinstance(tac.insert_user_id, UNIQUEIDENTIFIER)
+        else:  # This will cover SQLite, MySQL, and other databases
+            assert isinstance(tac.insert_user_id, str)
+        if db_dialect == 'postgresql':
+            assert isinstance(tac.last_update_user_id, UUID)
+        elif db_dialect == 'mssql':
+            assert isinstance(tac.last_update_user_id, UNIQUEIDENTIFIER)
+        else:  # This will cover SQLite, MySQL, and other databases
+            assert isinstance(tac.last_update_user_id, str)
+        assert tac.description == "" or isinstance(tac.description, str)
+        assert isinstance(tac.display_order, int)
+        assert isinstance(tac.is_active, bool)
+        assert tac.lookup_enum_name == "" or isinstance(tac.lookup_enum_name, str)
+        assert tac.name == "" or isinstance(tac.name, str)
+        assert isinstance(tac.pac_id, int)
+        # Check for the peek values, assuming they are UUIDs based on your model
+
+        #description,
+        #displayOrder,
+        #isActive,
+        #lookupEnumName,
+        #name,
+        #pacID
+        if db_dialect == 'postgresql':
+            assert isinstance(tac.pac_code_peek, UUID)
+        elif db_dialect == 'mssql':
+            assert isinstance(tac.pac_code_peek, UNIQUEIDENTIFIER)
+        else:  # This will cover SQLite, MySQL, and other databases
+            assert isinstance(tac.pac_code_peek, str)
+
+        assert isinstance(tac.insert_utc_date_time, datetime)
+        assert isinstance(tac.last_update_utc_date_time, datetime)
+    def test_unique_code_constraint(self, session):
+        tac_1 = TacFactory.create(session=session)
+        tac_2 = TacFactory.create(session=session)
+        tac_2.code = tac_1.code
+        session.add_all([tac_1, tac_2])
+        with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
+            session.commit()
+    def test_fields_default(self, session):
+        tac = Tac()
+        assert tac.code is not None
+        assert tac.last_change_code is not None
+        assert tac.insert_user_id is None
+        assert tac.last_update_user_id is None
+        assert tac.insert_utc_date_time is not None
+        assert tac.last_update_utc_date_time is not None
+
+        #description,
+        #displayOrder,
+        #isActive,
+        #lookupEnumName,
+        #name,
+        #PacID
+        if db_dialect == 'postgresql':
+            assert isinstance(tac.pac_code_peek, UUID)
+        elif db_dialect == 'mssql':
+            assert isinstance(tac.pac_code_peek, UNIQUEIDENTIFIER)
+        else:  # This will cover SQLite, MySQL, and other databases
+            assert isinstance(tac.pac_code_peek, str)
+
+        assert tac.description == ""
+        assert tac.display_order == 0
+        assert tac.is_active == False
+        assert tac.lookup_enum_name == ""
+        assert tac.name == ""
+        assert tac.pac_id == 0
+
+    def test_last_change_code_concurrency(self, session):
+        tac = TacFactory.create(session=session)
+        original_last_change_code = tac.last_change_code
+        tac_1 = session.query(Tac).filter_by(tac_id=tac.tac_id).first()
+        tac_1.code = generate_uuid()
+        session.commit()
+        tac_2 = session.query(Tac).filter_by(tac_id=tac.tac_id).first()
+        tac_2.code = generate_uuid()
+        session.commit()
+        assert tac_2.last_change_code != original_last_change_code
+
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
+    def test_invalid_pac_id(self, session):
+        tac = TacFactory.create(session=session)
+        tac.pac_id = 99999
+        with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
+            session.commit()
+

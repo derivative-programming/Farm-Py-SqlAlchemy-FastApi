@@ -11,7 +11,7 @@ class ErrorLogManager:
         await self.session.commit()
         return error_log
     async def get_by_id(self, error_log_id: int):
-        result = await self.session.execute(select(ErrorLog).filter(ErrorLog.id == error_log_id))
+        result = await self.session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(ErrorLog).filter_by(code=code))

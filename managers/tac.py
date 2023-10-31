@@ -11,7 +11,7 @@ class TacManager:
         await self.session.commit()
         return tac
     async def get_by_id(self, tac_id: int):
-        result = await self.session.execute(select(Tac).filter(Tac.id == tac_id))
+        result = await self.session.execute(select(Tac).filter(Tac.tac_id == tac_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(Tac).filter_by(code=code))

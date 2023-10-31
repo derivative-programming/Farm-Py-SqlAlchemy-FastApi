@@ -16,13 +16,13 @@ class DateGreaterThanFilterBusObj:
             date_greater_than_filter_obj = self.manager.get_by_code(code)
             self.date_greater_than_filter = date_greater_than_filter_obj
     async def save(self):
-        if self.date_greater_than_filter.id > 0:
+        if self.date_greater_than_filter.date_greater_than_filter_id > 0:
             self.date_greater_than_filter = await self.manager.update(self.date_greater_than_filter)
-        if self.date_greater_than_filter.id == 0:
+        if self.date_greater_than_filter.date_greater_than_filter_id == 0:
             self.date_greater_than_filter = await self.manager.add(self.date_greater_than_filter)
     async def delete(self):
-        if self.date_greater_than_filter.id > 0:
-            self.date_greater_than_filter = await self.manager.delete(self.date_greater_than_filter.id)
+        if self.date_greater_than_filter.date_greater_than_filter_id > 0:
+            self.date_greater_than_filter = await self.manager.delete(self.date_greater_than_filter.date_greater_than_filter_id)
     async def get_pac_id_rel_obj(self, pac_id: int): #PacID
         pac_manager = PacIDManager(self.session)
         return pac_manager.get_by_id(self.date_greater_than_filter.pac_id)

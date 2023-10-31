@@ -11,7 +11,7 @@ class DateGreaterThanFilterManager:
         await self.session.commit()
         return date_greater_than_filter
     async def get_by_id(self, date_greater_than_filter_id: int):
-        result = await self.session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.id == date_greater_than_filter_id))
+        result = await self.session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID):
         result = await self.session.execute(select(DateGreaterThanFilter).filter_by(code=code))

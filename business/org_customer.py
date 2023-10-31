@@ -17,13 +17,13 @@ class OrgCustomerBusObj:
             org_customer_obj = self.manager.get_by_code(code)
             self.org_customer = org_customer_obj
     async def save(self):
-        if self.org_customer.id > 0:
+        if self.org_customer.org_customer_id > 0:
             self.org_customer = await self.manager.update(self.org_customer)
-        if self.org_customer.id == 0:
+        if self.org_customer.org_customer_id == 0:
             self.org_customer = await self.manager.add(self.org_customer)
     async def delete(self):
-        if self.org_customer.id > 0:
-            self.org_customer = await self.manager.delete(self.org_customer.id)
+        if self.org_customer.org_customer_id > 0:
+            self.org_customer = await self.manager.delete(self.org_customer.org_customer_id)
     async def get_customer_id_rel_obj(self, customer_id: int): #CustomerID
         customer_manager = CustomerIDManager(self.session)
         return customer_manager.get_by_id(self.org_customer.customer_id)
