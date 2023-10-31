@@ -25,6 +25,9 @@ class TestCustomerRole:
     @pytest.fixture(scope="module")
     def engine(self):
         engine = create_engine(DATABASE_URL, echo=True)
+        #FKs are not activated by default in sqllite
+        with engine.connect() as conn:
+            conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
     @pytest.fixture

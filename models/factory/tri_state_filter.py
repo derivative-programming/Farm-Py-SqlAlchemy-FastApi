@@ -4,12 +4,14 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import TriStateFilter
+from models import TriStateFilter,TriStateFilterSchema
 from .pac import PacFactory #pac_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -30,7 +32,7 @@ class TriStateFilterFactory(factory.Factory):
     is_active = Faker('boolean')
     lookup_enum_name = Faker('sentence', nb_words=4)
     name = Faker('sentence', nb_words=4)
-    pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
+    #pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
     state_int_value = Faker('random_int')
     insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
@@ -45,6 +47,10 @@ class TriStateFilterFactory(factory.Factory):
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
         obj = model_class(*args, **kwargs)
+        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+
+        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+
         session.add(obj)
         # session.commit()
         return obj
@@ -57,6 +63,10 @@ class TriStateFilterFactory(factory.Factory):
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
         obj = model_class(*args, **kwargs)
+        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+
+        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+
         session.add(obj)
         session.commit()
         return obj
@@ -69,6 +79,10 @@ class TriStateFilterFactory(factory.Factory):
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
         obj = model_class(*args, **kwargs)
+        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+
+        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+
         async with session.begin():
             session.add(obj)
         await session.flush()
@@ -82,6 +96,10 @@ class TriStateFilterFactory(factory.Factory):
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
         obj = model_class(*args, **kwargs)
+        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+
+        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+
         async with session.begin():
             session.add(obj)
         # await session.flush()

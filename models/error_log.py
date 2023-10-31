@@ -1,4 +1,6 @@
 from datetime import datetime
+from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -57,6 +59,24 @@ class ErrorLog(Base):
         self.insert_utc_date_time = datetime(1753, 1, 1)
         self.last_update_utc_date_time = datetime(1753, 1, 1)
         self.pac_code_peek = generate_uuid() # PacID
+class ErrorLogSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = ErrorLog
+    error_log_id = fields.Int()
+    code = fields.UUID()
+    last_change_code = fields.Int()
+    insert_user_id = fields.UUID()
+    last_update_user_id = fields.UUID()
+    browser_code = fields.UUID()
+    context_code = fields.UUID()
+    created_utc_date_time = fields.DateTime()
+    description = fields.Str()
+    is_client_side_error = fields.Bool()
+    is_resolved = fields.Bool()
+    pac_id = fields.Int()
+    url = fields.Str()
+    insert_utc_date_time = fields.DateTime()
+    last_update_utc_date_time = fields.DateTime()
 # Define the index separately from the column
 # Index('index_code', ErrorLog.code)
 Index('error_log_index_pac_id', ErrorLog.pac_id) #PacID

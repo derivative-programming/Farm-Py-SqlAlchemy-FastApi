@@ -1,4 +1,6 @@
 from datetime import datetime
+from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -49,6 +51,19 @@ class OrgCustomer(Base):
         self.last_update_utc_date_time = datetime(1753, 1, 1)
         self.customer_code_peek = generate_uuid()  # CustomerID
         self.organization_code_peek = generate_uuid() # OrganizationID
+class OrgCustomerSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = OrgCustomer
+    org_customer_id = fields.Int()
+    code = fields.UUID()
+    last_change_code = fields.Int()
+    insert_user_id = fields.UUID()
+    last_update_user_id = fields.UUID()
+    customer_id = fields.Int()
+    email = fields.Str()
+    organization_id = fields.Int()
+    insert_utc_date_time = fields.DateTime()
+    last_update_utc_date_time = fields.DateTime()
 # Define the index separately from the column
 # Index('index_code', OrgCustomer.code)
 Index('org_customer_index_customer_id', OrgCustomer.customer_id) #CustomerID

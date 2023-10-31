@@ -4,13 +4,17 @@ import uuid
 import factory 
 from factory import Faker, SubFactory
 import pytz
-from models import Plant
+from models import Plant,PlantSchema
 from .flavor import FlavorFactory #flvr_foreign_key_id
 from .land import LandFactory #land_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
+from services.logging_config import get_logger
+
+logger = get_logger(__name__)
+
 
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -29,10 +33,10 @@ class PlantFactory(factory.Factory):
     last_change_code = 0
     insert_user_id = factory.LazyFunction(generate_uuid)
     last_update_user_id = factory.LazyFunction(generate_uuid)
-    flvr_foreign_key_id = 0 #factory.LazyAttribute(lambda obj: obj.flavor.flavor_id) 
+    #flvr_foreign_key_id = 0 #factory.LazyAttribute(lambda obj: obj.flavor.flavor_id) 
     is_delete_allowed = Faker('boolean')
     is_edit_allowed = Faker('boolean')
-    land_id = 0 #factory.LazyAttribute(lambda obj: obj.land.land_id)
+    #land_id = 0 #factory.LazyAttribute(lambda obj: obj.land.land_id)
     other_flavor = Faker('sentence', nb_words=4)
     some_big_int_val = Faker('random_int')
     some_bit_val = Faker('boolean')
@@ -70,7 +74,16 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        obj = model_class(*args, **kwargs)
+        obj = model_class(*args, **kwargs) 
+        
+        obj.land_id = land_id_land_instance.land_id #LandID 
+        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
+#endset
+        obj.land_code_peek = land_id_land_instance.code #LandID 
+        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
+#endset
+
+
         session.add(obj) 
         # session.commit() 
         return obj
@@ -90,7 +103,16 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        obj = model_class(*args, **kwargs)
+        obj = model_class(*args, **kwargs) 
+
+        obj.land_id = land_id_land_instance.land_id #LandID 
+        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
+#endset
+        obj.land_code_peek = land_id_land_instance.code #LandID 
+        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
+#endset
+
+        
         session.add(obj) 
         session.commit() 
         return obj
@@ -111,6 +133,14 @@ class PlantFactory(factory.Factory):
 #endset
 
         obj = model_class(*args, **kwargs)
+        
+        obj.land_id = land_id_land_instance.land_id #LandID 
+        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
+#endset
+        obj.land_code_peek = land_id_land_instance.code #LandID 
+        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
+#endset
+
         async with session.begin():
             session.add(obj) 
         await session.flush()
@@ -133,6 +163,14 @@ class PlantFactory(factory.Factory):
 #endset
 
         obj = model_class(*args, **kwargs)
+        
+        obj.land_id = land_id_land_instance.land_id #LandID 
+        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
+#endset
+        obj.land_code_peek = land_id_land_instance.code #LandID 
+        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
+#endset
+
         async with session.begin():
             session.add(obj) 
         # await session.flush()

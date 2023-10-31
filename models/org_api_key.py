@@ -1,4 +1,6 @@
 from datetime import datetime
+from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -61,6 +63,25 @@ class OrgApiKey(Base):
         self.last_update_utc_date_time = datetime(1753, 1, 1)
         self.organization_code_peek = generate_uuid() # OrganizationID
         self.org_customer_code_peek = generate_uuid()  # OrgCustomerID
+class OrgApiKeySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = OrgApiKey
+    org_api_key_id = fields.Int()
+    code = fields.UUID()
+    last_change_code = fields.Int()
+    insert_user_id = fields.UUID()
+    last_update_user_id = fields.UUID()
+    api_key_value = fields.Str()
+    created_by = fields.Str()
+    created_utc_date_time = fields.DateTime()
+    expiration_utc_date_time = fields.DateTime()
+    is_active = fields.Bool()
+    is_temp_user_key = fields.Bool()
+    name = fields.Str()
+    organization_id = fields.Int()
+    org_customer_id = fields.Int()
+    insert_utc_date_time = fields.DateTime()
+    last_update_utc_date_time = fields.DateTime()
 # Define the index separately from the column
 # Index('index_code', OrgApiKey.code)
 Index('org_api_key_index_organization_id', OrgApiKey.organization_id) #OrganizationID

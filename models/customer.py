@@ -1,4 +1,6 @@
 from datetime import datetime
+from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -87,6 +89,39 @@ class Customer(Base):
         self.insert_utc_date_time = datetime(1753, 1, 1)
         self.last_update_utc_date_time = datetime(1753, 1, 1)
         self.tac_code_peek = generate_uuid() # TacID
+class CustomerSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+    customer_id = fields.Int()
+    code = fields.UUID()
+    last_change_code = fields.Int()
+    insert_user_id = fields.UUID()
+    last_update_user_id = fields.UUID()
+    active_organization_id = fields.Int()
+    email = fields.Str()
+    email_confirmed_utc_date_time = fields.DateTime()
+    first_name = fields.Str()
+    forgot_password_key_expiration_utc_date_time = fields.DateTime()
+    forgot_password_key_value = fields.Str()
+    fs_user_code_value = fields.UUID()
+    is_active = fields.Bool()
+    is_email_allowed = fields.Bool()
+    is_email_confirmed = fields.Bool()
+    is_email_marketing_allowed = fields.Bool()
+    is_locked = fields.Bool()
+    is_multiple_organizations_allowed = fields.Bool()
+    is_verbose_logging_forced = fields.Bool()
+    last_login_utc_date_time = fields.DateTime()
+    last_name = fields.Str()
+    password = fields.Str()
+    phone = fields.Str()
+    province = fields.Str()
+    registration_utc_date_time = fields.DateTime()
+    tac_id = fields.Int()
+    utc_offset_in_minutes = fields.Int()
+    zip = fields.Str()
+    insert_utc_date_time = fields.DateTime()
+    last_update_utc_date_time = fields.DateTime()
 # Define the index separately from the column
 # Index('index_code', Customer.code)
 Index('customer_index_tac_id', Customer.tac_id) #TacID

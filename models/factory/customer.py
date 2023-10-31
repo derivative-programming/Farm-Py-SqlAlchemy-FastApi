@@ -4,12 +4,14 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import Customer
+from models import Customer,CustomerSchema
 from .tac import TacFactory #tac_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -45,7 +47,7 @@ class CustomerFactory(factory.Factory):
     phone = Faker('phone_number')
     province = Faker('sentence', nb_words=4)
     registration_utc_date_time = Faker('date_time', tzinfo=pytz.utc)
-    tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
+    #tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
     utc_offset_in_minutes = Faker('random_int')
     zip = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
@@ -61,6 +63,10 @@ class CustomerFactory(factory.Factory):
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
         obj = model_class(*args, **kwargs)
+        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+
+        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+
         session.add(obj)
         # session.commit()
         return obj
@@ -73,6 +79,10 @@ class CustomerFactory(factory.Factory):
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
         obj = model_class(*args, **kwargs)
+        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+
+        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+
         session.add(obj)
         session.commit()
         return obj
@@ -85,6 +95,10 @@ class CustomerFactory(factory.Factory):
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
         obj = model_class(*args, **kwargs)
+        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+
+        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+
         async with session.begin():
             session.add(obj)
         await session.flush()
@@ -98,6 +112,10 @@ class CustomerFactory(factory.Factory):
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
         obj = model_class(*args, **kwargs)
+        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+
+        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+
         async with session.begin():
             session.add(obj)
         # await session.flush()

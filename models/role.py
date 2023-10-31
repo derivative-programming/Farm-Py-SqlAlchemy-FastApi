@@ -1,4 +1,6 @@
 from datetime import datetime
+from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -53,6 +55,22 @@ class Role(Base):
         self.insert_utc_date_time = datetime(1753, 1, 1)
         self.last_update_utc_date_time = datetime(1753, 1, 1)
         self.pac_code_peek = generate_uuid() # PacID
+class RoleSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Role
+    role_id = fields.Int()
+    code = fields.UUID()
+    last_change_code = fields.Int()
+    insert_user_id = fields.UUID()
+    last_update_user_id = fields.UUID()
+    description = fields.Str()
+    display_order = fields.Int()
+    is_active = fields.Bool()
+    lookup_enum_name = fields.Str()
+    name = fields.Str()
+    pac_id = fields.Int()
+    insert_utc_date_time = fields.DateTime()
+    last_update_utc_date_time = fields.DateTime()
 # Define the index separately from the column
 # Index('index_code', Role.code)
 Index('role_index_pac_id', Role.pac_id) #PacID

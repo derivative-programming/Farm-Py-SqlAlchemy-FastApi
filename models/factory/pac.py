@@ -4,12 +4,14 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import Pac
+from models import Pac,PacSchema
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -37,6 +39,7 @@ class PacFactory(factory.Factory):
     def _build(cls, model_class, session, *args, **kwargs) -> Pac:
 
         obj = model_class(*args, **kwargs)
+
         session.add(obj)
         # session.commit()
         return obj
@@ -44,6 +47,7 @@ class PacFactory(factory.Factory):
     def _create(cls, model_class, session, *args, **kwargs) -> Pac:
 
         obj = model_class(*args, **kwargs)
+
         session.add(obj)
         session.commit()
         return obj
@@ -51,6 +55,7 @@ class PacFactory(factory.Factory):
     async def create_async(cls, model_class, session, *args, **kwargs) -> Pac:
 
         obj = model_class(*args, **kwargs)
+
         async with session.begin():
             session.add(obj)
         await session.flush()
@@ -59,6 +64,7 @@ class PacFactory(factory.Factory):
     async def build_async(cls, model_class, session, *args, **kwargs) -> Pac:
 
         obj = model_class(*args, **kwargs)
+
         async with session.begin():
             session.add(obj)
         # await session.flush()

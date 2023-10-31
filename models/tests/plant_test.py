@@ -30,6 +30,9 @@ class TestPlant:
     @pytest.fixture(scope="module")
     def engine(self):
         engine = create_engine(DATABASE_URL, echo=True)
+        #FKs are not activated by default in sqllite
+        with engine.connect() as conn: 
+            conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
 
@@ -298,6 +301,7 @@ class TestPlant:
         assert plant.some_utc_date_time_val == datetime(1753, 1, 1)
         assert plant.some_var_char_val == "" 
 #endset
+
 
     def test_last_change_code_concurrency(self, session):
         plant = PlantFactory.create(session=session)
