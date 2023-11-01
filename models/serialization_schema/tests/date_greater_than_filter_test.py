@@ -143,3 +143,34 @@ class TestDateGreaterThanFilterSchema:
         assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
+        assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
+    def test_to_json(self, date_greater_than_filter:DateGreaterThanFilter, session):
+            # Convert the DateGreaterThanFilter instance to JSON using the schema
+            date_greater_than_filter_schema = DateGreaterThanFilterSchema()
+            date_greater_than_filter_dict = date_greater_than_filter_schema.dump(date_greater_than_filter)
+            # Convert the date_greater_than_filter_dict to JSON string
+            date_greater_than_filter_json = json.dumps(date_greater_than_filter_dict)
+            # Convert the JSON strings back to dictionaries
+            date_greater_than_filter_dict_from_json = json.loads(date_greater_than_filter_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(date_greater_than_filter_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(date_greater_than_filter_dict_from_json.keys())}"
+            assert date_greater_than_filter_dict_from_json['code'] == date_greater_than_filter.code
+            assert date_greater_than_filter_dict_from_json['last_change_code'] == date_greater_than_filter.last_change_code
+            assert date_greater_than_filter_dict_from_json['insert_user_id'] == date_greater_than_filter.insert_user_id
+            assert date_greater_than_filter_dict_from_json['last_update_user_id'] == date_greater_than_filter.last_update_user_id
+
+            assert date_greater_than_filter_dict_from_json['day_count'] == date_greater_than_filter.day_count
+            assert date_greater_than_filter_dict_from_json['description'] == date_greater_than_filter.description
+            assert date_greater_than_filter_dict_from_json['display_order'] == date_greater_than_filter.display_order
+            assert date_greater_than_filter_dict_from_json['is_active'] == date_greater_than_filter.is_active
+            assert date_greater_than_filter_dict_from_json['lookup_enum_name'] == date_greater_than_filter.lookup_enum_name
+            assert date_greater_than_filter_dict_from_json['name'] == date_greater_than_filter.name
+            assert date_greater_than_filter_dict_from_json['pac_id'] == date_greater_than_filter.pac_id
+
+            assert date_greater_than_filter_dict_from_json['insert_utc_date_time'] == date_greater_than_filter.insert_utc_date_time.isoformat()
+            assert date_greater_than_filter_dict_from_json['last_update_utc_date_time'] == date_greater_than_filter.last_update_utc_date_time.isoformat()
+
+            assert date_greater_than_filter_dict_from_json['pac_code_peek'] == date_greater_than_filter.pac_code_peek # PacID
+

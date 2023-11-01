@@ -237,4 +237,54 @@ class TestPlantSchema:
         new_plant = Plant(**deserialized_data) 
 
         assert isinstance(new_plant, Plant)
+
+    def test_to_json(self, plant:Plant, session): 
+            # Convert the Plant instance to JSON using the schema
+            plant_schema = PlantSchema()
+            plant_dict = plant_schema.dump(plant)
+
+            # Convert the plant_dict to JSON string
+            plant_json = json.dumps(plant_dict)
+ 
+            # Convert the JSON strings back to dictionaries
+            plant_dict_from_json = json.loads(plant_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+
+            # Verify the keys in both dictionaries match
+            assert set(plant_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(plant_dict_from_json.keys())}"
+
+
+            assert plant_dict_from_json['code'] == plant.code
+            assert plant_dict_from_json['last_change_code'] == plant.last_change_code
+            assert plant_dict_from_json['insert_user_id'] == plant.insert_user_id
+            assert plant_dict_from_json['last_update_user_id'] == plant.last_update_user_id
+    #endset
+
+            assert plant_dict_from_json['is_delete_allowed'] == plant.is_delete_allowed
+            assert plant_dict_from_json['is_edit_allowed'] == plant.is_edit_allowed
+            assert plant_dict_from_json['land_id'] == plant.land_id
+            assert plant_dict_from_json['other_flavor'] == plant.other_flavor
+            assert plant_dict_from_json['some_big_int_val'] == plant.some_big_int_val
+            assert plant_dict_from_json['some_bit_val'] == plant.some_bit_val
+            assert plant_dict_from_json['some_date_val'] == plant.some_date_val.strftime('%Y-%m-%d')
+            assert plant_dict_from_json['some_decimal_val'] == str(plant.some_decimal_val)
+            assert plant_dict_from_json['some_email_address'] == plant.some_email_address
+            assert plant_dict_from_json['some_float_val'] == plant.some_float_val
+            assert plant_dict_from_json['some_int_val'] == plant.some_int_val
+            assert plant_dict_from_json['some_money_val'] == str(plant.some_money_val)
+            assert plant_dict_from_json['some_n_var_char_val'] == plant.some_n_var_char_val
+            assert plant_dict_from_json['some_phone_number'] == plant.some_phone_number
+            assert plant_dict_from_json['some_text_val'] == plant.some_text_val
+            assert plant_dict_from_json['some_uniqueidentifier_val'] == plant.some_uniqueidentifier_val
+            assert plant_dict_from_json['some_utc_date_time_val'] == plant.some_utc_date_time_val.isoformat()
+            assert plant_dict_from_json['some_var_char_val'] == plant.some_var_char_val
+            assert plant_dict_from_json['flvr_foreign_key_id'] == plant.flvr_foreign_key_id
+    #endset
+            assert plant_dict_from_json['insert_utc_date_time'] == plant.insert_utc_date_time.isoformat()
+            assert plant_dict_from_json['last_update_utc_date_time'] == plant.last_update_utc_date_time.isoformat()
+    #endset
+            assert plant_dict_from_json['flvr_foreign_key_code_peek'] == plant.flvr_foreign_key_code_peek # FlvrForeignKeyID
+            assert plant_dict_from_json['land_code_peek'] == plant.land_code_peek # LandID
+    #endset
+
                 

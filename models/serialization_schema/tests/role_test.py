@@ -138,3 +138,33 @@ class TestRoleSchema:
         assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_role = Role(**deserialized_data)
+        assert isinstance(new_role, Role)
+    def test_to_json(self, role:Role, session):
+            # Convert the Role instance to JSON using the schema
+            role_schema = RoleSchema()
+            role_dict = role_schema.dump(role)
+            # Convert the role_dict to JSON string
+            role_json = json.dumps(role_dict)
+            # Convert the JSON strings back to dictionaries
+            role_dict_from_json = json.loads(role_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(role_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(role_dict_from_json.keys())}"
+            assert role_dict_from_json['code'] == role.code
+            assert role_dict_from_json['last_change_code'] == role.last_change_code
+            assert role_dict_from_json['insert_user_id'] == role.insert_user_id
+            assert role_dict_from_json['last_update_user_id'] == role.last_update_user_id
+
+            assert role_dict_from_json['description'] == role.description
+            assert role_dict_from_json['display_order'] == role.display_order
+            assert role_dict_from_json['is_active'] == role.is_active
+            assert role_dict_from_json['lookup_enum_name'] == role.lookup_enum_name
+            assert role_dict_from_json['name'] == role.name
+            assert role_dict_from_json['pac_id'] == role.pac_id
+
+            assert role_dict_from_json['insert_utc_date_time'] == role.insert_utc_date_time.isoformat()
+            assert role_dict_from_json['last_update_utc_date_time'] == role.last_update_utc_date_time.isoformat()
+
+            assert role_dict_from_json['pac_code_peek'] == role.pac_code_peek # PacID
+

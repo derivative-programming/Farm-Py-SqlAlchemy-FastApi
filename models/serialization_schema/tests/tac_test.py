@@ -138,3 +138,33 @@ class TestTacSchema:
         assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_tac = Tac(**deserialized_data)
+        assert isinstance(new_tac, Tac)
+    def test_to_json(self, tac:Tac, session):
+            # Convert the Tac instance to JSON using the schema
+            tac_schema = TacSchema()
+            tac_dict = tac_schema.dump(tac)
+            # Convert the tac_dict to JSON string
+            tac_json = json.dumps(tac_dict)
+            # Convert the JSON strings back to dictionaries
+            tac_dict_from_json = json.loads(tac_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(tac_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tac_dict_from_json.keys())}"
+            assert tac_dict_from_json['code'] == tac.code
+            assert tac_dict_from_json['last_change_code'] == tac.last_change_code
+            assert tac_dict_from_json['insert_user_id'] == tac.insert_user_id
+            assert tac_dict_from_json['last_update_user_id'] == tac.last_update_user_id
+
+            assert tac_dict_from_json['description'] == tac.description
+            assert tac_dict_from_json['display_order'] == tac.display_order
+            assert tac_dict_from_json['is_active'] == tac.is_active
+            assert tac_dict_from_json['lookup_enum_name'] == tac.lookup_enum_name
+            assert tac_dict_from_json['name'] == tac.name
+            assert tac_dict_from_json['pac_id'] == tac.pac_id
+
+            assert tac_dict_from_json['insert_utc_date_time'] == tac.insert_utc_date_time.isoformat()
+            assert tac_dict_from_json['last_update_utc_date_time'] == tac.last_update_utc_date_time.isoformat()
+
+            assert tac_dict_from_json['pac_code_peek'] == tac.pac_code_peek # PacID
+

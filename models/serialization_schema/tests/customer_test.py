@@ -223,3 +223,50 @@ class TestCustomerSchema:
         assert str(deserialized_data['tac_code_peek']) == str(self.sample_data['tac_code_peek']) #TacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_customer = Customer(**deserialized_data)
+        assert isinstance(new_customer, Customer)
+    def test_to_json(self, customer:Customer, session):
+            # Convert the Customer instance to JSON using the schema
+            customer_schema = CustomerSchema()
+            customer_dict = customer_schema.dump(customer)
+            # Convert the customer_dict to JSON string
+            customer_json = json.dumps(customer_dict)
+            # Convert the JSON strings back to dictionaries
+            customer_dict_from_json = json.loads(customer_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(customer_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(customer_dict_from_json.keys())}"
+            assert customer_dict_from_json['code'] == customer.code
+            assert customer_dict_from_json['last_change_code'] == customer.last_change_code
+            assert customer_dict_from_json['insert_user_id'] == customer.insert_user_id
+            assert customer_dict_from_json['last_update_user_id'] == customer.last_update_user_id
+
+            assert customer_dict_from_json['active_organization_id'] == customer.active_organization_id
+            assert customer_dict_from_json['email'] == customer.email
+            assert customer_dict_from_json['email_confirmed_utc_date_time'] == customer.email_confirmed_utc_date_time.isoformat()
+            assert customer_dict_from_json['first_name'] == customer.first_name
+            assert customer_dict_from_json['forgot_password_key_expiration_utc_date_time'] == customer.forgot_password_key_expiration_utc_date_time.isoformat()
+            assert customer_dict_from_json['forgot_password_key_value'] == customer.forgot_password_key_value
+            assert customer_dict_from_json['fs_user_code_value'] == customer.fs_user_code_value
+            assert customer_dict_from_json['is_active'] == customer.is_active
+            assert customer_dict_from_json['is_email_allowed'] == customer.is_email_allowed
+            assert customer_dict_from_json['is_email_confirmed'] == customer.is_email_confirmed
+            assert customer_dict_from_json['is_email_marketing_allowed'] == customer.is_email_marketing_allowed
+            assert customer_dict_from_json['is_locked'] == customer.is_locked
+            assert customer_dict_from_json['is_multiple_organizations_allowed'] == customer.is_multiple_organizations_allowed
+            assert customer_dict_from_json['is_verbose_logging_forced'] == customer.is_verbose_logging_forced
+            assert customer_dict_from_json['last_login_utc_date_time'] == customer.last_login_utc_date_time.isoformat()
+            assert customer_dict_from_json['last_name'] == customer.last_name
+            assert customer_dict_from_json['password'] == customer.password
+            assert customer_dict_from_json['phone'] == customer.phone
+            assert customer_dict_from_json['province'] == customer.province
+            assert customer_dict_from_json['registration_utc_date_time'] == customer.registration_utc_date_time.isoformat()
+            assert customer_dict_from_json['tac_id'] == customer.tac_id
+            assert customer_dict_from_json['utc_offset_in_minutes'] == customer.utc_offset_in_minutes
+            assert customer_dict_from_json['zip'] == customer.zip
+
+            assert customer_dict_from_json['insert_utc_date_time'] == customer.insert_utc_date_time.isoformat()
+            assert customer_dict_from_json['last_update_utc_date_time'] == customer.last_update_utc_date_time.isoformat()
+
+            assert customer_dict_from_json['tac_code_peek'] == customer.tac_code_peek # TacID
+

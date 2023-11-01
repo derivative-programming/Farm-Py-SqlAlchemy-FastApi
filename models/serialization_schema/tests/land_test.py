@@ -138,3 +138,33 @@ class TestLandSchema:
         assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_land = Land(**deserialized_data)
+        assert isinstance(new_land, Land)
+    def test_to_json(self, land:Land, session):
+            # Convert the Land instance to JSON using the schema
+            land_schema = LandSchema()
+            land_dict = land_schema.dump(land)
+            # Convert the land_dict to JSON string
+            land_json = json.dumps(land_dict)
+            # Convert the JSON strings back to dictionaries
+            land_dict_from_json = json.loads(land_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(land_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(land_dict_from_json.keys())}"
+            assert land_dict_from_json['code'] == land.code
+            assert land_dict_from_json['last_change_code'] == land.last_change_code
+            assert land_dict_from_json['insert_user_id'] == land.insert_user_id
+            assert land_dict_from_json['last_update_user_id'] == land.last_update_user_id
+
+            assert land_dict_from_json['description'] == land.description
+            assert land_dict_from_json['display_order'] == land.display_order
+            assert land_dict_from_json['is_active'] == land.is_active
+            assert land_dict_from_json['lookup_enum_name'] == land.lookup_enum_name
+            assert land_dict_from_json['name'] == land.name
+            assert land_dict_from_json['pac_id'] == land.pac_id
+
+            assert land_dict_from_json['insert_utc_date_time'] == land.insert_utc_date_time.isoformat()
+            assert land_dict_from_json['last_update_utc_date_time'] == land.last_update_utc_date_time.isoformat()
+
+            assert land_dict_from_json['pac_code_peek'] == land.pac_code_peek # PacID
+

@@ -124,3 +124,30 @@ class TestPacSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_pac = Pac(**deserialized_data)
+        assert isinstance(new_pac, Pac)
+    def test_to_json(self, pac:Pac, session):
+            # Convert the Pac instance to JSON using the schema
+            pac_schema = PacSchema()
+            pac_dict = pac_schema.dump(pac)
+            # Convert the pac_dict to JSON string
+            pac_json = json.dumps(pac_dict)
+            # Convert the JSON strings back to dictionaries
+            pac_dict_from_json = json.loads(pac_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(pac_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(pac_dict_from_json.keys())}"
+            assert pac_dict_from_json['code'] == pac.code
+            assert pac_dict_from_json['last_change_code'] == pac.last_change_code
+            assert pac_dict_from_json['insert_user_id'] == pac.insert_user_id
+            assert pac_dict_from_json['last_update_user_id'] == pac.last_update_user_id
+
+            assert pac_dict_from_json['description'] == pac.description
+            assert pac_dict_from_json['display_order'] == pac.display_order
+            assert pac_dict_from_json['is_active'] == pac.is_active
+            assert pac_dict_from_json['lookup_enum_name'] == pac.lookup_enum_name
+            assert pac_dict_from_json['name'] == pac.name
+
+            assert pac_dict_from_json['insert_utc_date_time'] == pac.insert_utc_date_time.isoformat()
+            assert pac_dict_from_json['last_update_utc_date_time'] == pac.last_update_utc_date_time.isoformat()
+

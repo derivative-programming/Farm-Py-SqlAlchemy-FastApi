@@ -118,3 +118,29 @@ class TestOrganizationSchema:
         assert str(deserialized_data['tac_code_peek']) == str(self.sample_data['tac_code_peek']) #TacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_organization = Organization(**deserialized_data)
+        assert isinstance(new_organization, Organization)
+    def test_to_json(self, organization:Organization, session):
+            # Convert the Organization instance to JSON using the schema
+            organization_schema = OrganizationSchema()
+            organization_dict = organization_schema.dump(organization)
+            # Convert the organization_dict to JSON string
+            organization_json = json.dumps(organization_dict)
+            # Convert the JSON strings back to dictionaries
+            organization_dict_from_json = json.loads(organization_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(organization_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(organization_dict_from_json.keys())}"
+            assert organization_dict_from_json['code'] == organization.code
+            assert organization_dict_from_json['last_change_code'] == organization.last_change_code
+            assert organization_dict_from_json['insert_user_id'] == organization.insert_user_id
+            assert organization_dict_from_json['last_update_user_id'] == organization.last_update_user_id
+
+            assert organization_dict_from_json['name'] == organization.name
+            assert organization_dict_from_json['tac_id'] == organization.tac_id
+
+            assert organization_dict_from_json['insert_utc_date_time'] == organization.insert_utc_date_time.isoformat()
+            assert organization_dict_from_json['last_update_utc_date_time'] == organization.last_update_utc_date_time.isoformat()
+
+            assert organization_dict_from_json['tac_code_peek'] == organization.tac_code_peek # TacID
+

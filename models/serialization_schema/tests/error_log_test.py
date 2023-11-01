@@ -148,3 +148,35 @@ class TestErrorLogSchema:
         assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        new_error_log = ErrorLog(**deserialized_data)
+        assert isinstance(new_error_log, ErrorLog)
+    def test_to_json(self, error_log:ErrorLog, session):
+            # Convert the ErrorLog instance to JSON using the schema
+            error_log_schema = ErrorLogSchema()
+            error_log_dict = error_log_schema.dump(error_log)
+            # Convert the error_log_dict to JSON string
+            error_log_json = json.dumps(error_log_dict)
+            # Convert the JSON strings back to dictionaries
+            error_log_dict_from_json = json.loads(error_log_json)
+            # sample_dict_from_json = json.loads(self.sample_data)
+            # Verify the keys in both dictionaries match
+            assert set(error_log_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(error_log_dict_from_json.keys())}"
+            assert error_log_dict_from_json['code'] == error_log.code
+            assert error_log_dict_from_json['last_change_code'] == error_log.last_change_code
+            assert error_log_dict_from_json['insert_user_id'] == error_log.insert_user_id
+            assert error_log_dict_from_json['last_update_user_id'] == error_log.last_update_user_id
+
+            assert error_log_dict_from_json['browser_code'] == error_log.browser_code
+            assert error_log_dict_from_json['context_code'] == error_log.context_code
+            assert error_log_dict_from_json['created_utc_date_time'] == error_log.created_utc_date_time.isoformat()
+            assert error_log_dict_from_json['description'] == error_log.description
+            assert error_log_dict_from_json['is_client_side_error'] == error_log.is_client_side_error
+            assert error_log_dict_from_json['is_resolved'] == error_log.is_resolved
+            assert error_log_dict_from_json['pac_id'] == error_log.pac_id
+            assert error_log_dict_from_json['url'] == error_log.url
+
+            assert error_log_dict_from_json['insert_utc_date_time'] == error_log.insert_utc_date_time.isoformat()
+            assert error_log_dict_from_json['last_update_utc_date_time'] == error_log.last_update_utc_date_time.isoformat()
+
+            assert error_log_dict_from_json['pac_code_peek'] == error_log.pac_code_peek # PacID
+
