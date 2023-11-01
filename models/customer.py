@@ -95,8 +95,8 @@ class Customer(Base):
 Index('customer_index_tac_id', Customer.tac_id) #TacID
 @event.listens_for(Customer, 'before_insert')
 def set_created_on(mapper, connection, target):
-    target.insert_utc_date_time = func.now()
-    target.last_update_utc_date_time = func.now()
+    target.insert_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(Customer, 'before_update')
 def set_updated_on(mapper, connection, target):
-    target.last_update_utc_date_time = func.now()
+    target.last_update_utc_date_time = datetime.utcnow()

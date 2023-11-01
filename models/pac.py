@@ -57,8 +57,8 @@ class Pac(Base):
 
 @event.listens_for(Pac, 'before_insert')
 def set_created_on(mapper, connection, target):
-    target.insert_utc_date_time = func.now()
-    target.last_update_utc_date_time = func.now()
+    target.insert_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(Pac, 'before_update')
 def set_updated_on(mapper, connection, target):
-    target.last_update_utc_date_time = func.now()
+    target.last_update_utc_date_time = datetime.utcnow()

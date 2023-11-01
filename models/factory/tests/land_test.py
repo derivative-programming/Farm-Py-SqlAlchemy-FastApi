@@ -164,6 +164,7 @@ class TestLandFactory:
         session.add_all([land_1, land_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         land = Land()
         assert land.code is not None
@@ -215,4 +216,5 @@ class TestLandFactory:
         land.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

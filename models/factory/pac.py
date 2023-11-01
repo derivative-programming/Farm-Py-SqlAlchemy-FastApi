@@ -52,20 +52,18 @@ class PacFactory(factory.Factory):
         session.commit()
         return obj
     @classmethod
-    async def create_async(cls, model_class, session, *args, **kwargs) -> Pac:
+    async def create_async(cls, session, *args, **kwargs) -> Pac:
 
-        obj = model_class(*args, **kwargs)
+        obj = Pac(*args, **kwargs)
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         await session.flush()
         return obj
     @classmethod
-    async def build_async(cls, model_class, session, *args, **kwargs) -> Pac:
+    async def build_async(cls, session, *args, **kwargs) -> Pac:
 
-        obj = model_class(*args, **kwargs)
+        obj = Pac(*args, **kwargs)
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

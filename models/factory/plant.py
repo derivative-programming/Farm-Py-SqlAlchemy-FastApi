@@ -118,10 +118,10 @@ class PlantFactory(factory.Factory):
         return obj
     
     @classmethod
-    async def create_async(cls, model_class, session, *args, **kwargs) -> Plant:
+    async def create_async(cls, session, *args, **kwargs) -> Plant:
         
-        land_id_land_instance = LandFactory.create(session=session)  #LandID 
-        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(session=session) #FlvrForeignKeyID 
+        land_id_land_instance = await LandFactory.create_async(session=session)  #LandID 
+        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(session=session) #FlvrForeignKeyID 
 #endset
 
         kwargs["land_id"] = land_id_land_instance.land_id #LandID 
@@ -132,7 +132,7 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        obj = model_class(*args, **kwargs)
+        obj = Plant(*args, **kwargs)
         
         obj.land_id = land_id_land_instance.land_id #LandID 
         obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
@@ -141,17 +141,16 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        async with session.begin():
-            session.add(obj) 
+        session.add(obj) 
         await session.flush()
         return obj
     
     
     @classmethod
-    async def build_async(cls, model_class, session, *args, **kwargs) -> Plant:
+    async def build_async(cls, session, *args, **kwargs) -> Plant:
         
-        land_id_land_instance = LandFactory.create(session=session)  #LandID 
-        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(session=session) #FlvrForeignKeyID 
+        land_id_land_instance = await LandFactory.create_async(session=session)  #LandID 
+        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(session=session) #FlvrForeignKeyID 
 #endset
 
         kwargs["land_id"] = land_id_land_instance.land_id #LandID 
@@ -162,7 +161,7 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        obj = model_class(*args, **kwargs)
+        obj = Plant(*args, **kwargs)
         
         obj.land_id = land_id_land_instance.land_id #LandID 
         obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
@@ -171,7 +170,6 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        async with session.begin():
-            session.add(obj) 
+        session.add(obj) 
         # await session.flush()
         return obj

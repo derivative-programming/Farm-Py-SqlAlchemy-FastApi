@@ -58,8 +58,8 @@ Index('org_customer_index_customer_id', OrgCustomer.customer_id) #CustomerID
 Index('org_customer_index_organization_id', OrgCustomer.organization_id) #OrganizationID
 @event.listens_for(OrgCustomer, 'before_insert')
 def set_created_on(mapper, connection, target):
-    target.insert_utc_date_time = func.now()
-    target.last_update_utc_date_time = func.now()
+    target.insert_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(OrgCustomer, 'before_update')
 def set_updated_on(mapper, connection, target):
-    target.last_update_utc_date_time = func.now()
+    target.last_update_utc_date_time = datetime.utcnow()

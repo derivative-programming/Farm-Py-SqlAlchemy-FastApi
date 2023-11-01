@@ -166,6 +166,7 @@ class TestCustomerRoleFactory:
         session.add_all([customer_role_1, customer_role_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         customer_role = CustomerRole()
         assert customer_role.code is not None
@@ -214,6 +215,7 @@ class TestCustomerRoleFactory:
         customer_role.customer_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     #isPlaceholder,
     #placeholder,
     #RoleID
@@ -222,4 +224,5 @@ class TestCustomerRoleFactory:
         customer_role.role_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

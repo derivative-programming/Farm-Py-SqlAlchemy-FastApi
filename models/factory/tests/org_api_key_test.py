@@ -176,6 +176,7 @@ class TestOrgApiKeyFactory:
         session.add_all([org_api_key_1, org_api_key_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         org_api_key = OrgApiKey()
         assert org_api_key.code is not None
@@ -241,10 +242,12 @@ class TestOrgApiKeyFactory:
         org_api_key.organization_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     #OrgCustomerID
     def test_invalid_org_customer_id(self, session):
         org_api_key = OrgApiKeyFactory.create(session=session)
         org_api_key.org_customer_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

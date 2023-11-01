@@ -85,9 +85,9 @@ class OrgApiKeyFactory(factory.Factory):
         session.commit()
         return obj
     @classmethod
-    async def create_async(cls, model_class, session, *args, **kwargs) -> OrgApiKey:
-        organization_id_organization_instance = OrganizationFactory.create(session=session)  #OrganizationID
-        org_customer_id_org_customer_instance = OrgCustomerFactory.create(session=session) #OrgCustomerID
+    async def create_async(cls, session, *args, **kwargs) -> OrgApiKey:
+        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  #OrganizationID
+        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(session=session) #OrgCustomerID
 
         kwargs["organization_id"] = organization_id_organization_instance.organization_id #OrganizationID
         kwargs["org_customer_id"] = org_customer_id_org_customer_instance.org_customer_id #OrgCustomerID
@@ -95,21 +95,20 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code #OrganizationID
         kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code #OrgCustomerID
 
-        obj = model_class(*args, **kwargs)
+        obj = OrgApiKey(*args, **kwargs)
         obj.organization_id = organization_id_organization_instance.organization_id #OrganizationID
         obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id #OrgCustomerID
 
         obj.organization_code_peek = organization_id_organization_instance.code #OrganizationID
         obj.org_customer_code_peek = org_customer_id_org_customer_instance.code #OrgCustomerID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         await session.flush()
         return obj
     @classmethod
-    async def build_async(cls, model_class, session, *args, **kwargs) -> OrgApiKey:
-        organization_id_organization_instance = OrganizationFactory.create(session=session)  #OrganizationID
-        org_customer_id_org_customer_instance = OrgCustomerFactory.create(session=session) #OrgCustomerID
+    async def build_async(cls, session, *args, **kwargs) -> OrgApiKey:
+        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  #OrganizationID
+        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(session=session) #OrgCustomerID
 
         kwargs["organization_id"] = organization_id_organization_instance.organization_id #OrganizationID
         kwargs["org_customer_id"] = org_customer_id_org_customer_instance.org_customer_id #OrgCustomerID
@@ -117,14 +116,13 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code #OrganizationID
         kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code #OrgCustomerID
 
-        obj = model_class(*args, **kwargs)
+        obj = OrgApiKey(*args, **kwargs)
         obj.organization_id = organization_id_organization_instance.organization_id #OrganizationID
         obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id #OrgCustomerID
 
         obj.organization_code_peek = organization_id_organization_instance.code #OrganizationID
         obj.org_customer_code_peek = org_customer_id_org_customer_instance.code #OrgCustomerID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

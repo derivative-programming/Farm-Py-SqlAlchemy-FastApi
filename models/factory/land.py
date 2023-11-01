@@ -70,36 +70,34 @@ class LandFactory(factory.Factory):
         session.commit()
         return obj
     @classmethod
-    async def create_async(cls, model_class, session, *args, **kwargs) -> Land:
-        pac_id_pac_instance = PacFactory.create(session=session)  #PacID
+    async def create_async(cls, session, *args, **kwargs) -> Land:
+        pac_id_pac_instance = await PacFactory.create_async(session=session)  #PacID
 
         kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
 
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
-        obj = model_class(*args, **kwargs)
+        obj = Land(*args, **kwargs)
         obj.pac_id = pac_id_pac_instance.pac_id #PacID
 
         obj.pac_code_peek = pac_id_pac_instance.code #PacID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         await session.flush()
         return obj
     @classmethod
-    async def build_async(cls, model_class, session, *args, **kwargs) -> Land:
-        pac_id_pac_instance = PacFactory.create(session=session)  #PacID
+    async def build_async(cls, session, *args, **kwargs) -> Land:
+        pac_id_pac_instance = await PacFactory.create_async(session=session)  #PacID
 
         kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
 
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
-        obj = model_class(*args, **kwargs)
+        obj = Land(*args, **kwargs)
         obj.pac_id = pac_id_pac_instance.pac_id #PacID
 
         obj.pac_code_peek = pac_id_pac_instance.code #PacID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

@@ -87,36 +87,34 @@ class CustomerFactory(factory.Factory):
         session.commit()
         return obj
     @classmethod
-    async def create_async(cls, model_class, session, *args, **kwargs) -> Customer:
-        tac_id_tac_instance = TacFactory.create(session=session)  #TacID
+    async def create_async(cls, session, *args, **kwargs) -> Customer:
+        tac_id_tac_instance = await TacFactory.create_async(session=session)  #TacID
 
         kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
 
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
-        obj = model_class(*args, **kwargs)
+        obj = Customer(*args, **kwargs)
         obj.tac_id = tac_id_tac_instance.tac_id #TacID
 
         obj.tac_code_peek = tac_id_tac_instance.code #TacID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         await session.flush()
         return obj
     @classmethod
-    async def build_async(cls, model_class, session, *args, **kwargs) -> Customer:
-        tac_id_tac_instance = TacFactory.create(session=session)  #TacID
+    async def build_async(cls, session, *args, **kwargs) -> Customer:
+        tac_id_tac_instance = await TacFactory.create_async(session=session)  #TacID
 
         kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
 
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
-        obj = model_class(*args, **kwargs)
+        obj = Customer(*args, **kwargs)
         obj.tac_id = tac_id_tac_instance.tac_id #TacID
 
         obj.tac_code_peek = tac_id_tac_instance.code #TacID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

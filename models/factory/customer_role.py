@@ -80,9 +80,9 @@ class CustomerRoleFactory(factory.Factory):
         session.commit()
         return obj
     @classmethod
-    async def create_async(cls, model_class, session, *args, **kwargs) -> CustomerRole:
-        customer_id_customer_instance = CustomerFactory.create(session=session)  #CustomerID
-        role_id_role_instance = RoleFactory.create(session=session) #RoleID
+    async def create_async(cls, session, *args, **kwargs) -> CustomerRole:
+        customer_id_customer_instance = await CustomerFactory.create_async(session=session)  #CustomerID
+        role_id_role_instance = await RoleFactory.create_async(session=session) #RoleID
 
         kwargs["customer_id"] = customer_id_customer_instance.customer_id #CustomerID
         kwargs["role_id"] = role_id_role_instance.role_id #RoleID
@@ -90,21 +90,20 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code #CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code #RoleID
 
-        obj = model_class(*args, **kwargs)
+        obj = CustomerRole(*args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id #CustomerID
         obj.role_id = role_id_role_instance.role_id #RoleID
 
         obj.customer_code_peek = customer_id_customer_instance.code #CustomerID
         obj.role_code_peek = role_id_role_instance.code #RoleID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         await session.flush()
         return obj
     @classmethod
-    async def build_async(cls, model_class, session, *args, **kwargs) -> CustomerRole:
-        customer_id_customer_instance = CustomerFactory.create(session=session)  #CustomerID
-        role_id_role_instance = RoleFactory.create(session=session) #RoleID
+    async def build_async(cls, session, *args, **kwargs) -> CustomerRole:
+        customer_id_customer_instance = await CustomerFactory.create_async(session=session)  #CustomerID
+        role_id_role_instance = await RoleFactory.create_async(session=session) #RoleID
 
         kwargs["customer_id"] = customer_id_customer_instance.customer_id #CustomerID
         kwargs["role_id"] = role_id_role_instance.role_id #RoleID
@@ -112,14 +111,13 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code #CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code #RoleID
 
-        obj = model_class(*args, **kwargs)
+        obj = CustomerRole(*args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id #CustomerID
         obj.role_id = role_id_role_instance.role_id #RoleID
 
         obj.customer_code_peek = customer_id_customer_instance.code #CustomerID
         obj.role_code_peek = role_id_role_instance.code #RoleID
 
-        async with session.begin():
-            session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

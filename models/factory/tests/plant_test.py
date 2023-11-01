@@ -231,6 +231,7 @@ class TestPlantFactory:
         session.add_all([plant_1, plant_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 
     def test_fields_default(self, session):
         plant = Plant()
@@ -337,12 +338,14 @@ class TestPlantFactory:
         plant.land_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit() 
+        session.rollback()
     #FlvrForeignKeyID
     def test_invalid_flvr_foreign_key_id(self, session):  
         plant = PlantFactory.create(session=session)
         plant.flvr_foreign_key_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     #somePhoneNumber,
     #someTextVal,
     #someUniqueidentifierVal, 

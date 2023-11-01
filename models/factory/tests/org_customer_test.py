@@ -164,6 +164,7 @@ class TestOrgCustomerFactory:
         session.add_all([org_customer_1, org_customer_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         org_customer = OrgCustomer()
         assert org_customer.code is not None
@@ -210,6 +211,7 @@ class TestOrgCustomerFactory:
         org_customer.customer_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     #email,
     #OrganizationID
     def test_invalid_organization_id(self, session):
@@ -217,4 +219,5 @@ class TestOrgCustomerFactory:
         org_customer.organization_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

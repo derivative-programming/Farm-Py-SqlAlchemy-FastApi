@@ -164,6 +164,7 @@ class TestRoleFactory:
         session.add_all([role_1, role_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         role = Role()
         assert role.code is not None
@@ -215,4 +216,5 @@ class TestRoleFactory:
         role.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

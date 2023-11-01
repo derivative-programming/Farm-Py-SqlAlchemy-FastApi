@@ -14,7 +14,7 @@ class PlantListItem:
         self.flavor = flavor
 
 class PlantListReport:
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session):
         self.session = session
 
     async def run(self):

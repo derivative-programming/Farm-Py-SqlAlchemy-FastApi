@@ -166,6 +166,7 @@ class TestTriStateFilterFactory:
         session.add_all([tri_state_filter_1, tri_state_filter_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         tri_state_filter = TriStateFilter()
         assert tri_state_filter.code is not None
@@ -219,5 +220,6 @@ class TestTriStateFilterFactory:
         tri_state_filter.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     #stateIntValue,
 

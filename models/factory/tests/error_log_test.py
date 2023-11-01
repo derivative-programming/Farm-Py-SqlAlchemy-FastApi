@@ -180,6 +180,7 @@ class TestErrorLogFactory:
         session.add_all([error_log_1, error_log_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         error_log = ErrorLog()
         assert error_log.code is not None
@@ -248,5 +249,6 @@ class TestErrorLogFactory:
         error_log.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     #url,
 

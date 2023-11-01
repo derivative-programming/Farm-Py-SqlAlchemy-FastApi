@@ -70,8 +70,8 @@ Index('org_api_key_index_organization_id', OrgApiKey.organization_id) #Organizat
 Index('org_api_key_index_org_customer_id', OrgApiKey.org_customer_id) #OrgCustomerID
 @event.listens_for(OrgApiKey, 'before_insert')
 def set_created_on(mapper, connection, target):
-    target.insert_utc_date_time = func.now()
-    target.last_update_utc_date_time = func.now()
+    target.insert_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(OrgApiKey, 'before_update')
 def set_updated_on(mapper, connection, target):
-    target.last_update_utc_date_time = func.now()
+    target.last_update_utc_date_time = datetime.utcnow()

@@ -166,6 +166,7 @@ class TestDateGreaterThanFilterFactory:
         session.add_all([date_greater_than_filter_1, date_greater_than_filter_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         date_greater_than_filter = DateGreaterThanFilter()
         assert date_greater_than_filter.code is not None
@@ -220,4 +221,5 @@ class TestDateGreaterThanFilterFactory:
         date_greater_than_filter.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

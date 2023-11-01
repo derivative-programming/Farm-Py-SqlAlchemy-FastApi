@@ -156,6 +156,7 @@ class TestPacFactory:
         session.add_all([pac_1, pac_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         pac = Pac()
         assert pac.code is not None

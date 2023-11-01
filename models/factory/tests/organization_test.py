@@ -156,6 +156,7 @@ class TestOrganizationFactory:
         session.add_all([organization_1, organization_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         organization = Organization()
         assert organization.code is not None
@@ -195,4 +196,5 @@ class TestOrganizationFactory:
         organization.tac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

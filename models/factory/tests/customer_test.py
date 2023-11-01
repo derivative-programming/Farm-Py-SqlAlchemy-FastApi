@@ -204,6 +204,7 @@ class TestCustomerFactory:
         session.add_all([customer_1, customer_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         customer = Customer()
         assert customer.code is not None
@@ -310,6 +311,7 @@ class TestCustomerFactory:
         customer.tac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     #uTCOffsetInMinutes,
     #zip,
 

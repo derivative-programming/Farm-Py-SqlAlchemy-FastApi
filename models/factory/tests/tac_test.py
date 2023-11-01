@@ -164,6 +164,7 @@ class TestTacFactory:
         session.add_all([tac_1, tac_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         tac = Tac()
         assert tac.code is not None
@@ -215,4 +216,5 @@ class TestTacFactory:
         tac.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 

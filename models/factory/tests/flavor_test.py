@@ -164,6 +164,7 @@ class TestFlavorFactory:
         session.add_all([flavor_1, flavor_2])
         with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
     def test_fields_default(self, session):
         flavor = Flavor()
         assert flavor.code is not None
@@ -215,4 +216,5 @@ class TestFlavorFactory:
         flavor.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
+        session.rollback()
 
