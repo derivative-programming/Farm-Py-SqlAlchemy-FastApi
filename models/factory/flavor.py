@@ -4,7 +4,7 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import Flavor,FlavorSchema
+from models import Flavor
 from .pac import PacFactory #pac_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER

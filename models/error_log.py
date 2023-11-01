@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -43,40 +43,23 @@ class ErrorLog(Base):
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.error_log_id = 0
-        self.code = generate_uuid()
-        self.last_change_code = 0
-        insert_user_id = None
-        last_update_user_id = None
-        self.browser_code = generate_uuid()
-        self.context_code = generate_uuid()
-        self.created_utc_date_time = datetime(1753, 1, 1)
-        self.description = ""
-        self.is_client_side_error = False
-        self.is_resolved = False
-        self.pac_id = 0
-        self.url = ""
-        self.insert_utc_date_time = datetime(1753, 1, 1)
-        self.last_update_utc_date_time = datetime(1753, 1, 1)
-        self.pac_code_peek = generate_uuid() # PacID
-class ErrorLogSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = ErrorLog
-    error_log_id = fields.Int()
-    code = fields.UUID()
-    last_change_code = fields.Int()
-    insert_user_id = fields.UUID()
-    last_update_user_id = fields.UUID()
-    browser_code = fields.UUID()
-    context_code = fields.UUID()
-    created_utc_date_time = fields.DateTime()
-    description = fields.Str()
-    is_client_side_error = fields.Bool()
-    is_resolved = fields.Bool()
-    pac_id = fields.Int()
-    url = fields.Str()
-    insert_utc_date_time = fields.DateTime()
-    last_update_utc_date_time = fields.DateTime()
+        self.code = kwargs.get('code', generate_uuid())
+        self.last_change_code = kwargs.get('last_change_code', 0)
+        self.insert_user_id = kwargs.get('insert_user_id', None)
+        self.last_update_user_id = kwargs.get('last_update_user_id', None)
+        self.browser_code = kwargs.get('browser_code', generate_uuid())
+        self.context_code = kwargs.get('context_code', generate_uuid())
+        self.created_utc_date_time = kwargs.get('created_utc_date_time', datetime(1753, 1, 1))
+        self.description = kwargs.get('description', "")
+        self.is_client_side_error = kwargs.get('is_client_side_error', False)
+        self.is_resolved = kwargs.get('is_resolved', False)
+        self.pac_id = kwargs.get('pac_id', 0)
+        self.url = kwargs.get('url', "")
+        self.insert_utc_date_time = kwargs.get('insert_utc_date_time', datetime(1753, 1, 1))
+        self.last_update_utc_date_time = kwargs.get('last_update_utc_date_time', datetime(1753, 1, 1))
+
+        self.pac_code_peek = kwargs.get('pac_code_peek', generate_uuid())# PacID
+
 # Define the index separately from the column
 # Index('index_code', ErrorLog.code)
 Index('error_log_index_pac_id', ErrorLog.pac_id) #PacID

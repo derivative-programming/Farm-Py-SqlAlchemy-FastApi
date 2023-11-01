@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -45,43 +45,25 @@ class OrgApiKey(Base):
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.org_api_key_id = 0
-        self.code = generate_uuid()
-        self.last_change_code = 0
-        insert_user_id = None
-        last_update_user_id = None
-        self.api_key_value = ""
-        self.created_by = ""
-        self.created_utc_date_time = datetime(1753, 1, 1)
-        self.expiration_utc_date_time = datetime(1753, 1, 1)
-        self.is_active = False
-        self.is_temp_user_key = False
-        self.name = ""
-        self.organization_id = 0
-        self.org_customer_id = 0
-        self.insert_utc_date_time = datetime(1753, 1, 1)
-        self.last_update_utc_date_time = datetime(1753, 1, 1)
-        self.organization_code_peek = generate_uuid() # OrganizationID
-        self.org_customer_code_peek = generate_uuid()  # OrgCustomerID
-class OrgApiKeySchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = OrgApiKey
-    org_api_key_id = fields.Int()
-    code = fields.UUID()
-    last_change_code = fields.Int()
-    insert_user_id = fields.UUID()
-    last_update_user_id = fields.UUID()
-    api_key_value = fields.Str()
-    created_by = fields.Str()
-    created_utc_date_time = fields.DateTime()
-    expiration_utc_date_time = fields.DateTime()
-    is_active = fields.Bool()
-    is_temp_user_key = fields.Bool()
-    name = fields.Str()
-    organization_id = fields.Int()
-    org_customer_id = fields.Int()
-    insert_utc_date_time = fields.DateTime()
-    last_update_utc_date_time = fields.DateTime()
+        self.code = kwargs.get('code', generate_uuid())
+        self.last_change_code = kwargs.get('last_change_code', 0)
+        self.insert_user_id = kwargs.get('insert_user_id', None)
+        self.last_update_user_id = kwargs.get('last_update_user_id', None)
+        self.api_key_value = kwargs.get('api_key_value', "")
+        self.created_by = kwargs.get('created_by', "")
+        self.created_utc_date_time = kwargs.get('created_utc_date_time', datetime(1753, 1, 1))
+        self.expiration_utc_date_time = kwargs.get('expiration_utc_date_time', datetime(1753, 1, 1))
+        self.is_active = kwargs.get('is_active', False)
+        self.is_temp_user_key = kwargs.get('is_temp_user_key', False)
+        self.name = kwargs.get('name', "")
+        self.organization_id = kwargs.get('organization_id', 0)
+        self.org_customer_id = kwargs.get('org_customer_id', 0)
+        self.insert_utc_date_time = kwargs.get('insert_utc_date_time', datetime(1753, 1, 1))
+        self.last_update_utc_date_time = kwargs.get('last_update_utc_date_time', datetime(1753, 1, 1))
+
+        self.organization_code_peek = kwargs.get('organization_code_peek', generate_uuid())# OrganizationID
+        self.org_customer_code_peek = kwargs.get('org_customer_code_peek', generate_uuid()) # OrgCustomerID
+
 # Define the index separately from the column
 # Index('index_code', OrgApiKey.code)
 Index('org_api_key_index_organization_id', OrgApiKey.organization_id) #OrganizationID

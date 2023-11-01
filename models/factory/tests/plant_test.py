@@ -1,8 +1,10 @@
+from decimal import Decimal
 import pytest
 import uuid
 import time
-from datetime import datetime
-from sqlalchemy import create_engine
+from decimal import Decimal
+from datetime import datetime, date
+from sqlalchemy import Numeric, create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Plant
 from models.factory import PlantFactory
@@ -163,12 +165,12 @@ class TestPlantFactory:
         assert plant.other_flavor == "" or isinstance(plant.other_flavor, str)
         assert isinstance(plant.some_big_int_val, int)
         assert isinstance(plant.some_bit_val, bool)
-        assert isinstance(plant.some_date_val, datetime)
-        assert isinstance(plant.some_decimal_val, (float, int))  # Numeric type can be float or int based on the value
+        assert isinstance(plant.some_date_val, date)
+        assert isinstance(plant.some_decimal_val, Decimal)  # Numeric type can be float or int based on the value
         assert plant.some_email_address == "" or isinstance(plant.some_email_address, str)
         assert isinstance(plant.some_float_val, float)
         assert isinstance(plant.some_int_val, int)
-        assert isinstance(plant.some_money_val, (float, int))  # Numeric type can be float or int based on the value
+        assert isinstance(plant.some_money_val, Decimal)  # Numeric type can be float or int based on the value
         assert plant.some_n_var_char_val == "" or isinstance(plant.some_n_var_char_val, str)
         assert plant.some_phone_number == "" or isinstance(plant.some_phone_number, str)
         assert plant.some_text_val == "" or isinstance(plant.some_text_val, str) 
@@ -282,7 +284,7 @@ class TestPlantFactory:
         assert plant.other_flavor == ""
         assert plant.some_big_int_val == 0
         assert plant.some_bit_val == False
-        assert plant.some_date_val == datetime(1753, 1, 1)
+        assert plant.some_date_val == date(1753, 1, 1)
         assert plant.some_decimal_val == 0
         assert plant.some_email_address == ""
         assert plant.some_float_val == 0.0

@@ -1,8 +1,10 @@
+from decimal import Decimal
 import pytest
 import uuid
 import time
-from datetime import datetime
-from sqlalchemy import create_engine
+from decimal import Decimal
+from datetime import datetime, date
+from sqlalchemy import Numeric, create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Flavor
 from models.factory import FlavorFactory
@@ -21,7 +23,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class TestFlavor:
+class TestFlavorFactory:
     @pytest.fixture(scope="module")
     def engine(self):
         engine = create_engine(DATABASE_URL, echo=True)

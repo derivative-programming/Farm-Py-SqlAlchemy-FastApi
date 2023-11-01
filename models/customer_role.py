@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -40,33 +40,20 @@ class CustomerRole(Base):
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.customer_role_id = 0
-        self.code = generate_uuid()
-        self.last_change_code = 0
-        insert_user_id = None
-        last_update_user_id = None
-        self.customer_id = 0
-        self.is_placeholder = False
-        self.placeholder = False
-        self.role_id = 0
-        self.insert_utc_date_time = datetime(1753, 1, 1)
-        self.last_update_utc_date_time = datetime(1753, 1, 1)
-        self.customer_code_peek = generate_uuid() # CustomerID
-        self.role_code_peek = generate_uuid()  # RoleID
-class CustomerRoleSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = CustomerRole
-    customer_role_id = fields.Int()
-    code = fields.UUID()
-    last_change_code = fields.Int()
-    insert_user_id = fields.UUID()
-    last_update_user_id = fields.UUID()
-    customer_id = fields.Int()
-    is_placeholder = fields.Bool()
-    placeholder = fields.Bool()
-    role_id = fields.Int()
-    insert_utc_date_time = fields.DateTime()
-    last_update_utc_date_time = fields.DateTime()
+        self.code = kwargs.get('code', generate_uuid())
+        self.last_change_code = kwargs.get('last_change_code', 0)
+        self.insert_user_id = kwargs.get('insert_user_id', None)
+        self.last_update_user_id = kwargs.get('last_update_user_id', None)
+        self.customer_id = kwargs.get('customer_id', 0)
+        self.is_placeholder = kwargs.get('is_placeholder', False)
+        self.placeholder = kwargs.get('placeholder', False)
+        self.role_id = kwargs.get('role_id', 0)
+        self.insert_utc_date_time = kwargs.get('insert_utc_date_time', datetime(1753, 1, 1))
+        self.last_update_utc_date_time = kwargs.get('last_update_utc_date_time', datetime(1753, 1, 1))
+
+        self.customer_code_peek = kwargs.get('customer_code_peek', generate_uuid())# CustomerID
+        self.role_code_peek = kwargs.get('role_code_peek', generate_uuid()) # RoleID
+
 # Define the index separately from the column
 # Index('index_code', CustomerRole.code)
 Index('customer_role_index_customer_id', CustomerRole.customer_id) #CustomerID

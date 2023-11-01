@@ -1,7 +1,7 @@
-from datetime import datetime 
+from datetime import datetime, date 
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID 
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -35,12 +35,12 @@ class Plant(Base):
     other_flavor = Column(String, default="", nullable=True)
     some_big_int_val = Column(BigInteger, default=0, nullable=True)
     some_bit_val = Column(Boolean, default=False, nullable=True)
-    some_date_val = Column(DateTime, default=datetime(1753, 1, 1), nullable=True)
-    some_decimal_val = Column(Numeric, default=0, nullable=True)
+    some_date_val = Column(Date, default=date(1753, 1, 1), nullable=True)
+    some_decimal_val = Column(Numeric(precision=18, scale=6), default=0, nullable=True)
     some_email_address = Column(String, default="", nullable=True)
     some_float_val = Column(Float, default=0.0, nullable=True)
     some_int_val = Column(Integer, default=0, nullable=True)
-    some_money_val = Column(Numeric, default=0, nullable=True)
+    some_money_val = Column(Numeric(precision=18, scale=2), default=0, nullable=True)
     some_n_var_char_val = Column(String, default="", nullable=True)
     some_phone_number = Column(String, default="", nullable=True)
     some_text_val = Column(String, default="", nullable=True)
@@ -64,67 +64,36 @@ class Plant(Base):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs) 
-        # self.plant_id = 0
-        self.code = generate_uuid()
-        self.last_change_code = 0
-        insert_user_id = None
-        last_update_user_id = None
-        self.flvr_foreign_key_id = 0
-        self.is_delete_allowed = False
-        self.is_edit_allowed = False
-        self.land_id = 0
-        self.other_flavor = ""
-        self.some_big_int_val = 0
-        self.some_bit_val = False
-        self.some_date_val = datetime(1753, 1, 1)
-        self.some_decimal_val = 0
-        self.some_email_address = ""
-        self.some_float_val = 0.0
-        self.some_int_val = 0
-        self.some_money_val = 0
-        self.some_n_var_char_val = ""
-        self.some_phone_number =  ""
-        self.some_text_val =  ""
-        self.some_uniqueidentifier_val = generate_uuid()
-        self.some_utc_date_time_val = datetime(1753, 1, 1)
-        self.some_var_char_val = ""
-        self.insert_utc_date_time = datetime(1753, 1, 1)
-        self.last_update_utc_date_time = datetime(1753, 1, 1)
 
-        self.flvr_foreign_key_code_peek = generate_uuid()  # FlvrForeignKeyID
-        self.land_code_peek = generate_uuid() # LandID
-
-class PlantSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Plant
-    
-    plant_id = fields.Int()
-    code = fields.UUID()
-    last_change_code = fields.Int()
-    insert_user_id = fields.UUID()
-    last_update_user_id = fields.UUID()
-    flvr_foreign_key_id = fields.Int()
-    is_delete_allowed = fields.Bool()
-    is_edit_allowed = fields.Bool()
-    land_id = fields.Int()
-    other_flavor = fields.Str()
-    some_big_int_val = fields.Int()
-    some_bit_val = fields.Bool()
-    some_date_val = fields.DateTime()
-    some_decimal_val = fields.Decimal(as_string=True)  # This will serialize Decimal as string
-    some_email_address = fields.Str()
-    some_float_val = fields.Float()
-    some_int_val = fields.Int()
-    some_money_val = fields.Decimal(as_string=True)  # This will serialize Decimal as string
-    some_n_var_char_val = fields.Str()
-    some_phone_number = fields.Str()
-    some_text_val = fields.Str()
-    some_uniqueidentifier_val = fields.UUID()
-    some_utc_date_time_val = fields.DateTime()
-    some_var_char_val = fields.Str()
-    insert_utc_date_time = fields.DateTime()
-    last_update_utc_date_time = fields.DateTime()
- 
+        self.code = kwargs.get('code', generate_uuid())
+        self.last_change_code = kwargs.get('last_change_code', 0)
+        self.insert_user_id = kwargs.get('insert_user_id', None)
+        self.last_update_user_id = kwargs.get('last_update_user_id', None)
+        self.flvr_foreign_key_id = kwargs.get('flvr_foreign_key_id', 0)
+        self.is_delete_allowed = kwargs.get('is_delete_allowed', False)
+        self.is_edit_allowed = kwargs.get('is_edit_allowed', False)
+        self.land_id = kwargs.get('land_id', 0)
+        self.other_flavor = kwargs.get('other_flavor', "")
+        self.some_big_int_val = kwargs.get('some_big_int_val', 0)
+        self.some_bit_val = kwargs.get('some_bit_val', False)
+        self.some_date_val = kwargs.get('some_date_val', date(1753, 1, 1))
+        self.some_decimal_val = kwargs.get('some_decimal_val', 0)
+        self.some_email_address = kwargs.get('some_email_address', "")
+        self.some_float_val = kwargs.get('some_float_val', 0.0)
+        self.some_int_val = kwargs.get('some_int_val', 0)
+        self.some_money_val = kwargs.get('some_money_val', 0)
+        self.some_n_var_char_val = kwargs.get('some_n_var_char_val', "")
+        self.some_phone_number = kwargs.get('some_phone_number', "")
+        self.some_text_val = kwargs.get('some_text_val', "")
+        self.some_uniqueidentifier_val = kwargs.get('some_uniqueidentifier_val', generate_uuid())
+        self.some_utc_date_time_val = kwargs.get('some_utc_date_time_val', datetime(1753, 1, 1))
+        self.some_var_char_val = kwargs.get('some_var_char_val', "")
+        self.insert_utc_date_time = kwargs.get('insert_utc_date_time', datetime(1753, 1, 1))
+        self.last_update_utc_date_time = kwargs.get('last_update_utc_date_time', datetime(1753, 1, 1))
+#endset
+        self.flvr_foreign_key_code_peek = kwargs.get('flvr_foreign_key_code_peek', generate_uuid()) # FlvrForeignKeyID
+        self.land_code_peek = kwargs.get('land_code_peek', generate_uuid())# LandID
+#endset 
 
 # Define the index separately from the column
 # Index('index_code', Plant.code)

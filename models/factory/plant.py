@@ -4,7 +4,7 @@ import uuid
 import factory 
 from factory import Faker, SubFactory
 import pytz
-from models import Plant,PlantSchema
+from models import Plant
 from .flavor import FlavorFactory #flvr_foreign_key_id
 from .land import LandFactory #land_id
 from sqlalchemy.dialects.postgresql import UUID
@@ -41,11 +41,11 @@ class PlantFactory(factory.Factory):
     some_big_int_val = Faker('random_int')
     some_bit_val = Faker('boolean')
     some_date_val = Faker('date_object')
-    some_decimal_val = Faker('pydecimal', left_digits=5, right_digits=2, positive=True)
+    some_decimal_val = Faker('pydecimal', left_digits=18, right_digits=6, positive=True)
     some_email_address = Faker('email')
     some_float_val = Faker('pyfloat', positive=True)
     some_int_val = Faker('random_int')
-    some_money_val = Faker('pydecimal', left_digits=5, right_digits=2, positive=True)
+    some_money_val = Faker('pydecimal', left_digits=18, right_digits=2, positive=True)
     some_n_var_char_val = Faker('sentence', nb_words=4)
     some_phone_number = Faker('phone_number')
     some_text_val = Faker('text')

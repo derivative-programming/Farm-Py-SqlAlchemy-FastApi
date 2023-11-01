@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -42,38 +42,22 @@ class DateGreaterThanFilter(Base):
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.date_greater_than_filter_id = 0
-        self.code = generate_uuid()
-        self.last_change_code = 0
-        insert_user_id = None
-        last_update_user_id = None
-        self.day_count = 0
-        self.description = ""
-        self.display_order = 0
-        self.is_active = False
-        self.lookup_enum_name = ""
-        self.name = ""
-        self.pac_id = 0
-        self.insert_utc_date_time = datetime(1753, 1, 1)
-        self.last_update_utc_date_time = datetime(1753, 1, 1)
-        self.pac_code_peek = generate_uuid() # PacID
-class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = DateGreaterThanFilter
-    date_greater_than_filter_id = fields.Int()
-    code = fields.UUID()
-    last_change_code = fields.Int()
-    insert_user_id = fields.UUID()
-    last_update_user_id = fields.UUID()
-    day_count = fields.Int()
-    description = fields.Str()
-    display_order = fields.Int()
-    is_active = fields.Bool()
-    lookup_enum_name = fields.Str()
-    name = fields.Str()
-    pac_id = fields.Int()
-    insert_utc_date_time = fields.DateTime()
-    last_update_utc_date_time = fields.DateTime()
+        self.code = kwargs.get('code', generate_uuid())
+        self.last_change_code = kwargs.get('last_change_code', 0)
+        self.insert_user_id = kwargs.get('insert_user_id', None)
+        self.last_update_user_id = kwargs.get('last_update_user_id', None)
+        self.day_count = kwargs.get('day_count', 0)
+        self.description = kwargs.get('description', "")
+        self.display_order = kwargs.get('display_order', 0)
+        self.is_active = kwargs.get('is_active', False)
+        self.lookup_enum_name = kwargs.get('lookup_enum_name', "")
+        self.name = kwargs.get('name', "")
+        self.pac_id = kwargs.get('pac_id', 0)
+        self.insert_utc_date_time = kwargs.get('insert_utc_date_time', datetime(1753, 1, 1))
+        self.last_update_utc_date_time = kwargs.get('last_update_utc_date_time', datetime(1753, 1, 1))
+
+        self.pac_code_peek = kwargs.get('pac_code_peek', generate_uuid())# PacID
+
 # Define the index separately from the column
 # Index('index_code', DateGreaterThanFilter.code)
 Index('date_greater_than_filter_index_pac_id', DateGreaterThanFilter.pac_id) #PacID

@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -37,28 +37,17 @@ class Organization(Base):
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.organization_id = 0
-        self.code = generate_uuid()
-        self.last_change_code = 0
-        insert_user_id = None
-        last_update_user_id = None
-        self.name = ""
-        self.tac_id = 0
-        self.insert_utc_date_time = datetime(1753, 1, 1)
-        self.last_update_utc_date_time = datetime(1753, 1, 1)
-        self.tac_code_peek = generate_uuid() # TacID
-class OrganizationSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Organization
-    organization_id = fields.Int()
-    code = fields.UUID()
-    last_change_code = fields.Int()
-    insert_user_id = fields.UUID()
-    last_update_user_id = fields.UUID()
-    name = fields.Str()
-    tac_id = fields.Int()
-    insert_utc_date_time = fields.DateTime()
-    last_update_utc_date_time = fields.DateTime()
+        self.code = kwargs.get('code', generate_uuid())
+        self.last_change_code = kwargs.get('last_change_code', 0)
+        self.insert_user_id = kwargs.get('insert_user_id', None)
+        self.last_update_user_id = kwargs.get('last_update_user_id', None)
+        self.name = kwargs.get('name', "")
+        self.tac_id = kwargs.get('tac_id', 0)
+        self.insert_utc_date_time = kwargs.get('insert_utc_date_time', datetime(1753, 1, 1))
+        self.last_update_utc_date_time = kwargs.get('last_update_utc_date_time', datetime(1753, 1, 1))
+
+        self.tac_code_peek = kwargs.get('tac_code_peek', generate_uuid())# TacID
+
 # Define the index separately from the column
 # Index('index_code', Organization.code)
 Index('organization_index_tac_id', Organization.tac_id) #TacID

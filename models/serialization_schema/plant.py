@@ -14,21 +14,21 @@ from services.db_config import db_dialect,generate_uuid
 
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
+    schema_UUIDType = fields.UUID()
 elif db_dialect == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
+    schema_UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+    schema_UUIDType = fields.Str()
  
 class PlantSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Plant
     
     plant_id = fields.Int()
-    code = fields.UUID()
+    code = schema_UUIDType
     last_change_code = fields.Int()
-    insert_user_id = fields.UUID()
-    last_update_user_id = fields.UUID()
+    insert_user_id = schema_UUIDType
+    last_update_user_id = schema_UUIDType
     flvr_foreign_key_id = fields.Int()
     is_delete_allowed = fields.Bool()
     is_edit_allowed = fields.Bool()
@@ -36,7 +36,7 @@ class PlantSchema(SQLAlchemyAutoSchema):
     other_flavor = fields.Str()
     some_big_int_val = fields.Int()
     some_bit_val = fields.Bool()
-    some_date_val = fields.DateTime()
+    some_date_val = fields.Date()
     some_decimal_val = fields.Decimal(as_string=True)  # This will serialize Decimal as string
     some_email_address = fields.Str()
     some_float_val = fields.Float()
@@ -45,24 +45,12 @@ class PlantSchema(SQLAlchemyAutoSchema):
     some_n_var_char_val = fields.Str()
     some_phone_number = fields.Str()
     some_text_val = fields.Str()
-    some_uniqueidentifier_val = fields.UUID()
+    some_uniqueidentifier_val = schema_UUIDType
     some_utc_date_time_val = fields.DateTime()
     some_var_char_val = fields.Str()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
- 
-
-# Define the index separately from the column
-# Index('index_code', Plant.code)
-Index('plant_index_land_id', Plant.land_id) #LandID
-Index('plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id) #FlvrForeignKeyID
-
-    
-@event.listens_for(Plant, 'before_insert')
-def set_created_on(mapper, connection, target):
-    target.insert_utc_date_time = func.now()
-    target.last_update_utc_date_time = func.now()
-
-@event.listens_for(Plant, 'before_update')
-def set_updated_on(mapper, connection, target):
-    target.last_update_utc_date_time = func.now() 
+  
+    flvr_foreign_key_code_peek = schema_UUIDType  #FlvrForeignKeyID
+    land_code_peek = schema_UUIDType #LandID
+#endset

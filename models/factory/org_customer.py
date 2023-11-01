@@ -4,7 +4,7 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import OrgCustomer,OrgCustomerSchema
+from models import OrgCustomer
 from .customer import CustomerFactory #customer_id
 from .organization import OrganizationFactory #organization_id
 from sqlalchemy.dialects.postgresql import UUID
