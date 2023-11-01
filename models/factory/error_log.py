@@ -29,7 +29,7 @@ class ErrorLogFactory(factory.Factory):
     last_update_user_id = factory.LazyFunction(generate_uuid)
     browser_code = factory.LazyFunction(generate_uuid)
     context_code = factory.LazyFunction(generate_uuid)
-    created_utc_date_time = Faker('date_time', tzinfo=pytz.utc)
+    created_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     description = Faker('sentence', nb_words=4)
     is_client_side_error = Faker('boolean')
     is_resolved = Faker('boolean')

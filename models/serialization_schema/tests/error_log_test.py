@@ -1,5 +1,9 @@
+import json
 import pytest
+import pytz
 from models import ErrorLog
+from datetime import date, datetime
+from decimal import Decimal
 from models.serialization_schema import ErrorLogSchema
 from models.factory import ErrorLogFactory
 from sqlalchemy import create_engine
@@ -9,9 +13,31 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestErrorLogSchema:
+    # Sample data for a ErrorLog instance
+    sample_data = {
+        "error_log_id": 1,
+        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_change_code": 0,
+        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+
+        "browser_code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "context_code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "created_utc_date_time": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "description": "Vanilla",
+        "is_client_side_error": False,
+        "is_resolved": False,
+        "pac_id": 2,
+        "url": "Vanilla",
+        "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# PacID
+
+        "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
+    }
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -95,3 +121,30 @@ class TestErrorLogSchema:
 
         assert new_error_log.pac_code_peek == error_log.pac_code_peek #PacID
 
+    def test_from_json(self, error_log:ErrorLog, session):
+        error_log_schema = ErrorLogSchema()
+        # Convert sample data to JSON string
+        json_str = json.dumps(self.sample_data)
+        # Deserialize the JSON string to a dictionary
+        json_data = json.loads(json_str)
+        # Load the dictionary to an object
+        deserialized_data = error_log_schema.load(json_data)
+        assert str(deserialized_data['error_log_id']) == str(self.sample_data['error_log_id'])
+        assert str(deserialized_data['code']) == str(self.sample_data['code'])
+        assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
+        assert str(deserialized_data['insert_user_id']) == str(self.sample_data['insert_user_id'])
+        assert str(deserialized_data['last_update_user_id']) == str(self.sample_data['last_update_user_id'])
+
+        assert str(deserialized_data['browser_code']) == str(self.sample_data['browser_code'])
+        assert str(deserialized_data['context_code']) == str(self.sample_data['context_code'])
+        assert deserialized_data['created_utc_date_time'].isoformat() == self.sample_data['created_utc_date_time']
+        assert str(deserialized_data['description']) == str(self.sample_data['description'])
+        assert str(deserialized_data['is_client_side_error']) == str(self.sample_data['is_client_side_error'])
+        assert str(deserialized_data['is_resolved']) == str(self.sample_data['is_resolved'])
+        assert str(deserialized_data['pac_id']) == str(self.sample_data['pac_id'])
+        assert str(deserialized_data['url']) == str(self.sample_data['url'])
+
+        assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
+        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
+
+        assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']

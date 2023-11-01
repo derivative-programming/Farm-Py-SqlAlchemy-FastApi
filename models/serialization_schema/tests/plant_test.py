@@ -1,5 +1,9 @@
+import json
 import pytest
+import pytz
 from models import Plant
+from datetime import date, datetime
+from decimal import Decimal
 from models.serialization_schema import PlantSchema
 from models.factory import PlantFactory
 from sqlalchemy import create_engine
@@ -12,9 +16,45 @@ DATABASE_URL = "sqlite:///:memory:"
 
 class TestPlantSchema:
 
+        
+    # Sample data for a Plant instance
+    sample_data = {
+        "plant_id": 1,
+        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_change_code": 0,
+        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+#endset
+        "flvr_foreign_key_id": 1,
+        "is_delete_allowed": False,
+        "is_edit_allowed": True,
+        "land_id": 2,
+        "other_flavor": "Vanilla",
+        "some_big_int_val": 1000000000,
+        "some_bit_val": True,
+        "some_date_val": "2022-01-01",
+        "some_decimal_val": str(Decimal('1234.5678')),
+        "some_email_address": "test@email.com",
+        "some_float_val": 123.456,
+        "some_int_val": 42,
+        "some_money_val": str(Decimal('5678.9101')),
+        "some_n_var_char_val": "Hello",
+        "some_phone_number": "123-456-7890",
+        "some_text_val": "Lorem ipsum",
+        "some_uniqueidentifier_val": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "some_utc_date_time_val": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "some_var_char_val": "World",
+        "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+#endset
+        "flvr_foreign_key_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# FlvrForeignKeyID
+        "land_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# LandID
+#endset
+        "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
+    }
+
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -149,3 +189,52 @@ class TestPlantSchema:
         assert new_plant.flvr_foreign_key_code_peek == plant.flvr_foreign_key_code_peek  #FlvrForeignKeyID
         assert new_plant.land_code_peek == plant.land_code_peek #LandID
 #endset
+
+    def test_from_json(self, plant:Plant, session):
+        plant_schema = PlantSchema()
+        
+        # Convert sample data to JSON string
+        json_str = json.dumps(self.sample_data)
+
+        # Deserialize the JSON string to a dictionary
+        json_data = json.loads(json_str)
+        
+        # Load the dictionary to an object
+        deserialized_data = plant_schema.load(json_data)
+        
+        assert str(deserialized_data['plant_id']) == str(self.sample_data['plant_id'])
+        assert str(deserialized_data['code']) == str(self.sample_data['code'])
+        assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
+        assert str(deserialized_data['insert_user_id']) == str(self.sample_data['insert_user_id'])
+        assert str(deserialized_data['last_update_user_id']) == str(self.sample_data['last_update_user_id'])
+#endset
+        assert str(deserialized_data['flvr_foreign_key_id']) == str(self.sample_data['flvr_foreign_key_id'])
+        assert str(deserialized_data['is_delete_allowed']) == str(self.sample_data['is_delete_allowed'])
+        assert str(deserialized_data['is_edit_allowed']) == str(self.sample_data['is_edit_allowed'])
+        assert str(deserialized_data['land_id']) == str(self.sample_data['land_id'])
+        assert str(deserialized_data['other_flavor']) == str(self.sample_data['other_flavor'])
+        assert str(deserialized_data['some_big_int_val']) == str(self.sample_data['some_big_int_val'])
+        assert str(deserialized_data['some_bit_val']) == str(self.sample_data['some_bit_val'])
+        assert str(deserialized_data['some_date_val']) == str(self.sample_data['some_date_val'])
+        assert str(deserialized_data['some_decimal_val']) == str(self.sample_data['some_decimal_val'])
+        assert str(deserialized_data['some_email_address']) == str(self.sample_data['some_email_address'])
+        assert str(deserialized_data['some_float_val']) == str(self.sample_data['some_float_val'])
+        assert str(deserialized_data['some_int_val']) == str(self.sample_data['some_int_val'])
+        assert str(deserialized_data['some_money_val']) == str(self.sample_data['some_money_val'])
+        assert str(deserialized_data['some_n_var_char_val']) == str(self.sample_data['some_n_var_char_val'])
+        assert str(deserialized_data['some_phone_number']) == str(self.sample_data['some_phone_number'])
+        assert str(deserialized_data['some_text_val']) == str(self.sample_data['some_text_val'])
+        assert str(deserialized_data['some_uniqueidentifier_val']) == str(self.sample_data['some_uniqueidentifier_val'])
+        assert deserialized_data['some_utc_date_time_val'].isoformat() == self.sample_data['some_utc_date_time_val']
+        assert str(deserialized_data['some_var_char_val']) == str(self.sample_data['some_var_char_val'])
+#endset
+        assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
+        assert str(deserialized_data['flvr_foreign_key_code_peek']) == str(self.sample_data['flvr_foreign_key_code_peek'])   #FlvrForeignKeyID
+        assert str(deserialized_data['land_code_peek']) == str(self.sample_data['land_code_peek']) #LandID
+#endset
+        assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
+        
+        new_plant = Plant(**deserialized_data) 
+
+        assert isinstance(new_plant, Plant)
+                

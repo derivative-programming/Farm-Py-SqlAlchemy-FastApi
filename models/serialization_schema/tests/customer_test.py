@@ -1,5 +1,9 @@
+import json
 import pytest
+import pytz
 from models import Customer
+from datetime import date, datetime
+from decimal import Decimal
 from models.serialization_schema import CustomerSchema
 from models.factory import CustomerFactory
 from sqlalchemy import create_engine
@@ -9,9 +13,46 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestCustomerSchema:
+    # Sample data for a Customer instance
+    sample_data = {
+        "customer_id": 1,
+        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_change_code": 0,
+        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+
+        "active_organization_id": 42,
+        "email": "test@email.com",
+        "email_confirmed_utc_date_time": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "first_name": "Vanilla",
+        "forgot_password_key_expiration_utc_date_time": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "forgot_password_key_value": "Vanilla",
+        "fs_user_code_value": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "is_active": False,
+        "is_email_allowed": False,
+        "is_email_confirmed": False,
+        "is_email_marketing_allowed": False,
+        "is_locked": False,
+        "is_multiple_organizations_allowed": False,
+        "is_verbose_logging_forced": False,
+        "last_login_utc_date_time": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "last_name": "Vanilla",
+        "password": "Vanilla",
+        "phone": "123-456-7890",
+        "province": "Vanilla",
+        "registration_utc_date_time": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "tac_id": 2,
+        "utc_offset_in_minutes": 42,
+        "zip": "Vanilla",
+        "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+
+        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# TacID
+
+        "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
+    }
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -140,3 +181,45 @@ class TestCustomerSchema:
 
         assert new_customer.tac_code_peek == customer.tac_code_peek #TacID
 
+    def test_from_json(self, customer:Customer, session):
+        customer_schema = CustomerSchema()
+        # Convert sample data to JSON string
+        json_str = json.dumps(self.sample_data)
+        # Deserialize the JSON string to a dictionary
+        json_data = json.loads(json_str)
+        # Load the dictionary to an object
+        deserialized_data = customer_schema.load(json_data)
+        assert str(deserialized_data['customer_id']) == str(self.sample_data['customer_id'])
+        assert str(deserialized_data['code']) == str(self.sample_data['code'])
+        assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
+        assert str(deserialized_data['insert_user_id']) == str(self.sample_data['insert_user_id'])
+        assert str(deserialized_data['last_update_user_id']) == str(self.sample_data['last_update_user_id'])
+
+        assert str(deserialized_data['active_organization_id']) == str(self.sample_data['active_organization_id'])
+        assert str(deserialized_data['email']) == str(self.sample_data['email'])
+        assert deserialized_data['email_confirmed_utc_date_time'].isoformat() == self.sample_data['email_confirmed_utc_date_time']
+        assert str(deserialized_data['first_name']) == str(self.sample_data['first_name'])
+        assert deserialized_data['forgot_password_key_expiration_utc_date_time'].isoformat() == self.sample_data['forgot_password_key_expiration_utc_date_time']
+        assert str(deserialized_data['forgot_password_key_value']) == str(self.sample_data['forgot_password_key_value'])
+        assert str(deserialized_data['fs_user_code_value']) == str(self.sample_data['fs_user_code_value'])
+        assert str(deserialized_data['is_active']) == str(self.sample_data['is_active'])
+        assert str(deserialized_data['is_email_allowed']) == str(self.sample_data['is_email_allowed'])
+        assert str(deserialized_data['is_email_confirmed']) == str(self.sample_data['is_email_confirmed'])
+        assert str(deserialized_data['is_email_marketing_allowed']) == str(self.sample_data['is_email_marketing_allowed'])
+        assert str(deserialized_data['is_locked']) == str(self.sample_data['is_locked'])
+        assert str(deserialized_data['is_multiple_organizations_allowed']) == str(self.sample_data['is_multiple_organizations_allowed'])
+        assert str(deserialized_data['is_verbose_logging_forced']) == str(self.sample_data['is_verbose_logging_forced'])
+        assert deserialized_data['last_login_utc_date_time'].isoformat() == self.sample_data['last_login_utc_date_time']
+        assert str(deserialized_data['last_name']) == str(self.sample_data['last_name'])
+        assert str(deserialized_data['password']) == str(self.sample_data['password'])
+        assert str(deserialized_data['phone']) == str(self.sample_data['phone'])
+        assert str(deserialized_data['province']) == str(self.sample_data['province'])
+        assert deserialized_data['registration_utc_date_time'].isoformat() == self.sample_data['registration_utc_date_time']
+        assert str(deserialized_data['tac_id']) == str(self.sample_data['tac_id'])
+        assert str(deserialized_data['utc_offset_in_minutes']) == str(self.sample_data['utc_offset_in_minutes'])
+        assert str(deserialized_data['zip']) == str(self.sample_data['zip'])
+
+        assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
+        assert str(deserialized_data['tac_code_peek']) == str(self.sample_data['tac_code_peek']) #TacID
+
+        assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']

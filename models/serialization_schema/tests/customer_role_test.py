@@ -1,5 +1,9 @@
+import json
 import pytest
+import pytz
 from models import CustomerRole
+from datetime import date, datetime
+from decimal import Decimal
 from models.serialization_schema import CustomerRoleSchema
 from models.factory import CustomerRoleFactory
 from sqlalchemy import create_engine
@@ -9,9 +13,28 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestCustomerRoleSchema:
+    # Sample data for a CustomerRole instance
+    sample_data = {
+        "customer_role_id": 1,
+        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_change_code": 0,
+        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+
+        "customer_id": 2,
+        "is_placeholder": False,
+        "placeholder": False,
+        "role_id": 1,
+        "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+
+        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# CustomerID
+        "role_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# RoleID
+
+        "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
+    }
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -86,3 +109,27 @@ class TestCustomerRoleSchema:
         assert new_customer_role.customer_code_peek == customer_role.customer_code_peek #CustomerID
         assert new_customer_role.role_code_peek == customer_role.role_code_peek  #RoleID
 
+    def test_from_json(self, customer_role:CustomerRole, session):
+        customer_role_schema = CustomerRoleSchema()
+        # Convert sample data to JSON string
+        json_str = json.dumps(self.sample_data)
+        # Deserialize the JSON string to a dictionary
+        json_data = json.loads(json_str)
+        # Load the dictionary to an object
+        deserialized_data = customer_role_schema.load(json_data)
+        assert str(deserialized_data['customer_role_id']) == str(self.sample_data['customer_role_id'])
+        assert str(deserialized_data['code']) == str(self.sample_data['code'])
+        assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
+        assert str(deserialized_data['insert_user_id']) == str(self.sample_data['insert_user_id'])
+        assert str(deserialized_data['last_update_user_id']) == str(self.sample_data['last_update_user_id'])
+
+        assert str(deserialized_data['customer_id']) == str(self.sample_data['customer_id'])
+        assert str(deserialized_data['is_placeholder']) == str(self.sample_data['is_placeholder'])
+        assert str(deserialized_data['placeholder']) == str(self.sample_data['placeholder'])
+        assert str(deserialized_data['role_id']) == str(self.sample_data['role_id'])
+
+        assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
+        assert str(deserialized_data['customer_code_peek']) == str(self.sample_data['customer_code_peek']) #CustomerID
+        assert str(deserialized_data['role_code_peek']) == str(self.sample_data['role_code_peek'])   #RoleID
+
+        assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']

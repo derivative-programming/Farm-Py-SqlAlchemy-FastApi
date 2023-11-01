@@ -50,7 +50,7 @@ class PlantFactory(factory.Factory):
     some_phone_number = Faker('phone_number')
     some_text_val = Faker('text')
     some_uniqueidentifier_val = factory.LazyFunction(generate_uuid)
-    some_utc_date_time_val = Faker('date_time', tzinfo=pytz.utc)
+    some_utc_date_time_val = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     some_var_char_val = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)

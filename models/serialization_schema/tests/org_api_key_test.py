@@ -1,5 +1,9 @@
+import json
 import pytest
+import pytz
 from models import OrgApiKey
+from datetime import date, datetime
+from decimal import Decimal
 from models.serialization_schema import OrgApiKeySchema
 from models.factory import OrgApiKeyFactory
 from sqlalchemy import create_engine
@@ -9,9 +13,33 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestOrgApiKeySchema:
+    # Sample data for a OrgApiKey instance
+    sample_data = {
+        "org_api_key_id": 1,
+        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_change_code": 0,
+        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+
+        "api_key_value": "Vanilla",
+        "created_by": "Vanilla",
+        "created_utc_date_time": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "expiration_utc_date_time": datetime(2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+        "is_active": False,
+        "is_temp_user_key": False,
+        "name": "Vanilla",
+        "organization_id": 2,
+        "org_customer_id": 1,
+        "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+
+        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# OrganizationID
+        "org_customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# OrgCustomerID
+
+        "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
+    }
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -101,3 +129,32 @@ class TestOrgApiKeySchema:
         assert new_org_api_key.organization_code_peek == org_api_key.organization_code_peek #OrganizationID
         assert new_org_api_key.org_customer_code_peek == org_api_key.org_customer_code_peek  #OrgCustomerID
 
+    def test_from_json(self, org_api_key:OrgApiKey, session):
+        org_api_key_schema = OrgApiKeySchema()
+        # Convert sample data to JSON string
+        json_str = json.dumps(self.sample_data)
+        # Deserialize the JSON string to a dictionary
+        json_data = json.loads(json_str)
+        # Load the dictionary to an object
+        deserialized_data = org_api_key_schema.load(json_data)
+        assert str(deserialized_data['org_api_key_id']) == str(self.sample_data['org_api_key_id'])
+        assert str(deserialized_data['code']) == str(self.sample_data['code'])
+        assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
+        assert str(deserialized_data['insert_user_id']) == str(self.sample_data['insert_user_id'])
+        assert str(deserialized_data['last_update_user_id']) == str(self.sample_data['last_update_user_id'])
+
+        assert str(deserialized_data['api_key_value']) == str(self.sample_data['api_key_value'])
+        assert str(deserialized_data['created_by']) == str(self.sample_data['created_by'])
+        assert deserialized_data['created_utc_date_time'].isoformat() == self.sample_data['created_utc_date_time']
+        assert deserialized_data['expiration_utc_date_time'].isoformat() == self.sample_data['expiration_utc_date_time']
+        assert str(deserialized_data['is_active']) == str(self.sample_data['is_active'])
+        assert str(deserialized_data['is_temp_user_key']) == str(self.sample_data['is_temp_user_key'])
+        assert str(deserialized_data['name']) == str(self.sample_data['name'])
+        assert str(deserialized_data['organization_id']) == str(self.sample_data['organization_id'])
+        assert str(deserialized_data['org_customer_id']) == str(self.sample_data['org_customer_id'])
+
+        assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
+        assert str(deserialized_data['organization_code_peek']) == str(self.sample_data['organization_code_peek']) #OrganizationID
+        assert str(deserialized_data['org_customer_code_peek']) == str(self.sample_data['org_customer_code_peek'])   #OrgCustomerID
+
+        assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']

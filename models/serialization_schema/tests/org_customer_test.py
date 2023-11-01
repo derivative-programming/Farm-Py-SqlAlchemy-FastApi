@@ -1,5 +1,9 @@
+import json
 import pytest
+import pytz
 from models import OrgCustomer
+from datetime import date, datetime
+from decimal import Decimal
 from models.serialization_schema import OrgCustomerSchema
 from models.factory import OrgCustomerFactory
 from sqlalchemy import create_engine
@@ -9,9 +13,27 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestOrgCustomerSchema:
+    # Sample data for a OrgCustomer instance
+    sample_data = {
+        "org_customer_id": 1,
+        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_change_code": 0,
+        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+
+        "customer_id": 1,
+        "email": "test@email.com",
+        "organization_id": 2,
+        "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+
+        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# CustomerID
+        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# OrganizationID
+
+        "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
+    }
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -83,3 +105,26 @@ class TestOrgCustomerSchema:
         assert new_org_customer.customer_code_peek == org_customer.customer_code_peek  #CustomerID
         assert new_org_customer.organization_code_peek == org_customer.organization_code_peek #OrganizationID
 
+    def test_from_json(self, org_customer:OrgCustomer, session):
+        org_customer_schema = OrgCustomerSchema()
+        # Convert sample data to JSON string
+        json_str = json.dumps(self.sample_data)
+        # Deserialize the JSON string to a dictionary
+        json_data = json.loads(json_str)
+        # Load the dictionary to an object
+        deserialized_data = org_customer_schema.load(json_data)
+        assert str(deserialized_data['org_customer_id']) == str(self.sample_data['org_customer_id'])
+        assert str(deserialized_data['code']) == str(self.sample_data['code'])
+        assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
+        assert str(deserialized_data['insert_user_id']) == str(self.sample_data['insert_user_id'])
+        assert str(deserialized_data['last_update_user_id']) == str(self.sample_data['last_update_user_id'])
+
+        assert str(deserialized_data['customer_id']) == str(self.sample_data['customer_id'])
+        assert str(deserialized_data['email']) == str(self.sample_data['email'])
+        assert str(deserialized_data['organization_id']) == str(self.sample_data['organization_id'])
+
+        assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
+        assert str(deserialized_data['customer_code_peek']) == str(self.sample_data['customer_code_peek'])   #CustomerID
+        assert str(deserialized_data['organization_code_peek']) == str(self.sample_data['organization_code_peek']) #OrganizationID
+
+        assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']

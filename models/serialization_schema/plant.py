@@ -46,7 +46,7 @@ class PlantSchema(SQLAlchemyAutoSchema):
     some_phone_number = fields.Str()
     some_text_val = fields.Str()
     some_uniqueidentifier_val = schema_UUIDType
-    some_utc_date_time_val = fields.DateTime()
+    some_utc_date_time_val = fields.DateTime()#(format="%Y-%m-%dT%H:%M:%S")
     some_var_char_val = fields.Str()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()

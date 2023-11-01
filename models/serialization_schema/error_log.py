@@ -28,7 +28,7 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
     last_update_user_id = schema_UUIDType
     browser_code = schema_UUIDType
     context_code = schema_UUIDType
-    created_utc_date_time = fields.DateTime()
+    created_utc_date_time = fields.DateTime()#(format="%Y-%m-%dT%H:%M:%S")
     description = fields.Str()
     is_client_side_error = fields.Bool()
     is_resolved = fields.Bool()

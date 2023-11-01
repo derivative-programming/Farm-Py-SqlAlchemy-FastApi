@@ -1,5 +1,9 @@
+import json
 import pytest
+import pytz
 from models import DateGreaterThanFilter
+from datetime import date, datetime
+from decimal import Decimal
 from models.serialization_schema import DateGreaterThanFilterSchema
 from models.factory import DateGreaterThanFilterFactory
 from sqlalchemy import create_engine
@@ -9,9 +13,30 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestDateGreaterThanFilterSchema:
+    # Sample data for a DateGreaterThanFilter instance
+    sample_data = {
+        "date_greater_than_filter_id": 1,
+        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_change_code": 0,
+        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+
+        "day_count": 42,
+        "description": "Vanilla",
+        "display_order": 42,
+        "is_active": False,
+        "lookup_enum_name": "Vanilla",
+        "name": "Vanilla",
+        "pac_id": 2,
+        "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
+
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# PacID
+
+        "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
+    }
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -92,3 +117,29 @@ class TestDateGreaterThanFilterSchema:
 
         assert new_date_greater_than_filter.pac_code_peek == date_greater_than_filter.pac_code_peek #PacID
 
+    def test_from_json(self, date_greater_than_filter:DateGreaterThanFilter, session):
+        date_greater_than_filter_schema = DateGreaterThanFilterSchema()
+        # Convert sample data to JSON string
+        json_str = json.dumps(self.sample_data)
+        # Deserialize the JSON string to a dictionary
+        json_data = json.loads(json_str)
+        # Load the dictionary to an object
+        deserialized_data = date_greater_than_filter_schema.load(json_data)
+        assert str(deserialized_data['date_greater_than_filter_id']) == str(self.sample_data['date_greater_than_filter_id'])
+        assert str(deserialized_data['code']) == str(self.sample_data['code'])
+        assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
+        assert str(deserialized_data['insert_user_id']) == str(self.sample_data['insert_user_id'])
+        assert str(deserialized_data['last_update_user_id']) == str(self.sample_data['last_update_user_id'])
+
+        assert str(deserialized_data['day_count']) == str(self.sample_data['day_count'])
+        assert str(deserialized_data['description']) == str(self.sample_data['description'])
+        assert str(deserialized_data['display_order']) == str(self.sample_data['display_order'])
+        assert str(deserialized_data['is_active']) == str(self.sample_data['is_active'])
+        assert str(deserialized_data['lookup_enum_name']) == str(self.sample_data['lookup_enum_name'])
+        assert str(deserialized_data['name']) == str(self.sample_data['name'])
+        assert str(deserialized_data['pac_id']) == str(self.sample_data['pac_id'])
+
+        assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
+        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
+
+        assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
