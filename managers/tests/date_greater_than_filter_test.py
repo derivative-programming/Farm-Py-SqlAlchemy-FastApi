@@ -1,480 +1,412 @@
+import asyncio
+from decimal import Decimal
 import pytest
-import uuid
-from unittest.mock import AsyncMock, patch
-from managers import DateGreaterThanFilterManager, DateGreaterThanFilter
-from models.factory import DateGreaterThanFilterFactory
+import pytest_asyncio
+import time
+from decimal import Decimal
+from datetime import datetime, date
+from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base, DateGreaterThanFilter
-DATABASE_URL = "sqlite:///:memory:"
+from models.factory import DateGreaterThanFilterFactory
+from managers.date_greater_than_filter import DateGreaterThanFilterManager
+from services.db_config import db_dialect
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.future import select
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
+# Conditionally set the UUID column type
+if db_dialect == 'postgresql':
+    UUIDType = UUID(as_uuid=True)
+elif db_dialect == 'mssql':
+    UUIDType = UNIQUEIDENTIFIER
+else:  # This will cover SQLite, MySQL, and other databases
+    UUIDType = String(36)
 class TestDateGreaterThanFilterManager:
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="function")
+    def event_loop(self) -> asyncio.AbstractEventLoop:
+        loop = asyncio.get_event_loop_policy().new_event_loop()
+        yield loop
+        loop.close()
+    @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
-        #FKs are not activated by default in sqllite
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
+        engine = create_async_engine(DATABASE_URL, echo=True)
         yield engine
-        engine.dispose()
-    @pytest.fixture
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture
-    async def date_greater_than_filter_manager(self, session):
+        engine.sync_engine.dispose()
+    @pytest_asyncio.fixture(scope="function")
+    async def session(self,engine) -> AsyncSession:
+        @event.listens_for(engine.sync_engine, "connect")
+        def set_sqlite_pragma(dbapi_connection, connection_record):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+        async with engine.begin() as connection:
+            await connection.begin_nested()
+            await connection.run_sync(Base.metadata.drop_all)
+            await connection.run_sync(Base.metadata.create_all)
+            TestingSessionLocal = sessionmaker(
+                expire_on_commit=False,
+                class_=AsyncSession,
+                bind=engine,
+            )
+            async with TestingSessionLocal(bind=connection) as session:
+                @event.listens_for(
+                    session.sync_session, "after_transaction_end"
+                )
+                def end_savepoint(session, transaction):
+                    if connection.closed:
+                        return
+                    if not connection.in_nested_transaction():
+                        connection.sync_connection.begin_nested()
+                yield session
+                await session.flush()
+                await session.rollback()
+    @pytest_asyncio.fixture(scope="function")
+    async def date_greater_than_filter_manager(self, session:AsyncSession):
         return DateGreaterThanFilterManager(session)
     @pytest.mark.asyncio
-    async def test_build(self, date_greater_than_filter_manager):
+    async def test_build(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Define some mock data for our date_greater_than_filter
         mock_data = {
-            "name": "Rose",
-            "species": "Rosa",
-            "age": 2
+            "code": generate_uuid()
         }
         # Call the build function of the manager
         date_greater_than_filter = await date_greater_than_filter_manager.build(**mock_data)
         # Assert that the returned object is an instance of DateGreaterThanFilter
         assert isinstance(date_greater_than_filter, DateGreaterThanFilter)
         # Assert that the attributes of the date_greater_than_filter match our mock data
-        assert date_greater_than_filter.name == mock_data["name"]
-        assert date_greater_than_filter.species == mock_data["species"]
-        assert date_greater_than_filter.age == mock_data["age"]
+        assert date_greater_than_filter.code == mock_data["code"]
         # Optionally, if the build method has some default values or computations:
         # assert date_greater_than_filter.some_attribute == some_expected_value
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, date_greater_than_filter_manager):
+    async def test_build_with_missing_data(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Define mock data with a missing key
         mock_data = {
-            "name": "Rose",
-            "age": 2
+            "non_existant_property": "Rose"
         }
         # If the build method is expected to raise an exception for missing data, test for that
-        with pytest.raises(SomeSpecificException):
-            await date_greater_than_filter_manager.build(**mock_data)
+        with pytest.raises(Exception):
+            await date_greater_than_filter_manager.build_async(**mock_data)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_add(self, date_greater_than_filter_manager, mock_session):
-        date_greater_than_filter_data = DateGreaterThanFilterFactory.build()
-        mock_session.add.return_value = None
-        mock_session.commit.return_value = None
-        date_greater_than_filter = await date_greater_than_filter_manager.add(**date_greater_than_filter_data)
-        mock_session.add.assert_called_once_with(date_greater_than_filter)
-        mock_session.commit.assert_called_once()
-        assert isinstance(date_greater_than_filter, DateGreaterThanFilter)
-    @pytest.mark.asyncio
-    async def test_add_correctly_adds_date_greater_than_filter_to_database(self, date_greater_than_filter_manager, db_session):
-        # Create a test date_greater_than_filter using the DateGreaterThanFilterFactory without persisting it to the database
-        test_date_greater_than_filter = DateGreaterThanFilterFactory.build()
+    async def test_add_correctly_adds_date_greater_than_filter_to_database(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(session)
+        assert test_date_greater_than_filter.date_greater_than_filter_id is None
         # Add the date_greater_than_filter using the manager's add method
         added_date_greater_than_filter = await date_greater_than_filter_manager.add(date_greater_than_filter=test_date_greater_than_filter)
+        assert isinstance(added_date_greater_than_filter, DateGreaterThanFilter)
+        assert added_date_greater_than_filter.date_greater_than_filter_id > 0
         # Fetch the date_greater_than_filter from the database directly
-        result = await db_session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == added_date_greater_than_filter.date_greater_than_filter_id))
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == added_date_greater_than_filter.date_greater_than_filter_id))
         fetched_date_greater_than_filter = result.scalars().first()
         # Assert that the fetched date_greater_than_filter is not None and matches the added date_greater_than_filter
         assert fetched_date_greater_than_filter is not None
+        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
         assert fetched_date_greater_than_filter.date_greater_than_filter_id == added_date_greater_than_filter.date_greater_than_filter_id
-        assert fetched_date_greater_than_filter.name == added_date_greater_than_filter.name
-        # ... other attribute checks ...
     @pytest.mark.asyncio
-    async def test_add_returns_correct_date_greater_than_filter_object(self, date_greater_than_filter_manager):
+    async def test_add_returns_correct_date_greater_than_filter_object(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Create a test date_greater_than_filter using the DateGreaterThanFilterFactory without persisting it to the database
-        test_date_greater_than_filter = DateGreaterThanFilterFactory.build()
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(session)
+        assert test_date_greater_than_filter.date_greater_than_filter_id is None
+        test_date_greater_than_filter.code = generate_uuid()
         # Add the date_greater_than_filter using the manager's add method
         added_date_greater_than_filter = await date_greater_than_filter_manager.add(date_greater_than_filter=test_date_greater_than_filter)
+        assert isinstance(added_date_greater_than_filter, DateGreaterThanFilter)
+        assert added_date_greater_than_filter.date_greater_than_filter_id > 0
         # Assert that the returned date_greater_than_filter matches the test date_greater_than_filter
         assert added_date_greater_than_filter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id
-        assert added_date_greater_than_filter.name == test_date_greater_than_filter.name
-        # ... other attribute checks ...
+        assert added_date_greater_than_filter.code == test_date_greater_than_filter.code
     @pytest.mark.asyncio
-    async def test_get_by_id(self, date_greater_than_filter_manager, mock_session):
-        date_greater_than_filter_data = DateGreaterThanFilterFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=date_greater_than_filter_data)))
-        date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(1)
-        mock_session.execute.assert_called_once()
+    async def test_get_by_id(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
+        date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(test_date_greater_than_filter.date_greater_than_filter_id)
         assert isinstance(date_greater_than_filter, DateGreaterThanFilter)
-    async def test_get_by_id(self, session: AsyncSession, sample_date_greater_than_filter: DateGreaterThanFilter):
-        manager = DateGreaterThanFilterManager(session)
-        retrieved_date_greater_than_filter = await manager.get_by_id(sample_date_greater_than_filter.date_greater_than_filter_id)
-        assert retrieved_date_greater_than_filter is not None
-        assert retrieved_date_greater_than_filter.date_greater_than_filter_id == sample_date_greater_than_filter.date_greater_than_filter_id
-        assert retrieved_date_greater_than_filter.name == "Rose"
-        assert retrieved_date_greater_than_filter.color == "Red"
-    async def test_get_by_id_not_found(self, session: AsyncSession):
-        manager = DateGreaterThanFilterManager(session)
+        assert test_date_greater_than_filter.date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id
+        assert test_date_greater_than_filter.code == date_greater_than_filter.code
+    async def test_get_by_id_not_found(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session: AsyncSession):
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_date_greater_than_filter = await manager.get_by_id(non_existent_id)
+        retrieved_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(non_existent_id)
         assert retrieved_date_greater_than_filter is None
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_date_greater_than_filter(self, date_greater_than_filter_manager, db_session):
-        # Use your DateGreaterThanFilterFactory to create and save a DateGreaterThanFilter object
-        code = uuid.uuid4()
-        date_greater_than_filter = DateGreaterThanFilterFactory(code=code)
-        db_session.add(date_greater_than_filter)
-        await db_session.commit()
-        # Fetch the date_greater_than_filter using the manager's get_by_code method
-        fetched_date_greater_than_filter = await date_greater_than_filter_manager.get_by_code(code)
-        # Assert that the fetched date_greater_than_filter is not None and has the expected code
-        assert fetched_date_greater_than_filter is not None
-        assert fetched_date_greater_than_filter.code == code
+    async def test_get_by_code_returns_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
+        date_greater_than_filter = await date_greater_than_filter_manager.get_by_code(test_date_greater_than_filter.code)
+        assert isinstance(date_greater_than_filter, DateGreaterThanFilter)
+        assert test_date_greater_than_filter.date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id
+        assert test_date_greater_than_filter.code == date_greater_than_filter.code
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, date_greater_than_filter_manager):
+    async def test_get_by_code_returns_none_for_nonexistent_code(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Generate a random UUID that doesn't correspond to any DateGreaterThanFilter in the database
-        random_code = uuid.uuid4()
-        # Try fetching a date_greater_than_filter using the manager's get_by_code method
-        fetched_date_greater_than_filter = await date_greater_than_filter_manager.get_by_code(random_code)
-        # Assert that the result is None since no date_greater_than_filter with the given code exists
-        assert fetched_date_greater_than_filter is None
+        random_code = generate_uuid()
+        date_greater_than_filter = await date_greater_than_filter_manager.get_by_code(random_code)
+        assert date_greater_than_filter is None
     @pytest.mark.asyncio
-    async def test_update(self, date_greater_than_filter_manager, mock_session):
-        date_greater_than_filter_data = DateGreaterThanFilterFactory.build()
-        updated_data = {"name": "Updated DateGreaterThanFilter"}
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=date_greater_than_filter_data)))
-        mock_session.commit.return_value = None
-        updated_date_greater_than_filter = await date_greater_than_filter_manager.update(1, **updated_data)
-        assert updated_date_greater_than_filter.name == "Updated DateGreaterThanFilter"
-        mock_session.commit.assert_called_once()
+    async def test_update(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
+        test_date_greater_than_filter.code = generate_uuid()
+        updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter=test_date_greater_than_filter)
         assert isinstance(updated_date_greater_than_filter, DateGreaterThanFilter)
-    async def test_update_valid_date_greater_than_filter(self):
-        # Mocking a date_greater_than_filter instance
-        date_greater_than_filter = DateGreaterThanFilter(date_greater_than_filter_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
-        # Update the date_greater_than_filter with new attributes
-        updated_date_greater_than_filter = await self.manager.update(date_greater_than_filter, name="Red Rose", code="REDROSE123")
-        # Assertions
-        assert updated_date_greater_than_filter.name == "Red Rose"
-        assert updated_date_greater_than_filter.code == "REDROSE123"
-        self.session_mock.commit.assert_called_once()
+        assert updated_date_greater_than_filter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id
+        assert updated_date_greater_than_filter.code == test_date_greater_than_filter.code
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id))
+        fetched_date_greater_than_filter = result.scalars().first()
+        assert updated_date_greater_than_filter.date_greater_than_filter_id == fetched_date_greater_than_filter.date_greater_than_filter_id
+        assert updated_date_greater_than_filter.code == fetched_date_greater_than_filter.code
+        assert test_date_greater_than_filter.date_greater_than_filter_id == fetched_date_greater_than_filter.date_greater_than_filter_id
+        assert test_date_greater_than_filter.code == fetched_date_greater_than_filter.code
+    async def test_update_via_dict(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
+        new_code = generate_uuid()
+        updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter=test_date_greater_than_filter,code=new_code)
+        assert isinstance(updated_date_greater_than_filter, DateGreaterThanFilter)
+        assert updated_date_greater_than_filter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id
+        assert updated_date_greater_than_filter.code == new_code
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id))
+        fetched_date_greater_than_filter = result.scalars().first()
+        assert updated_date_greater_than_filter.date_greater_than_filter_id == fetched_date_greater_than_filter.date_greater_than_filter_id
+        assert updated_date_greater_than_filter.code == fetched_date_greater_than_filter.code
+        assert test_date_greater_than_filter.date_greater_than_filter_id == fetched_date_greater_than_filter.date_greater_than_filter_id
+        assert new_code == fetched_date_greater_than_filter.code
     async def test_update_invalid_date_greater_than_filter(self):
         # None date_greater_than_filter
         date_greater_than_filter = None
-        updated_date_greater_than_filter = await self.manager.update(date_greater_than_filter, name="Red Rose", code="REDROSE123")
+        new_code = generate_uuid()
+        updated_date_greater_than_filter = await self.manager.update(date_greater_than_filter, code=new_code)
         # Assertions
         assert updated_date_greater_than_filter is None
-        self.session_mock.commit.assert_not_called()
-    async def test_update_with_nonexistent_attribute(self):
-        # Mocking a date_greater_than_filter instance
-        date_greater_than_filter = DateGreaterThanFilter(date_greater_than_filter_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
+    async def test_update_with_nonexistent_attribute(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
+        new_code = generate_uuid()
         # This should raise an AttributeError since 'color' is not an attribute of DateGreaterThanFilter
         with pytest.raises(AttributeError):
-            await self.manager.update(date_greater_than_filter, color="Red")
-        self.session_mock.commit.assert_not_called()
+            updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter=test_date_greater_than_filter,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete(self, date_greater_than_filter_manager, mock_session):
-        date_greater_than_filter_data = DateGreaterThanFilterFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=date_greater_than_filter_data)))
-        mock_session.delete.return_value = None
-        mock_session.commit.return_value = None
-        deleted_date_greater_than_filter = await date_greater_than_filter_manager.delete(1)
-        mock_session.delete.assert_called_once_with(deleted_date_greater_than_filter)
-        mock_session.commit.assert_called_once()
-        assert isinstance(deleted_date_greater_than_filter, DateGreaterThanFilter)
+    async def test_delete(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter_data = await DateGreaterThanFilterFactory.create_async(session)
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_data.date_greater_than_filter_id))
+        fetched_date_greater_than_filter = result.scalars().first()
+        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+        assert fetched_date_greater_than_filter.date_greater_than_filter_id == date_greater_than_filter_data.date_greater_than_filter_id
+        deleted_date_greater_than_filter = await date_greater_than_filter_manager.delete(date_greater_than_filter_id=date_greater_than_filter_data.date_greater_than_filter_id)
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_data.date_greater_than_filter_id))
+        fetched_date_greater_than_filter = result.scalars().first()
+        assert fetched_date_greater_than_filter is None
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, date_greater_than_filter_manager, mock_session):
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=None)))
-        with pytest.raises(ValueError, match="DateGreaterThanFilter not found"):
+    async def test_delete_nonexistent(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        with pytest.raises(Exception):
             await date_greater_than_filter_manager.delete(999)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_list(self, date_greater_than_filter_manager, mock_session):
-        date_greater_than_filters_data = [DateGreaterThanFilterFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=date_greater_than_filters_data)))
+    async def test_delete_invalid_type(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        with pytest.raises(Exception):
+            await date_greater_than_filter_manager.delete("999")
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_get_list(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         date_greater_than_filters = await date_greater_than_filter_manager.get_list()
-        mock_session.execute.assert_called_once()
+        assert len(date_greater_than_filters) == 0
+        date_greater_than_filters_data = [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)]
+        date_greater_than_filters = await date_greater_than_filter_manager.get_list()
         assert len(date_greater_than_filters) == 5
         assert all(isinstance(date_greater_than_filter, DateGreaterThanFilter) for date_greater_than_filter in date_greater_than_filters)
     @pytest.mark.asyncio
-    async def test_to_json(self, date_greater_than_filter_manager):
-        date_greater_than_filter_data = DateGreaterThanFilterFactory.build()
-        date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_data)
+    async def test_to_json(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(session)
         json_data = date_greater_than_filter_manager.to_json(date_greater_than_filter)
         assert json_data is not None
-        # You might want to do more specific checks on the JSON structure
     @pytest.mark.asyncio
-    async def test_from_json(self, date_greater_than_filter_manager):
-        date_greater_than_filter_data = DateGreaterThanFilterFactory.build()
-        date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_data)
+    async def test_to_dict(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(session)
+        dict_data = date_greater_than_filter_manager.to_dict(date_greater_than_filter)
+        assert dict_data is not None
+    @pytest.mark.asyncio
+    async def test_from_json(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
         json_data = date_greater_than_filter_manager.to_json(date_greater_than_filter)
         deserialized_date_greater_than_filter = date_greater_than_filter_manager.from_json(json_data)
         assert isinstance(deserialized_date_greater_than_filter, DateGreaterThanFilter)
-        # Additional checks on the deserialized data can be added
+        assert deserialized_date_greater_than_filter.code == date_greater_than_filter.code
     @pytest.mark.asyncio
-    async def test_add_bulk(self, date_greater_than_filter_manager, mock_session):
-        date_greater_than_filters_data = [DateGreaterThanFilterFactory.build() for _ in range(5)]
-        mock_session.add_all.return_value = None
-        mock_session.commit.return_value = None
+    async def test_add_bulk(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filters_data = [await DateGreaterThanFilterFactory.build_async(session) for _ in range(5)]
         date_greater_than_filters = await date_greater_than_filter_manager.add_bulk(date_greater_than_filters_data)
-        mock_session.add_all.assert_called_once()
-        mock_session.commit.assert_called_once()
         assert len(date_greater_than_filters) == 5
+        for updated_date_greater_than_filter in date_greater_than_filters:
+            result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == updated_date_greater_than_filter.date_greater_than_filter_id))
+            fetched_date_greater_than_filter = result.scalars().first()
+            assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+            assert fetched_date_greater_than_filter.date_greater_than_filter_id == updated_date_greater_than_filter.date_greater_than_filter_id
     @pytest.mark.asyncio
-    async def test_update_bulk_success():
-        manager = DateGreaterThanFilterManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
+    async def test_update_bulk_success(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Mocking date_greater_than_filter instances
-        date_greater_than_filter1 = DateGreaterThanFilter(date_greater_than_filter_id=1, name="Rose", code="ROSE123")
-        date_greater_than_filter2 = DateGreaterThanFilter(date_greater_than_filter_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding date_greater_than_filter
-        async def mock_get_by_id(date_greater_than_filter_id):
-            if date_greater_than_filter_id == 1:
-                return date_greater_than_filter1
-            if date_greater_than_filter_id == 2:
-                return date_greater_than_filter2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
+        date_greater_than_filter2 = await DateGreaterThanFilterFactory.create_async(session=session)
+        code_updated1 = generate_uuid()
+        code_updated2 = generate_uuid()
         # Update date_greater_than_filters
-        updates = [{"date_greater_than_filter_id": 1, "name": "Red Rose"}, {"date_greater_than_filter_id": 2, "name": "Yellow Tulip"}]
-        updated_date_greater_than_filters = await manager.update_bulk(updates)
+        updates = [{"date_greater_than_filter_id": 1, "code": code_updated1}, {"date_greater_than_filter_id": 2, "code": code_updated2}]
+        updated_date_greater_than_filters = await date_greater_than_filter_manager.update_bulk(updates)
         # Assertions
         assert len(updated_date_greater_than_filters) == 2
-        assert updated_date_greater_than_filters[0].name == "Red Rose"
-        assert updated_date_greater_than_filters[1].name == "Yellow Tulip"
-        session_mock.commit.assert_called_once()
+        assert updated_date_greater_than_filters[0].code == code_updated1
+        assert updated_date_greater_than_filters[1].code == code_updated2
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == 1))
+        fetched_date_greater_than_filter = result.scalars().first()
+        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+        assert fetched_date_greater_than_filter.code == code_updated1
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == 2))
+        fetched_date_greater_than_filter = result.scalars().first()
+        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+        assert fetched_date_greater_than_filter.code == code_updated2
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_date_greater_than_filter_id():
-        manager = DateGreaterThanFilterManager()
+    async def test_update_bulk_missing_date_greater_than_filter_id(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # No date_greater_than_filters to update since date_greater_than_filter_id is missing
         updates = [{"name": "Red Rose"}]
-        updated_date_greater_than_filters = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_date_greater_than_filters) == 0
+        with pytest.raises(Exception):
+            updated_date_greater_than_filters = await date_greater_than_filter_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_date_greater_than_filter_not_found():
-        manager = DateGreaterThanFilterManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (date_greater_than_filter not found)
-        manager.get_by_id = AsyncMock(return_value=None)
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+    async def test_update_bulk_date_greater_than_filter_not_found(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Update date_greater_than_filters
-        updates = [{"date_greater_than_filter_id": 1, "name": "Red Rose"}]
-        updated_date_greater_than_filters = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_date_greater_than_filters) == 0
-        session_mock.commit.assert_not_called()
+        updates = [{"date_greater_than_filter_id": 1, "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_date_greater_than_filters = await date_greater_than_filter_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_success():
-        manager = DateGreaterThanFilterManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking date_greater_than_filter instances
-        date_greater_than_filter1 = DateGreaterThanFilter(date_greater_than_filter_id=1, name="Rose", code="ROSE123")
-        date_greater_than_filter2 = DateGreaterThanFilter(date_greater_than_filter_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding date_greater_than_filter
-        async def mock_get_by_id(date_greater_than_filter_id):
-            if date_greater_than_filter_id == 1:
-                return date_greater_than_filter1
-            if date_greater_than_filter_id == 2:
-                return date_greater_than_filter2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_update_bulk_invalid_type(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        updates = [{"date_greater_than_filter_id": "2", "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_date_greater_than_filters = await date_greater_than_filter_manager.update_bulk(updates)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_delete_bulk_success(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
+        date_greater_than_filter2 = await DateGreaterThanFilterFactory.create_async(session=session)
         # Delete date_greater_than_filters
         date_greater_than_filter_ids = [1, 2]
-        result = await manager.delete_bulk(date_greater_than_filter_ids)
-        # Assertions
+        result = await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
         assert result is True
-        session_mock.delete.assert_called()
-        session_mock.commit.assert_called_once()
+        for date_greater_than_filter_id in date_greater_than_filter_ids:
+            execute_result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_id))
+            fetched_date_greater_than_filter = execute_result.scalars().first()
+            assert fetched_date_greater_than_filter is None
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_date_greater_than_filters_not_found():
-        manager = DateGreaterThanFilterManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (date_greater_than_filter not found)
-        async def mock_get_by_id(date_greater_than_filter_id):
-            if date_greater_than_filter_id == 1:
-                return None
-            if date_greater_than_filter_id == 2:
-                return DateGreaterThanFilter(date_greater_than_filter_id=2, name="Tulip", code="TULIP123")
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_some_date_greater_than_filters_not_found(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
         # Delete date_greater_than_filters
         date_greater_than_filter_ids = [1, 2]
-        result = await manager.delete_bulk(date_greater_than_filter_ids)
-        # Assertions
-        assert result is True
-        session_mock.delete.assert_called_once_with(DateGreaterThanFilter(date_greater_than_filter_id=2, name="Tulip", code="TULIP123"))
-        session_mock.commit.assert_called_once()
+        with pytest.raises(Exception):
+           result = await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list():
-        manager = DateGreaterThanFilterManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_empty_list(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Delete date_greater_than_filters with an empty list
         date_greater_than_filter_ids = []
-        result = await manager.delete_bulk(date_greater_than_filter_ids)
+        result = await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
         # Assertions
         assert result is True
-        session_mock.delete.assert_not_called()
-        session_mock.commit.assert_not_called()
     @pytest.mark.asyncio
-    async def test_count(self, date_greater_than_filter_manager, mock_session):
-        date_greater_than_filters_data = [DateGreaterThanFilterFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=date_greater_than_filters_data)))
+    async def test_delete_bulk_invalid_type(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter_ids = ["1", 2]
+        with pytest.raises(Exception):
+           result = await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_count_basic_functionality(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filters_data = [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)]
         count = await date_greater_than_filter_manager.count()
-        mock_session.execute.assert_called_once()
         assert count == 5
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(async_session):
-        # Add a date_greater_than_filter
-        new_date_greater_than_filter = DateGreaterThanFilter()
-        async_session.add(new_date_greater_than_filter)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 1
-    @pytest.mark.asyncio
-    async def test_count_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
+    async def test_count_empty_database(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        count = await date_greater_than_filter_manager.count()
         assert count == 0
     @pytest.mark.asyncio
-    async def test_count_multiple_additions(async_session):
-        # Add multiple date_greater_than_filters
-        date_greater_than_filters = [DateGreaterThanFilter() for _ in range(5)]
-        async_session.add_all(date_greater_than_filters)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 5
-    @pytest.mark.asyncio
-    async def test_count_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.count()
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(async_session):
+    async def test_get_sorted_list_basic_sorting(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Add date_greater_than_filters
-        date_greater_than_filters = [DateGreaterThanFilter(name=f"DateGreaterThanFilter_{i}") for i in range(5)]
-        async_session.add_all(date_greater_than_filters)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_date_greater_than_filters = await manager.get_sorted_list(sort_by="name")
-        assert [date_greater_than_filter.name for date_greater_than_filter in sorted_date_greater_than_filters] == [f"DateGreaterThanFilter_{i}" for i in range(5)]
+        date_greater_than_filters_data = [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)]
+        sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(sort_by="date_greater_than_filter_id")
+        assert [date_greater_than_filter.date_greater_than_filter_id for date_greater_than_filter in sorted_date_greater_than_filters] == [(i + 1) for i in range(5)]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(async_session):
+    async def test_get_sorted_list_descending_sorting(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Add date_greater_than_filters
-        date_greater_than_filters = [DateGreaterThanFilter(name=f"DateGreaterThanFilter_{i}") for i in range(5)]
-        async_session.add_all(date_greater_than_filters)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_date_greater_than_filters = await manager.get_sorted_list(sort_by="name", order="desc")
-        assert [date_greater_than_filter.name for date_greater_than_filter in sorted_date_greater_than_filters] == [f"DateGreaterThanFilter_{i}" for i in reversed(range(5))]
+        date_greater_than_filters_data = [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)]
+        sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(sort_by="date_greater_than_filter_id", order="desc")
+        assert [date_greater_than_filter.date_greater_than_filter_id for date_greater_than_filter in sorted_date_greater_than_filters] == [(i + 1) for i in reversed(range(5))]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(async_session):
-        manager = YourManagerClass(session=async_session)
+    async def test_get_sorted_list_invalid_attribute(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         with pytest.raises(AttributeError):
-            await manager.get_sorted_list(sort_by="invalid_attribute")
+            await date_greater_than_filter_manager.get_sorted_list(sort_by="invalid_attribute")
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_sorted_list_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_sorted_list(sort_by="name")
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        sorted_date_greater_than_filters = await manager.get_sorted_list(sort_by="name")
+    async def test_get_sorted_list_empty_database(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(sort_by="date_greater_than_filter_id")
         assert len(sorted_date_greater_than_filters) == 0
     @pytest.mark.asyncio
-    async def test_refresh_basic(async_session):
+    async def test_refresh_basic(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Add a date_greater_than_filter
-        date_greater_than_filter = DateGreaterThanFilter(name="DateGreaterThanFilter_1")
-        async_session.add(date_greater_than_filter)
-        await async_session.commit()
-        # Modify the date_greater_than_filter directly in the database
-        await async_session.execute('UPDATE date_greater_than_filters SET name = :new_name WHERE id = :date_greater_than_filter_id', {"new_name": "Modified_DateGreaterThanFilter", "date_greater_than_filter_id": date_greater_than_filter.id})
-        await async_session.commit()
-        # Now, refresh the date_greater_than_filter using the manager function
-        manager = YourManagerClass(session=async_session)
-        refreshed_date_greater_than_filter = await manager.refresh(date_greater_than_filter)
-        assert refreshed_date_greater_than_filter.name == "Modified_DateGreaterThanFilter"
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
+        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter1.date_greater_than_filter_id))
+        date_greater_than_filter2 = result.scalars().first()
+        assert date_greater_than_filter1.code == date_greater_than_filter2.code
+        updated_code1 = generate_uuid()
+        date_greater_than_filter1.code = updated_code1
+        updated_date_greater_than_filter1 = await date_greater_than_filter_manager.update(date_greater_than_filter1)
+        assert updated_date_greater_than_filter1.code == updated_code1
+        refreshed_date_greater_than_filter2 = await date_greater_than_filter_manager.refresh(date_greater_than_filter2)
+        assert refreshed_date_greater_than_filter2.code == updated_code1
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_date_greater_than_filter(async_session):
-        date_greater_than_filter = DateGreaterThanFilter(id=999, name="Nonexistent_DateGreaterThanFilter")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior
-            await manager.refresh(date_greater_than_filter)
+    async def test_refresh_nonexistent_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        date_greater_than_filter = DateGreaterThanFilter(date_greater_than_filter_id=999)
+        with pytest.raises(Exception):
+            await date_greater_than_filter_manager.refresh(date_greater_than_filter)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_refresh_database_connection_issues(async_session, mocker):
-        # Mock the session's refresh method to simulate a database connection error
-        mocker.patch.object(async_session, 'refresh', side_effect=Exception("DB connection error"))
-        date_greater_than_filter = DateGreaterThanFilter(name="DateGreaterThanFilter_1")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.refresh(date_greater_than_filter)
-    @pytest.mark.asyncio
-    async def test_exists_with_existing_date_greater_than_filter(async_session):
+    async def test_exists_with_existing_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Add a date_greater_than_filter
-        date_greater_than_filter = DateGreaterThanFilter(name="DateGreaterThanFilter_1")
-        async_session.add(date_greater_than_filter)
-        await async_session.commit()
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
         # Check if the date_greater_than_filter exists using the manager function
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(date_greater_than_filter.id) == True
+        assert await date_greater_than_filter_manager.exists(date_greater_than_filter1.date_greater_than_filter_id) == True
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_date_greater_than_filter(async_session):
+    async def test_exists_with_nonexistent_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(non_existent_id) == False
+        assert await date_greater_than_filter_manager.exists(non_existent_id) == False
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(async_session):
+    async def test_exists_with_invalid_id_type(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.exists(invalid_id)
+        with pytest.raises(Exception):
+            await date_greater_than_filter_manager.exists(invalid_id)
+        await session.rollback()
+#endet
+    #dayCount,
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @pytest.mark.asyncio
-    async def test_exists_database_connection_issues(async_session, mocker):
-        # Mock the get_by_id method to simulate a database connection error
-        mocker.patch.object(YourManagerClass, 'get_by_id', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.exists(1)
-    #get_by_pac_id
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_existing(async_session):
+    async def test_get_by_pac_id_existing(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         # Add a date_greater_than_filter with a specific pac_id
-        date_greater_than_filter = DateGreaterThanFilter(name="DateGreaterThanFilter_1", pac_id=5)
-        async_session.add(date_greater_than_filter)
-        await async_session.commit()
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
         # Fetch the date_greater_than_filter using the manager function
-        manager = YourManagerClass(session=async_session)
-        fetched_date_greater_than_filters = await manager.get_by_pac_id(5)
+        fetched_date_greater_than_filters = await date_greater_than_filter_manager.get_by_pac_id(date_greater_than_filter1.pac_id)
         assert len(fetched_date_greater_than_filters) == 1
-        assert fetched_date_greater_than_filters[0].name == "DateGreaterThanFilter_1"
+        assert fetched_date_greater_than_filters[0].code == date_greater_than_filter1.code
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_nonexistent(async_session):
+    async def test_get_by_pac_id_nonexistent(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        fetched_date_greater_than_filters = await manager.get_by_pac_id(non_existent_id)
+        fetched_date_greater_than_filters = await date_greater_than_filter_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_date_greater_than_filters) == 0
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_invalid_type(async_session):
+    async def test_get_by_pac_id_invalid_type(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.get_by_pac_id(invalid_id)
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_database_connection_issues(async_session, mocker):
-        # Mock the execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_by_pac_id(1)
+        with pytest.raises(Exception):
+            await date_greater_than_filter_manager.get_by_pac_id(invalid_id)
+        await session.rollback()
+#endet

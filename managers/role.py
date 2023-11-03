@@ -5,16 +5,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.role import Role
 from models.serialization_schema.role import RoleSchema
+class RoleNotFoundError(Exception):
+    pass
 class RoleManager:
     def __init__(self, session: AsyncSession):
         self.session = session
-    def build(self, **kwargs) -> Role:
+    async def build(self, **kwargs) -> Role:
         return Role(**kwargs)
     async def add(self, role: Role) -> Role:
         self.session.add(role)
         await self.session.commit()
         return role
     async def get_by_id(self, role_id: int) -> Optional[Role]:
+        if not isinstance(role_id, int):
+            raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
         result = await self.session.execute(select(Role).filter(Role.role_id == role_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID) -> Optional[Role]:
@@ -26,12 +30,14 @@ class RoleManager:
                 setattr(role, key, value)
             await self.session.commit()
         return role
-    async def delete(self, role_id: int) -> Optional[Role]:
+    async def delete(self, role_id: int):
+        if not isinstance(role_id, int):
+            raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
         role = await self.get_by_id(role_id)
-        if role:
-            self.session.delete(role)
-            await self.session.commit()
-        return role
+        if not role:
+            raise RoleNotFoundError(f"Role with ID {role_id} not found!")
+        await self.session.delete(role)
+        await self.session.commit()
     async def get_list(self) -> List[Role]:
         result = await self.session.execute(select(Role))
         return result.scalars().all()
@@ -42,6 +48,13 @@ class RoleManager:
         schema = RoleSchema()
         role_data = schema.dump(role)
         return json.dumps(role_data)
+    def to_dict(self, role:Role) -> dict:
+        """
+        Serialize the Role object to a JSON string using the RoleSchema.
+        """
+        schema = RoleSchema()
+        role_data = schema.dump(role)
+        return role_data
     def from_json(self, json_str: str) -> Role:
         """
         Deserialize a JSON string into a Role object using the RoleSchema.
@@ -51,9 +64,8 @@ class RoleManager:
         role_dict = schema.load(data)
         new_role = Role(**role_dict)
         return new_role
-    async def add_bulk(self, roles_data: List[Dict]) -> List[Role]:
+    async def add_bulk(self, roles: List[Role]) -> List[Role]:
         """Add multiple roles at once."""
-        roles = [Role(**data) for data in roles_data]
         self.session.add_all(roles)
         await self.session.commit()
         return roles
@@ -62,11 +74,13 @@ class RoleManager:
         updated_roles = []
         for update in role_updates:
             role_id = update.get("role_id")
+            if not isinstance(role_id, int):
+                raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
             if not role_id:
                 continue
             role = await self.get_by_id(role_id)
             if not role:
-                continue
+                raise RoleNotFoundError(f"Role with ID {role_id} not found!")
             for key, value in update.items():
                 if key != "role_id":
                     setattr(role, key, value)
@@ -76,9 +90,13 @@ class RoleManager:
     async def delete_bulk(self, role_ids: List[int]) -> bool:
         """Delete multiple roles by their IDs."""
         for role_id in role_ids:
+            if not isinstance(role_id, int):
+                raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
             role = await self.get_by_id(role_id)
+            if not role:
+                raise RoleNotFoundError(f"Role with ID {role_id} not found!")
             if role:
-                self.session.delete(role)
+                await self.session.delete(role)
         await self.session.commit()
         return True
     async def count(self) -> int:
@@ -94,14 +112,18 @@ class RoleManager:
         return result.scalars().all()
     async def refresh(self, role: Role) -> Role:
         """Refresh the state of a given role instance from the database."""
-        self.session.refresh(role)
+        await self.session.refresh(role)
         return role
     async def exists(self, role_id: int) -> bool:
         """Check if a role with the given ID exists."""
+        if not isinstance(role_id, int):
+            raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
         role = await self.get_by_id(role_id)
         return bool(role)
 
     async def get_by_pac_id(self, pac_id: int): # PacID
+        if not isinstance(pac_id, int):
+            raise TypeError(f"The role_id must be an integer, got {type(pac_id)} instead.")
         result = await self.session.execute(select(Role).filter(Role.pac_id == pac_id))
         return result.scalars().all()
 

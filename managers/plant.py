@@ -5,12 +5,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
+
+class PlantNotFoundError(Exception):
+    pass
+
 class PlantManager:
     
     def __init__(self, session: AsyncSession):
         self.session = session 
 
-    def build(self, **kwargs) -> Plant:
+    async def build(self, **kwargs) -> Plant:
         return Plant(**kwargs)  
 
     async def add(self, plant: Plant) -> Plant:
@@ -19,6 +23,8 @@ class PlantManager:
         return plant
 
     async def get_by_id(self, plant_id: int) -> Optional[Plant]:
+        if not isinstance(plant_id, int):
+            raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
         result = await self.session.execute(select(Plant).filter(Plant.plant_id == plant_id))
         return result.scalars().first()
 
@@ -33,12 +39,18 @@ class PlantManager:
             await self.session.commit()
         return plant
 
-    async def delete(self, plant_id: int) -> Optional[Plant]:
+
+    async def delete(self, plant_id: int):
+        if not isinstance(plant_id, int):
+            raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
         plant = await self.get_by_id(plant_id)
-        if plant:
-            self.session.delete(plant)
-            await self.session.commit()
-        return plant
+        if not plant:
+            raise PlantNotFoundError(f"Plant with ID {plant_id} not found!") 
+        
+        await self.session.delete(plant)
+        await self.session.commit() 
+
+
 
     async def get_list(self) -> List[Plant]:
         result = await self.session.execute(select(Plant))
@@ -51,6 +63,16 @@ class PlantManager:
         schema = PlantSchema()
         plant_data = schema.dump(plant)
         return json.dumps(plant_data)
+    
+    
+    
+    def to_dict(self, plant:Plant) -> dict:
+        """
+        Serialize the Plant object to a JSON string using the PlantSchema.
+        """ 
+        schema = PlantSchema()
+        plant_data = schema.dump(plant)
+        return plant_data
         
 
     def from_json(self, json_str: str) -> Plant:
@@ -65,10 +87,9 @@ class PlantManager:
 
         return new_plant
     
-    async def add_bulk(self, plants_data: List[Dict]) -> List[Plant]:
-        """Add multiple plants at once."""
-        plants = [Plant(**data) for data in plants_data]
-        self.session.add_all(plants)
+    async def add_bulk(self, plants: List[Plant]) -> List[Plant]:
+        """Add multiple plants at once.""" 
+        self.session.add_all(plants) 
         await self.session.commit()
         return plants
 
@@ -77,11 +98,13 @@ class PlantManager:
         updated_plants = []
         for update in plant_updates:
             plant_id = update.get("plant_id")
+            if not isinstance(plant_id, int):
+                raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
             if not plant_id:
                 continue
             plant = await self.get_by_id(plant_id)
             if not plant:
-                continue
+                raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")  
             for key, value in update.items():
                 if key != "plant_id":
                     setattr(plant, key, value)
@@ -92,9 +115,13 @@ class PlantManager:
     async def delete_bulk(self, plant_ids: List[int]) -> bool:
         """Delete multiple plants by their IDs."""
         for plant_id in plant_ids:
+            if not isinstance(plant_id, int):
+                raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
             plant = await self.get_by_id(plant_id)
+            if not plant:
+                raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")  
             if plant:
-                self.session.delete(plant)
+                await self.session.delete(plant)
         await self.session.commit()
         return True
 
@@ -113,20 +140,26 @@ class PlantManager:
 
     async def refresh(self, plant: Plant) -> Plant:
         """Refresh the state of a given plant instance from the database."""
-        self.session.refresh(plant)
+        await self.session.refresh(plant)
         return plant
 
     async def exists(self, plant_id: int) -> bool:
         """Check if a plant with the given ID exists."""
+        if not isinstance(plant_id, int):
+            raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
         plant = await self.get_by_id(plant_id)
         return bool(plant)
     
 #endset
     async def get_by_flvr_foreign_key_id(self, flvr_foreign_key_id: int): # FlvrForeignKeyID
+        if not isinstance(flvr_foreign_key_id, int):
+            raise TypeError(f"The plant_id must be an integer, got {type(flvr_foreign_key_id)} instead.")
         result = await self.session.execute(select(Plant).filter(Plant.flvr_foreign_key_id == flvr_foreign_key_id))
         return result.scalars().all()
     
     async def get_by_land_id(self, land_id: int): # LandID
+        if not isinstance(land_id, int):
+            raise TypeError(f"The plant_id must be an integer, got {type(land_id)} instead.")
         result = await self.session.execute(select(Plant).filter(Plant.land_id == land_id))
         return result.scalars().all()
 #endset

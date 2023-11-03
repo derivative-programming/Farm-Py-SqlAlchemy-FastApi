@@ -1,480 +1,411 @@
+import asyncio
+from decimal import Decimal
 import pytest
-import uuid
-from unittest.mock import AsyncMock, patch
-from managers import RoleManager, Role
-from models.factory import RoleFactory
+import pytest_asyncio
+import time
+from decimal import Decimal
+from datetime import datetime, date
+from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base, Role
-DATABASE_URL = "sqlite:///:memory:"
+from models.factory import RoleFactory
+from managers.role import RoleManager
+from services.db_config import db_dialect
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.future import select
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
+# Conditionally set the UUID column type
+if db_dialect == 'postgresql':
+    UUIDType = UUID(as_uuid=True)
+elif db_dialect == 'mssql':
+    UUIDType = UNIQUEIDENTIFIER
+else:  # This will cover SQLite, MySQL, and other databases
+    UUIDType = String(36)
 class TestRoleManager:
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="function")
+    def event_loop(self) -> asyncio.AbstractEventLoop:
+        loop = asyncio.get_event_loop_policy().new_event_loop()
+        yield loop
+        loop.close()
+    @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
-        #FKs are not activated by default in sqllite
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
+        engine = create_async_engine(DATABASE_URL, echo=True)
         yield engine
-        engine.dispose()
-    @pytest.fixture
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture
-    async def role_manager(self, session):
+        engine.sync_engine.dispose()
+    @pytest_asyncio.fixture(scope="function")
+    async def session(self,engine) -> AsyncSession:
+        @event.listens_for(engine.sync_engine, "connect")
+        def set_sqlite_pragma(dbapi_connection, connection_record):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+        async with engine.begin() as connection:
+            await connection.begin_nested()
+            await connection.run_sync(Base.metadata.drop_all)
+            await connection.run_sync(Base.metadata.create_all)
+            TestingSessionLocal = sessionmaker(
+                expire_on_commit=False,
+                class_=AsyncSession,
+                bind=engine,
+            )
+            async with TestingSessionLocal(bind=connection) as session:
+                @event.listens_for(
+                    session.sync_session, "after_transaction_end"
+                )
+                def end_savepoint(session, transaction):
+                    if connection.closed:
+                        return
+                    if not connection.in_nested_transaction():
+                        connection.sync_connection.begin_nested()
+                yield session
+                await session.flush()
+                await session.rollback()
+    @pytest_asyncio.fixture(scope="function")
+    async def role_manager(self, session:AsyncSession):
         return RoleManager(session)
     @pytest.mark.asyncio
-    async def test_build(self, role_manager):
+    async def test_build(self, role_manager:RoleManager, session:AsyncSession):
         # Define some mock data for our role
         mock_data = {
-            "name": "Rose",
-            "species": "Rosa",
-            "age": 2
+            "code": generate_uuid()
         }
         # Call the build function of the manager
         role = await role_manager.build(**mock_data)
         # Assert that the returned object is an instance of Role
         assert isinstance(role, Role)
         # Assert that the attributes of the role match our mock data
-        assert role.name == mock_data["name"]
-        assert role.species == mock_data["species"]
-        assert role.age == mock_data["age"]
+        assert role.code == mock_data["code"]
         # Optionally, if the build method has some default values or computations:
         # assert role.some_attribute == some_expected_value
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, role_manager):
+    async def test_build_with_missing_data(self, role_manager:RoleManager, session:AsyncSession):
         # Define mock data with a missing key
         mock_data = {
-            "name": "Rose",
-            "age": 2
+            "non_existant_property": "Rose"
         }
         # If the build method is expected to raise an exception for missing data, test for that
-        with pytest.raises(SomeSpecificException):
-            await role_manager.build(**mock_data)
+        with pytest.raises(Exception):
+            await role_manager.build_async(**mock_data)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_add(self, role_manager, mock_session):
-        role_data = RoleFactory.build()
-        mock_session.add.return_value = None
-        mock_session.commit.return_value = None
-        role = await role_manager.add(**role_data)
-        mock_session.add.assert_called_once_with(role)
-        mock_session.commit.assert_called_once()
-        assert isinstance(role, Role)
-    @pytest.mark.asyncio
-    async def test_add_correctly_adds_role_to_database(self, role_manager, db_session):
-        # Create a test role using the RoleFactory without persisting it to the database
-        test_role = RoleFactory.build()
+    async def test_add_correctly_adds_role_to_database(self, role_manager:RoleManager, session:AsyncSession):
+        test_role = await RoleFactory.build_async(session)
+        assert test_role.role_id is None
         # Add the role using the manager's add method
         added_role = await role_manager.add(role=test_role)
+        assert isinstance(added_role, Role)
+        assert added_role.role_id > 0
         # Fetch the role from the database directly
-        result = await db_session.execute(select(Role).filter(Role.role_id == added_role.role_id))
+        result = await session.execute(select(Role).filter(Role.role_id == added_role.role_id))
         fetched_role = result.scalars().first()
         # Assert that the fetched role is not None and matches the added role
         assert fetched_role is not None
+        assert isinstance(fetched_role, Role)
         assert fetched_role.role_id == added_role.role_id
-        assert fetched_role.name == added_role.name
-        # ... other attribute checks ...
     @pytest.mark.asyncio
-    async def test_add_returns_correct_role_object(self, role_manager):
+    async def test_add_returns_correct_role_object(self, role_manager:RoleManager, session:AsyncSession):
         # Create a test role using the RoleFactory without persisting it to the database
-        test_role = RoleFactory.build()
+        test_role = await RoleFactory.build_async(session)
+        assert test_role.role_id is None
+        test_role.code = generate_uuid()
         # Add the role using the manager's add method
         added_role = await role_manager.add(role=test_role)
+        assert isinstance(added_role, Role)
+        assert added_role.role_id > 0
         # Assert that the returned role matches the test role
         assert added_role.role_id == test_role.role_id
-        assert added_role.name == test_role.name
-        # ... other attribute checks ...
+        assert added_role.code == test_role.code
     @pytest.mark.asyncio
-    async def test_get_by_id(self, role_manager, mock_session):
-        role_data = RoleFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=role_data)))
-        role = await role_manager.get_by_id(1)
-        mock_session.execute.assert_called_once()
+    async def test_get_by_id(self, role_manager:RoleManager, session:AsyncSession):
+        test_role = await RoleFactory.create_async(session)
+        role = await role_manager.get_by_id(test_role.role_id)
         assert isinstance(role, Role)
-    async def test_get_by_id(self, session: AsyncSession, sample_role: Role):
-        manager = RoleManager(session)
-        retrieved_role = await manager.get_by_id(sample_role.role_id)
-        assert retrieved_role is not None
-        assert retrieved_role.role_id == sample_role.role_id
-        assert retrieved_role.name == "Rose"
-        assert retrieved_role.color == "Red"
-    async def test_get_by_id_not_found(self, session: AsyncSession):
-        manager = RoleManager(session)
+        assert test_role.role_id == role.role_id
+        assert test_role.code == role.code
+    async def test_get_by_id_not_found(self, role_manager:RoleManager, session: AsyncSession):
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_role = await manager.get_by_id(non_existent_id)
+        retrieved_role = await role_manager.get_by_id(non_existent_id)
         assert retrieved_role is None
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_role(self, role_manager, db_session):
-        # Use your RoleFactory to create and save a Role object
-        code = uuid.uuid4()
-        role = RoleFactory(code=code)
-        db_session.add(role)
-        await db_session.commit()
-        # Fetch the role using the manager's get_by_code method
-        fetched_role = await role_manager.get_by_code(code)
-        # Assert that the fetched role is not None and has the expected code
-        assert fetched_role is not None
-        assert fetched_role.code == code
+    async def test_get_by_code_returns_role(self, role_manager:RoleManager, session:AsyncSession):
+        test_role = await RoleFactory.create_async(session)
+        role = await role_manager.get_by_code(test_role.code)
+        assert isinstance(role, Role)
+        assert test_role.role_id == role.role_id
+        assert test_role.code == role.code
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, role_manager):
+    async def test_get_by_code_returns_none_for_nonexistent_code(self, role_manager:RoleManager, session:AsyncSession):
         # Generate a random UUID that doesn't correspond to any Role in the database
-        random_code = uuid.uuid4()
-        # Try fetching a role using the manager's get_by_code method
-        fetched_role = await role_manager.get_by_code(random_code)
-        # Assert that the result is None since no role with the given code exists
-        assert fetched_role is None
+        random_code = generate_uuid()
+        role = await role_manager.get_by_code(random_code)
+        assert role is None
     @pytest.mark.asyncio
-    async def test_update(self, role_manager, mock_session):
-        role_data = RoleFactory.build()
-        updated_data = {"name": "Updated Role"}
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=role_data)))
-        mock_session.commit.return_value = None
-        updated_role = await role_manager.update(1, **updated_data)
-        assert updated_role.name == "Updated Role"
-        mock_session.commit.assert_called_once()
+    async def test_update(self, role_manager:RoleManager, session:AsyncSession):
+        test_role = await RoleFactory.create_async(session)
+        test_role.code = generate_uuid()
+        updated_role = await role_manager.update(role=test_role)
         assert isinstance(updated_role, Role)
-    async def test_update_valid_role(self):
-        # Mocking a role instance
-        role = Role(role_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
-        # Update the role with new attributes
-        updated_role = await self.manager.update(role, name="Red Rose", code="REDROSE123")
-        # Assertions
-        assert updated_role.name == "Red Rose"
-        assert updated_role.code == "REDROSE123"
-        self.session_mock.commit.assert_called_once()
+        assert updated_role.role_id == test_role.role_id
+        assert updated_role.code == test_role.code
+        result = await session.execute(select(Role).filter(Role.role_id == test_role.role_id))
+        fetched_role = result.scalars().first()
+        assert updated_role.role_id == fetched_role.role_id
+        assert updated_role.code == fetched_role.code
+        assert test_role.role_id == fetched_role.role_id
+        assert test_role.code == fetched_role.code
+    async def test_update_via_dict(self, role_manager:RoleManager, session:AsyncSession):
+        test_role = await RoleFactory.create_async(session)
+        new_code = generate_uuid()
+        updated_role = await role_manager.update(role=test_role,code=new_code)
+        assert isinstance(updated_role, Role)
+        assert updated_role.role_id == test_role.role_id
+        assert updated_role.code == new_code
+        result = await session.execute(select(Role).filter(Role.role_id == test_role.role_id))
+        fetched_role = result.scalars().first()
+        assert updated_role.role_id == fetched_role.role_id
+        assert updated_role.code == fetched_role.code
+        assert test_role.role_id == fetched_role.role_id
+        assert new_code == fetched_role.code
     async def test_update_invalid_role(self):
         # None role
         role = None
-        updated_role = await self.manager.update(role, name="Red Rose", code="REDROSE123")
+        new_code = generate_uuid()
+        updated_role = await self.manager.update(role, code=new_code)
         # Assertions
         assert updated_role is None
-        self.session_mock.commit.assert_not_called()
-    async def test_update_with_nonexistent_attribute(self):
-        # Mocking a role instance
-        role = Role(role_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
+    async def test_update_with_nonexistent_attribute(self, role_manager:RoleManager, session:AsyncSession):
+        test_role = await RoleFactory.create_async(session)
+        new_code = generate_uuid()
         # This should raise an AttributeError since 'color' is not an attribute of Role
         with pytest.raises(AttributeError):
-            await self.manager.update(role, color="Red")
-        self.session_mock.commit.assert_not_called()
+            updated_role = await role_manager.update(role=test_role,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete(self, role_manager, mock_session):
-        role_data = RoleFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=role_data)))
-        mock_session.delete.return_value = None
-        mock_session.commit.return_value = None
-        deleted_role = await role_manager.delete(1)
-        mock_session.delete.assert_called_once_with(deleted_role)
-        mock_session.commit.assert_called_once()
-        assert isinstance(deleted_role, Role)
+    async def test_delete(self, role_manager:RoleManager, session:AsyncSession):
+        role_data = await RoleFactory.create_async(session)
+        result = await session.execute(select(Role).filter(Role.role_id == role_data.role_id))
+        fetched_role = result.scalars().first()
+        assert isinstance(fetched_role, Role)
+        assert fetched_role.role_id == role_data.role_id
+        deleted_role = await role_manager.delete(role_id=role_data.role_id)
+        result = await session.execute(select(Role).filter(Role.role_id == role_data.role_id))
+        fetched_role = result.scalars().first()
+        assert fetched_role is None
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, role_manager, mock_session):
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=None)))
-        with pytest.raises(ValueError, match="Role not found"):
+    async def test_delete_nonexistent(self, role_manager:RoleManager, session:AsyncSession):
+        with pytest.raises(Exception):
             await role_manager.delete(999)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_list(self, role_manager, mock_session):
-        roles_data = [RoleFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=roles_data)))
+    async def test_delete_invalid_type(self, role_manager:RoleManager, session:AsyncSession):
+        with pytest.raises(Exception):
+            await role_manager.delete("999")
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_get_list(self, role_manager:RoleManager, session:AsyncSession):
         roles = await role_manager.get_list()
-        mock_session.execute.assert_called_once()
+        assert len(roles) == 0
+        roles_data = [await RoleFactory.create_async(session) for _ in range(5)]
+        roles = await role_manager.get_list()
         assert len(roles) == 5
         assert all(isinstance(role, Role) for role in roles)
     @pytest.mark.asyncio
-    async def test_to_json(self, role_manager):
-        role_data = RoleFactory.build()
-        role = Role(**role_data)
+    async def test_to_json(self, role_manager:RoleManager, session:AsyncSession):
+        role = await RoleFactory.build_async(session)
         json_data = role_manager.to_json(role)
         assert json_data is not None
-        # You might want to do more specific checks on the JSON structure
     @pytest.mark.asyncio
-    async def test_from_json(self, role_manager):
-        role_data = RoleFactory.build()
-        role = Role(**role_data)
+    async def test_to_dict(self, role_manager:RoleManager, session:AsyncSession):
+        role = await RoleFactory.build_async(session)
+        dict_data = role_manager.to_dict(role)
+        assert dict_data is not None
+    @pytest.mark.asyncio
+    async def test_from_json(self, role_manager:RoleManager, session:AsyncSession):
+        role = await RoleFactory.create_async(session)
         json_data = role_manager.to_json(role)
         deserialized_role = role_manager.from_json(json_data)
         assert isinstance(deserialized_role, Role)
-        # Additional checks on the deserialized data can be added
+        assert deserialized_role.code == role.code
     @pytest.mark.asyncio
-    async def test_add_bulk(self, role_manager, mock_session):
-        roles_data = [RoleFactory.build() for _ in range(5)]
-        mock_session.add_all.return_value = None
-        mock_session.commit.return_value = None
+    async def test_add_bulk(self, role_manager:RoleManager, session:AsyncSession):
+        roles_data = [await RoleFactory.build_async(session) for _ in range(5)]
         roles = await role_manager.add_bulk(roles_data)
-        mock_session.add_all.assert_called_once()
-        mock_session.commit.assert_called_once()
         assert len(roles) == 5
+        for updated_role in roles:
+            result = await session.execute(select(Role).filter(Role.role_id == updated_role.role_id))
+            fetched_role = result.scalars().first()
+            assert isinstance(fetched_role, Role)
+            assert fetched_role.role_id == updated_role.role_id
     @pytest.mark.asyncio
-    async def test_update_bulk_success():
-        manager = RoleManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
+    async def test_update_bulk_success(self, role_manager:RoleManager, session:AsyncSession):
         # Mocking role instances
-        role1 = Role(role_id=1, name="Rose", code="ROSE123")
-        role2 = Role(role_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding role
-        async def mock_get_by_id(role_id):
-            if role_id == 1:
-                return role1
-            if role_id == 2:
-                return role2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+        role1 = await RoleFactory.create_async(session=session)
+        role2 = await RoleFactory.create_async(session=session)
+        code_updated1 = generate_uuid()
+        code_updated2 = generate_uuid()
         # Update roles
-        updates = [{"role_id": 1, "name": "Red Rose"}, {"role_id": 2, "name": "Yellow Tulip"}]
-        updated_roles = await manager.update_bulk(updates)
+        updates = [{"role_id": 1, "code": code_updated1}, {"role_id": 2, "code": code_updated2}]
+        updated_roles = await role_manager.update_bulk(updates)
         # Assertions
         assert len(updated_roles) == 2
-        assert updated_roles[0].name == "Red Rose"
-        assert updated_roles[1].name == "Yellow Tulip"
-        session_mock.commit.assert_called_once()
+        assert updated_roles[0].code == code_updated1
+        assert updated_roles[1].code == code_updated2
+        result = await session.execute(select(Role).filter(Role.role_id == 1))
+        fetched_role = result.scalars().first()
+        assert isinstance(fetched_role, Role)
+        assert fetched_role.code == code_updated1
+        result = await session.execute(select(Role).filter(Role.role_id == 2))
+        fetched_role = result.scalars().first()
+        assert isinstance(fetched_role, Role)
+        assert fetched_role.code == code_updated2
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_role_id():
-        manager = RoleManager()
+    async def test_update_bulk_missing_role_id(self, role_manager:RoleManager, session:AsyncSession):
         # No roles to update since role_id is missing
         updates = [{"name": "Red Rose"}]
-        updated_roles = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_roles) == 0
+        with pytest.raises(Exception):
+            updated_roles = await role_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_role_not_found():
-        manager = RoleManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (role not found)
-        manager.get_by_id = AsyncMock(return_value=None)
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+    async def test_update_bulk_role_not_found(self, role_manager:RoleManager, session:AsyncSession):
         # Update roles
-        updates = [{"role_id": 1, "name": "Red Rose"}]
-        updated_roles = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_roles) == 0
-        session_mock.commit.assert_not_called()
+        updates = [{"role_id": 1, "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_roles = await role_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_success():
-        manager = RoleManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking role instances
-        role1 = Role(role_id=1, name="Rose", code="ROSE123")
-        role2 = Role(role_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding role
-        async def mock_get_by_id(role_id):
-            if role_id == 1:
-                return role1
-            if role_id == 2:
-                return role2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_update_bulk_invalid_type(self, role_manager:RoleManager, session:AsyncSession):
+        updates = [{"role_id": "2", "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_roles = await role_manager.update_bulk(updates)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_delete_bulk_success(self, role_manager:RoleManager, session:AsyncSession):
+        role1 = await RoleFactory.create_async(session=session)
+        role2 = await RoleFactory.create_async(session=session)
         # Delete roles
         role_ids = [1, 2]
-        result = await manager.delete_bulk(role_ids)
-        # Assertions
+        result = await role_manager.delete_bulk(role_ids)
         assert result is True
-        session_mock.delete.assert_called()
-        session_mock.commit.assert_called_once()
+        for role_id in role_ids:
+            execute_result = await session.execute(select(Role).filter(Role.role_id == role_id))
+            fetched_role = execute_result.scalars().first()
+            assert fetched_role is None
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_roles_not_found():
-        manager = RoleManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (role not found)
-        async def mock_get_by_id(role_id):
-            if role_id == 1:
-                return None
-            if role_id == 2:
-                return Role(role_id=2, name="Tulip", code="TULIP123")
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_some_roles_not_found(self, role_manager:RoleManager, session:AsyncSession):
+        role1 = await RoleFactory.create_async(session=session)
         # Delete roles
         role_ids = [1, 2]
-        result = await manager.delete_bulk(role_ids)
-        # Assertions
-        assert result is True
-        session_mock.delete.assert_called_once_with(Role(role_id=2, name="Tulip", code="TULIP123"))
-        session_mock.commit.assert_called_once()
+        with pytest.raises(Exception):
+           result = await role_manager.delete_bulk(role_ids)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list():
-        manager = RoleManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_empty_list(self, role_manager:RoleManager, session:AsyncSession):
         # Delete roles with an empty list
         role_ids = []
-        result = await manager.delete_bulk(role_ids)
+        result = await role_manager.delete_bulk(role_ids)
         # Assertions
         assert result is True
-        session_mock.delete.assert_not_called()
-        session_mock.commit.assert_not_called()
     @pytest.mark.asyncio
-    async def test_count(self, role_manager, mock_session):
-        roles_data = [RoleFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=roles_data)))
+    async def test_delete_bulk_invalid_type(self, role_manager:RoleManager, session:AsyncSession):
+        role_ids = ["1", 2]
+        with pytest.raises(Exception):
+           result = await role_manager.delete_bulk(role_ids)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_count_basic_functionality(self, role_manager:RoleManager, session:AsyncSession):
+        roles_data = [await RoleFactory.create_async(session) for _ in range(5)]
         count = await role_manager.count()
-        mock_session.execute.assert_called_once()
         assert count == 5
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(async_session):
-        # Add a role
-        new_role = Role()
-        async_session.add(new_role)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 1
-    @pytest.mark.asyncio
-    async def test_count_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
+    async def test_count_empty_database(self, role_manager:RoleManager, session:AsyncSession):
+        count = await role_manager.count()
         assert count == 0
     @pytest.mark.asyncio
-    async def test_count_multiple_additions(async_session):
-        # Add multiple roles
-        roles = [Role() for _ in range(5)]
-        async_session.add_all(roles)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 5
-    @pytest.mark.asyncio
-    async def test_count_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.count()
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(async_session):
+    async def test_get_sorted_list_basic_sorting(self, role_manager:RoleManager, session:AsyncSession):
         # Add roles
-        roles = [Role(name=f"Role_{i}") for i in range(5)]
-        async_session.add_all(roles)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_roles = await manager.get_sorted_list(sort_by="name")
-        assert [role.name for role in sorted_roles] == [f"Role_{i}" for i in range(5)]
+        roles_data = [await RoleFactory.create_async(session) for _ in range(5)]
+        sorted_roles = await role_manager.get_sorted_list(sort_by="role_id")
+        assert [role.role_id for role in sorted_roles] == [(i + 1) for i in range(5)]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(async_session):
+    async def test_get_sorted_list_descending_sorting(self, role_manager:RoleManager, session:AsyncSession):
         # Add roles
-        roles = [Role(name=f"Role_{i}") for i in range(5)]
-        async_session.add_all(roles)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_roles = await manager.get_sorted_list(sort_by="name", order="desc")
-        assert [role.name for role in sorted_roles] == [f"Role_{i}" for i in reversed(range(5))]
+        roles_data = [await RoleFactory.create_async(session) for _ in range(5)]
+        sorted_roles = await role_manager.get_sorted_list(sort_by="role_id", order="desc")
+        assert [role.role_id for role in sorted_roles] == [(i + 1) for i in reversed(range(5))]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(async_session):
-        manager = YourManagerClass(session=async_session)
+    async def test_get_sorted_list_invalid_attribute(self, role_manager:RoleManager, session:AsyncSession):
         with pytest.raises(AttributeError):
-            await manager.get_sorted_list(sort_by="invalid_attribute")
+            await role_manager.get_sorted_list(sort_by="invalid_attribute")
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_sorted_list_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_sorted_list(sort_by="name")
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        sorted_roles = await manager.get_sorted_list(sort_by="name")
+    async def test_get_sorted_list_empty_database(self, role_manager:RoleManager, session:AsyncSession):
+        sorted_roles = await role_manager.get_sorted_list(sort_by="role_id")
         assert len(sorted_roles) == 0
     @pytest.mark.asyncio
-    async def test_refresh_basic(async_session):
+    async def test_refresh_basic(self, role_manager:RoleManager, session:AsyncSession):
         # Add a role
-        role = Role(name="Role_1")
-        async_session.add(role)
-        await async_session.commit()
-        # Modify the role directly in the database
-        await async_session.execute('UPDATE roles SET name = :new_name WHERE id = :role_id', {"new_name": "Modified_Role", "role_id": role.id})
-        await async_session.commit()
-        # Now, refresh the role using the manager function
-        manager = YourManagerClass(session=async_session)
-        refreshed_role = await manager.refresh(role)
-        assert refreshed_role.name == "Modified_Role"
+        role1 = await RoleFactory.create_async(session=session)
+        result = await session.execute(select(Role).filter(Role.role_id == role1.role_id))
+        role2 = result.scalars().first()
+        assert role1.code == role2.code
+        updated_code1 = generate_uuid()
+        role1.code = updated_code1
+        updated_role1 = await role_manager.update(role1)
+        assert updated_role1.code == updated_code1
+        refreshed_role2 = await role_manager.refresh(role2)
+        assert refreshed_role2.code == updated_code1
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_role(async_session):
-        role = Role(id=999, name="Nonexistent_Role")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior
-            await manager.refresh(role)
+    async def test_refresh_nonexistent_role(self, role_manager:RoleManager, session:AsyncSession):
+        role = Role(role_id=999)
+        with pytest.raises(Exception):
+            await role_manager.refresh(role)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_refresh_database_connection_issues(async_session, mocker):
-        # Mock the session's refresh method to simulate a database connection error
-        mocker.patch.object(async_session, 'refresh', side_effect=Exception("DB connection error"))
-        role = Role(name="Role_1")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.refresh(role)
-    @pytest.mark.asyncio
-    async def test_exists_with_existing_role(async_session):
+    async def test_exists_with_existing_role(self, role_manager:RoleManager, session:AsyncSession):
         # Add a role
-        role = Role(name="Role_1")
-        async_session.add(role)
-        await async_session.commit()
+        role1 = await RoleFactory.create_async(session=session)
         # Check if the role exists using the manager function
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(role.id) == True
+        assert await role_manager.exists(role1.role_id) == True
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_role(async_session):
+    async def test_exists_with_nonexistent_role(self, role_manager:RoleManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(non_existent_id) == False
+        assert await role_manager.exists(non_existent_id) == False
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(async_session):
+    async def test_exists_with_invalid_id_type(self, role_manager:RoleManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.exists(invalid_id)
+        with pytest.raises(Exception):
+            await role_manager.exists(invalid_id)
+        await session.rollback()
+#endet
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @pytest.mark.asyncio
-    async def test_exists_database_connection_issues(async_session, mocker):
-        # Mock the get_by_id method to simulate a database connection error
-        mocker.patch.object(YourManagerClass, 'get_by_id', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.exists(1)
-    #get_by_pac_id
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_existing(async_session):
+    async def test_get_by_pac_id_existing(self, role_manager:RoleManager, session:AsyncSession):
         # Add a role with a specific pac_id
-        role = Role(name="Role_1", pac_id=5)
-        async_session.add(role)
-        await async_session.commit()
+        role1 = await RoleFactory.create_async(session=session)
         # Fetch the role using the manager function
-        manager = YourManagerClass(session=async_session)
-        fetched_roles = await manager.get_by_pac_id(5)
+        fetched_roles = await role_manager.get_by_pac_id(role1.pac_id)
         assert len(fetched_roles) == 1
-        assert fetched_roles[0].name == "Role_1"
+        assert fetched_roles[0].code == role1.code
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_nonexistent(async_session):
+    async def test_get_by_pac_id_nonexistent(self, role_manager:RoleManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        fetched_roles = await manager.get_by_pac_id(non_existent_id)
+        fetched_roles = await role_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_roles) == 0
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_invalid_type(async_session):
+    async def test_get_by_pac_id_invalid_type(self, role_manager:RoleManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.get_by_pac_id(invalid_id)
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_database_connection_issues(async_session, mocker):
-        # Mock the execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_by_pac_id(1)
+        with pytest.raises(Exception):
+            await role_manager.get_by_pac_id(invalid_id)
+        await session.rollback()
+#endet

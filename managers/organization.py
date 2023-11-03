@@ -5,16 +5,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.organization import Organization
 from models.serialization_schema.organization import OrganizationSchema
+class OrganizationNotFoundError(Exception):
+    pass
 class OrganizationManager:
     def __init__(self, session: AsyncSession):
         self.session = session
-    def build(self, **kwargs) -> Organization:
+    async def build(self, **kwargs) -> Organization:
         return Organization(**kwargs)
     async def add(self, organization: Organization) -> Organization:
         self.session.add(organization)
         await self.session.commit()
         return organization
     async def get_by_id(self, organization_id: int) -> Optional[Organization]:
+        if not isinstance(organization_id, int):
+            raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
         result = await self.session.execute(select(Organization).filter(Organization.organization_id == organization_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID) -> Optional[Organization]:
@@ -26,12 +30,14 @@ class OrganizationManager:
                 setattr(organization, key, value)
             await self.session.commit()
         return organization
-    async def delete(self, organization_id: int) -> Optional[Organization]:
+    async def delete(self, organization_id: int):
+        if not isinstance(organization_id, int):
+            raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
         organization = await self.get_by_id(organization_id)
-        if organization:
-            self.session.delete(organization)
-            await self.session.commit()
-        return organization
+        if not organization:
+            raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
+        await self.session.delete(organization)
+        await self.session.commit()
     async def get_list(self) -> List[Organization]:
         result = await self.session.execute(select(Organization))
         return result.scalars().all()
@@ -42,6 +48,13 @@ class OrganizationManager:
         schema = OrganizationSchema()
         organization_data = schema.dump(organization)
         return json.dumps(organization_data)
+    def to_dict(self, organization:Organization) -> dict:
+        """
+        Serialize the Organization object to a JSON string using the OrganizationSchema.
+        """
+        schema = OrganizationSchema()
+        organization_data = schema.dump(organization)
+        return organization_data
     def from_json(self, json_str: str) -> Organization:
         """
         Deserialize a JSON string into a Organization object using the OrganizationSchema.
@@ -51,9 +64,8 @@ class OrganizationManager:
         organization_dict = schema.load(data)
         new_organization = Organization(**organization_dict)
         return new_organization
-    async def add_bulk(self, organizations_data: List[Dict]) -> List[Organization]:
+    async def add_bulk(self, organizations: List[Organization]) -> List[Organization]:
         """Add multiple organizations at once."""
-        organizations = [Organization(**data) for data in organizations_data]
         self.session.add_all(organizations)
         await self.session.commit()
         return organizations
@@ -62,11 +74,13 @@ class OrganizationManager:
         updated_organizations = []
         for update in organization_updates:
             organization_id = update.get("organization_id")
+            if not isinstance(organization_id, int):
+                raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
             if not organization_id:
                 continue
             organization = await self.get_by_id(organization_id)
             if not organization:
-                continue
+                raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
             for key, value in update.items():
                 if key != "organization_id":
                     setattr(organization, key, value)
@@ -76,9 +90,13 @@ class OrganizationManager:
     async def delete_bulk(self, organization_ids: List[int]) -> bool:
         """Delete multiple organizations by their IDs."""
         for organization_id in organization_ids:
+            if not isinstance(organization_id, int):
+                raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
             organization = await self.get_by_id(organization_id)
+            if not organization:
+                raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
             if organization:
-                self.session.delete(organization)
+                await self.session.delete(organization)
         await self.session.commit()
         return True
     async def count(self) -> int:
@@ -94,14 +112,18 @@ class OrganizationManager:
         return result.scalars().all()
     async def refresh(self, organization: Organization) -> Organization:
         """Refresh the state of a given organization instance from the database."""
-        self.session.refresh(organization)
+        await self.session.refresh(organization)
         return organization
     async def exists(self, organization_id: int) -> bool:
         """Check if a organization with the given ID exists."""
+        if not isinstance(organization_id, int):
+            raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
         organization = await self.get_by_id(organization_id)
         return bool(organization)
 
     async def get_by_tac_id(self, tac_id: int): # TacID
+        if not isinstance(tac_id, int):
+            raise TypeError(f"The organization_id must be an integer, got {type(tac_id)} instead.")
         result = await self.session.execute(select(Organization).filter(Organization.tac_id == tac_id))
         return result.scalars().all()
 

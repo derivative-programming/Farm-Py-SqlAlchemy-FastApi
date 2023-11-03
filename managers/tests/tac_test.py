@@ -1,480 +1,411 @@
+import asyncio
+from decimal import Decimal
 import pytest
-import uuid
-from unittest.mock import AsyncMock, patch
-from managers import TacManager, Tac
-from models.factory import TacFactory
+import pytest_asyncio
+import time
+from decimal import Decimal
+from datetime import datetime, date
+from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base, Tac
-DATABASE_URL = "sqlite:///:memory:"
+from models.factory import TacFactory
+from managers.tac import TacManager
+from services.db_config import db_dialect
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.future import select
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
+# Conditionally set the UUID column type
+if db_dialect == 'postgresql':
+    UUIDType = UUID(as_uuid=True)
+elif db_dialect == 'mssql':
+    UUIDType = UNIQUEIDENTIFIER
+else:  # This will cover SQLite, MySQL, and other databases
+    UUIDType = String(36)
 class TestTacManager:
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="function")
+    def event_loop(self) -> asyncio.AbstractEventLoop:
+        loop = asyncio.get_event_loop_policy().new_event_loop()
+        yield loop
+        loop.close()
+    @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
-        #FKs are not activated by default in sqllite
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
+        engine = create_async_engine(DATABASE_URL, echo=True)
         yield engine
-        engine.dispose()
-    @pytest.fixture
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture
-    async def tac_manager(self, session):
+        engine.sync_engine.dispose()
+    @pytest_asyncio.fixture(scope="function")
+    async def session(self,engine) -> AsyncSession:
+        @event.listens_for(engine.sync_engine, "connect")
+        def set_sqlite_pragma(dbapi_connection, connection_record):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+        async with engine.begin() as connection:
+            await connection.begin_nested()
+            await connection.run_sync(Base.metadata.drop_all)
+            await connection.run_sync(Base.metadata.create_all)
+            TestingSessionLocal = sessionmaker(
+                expire_on_commit=False,
+                class_=AsyncSession,
+                bind=engine,
+            )
+            async with TestingSessionLocal(bind=connection) as session:
+                @event.listens_for(
+                    session.sync_session, "after_transaction_end"
+                )
+                def end_savepoint(session, transaction):
+                    if connection.closed:
+                        return
+                    if not connection.in_nested_transaction():
+                        connection.sync_connection.begin_nested()
+                yield session
+                await session.flush()
+                await session.rollback()
+    @pytest_asyncio.fixture(scope="function")
+    async def tac_manager(self, session:AsyncSession):
         return TacManager(session)
     @pytest.mark.asyncio
-    async def test_build(self, tac_manager):
+    async def test_build(self, tac_manager:TacManager, session:AsyncSession):
         # Define some mock data for our tac
         mock_data = {
-            "name": "Rose",
-            "species": "Rosa",
-            "age": 2
+            "code": generate_uuid()
         }
         # Call the build function of the manager
         tac = await tac_manager.build(**mock_data)
         # Assert that the returned object is an instance of Tac
         assert isinstance(tac, Tac)
         # Assert that the attributes of the tac match our mock data
-        assert tac.name == mock_data["name"]
-        assert tac.species == mock_data["species"]
-        assert tac.age == mock_data["age"]
+        assert tac.code == mock_data["code"]
         # Optionally, if the build method has some default values or computations:
         # assert tac.some_attribute == some_expected_value
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, tac_manager):
+    async def test_build_with_missing_data(self, tac_manager:TacManager, session:AsyncSession):
         # Define mock data with a missing key
         mock_data = {
-            "name": "Rose",
-            "age": 2
+            "non_existant_property": "Rose"
         }
         # If the build method is expected to raise an exception for missing data, test for that
-        with pytest.raises(SomeSpecificException):
-            await tac_manager.build(**mock_data)
+        with pytest.raises(Exception):
+            await tac_manager.build_async(**mock_data)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_add(self, tac_manager, mock_session):
-        tac_data = TacFactory.build()
-        mock_session.add.return_value = None
-        mock_session.commit.return_value = None
-        tac = await tac_manager.add(**tac_data)
-        mock_session.add.assert_called_once_with(tac)
-        mock_session.commit.assert_called_once()
-        assert isinstance(tac, Tac)
-    @pytest.mark.asyncio
-    async def test_add_correctly_adds_tac_to_database(self, tac_manager, db_session):
-        # Create a test tac using the TacFactory without persisting it to the database
-        test_tac = TacFactory.build()
+    async def test_add_correctly_adds_tac_to_database(self, tac_manager:TacManager, session:AsyncSession):
+        test_tac = await TacFactory.build_async(session)
+        assert test_tac.tac_id is None
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
+        assert isinstance(added_tac, Tac)
+        assert added_tac.tac_id > 0
         # Fetch the tac from the database directly
-        result = await db_session.execute(select(Tac).filter(Tac.tac_id == added_tac.tac_id))
+        result = await session.execute(select(Tac).filter(Tac.tac_id == added_tac.tac_id))
         fetched_tac = result.scalars().first()
         # Assert that the fetched tac is not None and matches the added tac
         assert fetched_tac is not None
+        assert isinstance(fetched_tac, Tac)
         assert fetched_tac.tac_id == added_tac.tac_id
-        assert fetched_tac.name == added_tac.name
-        # ... other attribute checks ...
     @pytest.mark.asyncio
-    async def test_add_returns_correct_tac_object(self, tac_manager):
+    async def test_add_returns_correct_tac_object(self, tac_manager:TacManager, session:AsyncSession):
         # Create a test tac using the TacFactory without persisting it to the database
-        test_tac = TacFactory.build()
+        test_tac = await TacFactory.build_async(session)
+        assert test_tac.tac_id is None
+        test_tac.code = generate_uuid()
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
+        assert isinstance(added_tac, Tac)
+        assert added_tac.tac_id > 0
         # Assert that the returned tac matches the test tac
         assert added_tac.tac_id == test_tac.tac_id
-        assert added_tac.name == test_tac.name
-        # ... other attribute checks ...
+        assert added_tac.code == test_tac.code
     @pytest.mark.asyncio
-    async def test_get_by_id(self, tac_manager, mock_session):
-        tac_data = TacFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=tac_data)))
-        tac = await tac_manager.get_by_id(1)
-        mock_session.execute.assert_called_once()
+    async def test_get_by_id(self, tac_manager:TacManager, session:AsyncSession):
+        test_tac = await TacFactory.create_async(session)
+        tac = await tac_manager.get_by_id(test_tac.tac_id)
         assert isinstance(tac, Tac)
-    async def test_get_by_id(self, session: AsyncSession, sample_tac: Tac):
-        manager = TacManager(session)
-        retrieved_tac = await manager.get_by_id(sample_tac.tac_id)
-        assert retrieved_tac is not None
-        assert retrieved_tac.tac_id == sample_tac.tac_id
-        assert retrieved_tac.name == "Rose"
-        assert retrieved_tac.color == "Red"
-    async def test_get_by_id_not_found(self, session: AsyncSession):
-        manager = TacManager(session)
+        assert test_tac.tac_id == tac.tac_id
+        assert test_tac.code == tac.code
+    async def test_get_by_id_not_found(self, tac_manager:TacManager, session: AsyncSession):
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_tac = await manager.get_by_id(non_existent_id)
+        retrieved_tac = await tac_manager.get_by_id(non_existent_id)
         assert retrieved_tac is None
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_tac(self, tac_manager, db_session):
-        # Use your TacFactory to create and save a Tac object
-        code = uuid.uuid4()
-        tac = TacFactory(code=code)
-        db_session.add(tac)
-        await db_session.commit()
-        # Fetch the tac using the manager's get_by_code method
-        fetched_tac = await tac_manager.get_by_code(code)
-        # Assert that the fetched tac is not None and has the expected code
-        assert fetched_tac is not None
-        assert fetched_tac.code == code
+    async def test_get_by_code_returns_tac(self, tac_manager:TacManager, session:AsyncSession):
+        test_tac = await TacFactory.create_async(session)
+        tac = await tac_manager.get_by_code(test_tac.code)
+        assert isinstance(tac, Tac)
+        assert test_tac.tac_id == tac.tac_id
+        assert test_tac.code == tac.code
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, tac_manager):
+    async def test_get_by_code_returns_none_for_nonexistent_code(self, tac_manager:TacManager, session:AsyncSession):
         # Generate a random UUID that doesn't correspond to any Tac in the database
-        random_code = uuid.uuid4()
-        # Try fetching a tac using the manager's get_by_code method
-        fetched_tac = await tac_manager.get_by_code(random_code)
-        # Assert that the result is None since no tac with the given code exists
-        assert fetched_tac is None
+        random_code = generate_uuid()
+        tac = await tac_manager.get_by_code(random_code)
+        assert tac is None
     @pytest.mark.asyncio
-    async def test_update(self, tac_manager, mock_session):
-        tac_data = TacFactory.build()
-        updated_data = {"name": "Updated Tac"}
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=tac_data)))
-        mock_session.commit.return_value = None
-        updated_tac = await tac_manager.update(1, **updated_data)
-        assert updated_tac.name == "Updated Tac"
-        mock_session.commit.assert_called_once()
+    async def test_update(self, tac_manager:TacManager, session:AsyncSession):
+        test_tac = await TacFactory.create_async(session)
+        test_tac.code = generate_uuid()
+        updated_tac = await tac_manager.update(tac=test_tac)
         assert isinstance(updated_tac, Tac)
-    async def test_update_valid_tac(self):
-        # Mocking a tac instance
-        tac = Tac(tac_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
-        # Update the tac with new attributes
-        updated_tac = await self.manager.update(tac, name="Red Rose", code="REDROSE123")
-        # Assertions
-        assert updated_tac.name == "Red Rose"
-        assert updated_tac.code == "REDROSE123"
-        self.session_mock.commit.assert_called_once()
+        assert updated_tac.tac_id == test_tac.tac_id
+        assert updated_tac.code == test_tac.code
+        result = await session.execute(select(Tac).filter(Tac.tac_id == test_tac.tac_id))
+        fetched_tac = result.scalars().first()
+        assert updated_tac.tac_id == fetched_tac.tac_id
+        assert updated_tac.code == fetched_tac.code
+        assert test_tac.tac_id == fetched_tac.tac_id
+        assert test_tac.code == fetched_tac.code
+    async def test_update_via_dict(self, tac_manager:TacManager, session:AsyncSession):
+        test_tac = await TacFactory.create_async(session)
+        new_code = generate_uuid()
+        updated_tac = await tac_manager.update(tac=test_tac,code=new_code)
+        assert isinstance(updated_tac, Tac)
+        assert updated_tac.tac_id == test_tac.tac_id
+        assert updated_tac.code == new_code
+        result = await session.execute(select(Tac).filter(Tac.tac_id == test_tac.tac_id))
+        fetched_tac = result.scalars().first()
+        assert updated_tac.tac_id == fetched_tac.tac_id
+        assert updated_tac.code == fetched_tac.code
+        assert test_tac.tac_id == fetched_tac.tac_id
+        assert new_code == fetched_tac.code
     async def test_update_invalid_tac(self):
         # None tac
         tac = None
-        updated_tac = await self.manager.update(tac, name="Red Rose", code="REDROSE123")
+        new_code = generate_uuid()
+        updated_tac = await self.manager.update(tac, code=new_code)
         # Assertions
         assert updated_tac is None
-        self.session_mock.commit.assert_not_called()
-    async def test_update_with_nonexistent_attribute(self):
-        # Mocking a tac instance
-        tac = Tac(tac_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
+    async def test_update_with_nonexistent_attribute(self, tac_manager:TacManager, session:AsyncSession):
+        test_tac = await TacFactory.create_async(session)
+        new_code = generate_uuid()
         # This should raise an AttributeError since 'color' is not an attribute of Tac
         with pytest.raises(AttributeError):
-            await self.manager.update(tac, color="Red")
-        self.session_mock.commit.assert_not_called()
+            updated_tac = await tac_manager.update(tac=test_tac,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete(self, tac_manager, mock_session):
-        tac_data = TacFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=tac_data)))
-        mock_session.delete.return_value = None
-        mock_session.commit.return_value = None
-        deleted_tac = await tac_manager.delete(1)
-        mock_session.delete.assert_called_once_with(deleted_tac)
-        mock_session.commit.assert_called_once()
-        assert isinstance(deleted_tac, Tac)
+    async def test_delete(self, tac_manager:TacManager, session:AsyncSession):
+        tac_data = await TacFactory.create_async(session)
+        result = await session.execute(select(Tac).filter(Tac.tac_id == tac_data.tac_id))
+        fetched_tac = result.scalars().first()
+        assert isinstance(fetched_tac, Tac)
+        assert fetched_tac.tac_id == tac_data.tac_id
+        deleted_tac = await tac_manager.delete(tac_id=tac_data.tac_id)
+        result = await session.execute(select(Tac).filter(Tac.tac_id == tac_data.tac_id))
+        fetched_tac = result.scalars().first()
+        assert fetched_tac is None
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, tac_manager, mock_session):
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=None)))
-        with pytest.raises(ValueError, match="Tac not found"):
+    async def test_delete_nonexistent(self, tac_manager:TacManager, session:AsyncSession):
+        with pytest.raises(Exception):
             await tac_manager.delete(999)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_list(self, tac_manager, mock_session):
-        tacs_data = [TacFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=tacs_data)))
+    async def test_delete_invalid_type(self, tac_manager:TacManager, session:AsyncSession):
+        with pytest.raises(Exception):
+            await tac_manager.delete("999")
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_get_list(self, tac_manager:TacManager, session:AsyncSession):
         tacs = await tac_manager.get_list()
-        mock_session.execute.assert_called_once()
+        assert len(tacs) == 0
+        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
+        tacs = await tac_manager.get_list()
         assert len(tacs) == 5
         assert all(isinstance(tac, Tac) for tac in tacs)
     @pytest.mark.asyncio
-    async def test_to_json(self, tac_manager):
-        tac_data = TacFactory.build()
-        tac = Tac(**tac_data)
+    async def test_to_json(self, tac_manager:TacManager, session:AsyncSession):
+        tac = await TacFactory.build_async(session)
         json_data = tac_manager.to_json(tac)
         assert json_data is not None
-        # You might want to do more specific checks on the JSON structure
     @pytest.mark.asyncio
-    async def test_from_json(self, tac_manager):
-        tac_data = TacFactory.build()
-        tac = Tac(**tac_data)
+    async def test_to_dict(self, tac_manager:TacManager, session:AsyncSession):
+        tac = await TacFactory.build_async(session)
+        dict_data = tac_manager.to_dict(tac)
+        assert dict_data is not None
+    @pytest.mark.asyncio
+    async def test_from_json(self, tac_manager:TacManager, session:AsyncSession):
+        tac = await TacFactory.create_async(session)
         json_data = tac_manager.to_json(tac)
         deserialized_tac = tac_manager.from_json(json_data)
         assert isinstance(deserialized_tac, Tac)
-        # Additional checks on the deserialized data can be added
+        assert deserialized_tac.code == tac.code
     @pytest.mark.asyncio
-    async def test_add_bulk(self, tac_manager, mock_session):
-        tacs_data = [TacFactory.build() for _ in range(5)]
-        mock_session.add_all.return_value = None
-        mock_session.commit.return_value = None
+    async def test_add_bulk(self, tac_manager:TacManager, session:AsyncSession):
+        tacs_data = [await TacFactory.build_async(session) for _ in range(5)]
         tacs = await tac_manager.add_bulk(tacs_data)
-        mock_session.add_all.assert_called_once()
-        mock_session.commit.assert_called_once()
         assert len(tacs) == 5
+        for updated_tac in tacs:
+            result = await session.execute(select(Tac).filter(Tac.tac_id == updated_tac.tac_id))
+            fetched_tac = result.scalars().first()
+            assert isinstance(fetched_tac, Tac)
+            assert fetched_tac.tac_id == updated_tac.tac_id
     @pytest.mark.asyncio
-    async def test_update_bulk_success():
-        manager = TacManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
+    async def test_update_bulk_success(self, tac_manager:TacManager, session:AsyncSession):
         # Mocking tac instances
-        tac1 = Tac(tac_id=1, name="Rose", code="ROSE123")
-        tac2 = Tac(tac_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding tac
-        async def mock_get_by_id(tac_id):
-            if tac_id == 1:
-                return tac1
-            if tac_id == 2:
-                return tac2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+        tac1 = await TacFactory.create_async(session=session)
+        tac2 = await TacFactory.create_async(session=session)
+        code_updated1 = generate_uuid()
+        code_updated2 = generate_uuid()
         # Update tacs
-        updates = [{"tac_id": 1, "name": "Red Rose"}, {"tac_id": 2, "name": "Yellow Tulip"}]
-        updated_tacs = await manager.update_bulk(updates)
+        updates = [{"tac_id": 1, "code": code_updated1}, {"tac_id": 2, "code": code_updated2}]
+        updated_tacs = await tac_manager.update_bulk(updates)
         # Assertions
         assert len(updated_tacs) == 2
-        assert updated_tacs[0].name == "Red Rose"
-        assert updated_tacs[1].name == "Yellow Tulip"
-        session_mock.commit.assert_called_once()
+        assert updated_tacs[0].code == code_updated1
+        assert updated_tacs[1].code == code_updated2
+        result = await session.execute(select(Tac).filter(Tac.tac_id == 1))
+        fetched_tac = result.scalars().first()
+        assert isinstance(fetched_tac, Tac)
+        assert fetched_tac.code == code_updated1
+        result = await session.execute(select(Tac).filter(Tac.tac_id == 2))
+        fetched_tac = result.scalars().first()
+        assert isinstance(fetched_tac, Tac)
+        assert fetched_tac.code == code_updated2
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_tac_id():
-        manager = TacManager()
+    async def test_update_bulk_missing_tac_id(self, tac_manager:TacManager, session:AsyncSession):
         # No tacs to update since tac_id is missing
         updates = [{"name": "Red Rose"}]
-        updated_tacs = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_tacs) == 0
+        with pytest.raises(Exception):
+            updated_tacs = await tac_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_tac_not_found():
-        manager = TacManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (tac not found)
-        manager.get_by_id = AsyncMock(return_value=None)
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+    async def test_update_bulk_tac_not_found(self, tac_manager:TacManager, session:AsyncSession):
         # Update tacs
-        updates = [{"tac_id": 1, "name": "Red Rose"}]
-        updated_tacs = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_tacs) == 0
-        session_mock.commit.assert_not_called()
+        updates = [{"tac_id": 1, "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_tacs = await tac_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_success():
-        manager = TacManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking tac instances
-        tac1 = Tac(tac_id=1, name="Rose", code="ROSE123")
-        tac2 = Tac(tac_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding tac
-        async def mock_get_by_id(tac_id):
-            if tac_id == 1:
-                return tac1
-            if tac_id == 2:
-                return tac2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_update_bulk_invalid_type(self, tac_manager:TacManager, session:AsyncSession):
+        updates = [{"tac_id": "2", "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_tacs = await tac_manager.update_bulk(updates)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_delete_bulk_success(self, tac_manager:TacManager, session:AsyncSession):
+        tac1 = await TacFactory.create_async(session=session)
+        tac2 = await TacFactory.create_async(session=session)
         # Delete tacs
         tac_ids = [1, 2]
-        result = await manager.delete_bulk(tac_ids)
-        # Assertions
+        result = await tac_manager.delete_bulk(tac_ids)
         assert result is True
-        session_mock.delete.assert_called()
-        session_mock.commit.assert_called_once()
+        for tac_id in tac_ids:
+            execute_result = await session.execute(select(Tac).filter(Tac.tac_id == tac_id))
+            fetched_tac = execute_result.scalars().first()
+            assert fetched_tac is None
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_tacs_not_found():
-        manager = TacManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (tac not found)
-        async def mock_get_by_id(tac_id):
-            if tac_id == 1:
-                return None
-            if tac_id == 2:
-                return Tac(tac_id=2, name="Tulip", code="TULIP123")
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_some_tacs_not_found(self, tac_manager:TacManager, session:AsyncSession):
+        tac1 = await TacFactory.create_async(session=session)
         # Delete tacs
         tac_ids = [1, 2]
-        result = await manager.delete_bulk(tac_ids)
-        # Assertions
-        assert result is True
-        session_mock.delete.assert_called_once_with(Tac(tac_id=2, name="Tulip", code="TULIP123"))
-        session_mock.commit.assert_called_once()
+        with pytest.raises(Exception):
+           result = await tac_manager.delete_bulk(tac_ids)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list():
-        manager = TacManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_empty_list(self, tac_manager:TacManager, session:AsyncSession):
         # Delete tacs with an empty list
         tac_ids = []
-        result = await manager.delete_bulk(tac_ids)
+        result = await tac_manager.delete_bulk(tac_ids)
         # Assertions
         assert result is True
-        session_mock.delete.assert_not_called()
-        session_mock.commit.assert_not_called()
     @pytest.mark.asyncio
-    async def test_count(self, tac_manager, mock_session):
-        tacs_data = [TacFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=tacs_data)))
+    async def test_delete_bulk_invalid_type(self, tac_manager:TacManager, session:AsyncSession):
+        tac_ids = ["1", 2]
+        with pytest.raises(Exception):
+           result = await tac_manager.delete_bulk(tac_ids)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_count_basic_functionality(self, tac_manager:TacManager, session:AsyncSession):
+        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
         count = await tac_manager.count()
-        mock_session.execute.assert_called_once()
         assert count == 5
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(async_session):
-        # Add a tac
-        new_tac = Tac()
-        async_session.add(new_tac)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 1
-    @pytest.mark.asyncio
-    async def test_count_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
+    async def test_count_empty_database(self, tac_manager:TacManager, session:AsyncSession):
+        count = await tac_manager.count()
         assert count == 0
     @pytest.mark.asyncio
-    async def test_count_multiple_additions(async_session):
-        # Add multiple tacs
-        tacs = [Tac() for _ in range(5)]
-        async_session.add_all(tacs)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 5
-    @pytest.mark.asyncio
-    async def test_count_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.count()
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(async_session):
+    async def test_get_sorted_list_basic_sorting(self, tac_manager:TacManager, session:AsyncSession):
         # Add tacs
-        tacs = [Tac(name=f"Tac_{i}") for i in range(5)]
-        async_session.add_all(tacs)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_tacs = await manager.get_sorted_list(sort_by="name")
-        assert [tac.name for tac in sorted_tacs] == [f"Tac_{i}" for i in range(5)]
+        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
+        sorted_tacs = await tac_manager.get_sorted_list(sort_by="tac_id")
+        assert [tac.tac_id for tac in sorted_tacs] == [(i + 1) for i in range(5)]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(async_session):
+    async def test_get_sorted_list_descending_sorting(self, tac_manager:TacManager, session:AsyncSession):
         # Add tacs
-        tacs = [Tac(name=f"Tac_{i}") for i in range(5)]
-        async_session.add_all(tacs)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_tacs = await manager.get_sorted_list(sort_by="name", order="desc")
-        assert [tac.name for tac in sorted_tacs] == [f"Tac_{i}" for i in reversed(range(5))]
+        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
+        sorted_tacs = await tac_manager.get_sorted_list(sort_by="tac_id", order="desc")
+        assert [tac.tac_id for tac in sorted_tacs] == [(i + 1) for i in reversed(range(5))]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(async_session):
-        manager = YourManagerClass(session=async_session)
+    async def test_get_sorted_list_invalid_attribute(self, tac_manager:TacManager, session:AsyncSession):
         with pytest.raises(AttributeError):
-            await manager.get_sorted_list(sort_by="invalid_attribute")
+            await tac_manager.get_sorted_list(sort_by="invalid_attribute")
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_sorted_list_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_sorted_list(sort_by="name")
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        sorted_tacs = await manager.get_sorted_list(sort_by="name")
+    async def test_get_sorted_list_empty_database(self, tac_manager:TacManager, session:AsyncSession):
+        sorted_tacs = await tac_manager.get_sorted_list(sort_by="tac_id")
         assert len(sorted_tacs) == 0
     @pytest.mark.asyncio
-    async def test_refresh_basic(async_session):
+    async def test_refresh_basic(self, tac_manager:TacManager, session:AsyncSession):
         # Add a tac
-        tac = Tac(name="Tac_1")
-        async_session.add(tac)
-        await async_session.commit()
-        # Modify the tac directly in the database
-        await async_session.execute('UPDATE tacs SET name = :new_name WHERE id = :tac_id', {"new_name": "Modified_Tac", "tac_id": tac.id})
-        await async_session.commit()
-        # Now, refresh the tac using the manager function
-        manager = YourManagerClass(session=async_session)
-        refreshed_tac = await manager.refresh(tac)
-        assert refreshed_tac.name == "Modified_Tac"
+        tac1 = await TacFactory.create_async(session=session)
+        result = await session.execute(select(Tac).filter(Tac.tac_id == tac1.tac_id))
+        tac2 = result.scalars().first()
+        assert tac1.code == tac2.code
+        updated_code1 = generate_uuid()
+        tac1.code = updated_code1
+        updated_tac1 = await tac_manager.update(tac1)
+        assert updated_tac1.code == updated_code1
+        refreshed_tac2 = await tac_manager.refresh(tac2)
+        assert refreshed_tac2.code == updated_code1
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_tac(async_session):
-        tac = Tac(id=999, name="Nonexistent_Tac")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior
-            await manager.refresh(tac)
+    async def test_refresh_nonexistent_tac(self, tac_manager:TacManager, session:AsyncSession):
+        tac = Tac(tac_id=999)
+        with pytest.raises(Exception):
+            await tac_manager.refresh(tac)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_refresh_database_connection_issues(async_session, mocker):
-        # Mock the session's refresh method to simulate a database connection error
-        mocker.patch.object(async_session, 'refresh', side_effect=Exception("DB connection error"))
-        tac = Tac(name="Tac_1")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.refresh(tac)
-    @pytest.mark.asyncio
-    async def test_exists_with_existing_tac(async_session):
+    async def test_exists_with_existing_tac(self, tac_manager:TacManager, session:AsyncSession):
         # Add a tac
-        tac = Tac(name="Tac_1")
-        async_session.add(tac)
-        await async_session.commit()
+        tac1 = await TacFactory.create_async(session=session)
         # Check if the tac exists using the manager function
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(tac.id) == True
+        assert await tac_manager.exists(tac1.tac_id) == True
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_tac(async_session):
+    async def test_exists_with_nonexistent_tac(self, tac_manager:TacManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(non_existent_id) == False
+        assert await tac_manager.exists(non_existent_id) == False
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(async_session):
+    async def test_exists_with_invalid_id_type(self, tac_manager:TacManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.exists(invalid_id)
+        with pytest.raises(Exception):
+            await tac_manager.exists(invalid_id)
+        await session.rollback()
+#endet
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @pytest.mark.asyncio
-    async def test_exists_database_connection_issues(async_session, mocker):
-        # Mock the get_by_id method to simulate a database connection error
-        mocker.patch.object(YourManagerClass, 'get_by_id', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.exists(1)
-    #get_by_pac_id
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_existing(async_session):
+    async def test_get_by_pac_id_existing(self, tac_manager:TacManager, session:AsyncSession):
         # Add a tac with a specific pac_id
-        tac = Tac(name="Tac_1", pac_id=5)
-        async_session.add(tac)
-        await async_session.commit()
+        tac1 = await TacFactory.create_async(session=session)
         # Fetch the tac using the manager function
-        manager = YourManagerClass(session=async_session)
-        fetched_tacs = await manager.get_by_pac_id(5)
+        fetched_tacs = await tac_manager.get_by_pac_id(tac1.pac_id)
         assert len(fetched_tacs) == 1
-        assert fetched_tacs[0].name == "Tac_1"
+        assert fetched_tacs[0].code == tac1.code
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_nonexistent(async_session):
+    async def test_get_by_pac_id_nonexistent(self, tac_manager:TacManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        fetched_tacs = await manager.get_by_pac_id(non_existent_id)
+        fetched_tacs = await tac_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_tacs) == 0
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_invalid_type(async_session):
+    async def test_get_by_pac_id_invalid_type(self, tac_manager:TacManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.get_by_pac_id(invalid_id)
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_database_connection_issues(async_session, mocker):
-        # Mock the execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_by_pac_id(1)
+        with pytest.raises(Exception):
+            await tac_manager.get_by_pac_id(invalid_id)
+        await session.rollback()
+#endet

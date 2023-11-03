@@ -1,480 +1,407 @@
+import asyncio
+from decimal import Decimal
 import pytest
-import uuid
-from unittest.mock import AsyncMock, patch
-from managers import OrganizationManager, Organization
-from models.factory import OrganizationFactory
+import pytest_asyncio
+import time
+from decimal import Decimal
+from datetime import datetime, date
+from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base, Organization
-DATABASE_URL = "sqlite:///:memory:"
+from models.factory import OrganizationFactory
+from managers.organization import OrganizationManager
+from services.db_config import db_dialect
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.future import select
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
+# Conditionally set the UUID column type
+if db_dialect == 'postgresql':
+    UUIDType = UUID(as_uuid=True)
+elif db_dialect == 'mssql':
+    UUIDType = UNIQUEIDENTIFIER
+else:  # This will cover SQLite, MySQL, and other databases
+    UUIDType = String(36)
 class TestOrganizationManager:
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="function")
+    def event_loop(self) -> asyncio.AbstractEventLoop:
+        loop = asyncio.get_event_loop_policy().new_event_loop()
+        yield loop
+        loop.close()
+    @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
-        #FKs are not activated by default in sqllite
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
+        engine = create_async_engine(DATABASE_URL, echo=True)
         yield engine
-        engine.dispose()
-    @pytest.fixture
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture
-    async def organization_manager(self, session):
+        engine.sync_engine.dispose()
+    @pytest_asyncio.fixture(scope="function")
+    async def session(self,engine) -> AsyncSession:
+        @event.listens_for(engine.sync_engine, "connect")
+        def set_sqlite_pragma(dbapi_connection, connection_record):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+        async with engine.begin() as connection:
+            await connection.begin_nested()
+            await connection.run_sync(Base.metadata.drop_all)
+            await connection.run_sync(Base.metadata.create_all)
+            TestingSessionLocal = sessionmaker(
+                expire_on_commit=False,
+                class_=AsyncSession,
+                bind=engine,
+            )
+            async with TestingSessionLocal(bind=connection) as session:
+                @event.listens_for(
+                    session.sync_session, "after_transaction_end"
+                )
+                def end_savepoint(session, transaction):
+                    if connection.closed:
+                        return
+                    if not connection.in_nested_transaction():
+                        connection.sync_connection.begin_nested()
+                yield session
+                await session.flush()
+                await session.rollback()
+    @pytest_asyncio.fixture(scope="function")
+    async def organization_manager(self, session:AsyncSession):
         return OrganizationManager(session)
     @pytest.mark.asyncio
-    async def test_build(self, organization_manager):
+    async def test_build(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Define some mock data for our organization
         mock_data = {
-            "name": "Rose",
-            "species": "Rosa",
-            "age": 2
+            "code": generate_uuid()
         }
         # Call the build function of the manager
         organization = await organization_manager.build(**mock_data)
         # Assert that the returned object is an instance of Organization
         assert isinstance(organization, Organization)
         # Assert that the attributes of the organization match our mock data
-        assert organization.name == mock_data["name"]
-        assert organization.species == mock_data["species"]
-        assert organization.age == mock_data["age"]
+        assert organization.code == mock_data["code"]
         # Optionally, if the build method has some default values or computations:
         # assert organization.some_attribute == some_expected_value
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, organization_manager):
+    async def test_build_with_missing_data(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Define mock data with a missing key
         mock_data = {
-            "name": "Rose",
-            "age": 2
+            "non_existant_property": "Rose"
         }
         # If the build method is expected to raise an exception for missing data, test for that
-        with pytest.raises(SomeSpecificException):
-            await organization_manager.build(**mock_data)
+        with pytest.raises(Exception):
+            await organization_manager.build_async(**mock_data)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_add(self, organization_manager, mock_session):
-        organization_data = OrganizationFactory.build()
-        mock_session.add.return_value = None
-        mock_session.commit.return_value = None
-        organization = await organization_manager.add(**organization_data)
-        mock_session.add.assert_called_once_with(organization)
-        mock_session.commit.assert_called_once()
-        assert isinstance(organization, Organization)
-    @pytest.mark.asyncio
-    async def test_add_correctly_adds_organization_to_database(self, organization_manager, db_session):
-        # Create a test organization using the OrganizationFactory without persisting it to the database
-        test_organization = OrganizationFactory.build()
+    async def test_add_correctly_adds_organization_to_database(self, organization_manager:OrganizationManager, session:AsyncSession):
+        test_organization = await OrganizationFactory.build_async(session)
+        assert test_organization.organization_id is None
         # Add the organization using the manager's add method
         added_organization = await organization_manager.add(organization=test_organization)
+        assert isinstance(added_organization, Organization)
+        assert added_organization.organization_id > 0
         # Fetch the organization from the database directly
-        result = await db_session.execute(select(Organization).filter(Organization.organization_id == added_organization.organization_id))
+        result = await session.execute(select(Organization).filter(Organization.organization_id == added_organization.organization_id))
         fetched_organization = result.scalars().first()
         # Assert that the fetched organization is not None and matches the added organization
         assert fetched_organization is not None
+        assert isinstance(fetched_organization, Organization)
         assert fetched_organization.organization_id == added_organization.organization_id
-        assert fetched_organization.name == added_organization.name
-        # ... other attribute checks ...
     @pytest.mark.asyncio
-    async def test_add_returns_correct_organization_object(self, organization_manager):
+    async def test_add_returns_correct_organization_object(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Create a test organization using the OrganizationFactory without persisting it to the database
-        test_organization = OrganizationFactory.build()
+        test_organization = await OrganizationFactory.build_async(session)
+        assert test_organization.organization_id is None
+        test_organization.code = generate_uuid()
         # Add the organization using the manager's add method
         added_organization = await organization_manager.add(organization=test_organization)
+        assert isinstance(added_organization, Organization)
+        assert added_organization.organization_id > 0
         # Assert that the returned organization matches the test organization
         assert added_organization.organization_id == test_organization.organization_id
-        assert added_organization.name == test_organization.name
-        # ... other attribute checks ...
+        assert added_organization.code == test_organization.code
     @pytest.mark.asyncio
-    async def test_get_by_id(self, organization_manager, mock_session):
-        organization_data = OrganizationFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=organization_data)))
-        organization = await organization_manager.get_by_id(1)
-        mock_session.execute.assert_called_once()
+    async def test_get_by_id(self, organization_manager:OrganizationManager, session:AsyncSession):
+        test_organization = await OrganizationFactory.create_async(session)
+        organization = await organization_manager.get_by_id(test_organization.organization_id)
         assert isinstance(organization, Organization)
-    async def test_get_by_id(self, session: AsyncSession, sample_organization: Organization):
-        manager = OrganizationManager(session)
-        retrieved_organization = await manager.get_by_id(sample_organization.organization_id)
-        assert retrieved_organization is not None
-        assert retrieved_organization.organization_id == sample_organization.organization_id
-        assert retrieved_organization.name == "Rose"
-        assert retrieved_organization.color == "Red"
-    async def test_get_by_id_not_found(self, session: AsyncSession):
-        manager = OrganizationManager(session)
+        assert test_organization.organization_id == organization.organization_id
+        assert test_organization.code == organization.code
+    async def test_get_by_id_not_found(self, organization_manager:OrganizationManager, session: AsyncSession):
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_organization = await manager.get_by_id(non_existent_id)
+        retrieved_organization = await organization_manager.get_by_id(non_existent_id)
         assert retrieved_organization is None
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_organization(self, organization_manager, db_session):
-        # Use your OrganizationFactory to create and save a Organization object
-        code = uuid.uuid4()
-        organization = OrganizationFactory(code=code)
-        db_session.add(organization)
-        await db_session.commit()
-        # Fetch the organization using the manager's get_by_code method
-        fetched_organization = await organization_manager.get_by_code(code)
-        # Assert that the fetched organization is not None and has the expected code
-        assert fetched_organization is not None
-        assert fetched_organization.code == code
+    async def test_get_by_code_returns_organization(self, organization_manager:OrganizationManager, session:AsyncSession):
+        test_organization = await OrganizationFactory.create_async(session)
+        organization = await organization_manager.get_by_code(test_organization.code)
+        assert isinstance(organization, Organization)
+        assert test_organization.organization_id == organization.organization_id
+        assert test_organization.code == organization.code
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, organization_manager):
+    async def test_get_by_code_returns_none_for_nonexistent_code(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Generate a random UUID that doesn't correspond to any Organization in the database
-        random_code = uuid.uuid4()
-        # Try fetching a organization using the manager's get_by_code method
-        fetched_organization = await organization_manager.get_by_code(random_code)
-        # Assert that the result is None since no organization with the given code exists
-        assert fetched_organization is None
+        random_code = generate_uuid()
+        organization = await organization_manager.get_by_code(random_code)
+        assert organization is None
     @pytest.mark.asyncio
-    async def test_update(self, organization_manager, mock_session):
-        organization_data = OrganizationFactory.build()
-        updated_data = {"name": "Updated Organization"}
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=organization_data)))
-        mock_session.commit.return_value = None
-        updated_organization = await organization_manager.update(1, **updated_data)
-        assert updated_organization.name == "Updated Organization"
-        mock_session.commit.assert_called_once()
+    async def test_update(self, organization_manager:OrganizationManager, session:AsyncSession):
+        test_organization = await OrganizationFactory.create_async(session)
+        test_organization.code = generate_uuid()
+        updated_organization = await organization_manager.update(organization=test_organization)
         assert isinstance(updated_organization, Organization)
-    async def test_update_valid_organization(self):
-        # Mocking a organization instance
-        organization = Organization(organization_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
-        # Update the organization with new attributes
-        updated_organization = await self.manager.update(organization, name="Red Rose", code="REDROSE123")
-        # Assertions
-        assert updated_organization.name == "Red Rose"
-        assert updated_organization.code == "REDROSE123"
-        self.session_mock.commit.assert_called_once()
+        assert updated_organization.organization_id == test_organization.organization_id
+        assert updated_organization.code == test_organization.code
+        result = await session.execute(select(Organization).filter(Organization.organization_id == test_organization.organization_id))
+        fetched_organization = result.scalars().first()
+        assert updated_organization.organization_id == fetched_organization.organization_id
+        assert updated_organization.code == fetched_organization.code
+        assert test_organization.organization_id == fetched_organization.organization_id
+        assert test_organization.code == fetched_organization.code
+    async def test_update_via_dict(self, organization_manager:OrganizationManager, session:AsyncSession):
+        test_organization = await OrganizationFactory.create_async(session)
+        new_code = generate_uuid()
+        updated_organization = await organization_manager.update(organization=test_organization,code=new_code)
+        assert isinstance(updated_organization, Organization)
+        assert updated_organization.organization_id == test_organization.organization_id
+        assert updated_organization.code == new_code
+        result = await session.execute(select(Organization).filter(Organization.organization_id == test_organization.organization_id))
+        fetched_organization = result.scalars().first()
+        assert updated_organization.organization_id == fetched_organization.organization_id
+        assert updated_organization.code == fetched_organization.code
+        assert test_organization.organization_id == fetched_organization.organization_id
+        assert new_code == fetched_organization.code
     async def test_update_invalid_organization(self):
         # None organization
         organization = None
-        updated_organization = await self.manager.update(organization, name="Red Rose", code="REDROSE123")
+        new_code = generate_uuid()
+        updated_organization = await self.manager.update(organization, code=new_code)
         # Assertions
         assert updated_organization is None
-        self.session_mock.commit.assert_not_called()
-    async def test_update_with_nonexistent_attribute(self):
-        # Mocking a organization instance
-        organization = Organization(organization_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
+    async def test_update_with_nonexistent_attribute(self, organization_manager:OrganizationManager, session:AsyncSession):
+        test_organization = await OrganizationFactory.create_async(session)
+        new_code = generate_uuid()
         # This should raise an AttributeError since 'color' is not an attribute of Organization
         with pytest.raises(AttributeError):
-            await self.manager.update(organization, color="Red")
-        self.session_mock.commit.assert_not_called()
+            updated_organization = await organization_manager.update(organization=test_organization,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete(self, organization_manager, mock_session):
-        organization_data = OrganizationFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=organization_data)))
-        mock_session.delete.return_value = None
-        mock_session.commit.return_value = None
-        deleted_organization = await organization_manager.delete(1)
-        mock_session.delete.assert_called_once_with(deleted_organization)
-        mock_session.commit.assert_called_once()
-        assert isinstance(deleted_organization, Organization)
+    async def test_delete(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization_data = await OrganizationFactory.create_async(session)
+        result = await session.execute(select(Organization).filter(Organization.organization_id == organization_data.organization_id))
+        fetched_organization = result.scalars().first()
+        assert isinstance(fetched_organization, Organization)
+        assert fetched_organization.organization_id == organization_data.organization_id
+        deleted_organization = await organization_manager.delete(organization_id=organization_data.organization_id)
+        result = await session.execute(select(Organization).filter(Organization.organization_id == organization_data.organization_id))
+        fetched_organization = result.scalars().first()
+        assert fetched_organization is None
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, organization_manager, mock_session):
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=None)))
-        with pytest.raises(ValueError, match="Organization not found"):
+    async def test_delete_nonexistent(self, organization_manager:OrganizationManager, session:AsyncSession):
+        with pytest.raises(Exception):
             await organization_manager.delete(999)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_list(self, organization_manager, mock_session):
-        organizations_data = [OrganizationFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=organizations_data)))
+    async def test_delete_invalid_type(self, organization_manager:OrganizationManager, session:AsyncSession):
+        with pytest.raises(Exception):
+            await organization_manager.delete("999")
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_get_list(self, organization_manager:OrganizationManager, session:AsyncSession):
         organizations = await organization_manager.get_list()
-        mock_session.execute.assert_called_once()
+        assert len(organizations) == 0
+        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
+        organizations = await organization_manager.get_list()
         assert len(organizations) == 5
         assert all(isinstance(organization, Organization) for organization in organizations)
     @pytest.mark.asyncio
-    async def test_to_json(self, organization_manager):
-        organization_data = OrganizationFactory.build()
-        organization = Organization(**organization_data)
+    async def test_to_json(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization = await OrganizationFactory.build_async(session)
         json_data = organization_manager.to_json(organization)
         assert json_data is not None
-        # You might want to do more specific checks on the JSON structure
     @pytest.mark.asyncio
-    async def test_from_json(self, organization_manager):
-        organization_data = OrganizationFactory.build()
-        organization = Organization(**organization_data)
+    async def test_to_dict(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization = await OrganizationFactory.build_async(session)
+        dict_data = organization_manager.to_dict(organization)
+        assert dict_data is not None
+    @pytest.mark.asyncio
+    async def test_from_json(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization = await OrganizationFactory.create_async(session)
         json_data = organization_manager.to_json(organization)
         deserialized_organization = organization_manager.from_json(json_data)
         assert isinstance(deserialized_organization, Organization)
-        # Additional checks on the deserialized data can be added
+        assert deserialized_organization.code == organization.code
     @pytest.mark.asyncio
-    async def test_add_bulk(self, organization_manager, mock_session):
-        organizations_data = [OrganizationFactory.build() for _ in range(5)]
-        mock_session.add_all.return_value = None
-        mock_session.commit.return_value = None
+    async def test_add_bulk(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organizations_data = [await OrganizationFactory.build_async(session) for _ in range(5)]
         organizations = await organization_manager.add_bulk(organizations_data)
-        mock_session.add_all.assert_called_once()
-        mock_session.commit.assert_called_once()
         assert len(organizations) == 5
+        for updated_organization in organizations:
+            result = await session.execute(select(Organization).filter(Organization.organization_id == updated_organization.organization_id))
+            fetched_organization = result.scalars().first()
+            assert isinstance(fetched_organization, Organization)
+            assert fetched_organization.organization_id == updated_organization.organization_id
     @pytest.mark.asyncio
-    async def test_update_bulk_success():
-        manager = OrganizationManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
+    async def test_update_bulk_success(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Mocking organization instances
-        organization1 = Organization(organization_id=1, name="Rose", code="ROSE123")
-        organization2 = Organization(organization_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding organization
-        async def mock_get_by_id(organization_id):
-            if organization_id == 1:
-                return organization1
-            if organization_id == 2:
-                return organization2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+        organization1 = await OrganizationFactory.create_async(session=session)
+        organization2 = await OrganizationFactory.create_async(session=session)
+        code_updated1 = generate_uuid()
+        code_updated2 = generate_uuid()
         # Update organizations
-        updates = [{"organization_id": 1, "name": "Red Rose"}, {"organization_id": 2, "name": "Yellow Tulip"}]
-        updated_organizations = await manager.update_bulk(updates)
+        updates = [{"organization_id": 1, "code": code_updated1}, {"organization_id": 2, "code": code_updated2}]
+        updated_organizations = await organization_manager.update_bulk(updates)
         # Assertions
         assert len(updated_organizations) == 2
-        assert updated_organizations[0].name == "Red Rose"
-        assert updated_organizations[1].name == "Yellow Tulip"
-        session_mock.commit.assert_called_once()
+        assert updated_organizations[0].code == code_updated1
+        assert updated_organizations[1].code == code_updated2
+        result = await session.execute(select(Organization).filter(Organization.organization_id == 1))
+        fetched_organization = result.scalars().first()
+        assert isinstance(fetched_organization, Organization)
+        assert fetched_organization.code == code_updated1
+        result = await session.execute(select(Organization).filter(Organization.organization_id == 2))
+        fetched_organization = result.scalars().first()
+        assert isinstance(fetched_organization, Organization)
+        assert fetched_organization.code == code_updated2
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_organization_id():
-        manager = OrganizationManager()
+    async def test_update_bulk_missing_organization_id(self, organization_manager:OrganizationManager, session:AsyncSession):
         # No organizations to update since organization_id is missing
         updates = [{"name": "Red Rose"}]
-        updated_organizations = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_organizations) == 0
+        with pytest.raises(Exception):
+            updated_organizations = await organization_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_organization_not_found():
-        manager = OrganizationManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (organization not found)
-        manager.get_by_id = AsyncMock(return_value=None)
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+    async def test_update_bulk_organization_not_found(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Update organizations
-        updates = [{"organization_id": 1, "name": "Red Rose"}]
-        updated_organizations = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_organizations) == 0
-        session_mock.commit.assert_not_called()
+        updates = [{"organization_id": 1, "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_organizations = await organization_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_success():
-        manager = OrganizationManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking organization instances
-        organization1 = Organization(organization_id=1, name="Rose", code="ROSE123")
-        organization2 = Organization(organization_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding organization
-        async def mock_get_by_id(organization_id):
-            if organization_id == 1:
-                return organization1
-            if organization_id == 2:
-                return organization2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_update_bulk_invalid_type(self, organization_manager:OrganizationManager, session:AsyncSession):
+        updates = [{"organization_id": "2", "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_organizations = await organization_manager.update_bulk(updates)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_delete_bulk_success(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization1 = await OrganizationFactory.create_async(session=session)
+        organization2 = await OrganizationFactory.create_async(session=session)
         # Delete organizations
         organization_ids = [1, 2]
-        result = await manager.delete_bulk(organization_ids)
-        # Assertions
+        result = await organization_manager.delete_bulk(organization_ids)
         assert result is True
-        session_mock.delete.assert_called()
-        session_mock.commit.assert_called_once()
+        for organization_id in organization_ids:
+            execute_result = await session.execute(select(Organization).filter(Organization.organization_id == organization_id))
+            fetched_organization = execute_result.scalars().first()
+            assert fetched_organization is None
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_organizations_not_found():
-        manager = OrganizationManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (organization not found)
-        async def mock_get_by_id(organization_id):
-            if organization_id == 1:
-                return None
-            if organization_id == 2:
-                return Organization(organization_id=2, name="Tulip", code="TULIP123")
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_some_organizations_not_found(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization1 = await OrganizationFactory.create_async(session=session)
         # Delete organizations
         organization_ids = [1, 2]
-        result = await manager.delete_bulk(organization_ids)
-        # Assertions
-        assert result is True
-        session_mock.delete.assert_called_once_with(Organization(organization_id=2, name="Tulip", code="TULIP123"))
-        session_mock.commit.assert_called_once()
+        with pytest.raises(Exception):
+           result = await organization_manager.delete_bulk(organization_ids)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list():
-        manager = OrganizationManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_empty_list(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Delete organizations with an empty list
         organization_ids = []
-        result = await manager.delete_bulk(organization_ids)
+        result = await organization_manager.delete_bulk(organization_ids)
         # Assertions
         assert result is True
-        session_mock.delete.assert_not_called()
-        session_mock.commit.assert_not_called()
     @pytest.mark.asyncio
-    async def test_count(self, organization_manager, mock_session):
-        organizations_data = [OrganizationFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=organizations_data)))
+    async def test_delete_bulk_invalid_type(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization_ids = ["1", 2]
+        with pytest.raises(Exception):
+           result = await organization_manager.delete_bulk(organization_ids)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_count_basic_functionality(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
         count = await organization_manager.count()
-        mock_session.execute.assert_called_once()
         assert count == 5
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(async_session):
-        # Add a organization
-        new_organization = Organization()
-        async_session.add(new_organization)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 1
-    @pytest.mark.asyncio
-    async def test_count_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
+    async def test_count_empty_database(self, organization_manager:OrganizationManager, session:AsyncSession):
+        count = await organization_manager.count()
         assert count == 0
     @pytest.mark.asyncio
-    async def test_count_multiple_additions(async_session):
-        # Add multiple organizations
-        organizations = [Organization() for _ in range(5)]
-        async_session.add_all(organizations)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 5
-    @pytest.mark.asyncio
-    async def test_count_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.count()
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(async_session):
+    async def test_get_sorted_list_basic_sorting(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Add organizations
-        organizations = [Organization(name=f"Organization_{i}") for i in range(5)]
-        async_session.add_all(organizations)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_organizations = await manager.get_sorted_list(sort_by="name")
-        assert [organization.name for organization in sorted_organizations] == [f"Organization_{i}" for i in range(5)]
+        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
+        sorted_organizations = await organization_manager.get_sorted_list(sort_by="organization_id")
+        assert [organization.organization_id for organization in sorted_organizations] == [(i + 1) for i in range(5)]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(async_session):
+    async def test_get_sorted_list_descending_sorting(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Add organizations
-        organizations = [Organization(name=f"Organization_{i}") for i in range(5)]
-        async_session.add_all(organizations)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_organizations = await manager.get_sorted_list(sort_by="name", order="desc")
-        assert [organization.name for organization in sorted_organizations] == [f"Organization_{i}" for i in reversed(range(5))]
+        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
+        sorted_organizations = await organization_manager.get_sorted_list(sort_by="organization_id", order="desc")
+        assert [organization.organization_id for organization in sorted_organizations] == [(i + 1) for i in reversed(range(5))]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(async_session):
-        manager = YourManagerClass(session=async_session)
+    async def test_get_sorted_list_invalid_attribute(self, organization_manager:OrganizationManager, session:AsyncSession):
         with pytest.raises(AttributeError):
-            await manager.get_sorted_list(sort_by="invalid_attribute")
+            await organization_manager.get_sorted_list(sort_by="invalid_attribute")
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_sorted_list_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_sorted_list(sort_by="name")
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        sorted_organizations = await manager.get_sorted_list(sort_by="name")
+    async def test_get_sorted_list_empty_database(self, organization_manager:OrganizationManager, session:AsyncSession):
+        sorted_organizations = await organization_manager.get_sorted_list(sort_by="organization_id")
         assert len(sorted_organizations) == 0
     @pytest.mark.asyncio
-    async def test_refresh_basic(async_session):
+    async def test_refresh_basic(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Add a organization
-        organization = Organization(name="Organization_1")
-        async_session.add(organization)
-        await async_session.commit()
-        # Modify the organization directly in the database
-        await async_session.execute('UPDATE organizations SET name = :new_name WHERE id = :organization_id', {"new_name": "Modified_Organization", "organization_id": organization.id})
-        await async_session.commit()
-        # Now, refresh the organization using the manager function
-        manager = YourManagerClass(session=async_session)
-        refreshed_organization = await manager.refresh(organization)
-        assert refreshed_organization.name == "Modified_Organization"
+        organization1 = await OrganizationFactory.create_async(session=session)
+        result = await session.execute(select(Organization).filter(Organization.organization_id == organization1.organization_id))
+        organization2 = result.scalars().first()
+        assert organization1.code == organization2.code
+        updated_code1 = generate_uuid()
+        organization1.code = updated_code1
+        updated_organization1 = await organization_manager.update(organization1)
+        assert updated_organization1.code == updated_code1
+        refreshed_organization2 = await organization_manager.refresh(organization2)
+        assert refreshed_organization2.code == updated_code1
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_organization(async_session):
-        organization = Organization(id=999, name="Nonexistent_Organization")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior
-            await manager.refresh(organization)
+    async def test_refresh_nonexistent_organization(self, organization_manager:OrganizationManager, session:AsyncSession):
+        organization = Organization(organization_id=999)
+        with pytest.raises(Exception):
+            await organization_manager.refresh(organization)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_refresh_database_connection_issues(async_session, mocker):
-        # Mock the session's refresh method to simulate a database connection error
-        mocker.patch.object(async_session, 'refresh', side_effect=Exception("DB connection error"))
-        organization = Organization(name="Organization_1")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.refresh(organization)
-    @pytest.mark.asyncio
-    async def test_exists_with_existing_organization(async_session):
+    async def test_exists_with_existing_organization(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Add a organization
-        organization = Organization(name="Organization_1")
-        async_session.add(organization)
-        await async_session.commit()
+        organization1 = await OrganizationFactory.create_async(session=session)
         # Check if the organization exists using the manager function
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(organization.id) == True
+        assert await organization_manager.exists(organization1.organization_id) == True
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_organization(async_session):
+    async def test_exists_with_nonexistent_organization(self, organization_manager:OrganizationManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(non_existent_id) == False
+        assert await organization_manager.exists(non_existent_id) == False
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(async_session):
+    async def test_exists_with_invalid_id_type(self, organization_manager:OrganizationManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.exists(invalid_id)
+        with pytest.raises(Exception):
+            await organization_manager.exists(invalid_id)
+        await session.rollback()
+#endet
+    #name,
+    #TacID
     @pytest.mark.asyncio
-    async def test_exists_database_connection_issues(async_session, mocker):
-        # Mock the get_by_id method to simulate a database connection error
-        mocker.patch.object(YourManagerClass, 'get_by_id', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.exists(1)
-    #get_by_tac_id
-    @pytest.mark.asyncio
-    async def test_get_by_tac_id_existing(async_session):
+    async def test_get_by_tac_id_existing(self, organization_manager:OrganizationManager, session:AsyncSession):
         # Add a organization with a specific tac_id
-        organization = Organization(name="Organization_1", tac_id=5)
-        async_session.add(organization)
-        await async_session.commit()
+        organization1 = await OrganizationFactory.create_async(session=session)
         # Fetch the organization using the manager function
-        manager = YourManagerClass(session=async_session)
-        fetched_organizations = await manager.get_by_tac_id(5)
+        fetched_organizations = await organization_manager.get_by_tac_id(organization1.tac_id)
         assert len(fetched_organizations) == 1
-        assert fetched_organizations[0].name == "Organization_1"
+        assert fetched_organizations[0].code == organization1.code
     @pytest.mark.asyncio
-    async def test_get_by_tac_id_nonexistent(async_session):
+    async def test_get_by_tac_id_nonexistent(self, organization_manager:OrganizationManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        fetched_organizations = await manager.get_by_tac_id(non_existent_id)
+        fetched_organizations = await organization_manager.get_by_tac_id(non_existent_id)
         assert len(fetched_organizations) == 0
     @pytest.mark.asyncio
-    async def test_get_by_tac_id_invalid_type(async_session):
+    async def test_get_by_tac_id_invalid_type(self, organization_manager:OrganizationManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.get_by_tac_id(invalid_id)
-    @pytest.mark.asyncio
-    async def test_get_by_tac_id_database_connection_issues(async_session, mocker):
-        # Mock the execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_by_tac_id(1)
+        with pytest.raises(Exception):
+            await organization_manager.get_by_tac_id(invalid_id)
+        await session.rollback()
+#endet

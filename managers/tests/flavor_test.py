@@ -1,480 +1,411 @@
+import asyncio
+from decimal import Decimal
 import pytest
-import uuid
-from unittest.mock import AsyncMock, patch
-from managers import FlavorManager, Flavor
-from models.factory import FlavorFactory
+import pytest_asyncio
+import time
+from decimal import Decimal
+from datetime import datetime, date
+from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base, Flavor
-DATABASE_URL = "sqlite:///:memory:"
+from models.factory import FlavorFactory
+from managers.flavor import FlavorManager
+from services.db_config import db_dialect
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.future import select
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
+# Conditionally set the UUID column type
+if db_dialect == 'postgresql':
+    UUIDType = UUID(as_uuid=True)
+elif db_dialect == 'mssql':
+    UUIDType = UNIQUEIDENTIFIER
+else:  # This will cover SQLite, MySQL, and other databases
+    UUIDType = String(36)
 class TestFlavorManager:
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="function")
+    def event_loop(self) -> asyncio.AbstractEventLoop:
+        loop = asyncio.get_event_loop_policy().new_event_loop()
+        yield loop
+        loop.close()
+    @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
-        #FKs are not activated by default in sqllite
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
+        engine = create_async_engine(DATABASE_URL, echo=True)
         yield engine
-        engine.dispose()
-    @pytest.fixture
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture
-    async def flavor_manager(self, session):
+        engine.sync_engine.dispose()
+    @pytest_asyncio.fixture(scope="function")
+    async def session(self,engine) -> AsyncSession:
+        @event.listens_for(engine.sync_engine, "connect")
+        def set_sqlite_pragma(dbapi_connection, connection_record):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+        async with engine.begin() as connection:
+            await connection.begin_nested()
+            await connection.run_sync(Base.metadata.drop_all)
+            await connection.run_sync(Base.metadata.create_all)
+            TestingSessionLocal = sessionmaker(
+                expire_on_commit=False,
+                class_=AsyncSession,
+                bind=engine,
+            )
+            async with TestingSessionLocal(bind=connection) as session:
+                @event.listens_for(
+                    session.sync_session, "after_transaction_end"
+                )
+                def end_savepoint(session, transaction):
+                    if connection.closed:
+                        return
+                    if not connection.in_nested_transaction():
+                        connection.sync_connection.begin_nested()
+                yield session
+                await session.flush()
+                await session.rollback()
+    @pytest_asyncio.fixture(scope="function")
+    async def flavor_manager(self, session:AsyncSession):
         return FlavorManager(session)
     @pytest.mark.asyncio
-    async def test_build(self, flavor_manager):
+    async def test_build(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Define some mock data for our flavor
         mock_data = {
-            "name": "Rose",
-            "species": "Rosa",
-            "age": 2
+            "code": generate_uuid()
         }
         # Call the build function of the manager
         flavor = await flavor_manager.build(**mock_data)
         # Assert that the returned object is an instance of Flavor
         assert isinstance(flavor, Flavor)
         # Assert that the attributes of the flavor match our mock data
-        assert flavor.name == mock_data["name"]
-        assert flavor.species == mock_data["species"]
-        assert flavor.age == mock_data["age"]
+        assert flavor.code == mock_data["code"]
         # Optionally, if the build method has some default values or computations:
         # assert flavor.some_attribute == some_expected_value
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, flavor_manager):
+    async def test_build_with_missing_data(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Define mock data with a missing key
         mock_data = {
-            "name": "Rose",
-            "age": 2
+            "non_existant_property": "Rose"
         }
         # If the build method is expected to raise an exception for missing data, test for that
-        with pytest.raises(SomeSpecificException):
-            await flavor_manager.build(**mock_data)
+        with pytest.raises(Exception):
+            await flavor_manager.build_async(**mock_data)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_add(self, flavor_manager, mock_session):
-        flavor_data = FlavorFactory.build()
-        mock_session.add.return_value = None
-        mock_session.commit.return_value = None
-        flavor = await flavor_manager.add(**flavor_data)
-        mock_session.add.assert_called_once_with(flavor)
-        mock_session.commit.assert_called_once()
-        assert isinstance(flavor, Flavor)
-    @pytest.mark.asyncio
-    async def test_add_correctly_adds_flavor_to_database(self, flavor_manager, db_session):
-        # Create a test flavor using the FlavorFactory without persisting it to the database
-        test_flavor = FlavorFactory.build()
+    async def test_add_correctly_adds_flavor_to_database(self, flavor_manager:FlavorManager, session:AsyncSession):
+        test_flavor = await FlavorFactory.build_async(session)
+        assert test_flavor.flavor_id is None
         # Add the flavor using the manager's add method
         added_flavor = await flavor_manager.add(flavor=test_flavor)
+        assert isinstance(added_flavor, Flavor)
+        assert added_flavor.flavor_id > 0
         # Fetch the flavor from the database directly
-        result = await db_session.execute(select(Flavor).filter(Flavor.flavor_id == added_flavor.flavor_id))
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == added_flavor.flavor_id))
         fetched_flavor = result.scalars().first()
         # Assert that the fetched flavor is not None and matches the added flavor
         assert fetched_flavor is not None
+        assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.flavor_id == added_flavor.flavor_id
-        assert fetched_flavor.name == added_flavor.name
-        # ... other attribute checks ...
     @pytest.mark.asyncio
-    async def test_add_returns_correct_flavor_object(self, flavor_manager):
+    async def test_add_returns_correct_flavor_object(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Create a test flavor using the FlavorFactory without persisting it to the database
-        test_flavor = FlavorFactory.build()
+        test_flavor = await FlavorFactory.build_async(session)
+        assert test_flavor.flavor_id is None
+        test_flavor.code = generate_uuid()
         # Add the flavor using the manager's add method
         added_flavor = await flavor_manager.add(flavor=test_flavor)
+        assert isinstance(added_flavor, Flavor)
+        assert added_flavor.flavor_id > 0
         # Assert that the returned flavor matches the test flavor
         assert added_flavor.flavor_id == test_flavor.flavor_id
-        assert added_flavor.name == test_flavor.name
-        # ... other attribute checks ...
+        assert added_flavor.code == test_flavor.code
     @pytest.mark.asyncio
-    async def test_get_by_id(self, flavor_manager, mock_session):
-        flavor_data = FlavorFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=flavor_data)))
-        flavor = await flavor_manager.get_by_id(1)
-        mock_session.execute.assert_called_once()
+    async def test_get_by_id(self, flavor_manager:FlavorManager, session:AsyncSession):
+        test_flavor = await FlavorFactory.create_async(session)
+        flavor = await flavor_manager.get_by_id(test_flavor.flavor_id)
         assert isinstance(flavor, Flavor)
-    async def test_get_by_id(self, session: AsyncSession, sample_flavor: Flavor):
-        manager = FlavorManager(session)
-        retrieved_flavor = await manager.get_by_id(sample_flavor.flavor_id)
-        assert retrieved_flavor is not None
-        assert retrieved_flavor.flavor_id == sample_flavor.flavor_id
-        assert retrieved_flavor.name == "Rose"
-        assert retrieved_flavor.color == "Red"
-    async def test_get_by_id_not_found(self, session: AsyncSession):
-        manager = FlavorManager(session)
+        assert test_flavor.flavor_id == flavor.flavor_id
+        assert test_flavor.code == flavor.code
+    async def test_get_by_id_not_found(self, flavor_manager:FlavorManager, session: AsyncSession):
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_flavor = await manager.get_by_id(non_existent_id)
+        retrieved_flavor = await flavor_manager.get_by_id(non_existent_id)
         assert retrieved_flavor is None
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_flavor(self, flavor_manager, db_session):
-        # Use your FlavorFactory to create and save a Flavor object
-        code = uuid.uuid4()
-        flavor = FlavorFactory(code=code)
-        db_session.add(flavor)
-        await db_session.commit()
-        # Fetch the flavor using the manager's get_by_code method
-        fetched_flavor = await flavor_manager.get_by_code(code)
-        # Assert that the fetched flavor is not None and has the expected code
-        assert fetched_flavor is not None
-        assert fetched_flavor.code == code
+    async def test_get_by_code_returns_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+        test_flavor = await FlavorFactory.create_async(session)
+        flavor = await flavor_manager.get_by_code(test_flavor.code)
+        assert isinstance(flavor, Flavor)
+        assert test_flavor.flavor_id == flavor.flavor_id
+        assert test_flavor.code == flavor.code
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, flavor_manager):
+    async def test_get_by_code_returns_none_for_nonexistent_code(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Generate a random UUID that doesn't correspond to any Flavor in the database
-        random_code = uuid.uuid4()
-        # Try fetching a flavor using the manager's get_by_code method
-        fetched_flavor = await flavor_manager.get_by_code(random_code)
-        # Assert that the result is None since no flavor with the given code exists
-        assert fetched_flavor is None
+        random_code = generate_uuid()
+        flavor = await flavor_manager.get_by_code(random_code)
+        assert flavor is None
     @pytest.mark.asyncio
-    async def test_update(self, flavor_manager, mock_session):
-        flavor_data = FlavorFactory.build()
-        updated_data = {"name": "Updated Flavor"}
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=flavor_data)))
-        mock_session.commit.return_value = None
-        updated_flavor = await flavor_manager.update(1, **updated_data)
-        assert updated_flavor.name == "Updated Flavor"
-        mock_session.commit.assert_called_once()
+    async def test_update(self, flavor_manager:FlavorManager, session:AsyncSession):
+        test_flavor = await FlavorFactory.create_async(session)
+        test_flavor.code = generate_uuid()
+        updated_flavor = await flavor_manager.update(flavor=test_flavor)
         assert isinstance(updated_flavor, Flavor)
-    async def test_update_valid_flavor(self):
-        # Mocking a flavor instance
-        flavor = Flavor(flavor_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
-        # Update the flavor with new attributes
-        updated_flavor = await self.manager.update(flavor, name="Red Rose", code="REDROSE123")
-        # Assertions
-        assert updated_flavor.name == "Red Rose"
-        assert updated_flavor.code == "REDROSE123"
-        self.session_mock.commit.assert_called_once()
+        assert updated_flavor.flavor_id == test_flavor.flavor_id
+        assert updated_flavor.code == test_flavor.code
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == test_flavor.flavor_id))
+        fetched_flavor = result.scalars().first()
+        assert updated_flavor.flavor_id == fetched_flavor.flavor_id
+        assert updated_flavor.code == fetched_flavor.code
+        assert test_flavor.flavor_id == fetched_flavor.flavor_id
+        assert test_flavor.code == fetched_flavor.code
+    async def test_update_via_dict(self, flavor_manager:FlavorManager, session:AsyncSession):
+        test_flavor = await FlavorFactory.create_async(session)
+        new_code = generate_uuid()
+        updated_flavor = await flavor_manager.update(flavor=test_flavor,code=new_code)
+        assert isinstance(updated_flavor, Flavor)
+        assert updated_flavor.flavor_id == test_flavor.flavor_id
+        assert updated_flavor.code == new_code
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == test_flavor.flavor_id))
+        fetched_flavor = result.scalars().first()
+        assert updated_flavor.flavor_id == fetched_flavor.flavor_id
+        assert updated_flavor.code == fetched_flavor.code
+        assert test_flavor.flavor_id == fetched_flavor.flavor_id
+        assert new_code == fetched_flavor.code
     async def test_update_invalid_flavor(self):
         # None flavor
         flavor = None
-        updated_flavor = await self.manager.update(flavor, name="Red Rose", code="REDROSE123")
+        new_code = generate_uuid()
+        updated_flavor = await self.manager.update(flavor, code=new_code)
         # Assertions
         assert updated_flavor is None
-        self.session_mock.commit.assert_not_called()
-    async def test_update_with_nonexistent_attribute(self):
-        # Mocking a flavor instance
-        flavor = Flavor(flavor_id=1, name="Rose", code="ROSE123")
-        # Mocking the commit method
-        self.session_mock.commit = AsyncMock()
+    async def test_update_with_nonexistent_attribute(self, flavor_manager:FlavorManager, session:AsyncSession):
+        test_flavor = await FlavorFactory.create_async(session)
+        new_code = generate_uuid()
         # This should raise an AttributeError since 'color' is not an attribute of Flavor
         with pytest.raises(AttributeError):
-            await self.manager.update(flavor, color="Red")
-        self.session_mock.commit.assert_not_called()
+            updated_flavor = await flavor_manager.update(flavor=test_flavor,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete(self, flavor_manager, mock_session):
-        flavor_data = FlavorFactory.build()
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=flavor_data)))
-        mock_session.delete.return_value = None
-        mock_session.commit.return_value = None
-        deleted_flavor = await flavor_manager.delete(1)
-        mock_session.delete.assert_called_once_with(deleted_flavor)
-        mock_session.commit.assert_called_once()
-        assert isinstance(deleted_flavor, Flavor)
+    async def test_delete(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor_data = await FlavorFactory.create_async(session)
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_data.flavor_id))
+        fetched_flavor = result.scalars().first()
+        assert isinstance(fetched_flavor, Flavor)
+        assert fetched_flavor.flavor_id == flavor_data.flavor_id
+        deleted_flavor = await flavor_manager.delete(flavor_id=flavor_data.flavor_id)
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_data.flavor_id))
+        fetched_flavor = result.scalars().first()
+        assert fetched_flavor is None
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, flavor_manager, mock_session):
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(first=AsyncMock(return_value=None)))
-        with pytest.raises(ValueError, match="Flavor not found"):
+    async def test_delete_nonexistent(self, flavor_manager:FlavorManager, session:AsyncSession):
+        with pytest.raises(Exception):
             await flavor_manager.delete(999)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_list(self, flavor_manager, mock_session):
-        flavors_data = [FlavorFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=flavors_data)))
+    async def test_delete_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+        with pytest.raises(Exception):
+            await flavor_manager.delete("999")
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_get_list(self, flavor_manager:FlavorManager, session:AsyncSession):
         flavors = await flavor_manager.get_list()
-        mock_session.execute.assert_called_once()
+        assert len(flavors) == 0
+        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
+        flavors = await flavor_manager.get_list()
         assert len(flavors) == 5
         assert all(isinstance(flavor, Flavor) for flavor in flavors)
     @pytest.mark.asyncio
-    async def test_to_json(self, flavor_manager):
-        flavor_data = FlavorFactory.build()
-        flavor = Flavor(**flavor_data)
+    async def test_to_json(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor = await FlavorFactory.build_async(session)
         json_data = flavor_manager.to_json(flavor)
         assert json_data is not None
-        # You might want to do more specific checks on the JSON structure
     @pytest.mark.asyncio
-    async def test_from_json(self, flavor_manager):
-        flavor_data = FlavorFactory.build()
-        flavor = Flavor(**flavor_data)
+    async def test_to_dict(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor = await FlavorFactory.build_async(session)
+        dict_data = flavor_manager.to_dict(flavor)
+        assert dict_data is not None
+    @pytest.mark.asyncio
+    async def test_from_json(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor = await FlavorFactory.create_async(session)
         json_data = flavor_manager.to_json(flavor)
         deserialized_flavor = flavor_manager.from_json(json_data)
         assert isinstance(deserialized_flavor, Flavor)
-        # Additional checks on the deserialized data can be added
+        assert deserialized_flavor.code == flavor.code
     @pytest.mark.asyncio
-    async def test_add_bulk(self, flavor_manager, mock_session):
-        flavors_data = [FlavorFactory.build() for _ in range(5)]
-        mock_session.add_all.return_value = None
-        mock_session.commit.return_value = None
+    async def test_add_bulk(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavors_data = [await FlavorFactory.build_async(session) for _ in range(5)]
         flavors = await flavor_manager.add_bulk(flavors_data)
-        mock_session.add_all.assert_called_once()
-        mock_session.commit.assert_called_once()
         assert len(flavors) == 5
+        for updated_flavor in flavors:
+            result = await session.execute(select(Flavor).filter(Flavor.flavor_id == updated_flavor.flavor_id))
+            fetched_flavor = result.scalars().first()
+            assert isinstance(fetched_flavor, Flavor)
+            assert fetched_flavor.flavor_id == updated_flavor.flavor_id
     @pytest.mark.asyncio
-    async def test_update_bulk_success():
-        manager = FlavorManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
+    async def test_update_bulk_success(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Mocking flavor instances
-        flavor1 = Flavor(flavor_id=1, name="Rose", code="ROSE123")
-        flavor2 = Flavor(flavor_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding flavor
-        async def mock_get_by_id(flavor_id):
-            if flavor_id == 1:
-                return flavor1
-            if flavor_id == 2:
-                return flavor2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+        flavor1 = await FlavorFactory.create_async(session=session)
+        flavor2 = await FlavorFactory.create_async(session=session)
+        code_updated1 = generate_uuid()
+        code_updated2 = generate_uuid()
         # Update flavors
-        updates = [{"flavor_id": 1, "name": "Red Rose"}, {"flavor_id": 2, "name": "Yellow Tulip"}]
-        updated_flavors = await manager.update_bulk(updates)
+        updates = [{"flavor_id": 1, "code": code_updated1}, {"flavor_id": 2, "code": code_updated2}]
+        updated_flavors = await flavor_manager.update_bulk(updates)
         # Assertions
         assert len(updated_flavors) == 2
-        assert updated_flavors[0].name == "Red Rose"
-        assert updated_flavors[1].name == "Yellow Tulip"
-        session_mock.commit.assert_called_once()
+        assert updated_flavors[0].code == code_updated1
+        assert updated_flavors[1].code == code_updated2
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == 1))
+        fetched_flavor = result.scalars().first()
+        assert isinstance(fetched_flavor, Flavor)
+        assert fetched_flavor.code == code_updated1
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == 2))
+        fetched_flavor = result.scalars().first()
+        assert isinstance(fetched_flavor, Flavor)
+        assert fetched_flavor.code == code_updated2
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_flavor_id():
-        manager = FlavorManager()
+    async def test_update_bulk_missing_flavor_id(self, flavor_manager:FlavorManager, session:AsyncSession):
         # No flavors to update since flavor_id is missing
         updates = [{"name": "Red Rose"}]
-        updated_flavors = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_flavors) == 0
+        with pytest.raises(Exception):
+            updated_flavors = await flavor_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_flavor_not_found():
-        manager = FlavorManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (flavor not found)
-        manager.get_by_id = AsyncMock(return_value=None)
-        # Mocking the commit method
-        session_mock.commit = AsyncMock()
+    async def test_update_bulk_flavor_not_found(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Update flavors
-        updates = [{"flavor_id": 1, "name": "Red Rose"}]
-        updated_flavors = await manager.update_bulk(updates)
-        # Assertions
-        assert len(updated_flavors) == 0
-        session_mock.commit.assert_not_called()
+        updates = [{"flavor_id": 1, "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_flavors = await flavor_manager.update_bulk(updates)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_success():
-        manager = FlavorManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking flavor instances
-        flavor1 = Flavor(flavor_id=1, name="Rose", code="ROSE123")
-        flavor2 = Flavor(flavor_id=2, name="Tulip", code="TULIP123")
-        # Mocking the get_by_id method to return the corresponding flavor
-        async def mock_get_by_id(flavor_id):
-            if flavor_id == 1:
-                return flavor1
-            if flavor_id == 2:
-                return flavor2
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_update_bulk_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+        updates = [{"flavor_id": "2", "code": generate_uuid()}]
+        with pytest.raises(Exception):
+            updated_flavors = await flavor_manager.update_bulk(updates)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_delete_bulk_success(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor1 = await FlavorFactory.create_async(session=session)
+        flavor2 = await FlavorFactory.create_async(session=session)
         # Delete flavors
         flavor_ids = [1, 2]
-        result = await manager.delete_bulk(flavor_ids)
-        # Assertions
+        result = await flavor_manager.delete_bulk(flavor_ids)
         assert result is True
-        session_mock.delete.assert_called()
-        session_mock.commit.assert_called_once()
+        for flavor_id in flavor_ids:
+            execute_result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
+            fetched_flavor = execute_result.scalars().first()
+            assert fetched_flavor is None
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_flavors_not_found():
-        manager = FlavorManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the get_by_id method to return None (flavor not found)
-        async def mock_get_by_id(flavor_id):
-            if flavor_id == 1:
-                return None
-            if flavor_id == 2:
-                return Flavor(flavor_id=2, name="Tulip", code="TULIP123")
-        manager.get_by_id = mock_get_by_id
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_some_flavors_not_found(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor1 = await FlavorFactory.create_async(session=session)
         # Delete flavors
         flavor_ids = [1, 2]
-        result = await manager.delete_bulk(flavor_ids)
-        # Assertions
-        assert result is True
-        session_mock.delete.assert_called_once_with(Flavor(flavor_id=2, name="Tulip", code="TULIP123"))
-        session_mock.commit.assert_called_once()
+        with pytest.raises(Exception):
+           result = await flavor_manager.delete_bulk(flavor_ids)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list():
-        manager = FlavorManager()
-        session_mock = AsyncMock()
-        manager.session = session_mock
-        # Mocking the commit and delete methods
-        session_mock.commit = AsyncMock()
-        session_mock.delete = AsyncMock()
+    async def test_delete_bulk_empty_list(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Delete flavors with an empty list
         flavor_ids = []
-        result = await manager.delete_bulk(flavor_ids)
+        result = await flavor_manager.delete_bulk(flavor_ids)
         # Assertions
         assert result is True
-        session_mock.delete.assert_not_called()
-        session_mock.commit.assert_not_called()
     @pytest.mark.asyncio
-    async def test_count(self, flavor_manager, mock_session):
-        flavors_data = [FlavorFactory.build() for _ in range(5)]
-        mock_session.execute.return_value = AsyncMock(scalars=AsyncMock(all=AsyncMock(return_value=flavors_data)))
+    async def test_delete_bulk_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor_ids = ["1", 2]
+        with pytest.raises(Exception):
+           result = await flavor_manager.delete_bulk(flavor_ids)
+        await session.rollback()
+    @pytest.mark.asyncio
+    async def test_count_basic_functionality(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
         count = await flavor_manager.count()
-        mock_session.execute.assert_called_once()
         assert count == 5
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(async_session):
-        # Add a flavor
-        new_flavor = Flavor()
-        async_session.add(new_flavor)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 1
-    @pytest.mark.asyncio
-    async def test_count_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
+    async def test_count_empty_database(self, flavor_manager:FlavorManager, session:AsyncSession):
+        count = await flavor_manager.count()
         assert count == 0
     @pytest.mark.asyncio
-    async def test_count_multiple_additions(async_session):
-        # Add multiple flavors
-        flavors = [Flavor() for _ in range(5)]
-        async_session.add_all(flavors)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        count = await manager.count()
-        assert count == 5
-    @pytest.mark.asyncio
-    async def test_count_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.count()
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(async_session):
+    async def test_get_sorted_list_basic_sorting(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Add flavors
-        flavors = [Flavor(name=f"Flavor_{i}") for i in range(5)]
-        async_session.add_all(flavors)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_flavors = await manager.get_sorted_list(sort_by="name")
-        assert [flavor.name for flavor in sorted_flavors] == [f"Flavor_{i}" for i in range(5)]
+        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
+        sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id")
+        assert [flavor.flavor_id for flavor in sorted_flavors] == [(i + 1) for i in range(5)]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(async_session):
+    async def test_get_sorted_list_descending_sorting(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Add flavors
-        flavors = [Flavor(name=f"Flavor_{i}") for i in range(5)]
-        async_session.add_all(flavors)
-        await async_session.commit()
-        manager = YourManagerClass(session=async_session)
-        sorted_flavors = await manager.get_sorted_list(sort_by="name", order="desc")
-        assert [flavor.name for flavor in sorted_flavors] == [f"Flavor_{i}" for i in reversed(range(5))]
+        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
+        sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id", order="desc")
+        assert [flavor.flavor_id for flavor in sorted_flavors] == [(i + 1) for i in reversed(range(5))]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(async_session):
-        manager = YourManagerClass(session=async_session)
+    async def test_get_sorted_list_invalid_attribute(self, flavor_manager:FlavorManager, session:AsyncSession):
         with pytest.raises(AttributeError):
-            await manager.get_sorted_list(sort_by="invalid_attribute")
+            await flavor_manager.get_sorted_list(sort_by="invalid_attribute")
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_sorted_list_database_connection_issues(async_session, mocker):
-        # Mock the session's execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_sorted_list(sort_by="name")
-    @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(async_session):
-        manager = YourManagerClass(session=async_session)
-        sorted_flavors = await manager.get_sorted_list(sort_by="name")
+    async def test_get_sorted_list_empty_database(self, flavor_manager:FlavorManager, session:AsyncSession):
+        sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id")
         assert len(sorted_flavors) == 0
     @pytest.mark.asyncio
-    async def test_refresh_basic(async_session):
+    async def test_refresh_basic(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Add a flavor
-        flavor = Flavor(name="Flavor_1")
-        async_session.add(flavor)
-        await async_session.commit()
-        # Modify the flavor directly in the database
-        await async_session.execute('UPDATE flavors SET name = :new_name WHERE id = :flavor_id', {"new_name": "Modified_Flavor", "flavor_id": flavor.id})
-        await async_session.commit()
-        # Now, refresh the flavor using the manager function
-        manager = YourManagerClass(session=async_session)
-        refreshed_flavor = await manager.refresh(flavor)
-        assert refreshed_flavor.name == "Modified_Flavor"
+        flavor1 = await FlavorFactory.create_async(session=session)
+        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor1.flavor_id))
+        flavor2 = result.scalars().first()
+        assert flavor1.code == flavor2.code
+        updated_code1 = generate_uuid()
+        flavor1.code = updated_code1
+        updated_flavor1 = await flavor_manager.update(flavor1)
+        assert updated_flavor1.code == updated_code1
+        refreshed_flavor2 = await flavor_manager.refresh(flavor2)
+        assert refreshed_flavor2.code == updated_code1
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_flavor(async_session):
-        flavor = Flavor(id=999, name="Nonexistent_Flavor")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior
-            await manager.refresh(flavor)
+    async def test_refresh_nonexistent_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+        flavor = Flavor(flavor_id=999)
+        with pytest.raises(Exception):
+            await flavor_manager.refresh(flavor)
+        await session.rollback()
     @pytest.mark.asyncio
-    async def test_refresh_database_connection_issues(async_session, mocker):
-        # Mock the session's refresh method to simulate a database connection error
-        mocker.patch.object(async_session, 'refresh', side_effect=Exception("DB connection error"))
-        flavor = Flavor(name="Flavor_1")
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.refresh(flavor)
-    @pytest.mark.asyncio
-    async def test_exists_with_existing_flavor(async_session):
+    async def test_exists_with_existing_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Add a flavor
-        flavor = Flavor(name="Flavor_1")
-        async_session.add(flavor)
-        await async_session.commit()
+        flavor1 = await FlavorFactory.create_async(session=session)
         # Check if the flavor exists using the manager function
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(flavor.id) == True
+        assert await flavor_manager.exists(flavor1.flavor_id) == True
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_flavor(async_session):
+    async def test_exists_with_nonexistent_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        assert await manager.exists(non_existent_id) == False
+        assert await flavor_manager.exists(non_existent_id) == False
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(async_session):
+    async def test_exists_with_invalid_id_type(self, flavor_manager:FlavorManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.exists(invalid_id)
+        with pytest.raises(Exception):
+            await flavor_manager.exists(invalid_id)
+        await session.rollback()
+#endet
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @pytest.mark.asyncio
-    async def test_exists_database_connection_issues(async_session, mocker):
-        # Mock the get_by_id method to simulate a database connection error
-        mocker.patch.object(YourManagerClass, 'get_by_id', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.exists(1)
-    #get_by_pac_id
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_existing(async_session):
+    async def test_get_by_pac_id_existing(self, flavor_manager:FlavorManager, session:AsyncSession):
         # Add a flavor with a specific pac_id
-        flavor = Flavor(name="Flavor_1", pac_id=5)
-        async_session.add(flavor)
-        await async_session.commit()
+        flavor1 = await FlavorFactory.create_async(session=session)
         # Fetch the flavor using the manager function
-        manager = YourManagerClass(session=async_session)
-        fetched_flavors = await manager.get_by_pac_id(5)
+        fetched_flavors = await flavor_manager.get_by_pac_id(flavor1.pac_id)
         assert len(fetched_flavors) == 1
-        assert fetched_flavors[0].name == "Flavor_1"
+        assert fetched_flavors[0].code == flavor1.code
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_nonexistent(async_session):
+    async def test_get_by_pac_id_nonexistent(self, flavor_manager:FlavorManager, session:AsyncSession):
         non_existent_id = 999
-        manager = YourManagerClass(session=async_session)
-        fetched_flavors = await manager.get_by_pac_id(non_existent_id)
+        fetched_flavors = await flavor_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_flavors) == 0
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_invalid_type(async_session):
+    async def test_get_by_pac_id_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
         invalid_id = "invalid_id"
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception):  # Modify the exception type based on your ORM's behavior or validation
-            await manager.get_by_pac_id(invalid_id)
-    @pytest.mark.asyncio
-    async def test_get_by_pac_id_database_connection_issues(async_session, mocker):
-        # Mock the execute method to simulate a database connection error
-        mocker.patch.object(async_session, 'execute', side_effect=Exception("DB connection error"))
-        manager = YourManagerClass(session=async_session)
-        with pytest.raises(Exception, match="DB connection error"):
-            await manager.get_by_pac_id(1)
+        with pytest.raises(Exception):
+            await flavor_manager.get_by_pac_id(invalid_id)
+        await session.rollback()
+#endet

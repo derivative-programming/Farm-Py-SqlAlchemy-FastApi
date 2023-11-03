@@ -5,16 +5,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.tac import Tac
 from models.serialization_schema.tac import TacSchema
+class TacNotFoundError(Exception):
+    pass
 class TacManager:
     def __init__(self, session: AsyncSession):
         self.session = session
-    def build(self, **kwargs) -> Tac:
+    async def build(self, **kwargs) -> Tac:
         return Tac(**kwargs)
     async def add(self, tac: Tac) -> Tac:
         self.session.add(tac)
         await self.session.commit()
         return tac
     async def get_by_id(self, tac_id: int) -> Optional[Tac]:
+        if not isinstance(tac_id, int):
+            raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
         result = await self.session.execute(select(Tac).filter(Tac.tac_id == tac_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
@@ -26,12 +30,14 @@ class TacManager:
                 setattr(tac, key, value)
             await self.session.commit()
         return tac
-    async def delete(self, tac_id: int) -> Optional[Tac]:
+    async def delete(self, tac_id: int):
+        if not isinstance(tac_id, int):
+            raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
         tac = await self.get_by_id(tac_id)
-        if tac:
-            self.session.delete(tac)
-            await self.session.commit()
-        return tac
+        if not tac:
+            raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
+        await self.session.delete(tac)
+        await self.session.commit()
     async def get_list(self) -> List[Tac]:
         result = await self.session.execute(select(Tac))
         return result.scalars().all()
@@ -42,6 +48,13 @@ class TacManager:
         schema = TacSchema()
         tac_data = schema.dump(tac)
         return json.dumps(tac_data)
+    def to_dict(self, tac:Tac) -> dict:
+        """
+        Serialize the Tac object to a JSON string using the TacSchema.
+        """
+        schema = TacSchema()
+        tac_data = schema.dump(tac)
+        return tac_data
     def from_json(self, json_str: str) -> Tac:
         """
         Deserialize a JSON string into a Tac object using the TacSchema.
@@ -51,9 +64,8 @@ class TacManager:
         tac_dict = schema.load(data)
         new_tac = Tac(**tac_dict)
         return new_tac
-    async def add_bulk(self, tacs_data: List[Dict]) -> List[Tac]:
+    async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
         """Add multiple tacs at once."""
-        tacs = [Tac(**data) for data in tacs_data]
         self.session.add_all(tacs)
         await self.session.commit()
         return tacs
@@ -62,11 +74,13 @@ class TacManager:
         updated_tacs = []
         for update in tac_updates:
             tac_id = update.get("tac_id")
+            if not isinstance(tac_id, int):
+                raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
             if not tac_id:
                 continue
             tac = await self.get_by_id(tac_id)
             if not tac:
-                continue
+                raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
             for key, value in update.items():
                 if key != "tac_id":
                     setattr(tac, key, value)
@@ -76,9 +90,13 @@ class TacManager:
     async def delete_bulk(self, tac_ids: List[int]) -> bool:
         """Delete multiple tacs by their IDs."""
         for tac_id in tac_ids:
+            if not isinstance(tac_id, int):
+                raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
             tac = await self.get_by_id(tac_id)
+            if not tac:
+                raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
             if tac:
-                self.session.delete(tac)
+                await self.session.delete(tac)
         await self.session.commit()
         return True
     async def count(self) -> int:
@@ -94,14 +112,18 @@ class TacManager:
         return result.scalars().all()
     async def refresh(self, tac: Tac) -> Tac:
         """Refresh the state of a given tac instance from the database."""
-        self.session.refresh(tac)
+        await self.session.refresh(tac)
         return tac
     async def exists(self, tac_id: int) -> bool:
         """Check if a tac with the given ID exists."""
+        if not isinstance(tac_id, int):
+            raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
         tac = await self.get_by_id(tac_id)
         return bool(tac)
 
     async def get_by_pac_id(self, pac_id: int): # PacID
+        if not isinstance(pac_id, int):
+            raise TypeError(f"The tac_id must be an integer, got {type(pac_id)} instead.")
         result = await self.session.execute(select(Tac).filter(Tac.pac_id == pac_id))
         return result.scalars().all()
 

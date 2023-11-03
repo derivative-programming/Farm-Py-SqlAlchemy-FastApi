@@ -37,23 +37,6 @@ class TestTacFactoryAsync:
         engine = create_async_engine(DATABASE_URL, echo=True)
         yield engine
         engine.sync_engine.dispose()
-    # @pytest_asyncio.fixture(scope="session")
-    # async def prepare_db(self):
-    #     create_db_engine = create_async_engine(
-    #         DATABASE_URL,
-    #         isolation_level="AUTOCOMMIT",
-    #     )
-    #     async with create_db_engine.begin() as connection:
-    #         await connection.execute(
-    #             text(
-    #                 "drop database if exists {name};".format(
-    #                     name="test_db"
-    #                 )
-    #             ),
-    #         )
-    #         await connection.execute(
-    #             text("create database {name};".format(name="test_db")),
-    #         )
     @pytest_asyncio.fixture(scope="session")
     async def session(self,engine) -> AsyncSession:
         @event.listens_for(engine.sync_engine, "connect")

@@ -5,16 +5,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.tri_state_filter import TriStateFilter
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
+class TriStateFilterNotFoundError(Exception):
+    pass
 class TriStateFilterManager:
     def __init__(self, session: AsyncSession):
         self.session = session
-    def build(self, **kwargs) -> TriStateFilter:
+    async def build(self, **kwargs) -> TriStateFilter:
         return TriStateFilter(**kwargs)
     async def add(self, tri_state_filter: TriStateFilter) -> TriStateFilter:
         self.session.add(tri_state_filter)
         await self.session.commit()
         return tri_state_filter
     async def get_by_id(self, tri_state_filter_id: int) -> Optional[TriStateFilter]:
+        if not isinstance(tri_state_filter_id, int):
+            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
         result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == tri_state_filter_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID) -> Optional[TriStateFilter]:
@@ -26,12 +30,14 @@ class TriStateFilterManager:
                 setattr(tri_state_filter, key, value)
             await self.session.commit()
         return tri_state_filter
-    async def delete(self, tri_state_filter_id: int) -> Optional[TriStateFilter]:
+    async def delete(self, tri_state_filter_id: int):
+        if not isinstance(tri_state_filter_id, int):
+            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
-        if tri_state_filter:
-            self.session.delete(tri_state_filter)
-            await self.session.commit()
-        return tri_state_filter
+        if not tri_state_filter:
+            raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
+        await self.session.delete(tri_state_filter)
+        await self.session.commit()
     async def get_list(self) -> List[TriStateFilter]:
         result = await self.session.execute(select(TriStateFilter))
         return result.scalars().all()
@@ -42,6 +48,13 @@ class TriStateFilterManager:
         schema = TriStateFilterSchema()
         tri_state_filter_data = schema.dump(tri_state_filter)
         return json.dumps(tri_state_filter_data)
+    def to_dict(self, tri_state_filter:TriStateFilter) -> dict:
+        """
+        Serialize the TriStateFilter object to a JSON string using the TriStateFilterSchema.
+        """
+        schema = TriStateFilterSchema()
+        tri_state_filter_data = schema.dump(tri_state_filter)
+        return tri_state_filter_data
     def from_json(self, json_str: str) -> TriStateFilter:
         """
         Deserialize a JSON string into a TriStateFilter object using the TriStateFilterSchema.
@@ -51,9 +64,8 @@ class TriStateFilterManager:
         tri_state_filter_dict = schema.load(data)
         new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
         return new_tri_state_filter
-    async def add_bulk(self, tri_state_filters_data: List[Dict]) -> List[TriStateFilter]:
+    async def add_bulk(self, tri_state_filters: List[TriStateFilter]) -> List[TriStateFilter]:
         """Add multiple tri_state_filters at once."""
-        tri_state_filters = [TriStateFilter(**data) for data in tri_state_filters_data]
         self.session.add_all(tri_state_filters)
         await self.session.commit()
         return tri_state_filters
@@ -62,11 +74,13 @@ class TriStateFilterManager:
         updated_tri_state_filters = []
         for update in tri_state_filter_updates:
             tri_state_filter_id = update.get("tri_state_filter_id")
+            if not isinstance(tri_state_filter_id, int):
+                raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
             if not tri_state_filter_id:
                 continue
             tri_state_filter = await self.get_by_id(tri_state_filter_id)
             if not tri_state_filter:
-                continue
+                raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
             for key, value in update.items():
                 if key != "tri_state_filter_id":
                     setattr(tri_state_filter, key, value)
@@ -76,9 +90,13 @@ class TriStateFilterManager:
     async def delete_bulk(self, tri_state_filter_ids: List[int]) -> bool:
         """Delete multiple tri_state_filters by their IDs."""
         for tri_state_filter_id in tri_state_filter_ids:
+            if not isinstance(tri_state_filter_id, int):
+                raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
             tri_state_filter = await self.get_by_id(tri_state_filter_id)
+            if not tri_state_filter:
+                raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
             if tri_state_filter:
-                self.session.delete(tri_state_filter)
+                await self.session.delete(tri_state_filter)
         await self.session.commit()
         return True
     async def count(self) -> int:
@@ -94,14 +112,18 @@ class TriStateFilterManager:
         return result.scalars().all()
     async def refresh(self, tri_state_filter: TriStateFilter) -> TriStateFilter:
         """Refresh the state of a given tri_state_filter instance from the database."""
-        self.session.refresh(tri_state_filter)
+        await self.session.refresh(tri_state_filter)
         return tri_state_filter
     async def exists(self, tri_state_filter_id: int) -> bool:
         """Check if a tri_state_filter with the given ID exists."""
+        if not isinstance(tri_state_filter_id, int):
+            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
         return bool(tri_state_filter)
 
     async def get_by_pac_id(self, pac_id: int): # PacID
+        if not isinstance(pac_id, int):
+            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(pac_id)} instead.")
         result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.pac_id == pac_id))
         return result.scalars().all()
 

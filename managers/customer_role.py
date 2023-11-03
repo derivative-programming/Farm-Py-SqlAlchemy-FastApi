@@ -5,16 +5,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.customer_role import CustomerRole
 from models.serialization_schema.customer_role import CustomerRoleSchema
+class CustomerRoleNotFoundError(Exception):
+    pass
 class CustomerRoleManager:
     def __init__(self, session: AsyncSession):
         self.session = session
-    def build(self, **kwargs) -> CustomerRole:
+    async def build(self, **kwargs) -> CustomerRole:
         return CustomerRole(**kwargs)
     async def add(self, customer_role: CustomerRole) -> CustomerRole:
         self.session.add(customer_role)
         await self.session.commit()
         return customer_role
     async def get_by_id(self, customer_role_id: int) -> Optional[CustomerRole]:
+        if not isinstance(customer_role_id, int):
+            raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
         result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == customer_role_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:
@@ -26,12 +30,14 @@ class CustomerRoleManager:
                 setattr(customer_role, key, value)
             await self.session.commit()
         return customer_role
-    async def delete(self, customer_role_id: int) -> Optional[CustomerRole]:
+    async def delete(self, customer_role_id: int):
+        if not isinstance(customer_role_id, int):
+            raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
         customer_role = await self.get_by_id(customer_role_id)
-        if customer_role:
-            self.session.delete(customer_role)
-            await self.session.commit()
-        return customer_role
+        if not customer_role:
+            raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
+        await self.session.delete(customer_role)
+        await self.session.commit()
     async def get_list(self) -> List[CustomerRole]:
         result = await self.session.execute(select(CustomerRole))
         return result.scalars().all()
@@ -42,6 +48,13 @@ class CustomerRoleManager:
         schema = CustomerRoleSchema()
         customer_role_data = schema.dump(customer_role)
         return json.dumps(customer_role_data)
+    def to_dict(self, customer_role:CustomerRole) -> dict:
+        """
+        Serialize the CustomerRole object to a JSON string using the CustomerRoleSchema.
+        """
+        schema = CustomerRoleSchema()
+        customer_role_data = schema.dump(customer_role)
+        return customer_role_data
     def from_json(self, json_str: str) -> CustomerRole:
         """
         Deserialize a JSON string into a CustomerRole object using the CustomerRoleSchema.
@@ -51,9 +64,8 @@ class CustomerRoleManager:
         customer_role_dict = schema.load(data)
         new_customer_role = CustomerRole(**customer_role_dict)
         return new_customer_role
-    async def add_bulk(self, customer_roles_data: List[Dict]) -> List[CustomerRole]:
+    async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
         """Add multiple customer_roles at once."""
-        customer_roles = [CustomerRole(**data) for data in customer_roles_data]
         self.session.add_all(customer_roles)
         await self.session.commit()
         return customer_roles
@@ -62,11 +74,13 @@ class CustomerRoleManager:
         updated_customer_roles = []
         for update in customer_role_updates:
             customer_role_id = update.get("customer_role_id")
+            if not isinstance(customer_role_id, int):
+                raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
             if not customer_role_id:
                 continue
             customer_role = await self.get_by_id(customer_role_id)
             if not customer_role:
-                continue
+                raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
             for key, value in update.items():
                 if key != "customer_role_id":
                     setattr(customer_role, key, value)
@@ -76,9 +90,13 @@ class CustomerRoleManager:
     async def delete_bulk(self, customer_role_ids: List[int]) -> bool:
         """Delete multiple customer_roles by their IDs."""
         for customer_role_id in customer_role_ids:
+            if not isinstance(customer_role_id, int):
+                raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
             customer_role = await self.get_by_id(customer_role_id)
+            if not customer_role:
+                raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
             if customer_role:
-                self.session.delete(customer_role)
+                await self.session.delete(customer_role)
         await self.session.commit()
         return True
     async def count(self) -> int:
@@ -94,17 +112,23 @@ class CustomerRoleManager:
         return result.scalars().all()
     async def refresh(self, customer_role: CustomerRole) -> CustomerRole:
         """Refresh the state of a given customer_role instance from the database."""
-        self.session.refresh(customer_role)
+        await self.session.refresh(customer_role)
         return customer_role
     async def exists(self, customer_role_id: int) -> bool:
         """Check if a customer_role with the given ID exists."""
+        if not isinstance(customer_role_id, int):
+            raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
         customer_role = await self.get_by_id(customer_role_id)
         return bool(customer_role)
 
     async def get_by_customer_id(self, customer_id: int): # CustomerID
+        if not isinstance(customer_id, int):
+            raise TypeError(f"The customer_role_id must be an integer, got {type(customer_id)} instead.")
         result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_id == customer_id))
         return result.scalars().all()
     async def get_by_role_id(self, role_id: int): # RoleID
+        if not isinstance(role_id, int):
+            raise TypeError(f"The customer_role_id must be an integer, got {type(role_id)} instead.")
         result = await self.session.execute(select(CustomerRole).filter(CustomerRole.role_id == role_id))
         return result.scalars().all()
 

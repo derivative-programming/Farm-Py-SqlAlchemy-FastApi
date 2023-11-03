@@ -5,16 +5,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.org_api_key import OrgApiKey
 from models.serialization_schema.org_api_key import OrgApiKeySchema
+class OrgApiKeyNotFoundError(Exception):
+    pass
 class OrgApiKeyManager:
     def __init__(self, session: AsyncSession):
         self.session = session
-    def build(self, **kwargs) -> OrgApiKey:
+    async def build(self, **kwargs) -> OrgApiKey:
         return OrgApiKey(**kwargs)
     async def add(self, org_api_key: OrgApiKey) -> OrgApiKey:
         self.session.add(org_api_key)
         await self.session.commit()
         return org_api_key
     async def get_by_id(self, org_api_key_id: int) -> Optional[OrgApiKey]:
+        if not isinstance(org_api_key_id, int):
+            raise TypeError(f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
         result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_id))
         return result.scalars().first()
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgApiKey]:
@@ -26,12 +30,14 @@ class OrgApiKeyManager:
                 setattr(org_api_key, key, value)
             await self.session.commit()
         return org_api_key
-    async def delete(self, org_api_key_id: int) -> Optional[OrgApiKey]:
+    async def delete(self, org_api_key_id: int):
+        if not isinstance(org_api_key_id, int):
+            raise TypeError(f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
         org_api_key = await self.get_by_id(org_api_key_id)
-        if org_api_key:
-            self.session.delete(org_api_key)
-            await self.session.commit()
-        return org_api_key
+        if not org_api_key:
+            raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
+        await self.session.delete(org_api_key)
+        await self.session.commit()
     async def get_list(self) -> List[OrgApiKey]:
         result = await self.session.execute(select(OrgApiKey))
         return result.scalars().all()
@@ -42,6 +48,13 @@ class OrgApiKeyManager:
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
         return json.dumps(org_api_key_data)
+    def to_dict(self, org_api_key:OrgApiKey) -> dict:
+        """
+        Serialize the OrgApiKey object to a JSON string using the OrgApiKeySchema.
+        """
+        schema = OrgApiKeySchema()
+        org_api_key_data = schema.dump(org_api_key)
+        return org_api_key_data
     def from_json(self, json_str: str) -> OrgApiKey:
         """
         Deserialize a JSON string into a OrgApiKey object using the OrgApiKeySchema.
@@ -51,9 +64,8 @@ class OrgApiKeyManager:
         org_api_key_dict = schema.load(data)
         new_org_api_key = OrgApiKey(**org_api_key_dict)
         return new_org_api_key
-    async def add_bulk(self, org_api_keys_data: List[Dict]) -> List[OrgApiKey]:
+    async def add_bulk(self, org_api_keys: List[OrgApiKey]) -> List[OrgApiKey]:
         """Add multiple org_api_keys at once."""
-        org_api_keys = [OrgApiKey(**data) for data in org_api_keys_data]
         self.session.add_all(org_api_keys)
         await self.session.commit()
         return org_api_keys
@@ -62,11 +74,13 @@ class OrgApiKeyManager:
         updated_org_api_keys = []
         for update in org_api_key_updates:
             org_api_key_id = update.get("org_api_key_id")
+            if not isinstance(org_api_key_id, int):
+                raise TypeError(f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
             if not org_api_key_id:
                 continue
             org_api_key = await self.get_by_id(org_api_key_id)
             if not org_api_key:
-                continue
+                raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
             for key, value in update.items():
                 if key != "org_api_key_id":
                     setattr(org_api_key, key, value)
@@ -76,9 +90,13 @@ class OrgApiKeyManager:
     async def delete_bulk(self, org_api_key_ids: List[int]) -> bool:
         """Delete multiple org_api_keys by their IDs."""
         for org_api_key_id in org_api_key_ids:
+            if not isinstance(org_api_key_id, int):
+                raise TypeError(f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
             org_api_key = await self.get_by_id(org_api_key_id)
+            if not org_api_key:
+                raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
             if org_api_key:
-                self.session.delete(org_api_key)
+                await self.session.delete(org_api_key)
         await self.session.commit()
         return True
     async def count(self) -> int:
@@ -94,17 +112,23 @@ class OrgApiKeyManager:
         return result.scalars().all()
     async def refresh(self, org_api_key: OrgApiKey) -> OrgApiKey:
         """Refresh the state of a given org_api_key instance from the database."""
-        self.session.refresh(org_api_key)
+        await self.session.refresh(org_api_key)
         return org_api_key
     async def exists(self, org_api_key_id: int) -> bool:
         """Check if a org_api_key with the given ID exists."""
+        if not isinstance(org_api_key_id, int):
+            raise TypeError(f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
         org_api_key = await self.get_by_id(org_api_key_id)
         return bool(org_api_key)
 
     async def get_by_organization_id(self, organization_id: int): # OrganizationID
+        if not isinstance(organization_id, int):
+            raise TypeError(f"The org_api_key_id must be an integer, got {type(organization_id)} instead.")
         result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.organization_id == organization_id))
         return result.scalars().all()
     async def get_by_org_customer_id(self, org_customer_id: int): # OrgCustomerID
+        if not isinstance(org_customer_id, int):
+            raise TypeError(f"The org_api_key_id must be an integer, got {type(org_customer_id)} instead.")
         result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.org_customer_id == org_customer_id))
         return result.scalars().all()
 
