@@ -1,32 +1,242 @@
 import uuid
+from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from services.db_config import db_dialect,generate_uuid
 from managers import OrganizationManager as OrganizationIDManager #OrganizationID
 from managers import OrgCustomerManager as OrgCustomerIDManager #OrgCustomerID
 from managers import OrgApiKeyManager
 from models import OrgApiKey
+class OrgApiKeySessionNotFoundError(Exception):
+    pass
+class OrgApiKeyInvalidInitError(Exception):
+    pass
+#Conditionally set the UUID column type
+if db_dialect == 'postgresql':
+    UUIDType = UUID(as_uuid=True)
+elif db_dialect == 'mssql':
+    UUIDType = UNIQUEIDENTIFIER
+else:  #This will cover SQLite, MySQL, and other databases
+    UUIDType = String(36)
 class OrgApiKeyBusObj:
-    def __init__(self, code:uuid.UUID=None, org_api_key_id:int=None, org_api_key:OrgApiKey=None, session:AsyncSession=None):
-        self.org_api_key = org_api_key
+    def __init__(self, session:AsyncSession=None):
+        if not session:
+            raise OrgApiKeySessionNotFoundError("session required")
         self.session = session
-        self.manager = OrgApiKeyManager(session)
-        # If initialized with a org_api_key_id and not a org_api_key object, load the org_api_key
-        if org_api_key_id and not org_api_key and not code:
-            org_api_key_obj = self.manager.get_by_id(org_api_key_id)
+        self.org_api_key = OrgApiKey()
+    @property
+    def org_api_key_id(self):
+        return self.org_api_key.org_api_key_id
+    @org_api_key_id.setter
+    def code(self, value: int):
+        if not isinstance(value, int):
+            raise ValueError("org_api_key_id must be a int.")
+        self.org_api_key.org_api_key_id = value
+    #code
+    @property
+    def code(self):
+        return self.org_api_key.code
+    @code.setter
+    def code(self, value: UUIDType):
+        #if not isinstance(value, UUIDType):
+        #raise ValueError("code must be a UUID.")
+        self.org_api_key.code = value
+    #last_change_code
+    @property
+    def last_change_code(self):
+        return self.org_api_key.last_change_code
+    @last_change_code.setter
+    def last_change_code(self, value: int):
+        if not isinstance(value, int):
+            raise ValueError("last_change_code must be an integer.")
+        self.org_api_key.last_change_code = value
+    #insert_user_id
+    @property
+    def insert_user_id(self):
+        return self.org_api_key.insert_user_id
+    @insert_user_id.setter
+    def insert_user_id(self, value: uuid.UUID):
+        if not isinstance(value, uuid.UUID):
+            raise ValueError("insert_user_id must be a UUID.")
+        self.org_api_key.insert_user_id = value
+    #last_update_user_id
+    @property
+    def last_update_user_id(self):
+        return self.org_api_key.last_update_user_id
+    @last_update_user_id.setter
+    def last_update_user_id(self, value: uuid.UUID):
+        if not isinstance(value, uuid.UUID):
+            raise ValueError("last_update_user_id must be a UUID.")
+        self.org_api_key.last_update_user_id = value
+
+    #ApiKeyValue
+    @property
+    def api_key_value(self):
+        return self.org_api_key.api_key_value
+    @api_key_value.setter
+    def api_key_value(self, value):
+        assert isinstance(value, str), "api_key_value must be a string"
+        self.org_api_key.api_key_value = value
+    #CreatedBy
+    @property
+    def created_by(self):
+        return self.org_api_key.created_by
+    @created_by.setter
+    def created_by(self, value):
+        assert isinstance(value, str), "created_by must be a string"
+        self.org_api_key.created_by = value
+    #CreatedUTCDateTime
+    @property
+    def created_utc_date_time(self):
+        return self.org_api_key.created_utc_date_time
+    @created_utc_date_time.setter
+    def created_utc_date_time(self, value):
+        assert isinstance(value, datetime), "created_utc_date_time must be a datetime object"
+        self.org_api_key.created_utc_date_time = value
+    #ExpirationUTCDateTime
+    @property
+    def expiration_utc_date_time(self):
+        return self.org_api_key.expiration_utc_date_time
+    @expiration_utc_date_time.setter
+    def expiration_utc_date_time(self, value):
+        assert isinstance(value, datetime), "expiration_utc_date_time must be a datetime object"
+        self.org_api_key.expiration_utc_date_time = value
+    #IsActive
+    @property
+    def is_active(self):
+        return self.org_api_key.is_active
+    @is_active.setter
+    def is_active(self, value: bool):
+        if not isinstance(value, bool):
+            raise ValueError("is_active must be a boolean.")
+        self.org_api_key.is_active = value
+    #IsTempUserKey
+    @property
+    def is_temp_user_key(self):
+        return self.org_api_key.is_temp_user_key
+    @is_temp_user_key.setter
+    def is_temp_user_key(self, value: bool):
+        if not isinstance(value, bool):
+            raise ValueError("is_temp_user_key must be a boolean.")
+        self.org_api_key.is_temp_user_key = value
+    #Name
+    @property
+    def name(self):
+        return self.org_api_key.name
+    @name.setter
+    def name(self, value):
+        assert isinstance(value, str), "name must be a string"
+        self.org_api_key.name = value
+    #OrganizationID
+    @property
+    def organization_id(self):
+        return self.org_api_key.organization_id
+    @organization_id.setter
+    def organization_id(self, value):
+        assert isinstance(value, int) or value is None, "organization_id must be an integer or None"
+        self.org_api_key.organization_id = value
+    #OrgCustomerID
+    @property
+    def org_customer_id(self):
+        return self.org_api_key.org_customer_id
+    @org_customer_id.setter
+    def org_customer_id(self, value: int):
+        if not isinstance(value, int):
+            raise ValueError("org_customer_id must be an integer.")
+        self.org_api_key.org_customer_id = value
+    @property
+    def some_var_char_val(self):
+        return self.org_api_key.some_var_char_val
+    @some_var_char_val.setter
+    def some_var_char_val(self, value):
+        assert isinstance(value, str), "some_var_char_val must be a string"
+        self.org_api_key.some_var_char_val = value
+
+    #OrganizationID
+    #OrgCustomerID
+    @property
+    def org_customer_code_peek(self):
+        return self.org_api_key.org_customer_code_peek
+    @org_customer_code_peek.setter
+    def org_customer_code_peek(self, value):
+        assert isinstance(value, UUIDType), "org_customer_code_peek must be a UUID"
+        self.org_api_key.org_customer_code_peek = value
+    @property
+    def organization_code_peek(self):
+        return self.org_api_key.organization_code_peek
+    @organization_code_peek.setter
+    def organization_code_peek(self, value):
+        assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
+        self.org_api_key.organization_code_peek = value
+
+    #insert_utc_date_time
+    @property
+    def insert_utc_date_time(self):
+        return self.org_api_key.insert_utc_date_time
+    @insert_utc_date_time.setter
+    def insert_utc_date_time(self, value):
+        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        self.org_api_key.insert_utc_date_time = value
+    #update_utc_date_time
+    @property
+    def last_update_utc_date_time(self):
+        return self.org_api_key.last_update_utc_date_time
+    @last_update_utc_date_time.setter
+    def last_update_utc_date_time(self, value):
+        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        self.org_api_key.last_update_utc_date_time = value
+    async def load(self, json_data:str=None, code:uuid.UUID=None, org_api_key_id:int=None, org_api_key_obj_instance:OrgApiKey=None, org_api_key_dict:dict=None):
+        if org_api_key_id and self.org_api_key.org_api_key_id is None:
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_obj = await org_api_key_manager.get_by_id(org_api_key_id)
             self.org_api_key = org_api_key_obj
-        if code and not org_api_key and not org_api_key_id:
-            org_api_key_obj = self.manager.get_by_code(code)
+        if code and self.org_api_key.org_api_key_id is None:
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_obj = await org_api_key_manager.get_by_code(code)
             self.org_api_key = org_api_key_obj
+        if org_api_key_obj_instance and self.org_api_key.org_api_key_id is None:
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_obj = await org_api_key_manager.get_by_id(org_api_key_obj_instance.org_api_key_id)
+            self.org_api_key = org_api_key_obj
+        if json_data and self.org_api_key.org_api_key_id is None:
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            self.org_api_key = org_api_key_manager.from_json(json_data)
+        if org_api_key_dict and self.org_api_key.org_api_key_id is None:
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            self.org_api_key = org_api_key_manager.from_dict(org_api_key_dict)
+    async def refresh(self):
+        org_api_key_manager = OrgApiKeyManager(self.session)
+        self.org_api_key = await org_api_key_manager.refresh(self.org_api_key)
+    def to_dict(self):
+        org_api_key_manager = OrgApiKeyManager(self.session)
+        return org_api_key_manager.to_dict(self.org_api_key)
+    def to_json(self):
+        org_api_key_manager = OrgApiKeyManager(self.session)
+        return org_api_key_manager.to_json(self.org_api_key)
     async def save(self):
         if self.org_api_key.org_api_key_id > 0:
-            self.org_api_key = await self.manager.update(self.org_api_key)
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            self.org_api_key = await org_api_key_manager.update(self.org_api_key)
         if self.org_api_key.org_api_key_id == 0:
-            self.org_api_key = await self.manager.add(self.org_api_key)
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            self.org_api_key = await org_api_key_manager.add(self.org_api_key)
     async def delete(self):
         if self.org_api_key.org_api_key_id > 0:
-            self.org_api_key = await self.manager.delete(self.org_api_key.org_api_key_id)
+            org_api_key_manager = OrgApiKeyManager(self.session)
+            self.org_api_key = await org_api_key_manager.delete(self.org_api_key.org_api_key_id)
+    def get_org_api_key_obj(self) -> OrgApiKey:
+        return self.org_api_key
+    def is_equal(self,org_api_key:OrgApiKey) -> OrgApiKey:
+        org_api_key_manager = OrgApiKeyManager(self.session)
+        my_org_api_key = self.get_org_api_key_obj()
+        return org_api_key_manager.is_equal(org_api_key, my_org_api_key)
+
     async def get_organization_id_rel_obj(self, organization_id: int): #OrganizationID
         organization_manager = OrganizationIDManager(self.session)
-        return organization_manager.get_by_id(self.org_api_key.organization_id)
+        return await organization_manager.get_by_id(self.org_api_key.organization_id)
     async def get_org_customer_id_rel_obj(self, org_customer_id: int): #OrgCustomerID
         org_customer_manager = OrgCustomerIDManager(self.session)
-        return org_customer_manager.get_by_id(self.org_api_key.org_customer_id)
+        return await org_customer_manager.get_by_id(self.org_api_key.org_customer_id)
+

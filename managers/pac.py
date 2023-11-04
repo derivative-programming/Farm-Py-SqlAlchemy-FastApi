@@ -64,6 +64,9 @@ class PacManager:
         pac_dict = schema.load(data)
         new_pac = Pac(**pac_dict)
         return new_pac
+    def from_dict(self, pac_dict: str) -> Pac:
+        new_pac = Pac(**pac_dict)
+        return new_pac
     async def add_bulk(self, pacs: List[Pac]) -> List[Pac]:
         """Add multiple pacs at once."""
         self.session.add_all(pacs)
@@ -120,4 +123,16 @@ class PacManager:
             raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
         pac = await self.get_by_id(pac_id)
         return bool(pac)
+    def is_equal(self, pac1:Pac, pac2:Pac) -> bool:
+        if not pac1:
+            raise TypeError("Pac1 required.")
+        if not pac2:
+            raise TypeError("Pac2 required.")
+        if not isinstance(pac1, Pac):
+            raise TypeError("The pac1 must be an Pac instance.")
+        if not isinstance(pac2, Pac):
+            raise TypeError("The pac2 must be an Pac instance.")
+        dict1 = self.to_dict(pac1)
+        dict2 = self.to_dict(pac2)
+        return dict1 == dict2
 

@@ -95,6 +95,7 @@ class Plant(Base):
         self.land_code_peek = kwargs.get('land_code_peek', generate_uuid())# LandID
 #endset 
 
+
 # Define the index separately from the column
 # Index('index_code', Plant.code)
 Index('plant_index_land_id', Plant.land_id) #LandID

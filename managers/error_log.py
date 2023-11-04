@@ -64,6 +64,9 @@ class ErrorLogManager:
         error_log_dict = schema.load(data)
         new_error_log = ErrorLog(**error_log_dict)
         return new_error_log
+    def from_dict(self, error_log_dict: str) -> ErrorLog:
+        new_error_log = ErrorLog(**error_log_dict)
+        return new_error_log
     async def add_bulk(self, error_logs: List[ErrorLog]) -> List[ErrorLog]:
         """Add multiple error_logs at once."""
         self.session.add_all(error_logs)
@@ -120,6 +123,18 @@ class ErrorLogManager:
             raise TypeError(f"The error_log_id must be an integer, got {type(error_log_id)} instead.")
         error_log = await self.get_by_id(error_log_id)
         return bool(error_log)
+    def is_equal(self, error_log1:ErrorLog, error_log2:ErrorLog) -> bool:
+        if not error_log1:
+            raise TypeError("ErrorLog1 required.")
+        if not error_log2:
+            raise TypeError("ErrorLog2 required.")
+        if not isinstance(error_log1, ErrorLog):
+            raise TypeError("The error_log1 must be an ErrorLog instance.")
+        if not isinstance(error_log2, ErrorLog):
+            raise TypeError("The error_log2 must be an ErrorLog instance.")
+        dict1 = self.to_dict(error_log1)
+        dict2 = self.to_dict(error_log2)
+        return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
         if not isinstance(pac_id, int):

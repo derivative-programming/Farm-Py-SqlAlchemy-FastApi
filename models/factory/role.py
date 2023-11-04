@@ -38,7 +38,10 @@ class RoleFactory(factory.Factory):
 
     pac_code_peek = factory.LazyFunction(generate_uuid) # PacID
     @classmethod
-    def _build(cls, model_class, session, *args, **kwargs) -> Role:
+    def _build(cls, model_class, session=None, *args, **kwargs) -> Role:
+        if session is None:
+                obj2 = model_class(*args, **kwargs)
+                return obj2
         pac_id_pac_instance = PacFactory.create(session=session)  #PacID
 
         kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
@@ -54,7 +57,7 @@ class RoleFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Role:
+    def _create(cls, model_class, session=None, *args, **kwargs) -> Role:
         pac_id_pac_instance = PacFactory.create(session=session)  #PacID
 
         kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
@@ -77,7 +80,7 @@ class RoleFactory(factory.Factory):
 
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
-        obj = Role(*args, **kwargs)
+        obj = RoleFactory.build(session=None, *args, **kwargs)
         obj.pac_id = pac_id_pac_instance.pac_id #PacID
 
         obj.pac_code_peek = pac_id_pac_instance.code #PacID
@@ -93,7 +96,7 @@ class RoleFactory(factory.Factory):
 
         kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
 
-        obj = Role(*args, **kwargs)
+        obj = RoleFactory.build(session=None, *args, **kwargs)
         obj.pac_id = pac_id_pac_instance.pac_id #PacID
 
         obj.pac_code_peek = pac_id_pac_instance.code #PacID

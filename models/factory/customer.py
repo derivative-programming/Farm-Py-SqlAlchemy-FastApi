@@ -55,7 +55,10 @@ class CustomerFactory(factory.Factory):
 
     tac_code_peek = factory.LazyFunction(generate_uuid) # TacID
     @classmethod
-    def _build(cls, model_class, session, *args, **kwargs) -> Customer:
+    def _build(cls, model_class, session=None, *args, **kwargs) -> Customer:
+        if session is None:
+                obj2 = model_class(*args, **kwargs)
+                return obj2
         tac_id_tac_instance = TacFactory.create(session=session)  #TacID
 
         kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
@@ -71,7 +74,7 @@ class CustomerFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Customer:
+    def _create(cls, model_class, session=None, *args, **kwargs) -> Customer:
         tac_id_tac_instance = TacFactory.create(session=session)  #TacID
 
         kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
@@ -94,7 +97,7 @@ class CustomerFactory(factory.Factory):
 
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
-        obj = Customer(*args, **kwargs)
+        obj = CustomerFactory.build(session=None, *args, **kwargs)
         obj.tac_id = tac_id_tac_instance.tac_id #TacID
 
         obj.tac_code_peek = tac_id_tac_instance.code #TacID
@@ -110,7 +113,7 @@ class CustomerFactory(factory.Factory):
 
         kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
 
-        obj = Customer(*args, **kwargs)
+        obj = CustomerFactory.build(session=None, *args, **kwargs)
         obj.tac_id = tac_id_tac_instance.tac_id #TacID
 
         obj.tac_code_peek = tac_id_tac_instance.code #TacID

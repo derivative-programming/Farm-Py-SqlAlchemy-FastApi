@@ -64,6 +64,9 @@ class RoleManager:
         role_dict = schema.load(data)
         new_role = Role(**role_dict)
         return new_role
+    def from_dict(self, role_dict: str) -> Role:
+        new_role = Role(**role_dict)
+        return new_role
     async def add_bulk(self, roles: List[Role]) -> List[Role]:
         """Add multiple roles at once."""
         self.session.add_all(roles)
@@ -120,6 +123,18 @@ class RoleManager:
             raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
         role = await self.get_by_id(role_id)
         return bool(role)
+    def is_equal(self, role1:Role, role2:Role) -> bool:
+        if not role1:
+            raise TypeError("Role1 required.")
+        if not role2:
+            raise TypeError("Role2 required.")
+        if not isinstance(role1, Role):
+            raise TypeError("The role1 must be an Role instance.")
+        if not isinstance(role2, Role):
+            raise TypeError("The role2 must be an Role instance.")
+        dict1 = self.to_dict(role1)
+        dict2 = self.to_dict(role2)
+        return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
         if not isinstance(pac_id, int):

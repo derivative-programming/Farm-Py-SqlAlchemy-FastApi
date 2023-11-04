@@ -64,6 +64,9 @@ class OrganizationManager:
         organization_dict = schema.load(data)
         new_organization = Organization(**organization_dict)
         return new_organization
+    def from_dict(self, organization_dict: str) -> Organization:
+        new_organization = Organization(**organization_dict)
+        return new_organization
     async def add_bulk(self, organizations: List[Organization]) -> List[Organization]:
         """Add multiple organizations at once."""
         self.session.add_all(organizations)
@@ -120,6 +123,18 @@ class OrganizationManager:
             raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
         organization = await self.get_by_id(organization_id)
         return bool(organization)
+    def is_equal(self, organization1:Organization, organization2:Organization) -> bool:
+        if not organization1:
+            raise TypeError("Organization1 required.")
+        if not organization2:
+            raise TypeError("Organization2 required.")
+        if not isinstance(organization1, Organization):
+            raise TypeError("The organization1 must be an Organization instance.")
+        if not isinstance(organization2, Organization):
+            raise TypeError("The organization2 must be an Organization instance.")
+        dict1 = self.to_dict(organization1)
+        dict2 = self.to_dict(organization2)
+        return dict1 == dict2
 
     async def get_by_tac_id(self, tac_id: int): # TacID
         if not isinstance(tac_id, int):

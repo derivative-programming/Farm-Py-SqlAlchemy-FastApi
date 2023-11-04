@@ -64,6 +64,9 @@ class CustomerRoleManager:
         customer_role_dict = schema.load(data)
         new_customer_role = CustomerRole(**customer_role_dict)
         return new_customer_role
+    def from_dict(self, customer_role_dict: str) -> CustomerRole:
+        new_customer_role = CustomerRole(**customer_role_dict)
+        return new_customer_role
     async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
         """Add multiple customer_roles at once."""
         self.session.add_all(customer_roles)
@@ -120,6 +123,18 @@ class CustomerRoleManager:
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
         customer_role = await self.get_by_id(customer_role_id)
         return bool(customer_role)
+    def is_equal(self, customer_role1:CustomerRole, customer_role2:CustomerRole) -> bool:
+        if not customer_role1:
+            raise TypeError("CustomerRole1 required.")
+        if not customer_role2:
+            raise TypeError("CustomerRole2 required.")
+        if not isinstance(customer_role1, CustomerRole):
+            raise TypeError("The customer_role1 must be an CustomerRole instance.")
+        if not isinstance(customer_role2, CustomerRole):
+            raise TypeError("The customer_role2 must be an CustomerRole instance.")
+        dict1 = self.to_dict(customer_role1)
+        dict2 = self.to_dict(customer_role2)
+        return dict1 == dict2
 
     async def get_by_customer_id(self, customer_id: int): # CustomerID
         if not isinstance(customer_id, int):

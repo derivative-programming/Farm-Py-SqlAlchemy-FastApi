@@ -64,6 +64,9 @@ class FlavorManager:
         flavor_dict = schema.load(data)
         new_flavor = Flavor(**flavor_dict)
         return new_flavor
+    def from_dict(self, flavor_dict: str) -> Flavor:
+        new_flavor = Flavor(**flavor_dict)
+        return new_flavor
     async def add_bulk(self, flavors: List[Flavor]) -> List[Flavor]:
         """Add multiple flavors at once."""
         self.session.add_all(flavors)
@@ -120,6 +123,18 @@ class FlavorManager:
             raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
         flavor = await self.get_by_id(flavor_id)
         return bool(flavor)
+    def is_equal(self, flavor1:Flavor, flavor2:Flavor) -> bool:
+        if not flavor1:
+            raise TypeError("Flavor1 required.")
+        if not flavor2:
+            raise TypeError("Flavor2 required.")
+        if not isinstance(flavor1, Flavor):
+            raise TypeError("The flavor1 must be an Flavor instance.")
+        if not isinstance(flavor2, Flavor):
+            raise TypeError("The flavor2 must be an Flavor instance.")
+        dict1 = self.to_dict(flavor1)
+        dict2 = self.to_dict(flavor2)
+        return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
         if not isinstance(pac_id, int):

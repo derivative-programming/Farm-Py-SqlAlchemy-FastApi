@@ -64,6 +64,9 @@ class TacManager:
         tac_dict = schema.load(data)
         new_tac = Tac(**tac_dict)
         return new_tac
+    def from_dict(self, tac_dict: str) -> Tac:
+        new_tac = Tac(**tac_dict)
+        return new_tac
     async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
         """Add multiple tacs at once."""
         self.session.add_all(tacs)
@@ -120,6 +123,18 @@ class TacManager:
             raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
         tac = await self.get_by_id(tac_id)
         return bool(tac)
+    def is_equal(self, tac1:Tac, tac2:Tac) -> bool:
+        if not tac1:
+            raise TypeError("Tac1 required.")
+        if not tac2:
+            raise TypeError("Tac2 required.")
+        if not isinstance(tac1, Tac):
+            raise TypeError("The tac1 must be an Tac instance.")
+        if not isinstance(tac2, Tac):
+            raise TypeError("The tac2 must be an Tac instance.")
+        dict1 = self.to_dict(tac1)
+        dict2 = self.to_dict(tac2)
+        return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
         if not isinstance(pac_id, int):

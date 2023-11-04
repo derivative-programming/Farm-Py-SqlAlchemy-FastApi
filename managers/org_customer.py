@@ -64,6 +64,9 @@ class OrgCustomerManager:
         org_customer_dict = schema.load(data)
         new_org_customer = OrgCustomer(**org_customer_dict)
         return new_org_customer
+    def from_dict(self, org_customer_dict: str) -> OrgCustomer:
+        new_org_customer = OrgCustomer(**org_customer_dict)
+        return new_org_customer
     async def add_bulk(self, org_customers: List[OrgCustomer]) -> List[OrgCustomer]:
         """Add multiple org_customers at once."""
         self.session.add_all(org_customers)
@@ -120,6 +123,18 @@ class OrgCustomerManager:
             raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
         org_customer = await self.get_by_id(org_customer_id)
         return bool(org_customer)
+    def is_equal(self, org_customer1:OrgCustomer, org_customer2:OrgCustomer) -> bool:
+        if not org_customer1:
+            raise TypeError("OrgCustomer1 required.")
+        if not org_customer2:
+            raise TypeError("OrgCustomer2 required.")
+        if not isinstance(org_customer1, OrgCustomer):
+            raise TypeError("The org_customer1 must be an OrgCustomer instance.")
+        if not isinstance(org_customer2, OrgCustomer):
+            raise TypeError("The org_customer2 must be an OrgCustomer instance.")
+        dict1 = self.to_dict(org_customer1)
+        dict2 = self.to_dict(org_customer2)
+        return dict1 == dict2
 
     async def get_by_customer_id(self, customer_id: int): # CustomerID
         if not isinstance(customer_id, int):

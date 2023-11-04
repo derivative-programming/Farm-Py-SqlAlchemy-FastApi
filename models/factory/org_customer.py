@@ -37,7 +37,10 @@ class OrgCustomerFactory(factory.Factory):
     customer_code_peek = factory.LazyFunction(generate_uuid)  # CustomerID
     organization_code_peek = factory.LazyFunction(generate_uuid) # OrganizationID
     @classmethod
-    def _build(cls, model_class, session, *args, **kwargs) -> OrgCustomer:
+    def _build(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
+        if session is None:
+                obj2 = model_class(*args, **kwargs)
+                return obj2
         customer_id_customer_instance = CustomerFactory.create(session=session) #CustomerID
         organization_id_organization_instance = OrganizationFactory.create(session=session)  #OrganizationID
 
@@ -58,7 +61,7 @@ class OrgCustomerFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> OrgCustomer:
+    def _create(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
         customer_id_customer_instance = CustomerFactory.create(session=session) #CustomerID
         organization_id_organization_instance = OrganizationFactory.create(session=session)  #OrganizationID
 
@@ -89,7 +92,7 @@ class OrgCustomerFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code #CustomerID
         kwargs["organization_code_peek"] = organization_id_organization_instance.code #OrganizationID
 
-        obj = OrgCustomer(*args, **kwargs)
+        obj = OrgCustomerFactory.build(session=None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id #CustomerID
         obj.organization_id = organization_id_organization_instance.organization_id #OrganizationID
 
@@ -110,7 +113,7 @@ class OrgCustomerFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code #CustomerID
         kwargs["organization_code_peek"] = organization_id_organization_instance.code #OrganizationID
 
-        obj = OrgCustomer(*args, **kwargs)
+        obj = OrgCustomerFactory.build(session=None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id #CustomerID
         obj.organization_id = organization_id_organization_instance.organization_id #OrganizationID
 

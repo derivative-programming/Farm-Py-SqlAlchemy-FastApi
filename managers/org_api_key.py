@@ -64,6 +64,9 @@ class OrgApiKeyManager:
         org_api_key_dict = schema.load(data)
         new_org_api_key = OrgApiKey(**org_api_key_dict)
         return new_org_api_key
+    def from_dict(self, org_api_key_dict: str) -> OrgApiKey:
+        new_org_api_key = OrgApiKey(**org_api_key_dict)
+        return new_org_api_key
     async def add_bulk(self, org_api_keys: List[OrgApiKey]) -> List[OrgApiKey]:
         """Add multiple org_api_keys at once."""
         self.session.add_all(org_api_keys)
@@ -120,6 +123,18 @@ class OrgApiKeyManager:
             raise TypeError(f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
         org_api_key = await self.get_by_id(org_api_key_id)
         return bool(org_api_key)
+    def is_equal(self, org_api_key1:OrgApiKey, org_api_key2:OrgApiKey) -> bool:
+        if not org_api_key1:
+            raise TypeError("OrgApiKey1 required.")
+        if not org_api_key2:
+            raise TypeError("OrgApiKey2 required.")
+        if not isinstance(org_api_key1, OrgApiKey):
+            raise TypeError("The org_api_key1 must be an OrgApiKey instance.")
+        if not isinstance(org_api_key2, OrgApiKey):
+            raise TypeError("The org_api_key2 must be an OrgApiKey instance.")
+        dict1 = self.to_dict(org_api_key1)
+        dict2 = self.to_dict(org_api_key2)
+        return dict1 == dict2
 
     async def get_by_organization_id(self, organization_id: int): # OrganizationID
         if not isinstance(organization_id, int):

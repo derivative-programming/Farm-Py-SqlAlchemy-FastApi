@@ -64,6 +64,9 @@ class LandManager:
         land_dict = schema.load(data)
         new_land = Land(**land_dict)
         return new_land
+    def from_dict(self, land_dict: str) -> Land:
+        new_land = Land(**land_dict)
+        return new_land
     async def add_bulk(self, lands: List[Land]) -> List[Land]:
         """Add multiple lands at once."""
         self.session.add_all(lands)
@@ -120,6 +123,18 @@ class LandManager:
             raise TypeError(f"The land_id must be an integer, got {type(land_id)} instead.")
         land = await self.get_by_id(land_id)
         return bool(land)
+    def is_equal(self, land1:Land, land2:Land) -> bool:
+        if not land1:
+            raise TypeError("Land1 required.")
+        if not land2:
+            raise TypeError("Land2 required.")
+        if not isinstance(land1, Land):
+            raise TypeError("The land1 must be an Land instance.")
+        if not isinstance(land2, Land):
+            raise TypeError("The land2 must be an Land instance.")
+        dict1 = self.to_dict(land1)
+        dict2 = self.to_dict(land2)
+        return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
         if not isinstance(pac_id, int):

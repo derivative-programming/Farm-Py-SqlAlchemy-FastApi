@@ -64,6 +64,9 @@ class DateGreaterThanFilterManager:
         date_greater_than_filter_dict = schema.load(data)
         new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict)
         return new_date_greater_than_filter
+    def from_dict(self, date_greater_than_filter_dict: str) -> DateGreaterThanFilter:
+        new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict)
+        return new_date_greater_than_filter
     async def add_bulk(self, date_greater_than_filters: List[DateGreaterThanFilter]) -> List[DateGreaterThanFilter]:
         """Add multiple date_greater_than_filters at once."""
         self.session.add_all(date_greater_than_filters)
@@ -120,6 +123,18 @@ class DateGreaterThanFilterManager:
             raise TypeError(f"The date_greater_than_filter_id must be an integer, got {type(date_greater_than_filter_id)} instead.")
         date_greater_than_filter = await self.get_by_id(date_greater_than_filter_id)
         return bool(date_greater_than_filter)
+    def is_equal(self, date_greater_than_filter1:DateGreaterThanFilter, date_greater_than_filter2:DateGreaterThanFilter) -> bool:
+        if not date_greater_than_filter1:
+            raise TypeError("DateGreaterThanFilter1 required.")
+        if not date_greater_than_filter2:
+            raise TypeError("DateGreaterThanFilter2 required.")
+        if not isinstance(date_greater_than_filter1, DateGreaterThanFilter):
+            raise TypeError("The date_greater_than_filter1 must be an DateGreaterThanFilter instance.")
+        if not isinstance(date_greater_than_filter2, DateGreaterThanFilter):
+            raise TypeError("The date_greater_than_filter2 must be an DateGreaterThanFilter instance.")
+        dict1 = self.to_dict(date_greater_than_filter1)
+        dict2 = self.to_dict(date_greater_than_filter2)
+        return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
         if not isinstance(pac_id, int):

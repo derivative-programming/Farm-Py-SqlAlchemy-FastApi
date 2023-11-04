@@ -64,6 +64,9 @@ class TriStateFilterManager:
         tri_state_filter_dict = schema.load(data)
         new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
         return new_tri_state_filter
+    def from_dict(self, tri_state_filter_dict: str) -> TriStateFilter:
+        new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
+        return new_tri_state_filter
     async def add_bulk(self, tri_state_filters: List[TriStateFilter]) -> List[TriStateFilter]:
         """Add multiple tri_state_filters at once."""
         self.session.add_all(tri_state_filters)
@@ -120,6 +123,18 @@ class TriStateFilterManager:
             raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
         return bool(tri_state_filter)
+    def is_equal(self, tri_state_filter1:TriStateFilter, tri_state_filter2:TriStateFilter) -> bool:
+        if not tri_state_filter1:
+            raise TypeError("TriStateFilter1 required.")
+        if not tri_state_filter2:
+            raise TypeError("TriStateFilter2 required.")
+        if not isinstance(tri_state_filter1, TriStateFilter):
+            raise TypeError("The tri_state_filter1 must be an TriStateFilter instance.")
+        if not isinstance(tri_state_filter2, TriStateFilter):
+            raise TypeError("The tri_state_filter2 must be an TriStateFilter instance.")
+        dict1 = self.to_dict(tri_state_filter1)
+        dict2 = self.to_dict(tri_state_filter2)
+        return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
         if not isinstance(pac_id, int):

@@ -64,6 +64,9 @@ class CustomerManager:
         customer_dict = schema.load(data)
         new_customer = Customer(**customer_dict)
         return new_customer
+    def from_dict(self, customer_dict: str) -> Customer:
+        new_customer = Customer(**customer_dict)
+        return new_customer
     async def add_bulk(self, customers: List[Customer]) -> List[Customer]:
         """Add multiple customers at once."""
         self.session.add_all(customers)
@@ -120,6 +123,18 @@ class CustomerManager:
             raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
         customer = await self.get_by_id(customer_id)
         return bool(customer)
+    def is_equal(self, customer1:Customer, customer2:Customer) -> bool:
+        if not customer1:
+            raise TypeError("Customer1 required.")
+        if not customer2:
+            raise TypeError("Customer2 required.")
+        if not isinstance(customer1, Customer):
+            raise TypeError("The customer1 must be an Customer instance.")
+        if not isinstance(customer2, Customer):
+            raise TypeError("The customer2 must be an Customer instance.")
+        dict1 = self.to_dict(customer1)
+        dict2 = self.to_dict(customer2)
+        return dict1 == dict2
 
     async def get_by_tac_id(self, tac_id: int): # TacID
         if not isinstance(tac_id, int):

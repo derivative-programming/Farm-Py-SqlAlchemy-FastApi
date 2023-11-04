@@ -87,6 +87,12 @@ class PlantManager:
 
         return new_plant
     
+    
+    def from_dict(self, plant_dict: str) -> Plant: 
+        new_plant = Plant(**plant_dict) 
+
+        return new_plant
+    
     async def add_bulk(self, plants: List[Plant]) -> List[Plant]:
         """Add multiple plants at once.""" 
         self.session.add_all(plants) 
@@ -148,7 +154,26 @@ class PlantManager:
         if not isinstance(plant_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
         plant = await self.get_by_id(plant_id)
-        return bool(plant)
+        return bool(plant) 
+    
+    def is_equal(self, plant1:Plant, plant2:Plant) -> bool: 
+        if not plant1:
+            raise TypeError("Plant1 required.")
+        
+        if not plant2:
+            raise TypeError("Plant2 required.")
+        
+        if not isinstance(plant1, Plant):
+            raise TypeError("The plant1 must be an Plant instance.")
+        
+        if not isinstance(plant2, Plant):
+            raise TypeError("The plant2 must be an Plant instance.")
+        
+        dict1 = self.to_dict(plant1)
+
+        dict2 = self.to_dict(plant2)
+
+        return dict1 == dict2
     
 #endset
     async def get_by_flvr_foreign_key_id(self, flvr_foreign_key_id: int): # FlvrForeignKeyID

@@ -60,7 +60,11 @@ class PlantFactory(factory.Factory):
     land_code_peek = factory.LazyFunction(generate_uuid) # LandID
  
     @classmethod
-    def _build(cls, model_class, session, *args, **kwargs) -> Plant:
+    def _build(cls, model_class, session=None, *args, **kwargs) -> Plant:
+
+        if session is None:
+                obj2 = model_class(*args, **kwargs)   
+                return obj2
 
         land_id_land_instance = LandFactory.create(session=session)  #LandID 
         flvr_foreign_key_id_flavor_instance = FlavorFactory.create(session=session) #FlvrForeignKeyID 
@@ -89,7 +93,7 @@ class PlantFactory(factory.Factory):
         return obj
  
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Plant:
+    def _create(cls, model_class, session=None, *args, **kwargs) -> Plant:
 
         land_id_land_instance = LandFactory.create(session=session)  #LandID 
         flvr_foreign_key_id_flavor_instance = FlavorFactory.create(session=session) #FlvrForeignKeyID 
@@ -119,7 +123,7 @@ class PlantFactory(factory.Factory):
     
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Plant:
-        
+ 
         land_id_land_instance = await LandFactory.create_async(session=session)  #LandID 
         flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(session=session) #FlvrForeignKeyID 
 #endset
@@ -132,7 +136,7 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        obj = Plant(*args, **kwargs)
+        obj = PlantFactory.build(session=None, *args, **kwargs)  
         
         obj.land_id = land_id_land_instance.land_id #LandID 
         obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
@@ -161,7 +165,7 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        obj = Plant(*args, **kwargs)
+        obj = PlantFactory.build(session=None, *args, **kwargs)  
         
         obj.land_id = land_id_land_instance.land_id #LandID 
         obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id #FlvrForeignKeyID 
