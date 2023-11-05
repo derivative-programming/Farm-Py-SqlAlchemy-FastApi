@@ -1,5 +1,4 @@
-from pydantic import BaseModel, Field
-from typing import List
+from pydantic import BaseModel, Field 
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
@@ -31,8 +30,8 @@ class ReportItemLandPlantList(BaseModel):
     details_link_plant_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
 #endset
 
-    def __init__(self): 
-        pass
+    # def __init__(self): 
+    #     pass
     def load_data_provider_dict(self,data:dict):
             self.plant_code = uuid.UUID(data["plant_code"])
             self.some_int_val = int(data["some_int_val"])
