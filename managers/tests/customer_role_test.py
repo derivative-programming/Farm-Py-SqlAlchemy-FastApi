@@ -36,7 +36,7 @@ class TestCustomerRoleManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestCustomerRoleManager:
         # Check if the customer_role exists using the manager function
         assert await customer_role_manager.exists(customer_role1.customer_role_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_customer_role(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
+        # Add a customer_role
+        customer_role1 = await CustomerRoleFactory.create_async(session=session)
+        customer_role2 = await customer_role_manager.get_by_id(customer_role_id=customer_role1.customer_role_id)
+        assert customer_role_manager.is_equal(customer_role1,customer_role2) == True
+        customer_role1_dict = customer_role_manager.to_dict(customer_role1)
+        customer_role3 = customer_role_manager.from_dict(customer_role1_dict)
+        assert customer_role_manager.is_equal(customer_role1,customer_role3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_customer_role(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
         non_existent_id = 999
         assert await customer_role_manager.exists(non_existent_id) == False
@@ -440,4 +449,3 @@ class TestCustomerRoleManager:
             await customer_role_manager.get_by_role_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

@@ -36,7 +36,7 @@ class TestOrganizationManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestOrganizationManager:
         # Check if the organization exists using the manager function
         assert await organization_manager.exists(organization1.organization_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_organization(self, organization_manager:OrganizationManager, session:AsyncSession):
+        # Add a organization
+        organization1 = await OrganizationFactory.create_async(session=session)
+        organization2 = await organization_manager.get_by_id(organization_id=organization1.organization_id)
+        assert organization_manager.is_equal(organization1,organization2) == True
+        organization1_dict = organization_manager.to_dict(organization1)
+        organization3 = organization_manager.from_dict(organization1_dict)
+        assert organization_manager.is_equal(organization1,organization3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_organization(self, organization_manager:OrganizationManager, session:AsyncSession):
         non_existent_id = 999
         assert await organization_manager.exists(non_existent_id) == False
@@ -419,4 +428,3 @@ class TestOrganizationManager:
             await organization_manager.get_by_tac_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

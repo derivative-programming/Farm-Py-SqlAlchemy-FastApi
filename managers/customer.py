@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.customer import Customer
 from models.serialization_schema.customer import CustomerSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class CustomerNotFoundError(Exception):
     pass
 class CustomerManager:
@@ -65,7 +67,9 @@ class CustomerManager:
         new_customer = Customer(**customer_dict)
         return new_customer
     def from_dict(self, customer_dict: str) -> Customer:
-        new_customer = Customer(**customer_dict)
+        schema = CustomerSchema()
+        customer_dict_converted = schema.load(customer_dict)
+        new_customer = Customer(**customer_dict_converted)
         return new_customer
     async def add_bulk(self, customers: List[Customer]) -> List[Customer]:
         """Add multiple customers at once."""
@@ -134,6 +138,9 @@ class CustomerManager:
             raise TypeError("The customer2 must be an Customer instance.")
         dict1 = self.to_dict(customer1)
         dict2 = self.to_dict(customer2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_tac_id(self, tac_id: int): # TacID

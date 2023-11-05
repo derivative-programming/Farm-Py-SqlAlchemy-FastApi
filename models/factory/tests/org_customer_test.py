@@ -72,7 +72,7 @@ class TestOrgCustomerFactory:
         assert isinstance(org_customer.insert_utc_date_time, datetime)
         initial_time = org_customer.insert_utc_date_time
         org_customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert org_customer.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -81,7 +81,7 @@ class TestOrgCustomerFactory:
         assert isinstance(org_customer.insert_utc_date_time, datetime)
         initial_time = org_customer.insert_utc_date_time
         org_customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert org_customer.insert_utc_date_time == initial_time
     def test_date_updated_on_build(self, session):
@@ -94,7 +94,7 @@ class TestOrgCustomerFactory:
         assert isinstance(org_customer.last_update_utc_date_time, datetime)
         initial_time = org_customer.last_update_utc_date_time
         org_customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert org_customer.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
@@ -103,7 +103,7 @@ class TestOrgCustomerFactory:
         assert isinstance(org_customer.last_update_utc_date_time, datetime)
         initial_time = org_customer.last_update_utc_date_time
         org_customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert org_customer.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):

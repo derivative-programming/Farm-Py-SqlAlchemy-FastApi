@@ -142,7 +142,6 @@ class TestCustomerBusObj:
         customer_json = customer_manager.to_json(new_customer)
         await customer_bus_obj.load(json_data=customer_json)
         assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_customer_dict(self, session, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
         logger.info("test_load_with_customer_dict 1")

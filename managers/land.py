@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.land import Land
 from models.serialization_schema.land import LandSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class LandNotFoundError(Exception):
     pass
 class LandManager:
@@ -65,7 +67,9 @@ class LandManager:
         new_land = Land(**land_dict)
         return new_land
     def from_dict(self, land_dict: str) -> Land:
-        new_land = Land(**land_dict)
+        schema = LandSchema()
+        land_dict_converted = schema.load(land_dict)
+        new_land = Land(**land_dict_converted)
         return new_land
     async def add_bulk(self, lands: List[Land]) -> List[Land]:
         """Add multiple lands at once."""
@@ -134,6 +138,9 @@ class LandManager:
             raise TypeError("The land2 must be an Land instance.")
         dict1 = self.to_dict(land1)
         dict2 = self.to_dict(land2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID

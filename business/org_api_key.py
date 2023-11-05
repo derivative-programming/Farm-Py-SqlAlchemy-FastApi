@@ -130,6 +130,16 @@ class OrgApiKeyBusObj:
         assert isinstance(value, str), "name must be a string"
         self.org_api_key.name = value
     #OrganizationID
+    #OrgCustomerID
+
+    #apiKeyValue,
+    #createdBy,
+    #createdUTCDateTime
+    #expirationUTCDateTime
+    #isActive,
+    #isTempUserKey,
+    #name,
+    #OrganizationID
     @property
     def organization_id(self):
         return self.org_api_key.organization_id
@@ -137,6 +147,13 @@ class OrgApiKeyBusObj:
     def organization_id(self, value):
         assert isinstance(value, int) or value is None, "organization_id must be an integer or None"
         self.org_api_key.organization_id = value
+    @property
+    def organization_code_peek(self):
+        return self.org_api_key.organization_code_peek
+    @organization_code_peek.setter
+    def organization_code_peek(self, value):
+        assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
+        self.org_api_key.organization_code_peek = value
     #OrgCustomerID
     @property
     def org_customer_id(self):
@@ -147,29 +164,12 @@ class OrgApiKeyBusObj:
             raise ValueError("org_customer_id must be an integer.")
         self.org_api_key.org_customer_id = value
     @property
-    def some_var_char_val(self):
-        return self.org_api_key.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.org_api_key.some_var_char_val = value
-
-    #OrganizationID
-    #OrgCustomerID
-    @property
     def org_customer_code_peek(self):
         return self.org_api_key.org_customer_code_peek
     @org_customer_code_peek.setter
     def org_customer_code_peek(self, value):
         assert isinstance(value, UUIDType), "org_customer_code_peek must be a UUID"
         self.org_api_key.org_customer_code_peek = value
-    @property
-    def organization_code_peek(self):
-        return self.org_api_key.organization_code_peek
-    @organization_code_peek.setter
-    def organization_code_peek(self, value):
-        assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
-        self.org_api_key.organization_code_peek = value
 
     #insert_utc_date_time
     @property

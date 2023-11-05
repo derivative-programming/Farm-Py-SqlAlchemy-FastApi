@@ -119,7 +119,6 @@ class TestRoleBusObj:
         role_json = role_manager.to_json(new_role)
         await role_bus_obj.load(json_data=role_json)
         assert role_manager.is_equal(role_bus_obj.role,new_role)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_role_dict(self, session, role_manager:RoleManager, role_bus_obj:RoleBusObj, new_role:Role):
         logger.info("test_load_with_role_dict 1")

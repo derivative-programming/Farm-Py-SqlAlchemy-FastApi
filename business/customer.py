@@ -238,13 +238,6 @@ class CustomerBusObj:
         assert isinstance(value, datetime), "registration_utc_date_time must be a datetime object"
         self.customer.registration_utc_date_time = value
     #TacID
-    @property
-    def tac_id(self):
-        return self.customer.tac_id
-    @tac_id.setter
-    def tac_id(self, value):
-        assert isinstance(value, int) or value is None, "tac_id must be an integer or None"
-        self.customer.tac_id = value
     #UTCOffsetInMinutes
     @property
     def utc_offset_in_minutes(self):
@@ -261,15 +254,35 @@ class CustomerBusObj:
     def zip(self, value):
         assert isinstance(value, str), "zip must be a string"
         self.customer.zip = value
-    @property
-    def some_var_char_val(self):
-        return self.customer.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.customer.some_var_char_val = value
 
+    #activeOrganizationID,
+    #email,
+    #emailConfirmedUTCDateTime
+    #firstName,
+    #forgotPasswordKeyExpirationUTCDateTime
+    #forgotPasswordKeyValue,
+    #fSUserCodeValue,
+    #isActive,
+    #isEmailAllowed,
+    #isEmailConfirmed,
+    #isEmailMarketingAllowed,
+    #isLocked,
+    #isMultipleOrganizationsAllowed,
+    #isVerboseLoggingForced,
+    #lastLoginUTCDateTime
+    #lastName,
+    #password,
+    #phone,
+    #province,
+    #registrationUTCDateTime
     #TacID
+    @property
+    def tac_id(self):
+        return self.customer.tac_id
+    @tac_id.setter
+    def tac_id(self, value):
+        assert isinstance(value, int) or value is None, "tac_id must be an integer or None"
+        self.customer.tac_id = value
     @property
     def tac_code_peek(self):
         return self.customer.tac_code_peek
@@ -277,6 +290,8 @@ class CustomerBusObj:
     def tac_code_peek(self, value):
         assert isinstance(value, UUIDType), "tac_code_peek must be a UUID"
         self.customer.tac_code_peek = value
+    #uTCOffsetInMinutes,
+    #zip,
 
     #insert_utc_date_time
     @property

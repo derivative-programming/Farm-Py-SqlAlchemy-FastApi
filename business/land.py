@@ -112,6 +112,13 @@ class LandBusObj:
         assert isinstance(value, str), "name must be a string"
         self.land.name = value
     #PacID
+
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @property
     def pac_id(self):
         return self.land.pac_id
@@ -119,15 +126,6 @@ class LandBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.land.pac_id = value
-    @property
-    def some_var_char_val(self):
-        return self.land.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.land.some_var_char_val = value
-
-    #PacID
     @property
     def pac_code_peek(self):
         return self.land.pac_code_peek

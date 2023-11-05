@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.error_log import ErrorLog
 from models.serialization_schema.error_log import ErrorLogSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class ErrorLogNotFoundError(Exception):
     pass
 class ErrorLogManager:
@@ -65,7 +67,9 @@ class ErrorLogManager:
         new_error_log = ErrorLog(**error_log_dict)
         return new_error_log
     def from_dict(self, error_log_dict: str) -> ErrorLog:
-        new_error_log = ErrorLog(**error_log_dict)
+        schema = ErrorLogSchema()
+        error_log_dict_converted = schema.load(error_log_dict)
+        new_error_log = ErrorLog(**error_log_dict_converted)
         return new_error_log
     async def add_bulk(self, error_logs: List[ErrorLog]) -> List[ErrorLog]:
         """Add multiple error_logs at once."""
@@ -134,6 +138,9 @@ class ErrorLogManager:
             raise TypeError("The error_log2 must be an ErrorLog instance.")
         dict1 = self.to_dict(error_log1)
         dict2 = self.to_dict(error_log2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID

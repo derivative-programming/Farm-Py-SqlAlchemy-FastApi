@@ -36,7 +36,7 @@ class TestOrgCustomerManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestOrgCustomerManager:
         # Check if the org_customer exists using the manager function
         assert await org_customer_manager.exists(org_customer1.org_customer_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_org_customer(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
+        # Add a org_customer
+        org_customer1 = await OrgCustomerFactory.create_async(session=session)
+        org_customer2 = await org_customer_manager.get_by_id(org_customer_id=org_customer1.org_customer_id)
+        assert org_customer_manager.is_equal(org_customer1,org_customer2) == True
+        org_customer1_dict = org_customer_manager.to_dict(org_customer1)
+        org_customer3 = org_customer_manager.from_dict(org_customer1_dict)
+        assert org_customer_manager.is_equal(org_customer1,org_customer3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_org_customer(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
         non_existent_id = 999
         assert await org_customer_manager.exists(non_existent_id) == False
@@ -439,4 +448,3 @@ class TestOrgCustomerManager:
             await org_customer_manager.get_by_organization_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

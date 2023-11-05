@@ -123,7 +123,7 @@ class TestPlantFactoryAsync:
         assert isinstance(plant.insert_utc_date_time, datetime)
         initial_time = plant.insert_utc_date_time
         plant.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert plant.insert_utc_date_time > initial_time
 
@@ -134,7 +134,7 @@ class TestPlantFactoryAsync:
         assert isinstance(plant.insert_utc_date_time, datetime)
         initial_time = plant.insert_utc_date_time
         plant.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert plant.insert_utc_date_time == initial_time
 
@@ -152,7 +152,7 @@ class TestPlantFactoryAsync:
         assert isinstance(plant.last_update_utc_date_time, datetime)
         initial_time = plant.last_update_utc_date_time
         plant.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert plant.last_update_utc_date_time > initial_time
 
@@ -163,7 +163,7 @@ class TestPlantFactoryAsync:
         assert isinstance(plant.last_update_utc_date_time, datetime)
         initial_time = plant.last_update_utc_date_time
         plant.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert plant.last_update_utc_date_time > initial_time 
 

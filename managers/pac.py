@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.pac import Pac
 from models.serialization_schema.pac import PacSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class PacNotFoundError(Exception):
     pass
 class PacManager:
@@ -65,7 +67,9 @@ class PacManager:
         new_pac = Pac(**pac_dict)
         return new_pac
     def from_dict(self, pac_dict: str) -> Pac:
-        new_pac = Pac(**pac_dict)
+        schema = PacSchema()
+        pac_dict_converted = schema.load(pac_dict)
+        new_pac = Pac(**pac_dict_converted)
         return new_pac
     async def add_bulk(self, pacs: List[Pac]) -> List[Pac]:
         """Add multiple pacs at once."""
@@ -134,5 +138,8 @@ class PacManager:
             raise TypeError("The pac2 must be an Pac instance.")
         dict1 = self.to_dict(pac1)
         dict2 = self.to_dict(pac2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 

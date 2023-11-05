@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.organization import Organization
 from models.serialization_schema.organization import OrganizationSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class OrganizationNotFoundError(Exception):
     pass
 class OrganizationManager:
@@ -65,7 +67,9 @@ class OrganizationManager:
         new_organization = Organization(**organization_dict)
         return new_organization
     def from_dict(self, organization_dict: str) -> Organization:
-        new_organization = Organization(**organization_dict)
+        schema = OrganizationSchema()
+        organization_dict_converted = schema.load(organization_dict)
+        new_organization = Organization(**organization_dict_converted)
         return new_organization
     async def add_bulk(self, organizations: List[Organization]) -> List[Organization]:
         """Add multiple organizations at once."""
@@ -134,6 +138,9 @@ class OrganizationManager:
             raise TypeError("The organization2 must be an Organization instance.")
         dict1 = self.to_dict(organization1)
         dict2 = self.to_dict(organization2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_tac_id(self, tac_id: int): # TacID

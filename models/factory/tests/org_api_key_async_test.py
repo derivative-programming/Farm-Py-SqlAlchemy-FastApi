@@ -105,7 +105,7 @@ class TestOrgApiKeyFactoryAsync:
         assert isinstance(org_api_key.insert_utc_date_time, datetime)
         initial_time = org_api_key.insert_utc_date_time
         org_api_key.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert org_api_key.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -115,7 +115,7 @@ class TestOrgApiKeyFactoryAsync:
         assert isinstance(org_api_key.insert_utc_date_time, datetime)
         initial_time = org_api_key.insert_utc_date_time
         org_api_key.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert org_api_key.insert_utc_date_time == initial_time
     @pytest.mark.asyncio
@@ -130,7 +130,7 @@ class TestOrgApiKeyFactoryAsync:
         assert isinstance(org_api_key.last_update_utc_date_time, datetime)
         initial_time = org_api_key.last_update_utc_date_time
         org_api_key.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert org_api_key.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -140,7 +140,7 @@ class TestOrgApiKeyFactoryAsync:
         assert isinstance(org_api_key.last_update_utc_date_time, datetime)
         initial_time = org_api_key.last_update_utc_date_time
         org_api_key.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert org_api_key.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

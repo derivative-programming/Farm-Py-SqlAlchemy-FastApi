@@ -72,7 +72,7 @@ class TestRoleFactory:
         assert isinstance(role.insert_utc_date_time, datetime)
         initial_time = role.insert_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert role.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -81,7 +81,7 @@ class TestRoleFactory:
         assert isinstance(role.insert_utc_date_time, datetime)
         initial_time = role.insert_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert role.insert_utc_date_time == initial_time
     def test_date_updated_on_build(self, session):
@@ -94,7 +94,7 @@ class TestRoleFactory:
         assert isinstance(role.last_update_utc_date_time, datetime)
         initial_time = role.last_update_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert role.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
@@ -103,7 +103,7 @@ class TestRoleFactory:
         assert isinstance(role.last_update_utc_date_time, datetime)
         initial_time = role.last_update_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         session.commit()
         assert role.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):

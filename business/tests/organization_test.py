@@ -115,7 +115,6 @@ class TestOrganizationBusObj:
         organization_json = organization_manager.to_json(new_organization)
         await organization_bus_obj.load(json_data=organization_json)
         assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_organization_dict(self, session, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         logger.info("test_load_with_organization_dict 1")

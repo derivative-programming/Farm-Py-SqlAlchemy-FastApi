@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.date_greater_than_filter import DateGreaterThanFilter
 from models.serialization_schema.date_greater_than_filter import DateGreaterThanFilterSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class DateGreaterThanFilterNotFoundError(Exception):
     pass
 class DateGreaterThanFilterManager:
@@ -65,7 +67,9 @@ class DateGreaterThanFilterManager:
         new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict)
         return new_date_greater_than_filter
     def from_dict(self, date_greater_than_filter_dict: str) -> DateGreaterThanFilter:
-        new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict)
+        schema = DateGreaterThanFilterSchema()
+        date_greater_than_filter_dict_converted = schema.load(date_greater_than_filter_dict)
+        new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict_converted)
         return new_date_greater_than_filter
     async def add_bulk(self, date_greater_than_filters: List[DateGreaterThanFilter]) -> List[DateGreaterThanFilter]:
         """Add multiple date_greater_than_filters at once."""
@@ -134,6 +138,9 @@ class DateGreaterThanFilterManager:
             raise TypeError("The date_greater_than_filter2 must be an DateGreaterThanFilter instance.")
         dict1 = self.to_dict(date_greater_than_filter1)
         dict2 = self.to_dict(date_greater_than_filter2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID

@@ -120,7 +120,6 @@ class TestDateGreaterThanFilterBusObj:
         date_greater_than_filter_json = date_greater_than_filter_manager.to_json(new_date_greater_than_filter)
         await date_greater_than_filter_bus_obj.load(json_data=date_greater_than_filter_json)
         assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter,new_date_greater_than_filter)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_dict(self, session, date_greater_than_filter_manager:DateGreaterThanFilterManager, date_greater_than_filter_bus_obj:DateGreaterThanFilterBusObj, new_date_greater_than_filter:DateGreaterThanFilter):
         logger.info("test_load_with_date_greater_than_filter_dict 1")

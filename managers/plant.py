@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 
 class PlantNotFoundError(Exception):
     pass
@@ -89,7 +91,11 @@ class PlantManager:
     
     
     def from_dict(self, plant_dict: str) -> Plant: 
-        new_plant = Plant(**plant_dict) 
+        schema = PlantSchema()
+        plant_dict_converted = schema.load(plant_dict)
+        new_plant = Plant(**plant_dict_converted) 
+
+        
 
         return new_plant
     
@@ -169,9 +175,16 @@ class PlantManager:
         if not isinstance(plant2, Plant):
             raise TypeError("The plant2 must be an Plant instance.")
         
+        
         dict1 = self.to_dict(plant1)
 
         dict2 = self.to_dict(plant2)
+
+        logger.info("vrtest")
+        
+        logger.info(dict1)
+        
+        logger.info(dict2)
 
         return dict1 == dict2
     

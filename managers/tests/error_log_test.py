@@ -36,7 +36,7 @@ class TestErrorLogManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestErrorLogManager:
         # Check if the error_log exists using the manager function
         assert await error_log_manager.exists(error_log1.error_log_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_error_log(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+        # Add a error_log
+        error_log1 = await ErrorLogFactory.create_async(session=session)
+        error_log2 = await error_log_manager.get_by_id(error_log_id=error_log1.error_log_id)
+        assert error_log_manager.is_equal(error_log1,error_log2) == True
+        error_log1_dict = error_log_manager.to_dict(error_log1)
+        error_log3 = error_log_manager.from_dict(error_log1_dict)
+        assert error_log_manager.is_equal(error_log1,error_log3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_error_log(self, error_log_manager:ErrorLogManager, session:AsyncSession):
         non_existent_id = 999
         assert await error_log_manager.exists(non_existent_id) == False
@@ -425,4 +434,3 @@ class TestErrorLogManager:
         await session.rollback()
     #url,
 #endet
-##todo test for is_equal

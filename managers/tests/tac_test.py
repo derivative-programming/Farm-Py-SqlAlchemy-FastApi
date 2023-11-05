@@ -36,7 +36,7 @@ class TestTacManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestTacManager:
         # Check if the tac exists using the manager function
         assert await tac_manager.exists(tac1.tac_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_tac(self, tac_manager:TacManager, session:AsyncSession):
+        # Add a tac
+        tac1 = await TacFactory.create_async(session=session)
+        tac2 = await tac_manager.get_by_id(tac_id=tac1.tac_id)
+        assert tac_manager.is_equal(tac1,tac2) == True
+        tac1_dict = tac_manager.to_dict(tac1)
+        tac3 = tac_manager.from_dict(tac1_dict)
+        assert tac_manager.is_equal(tac1,tac3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_tac(self, tac_manager:TacManager, session:AsyncSession):
         non_existent_id = 999
         assert await tac_manager.exists(non_existent_id) == False
@@ -423,4 +432,3 @@ class TestTacManager:
             await tac_manager.get_by_pac_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

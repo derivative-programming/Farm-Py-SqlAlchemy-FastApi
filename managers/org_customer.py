@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.org_customer import OrgCustomer
 from models.serialization_schema.org_customer import OrgCustomerSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class OrgCustomerNotFoundError(Exception):
     pass
 class OrgCustomerManager:
@@ -65,7 +67,9 @@ class OrgCustomerManager:
         new_org_customer = OrgCustomer(**org_customer_dict)
         return new_org_customer
     def from_dict(self, org_customer_dict: str) -> OrgCustomer:
-        new_org_customer = OrgCustomer(**org_customer_dict)
+        schema = OrgCustomerSchema()
+        org_customer_dict_converted = schema.load(org_customer_dict)
+        new_org_customer = OrgCustomer(**org_customer_dict_converted)
         return new_org_customer
     async def add_bulk(self, org_customers: List[OrgCustomer]) -> List[OrgCustomer]:
         """Add multiple org_customers at once."""
@@ -134,6 +138,9 @@ class OrgCustomerManager:
             raise TypeError("The org_customer2 must be an OrgCustomer instance.")
         dict1 = self.to_dict(org_customer1)
         dict2 = self.to_dict(org_customer2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_customer_id(self, customer_id: int): # CustomerID

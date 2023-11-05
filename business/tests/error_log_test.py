@@ -133,7 +133,6 @@ class TestErrorLogBusObj:
         error_log_json = error_log_manager.to_json(new_error_log)
         await error_log_bus_obj.load(json_data=error_log_json)
         assert error_log_manager.is_equal(error_log_bus_obj.error_log,new_error_log)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_error_log_dict(self, session, error_log_manager:ErrorLogManager, error_log_bus_obj:ErrorLogBusObj, new_error_log:ErrorLog):
         logger.info("test_load_with_error_log_dict 1")

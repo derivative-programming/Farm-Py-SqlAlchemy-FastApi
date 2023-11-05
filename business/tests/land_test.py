@@ -119,7 +119,6 @@ class TestLandBusObj:
         land_json = land_manager.to_json(new_land)
         await land_bus_obj.load(json_data=land_json)
         assert land_manager.is_equal(land_bus_obj.land,new_land)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_land_dict(self, session, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
         logger.info("test_load_with_land_dict 1")

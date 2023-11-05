@@ -122,7 +122,6 @@ class TestOrgApiKeyBusObj:
         org_api_key_json = org_api_key_manager.to_json(new_org_api_key)
         await org_api_key_bus_obj.load(json_data=org_api_key_json)
         assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_dict(self, session, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         logger.info("test_load_with_org_api_key_dict 1")

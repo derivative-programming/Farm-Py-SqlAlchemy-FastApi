@@ -125,7 +125,7 @@ class TestPacFactoryAsync:
     #     assert isinstance(pac.insert_utc_date_time, datetime)
     #     initial_time = pac.insert_utc_date_time
     #     pac.code = generate_uuid()
-    #     time.sleep(2)
+    #     time.sleep(1)
     #     await session.commit()
     #     assert pac.insert_utc_date_time > initial_time
     # @pytest.mark.asyncio
@@ -135,7 +135,7 @@ class TestPacFactoryAsync:
     #     assert isinstance(pac.insert_utc_date_time, datetime)
     #     initial_time = pac.insert_utc_date_time
     #     pac.code = generate_uuid()
-    #     time.sleep(2)
+    #     time.sleep(1)
     #     await session.commit()
     #     assert pac.insert_utc_date_time == initial_time
     # @pytest.mark.asyncio
@@ -150,7 +150,7 @@ class TestPacFactoryAsync:
     #     assert isinstance(pac.last_update_utc_date_time, datetime)
     #     initial_time = pac.last_update_utc_date_time
     #     pac.code = generate_uuid()
-    #     time.sleep(2)
+    #     time.sleep(1)
     #     await session.commit()
     #     assert pac.last_update_utc_date_time > initial_time
     # @pytest.mark.asyncio
@@ -160,7 +160,7 @@ class TestPacFactoryAsync:
     #     assert isinstance(pac.last_update_utc_date_time, datetime)
     #     initial_time = pac.last_update_utc_date_time
     #     pac.code = generate_uuid()
-    #     time.sleep(2)
+    #     time.sleep(1)
     #     await session.commit()
     #     assert pac.last_update_utc_date_time > initial_time
     # @pytest.mark.asyncio

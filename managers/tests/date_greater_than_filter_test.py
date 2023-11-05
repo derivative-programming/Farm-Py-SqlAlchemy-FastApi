@@ -36,7 +36,7 @@ class TestDateGreaterThanFilterManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestDateGreaterThanFilterManager:
         # Check if the date_greater_than_filter exists using the manager function
         assert await date_greater_than_filter_manager.exists(date_greater_than_filter1.date_greater_than_filter_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        # Add a date_greater_than_filter
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
+        date_greater_than_filter2 = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_id=date_greater_than_filter1.date_greater_than_filter_id)
+        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter1,date_greater_than_filter2) == True
+        date_greater_than_filter1_dict = date_greater_than_filter_manager.to_dict(date_greater_than_filter1)
+        date_greater_than_filter3 = date_greater_than_filter_manager.from_dict(date_greater_than_filter1_dict)
+        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter1,date_greater_than_filter3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         non_existent_id = 999
         assert await date_greater_than_filter_manager.exists(non_existent_id) == False
@@ -424,4 +433,3 @@ class TestDateGreaterThanFilterManager:
             await date_greater_than_filter_manager.get_by_pac_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

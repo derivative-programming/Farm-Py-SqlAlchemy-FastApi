@@ -120,7 +120,6 @@ class TestTriStateFilterBusObj:
         tri_state_filter_json = tri_state_filter_manager.to_json(new_tri_state_filter)
         await tri_state_filter_bus_obj.load(json_data=tri_state_filter_json)
         assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_dict(self, session, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         logger.info("test_load_with_tri_state_filter_dict 1")

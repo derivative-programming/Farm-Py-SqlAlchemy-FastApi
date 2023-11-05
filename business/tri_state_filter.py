@@ -112,13 +112,6 @@ class TriStateFilterBusObj:
         assert isinstance(value, str), "name must be a string"
         self.tri_state_filter.name = value
     #PacID
-    @property
-    def pac_id(self):
-        return self.tri_state_filter.pac_id
-    @pac_id.setter
-    def pac_id(self, value):
-        assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
-        self.tri_state_filter.pac_id = value
     #StateIntValue
     @property
     def state_int_value(self):
@@ -127,15 +120,20 @@ class TriStateFilterBusObj:
     def state_int_value(self, value):
         assert isinstance(value, int), "state_int_value must be an integer"
         self.tri_state_filter.state_int_value = value
-    @property
-    def some_var_char_val(self):
-        return self.tri_state_filter.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.tri_state_filter.some_var_char_val = value
 
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
     #PacID
+    @property
+    def pac_id(self):
+        return self.tri_state_filter.pac_id
+    @pac_id.setter
+    def pac_id(self, value):
+        assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
+        self.tri_state_filter.pac_id = value
     @property
     def pac_code_peek(self):
         return self.tri_state_filter.pac_code_peek
@@ -143,6 +141,7 @@ class TriStateFilterBusObj:
     def pac_code_peek(self, value):
         assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
         self.tri_state_filter.pac_code_peek = value
+    #stateIntValue,
 
     #insert_utc_date_time
     @property

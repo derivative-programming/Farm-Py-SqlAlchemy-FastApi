@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.org_api_key import OrgApiKey
 from models.serialization_schema.org_api_key import OrgApiKeySchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class OrgApiKeyNotFoundError(Exception):
     pass
 class OrgApiKeyManager:
@@ -65,7 +67,9 @@ class OrgApiKeyManager:
         new_org_api_key = OrgApiKey(**org_api_key_dict)
         return new_org_api_key
     def from_dict(self, org_api_key_dict: str) -> OrgApiKey:
-        new_org_api_key = OrgApiKey(**org_api_key_dict)
+        schema = OrgApiKeySchema()
+        org_api_key_dict_converted = schema.load(org_api_key_dict)
+        new_org_api_key = OrgApiKey(**org_api_key_dict_converted)
         return new_org_api_key
     async def add_bulk(self, org_api_keys: List[OrgApiKey]) -> List[OrgApiKey]:
         """Add multiple org_api_keys at once."""
@@ -134,6 +138,9 @@ class OrgApiKeyManager:
             raise TypeError("The org_api_key2 must be an OrgApiKey instance.")
         dict1 = self.to_dict(org_api_key1)
         dict2 = self.to_dict(org_api_key2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_organization_id(self, organization_id: int): # OrganizationID

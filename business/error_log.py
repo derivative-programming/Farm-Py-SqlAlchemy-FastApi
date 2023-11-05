@@ -121,13 +121,6 @@ class ErrorLogBusObj:
             raise ValueError("is_resolved must be a boolean.")
         self.error_log.is_resolved = value
     #PacID
-    @property
-    def pac_id(self):
-        return self.error_log.pac_id
-    @pac_id.setter
-    def pac_id(self, value):
-        assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
-        self.error_log.pac_id = value
     #Url
     @property
     def url(self):
@@ -136,15 +129,21 @@ class ErrorLogBusObj:
     def url(self, value):
         assert isinstance(value, str), "url must be a string"
         self.error_log.url = value
-    @property
-    def some_var_char_val(self):
-        return self.error_log.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.error_log.some_var_char_val = value
 
+    #browserCode,
+    #contextCode,
+    #createdUTCDateTime
+    #description,
+    #isClientSideError,
+    #isResolved,
     #PacID
+    @property
+    def pac_id(self):
+        return self.error_log.pac_id
+    @pac_id.setter
+    def pac_id(self, value):
+        assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
+        self.error_log.pac_id = value
     @property
     def pac_code_peek(self):
         return self.error_log.pac_code_peek
@@ -152,6 +151,7 @@ class ErrorLogBusObj:
     def pac_code_peek(self, value):
         assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
         self.error_log.pac_code_peek = value
+    #url,
 
     #insert_utc_date_time
     @property

@@ -116,7 +116,6 @@ class TestOrgCustomerBusObj:
         org_customer_json = org_customer_manager.to_json(new_org_customer)
         await org_customer_bus_obj.load(json_data=org_customer_json)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_org_customer_dict(self, session, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
         logger.info("test_load_with_org_customer_dict 1")

@@ -36,7 +36,7 @@ class TestLandManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestLandManager:
         # Check if the land exists using the manager function
         assert await land_manager.exists(land1.land_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_land(self, land_manager:LandManager, session:AsyncSession):
+        # Add a land
+        land1 = await LandFactory.create_async(session=session)
+        land2 = await land_manager.get_by_id(land_id=land1.land_id)
+        assert land_manager.is_equal(land1,land2) == True
+        land1_dict = land_manager.to_dict(land1)
+        land3 = land_manager.from_dict(land1_dict)
+        assert land_manager.is_equal(land1,land3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_land(self, land_manager:LandManager, session:AsyncSession):
         non_existent_id = 999
         assert await land_manager.exists(non_existent_id) == False
@@ -423,4 +432,3 @@ class TestLandManager:
             await land_manager.get_by_pac_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

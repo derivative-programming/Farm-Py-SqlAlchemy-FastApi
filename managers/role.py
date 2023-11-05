@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.role import Role
 from models.serialization_schema.role import RoleSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class RoleNotFoundError(Exception):
     pass
 class RoleManager:
@@ -65,7 +67,9 @@ class RoleManager:
         new_role = Role(**role_dict)
         return new_role
     def from_dict(self, role_dict: str) -> Role:
-        new_role = Role(**role_dict)
+        schema = RoleSchema()
+        role_dict_converted = schema.load(role_dict)
+        new_role = Role(**role_dict_converted)
         return new_role
     async def add_bulk(self, roles: List[Role]) -> List[Role]:
         """Add multiple roles at once."""
@@ -134,6 +138,9 @@ class RoleManager:
             raise TypeError("The role2 must be an Role instance.")
         dict1 = self.to_dict(role1)
         dict2 = self.to_dict(role2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID

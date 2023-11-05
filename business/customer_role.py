@@ -72,13 +72,6 @@ class CustomerRoleBusObj:
         self.customer_role.last_update_user_id = value
 
     #CustomerID
-    @property
-    def customer_id(self):
-        return self.customer_role.customer_id
-    @customer_id.setter
-    def customer_id(self, value):
-        assert isinstance(value, int) or value is None, "customer_id must be an integer or None"
-        self.customer_role.customer_id = value
     #IsPlaceholder
     @property
     def is_placeholder(self):
@@ -98,6 +91,25 @@ class CustomerRoleBusObj:
             raise ValueError("placeholder must be a boolean.")
         self.customer_role.placeholder = value
     #RoleID
+
+    #CustomerID
+    @property
+    def customer_id(self):
+        return self.customer_role.customer_id
+    @customer_id.setter
+    def customer_id(self, value):
+        assert isinstance(value, int) or value is None, "customer_id must be an integer or None"
+        self.customer_role.customer_id = value
+    @property
+    def customer_code_peek(self):
+        return self.customer_role.customer_code_peek
+    @customer_code_peek.setter
+    def customer_code_peek(self, value):
+        assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
+        self.customer_role.customer_code_peek = value
+    #isPlaceholder,
+    #placeholder,
+    #RoleID
     @property
     def role_id(self):
         return self.customer_role.role_id
@@ -107,29 +119,12 @@ class CustomerRoleBusObj:
             raise ValueError("role_id must be an integer.")
         self.customer_role.role_id = value
     @property
-    def some_var_char_val(self):
-        return self.customer_role.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.customer_role.some_var_char_val = value
-
-    #CustomerID
-    #RoleID
-    @property
     def role_code_peek(self):
         return self.customer_role.role_code_peek
     @role_code_peek.setter
     def role_code_peek(self, value):
         assert isinstance(value, UUIDType), "role_code_peek must be a UUID"
         self.customer_role.role_code_peek = value
-    @property
-    def customer_code_peek(self):
-        return self.customer_role.customer_code_peek
-    @customer_code_peek.setter
-    def customer_code_peek(self, value):
-        assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
-        self.customer_role.customer_code_peek = value
 
     #insert_utc_date_time
     @property

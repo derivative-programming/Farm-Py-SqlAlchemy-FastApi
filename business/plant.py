@@ -89,17 +89,10 @@ class PlantBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.plant.last_update_user_id = value
-#endset
-    #FlvrForeignKeyID
-    @property
-    def flvr_foreign_key_id(self):
-        return self.plant.flvr_foreign_key_id
 
-    @flvr_foreign_key_id.setter
-    def flvr_foreign_key_id(self, value: int):
-        if not isinstance(value, int):
-            raise ValueError("flvr_foreign_key_id must be an integer.")
-        self.plant.flvr_foreign_key_id = value
+#endset
+
+    #FlvrForeignKeyID
 
     #IsDeleteAllowed
     @property
@@ -124,15 +117,6 @@ class PlantBusObj:
         assert isinstance(value, bool), "is_edit_allowed must be a boolean"
         self.plant.is_edit_allowed = value
 
-    #LandID
-    @property
-    def land_id(self):
-        return self.plant.land_id
-
-    @land_id.setter
-    def land_id(self, value):
-        assert isinstance(value, int) or value is None, "land_id must be an integer or None"
-        self.plant.land_id = value
 
     #OtherFlavor
     @property
@@ -283,9 +267,35 @@ class PlantBusObj:
     def some_var_char_val(self, value):
         assert isinstance(value, str), "some_var_char_val must be a string"
         self.plant.some_var_char_val = value
+
+    #LandID
+
 #endset
 
+    #isDeleteAllowed,
+    #isEditAllowed,
+    #otherFlavor, 
+    #someBigIntVal,
+    #someBitVal, 
+    #someDecimalVal,
+    #someEmailAddress,
+    #someFloatVal,
+    #someIntVal,
+    #someMoneyVal,
+    #someNVarCharVal, 
+    #someDateVal
+    #someUTCDateTimeVal
     #FlvrForeignKeyID
+    @property
+    def flvr_foreign_key_id(self):
+        return self.plant.flvr_foreign_key_id
+
+    @flvr_foreign_key_id.setter
+    def flvr_foreign_key_id(self, value: int):
+        if not isinstance(value, int):
+            raise ValueError("flvr_foreign_key_id must be an integer.")
+        self.plant.flvr_foreign_key_id = value
+
     @property 
     def flvr_foreign_key_code_peek(self):
         return self.plant.flvr_foreign_key_code_peek
@@ -296,6 +306,15 @@ class PlantBusObj:
         self.plant.flvr_foreign_key_code_peek = value
 
     #LandID
+    @property
+    def land_id(self):
+        return self.plant.land_id
+
+    @land_id.setter
+    def land_id(self, value):
+        assert isinstance(value, int) or value is None, "land_id must be an integer or None"
+        self.plant.land_id = value
+
     @property 
     def land_code_peek(self):
         return self.plant.land_code_peek
@@ -304,6 +323,12 @@ class PlantBusObj:
     def land_code_peek(self, value):
         assert isinstance(value, UUIDType), "land_code_peek must be a UUID"
         self.plant.land_code_peek = value
+
+    #somePhoneNumber,
+    #someTextVal,
+    #someUniqueidentifierVal, 
+    #someVarCharVal,
+    
 #endset
 
     #insert_utc_date_time

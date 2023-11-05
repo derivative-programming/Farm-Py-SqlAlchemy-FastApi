@@ -174,8 +174,7 @@ class TestPlantBusObj:
         await plant_bus_obj.load(json_data=plant_json)
         
         assert plant_manager.is_equal(plant_bus_obj.plant,new_plant)  == True
-
-    # todo fix test
+ 
     @pytest.mark.asyncio
     async def test_load_with_plant_dict(self, session, plant_manager:PlantManager, plant_bus_obj:PlantBusObj, new_plant:Plant):
          

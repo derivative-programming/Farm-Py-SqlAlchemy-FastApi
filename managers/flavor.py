@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.flavor import Flavor
 from models.serialization_schema.flavor import FlavorSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class FlavorNotFoundError(Exception):
     pass
 class FlavorManager:
@@ -65,7 +67,9 @@ class FlavorManager:
         new_flavor = Flavor(**flavor_dict)
         return new_flavor
     def from_dict(self, flavor_dict: str) -> Flavor:
-        new_flavor = Flavor(**flavor_dict)
+        schema = FlavorSchema()
+        flavor_dict_converted = schema.load(flavor_dict)
+        new_flavor = Flavor(**flavor_dict_converted)
         return new_flavor
     async def add_bulk(self, flavors: List[Flavor]) -> List[Flavor]:
         """Add multiple flavors at once."""
@@ -134,6 +138,9 @@ class FlavorManager:
             raise TypeError("The flavor2 must be an Flavor instance.")
         dict1 = self.to_dict(flavor1)
         dict2 = self.to_dict(flavor2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID

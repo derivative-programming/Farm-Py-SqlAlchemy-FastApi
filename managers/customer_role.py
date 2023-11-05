@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.customer_role import CustomerRole
 from models.serialization_schema.customer_role import CustomerRoleSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class CustomerRoleNotFoundError(Exception):
     pass
 class CustomerRoleManager:
@@ -65,7 +67,9 @@ class CustomerRoleManager:
         new_customer_role = CustomerRole(**customer_role_dict)
         return new_customer_role
     def from_dict(self, customer_role_dict: str) -> CustomerRole:
-        new_customer_role = CustomerRole(**customer_role_dict)
+        schema = CustomerRoleSchema()
+        customer_role_dict_converted = schema.load(customer_role_dict)
+        new_customer_role = CustomerRole(**customer_role_dict_converted)
         return new_customer_role
     async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
         """Add multiple customer_roles at once."""
@@ -134,6 +138,9 @@ class CustomerRoleManager:
             raise TypeError("The customer_role2 must be an CustomerRole instance.")
         dict1 = self.to_dict(customer_role1)
         dict2 = self.to_dict(customer_role2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_customer_id(self, customer_id: int): # CustomerID

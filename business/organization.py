@@ -79,6 +79,9 @@ class OrganizationBusObj:
         assert isinstance(value, str), "name must be a string"
         self.organization.name = value
     #TacID
+
+    #name,
+    #TacID
     @property
     def tac_id(self):
         return self.organization.tac_id
@@ -86,15 +89,6 @@ class OrganizationBusObj:
     def tac_id(self, value):
         assert isinstance(value, int) or value is None, "tac_id must be an integer or None"
         self.organization.tac_id = value
-    @property
-    def some_var_char_val(self):
-        return self.organization.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.organization.some_var_char_val = value
-
-    #TacID
     @property
     def tac_code_peek(self):
         return self.organization.tac_code_peek

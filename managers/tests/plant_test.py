@@ -43,7 +43,7 @@ class TestPlantManager:
 
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose() 
 
@@ -353,11 +353,13 @@ class TestPlantManager:
         plant = await PlantFactory.create_async(session)
         
         schema = PlantSchema()
+
         plant_data = schema.dump(plant) 
         
         deserialized_plant = plant_manager.from_dict(plant_data)
 
         assert isinstance(deserialized_plant, Plant)
+        
         assert deserialized_plant.code == plant.code 
 
     @pytest.mark.asyncio
@@ -585,6 +587,22 @@ class TestPlantManager:
         
         assert await plant_manager.exists(plant1.plant_id) == True
 
+    
+    @pytest.mark.asyncio
+    async def test_is_equal_with_existing_plant(self, plant_manager:PlantManager, session:AsyncSession):
+        # Add a plant
+        plant1 = await PlantFactory.create_async(session=session) 
+
+        plant2 = await plant_manager.get_by_id(plant_id=plant1.plant_id)
+ 
+        assert plant_manager.is_equal(plant1,plant2) == True
+
+        plant1_dict = plant_manager.to_dict(plant1)
+
+        plant3 = plant_manager.from_dict(plant1_dict) 
+        
+        assert plant_manager.is_equal(plant1,plant3) == True
+
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_plant(self, plant_manager:PlantManager, session:AsyncSession):
         non_existent_id = 999
@@ -674,5 +692,4 @@ class TestPlantManager:
     #someUniqueidentifierVal, 
     #someVarCharVal,
 #endet
-
-##todo test for is_equal
+ 

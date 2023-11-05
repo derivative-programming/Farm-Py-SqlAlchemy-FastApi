@@ -36,7 +36,7 @@ class TestTriStateFilterManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestTriStateFilterManager:
         # Check if the tri_state_filter exists using the manager function
         assert await tri_state_filter_manager.exists(tri_state_filter1.tri_state_filter_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_tri_state_filter(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
+        # Add a tri_state_filter
+        tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
+        tri_state_filter2 = await tri_state_filter_manager.get_by_id(tri_state_filter_id=tri_state_filter1.tri_state_filter_id)
+        assert tri_state_filter_manager.is_equal(tri_state_filter1,tri_state_filter2) == True
+        tri_state_filter1_dict = tri_state_filter_manager.to_dict(tri_state_filter1)
+        tri_state_filter3 = tri_state_filter_manager.from_dict(tri_state_filter1_dict)
+        assert tri_state_filter_manager.is_equal(tri_state_filter1,tri_state_filter3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_tri_state_filter(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
         non_existent_id = 999
         assert await tri_state_filter_manager.exists(non_existent_id) == False
@@ -424,4 +433,3 @@ class TestTriStateFilterManager:
         await session.rollback()
     #stateIntValue,
 #endet
-##todo test for is_equal

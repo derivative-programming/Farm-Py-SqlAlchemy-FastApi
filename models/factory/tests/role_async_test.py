@@ -105,7 +105,7 @@ class TestRoleFactoryAsync:
         assert isinstance(role.insert_utc_date_time, datetime)
         initial_time = role.insert_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert role.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -115,7 +115,7 @@ class TestRoleFactoryAsync:
         assert isinstance(role.insert_utc_date_time, datetime)
         initial_time = role.insert_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert role.insert_utc_date_time == initial_time
     @pytest.mark.asyncio
@@ -130,7 +130,7 @@ class TestRoleFactoryAsync:
         assert isinstance(role.last_update_utc_date_time, datetime)
         initial_time = role.last_update_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert role.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -140,7 +140,7 @@ class TestRoleFactoryAsync:
         assert isinstance(role.last_update_utc_date_time, datetime)
         initial_time = role.last_update_utc_date_time
         role.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert role.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

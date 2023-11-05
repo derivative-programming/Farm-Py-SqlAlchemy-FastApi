@@ -118,7 +118,6 @@ class TestPacBusObj:
         pac_json = pac_manager.to_json(new_pac)
         await pac_bus_obj.load(json_data=pac_json)
         assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_pac_dict(self, session, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac):
         logger.info("test_load_with_pac_dict 1")

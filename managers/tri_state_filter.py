@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.tri_state_filter import TriStateFilter
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class TriStateFilterNotFoundError(Exception):
     pass
 class TriStateFilterManager:
@@ -65,7 +67,9 @@ class TriStateFilterManager:
         new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
         return new_tri_state_filter
     def from_dict(self, tri_state_filter_dict: str) -> TriStateFilter:
-        new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
+        schema = TriStateFilterSchema()
+        tri_state_filter_dict_converted = schema.load(tri_state_filter_dict)
+        new_tri_state_filter = TriStateFilter(**tri_state_filter_dict_converted)
         return new_tri_state_filter
     async def add_bulk(self, tri_state_filters: List[TriStateFilter]) -> List[TriStateFilter]:
         """Add multiple tri_state_filters at once."""
@@ -134,6 +138,9 @@ class TriStateFilterManager:
             raise TypeError("The tri_state_filter2 must be an TriStateFilter instance.")
         dict1 = self.to_dict(tri_state_filter1)
         dict2 = self.to_dict(tri_state_filter2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID

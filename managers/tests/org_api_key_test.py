@@ -36,7 +36,7 @@ class TestOrgApiKeyManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestOrgApiKeyManager:
         # Check if the org_api_key exists using the manager function
         assert await org_api_key_manager.exists(org_api_key1.org_api_key_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_org_api_key(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
+        # Add a org_api_key
+        org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key2 = await org_api_key_manager.get_by_id(org_api_key_id=org_api_key1.org_api_key_id)
+        assert org_api_key_manager.is_equal(org_api_key1,org_api_key2) == True
+        org_api_key1_dict = org_api_key_manager.to_dict(org_api_key1)
+        org_api_key3 = org_api_key_manager.from_dict(org_api_key1_dict)
+        assert org_api_key_manager.is_equal(org_api_key1,org_api_key3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_org_api_key(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
         non_existent_id = 999
         assert await org_api_key_manager.exists(non_existent_id) == False
@@ -445,4 +454,3 @@ class TestOrgApiKeyManager:
             await org_api_key_manager.get_by_org_customer_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

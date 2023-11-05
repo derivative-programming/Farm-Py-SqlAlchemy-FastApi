@@ -119,7 +119,6 @@ class TestTacBusObj:
         tac_json = tac_manager.to_json(new_tac)
         await tac_bus_obj.load(json_data=tac_json)
         assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_tac_dict(self, session, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
         logger.info("test_load_with_tac_dict 1")

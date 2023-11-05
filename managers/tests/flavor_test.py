@@ -36,7 +36,7 @@ class TestFlavorManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestFlavorManager:
         # Check if the flavor exists using the manager function
         assert await flavor_manager.exists(flavor1.flavor_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+        # Add a flavor
+        flavor1 = await FlavorFactory.create_async(session=session)
+        flavor2 = await flavor_manager.get_by_id(flavor_id=flavor1.flavor_id)
+        assert flavor_manager.is_equal(flavor1,flavor2) == True
+        flavor1_dict = flavor_manager.to_dict(flavor1)
+        flavor3 = flavor_manager.from_dict(flavor1_dict)
+        assert flavor_manager.is_equal(flavor1,flavor3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
         non_existent_id = 999
         assert await flavor_manager.exists(non_existent_id) == False
@@ -423,4 +432,3 @@ class TestFlavorManager:
             await flavor_manager.get_by_pac_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

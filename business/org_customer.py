@@ -72,14 +72,6 @@ class OrgCustomerBusObj:
         self.org_customer.last_update_user_id = value
 
     #CustomerID
-    @property
-    def customer_id(self):
-        return self.org_customer.customer_id
-    @customer_id.setter
-    def customer_id(self, value: int):
-        if not isinstance(value, int):
-            raise ValueError("customer_id must be an integer.")
-        self.org_customer.customer_id = value
     #Email
     @property
     def email(self):
@@ -89,22 +81,16 @@ class OrgCustomerBusObj:
         assert isinstance(value, str), "email must be a string"
         self.org_customer.email = value
     #OrganizationID
-    @property
-    def organization_id(self):
-        return self.org_customer.organization_id
-    @organization_id.setter
-    def organization_id(self, value):
-        assert isinstance(value, int) or value is None, "organization_id must be an integer or None"
-        self.org_customer.organization_id = value
-    @property
-    def some_var_char_val(self):
-        return self.org_customer.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.org_customer.some_var_char_val = value
 
     #CustomerID
+    @property
+    def customer_id(self):
+        return self.org_customer.customer_id
+    @customer_id.setter
+    def customer_id(self, value: int):
+        if not isinstance(value, int):
+            raise ValueError("customer_id must be an integer.")
+        self.org_customer.customer_id = value
     @property
     def customer_code_peek(self):
         return self.org_customer.customer_code_peek
@@ -112,7 +98,15 @@ class OrgCustomerBusObj:
     def customer_code_peek(self, value):
         assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
         self.org_customer.customer_code_peek = value
+    #email,
     #OrganizationID
+    @property
+    def organization_id(self):
+        return self.org_customer.organization_id
+    @organization_id.setter
+    def organization_id(self, value):
+        assert isinstance(value, int) or value is None, "organization_id must be an integer or None"
+        self.org_customer.organization_id = value
     @property
     def organization_code_peek(self):
         return self.org_customer.organization_code_peek

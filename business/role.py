@@ -112,6 +112,13 @@ class RoleBusObj:
         assert isinstance(value, str), "name must be a string"
         self.role.name = value
     #PacID
+
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @property
     def pac_id(self):
         return self.role.pac_id
@@ -119,15 +126,6 @@ class RoleBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.role.pac_id = value
-    @property
-    def some_var_char_val(self):
-        return self.role.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.role.some_var_char_val = value
-
-    #PacID
     @property
     def pac_code_peek(self):
         return self.role.pac_code_peek

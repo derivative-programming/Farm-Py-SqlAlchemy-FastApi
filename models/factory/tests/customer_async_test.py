@@ -105,7 +105,7 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.insert_utc_date_time, datetime)
         initial_time = customer.insert_utc_date_time
         customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert customer.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -115,7 +115,7 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.insert_utc_date_time, datetime)
         initial_time = customer.insert_utc_date_time
         customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert customer.insert_utc_date_time == initial_time
     @pytest.mark.asyncio
@@ -130,7 +130,7 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.last_update_utc_date_time, datetime)
         initial_time = customer.last_update_utc_date_time
         customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert customer.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -140,7 +140,7 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.last_update_utc_date_time, datetime)
         initial_time = customer.last_update_utc_date_time
         customer.code = generate_uuid()
-        time.sleep(2)
+        time.sleep(1)
         await session.commit()
         assert customer.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

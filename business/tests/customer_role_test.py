@@ -117,7 +117,6 @@ class TestCustomerRoleBusObj:
         customer_role_json = customer_role_manager.to_json(new_customer_role)
         await customer_role_bus_obj.load(json_data=customer_role_json)
         assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role,new_customer_role)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_customer_role_dict(self, session, customer_role_manager:CustomerRoleManager, customer_role_bus_obj:CustomerRoleBusObj, new_customer_role:CustomerRole):
         logger.info("test_load_with_customer_role_dict 1")

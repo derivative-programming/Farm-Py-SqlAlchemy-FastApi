@@ -36,7 +36,7 @@ class TestRoleManager:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
@@ -387,6 +387,15 @@ class TestRoleManager:
         # Check if the role exists using the manager function
         assert await role_manager.exists(role1.role_id) == True
     @pytest.mark.asyncio
+    async def test_is_equal_with_existing_role(self, role_manager:RoleManager, session:AsyncSession):
+        # Add a role
+        role1 = await RoleFactory.create_async(session=session)
+        role2 = await role_manager.get_by_id(role_id=role1.role_id)
+        assert role_manager.is_equal(role1,role2) == True
+        role1_dict = role_manager.to_dict(role1)
+        role3 = role_manager.from_dict(role1_dict)
+        assert role_manager.is_equal(role1,role3) == True
+    @pytest.mark.asyncio
     async def test_exists_with_nonexistent_role(self, role_manager:RoleManager, session:AsyncSession):
         non_existent_id = 999
         assert await role_manager.exists(non_existent_id) == False
@@ -423,4 +432,3 @@ class TestRoleManager:
             await role_manager.get_by_pac_id(invalid_id)
         await session.rollback()
 #endet
-##todo test for is_equal

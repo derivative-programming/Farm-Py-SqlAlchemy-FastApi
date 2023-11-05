@@ -112,6 +112,13 @@ class FlavorBusObj:
         assert isinstance(value, str), "name must be a string"
         self.flavor.name = value
     #PacID
+
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @property
     def pac_id(self):
         return self.flavor.pac_id
@@ -119,15 +126,6 @@ class FlavorBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.flavor.pac_id = value
-    @property
-    def some_var_char_val(self):
-        return self.flavor.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.flavor.some_var_char_val = value
-
-    #PacID
     @property
     def pac_code_peek(self):
         return self.flavor.pac_code_peek

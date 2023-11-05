@@ -120,6 +120,14 @@ class DateGreaterThanFilterBusObj:
         assert isinstance(value, str), "name must be a string"
         self.date_greater_than_filter.name = value
     #PacID
+
+    #dayCount,
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
     @property
     def pac_id(self):
         return self.date_greater_than_filter.pac_id
@@ -127,15 +135,6 @@ class DateGreaterThanFilterBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.date_greater_than_filter.pac_id = value
-    @property
-    def some_var_char_val(self):
-        return self.date_greater_than_filter.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.date_greater_than_filter.some_var_char_val = value
-
-    #PacID
     @property
     def pac_code_peek(self):
         return self.date_greater_than_filter.pac_code_peek

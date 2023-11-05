@@ -119,7 +119,6 @@ class TestFlavorBusObj:
         flavor_json = flavor_manager.to_json(new_flavor)
         await flavor_bus_obj.load(json_data=flavor_json)
         assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  == True
-    # todo fix test
     @pytest.mark.asyncio
     async def test_load_with_flavor_dict(self, session, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
         logger.info("test_load_with_flavor_dict 1")

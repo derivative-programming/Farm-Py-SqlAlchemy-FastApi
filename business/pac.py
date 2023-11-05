@@ -111,21 +111,12 @@ class PacBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.pac.name = value
-    @property
-    def some_var_char_val(self):
-        return self.pac.some_var_char_val
-    @some_var_char_val.setter
-    def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
-        self.pac.some_var_char_val = value
 
-    @property
-    def _code_peek(self):
-        return self.pac._code_peek
-    @_code_peek.setter
-    def _code_peek(self, value):
-        assert isinstance(value, UUIDType), "_code_peek must be a UUID"
-        self.pac._code_peek = value
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
 
     #insert_utc_date_time
     @property

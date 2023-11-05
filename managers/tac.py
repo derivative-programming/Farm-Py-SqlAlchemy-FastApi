@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.tac import Tac
 from models.serialization_schema.tac import TacSchema
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 class TacNotFoundError(Exception):
     pass
 class TacManager:
@@ -65,7 +67,9 @@ class TacManager:
         new_tac = Tac(**tac_dict)
         return new_tac
     def from_dict(self, tac_dict: str) -> Tac:
-        new_tac = Tac(**tac_dict)
+        schema = TacSchema()
+        tac_dict_converted = schema.load(tac_dict)
+        new_tac = Tac(**tac_dict_converted)
         return new_tac
     async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
         """Add multiple tacs at once."""
@@ -134,6 +138,9 @@ class TacManager:
             raise TypeError("The tac2 must be an Tac instance.")
         dict1 = self.to_dict(tac1)
         dict2 = self.to_dict(tac2)
+        logger.info("vrtest")
+        logger.info(dict1)
+        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int): # PacID
