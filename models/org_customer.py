@@ -19,18 +19,18 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrgCustomer(Base):
     __tablename__ = snake_case('OrgCustomer')
-    org_customer_id = Column(Integer, primary_key=True, autoincrement=True)
-    code = Column(UUIDType, unique=True, default=generate_uuid, nullable=True)
-    last_change_code = Column(Integer, nullable=True)
-    insert_user_id = Column(UUIDType, default=generate_uuid, nullable=True)
-    last_update_user_id = Column(UUIDType, default=generate_uuid, nullable=True)
-    customer_id = Column(Integer, ForeignKey(snake_case('Customer') + '.customer_id'), nullable=True)
-    email = Column(String, default="", nullable=True)
-    organization_id = Column(Integer, ForeignKey(snake_case('Organization') + '.organization_id'), nullable=True)
+    org_customer_id = Column('org_customer_id', Integer, primary_key=True, autoincrement=True)
+    code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
+    last_change_code = Column('last_change_code', Integer, nullable=True)
+    insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
+    last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
+    customer_id = Column('customer_id', Integer, ForeignKey(snake_case('Customer') + '.customer_id'), nullable=True)
+    email = Column('email', String, default="", nullable=True)
+    organization_id = Column('organization_id', Integer, ForeignKey(snake_case('Organization') + '.organization_id'), nullable=True)
     customer_code_peek = UUIDType  # CustomerID
     organization_code_peek = UUIDType # OrganizationID
-    insert_utc_date_time = Column(DateTime, nullable=True)
-    last_update_utc_date_time = Column(DateTime, nullable=True)
+    insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
+    last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
     #no relationsip properties. they are not updated immediately if the id prop is updated directly
     # organization = relationship('Organization', back_populates=snake_case('Organization'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
