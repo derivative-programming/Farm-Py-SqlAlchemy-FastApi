@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from typing import List
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
@@ -13,8 +12,8 @@ class ReportItemPacUserDateGreaterThanFilterList(BaseModel):
     date_greater_than_filter_lookup_enum_name: str = ""
     date_greater_than_filter_name: str = ""
 
-    def __init__(self):
-        pass
+    # def __init__(self):
+    #     pass
     def load_data_provider_dict(self,data:dict):
             self.date_greater_than_filter_code = uuid.UUID(data["date_greater_than_filter_code"])
             self.date_greater_than_filter_day_count = int(data["date_greater_than_filter_day_count"])

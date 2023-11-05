@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from typing import List
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
@@ -13,8 +12,8 @@ class ReportItemPacUserLandList(BaseModel):
     land_name: str = ""
     pac_name: str = ""
 
-    def __init__(self):
-        pass
+    # def __init__(self):
+    #     pass
     def load_data_provider_dict(self,data:dict):
             self.land_code = uuid.UUID(data["land_code"])
             self.land_description = str(data["land_description"])
