@@ -11,20 +11,15 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models import Base, CustomerRole
-from models.factory import CustomerRoleFactory
+from models import Base
 from models.factory.pac import PacFactory
 from reports.pac_user_tri_state_filter_list import ReportManagerPacUserTriStateFilterList
 from reports.report_request_validation_error import ReportRequestValidationError
-from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-from reports.providers.pac_user_tri_state_filter_list import ReportProviderPacUserTriStateFilterList
 import sqlite3
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)

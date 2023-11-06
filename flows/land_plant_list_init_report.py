@@ -3,7 +3,7 @@ from dataclasses_json import dataclass_json,LetterCase, config
 from datetime import date, datetime
 import uuid
 from flows.base import BaseFlowLandPlantListInitReport
-from models import Land 
+from models import Land
 from flows.base import LogSeverity
 from helpers import SessionContext
 from models import Customer
@@ -11,7 +11,7 @@ from django.utils import timezone
 from helpers import ApiToken
 from decimal import Decimal
 from helpers import TypeConversion
-import models as farm_models 
+import models as farm_models
 import managers as farm_managers
 @dataclass_json
 @dataclass
@@ -44,8 +44,8 @@ class FlowLandPlantListInitReportResult():
     tac_code:uuid = uuid.UUID(int=0)
     land_name:str = ""
 class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
-    def __init__(self, session_context:SessionContext): 
-        super(FlowLandPlantListInitReport, self).__init__(session_context) 
+    def __init__(self, session_context:SessionContext):
+        super(FlowLandPlantListInitReport, self).__init__(session_context)
     def process(self,
         land: Land,
 
@@ -78,13 +78,8 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         land_name_output:str = ""
         # TODO: add flow logic
 
-        flavor_code_output = farm_models.Flavor.objects.from_enum(farm_managers.FlavorEnum.Unknown).code
-        land_code_output = farm_models.Land.objects.from_enum(farm_managers.LandEnum.Unknown).code
-        tac_code_output = farm_models.Tac.objects.from_enum(farm_managers.TacEnum.Unknown).code
-        land_name_output = land.name
-
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
-        result = FlowLandPlantListInitReportResult() 
+        result = FlowLandPlantListInitReportResult()
         result.context_object_code = land.code
         result.some_int_val = some_int_val_output
         result.some_big_int_val = some_big_int_val_output

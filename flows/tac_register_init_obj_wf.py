@@ -1,13 +1,18 @@
-from dataclasses import dataclass
-from dataclasses_json import dataclass_json,LetterCase 
+from dataclasses import dataclass, field
+from dataclasses_json import dataclass_json,LetterCase, config
+from datetime import date, datetime
 import uuid
 from flows.base import BaseFlowTacRegisterInitObjWF
-from models import Tac 
+from models import Tac
 from flows.base import LogSeverity
 from helpers import SessionContext
-import models as farm_models 
+from models import Customer
+from django.utils import timezone
+from helpers import ApiToken
+from decimal import Decimal
+from helpers import TypeConversion
+import models as farm_models
 import managers as farm_managers
-
 @dataclass_json
 @dataclass
 class FlowTacRegisterInitObjWFResult():
@@ -17,34 +22,26 @@ class FlowTacRegisterInitObjWFResult():
     confirm_password:str = ""
     first_name:str = ""
     last_name:str = ""
-
-    def __init__(self): 
-        pass
-
 class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
-    def __init__(self, session_context:SessionContext): 
-        super(FlowTacRegisterInitObjWF, self).__init__(session_context) 
-
+    def __init__(self, session_context:SessionContext):
+        super(FlowTacRegisterInitObjWF, self).__init__(session_context)
     def process(self,
         tac: Tac,
+
         ) -> FlowTacRegisterInitObjWFResult:
- 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(tac.code))
-
         super()._process_validation_rules(
             tac,
+
         )
-
         super()._throw_queued_validation_errors()
-
-        email_output = ""
-        password_output = ""
-        confirm_password_output = ""
-        first_name_output = ""
-        last_name_output = ""
- 
-        
+        email_output:str = ""
+        password_output:str = ""
+        confirm_password_output:str = ""
+        first_name_output:str = ""
+        last_name_output:str = ""
+        # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacRegisterInitObjWFResult()
@@ -54,13 +51,6 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         result.confirm_password = confirm_password_output
         result.first_name = first_name_output
         result.last_name = last_name_output
-        result.context_object_code = tac.code
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
-
-
         return result
-
-
-    
