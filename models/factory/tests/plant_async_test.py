@@ -3,6 +3,7 @@ from decimal import Decimal
 import pytest
 import pytest_asyncio 
 import time
+from typing import AsyncGenerator
 from decimal import Decimal
 from datetime import datetime, date
 from sqlalchemy import event
@@ -46,7 +47,7 @@ class TestPlantFactoryAsync:
         engine.sync_engine.dispose() 
 
     @pytest_asyncio.fixture(scope="session")
-    async def session(self,engine) -> AsyncSession:
+    async def session(self,engine) -> AsyncGenerator[AsyncSession, None]:
         
         @event.listens_for(engine.sync_engine, "connect")
         def set_sqlite_pragma(dbapi_connection, connection_record):

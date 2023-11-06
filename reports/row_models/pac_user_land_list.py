@@ -12,8 +12,6 @@ class ReportItemPacUserLandList(BaseModel):
     land_name: str = ""
     pac_name: str = ""
 
-    # def __init__(self):
-    #     pass
     def load_data_provider_dict(self,data:dict):
             self.land_code = uuid.UUID(data["land_code"])
             self.land_description = str(data["land_description"])

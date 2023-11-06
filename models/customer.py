@@ -18,7 +18,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class Customer(Base):
-    __tablename__ = snake_case('Customer')
+    __tablename__ = 'farm_' + snake_case('Customer')
     customer_id = Column('customer_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)
@@ -44,7 +44,7 @@ class Customer(Base):
     phone = Column('phone', String, default="", nullable=True)
     province = Column('province', String, default="", nullable=True)
     registration_utc_date_time = Column('registration_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    tac_id = Column('tac_id', Integer, ForeignKey(snake_case('Tac') + '.tac_id'), nullable=True)
+    tac_id = Column('tac_id', Integer, ForeignKey('farm_' + snake_case('Tac') + '.tac_id'), nullable=True)
     utc_offset_in_minutes = Column('utc_offset_in_minutes', Integer, default=0, nullable=True)
     zip = Column('zip', String, default="", nullable=True)
     tac_code_peek = UUIDType # TacID
@@ -92,7 +92,7 @@ class Customer(Base):
 
 # Define the index separately from the column
 # Index('index_code', Customer.code)
-Index('customer_index_tac_id', Customer.tac_id) #TacID
+Index('farm_customer_index_tac_id', Customer.tac_id) #TacID
 @event.listens_for(Customer, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

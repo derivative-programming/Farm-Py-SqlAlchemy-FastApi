@@ -12,8 +12,6 @@ class ReportItemPacUserFlavorList(BaseModel):
     flavor_name: str = ""
     pac_name: str = ""
 
-    # def __init__(self):
-    #     pass
     def load_data_provider_dict(self,data:dict):
             self.flavor_code = uuid.UUID(data["flavor_code"])
             self.flavor_description = str(data["flavor_description"])

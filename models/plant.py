@@ -21,17 +21,17 @@ else:  # This will cover SQLite, MySQL, and other databases
 
 
 class Plant(Base):
-    __tablename__ = snake_case('Plant')
+    __tablename__ = 'farm_' + snake_case('Plant')
 
     plant_id = Column('plant_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    flvr_foreign_key_id = Column('flvr_foreign_key_id', Integer, ForeignKey(snake_case('Flavor') + '.flavor_id'), nullable=True)
+    flvr_foreign_key_id = Column('flvr_foreign_key_id', Integer, ForeignKey('farm_' + snake_case('Flavor') + '.flavor_id'), nullable=True)
     is_delete_allowed = Column('is_delete_allowed', Boolean, default=False, nullable=True)
     is_edit_allowed = Column('is_edit_allowed', Boolean, default=False, nullable=True)
-    land_id = Column('land_id', Integer, ForeignKey(snake_case('Land') + '.land_id'), nullable=True)
+    land_id = Column('land_id', Integer, ForeignKey('farm_' + snake_case('Land') + '.land_id'), nullable=True)
     other_flavor = Column('other_flavor', String, default="", nullable=True)
     some_big_int_val = Column('some_big_int_val', BigInteger, default=0, nullable=True)
     some_bit_val = Column('some_bit_val', Boolean, default=False, nullable=True)
@@ -98,8 +98,8 @@ class Plant(Base):
 
 # Define the index separately from the column
 # Index('index_code', Plant.code)
-Index('plant_index_land_id', Plant.land_id) #LandID
-Index('plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id) #FlvrForeignKeyID
+Index('farm_plant_index_land_id', Plant.land_id) #LandID
+Index('farm_plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id) #FlvrForeignKeyID
 
     
 @event.listens_for(Plant, 'before_insert')

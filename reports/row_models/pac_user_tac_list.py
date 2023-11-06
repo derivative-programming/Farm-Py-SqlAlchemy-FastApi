@@ -12,8 +12,6 @@ class ReportItemPacUserTacList(BaseModel):
     tac_name: str = ""
     pac_name: str = ""
 
-    # def __init__(self):
-    #     pass
     def load_data_provider_dict(self,data:dict):
             self.tac_code = uuid.UUID(data["tac_code"])
             self.tac_description = str(data["tac_description"])

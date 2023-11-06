@@ -28,8 +28,6 @@ class ReportItemPlantUserDetails(BaseModel):
     random_property_updates_link_plant_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
     back_to_dashboard_link_tac_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
 
-    # def __init__(self):
-    #     pass
     def load_data_provider_dict(self,data:dict):
             self.flavor_name = str(data["flavor_name"])
             self.is_delete_allowed = bool(data["is_delete_allowed"])

@@ -18,7 +18,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TriStateFilter(Base):
-    __tablename__ = snake_case('TriStateFilter')
+    __tablename__ = 'farm_' + snake_case('TriStateFilter')
     tri_state_filter_id = Column('tri_state_filter_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)
@@ -29,7 +29,7 @@ class TriStateFilter(Base):
     is_active = Column('is_active', Boolean, default=False, nullable=True)
     lookup_enum_name = Column('lookup_enum_name', String, default="", nullable=True)
     name = Column('name', String, default="", nullable=True)
-    pac_id = Column('pac_id', Integer, ForeignKey(snake_case('Pac') + '.pac_id'), nullable=True)
+    pac_id = Column('pac_id', Integer, ForeignKey('farm_' + snake_case('Pac') + '.pac_id'), nullable=True)
     state_int_value = Column('state_int_value', Integer, default=0, nullable=True)
     pac_code_peek = UUIDType # PacID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
@@ -60,7 +60,7 @@ class TriStateFilter(Base):
 
 # Define the index separately from the column
 # Index('index_code', TriStateFilter.code)
-Index('tri_state_filter_index_pac_id', TriStateFilter.pac_id) #PacID
+Index('farm_tri_state_filter_index_pac_id', TriStateFilter.pac_id) #PacID
 @event.listens_for(TriStateFilter, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

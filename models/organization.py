@@ -18,14 +18,14 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class Organization(Base):
-    __tablename__ = snake_case('Organization')
+    __tablename__ = 'farm_' + snake_case('Organization')
     organization_id = Column('organization_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
     name = Column('name', String, default="", nullable=True)
-    tac_id = Column('tac_id', Integer, ForeignKey(snake_case('Tac') + '.tac_id'), nullable=True)
+    tac_id = Column('tac_id', Integer, ForeignKey('farm_' + snake_case('Tac') + '.tac_id'), nullable=True)
     tac_code_peek = UUIDType # TacID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
@@ -50,7 +50,7 @@ class Organization(Base):
 
 # Define the index separately from the column
 # Index('index_code', Organization.code)
-Index('organization_index_tac_id', Organization.tac_id) #TacID
+Index('farm_organization_index_tac_id', Organization.tac_id) #TacID
 @event.listens_for(Organization, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

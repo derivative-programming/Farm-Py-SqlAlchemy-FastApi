@@ -18,7 +18,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class Pac(Base):
-    __tablename__ = snake_case('Pac')
+    __tablename__ = 'farm_' + snake_case('Pac')
     pac_id = Column('pac_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)

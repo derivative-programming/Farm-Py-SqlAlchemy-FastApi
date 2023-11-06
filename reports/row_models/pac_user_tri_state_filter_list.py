@@ -12,8 +12,6 @@ class ReportItemPacUserTriStateFilterList(BaseModel):
     tri_state_filter_name: str = ""
     tri_state_filter_state_int_value: int = 0
 
-    # def __init__(self):
-    #     pass
     def load_data_provider_dict(self,data:dict):
             self.tri_state_filter_code = uuid.UUID(data["tri_state_filter_code"])
             self.tri_state_filter_description = str(data["tri_state_filter_description"])

@@ -18,16 +18,16 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class CustomerRole(Base):
-    __tablename__ = snake_case('CustomerRole')
+    __tablename__ = 'farm_' + snake_case('CustomerRole')
     customer_role_id = Column('customer_role_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    customer_id = Column('customer_id', Integer, ForeignKey(snake_case('Customer') + '.customer_id'), nullable=True)
+    customer_id = Column('customer_id', Integer, ForeignKey('farm_' + snake_case('Customer') + '.customer_id'), nullable=True)
     is_placeholder = Column('is_placeholder', Boolean, default=False, nullable=True)
     placeholder = Column('placeholder', Boolean, default=False, nullable=True)
-    role_id = Column('role_id', Integer, ForeignKey(snake_case('Role') + '.role_id'), nullable=True)
+    role_id = Column('role_id', Integer, ForeignKey('farm_' + snake_case('Role') + '.role_id'), nullable=True)
     customer_code_peek = UUIDType # CustomerID
     role_code_peek = UUIDType  # RoleID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
@@ -56,8 +56,8 @@ class CustomerRole(Base):
 
 # Define the index separately from the column
 # Index('index_code', CustomerRole.code)
-Index('customer_role_index_customer_id', CustomerRole.customer_id) #CustomerID
-Index('customer_role_index_role_id', CustomerRole.role_id) #RoleID
+Index('farm_customer_role_index_customer_id', CustomerRole.customer_id) #CustomerID
+Index('farm_customer_role_index_role_id', CustomerRole.role_id) #RoleID
 @event.listens_for(CustomerRole, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

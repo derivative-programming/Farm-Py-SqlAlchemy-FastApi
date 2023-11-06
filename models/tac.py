@@ -18,7 +18,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class Tac(Base):
-    __tablename__ = snake_case('Tac')
+    __tablename__ = 'farm_' + snake_case('Tac')
     tac_id = Column('tac_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)
@@ -29,7 +29,7 @@ class Tac(Base):
     is_active = Column('is_active', Boolean, default=False, nullable=True)
     lookup_enum_name = Column('lookup_enum_name', String, default="", nullable=True)
     name = Column('name', String, default="", nullable=True)
-    pac_id = Column('pac_id', Integer, ForeignKey(snake_case('Pac') + '.pac_id'), nullable=True)
+    pac_id = Column('pac_id', Integer, ForeignKey('farm_' + snake_case('Pac') + '.pac_id'), nullable=True)
     pac_code_peek = UUIDType # PacID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
@@ -58,7 +58,7 @@ class Tac(Base):
 
 # Define the index separately from the column
 # Index('index_code', Tac.code)
-Index('tac_index_pac_id', Tac.pac_id) #PacID
+Index('farm_tac_index_pac_id', Tac.pac_id) #PacID
 @event.listens_for(Tac, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

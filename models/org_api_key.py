@@ -18,7 +18,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrgApiKey(Base):
-    __tablename__ = snake_case('OrgApiKey')
+    __tablename__ = 'farm_' + snake_case('OrgApiKey')
     org_api_key_id = Column('org_api_key_id', Integer, primary_key=True, autoincrement=True)
     code = Column('code', UUIDType, unique=True, default=generate_uuid, nullable=True)
     last_change_code = Column('last_change_code', Integer, nullable=True)
@@ -31,8 +31,8 @@ class OrgApiKey(Base):
     is_active = Column('is_active', Boolean, default=False, nullable=True)
     is_temp_user_key = Column('is_temp_user_key', Boolean, default=False, nullable=True)
     name = Column('name', String, default="", nullable=True)
-    organization_id = Column('organization_id', Integer, ForeignKey(snake_case('Organization') + '.organization_id'), nullable=True)
-    org_customer_id = Column('org_customer_id', Integer, ForeignKey(snake_case('OrgCustomer') + '.org_customer_id'), nullable=True)
+    organization_id = Column('organization_id', Integer, ForeignKey('farm_' + snake_case('Organization') + '.organization_id'), nullable=True)
+    org_customer_id = Column('org_customer_id', Integer, ForeignKey('farm_' + snake_case('OrgCustomer') + '.org_customer_id'), nullable=True)
     organization_code_peek = UUIDType # OrganizationID
     org_customer_code_peek = UUIDType  # OrgCustomerID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
@@ -66,8 +66,8 @@ class OrgApiKey(Base):
 
 # Define the index separately from the column
 # Index('index_code', OrgApiKey.code)
-Index('org_api_key_index_organization_id', OrgApiKey.organization_id) #OrganizationID
-Index('org_api_key_index_org_customer_id', OrgApiKey.org_customer_id) #OrgCustomerID
+Index('farm_org_api_key_index_organization_id', OrgApiKey.organization_id) #OrganizationID
+Index('farm_org_api_key_index_org_customer_id', OrgApiKey.org_customer_id) #OrgCustomerID
 @event.listens_for(OrgApiKey, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()
