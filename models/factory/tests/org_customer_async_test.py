@@ -3,6 +3,7 @@ from decimal import Decimal
 import pytest
 import pytest_asyncio
 import time
+from typing import AsyncGenerator
 from decimal import Decimal
 from datetime import datetime, date
 from sqlalchemy import event
@@ -27,18 +28,18 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestOrgCustomerFactoryAsync:
-    @pytest.fixture(scope="session")
+    @pytest.fixture(scope="function")
     def event_loop(self) -> asyncio.AbstractEventLoop:
         loop = asyncio.get_event_loop_policy().new_event_loop()
         yield loop
         loop.close()
-    @pytest.fixture(scope="session")
+    @pytest.fixture(scope="function")
     def engine(self):
         engine = create_async_engine(DATABASE_URL, echo=True)
         yield engine
         engine.sync_engine.dispose()
-    @pytest_asyncio.fixture(scope="session")
-    async def session(self,engine) -> AsyncSession:
+    @pytest_asyncio.fixture(scope="function")
+    async def session(self,engine) -> AsyncGenerator[AsyncSession, None]:
         @event.listens_for(engine.sync_engine, "connect")
         def set_sqlite_pragma(dbapi_connection, connection_record):
             cursor = dbapi_connection.cursor()

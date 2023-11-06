@@ -1,0 +1,30 @@
+{
+    "templateType":"objWF",  
+    "ForceFileNameFormat" : "Snake",
+    "dimension" :{
+        "name":"LandAddPlant"
+    },
+    "ignoreDimensionPropertyList": [  
+        "objectWorkflowParam.calculatedIsSourceObjectAvailable", 
+        "objectWorkflowParam.calculatedIsDetailsTextAvailable", 
+        "objectWorkflowParam.calculatedIsRequiredCSSClassName", 
+        "objectWorkflowParam.calculatedIsConditionalVisible",
+        "objectWorkflowParam.calculatedIsRegExMatchRequired",
+        "objectWorkflowParam.calculatedIsObjectID",
+        "objectWorkflowParam.calculatedIsfKObjectQueryUsed",
+        "objectWorkflowParam.isFKListUnknownOptionRemoved",
+        "objectWorkflowParam.calculatedIsCodeAndLookup",
+        "objectWorkflowParam.isFKListOptionRecommended",
+        "objectWorkflowParam.isFKListInactiveIncluded",
+        "objectWorkflowParam.isTimeZoneDetermined", 
+        "objectWorkflowOutputVar.calculatedIsSourceObjectAvailable", 
+        "objectWorkflowOutputVar.calculatedIsConditionalVisible", 
+        "objectWorkflowOutputVar.isAutoRedirectURL" , 
+        "objectWorkflowOutputVar.calculatedIsObjectID",    
+        "objectWorkflowOutputVar.isLabelVisible",   
+        "objectWorkflowOutputVar.isHeaderText",   
+        "objectWorkflowOutputVar.isVisible" ,   
+        "objectWorkflowOutputVar.isFKLookup" ,   
+        "objectWorkflowOutputVar.isFK" 
+    ]
+} 

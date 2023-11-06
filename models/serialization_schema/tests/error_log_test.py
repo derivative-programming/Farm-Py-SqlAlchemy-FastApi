@@ -42,14 +42,14 @@ class TestErrorLogSchema:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def session(self, engine):
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def error_log(self, session):
         # Use the ErrorLogFactory to create and return a error_log instance
         return ErrorLogFactory.create(session=session)

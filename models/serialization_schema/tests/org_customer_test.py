@@ -38,14 +38,14 @@ class TestOrgCustomerSchema:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def session(self, engine):
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def org_customer(self, session):
         # Use the OrgCustomerFactory to create and return a org_customer instance
         return OrgCustomerFactory.create(session=session)

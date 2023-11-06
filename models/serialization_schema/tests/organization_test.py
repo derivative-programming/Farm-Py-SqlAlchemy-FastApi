@@ -36,14 +36,14 @@ class TestOrganizationSchema:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def session(self, engine):
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def organization(self, session):
         # Use the OrganizationFactory to create and return a organization instance
         return OrganizationFactory.create(session=session)

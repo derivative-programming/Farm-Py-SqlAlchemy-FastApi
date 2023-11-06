@@ -40,14 +40,14 @@ class TestTacSchema:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def session(self, engine):
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def tac(self, session):
         # Use the TacFactory to create and return a tac instance
         return TacFactory.create(session=session)

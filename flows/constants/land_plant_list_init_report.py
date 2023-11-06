@@ -1,0 +1,6 @@
+#configuration constants
+
+
+calculatedIsRowLevelCustomerSecurityUsed = False
+calculatedIsRowLevelOrgCustomerSecurityUsed = False
+calculatedIsRowLevelOrganizationSecurityUsed = False

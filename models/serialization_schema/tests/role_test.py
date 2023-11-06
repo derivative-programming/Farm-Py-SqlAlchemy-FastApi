@@ -40,14 +40,14 @@ class TestRoleSchema:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def session(self, engine):
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def role(self, session):
         # Use the RoleFactory to create and return a role instance
         return RoleFactory.create(session=session)

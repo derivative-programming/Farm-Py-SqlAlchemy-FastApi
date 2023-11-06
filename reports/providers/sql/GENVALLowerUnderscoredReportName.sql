@@ -1,108 +1,15 @@
-import json
-from datetime import date, datetime
-import uuid
-from decimal import Decimal
-from django.db import connection
-from farm.reports.row_models import ReportItemLandPlantList
-import logging
-from farm.helpers import SessionContext
-
-class ReportProviderLandPlantList(): 
-    _session_context:SessionContext
-    def __init__(self, session_context:SessionContext): 
-        self._session_context = session_context
-    
-    def generate_list(self, 
-                    context_code:uuid, 
-                    some_int_val: int, 
-                    some_big_int_val: int, 
-                    some_bit_val: bool, 
-                    is_edit_allowed: bool, 
-                    is_delete_allowed: bool, 
-                    some_float_val: float, 
-                    some_decimal_val: Decimal, 
-                    some_min_utc_date_time_val: datetime, 
-                    some_min_date_val: date, 
-                    some_money_val: Decimal, 
-                    some_n_var_char_val: str, 
-                    some_var_char_val: str, 
-                    some_text_val: str, 
-                    some_phone_number: str, 
-                    some_email_address: str, 
-                    flavor_code: uuid,
-                    page_number:int,
-                    item_count_per_page:int,
-                    order_by_column_name:str,
-                    order_by_descending:bool,
-                      ) -> list[dict[str,any]]: 
-        
-        logging.debug("ReportProviderLandPlantList.generate_list Start")
-        logging.debug("ReportProviderLandPlantList.generate_list context_code:" + str(context_code))
-        
-        offset = (page_number - 1) * item_count_per_page
-
-        query_dict = dict()
-
-        query_dict["context_code"] = str(context_code)
-        query_dict["some_int_val"] = some_int_val 
-        query_dict["some_big_int_val"] = some_big_int_val 
-        query_dict["some_bit_val"] = some_bit_val 
-        query_dict["is_edit_allowed"] = is_edit_allowed 
-        query_dict["is_delete_allowed"] = is_delete_allowed 
-        query_dict["some_float_val"] = some_float_val 
-        query_dict["some_decimal_val"] = some_decimal_val 
-        query_dict["some_min_utc_date_time_val"] = some_min_utc_date_time_val 
-        query_dict["some_min_date_val"] = some_min_date_val 
-        query_dict["some_money_val"] = some_money_val 
-        query_dict["some_n_var_char_val"] = some_n_var_char_val 
-        query_dict["some_var_char_val"] = some_var_char_val 
-        query_dict["some_text_val"] = some_text_val 
-        query_dict["some_phone_number"] = some_phone_number 
-        query_dict["some_email_address"] = some_email_address 
-        query_dict["flavor_code"] = str(flavor_code)
-#endset
-		
-        query_dict["like_some_int_val"] = some_int_val 
-        query_dict["like_some_big_int_val"] = some_big_int_val 
-        query_dict["like_some_bit_val"] = some_bit_val 
-        query_dict["like_is_edit_allowed"] = is_edit_allowed 
-        query_dict["like_is_delete_allowed"] = is_delete_allowed 
-        query_dict["like_some_float_val"] = some_float_val 
-        query_dict["like_some_decimal_val"] = some_decimal_val 
-        query_dict["like_some_min_utc_date_time_val"] = some_min_utc_date_time_val 
-        query_dict["like_some_min_date_val"] = some_min_date_val 
-        query_dict["like_some_money_val"] = some_money_val 
-        query_dict["like_some_n_var_char_val"] = '%' + some_n_var_char_val + '%' 
-        query_dict["like_some_var_char_val"] = '%' + some_var_char_val  + '%' 
-        query_dict["like_some_text_val"] = '%' + some_text_val  + '%' 
-        query_dict["like_some_phone_number"] = '%' + some_phone_number  + '%' 
-        query_dict["like_some_email_address"] = '%' + some_email_address  + '%' 
-        query_dict["like_flavor_code"] = str(flavor_code)
-#endset
-        
-
-        query_dict["page_number"] = page_number 
-        query_dict["item_count_per_page"] = item_count_per_page 
-        query_dict["order_by_column_name"] = order_by_column_name 
-        query_dict["order_by_descending"] = order_by_descending 
-        query_dict["user_id"] = str(self._session_context.customer_code)
-
-        results = list()
-
-        with connection.cursor() as cursor:  
-            cursor.execute(""" 
 
                
         --GENLOOPReportParamStart
 		--GENIF[calculatedFKObjectName=TriStateFilter]Start
 		--TriStateFilter GENVALName
 		DECLARE @GENVALName_TriStateFilterValue int = -1
-		select @GENVALName_TriStateFilterValue = StateIntValue from TriStateFilter where code = %(GENVALLowerUnderscoredReportParamName)s
+		select @GENVALName_TriStateFilterValue = StateIntValue from TriStateFilter where code = :GENVALLowerUnderscoredReportParamName
 		--GENIF[calculatedFKObjectName=TriStateFilter]End
 		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]Start
 		--DateGreaterThanFilter GENVALName
 		DECLARE @GENVALName_DateGreaterThanFilterIntValue int = -1
-		select @GENVALName_DateGreaterThanFilterIntValue = DayCount from DateGreaterThanFilter where code = %(GENVALLowerUnderscoredReportParamName)s
+		select @GENVALName_DateGreaterThanFilterIntValue = DayCount from DateGreaterThanFilter where code = :GENVALLowerUnderscoredReportParamName
 		DECLARE @GENVALName_DateGreaterThanFilterUtcDateTimeValue datetime = getutcdate()
 		select @GENVALName_DateGreaterThanFilterUtcDateTimeValue = dateadd(d,(-1 * @GENVALName_DateGreaterThanFilterIntValue),getutcdate())
 		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]End
@@ -151,7 +58,7 @@ class ReportProviderLandPlantList():
 				--GENWHEN[Text]Start 
 				--GENWHEN[Text]End
 				--GENElseStart  
-					CASE WHEN %(order_by_descending)s = 0 and %(order_by_column_name)s = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredcalculatedSourceLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedSourceObjectName.GENVALLowerUnderscoredcalculatedSourcePropertyName  END ASC, 
+					CASE WHEN :order_by_descending = 0 and :order_by_column_name = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredcalculatedSourceLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedSourceObjectName.GENVALLowerUnderscoredcalculatedSourcePropertyName  END ASC, 
 				--GENElseEnd 
 				--GENCASE[calculatedSqlServerDBDataType]End 
 				--GENIF[calculatedIsSourceObjectAvailable=true]End
@@ -162,7 +69,7 @@ class ReportProviderLandPlantList():
 				--GENWHEN[Text]Start 
 				--GENWHEN[Text]End
 				--GENElseStart  
-					CASE WHEN %(order_by_descending)s = 0 and %(order_by_column_name)s = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportColumnName  END ASC, 
+					CASE WHEN :order_by_descending = 0 and :order_by_column_name = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportColumnName  END ASC, 
 				--GENElseEnd 
 				--GENCASE[calculatedSqlServerDBDataType]End 
 				--GENIF[calculatedIsSourceObjectAvailable=false]End 
@@ -178,7 +85,7 @@ class ReportProviderLandPlantList():
 				--GENWHEN[Text]Start 
 				--GENWHEN[Text]End
 				--GENElseStart  
-					CASE WHEN %(order_by_descending)s = 1 and %(order_by_column_name)s = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredcalculatedSourceLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedSourceObjectName.GENVALLowerUnderscoredcalculatedSourcePropertyName  END DESC, 
+					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredcalculatedSourceLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedSourceObjectName.GENVALLowerUnderscoredcalculatedSourcePropertyName  END DESC, 
 				--GENElseEnd 
 				--GENCASE[calculatedSqlServerDBDataType]End
 				--GENIF[calculatedIsSourceObjectAvailable=true]End
@@ -189,7 +96,7 @@ class ReportProviderLandPlantList():
 				--GENWHEN[Text]Start 
 				--GENWHEN[Text]End
 				--GENElseStart  
-					CASE WHEN %(order_by_descending)s = 1 and %(order_by_column_name)s = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportColumnName  END DESC, 
+					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'GENVALReportColumnName' THEN GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportColumnName  END DESC, 
 				--GENElseEnd 
 				--GENCASE[calculatedSqlServerDBDataType]End
 				--GENIF[calculatedIsSourceObjectAvailable=false]End 
@@ -198,7 +105,7 @@ class ReportProviderLandPlantList():
 		--GENIF[calculatedIsVisualizationDetailTwoColumn=false]End 
 		--GENIF[calculatedIsVisualizationDetailThreeColumn=false]End 
 
-					CASE WHEN %(order_by_descending)s = 1 and %(order_by_column_name)s = 'placeholder' THEN ''  END DESC 
+					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'placeholder' THEN ''  END DESC 
 
 				) AS ROWNUMBER 
 		  -- select * 
@@ -280,18 +187,18 @@ class ReportProviderLandPlantList():
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 
 		where
-			 (GENVALLowerUnderscoredObjectName.code = %(context_code)s 
+			 (GENVALLowerUnderscoredObjectName.code = :context_code
 			 GENVALfilteringSqlLogic  )
 			--GENIF[calculatedIsRowLevelCustomerSecurityUsed=true]Start
-			and (%(user_id)s is not null and %(user_id)s <> '00000000-0000-0000-0000-000000000000' and Customer.Code = %(user_id)s )
+			and (:user_id is not null and :user_id <> '00000000-0000-0000-0000-000000000000' and Customer.Code = :user_id )
 			--GENIF[calculatedIsRowLevelCustomerSecurityUsed=true]End
 
 			--GENIF[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start
-			and (%(user_id)s is not null and %(user_id)s <> '00000000-0000-0000-0000-000000000000' and Customer_Security.Code = %(user_id)s )
+			and (:user_id is not null and :user_id <> '00000000-0000-0000-0000-000000000000' and Customer_Security.Code = :user_id )
 			--GENIF[calculatedIsRowLevelOrgCustomerSecurityUsed=true]End
 
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
-			and (%(user_id)s is not null and %(user_id)s <> '00000000-0000-0000-0000-000000000000' and Customer_Security.Code = %(user_id)s )
+			and (:user_id is not null and :user_id <> '00000000-0000-0000-0000-000000000000' and Customer_Security.Code = :user_id )
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 			 
 			--GENIF[calculatedIsTargetChildObjAPairedIntersectionObj=false]Start
@@ -308,22 +215,22 @@ class ReportProviderLandPlantList():
 		--GENIF[calculatedIsTargetObjectAvailable=true]Start
 			 	--GENCASE[calculatedCSharpDataType]Start
 				--GENWHEN[String]Start 
-			and (%(GENVALLowerUnderscoredReportParamName)s is null or %(GENVALLowerUnderscoredReportParamName)s = GENVALcalculatedSqlServerSingleQuoteDefaultValue or  GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName like %(like_GENVALLowerUnderscoredReportParamName)s)
+			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = GENVALcalculatedSqlServerSingleQuoteDefaultValue or  GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName like :like_GENVALLowerUnderscoredReportParamName)
 				--GENWHEN[String]End
 				--GENElseStart  
 				
 				--GENIF[calculatedFKObjectName=TriStateFilter]Start
 				--TriStateFilter GENVALName @GENVALName_TriStateFilterValue
-			and (%(GENVALLowerUnderscoredReportParamName)s is null or %(GENVALLowerUnderscoredReportParamName)s = '00000000-0000-0000-0000-000000000000' or @GENVALName_TriStateFilterValue = -1 or @GENVALName_TriStateFilterValue = GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
+			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = '00000000-0000-0000-0000-000000000000' or @GENVALName_TriStateFilterValue = -1 or @GENVALName_TriStateFilterValue = GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
 				--GENIF[calculatedFKObjectName=TriStateFilter]End
 				--GENIF[calculatedFKObjectName=DateGreaterThanFilter]Start
 				--DateGreaterThanFilter GENVALName @GENVALName_DateGreaterThanFilterUtcDateTimeValue
-			and (%(GENVALLowerUnderscoredReportParamName)s is null or %(GENVALLowerUnderscoredReportParamName)s = '00000000-0000-0000-0000-000000000000' or @GENVALName_DateGreaterThanFilterUtcDateTimeValue < GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
+			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = '00000000-0000-0000-0000-000000000000' or @GENVALName_DateGreaterThanFilterUtcDateTimeValue < GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
 				--GENIF[calculatedFKObjectName=DateGreaterThanFilter]End
 				
 				--GENIF[calculatedFKObjectName!=TriStateFilter]Start
 				--GENIF[calculatedFKObjectName!=DateGreaterThanFilter]Start
-			and (%(GENVALLowerUnderscoredReportParamName)s is null or %(GENVALLowerUnderscoredReportParamName)s = GENVALcalculatedSqlServerSingleQuoteDefaultValue or %(GENVALLowerUnderscoredReportParamName)s = GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
+			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = GENVALcalculatedSqlServerSingleQuoteDefaultValue or :GENVALLowerUnderscoredReportParamName = GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
 				--GENIF[calculatedFKObjectName!=DateGreaterThanFilter]End
 				--GENIF[calculatedFKObjectName!=TriStateFilter]End
 
@@ -333,10 +240,10 @@ class ReportProviderLandPlantList():
 		--GENIF[calculatedIsTargetObjectAvailable=false]Start
 			 	--GENCASE[calculatedCSharpDataType]Start
 				--GENWHEN[String]Start 
-			and (%(GENVALLowerUnderscoredReportParamName)s is null or %(GENVALLowerUnderscoredReportParamName)s = GENVALcalculatedSqlServerSingleQuoteDefaultValue or  GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportParamName like %(like_GENVALLowerUnderscoredReportParamName)s)
+			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = GENVALcalculatedSqlServerSingleQuoteDefaultValue or  GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportParamName like :like_GENVALLowerUnderscoredReportParamName)
 				--GENWHEN[String]End
 				--GENElseStart  
-			and (%(GENVALLowerUnderscoredReportParamName)s is null or %(GENVALLowerUnderscoredReportParamName)s = GENVALcalculatedSqlServerSingleQuoteDefaultValue or %(GENVALLowerUnderscoredReportParamName)s = GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportParamName)
+			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = GENVALcalculatedSqlServerSingleQuoteDefaultValue or :GENVALLowerUnderscoredReportParamName = GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredReportParamName)
 				--GENElseEnd 
 				--GENCASE[calculatedCSharpDataType]End
 		--GENIF[calculatedIsTargetObjectAvailable=false]End
@@ -344,20 +251,5 @@ class ReportProviderLandPlantList():
    
 	) AS TBL
 	WHERE 
-		ROWNUMBER BETWEEN ((%(page_number)s - 1) * %(item_count_per_page)s + 1) AND (%(page_number)s * %(item_count_per_page)s) 
+		ROWNUMBER BETWEEN ((:page_number - 1) * :item_count_per_page + 1) AND (:page_number * :item_count_per_page) 
 		  
-                """, query_dict)
-            results = self.dictfetchall(cursor)
-             
-        logging.debug("ReportProviderLandPlantList.generate_list Results: " + json.dumps(results))
-
-        logging.debug("ReportProviderLandPlantList.generate_list End")
-        return results
-
-    def dictfetchall(self, cursor) -> list[dict[str,any]]:
-        "Return all rows from a cursor as a dict"
-        columns = [col[0] for col in cursor.description]
-        return [
-            dict(zip(columns, row))
-            for row in cursor.fetchall()
-        ]

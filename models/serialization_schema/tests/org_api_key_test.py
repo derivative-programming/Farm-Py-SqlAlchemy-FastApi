@@ -44,14 +44,14 @@ class TestOrgApiKeySchema:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def session(self, engine):
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def org_api_key(self, session):
         # Use the OrgApiKeyFactory to create and return a org_api_key instance
         return OrgApiKeyFactory.create(session=session)

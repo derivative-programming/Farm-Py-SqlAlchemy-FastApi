@@ -1,7 +1,6 @@
 import jwt
 import datetime
-import os
-from django.conf import settings
+import os 
 import logging 
  
 class ApiToken:
@@ -13,7 +12,8 @@ class ApiToken:
         payload["exp"] = datetime.datetime.utcnow() + datetime.timedelta(days=expires_in_day_count)
 
         logging.debug(str(payload))
-        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+        token = ""
+        # token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
         logging.debug("create_token: " + token)
         logging.debug("create_token End")
         return token
@@ -21,8 +21,9 @@ class ApiToken:
     @staticmethod
     def validate_token(token) -> dict:
         try:
+            payload = ""
             # Decode the token and verify its validity
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            # payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
             return payload
         except jwt.ExpiredSignatureError:
             return dict()  # The token has expired

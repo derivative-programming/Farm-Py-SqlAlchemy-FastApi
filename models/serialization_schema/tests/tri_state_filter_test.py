@@ -41,14 +41,14 @@ class TestTriStateFilterSchema:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def session(self, engine):
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
-    @pytest.fixture
+    @pytest.fixture(scope="function")
     def tri_state_filter(self, session):
         # Use the TriStateFilterFactory to create and return a tri_state_filter instance
         return TriStateFilterFactory.create(session=session)

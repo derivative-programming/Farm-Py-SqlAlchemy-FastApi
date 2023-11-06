@@ -2,8 +2,8 @@ from dataclasses import dataclass
 import json
 import uuid
 from typing import List
-from reports.providers import ReportProviderLandPlantList
-from reports.row_models import ReportItemLandPlantList
+from reports.providers.land_plant_list import ReportProviderLandPlantList
+from reports.row_models.land_plant_list import ReportItemLandPlantList
 import logging
 from .report_request_validation_error import ReportRequestValidationError
 from helpers import SessionContext
@@ -15,10 +15,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 class ReportManagerLandPlantList():
     _session_context:SessionContext
-    def __init__(self, session_context:SessionContext): 
+    _session:AsyncSession
+    def __init__(self, session:AsyncSession, session_context:SessionContext):
         self._session_context = session_context
+        self._session = session
      
-    def generate(self, 
+    async def generate(self, 
                 land_code:uuid,
                 some_int_val: int = 0,
                 some_big_int_val: int = 0,
@@ -58,9 +60,9 @@ class ReportManagerLandPlantList():
         if page_number <= 0:
             raise ReportRequestValidationError("page_number","Minimum page number is 1")
         
-        provider = ReportProviderLandPlantList(self._session_context)
+        provider = ReportProviderLandPlantList(self._session, self._session_context)
 
-        dataList = provider.generate_list(
+        dataList = await provider.generate_list(
             land_code,
             some_int_val, 
             some_big_int_val,
