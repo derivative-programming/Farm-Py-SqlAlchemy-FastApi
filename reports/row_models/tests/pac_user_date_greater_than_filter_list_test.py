@@ -2,6 +2,7 @@ import pytest
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
+from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_date_greater_than_filter_list import ReportItemPacUserDateGreaterThanFilterList
 class TestReportItemPacUserDateGreaterThanFilterList:
     def test_default_values(self):
@@ -25,8 +26,9 @@ class TestReportItemPacUserDateGreaterThanFilterList:
             "date_greater_than_filter_lookup_enum_name": "test",
             "date_greater_than_filter_name": "test",
         }
-        report_item = ReportItemPacUserDateGreaterThanFilterList(**data)
-        # report_item.load_data_provider_dict(data)
+        # report_item = ReportItemPacUserDateGreaterThanFilterList(**data)
+        report_item = ReportItemPacUserDateGreaterThanFilterList()
+        report_item.load_data_provider_dict(data)
         assert report_item.date_greater_than_filter_code == UUID(int=2)
         assert report_item.date_greater_than_filter_day_count == 1
         assert report_item.date_greater_than_filter_description == "test"

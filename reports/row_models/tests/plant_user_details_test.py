@@ -2,6 +2,7 @@ import pytest
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
+from helpers.type_conversion import TypeConversion
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 class TestReportItemPlantUserDetails:
     def test_default_values(self):
@@ -13,7 +14,7 @@ class TestReportItemPlantUserDetails:
         assert report_item.other_flavor == ""
         assert report_item.some_big_int_val == 0
         assert report_item.some_bit_val is False
-        assert report_item.some_date_val == date.today()
+        assert report_item.some_date_val == TypeConversion.get_default_date()
         assert report_item.some_decimal_val == Decimal(0)
         assert report_item.some_email_address == ""
         assert report_item.some_float_val == 0.0
@@ -23,7 +24,7 @@ class TestReportItemPlantUserDetails:
         assert report_item.some_phone_number == ""
         assert report_item.some_text_val == ""
         assert report_item.some_uniqueidentifier_val.int == 0
-        assert report_item.some_utc_date_time_val <= datetime.utcnow()
+        assert report_item.some_utc_date_time_val == TypeConversion.get_default_date_time()
         assert report_item.some_var_char_val == ""
         assert report_item.phone_num_conditional_on_is_editable == ""
         assert report_item.n_var_char_as_url == ""
@@ -39,7 +40,7 @@ class TestReportItemPlantUserDetails:
             "other_flavor": "test",
             "some_big_int_val": 1000000000,
             "some_bit_val": True,
-            "some_date_val": "2023-01-01",
+            "some_date_val": date(2023,1,1),#"2023-01-01",
             "some_decimal_val": "10.99",
             "some_email_address": "test@example.com",
             "some_float_val": 1.23,
@@ -49,7 +50,7 @@ class TestReportItemPlantUserDetails:
             "some_phone_number": "1234567890",
             "some_text_val": "test",
             "some_uniqueidentifier_val": str(UUID(int=2)),
-            "some_utc_date_time_val": "2023-01-01T00:00:00",
+            "some_utc_date_time_val": datetime(2023, 1, 1, 0, 0, 0),# "2023-01-01T00:00:00",
             "some_var_char_val": "test",
             "phone_num_conditional_on_is_editable": "test",
             "n_var_char_as_url": "http://example.com",
@@ -57,8 +58,9 @@ class TestReportItemPlantUserDetails:
             "random_property_updates_link_plant_code": str(UUID(int=4)),
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
         }
-        report_item = ReportItemPlantUserDetails(**data)
-        # report_item.load_data_provider_dict(data)
+        # report_item = ReportItemPlantUserDetails(**data)
+        report_item = ReportItemPlantUserDetails()
+        report_item.load_data_provider_dict(data)
         assert report_item.flavor_name == "test"
         assert report_item.is_delete_allowed is True
         assert report_item.is_edit_allowed is True

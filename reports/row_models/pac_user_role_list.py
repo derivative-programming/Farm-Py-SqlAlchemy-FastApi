@@ -13,7 +13,7 @@ class ReportItemPacUserRoleList(BaseModel):
     pac_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.role_code = UUID4(data["role_code"])
+            self.role_code = TypeConversion.get_uuid(data["role_code"])
             self.role_description = str(data["role_description"])
             self.role_display_order = int(data["role_display_order"])
             self.role_is_active = bool(data["role_is_active"])

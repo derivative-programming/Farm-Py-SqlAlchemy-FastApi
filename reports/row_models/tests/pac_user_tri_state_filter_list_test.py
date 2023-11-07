@@ -2,6 +2,7 @@ import pytest
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
+from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
 class TestReportItemPacUserTriStateFilterList:
     def test_default_values(self):
@@ -25,8 +26,9 @@ class TestReportItemPacUserTriStateFilterList:
             "tri_state_filter_name": "test",
             "tri_state_filter_state_int_value": 1,
         }
-        report_item = ReportItemPacUserTriStateFilterList(**data)
-        # report_item.load_data_provider_dict(data)
+        # report_item = ReportItemPacUserTriStateFilterList(**data)
+        report_item = ReportItemPacUserTriStateFilterList()
+        report_item.load_data_provider_dict(data)
         assert report_item.tri_state_filter_code == UUID(int=2)
         assert report_item.tri_state_filter_description == "test"
         assert report_item.tri_state_filter_display_order == 1

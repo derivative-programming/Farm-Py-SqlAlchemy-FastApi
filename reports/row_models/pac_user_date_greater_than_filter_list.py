@@ -13,7 +13,7 @@ class ReportItemPacUserDateGreaterThanFilterList(BaseModel):
     date_greater_than_filter_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.date_greater_than_filter_code = UUID4(data["date_greater_than_filter_code"])
+            self.date_greater_than_filter_code = TypeConversion.get_uuid(data["date_greater_than_filter_code"])
             self.date_greater_than_filter_day_count = int(data["date_greater_than_filter_day_count"])
             self.date_greater_than_filter_description = str(data["date_greater_than_filter_description"])
             self.date_greater_than_filter_display_order = int(data["date_greater_than_filter_display_order"])

@@ -13,7 +13,7 @@ class ReportItemPacUserTacList(BaseModel):
     pac_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.tac_code = UUID4(data["tac_code"])
+            self.tac_code = TypeConversion.get_uuid(data["tac_code"])
             self.tac_description = str(data["tac_description"])
             self.tac_display_order = int(data["tac_display_order"])
             self.tac_is_active = bool(data["tac_is_active"])

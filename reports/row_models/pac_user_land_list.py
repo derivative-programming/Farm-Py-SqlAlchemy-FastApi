@@ -13,7 +13,7 @@ class ReportItemPacUserLandList(BaseModel):
     pac_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.land_code = UUID4(data["land_code"])
+            self.land_code = TypeConversion.get_uuid(data["land_code"])
             self.land_description = str(data["land_description"])
             self.land_display_order = int(data["land_display_order"])
             self.land_is_active = bool(data["land_is_active"])

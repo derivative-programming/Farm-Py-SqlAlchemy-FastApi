@@ -2,6 +2,7 @@ import pytest
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
+from helpers.type_conversion import TypeConversion
 from reports.row_models.land_plant_list import ReportItemLandPlantList
 
 class TestReportItemLandPlantList:
@@ -17,8 +18,8 @@ class TestReportItemLandPlantList:
         assert report_item.is_delete_allowed is False
         assert report_item.some_float_val == 0.0
         assert report_item.some_decimal_val == Decimal(0)
-        assert report_item.some_utc_date_time_val <= datetime.utcnow()
-        assert report_item.some_date_val == date.today()
+        assert report_item.some_utc_date_time_val == TypeConversion.get_default_date_time()
+        assert report_item.some_date_val == TypeConversion.get_default_date()
         assert report_item.some_money_val == Decimal(0)
         assert report_item.some_n_var_char_val == ""
         assert report_item.some_var_char_val == ""
@@ -44,8 +45,8 @@ class TestReportItemLandPlantList:
             "is_delete_allowed": True,
             "some_float_val": 1.23,
             "some_decimal_val": "10.99",
-            "some_utc_date_time_val": "2023-01-01T00:00:00",
-            "some_date_val": "2023-01-01",
+            "some_utc_date_time_val": datetime(2023, 1, 1, 0, 0, 0),# "2023-01-01T00:00:00",
+            "some_date_val": date(2023,1,1),#"2023-01-01",
             "some_money_val": "99.99",
             "some_n_var_char_val": "test",
             "some_var_char_val": "test",
@@ -61,8 +62,9 @@ class TestReportItemLandPlantList:
             "details_link_plant_code": str(UUID(int=5)),
         }
 
-        report_item = ReportItemLandPlantList(**data)
-        # report_item.load_data_provider_dict(data)
+        # report_item = ReportItemLandPlantList(**data)
+        report_item = ReportItemLandPlantList()
+        report_item.load_data_provider_dict(data)
 
         assert report_item.plant_code == UUID(int=1)
         assert report_item.some_int_val == 1

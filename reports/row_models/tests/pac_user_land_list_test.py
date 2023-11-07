@@ -2,6 +2,7 @@ import pytest
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
+from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_land_list import ReportItemPacUserLandList
 class TestReportItemPacUserLandList:
     def test_default_values(self):
@@ -25,8 +26,9 @@ class TestReportItemPacUserLandList:
             "land_name": "test",
             "pac_name": "test",
         }
-        report_item = ReportItemPacUserLandList(**data)
-        # report_item.load_data_provider_dict(data)
+        # report_item = ReportItemPacUserLandList(**data)
+        report_item = ReportItemPacUserLandList()
+        report_item.load_data_provider_dict(data)
         assert report_item.land_code == UUID(int=2)
         assert report_item.land_description == "test"
         assert report_item.land_display_order == 1

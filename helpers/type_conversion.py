@@ -16,6 +16,13 @@ class TypeConversion:
     def get_default_uuid():
         return uuid.UUID(int=0) 
 
+    
+    @staticmethod
+    def get_uuid(val) -> uuid.UUID:
+            if isinstance(val, uuid.UUID):
+                return val
+            else:
+                return uuid.UUID(val)
 
 
 class UUIDField(fields.Field):

@@ -13,7 +13,7 @@ class ReportItemPacUserFlavorList(BaseModel):
     pac_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.flavor_code = UUID4(data["flavor_code"])
+            self.flavor_code = TypeConversion.get_uuid(data["flavor_code"])
             self.flavor_description = str(data["flavor_description"])
             self.flavor_display_order = int(data["flavor_display_order"])
             self.flavor_is_active = bool(data["flavor_is_active"])

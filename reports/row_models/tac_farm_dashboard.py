@@ -9,7 +9,7 @@ class ReportItemTacFarmDashboard(BaseModel):
     is_conditional_btn_available: bool = False
 
     def load_data_provider_dict(self,data:dict):
-            self.field_one_plant_list_link_land_code = UUID4(data["field_one_plant_list_link_land_code"])
-            self.conditional_btn_example_link_land_code = UUID4(data["conditional_btn_example_link_land_code"])
+            self.field_one_plant_list_link_land_code = TypeConversion.get_uuid(data["field_one_plant_list_link_land_code"])
+            self.conditional_btn_example_link_land_code = TypeConversion.get_uuid(data["conditional_btn_example_link_land_code"])
             self.is_conditional_btn_available = bool(data["is_conditional_btn_available"])
 
