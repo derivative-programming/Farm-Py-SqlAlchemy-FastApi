@@ -3,6 +3,8 @@ import uuid
 from typing import List, Optional, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from models.customer import Customer # CustomerID
+from models.role import Role # RoleID
 from models.customer_role import CustomerRole
 from models.serialization_schema.customer_role import CustomerRoleSchema
 from services.logging_config import get_logger
@@ -143,12 +145,12 @@ class CustomerRoleManager:
         logger.info(dict2)
         return dict1 == dict2
 
-    async def get_by_customer_id(self, customer_id: int): # CustomerID
+    async def get_by_customer_id(self, customer_id: int) -> List[Customer]: # CustomerID
         if not isinstance(customer_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_id)} instead.")
         result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_id == customer_id))
         return result.scalars().all()
-    async def get_by_role_id(self, role_id: int): # RoleID
+    async def get_by_role_id(self, role_id: int) -> List[Role]: # RoleID
         if not isinstance(role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(role_id)} instead.")
         result = await self.session.execute(select(CustomerRole).filter(CustomerRole.role_id == role_id))

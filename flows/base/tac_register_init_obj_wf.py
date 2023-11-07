@@ -1,4 +1,7 @@
 import uuid
+from business.customer import CustomerBusObj
+from business.tac import TacBusObj
+from managers.org_customer import OrgCustomerManager
 from models import Tac
 from .base_flow import BaseFlow
 from flows.base import LogSeverity
@@ -14,15 +17,15 @@ class BaseFlowTacRegisterInitObjWF(BaseFlow):
             "TacRegisterInitObjWF",
             session_context,
             )
-    def _process_validation_rules(self,
-            tac: Tac,
+    async def _process_validation_rules(self,
+            tac_bus_obj: TacBusObj,
 
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
-        self._process_security_rules(tac)
-    def _process_security_rules(self,
-        tac: Tac,
+        await self._process_security_rules(tac_bus_obj)
+    async def _process_security_rules(self,
+        tac_bus_obj: TacBusObj,
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
@@ -36,11 +39,11 @@ class BaseFlowTacRegisterInitObjWF(BaseFlow):
             customerCodeMatchRequired = True
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
             customerCodeMatchRequired = True
-        if customerCodeMatchRequired == True:
+        if customerCodeMatchRequired == True and len(self.queued_validation_errors) == 0:
             val = True
-            item = tac
+            item = tac_bus_obj
             while val:
                 if item.get_object_name() == "pac":
                     val = False
 
-                item = item.get_parent_object()
+                item = await item.get_parent_object()

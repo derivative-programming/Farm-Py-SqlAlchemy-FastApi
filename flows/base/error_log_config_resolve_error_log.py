@@ -1,4 +1,7 @@
 import uuid
+from business.customer import CustomerBusObj
+from business.error_log import ErrorLogBusObj
+from managers.org_customer import OrgCustomerManager
 from models import ErrorLog
 from .base_flow import BaseFlow
 from flows.base import LogSeverity
@@ -14,15 +17,15 @@ class BaseFlowErrorLogConfigResolveErrorLog(BaseFlow):
             "ErrorLogConfigResolveErrorLog",
             session_context,
             )
-    def _process_validation_rules(self,
-            error_log: ErrorLog,
+    async def _process_validation_rules(self,
+            error_log_bus_obj: ErrorLogBusObj,
 
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
-        self._process_security_rules(error_log)
-    def _process_security_rules(self,
-        error_log: ErrorLog,
+        await self._process_security_rules(error_log_bus_obj)
+    async def _process_security_rules(self,
+        error_log_bus_obj: ErrorLogBusObj,
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
@@ -36,11 +39,11 @@ class BaseFlowErrorLogConfigResolveErrorLog(BaseFlow):
             customerCodeMatchRequired = True
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
             customerCodeMatchRequired = True
-        if customerCodeMatchRequired == True:
+        if customerCodeMatchRequired == True and len(self.queued_validation_errors) == 0:
             val = True
-            item = error_log
+            item = error_log_bus_obj
             while val:
                 if item.get_object_name() == "pac":
                     val = False
 
-                item = item.get_parent_object()
+                item = await item.get_parent_object()

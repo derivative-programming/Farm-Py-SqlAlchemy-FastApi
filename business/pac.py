@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+
 from services.db_config import db_dialect,generate_uuid
 
 from managers import PacManager
@@ -180,3 +181,20 @@ class PacBusObj:
         my_pac = self.get_pac_obj()
         return pac_manager.is_equal(pac, my_pac)
 
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+
+    def get_obj(self) -> Pac:
+        return self.pac
+    def get_object_name(self) -> str:
+        return "pac"
+    def get_id(self) -> int:
+        return self.pac_id
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,

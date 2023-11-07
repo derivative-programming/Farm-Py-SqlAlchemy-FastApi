@@ -3,6 +3,8 @@ import uuid
 from typing import List, Optional, Dict 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from models.flavor import Flavor # FlvrForeignKeyID
+from models.land import Land # LandID
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
 from services.logging_config import get_logger
@@ -189,13 +191,13 @@ class PlantManager:
         return dict1 == dict2
     
 #endset
-    async def get_by_flvr_foreign_key_id(self, flvr_foreign_key_id: int): # FlvrForeignKeyID
+    async def get_by_flvr_foreign_key_id(self, flvr_foreign_key_id: int) -> List[Flavor]: # FlvrForeignKeyID
         if not isinstance(flvr_foreign_key_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(flvr_foreign_key_id)} instead.")
         result = await self.session.execute(select(Plant).filter(Plant.flvr_foreign_key_id == flvr_foreign_key_id))
         return result.scalars().all()
     
-    async def get_by_land_id(self, land_id: int): # LandID
+    async def get_by_land_id(self, land_id: int) -> List[Land]: # LandID
         if not isinstance(land_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(land_id)} instead.")
         result = await self.session.execute(select(Plant).filter(Plant.land_id == land_id))

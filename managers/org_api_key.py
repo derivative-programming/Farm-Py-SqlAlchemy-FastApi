@@ -3,6 +3,8 @@ import uuid
 from typing import List, Optional, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from models.organization import Organization # OrganizationID
+from models.org_customer import OrgCustomer # OrgCustomerID
 from models.org_api_key import OrgApiKey
 from models.serialization_schema.org_api_key import OrgApiKeySchema
 from services.logging_config import get_logger
@@ -143,12 +145,12 @@ class OrgApiKeyManager:
         logger.info(dict2)
         return dict1 == dict2
 
-    async def get_by_organization_id(self, organization_id: int): # OrganizationID
+    async def get_by_organization_id(self, organization_id: int) -> List[Organization]: # OrganizationID
         if not isinstance(organization_id, int):
             raise TypeError(f"The org_api_key_id must be an integer, got {type(organization_id)} instead.")
         result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.organization_id == organization_id))
         return result.scalars().all()
-    async def get_by_org_customer_id(self, org_customer_id: int): # OrgCustomerID
+    async def get_by_org_customer_id(self, org_customer_id: int) -> List[OrgCustomer]: # OrgCustomerID
         if not isinstance(org_customer_id, int):
             raise TypeError(f"The org_api_key_id must be an integer, got {type(org_customer_id)} instead.")
         result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.org_customer_id == org_customer_id))

@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from business.customer import CustomerBusObj #CustomerID
+from business.organization import OrganizationBusObj #OrganizationID
 from services.db_config import db_dialect,generate_uuid
 from managers import CustomerManager as CustomerIDManager #CustomerID
 from managers import OrganizationManager as OrganizationIDManager #OrganizationID
@@ -177,10 +179,26 @@ class OrgCustomerBusObj:
         my_org_customer = self.get_org_customer_obj()
         return org_customer_manager.is_equal(org_customer, my_org_customer)
 
-    async def get_customer_id_rel_obj(self, customer_id: int): #CustomerID
-        customer_manager = CustomerIDManager(self.session)
-        return await customer_manager.get_by_id(self.org_customer.customer_id)
-    async def get_organization_id_rel_obj(self, organization_id: int): #OrganizationID
-        organization_manager = OrganizationIDManager(self.session)
-        return await organization_manager.get_by_id(self.org_customer.organization_id)
+    #CustomerID
+    async def get_customer_id_rel_bus_obj(self) -> CustomerBusObj:
+        customer_bus_obj = CustomerBusObj(self.session)
+        await customer_bus_obj.load(customer_id=self.org_customer.customer_id)
+        return customer_bus_obj
+    #email,
+    #OrganizationID
+    async def get_organization_id_rel_bus_obj(self) -> OrganizationBusObj:
+        organization_bus_obj = OrganizationBusObj(self.session)
+        await organization_bus_obj.load(organization_id=self.org_customer.organization_id)
+        return organization_bus_obj
 
+    def get_obj(self) -> OrgCustomer:
+        return self.org_customer
+    def get_object_name(self) -> str:
+        return "org_customer"
+    def get_id(self) -> int:
+        return self.org_customer_id
+    #CustomerID
+    #email,
+    #OrganizationID
+    async def get_parent_obj(self) -> OrganizationBusObj:
+        return await self.get_organization_id_rel_bus_obj()

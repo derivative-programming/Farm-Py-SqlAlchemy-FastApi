@@ -1,4 +1,7 @@
 import uuid
+from business.customer import CustomerBusObj
+from business.pac import PacBusObj
+from managers.org_customer import OrgCustomerManager
 from models import Pac
 from .base_flow import BaseFlow
 from flows.base import LogSeverity
@@ -14,15 +17,15 @@ class BaseFlowPacUserTriStateFilterListInitReport(BaseFlow):
             "PacUserTriStateFilterListInitReport",
             session_context,
             )
-    def _process_validation_rules(self,
-            pac: Pac,
+    async def _process_validation_rules(self,
+            pac_bus_obj: PacBusObj,
 
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
-        self._process_security_rules(pac)
-    def _process_security_rules(self,
-        pac: Pac,
+        await self._process_security_rules(pac_bus_obj)
+    async def _process_security_rules(self,
+        pac_bus_obj: PacBusObj,
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
@@ -36,11 +39,11 @@ class BaseFlowPacUserTriStateFilterListInitReport(BaseFlow):
             customerCodeMatchRequired = True
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
             customerCodeMatchRequired = True
-        if customerCodeMatchRequired == True:
+        if customerCodeMatchRequired == True and len(self.queued_validation_errors) == 0:
             val = True
-            item = pac
+            item = pac_bus_obj
             while val:
                 if item.get_object_name() == "pac":
                     val = False
 
-                item = item.get_parent_object()
+                item = await item.get_parent_object()

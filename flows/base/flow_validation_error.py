@@ -1,10 +1,10 @@
 import uuid
 from models import Tac 
-from dataclasses import dataclass, asdict
-from dataclasses_json import dataclass_json,LetterCase 
+# from dataclasses import dataclass, asdict
+# from dataclasses_json import dataclass_json,LetterCase 
  
  
-@dataclass
+# @dataclass
 class FlowValidationError(Exception): 
     error_dict:dict
  

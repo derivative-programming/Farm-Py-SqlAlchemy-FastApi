@@ -1,4 +1,7 @@
 import uuid
+from business.customer import CustomerBusObj
+from business.land import LandBusObj
+from managers.org_customer import OrgCustomerManager
 from models import Land 
 from .base_flow import BaseFlow
 from flows.base import LogSeverity
@@ -7,7 +10,8 @@ from decimal import Decimal
 from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.land_add_plant as FlowConstants
-import models as farm_models
+import models as farm_models  
+ 
 
 class BaseFlowLandAddPlant(BaseFlow):
     def __init__(self, session_context:SessionContext): 
@@ -17,9 +21,9 @@ class BaseFlowLandAddPlant(BaseFlow):
             ) 
      
     
-    def _process_validation_rules(self, 
-            land: Land,
-            request_flavor_code:uuid = "",    
+    async def _process_validation_rules(self, 
+            land_bus_obj: LandBusObj,
+            request_flavor_code:uuid = uuid.UUID(int=0),    
             request_other_flavor:str = "",    
             request_some_int_val:int = 0,    
             request_some_big_int_val:int = 0,    
@@ -40,7 +44,7 @@ class BaseFlowLandAddPlant(BaseFlow):
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
   
-        if request_flavor_code == "" and FlowConstants.param_request_flavor_code_isRequired == True:
+        if request_flavor_code == uuid.UUID(int=0) and FlowConstants.param_request_flavor_code_isRequired == True:
             self._add_field_validation_error("requestFlavorCode","Please select a Flavor")
             
         if request_other_flavor == "" and FlowConstants.param_request_other_flavor_isRequired == True:
@@ -67,13 +71,13 @@ class BaseFlowLandAddPlant(BaseFlow):
         if request_some_decimal_val == 0 and FlowConstants.param_request_some_decimal_val_isRequired == True:
             self._add_field_validation_error("requestSomeDecimalVal","Please enter a Some Decimal Val")
             
-        if request_some_utc_date_time_val == "" and FlowConstants.param_request_some_utc_date_time_val_isRequired == True:
+        if request_some_utc_date_time_val == TypeConversion.get_default_date_time() and FlowConstants.param_request_some_utc_date_time_val_isRequired == True:
             self._add_field_validation_error("requestSomeUTCDateTimeVal","Please enter a Some UTC Date Time Val")
             
-        if request_some_date_val == "" and FlowConstants.param_request_some_date_val_isRequired == True:
+        if request_some_date_val == TypeConversion.get_default_date() and FlowConstants.param_request_some_date_val_isRequired == True:
             self._add_field_validation_error("requestSomeDateVal","Please enter a Some Date Val")
             
-        if request_some_money_val == "" and FlowConstants.param_request_some_money_val_isRequired == True:
+        if request_some_money_val == 0 and FlowConstants.param_request_some_money_val_isRequired == True:
             self._add_field_validation_error("requestSomeMoneyVal","Please enter a Some Money Val")
             
         if request_some_n_var_char_val == "" and FlowConstants.param_request_some_n_var_char_val_isRequired == True:
@@ -96,14 +100,14 @@ class BaseFlowLandAddPlant(BaseFlow):
 
 
 
-        self._process_security_rules(land)
+        await self._process_security_rules(land_bus_obj)
         
         
         
 
     
-    def _process_security_rules(self, 
-        land: Land,
+    async def _process_security_rules(self, 
+        land_bus_obj: LandBusObj,
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
 
@@ -123,11 +127,11 @@ class BaseFlowLandAddPlant(BaseFlow):
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
             customerCodeMatchRequired = True
 
-        if customerCodeMatchRequired == True:
+        if customerCodeMatchRequired == True and len(self.queued_validation_errors) == 0:
             
             val = True
 
-            item = land 
+            item = land_bus_obj 
 
             while val:
                 if item.get_object_name() == "pac":
@@ -137,7 +141,7 @@ class BaseFlowLandAddPlant(BaseFlow):
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start   
                 if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
                     if item.get_object_name() == "org_customer":
-                        item = item.customer
+                        item = item.get_customer_id_rel_obj()
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrgCustomerSecurityUsed]End
 
@@ -154,12 +158,15 @@ class BaseFlowLandAddPlant(BaseFlow):
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]Start    
                 if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed == True:
                     if item.get_object_name() == "organization":
-                        customer = farm_models.Customer.objects.from_code(self._session_context.customer_code)
-                        org_customers = farm_models.OrgCustomer.objects.filter(organization_id=item.organization_id, customer_id=customer.customer_id)
-                        if org_customers.count() == 0:
+                        organization_id = item.get_id()
+                        customer_bus_obj = CustomerBusObj(land_bus_obj.session) 
+                        await customer_bus_obj.load(code=self._session_context.customer_code) 
+                        org_customer_manager = OrgCustomerManager(land_bus_obj.session)
+                        org_customers = org_customer_manager.get_by_customer_id(customer_bus_obj.customer_id) 
+                        org_customers = filter(lambda x: x.organization_id == organization_id, org_customers) 
+                        if len(org_customers) == 0:
                             self._add_validation_error("Unautorized access. Invalid user in organization.") 
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End
-
-                      
-                item = item.get_parent_object()
+ 
+                item = await item.get_parent_object()

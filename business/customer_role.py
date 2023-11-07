@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from business.customer import CustomerBusObj #CustomerID
+from business.role import RoleBusObj #RoleID
 from services.db_config import db_dialect,generate_uuid
 from managers import CustomerManager as CustomerIDManager #CustomerID
 from managers import RoleManager as RoleIDManager #RoleID
@@ -188,10 +190,28 @@ class CustomerRoleBusObj:
         my_customer_role = self.get_customer_role_obj()
         return customer_role_manager.is_equal(customer_role, my_customer_role)
 
-    async def get_customer_id_rel_obj(self, customer_id: int): #CustomerID
-        customer_manager = CustomerIDManager(self.session)
-        return await customer_manager.get_by_id(self.customer_role.customer_id)
-    async def get_role_id_rel_obj(self, role_id: int): #RoleID
-        role_manager = RoleIDManager(self.session)
-        return await role_manager.get_by_id(self.customer_role.role_id)
+    #CustomerID
+    async def get_customer_id_rel_bus_obj(self) -> CustomerBusObj:
+        customer_bus_obj = CustomerBusObj(self.session)
+        await customer_bus_obj.load(customer_id=self.customer_role.customer_id)
+        return customer_bus_obj
+    #isPlaceholder,
+    #placeholder,
+    #RoleID
+    async def get_role_id_rel_bus_obj(self) -> RoleBusObj:
+        role_bus_obj = RoleBusObj(self.session)
+        await role_bus_obj.load(role_id=self.customer_role.role_id)
+        return role_bus_obj
 
+    def get_obj(self) -> CustomerRole:
+        return self.customer_role
+    def get_object_name(self) -> str:
+        return "customer_role"
+    def get_id(self) -> int:
+        return self.customer_role_id
+    #CustomerID
+    async def get_parent_obj(self) -> CustomerBusObj:
+        return await self.get_customer_id_rel_bus_obj()
+    #isPlaceholder,
+    #placeholder,
+    #RoleID

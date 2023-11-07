@@ -3,6 +3,7 @@ import uuid
 from typing import List, Optional, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from models.pac import Pac # PacID
 from models.tri_state_filter import TriStateFilter
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
 from services.logging_config import get_logger
@@ -143,7 +144,7 @@ class TriStateFilterManager:
         logger.info(dict2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int): # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
         if not isinstance(pac_id, int):
             raise TypeError(f"The tri_state_filter_id must be an integer, got {type(pac_id)} instead.")
         result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.pac_id == pac_id))

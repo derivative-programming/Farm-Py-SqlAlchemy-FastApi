@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from business.tac import TacBusObj #TacID
 from services.db_config import db_dialect,generate_uuid
 from managers import TacManager as TacIDManager #TacID
 from managers import OrganizationManager
@@ -159,7 +160,20 @@ class OrganizationBusObj:
         my_organization = self.get_organization_obj()
         return organization_manager.is_equal(organization, my_organization)
 
-    async def get_tac_id_rel_obj(self, tac_id: int): #TacID
-        tac_manager = TacIDManager(self.session)
-        return await tac_manager.get_by_id(self.organization.tac_id)
+    #name,
+    #TacID
+    async def get_tac_id_rel_bus_obj(self) -> TacBusObj:
+        tac_bus_obj = TacBusObj(self.session)
+        await tac_bus_obj.load(tac_id=self.organization.tac_id)
+        return tac_bus_obj
 
+    def get_obj(self) -> Organization:
+        return self.organization
+    def get_object_name(self) -> str:
+        return "organization"
+    def get_id(self) -> int:
+        return self.organization_id
+    #name,
+    #TacID
+    async def get_parent_obj(self) -> TacBusObj:
+        return await self.get_tac_id_rel_bus_obj()

@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from business.tac import TacBusObj #TacID
 from services.db_config import db_dialect,generate_uuid
 from managers import TacManager as TacIDManager #TacID
 from managers import CustomerManager
@@ -355,7 +356,62 @@ class CustomerBusObj:
         my_customer = self.get_customer_obj()
         return customer_manager.is_equal(customer, my_customer)
 
-    async def get_tac_id_rel_obj(self, tac_id: int): #TacID
-        tac_manager = TacIDManager(self.session)
-        return await tac_manager.get_by_id(self.customer.tac_id)
+    #activeOrganizationID,
+    #email,
+    #emailConfirmedUTCDateTime
+    #firstName,
+    #forgotPasswordKeyExpirationUTCDateTime
+    #forgotPasswordKeyValue,
+    #fSUserCodeValue,
+    #isActive,
+    #isEmailAllowed,
+    #isEmailConfirmed,
+    #isEmailMarketingAllowed,
+    #isLocked,
+    #isMultipleOrganizationsAllowed,
+    #isVerboseLoggingForced,
+    #lastLoginUTCDateTime
+    #lastName,
+    #password,
+    #phone,
+    #province,
+    #registrationUTCDateTime
+    #TacID
+    async def get_tac_id_rel_bus_obj(self) -> TacBusObj:
+        tac_bus_obj = TacBusObj(self.session)
+        await tac_bus_obj.load(tac_id=self.customer.tac_id)
+        return tac_bus_obj
+    #uTCOffsetInMinutes,
+    #zip,
 
+    def get_obj(self) -> Customer:
+        return self.customer
+    def get_object_name(self) -> str:
+        return "customer"
+    def get_id(self) -> int:
+        return self.customer_id
+    #activeOrganizationID,
+    #email,
+    #emailConfirmedUTCDateTime
+    #firstName,
+    #forgotPasswordKeyExpirationUTCDateTime
+    #forgotPasswordKeyValue,
+    #fSUserCodeValue,
+    #isActive,
+    #isEmailAllowed,
+    #isEmailConfirmed,
+    #isEmailMarketingAllowed,
+    #isLocked,
+    #isMultipleOrganizationsAllowed,
+    #isVerboseLoggingForced,
+    #lastLoginUTCDateTime
+    #lastName,
+    #password,
+    #phone,
+    #province,
+    #registrationUTCDateTime
+    #TacID
+    async def get_parent_obj(self) -> TacBusObj:
+        return await self.get_tac_id_rel_bus_obj()
+    #uTCOffsetInMinutes,
+    #zip,

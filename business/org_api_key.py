@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from business.organization import OrganizationBusObj #OrganizationID
+from business.org_customer import OrgCustomerBusObj #OrgCustomerID
 from services.db_config import db_dialect,generate_uuid
 from managers import OrganizationManager as OrganizationIDManager #OrganizationID
 from managers import OrgCustomerManager as OrgCustomerIDManager #OrgCustomerID
@@ -233,10 +235,38 @@ class OrgApiKeyBusObj:
         my_org_api_key = self.get_org_api_key_obj()
         return org_api_key_manager.is_equal(org_api_key, my_org_api_key)
 
-    async def get_organization_id_rel_obj(self, organization_id: int): #OrganizationID
-        organization_manager = OrganizationIDManager(self.session)
-        return await organization_manager.get_by_id(self.org_api_key.organization_id)
-    async def get_org_customer_id_rel_obj(self, org_customer_id: int): #OrgCustomerID
-        org_customer_manager = OrgCustomerIDManager(self.session)
-        return await org_customer_manager.get_by_id(self.org_api_key.org_customer_id)
+    #apiKeyValue,
+    #createdBy,
+    #createdUTCDateTime
+    #expirationUTCDateTime
+    #isActive,
+    #isTempUserKey,
+    #name,
+    #OrganizationID
+    async def get_organization_id_rel_bus_obj(self) -> OrganizationBusObj:
+        organization_bus_obj = OrganizationBusObj(self.session)
+        await organization_bus_obj.load(organization_id=self.org_api_key.organization_id)
+        return organization_bus_obj
+    #OrgCustomerID
+    async def get_org_customer_id_rel_bus_obj(self) -> OrgCustomerBusObj:
+        org_customer_bus_obj = OrgCustomerBusObj(self.session)
+        await org_customer_bus_obj.load(org_customer_id=self.org_api_key.org_customer_id)
+        return org_customer_bus_obj
 
+    def get_obj(self) -> OrgApiKey:
+        return self.org_api_key
+    def get_object_name(self) -> str:
+        return "org_api_key"
+    def get_id(self) -> int:
+        return self.org_api_key_id
+    #apiKeyValue,
+    #createdBy,
+    #createdUTCDateTime
+    #expirationUTCDateTime
+    #isActive,
+    #isTempUserKey,
+    #name,
+    #OrganizationID
+    async def get_parent_obj(self) -> OrganizationBusObj:
+        return await self.get_organization_id_rel_bus_obj()
+    #OrgCustomerID

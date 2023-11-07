@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import TacManager
@@ -196,7 +197,28 @@ class TacBusObj:
         my_tac = self.get_tac_obj()
         return tac_manager.is_equal(tac, my_tac)
 
-    async def get_pac_id_rel_obj(self, pac_id: int): #PacID
-        pac_manager = PacIDManager(self.session)
-        return await pac_manager.get_by_id(self.tac.pac_id)
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
+    async def get_pac_id_rel_bus_obj(self) -> PacBusObj:
+        pac_bus_obj = PacBusObj(self.session)
+        await pac_bus_obj.load(pac_id=self.tac.pac_id)
+        return pac_bus_obj
 
+    def get_obj(self) -> Tac:
+        return self.tac
+    def get_object_name(self) -> str:
+        return "tac"
+    def get_id(self) -> int:
+        return self.tac_id
+    #description,
+    #displayOrder,
+    #isActive,
+    #lookupEnumName,
+    #name,
+    #PacID
+    async def get_parent_obj(self) -> PacBusObj:
+        return await self.get_pac_id_rel_bus_obj()

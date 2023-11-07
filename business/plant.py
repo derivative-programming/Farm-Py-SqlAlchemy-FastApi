@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from business.land import LandBusObj #LandID
+from business.flavor import FlavorBusObj #FlvrForeignKeyID
 from services.db_config import db_dialect,generate_uuid
 from managers import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
 from managers import LandManager as LandIDManager #LandID
@@ -324,6 +326,7 @@ class PlantBusObj:
         assert isinstance(value, UUIDType), "land_code_peek must be a UUID"
         self.plant.land_code_peek = value
 
+
     #somePhoneNumber,
     #someTextVal,
     #someUniqueidentifierVal, 
@@ -404,6 +407,7 @@ class PlantBusObj:
  
     def get_plant_obj(self) -> Plant:
         return self.plant
+     
     
     def is_equal(self,plant:Plant) -> Plant:
         plant_manager = PlantManager(self.session)
@@ -411,14 +415,68 @@ class PlantBusObj:
         return plant_manager.is_equal(plant, my_plant)
 #endset
 
-    async def get_land_id_rel_obj(self, land_id: int): #LandID 
-        land_manager = LandIDManager(self.session)
-        return await land_manager.get_by_id(self.plant.land_id)
+    #isDeleteAllowed,
+    #isEditAllowed,
+    #otherFlavor, 
+    #someBigIntVal,
+    #someBitVal, 
+    #someDecimalVal,
+    #someEmailAddress,
+    #someFloatVal,
+    #someIntVal,
+    #someMoneyVal,
+    #someNVarCharVal, 
+    #someDateVal
+    #someUTCDateTimeVal
+    #LandID
+    async def get_land_id_rel_bus_obj(self) -> LandBusObj:  
+        land_bus_obj = LandBusObj(self.session)
+        await land_bus_obj.load(land_id=self.plant.land_id) 
+        return land_bus_obj 
     
+    #FlvrForeignKeyID 
+    async def get_flvr_foreign_key_id_rel_bus_obj(self) -> FlavorBusObj: 
+        flavor_bus_obj = FlavorBusObj(self.session)
+        await flavor_bus_obj.load(flavor_id=self.plant.flvr_foreign_key_id) 
+        return flavor_bus_obj
+    #somePhoneNumber,
+    #someTextVal,
+    #someUniqueidentifierVal, 
+    #someVarCharVal,
     
-    async def get_flvr_foreign_key_id_rel_obj(self, flvr_foreign_key_id: int): #FlvrForeignKeyID 
-        flavor_manager = FlvrForeignKeyIDManager(self.session)
-        return await flavor_manager.get_by_id(self.plant.flvr_foreign_key_id)
 #endset
-     
+
+    def get_obj(self) -> Plant:
+        return self.plant
+    
+    def get_object_name(self) -> str:
+        return "plant"
+    
+    def get_id(self) -> int:
+        return self.plant_id
+      
+    
+    #isDeleteAllowed,
+    #isEditAllowed,
+    #otherFlavor, 
+    #someBigIntVal,
+    #someBitVal, 
+    #someDecimalVal,
+    #someEmailAddress,
+    #someFloatVal,
+    #someIntVal,
+    #someMoneyVal,
+    #someNVarCharVal, 
+    #someDateVal
+    #someUTCDateTimeVal
+    #FlvrForeignKeyID
+    #LandID  
+    async def get_parent_obj(self) -> LandBusObj: 
+        return await self.get_land_id_rel_bus_obj()
+    #somePhoneNumber,
+    #someTextVal,
+    #someUniqueidentifierVal, 
+    #someVarCharVal,
+        
+    
     

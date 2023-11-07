@@ -3,6 +3,7 @@ import uuid
 from typing import List, Optional, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from models.pac import Pac # PacID
 from models.role import Role
 from models.serialization_schema.role import RoleSchema
 from services.logging_config import get_logger
@@ -143,7 +144,7 @@ class RoleManager:
         logger.info(dict2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int): # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
         if not isinstance(pac_id, int):
             raise TypeError(f"The role_id must be an integer, got {type(pac_id)} instead.")
         result = await self.session.execute(select(Role).filter(Role.pac_id == pac_id))

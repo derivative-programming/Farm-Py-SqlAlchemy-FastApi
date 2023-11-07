@@ -1,20 +1,22 @@
-from dataclasses import dataclass, field
-from dataclasses_json import dataclass_json,LetterCase, config
+from business.land import LandBusObj
 from datetime import date, datetime
 import uuid
 from flows.base import BaseFlowLandPlantListInitReport
 from models import Land
 from flows.base import LogSeverity
 from helpers import SessionContext
-from models import Customer
-from django.utils import timezone
 from helpers import ApiToken
 from decimal import Decimal
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
-@dataclass_json
-@dataclass
+from sqlalchemy.ext.asyncio import AsyncSession
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import String
+# @dataclass_json
+# @dataclass
 class FlowLandPlantListInitReportResult():
     context_object_code:uuid = uuid.UUID(int=0)
     some_int_val:int = 0
@@ -46,14 +48,14 @@ class FlowLandPlantListInitReportResult():
 class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
     def __init__(self, session_context:SessionContext):
         super(FlowLandPlantListInitReport, self).__init__(session_context)
-    def process(self,
-        land: Land,
+    async def process(self,
+        land_bus_obj: LandBusObj,
 
         ) -> FlowLandPlantListInitReportResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land.code))
-        super()._process_validation_rules(
-            land,
+        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land_bus_obj.code))
+        await super()._process_validation_rules(
+            land_bus_obj,
 
         )
         super()._throw_queued_validation_errors()
@@ -80,7 +82,7 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowLandPlantListInitReportResult()
-        result.context_object_code = land.code
+        result.context_object_code = land_bus_obj.code
         result.some_int_val = some_int_val_output
         result.some_big_int_val = some_big_int_val_output
         result.some_bit_val = some_bit_val_output

@@ -3,6 +3,7 @@ import uuid
 from typing import List, Optional, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from models.tac import Tac # TacID
 from models.organization import Organization
 from models.serialization_schema.organization import OrganizationSchema
 from services.logging_config import get_logger
@@ -143,7 +144,7 @@ class OrganizationManager:
         logger.info(dict2)
         return dict1 == dict2
 
-    async def get_by_tac_id(self, tac_id: int): # TacID
+    async def get_by_tac_id(self, tac_id: int) -> List[Tac]: # TacID
         if not isinstance(tac_id, int):
             raise TypeError(f"The organization_id must be an integer, got {type(tac_id)} instead.")
         result = await self.session.execute(select(Organization).filter(Organization.tac_id == tac_id))

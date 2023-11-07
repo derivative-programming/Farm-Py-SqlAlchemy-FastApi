@@ -1,21 +1,24 @@
-from dataclasses import dataclass, field
-from dataclasses_json import dataclass_json,LetterCase, config
+from business.land import LandBusObj 
 from datetime import date, datetime
 import uuid
 from flows.base import BaseFlowLandAddPlant
 from models import Land 
 from flows.base import LogSeverity
-from helpers import SessionContext
-from models import Customer
-from django.utils import timezone
+from helpers import SessionContext 
 from helpers import ApiToken
 from decimal import Decimal
 from helpers import TypeConversion
 import models as farm_models 
 import managers as farm_managers
+from sqlalchemy.ext.asyncio import AsyncSession
+from services.db_config import db_dialect,generate_uuid
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import String
+ 
 
-@dataclass_json
-@dataclass
+# @dataclass_json
+# @dataclass
 class FlowLandAddPlantResult():
     context_object_code:uuid = uuid.UUID(int=0) 
     land_code:uuid = uuid.UUID(int=0) 
@@ -29,15 +32,8 @@ class FlowLandAddPlantResult():
     output_is_delete_allowed:bool = False 
     output_some_float_val:float = 0
     output_some_decimal_val:Decimal = Decimal(0)
-    output_some_utc_date_time_val:datetime = field(default_factory=TypeConversion.get_default_date_time, 
-            metadata=config(
-            encoder=datetime.isoformat, 
-            decoder=datetime.fromisoformat
-        )) 
-    output_some_date_val:date = field(default_factory=TypeConversion.get_default_date, metadata=config(
-            encoder=date.isoformat, 
-            decoder=date.fromisoformat
-        ))
+    output_some_utc_date_time_val:datetime = TypeConversion.get_default_date_time()
+    output_some_date_val:date = TypeConversion.get_default_date()
     output_some_money_val:Decimal = Decimal(0)
     output_some_n_var_char_val:str = "" 
     output_some_var_char_val:str = "" 
@@ -52,8 +48,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
     def __init__(self, session_context:SessionContext): 
         super(FlowLandAddPlant, self).__init__(session_context) 
      
-    def process(self,
-        land: Land,
+    async def process(self,
+        land_bus_obj: LandBusObj,
         request_flavor_code:uuid = uuid.UUID(int=0),    
         request_other_flavor:str = "",    
         request_some_int_val:int = 0,    
@@ -75,10 +71,10 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         ) -> FlowLandAddPlantResult:
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land.code))
+        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land_bus_obj.code))
 
-        super()._process_validation_rules(
-            land,
+        await super()._process_validation_rules(
+            land_bus_obj,
             request_flavor_code,    
             request_other_flavor,    
             request_some_int_val,   
@@ -125,9 +121,9 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 ##GENTrainingBlock[caseFlowLogic]Start
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]Start   
  
-        # plant:farm_models.Plant = farm_models.Plant.build(land)
-        # plant.land = land
-        # plant.flvr_foreign_key = farm_models.Flavor.objects.from_code(request_flavor_code)
+        # plant:PlantBusObj = PlantBusObj(land_bus_obj.session)
+        # plant.land_id = land_bus_obj.land_id
+        # plant.flvr_foreign_key_id = 0
         # plant.other_flavor = request_other_flavor    
         # plant.some_int_val = request_some_int_val   
         # plant.some_big_int_val = request_some_big_int_val   
@@ -173,7 +169,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowLandAddPlantResult() 
         
-        result.context_object_code = land.code
+        result.context_object_code = land_bus_obj.code
         result.land_code = land_code_output
         result.plant_code = plant_code_output
         result.output_flavor_code = output_flavor_code_output
