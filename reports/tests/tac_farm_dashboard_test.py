@@ -145,7 +145,7 @@ class TestReportManagerTacFarmDashboard:
 # import uuid
 # from decimal import Decimal
 # from helpers import SessionContext,TypeConversion
-# from models.factories import TacFactory
+# from models.factory import TacFactory
 # from models import CurrentRuntime
 # class ReportTestTacFarmDashboard(TestCase):
 #     def setUp(self):

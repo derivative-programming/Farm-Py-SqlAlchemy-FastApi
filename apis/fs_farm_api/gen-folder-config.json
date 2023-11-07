@@ -1,0 +1,6 @@
+{
+    "templateType":"api",  
+    "dimension" :{
+        "name":"FSFarmAPI"
+    }
+}

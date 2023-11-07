@@ -1,0 +1,32 @@
+{
+    "templateType":"report",  
+    "dimension" :{
+        "name":"LandPlantList"
+    },
+    "ignoreDimensionPropertyList": [   
+        "reportParam.calculatedIsTargetColumnNameAvailable",
+        "reportParam.calculatedIsTargetObjectAvailable",
+        "reportColumn.calculatedIsConditionalSqlLogicAvailable",
+        "reportColumn.calculatedIsSourceObjectAvailable",
+        "reportColumn.isAsyncObjWFResultFileStreamedOut",
+        "reportColumn.calculatedIsConditionalVisible",
+        "reportColumn.calculatedIsMaxWidthAvailable",
+        "reportColumn.calculatedIsMinWidthAvailable",
+        "reportColumn.calculatedIsSummarySumAllowed",
+        "reportColumn.calculatedIsSummaryDisplayed",
+        "reportColumn.calculatedIsAddedIntoExport",
+        "reportColumn.calculatedDestinationIsReport",
+        "reportColumn.calculatedDestinationIsReportDetailView",
+        "reportColumn.calculatedDestinationIsObjectWorkflow",
+        "reportColumn.calculatedDestinationIsJump", 
+        "reportColumn.isColumnSumMetricAvailable",
+        "reportColumn.isButtonClickedOnRowClick",
+        "reportColumn.isConditionallyDisplayed",
+        "reportColumn.isJoinedToRightColumn",
+        "reportColumn.calculatedIsObjectID",
+        "reportColumn.isButtonCallToAction",
+        "reportColumn.isJoinedToLeftColumn",
+        "reportColumn.isForcedIntoExport",
+        "reportColumn.isVisible"
+    ]
+} 

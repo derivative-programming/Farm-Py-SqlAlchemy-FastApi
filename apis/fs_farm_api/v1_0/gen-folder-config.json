@@ -1,0 +1,7 @@
+{
+    "templateType":"api",  
+    "dimension" :{
+        "name":"FSFarmAPI",
+        "cCSVN":"v1_0"
+    }
+}

@@ -145,7 +145,7 @@ class TestReportManagerPlantUserDetails:
 # import uuid
 # from decimal import Decimal
 # from helpers import SessionContext,TypeConversion
-# from models.factories import PlantFactory
+# from models.factory import PlantFactory
 # from models import CurrentRuntime
 # class ReportTestPlantUserDetails(TestCase):
 #     def setUp(self):

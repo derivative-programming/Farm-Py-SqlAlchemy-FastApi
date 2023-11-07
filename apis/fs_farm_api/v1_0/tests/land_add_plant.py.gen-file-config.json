@@ -1,0 +1,8 @@
+{
+    "templateType":"apiEndPoint",  
+    "dimension" :{
+        "name":"LandAddPlant" 
+    },
+    "ignoreDimensionPropertyList": [   
+    ]
+} 

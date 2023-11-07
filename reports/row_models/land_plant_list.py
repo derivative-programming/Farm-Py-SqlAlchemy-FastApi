@@ -1,12 +1,11 @@
-import uuid
-from pydantic import BaseModel, Field , UUID4
+import uuid 
 from decimal import Decimal
 from datetime import datetime, date
 
 from helpers.type_conversion import TypeConversion 
 
-class ReportItemLandPlantList(BaseModel):
-    plant_code: UUID4 =  uuid.UUID(int=0)
+class ReportItemLandPlantList():
+    plant_code:uuid.UUID =  uuid.UUID(int=0)
     some_int_val: int = 0
     some_big_int_val: int = 0
     some_bit_val: bool = False
@@ -14,8 +13,8 @@ class ReportItemLandPlantList(BaseModel):
     is_delete_allowed: bool = False
     some_float_val: float = 0.0
     some_decimal_val: Decimal = Decimal(0)
-    some_utc_date_time_val: datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    some_date_val: date = Field(default_factory=TypeConversion.get_default_date)
+    some_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+    some_date_val: date = TypeConversion.get_default_date()
     some_money_val: Decimal = Decimal(0)
     some_n_var_char_val: str = ""
     some_var_char_val: str = ""
@@ -23,12 +22,12 @@ class ReportItemLandPlantList(BaseModel):
     some_phone_number: str = ""
     some_email_address: str = ""
     flavor_name: str = ""
-    flavor_code: UUID4 =  uuid.UUID(int=0)
+    flavor_code: uuid.UUID =  uuid.UUID(int=0)
     some_int_conditional_on_deletable: int = 0
     n_var_char_as_url: str = ""
-    update_link_plant_code: UUID4 =  uuid.UUID(int=0)
-    delete_async_button_link_plant_code: UUID4 =  uuid.UUID(int=0)
-    details_link_plant_code: UUID4 =  uuid.UUID(int=0)
+    update_link_plant_code: uuid.UUID =  uuid.UUID(int=0)
+    delete_async_button_link_plant_code: uuid.UUID =  uuid.UUID(int=0)
+    details_link_plant_code: uuid.UUID =  uuid.UUID(int=0)
 #endset
 
     def load_data_provider_dict(self,data:dict):

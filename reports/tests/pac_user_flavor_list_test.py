@@ -145,7 +145,7 @@ class TestReportManagerPacUserFlavorList:
 # import uuid
 # from decimal import Decimal
 # from helpers import SessionContext,TypeConversion
-# from models.factories import PacFactory
+# from models.factory import PacFactory
 # from models import CurrentRuntime
 # class ReportTestPacUserFlavorList(TestCase):
 #     def setUp(self):
