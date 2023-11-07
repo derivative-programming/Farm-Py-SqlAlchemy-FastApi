@@ -6,7 +6,6 @@ from models import Tac
 from flows.base import LogSeverity
 from helpers import SessionContext
 from helpers import ApiToken
-from decimal import Decimal
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
@@ -15,16 +14,18 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
-# @dataclass_json
-# @dataclass
-class FlowTacRegisterResult():
-    context_object_code:uuid = uuid.UUID(int=0)
-    customer_code:uuid = uuid.UUID(int=0)
+from pydantic import BaseModel, Field, UUID4
+from decimal import Decimal
+class FlowTacRegisterResult(BaseModel):
+    context_object_code:UUID4 =  uuid.UUID(int=0)
+    customer_code:UUID4 =  uuid.UUID(int=0)
     email:str = ""
-    user_code_value:uuid = uuid.UUID(int=0)
+    user_code_value:UUID4 =  uuid.UUID(int=0)
     utc_offset_in_minutes:int = 0
     role_name_csv_list:str = ""
     api_key:str = ""
+    def __init__(self):
+        pass
 class FlowTacRegister(BaseFlowTacRegister):
     def __init__(self, session_context:SessionContext):
         super(FlowTacRegister, self).__init__(session_context)

@@ -1,11 +1,12 @@
-from pydantic import BaseModel, Field 
+import uuid
+from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
-from uuid import UUID
-import uuid 
+
+from helpers.type_conversion import TypeConversion 
 
 class ReportItemLandPlantList(BaseModel):
-    plant_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
+    plant_code: UUID4 =  uuid.UUID(int=0)
     some_int_val: int = 0
     some_big_int_val: int = 0
     some_bit_val: bool = False
@@ -13,8 +14,8 @@ class ReportItemLandPlantList(BaseModel):
     is_delete_allowed: bool = False
     some_float_val: float = 0.0
     some_decimal_val: Decimal = Decimal(0)
-    some_utc_date_time_val: datetime = Field(default_factory=datetime.utcnow)
-    some_date_val: date = Field(default_factory=date.today)
+    some_utc_date_time_val: datetime = Field(default_factory=TypeConversion.get_default_date_time)
+    some_date_val: date = Field(default_factory=TypeConversion.get_default_date)
     some_money_val: Decimal = Decimal(0)
     some_n_var_char_val: str = ""
     some_var_char_val: str = ""
@@ -22,16 +23,16 @@ class ReportItemLandPlantList(BaseModel):
     some_phone_number: str = ""
     some_email_address: str = ""
     flavor_name: str = ""
-    flavor_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
+    flavor_code: UUID4 =  uuid.UUID(int=0)
     some_int_conditional_on_deletable: int = 0
     n_var_char_as_url: str = ""
-    update_link_plant_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
-    delete_async_button_link_plant_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
-    details_link_plant_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
+    update_link_plant_code: UUID4 =  uuid.UUID(int=0)
+    delete_async_button_link_plant_code: UUID4 =  uuid.UUID(int=0)
+    details_link_plant_code: UUID4 =  uuid.UUID(int=0)
 #endset
 
     def load_data_provider_dict(self,data:dict):
-            self.plant_code = uuid.UUID(data["plant_code"])
+            self.plant_code = UUID4(data["plant_code"])
             self.some_int_val = int(data["some_int_val"])
             self.some_big_int_val = int(data["some_big_int_val"])
             self.some_bit_val = bool(data["some_bit_val"])
@@ -48,10 +49,10 @@ class ReportItemLandPlantList(BaseModel):
             self.some_phone_number = str(data["some_phone_number"])
             self.some_email_address = str(data["some_email_address"])
             self.flavor_name = str(data["flavor_name"])
-            self.flavor_code = uuid.UUID(data["flavor_code"])
+            self.flavor_code = UUID4(data["flavor_code"])
             self.some_int_conditional_on_deletable = int(data["some_int_conditional_on_deletable"])
             self.n_var_char_as_url = str(data["n_var_char_as_url"])
-            self.update_link_plant_code = uuid.UUID(data["update_link_plant_code"])
-            self.delete_async_button_link_plant_code = uuid.UUID(data["delete_async_button_link_plant_code"])
-            self.details_link_plant_code = uuid.UUID(data["details_link_plant_code"])
+            self.update_link_plant_code = UUID4(data["update_link_plant_code"])
+            self.delete_async_button_link_plant_code = UUID4(data["delete_async_button_link_plant_code"])
+            self.details_link_plant_code = UUID4(data["details_link_plant_code"])
 

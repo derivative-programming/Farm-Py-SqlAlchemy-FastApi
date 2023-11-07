@@ -1,10 +1,10 @@
-from pydantic import BaseModel, Field
+import uuid
+from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
-from uuid import UUID
-import uuid
+from helpers.type_conversion import TypeConversion
 class ReportItemPacUserDateGreaterThanFilterList(BaseModel):
-    date_greater_than_filter_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
+    date_greater_than_filter_code: UUID4 =  uuid.UUID(int=0)
     date_greater_than_filter_day_count: int = 0
     date_greater_than_filter_description: str = ""
     date_greater_than_filter_display_order: int = 0
@@ -13,7 +13,7 @@ class ReportItemPacUserDateGreaterThanFilterList(BaseModel):
     date_greater_than_filter_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.date_greater_than_filter_code = uuid.UUID(data["date_greater_than_filter_code"])
+            self.date_greater_than_filter_code = UUID4(data["date_greater_than_filter_code"])
             self.date_greater_than_filter_day_count = int(data["date_greater_than_filter_day_count"])
             self.date_greater_than_filter_description = str(data["date_greater_than_filter_description"])
             self.date_greater_than_filter_display_order = int(data["date_greater_than_filter_display_order"])

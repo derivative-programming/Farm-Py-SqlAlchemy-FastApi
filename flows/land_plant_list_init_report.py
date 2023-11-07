@@ -6,7 +6,6 @@ from models import Land
 from flows.base import LogSeverity
 from helpers import SessionContext
 from helpers import ApiToken
-from decimal import Decimal
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
@@ -15,10 +14,10 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
-# @dataclass_json
-# @dataclass
-class FlowLandPlantListInitReportResult():
-    context_object_code:uuid = uuid.UUID(int=0)
+from pydantic import BaseModel, Field, UUID4
+from decimal import Decimal
+class FlowLandPlantListInitReportResult(BaseModel):
+    context_object_code:UUID4 =  uuid.UUID(int=0)
     some_int_val:int = 0
     some_big_int_val:int = 0
     some_bit_val:bool = False
@@ -26,25 +25,20 @@ class FlowLandPlantListInitReportResult():
     is_delete_allowed:bool = False
     some_float_val:float = 0
     some_decimal_val:Decimal = Decimal(0)
-    some_min_utc_date_time_val:datetime = field(default_factory=TypeConversion.get_default_date_time,
-            metadata=config(
-            encoder=datetime.isoformat,
-            decoder=datetime.fromisoformat
-        ))
-    some_min_date_val:date = field(default_factory=TypeConversion.get_default_date, metadata=config(
-            encoder=date.isoformat,
-            decoder=date.fromisoformat
-        ))
+    some_min_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
+    some_min_date_val:date = Field(default_factory=TypeConversion.get_default_date)
     some_money_val:Decimal = Decimal(0)
     some_n_var_char_val:str = ""
     some_var_char_val:str = ""
     some_text_val:str = ""
     some_phone_number:str = ""
     some_email_address:str = ""
-    flavor_code:uuid = uuid.UUID(int=0)
-    land_code:uuid = uuid.UUID(int=0)
-    tac_code:uuid = uuid.UUID(int=0)
+    flavor_code:UUID4 =  uuid.UUID(int=0)
+    land_code:UUID4 =  uuid.UUID(int=0)
+    tac_code:UUID4 =  uuid.UUID(int=0)
     land_name:str = ""
+    def __init__(self):
+        pass
 class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
     def __init__(self, session_context:SessionContext):
         super(FlowLandPlantListInitReport, self).__init__(session_context)

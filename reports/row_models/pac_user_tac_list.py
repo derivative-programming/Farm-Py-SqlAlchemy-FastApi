@@ -1,10 +1,10 @@
-from pydantic import BaseModel, Field
+import uuid
+from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
-from uuid import UUID
-import uuid
+from helpers.type_conversion import TypeConversion
 class ReportItemPacUserTacList(BaseModel):
-    tac_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
+    tac_code: UUID4 =  uuid.UUID(int=0)
     tac_description: str = ""
     tac_display_order: int = 0
     tac_is_active: bool = False
@@ -13,7 +13,7 @@ class ReportItemPacUserTacList(BaseModel):
     pac_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.tac_code = uuid.UUID(data["tac_code"])
+            self.tac_code = UUID4(data["tac_code"])
             self.tac_description = str(data["tac_description"])
             self.tac_display_order = int(data["tac_display_order"])
             self.tac_is_active = bool(data["tac_is_active"])

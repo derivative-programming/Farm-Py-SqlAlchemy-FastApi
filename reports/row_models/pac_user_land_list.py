@@ -1,10 +1,10 @@
-from pydantic import BaseModel, Field
+import uuid
+from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
-from uuid import UUID
-import uuid
+from helpers.type_conversion import TypeConversion
 class ReportItemPacUserLandList(BaseModel):
-    land_code: UUID = Field(default_factory=lambda: uuid.UUID(int=0))
+    land_code: UUID4 =  uuid.UUID(int=0)
     land_description: str = ""
     land_display_order: int = 0
     land_is_active: bool = False
@@ -13,7 +13,7 @@ class ReportItemPacUserLandList(BaseModel):
     pac_name: str = ""
 
     def load_data_provider_dict(self,data:dict):
-            self.land_code = uuid.UUID(data["land_code"])
+            self.land_code = UUID4(data["land_code"])
             self.land_description = str(data["land_description"])
             self.land_display_order = int(data["land_display_order"])
             self.land_is_active = bool(data["land_is_active"])
