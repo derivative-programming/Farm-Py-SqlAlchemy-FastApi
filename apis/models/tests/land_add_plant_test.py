@@ -9,9 +9,12 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from ...land_plant_list import LandPlantListGetModelRequest
+
+from helpers.session_context import SessionContext
+from models.factory.land import LandFactory
+from ...models.land_add_plant import LandAddPlantPostModelRequest,LandAddPlantPostModelResponse
 from models import Base, Plant
-from ..land_plant_list import LandPlantListGetModelRequestFactory
+from factory.land_add_plant import LandAddPlantPostModelRequestFactory
 from services.db_config import db_dialect 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
@@ -33,7 +36,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
     
-class TestLandPlantListGetModelRequestFactoryAsync:
+class TestLandAddPlantPostModelResponse:
 
     @pytest.fixture(scope="function")
     def event_loop(self) -> asyncio.AbstractEventLoop:
@@ -81,25 +84,16 @@ class TestLandPlantListGetModelRequestFactoryAsync:
                 await session.rollback()   
   
     @pytest.mark.asyncio
-    async def test_create_async(self, session):
-        model_instance = await LandPlantListGetModelRequestFactory.create_async(session=session)
-        assert isinstance(model_instance,LandPlantListGetModelRequest)
-        assert isinstance(model_instance.flavor_code,UUID4) 
-        assert isinstance(model_instance.some_int_val,int)
-        assert isinstance(model_instance.some_big_int_val,int)
-        assert isinstance(model_instance.some_float_val,float)
-        assert isinstance(model_instance.some_bit_val,bool)
-        assert isinstance(model_instance.is_edit_allowed,bool)
-        assert isinstance(model_instance.is_delete_allowed,bool)
-        assert isinstance(model_instance.some_decimal_val,Decimal)
-        assert isinstance(model_instance.some_min_utc_date_time_val,datetime)
-        assert isinstance(model_instance.some_min_date_val,date)
-        assert isinstance(model_instance.some_money_val,Decimal)
-        assert isinstance(model_instance.some_n_var_char_val,str)
-        assert isinstance(model_instance.some_var_char_val,str)
-        assert isinstance(model_instance.some_text_val,str)
-        assert isinstance(model_instance.some_phone_number,str)
-        assert isinstance(model_instance.some_email_address,str)
-        assert isinstance(model_instance.page_number,int)
-        assert isinstance(model_instance.item_count_per_page,int)
+    async def test_flow_process_request(self, session):
+        request_instance = await LandAddPlantPostModelRequestFactory.create_async(session=session) 
+        response_instance = LandAddPlantPostModelResponse()
+        session_context = SessionContext(dict())
+        land = await LandFactory.create_async(session)
+        await response_instance.process_request(
+            session=session,
+            session_context=session_context,
+            land_code=land.code,
+            request=request_instance
+            )
+
  

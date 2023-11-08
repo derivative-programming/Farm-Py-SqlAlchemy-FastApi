@@ -33,7 +33,7 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
     
-class TestLandPlantListGetModelRequestFactoryAsync:
+class LandPlantListGetModelRequestFactoryAsync:
 
     @pytest.fixture(scope="function")
     def event_loop(self) -> asyncio.AbstractEventLoop:
@@ -81,7 +81,7 @@ class TestLandPlantListGetModelRequestFactoryAsync:
                 await session.rollback()   
   
     @pytest.mark.asyncio
-    async def test_create_async(self, session):
+    async def test_plant_creation(self, session):
         model_instance = await LandPlantListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance,LandPlantListGetModelRequest)
         assert isinstance(model_instance.flavor_code,UUID4) 

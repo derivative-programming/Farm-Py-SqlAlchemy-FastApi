@@ -1,0 +1,18 @@
+{
+    "templateType":"object", 
+    "ForceFileNameFormat" : "Snake",
+    "dimension" :{
+        "name":"Plant"
+    },
+    "ignoreDimensionPropertyList": [
+        "prop.calculatedisFKObjectParentOFOwnerObject",
+        "prop.isNotPublishedToSubscriptions",
+        "prop.isFKLookup",
+        "prop.isQueryByAvailable",
+        "prop.calculatedIsDBColumnIndexed",
+        "prop.isEncrypted",
+        "prop.calculatedIsCodeNotLookup",
+        "prop.calculatedIsCodeAndLookup",
+        "prop.calculatedisLexiconEligible"
+    ]
+} 

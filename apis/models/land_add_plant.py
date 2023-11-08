@@ -14,6 +14,29 @@ import logging
 from apis.models.validation_error import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
+class LandAddPlantPostModelRequest(SnakeModel):
+    request_flavor_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
+    request_other_flavor:str = ""
+    request_some_int_val:int = 0
+    request_some_big_int_val:int = 0
+    request_some_bit_val:bool = False
+    request_is_edit_allowed:bool = False
+    request_is_delete_allowed:bool = False
+    request_some_float_val:float = 0
+    request_some_decimal_val:Decimal = Decimal(0)
+    request_some_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
+    request_some_date_val:date = Field(default_factory=TypeConversion.get_default_date)
+    request_some_money_val:Decimal = Decimal(0)
+    request_some_n_var_char_val:str = ""
+    request_some_var_char_val:str = ""
+    request_some_text_val:str = ""
+    request_some_phone_number:str = ""
+    request_some_email_address:str = ""
+    request_sample_image_upload_file:str = ""
+#endset 
+    
+
 class LandAddPlantPostModelResponse(PostResponse):
     output_flavor_code:UUID4 = uuid.UUID(int=0)
     output_other_flavor:str = ""
@@ -57,68 +80,47 @@ class LandAddPlantPostModelResponse(PostResponse):
         self.land_code = data.land_code
         self.plant_code = data.plant_code
 #endset
-### request. expect camel case. use marshmallow to validate.
-class LandAddPlantPostModelRequest(SnakeModel):
-    request_flavor_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
-    request_other_flavor:str = ""
-    request_some_int_val:int = 0
-    request_some_big_int_val:int = 0
-    request_some_bit_val:bool = False
-    request_is_edit_allowed:bool = False
-    request_is_delete_allowed:bool = False
-    request_some_float_val:float = 0
-    request_some_decimal_val:Decimal = Decimal(0)
-    request_some_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    request_some_date_val:date = Field(default_factory=TypeConversion.get_default_date)
-    request_some_money_val:Decimal = Decimal(0)
-    request_some_n_var_char_val:str = ""
-    request_some_var_char_val:str = ""
-    request_some_text_val:str = ""
-    request_some_phone_number:str = ""
-    request_some_email_address:str = ""
-    request_sample_image_upload_file:str = ""
-#endset 
+
     async def process_request(self,
                         session:AsyncSession,
                         session_context:SessionContext,
                         land_code:uuid,
-                        response:LandAddPlantPostModelResponse) -> LandAddPlantPostModelResponse:
+                        request:LandAddPlantPostModelRequest):
         try:
-            logging.debug("loading model...LandAddPlantPostModelRequest")
+            logging.debug("loading model...LandAddPlantPostModelResponse")
             land_bus_obj = LandBusObj(session=session)
             await land_bus_obj.load(code=land_code) 
             flow = FlowLandAddPlant(session_context)
-            logging.debug("process flow...LandAddPlantPostModelRequest")
+            logging.debug("process flow...LandAddPlantPostModelResponse")
             flowResponse = await flow.process(
                 land_bus_obj,
-                self.request_flavor_code,
-                self.request_other_flavor,
-                self.request_some_int_val,
-                self.request_some_big_int_val,
-                self.request_some_bit_val,
-                self.request_is_edit_allowed,
-                self.request_is_delete_allowed,
-                self.request_some_float_val,
-                self.request_some_decimal_val,
-                self.request_some_utc_date_time_val,
-                self.request_some_date_val,
-                self.request_some_money_val,
-                self.request_some_n_var_char_val,
-                self.request_some_var_char_val,
-                self.request_some_text_val,
-                self.request_some_phone_number,
-                self.request_some_email_address,
-                self.request_sample_image_upload_file,
+                request.request_flavor_code,
+                request.request_other_flavor,
+                request.request_some_int_val,
+                request.request_some_big_int_val,
+                request.request_some_bit_val,
+                request.request_is_edit_allowed,
+                request.request_is_delete_allowed,
+                request.request_some_float_val,
+                request.request_some_decimal_val,
+                request.request_some_utc_date_time_val,
+                request.request_some_date_val,
+                request.request_some_money_val,
+                request.request_some_n_var_char_val,
+                request.request_some_var_char_val,
+                request.request_some_text_val,
+                request.request_some_phone_number,
+                request.request_some_email_address,
+                request.request_sample_image_upload_file
 #endset
             ) 
-            response.load_flow_response(flowResponse); 
-            response.success = True
-            response.message = "Success."
+            self.load_flow_response(flowResponse); 
+            self.success = True
+            self.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...LandAddPlantPostModelRequest")
-            response.success = False 
-            response.validation_errors = list()
+            logging.debug("error...LandAddPlantPostModelResponse")
+            self.success = False 
+            self.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
-        return response
-
+                self.validation_errors.append(ValidationError(key,ve.error_dict[key])) 
+    
