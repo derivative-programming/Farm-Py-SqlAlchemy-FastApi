@@ -1,10 +1,9 @@
 import uuid
-from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
-class ReportItemPacUserTriStateFilterList(BaseModel):
-    tri_state_filter_code: UUID4 =  uuid.UUID(int=0)
+class ReportItemPacUserTriStateFilterList():
+    tri_state_filter_code: uuid.UUID =  uuid.UUID(int=0)
     tri_state_filter_description: str = ""
     tri_state_filter_display_order: int = 0
     tri_state_filter_is_active: bool = False

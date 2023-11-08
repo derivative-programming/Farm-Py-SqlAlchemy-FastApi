@@ -11,16 +11,15 @@ import models as farm_models
 import managers as farm_managers
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.db_config import db_dialect,generate_uuid
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
-from pydantic import BaseModel, Field, UUID4
 from decimal import Decimal
-class FlowTacLoginResult(BaseModel):
-    context_object_code:UUID4 =  uuid.UUID(int=0)
-    customer_code:UUID4 =  uuid.UUID(int=0)
+class FlowTacLoginResult():
+    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    customer_code:uuid.UUID =  uuid.UUID(int=0)
     email:str = ""
-    user_code_value:UUID4 =  uuid.UUID(int=0)
+    user_code_value:uuid.UUID =  uuid.UUID(int=0)
     utc_offset_in_minutes:int = 0
     role_name_csv_list:str = ""
     api_key:str = ""

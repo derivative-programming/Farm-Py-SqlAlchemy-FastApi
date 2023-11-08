@@ -1,16 +1,15 @@
 import uuid
-from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
-class ReportItemPlantUserDetails(BaseModel):
+class ReportItemPlantUserDetails():
     flavor_name: str = ""
     is_delete_allowed: bool = False
     is_edit_allowed: bool = False
     other_flavor: str = ""
     some_big_int_val: int = 0
     some_bit_val: bool = False
-    some_date_val: date = Field(default_factory=TypeConversion.get_default_date)
+    some_date_val: date = TypeConversion.get_default_date()
     some_decimal_val: Decimal = Decimal(0)
     some_email_address: str = ""
     some_float_val: float = 0.0
@@ -19,14 +18,14 @@ class ReportItemPlantUserDetails(BaseModel):
     some_n_var_char_val: str = ""
     some_phone_number: str = ""
     some_text_val: str = ""
-    some_uniqueidentifier_val: UUID4 =  uuid.UUID(int=0)
-    some_utc_date_time_val: datetime = Field(default_factory=TypeConversion.get_default_date_time)
+    some_uniqueidentifier_val: uuid.UUID =  uuid.UUID(int=0)
+    some_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
     some_var_char_val: str = ""
     phone_num_conditional_on_is_editable: str = ""
     n_var_char_as_url: str = ""
-    update_button_text_link_plant_code: UUID4 =  uuid.UUID(int=0)
-    random_property_updates_link_plant_code: UUID4 =  uuid.UUID(int=0)
-    back_to_dashboard_link_tac_code: UUID4 =  uuid.UUID(int=0)
+    update_button_text_link_plant_code: uuid.UUID =  uuid.UUID(int=0)
+    random_property_updates_link_plant_code: uuid.UUID =  uuid.UUID(int=0)
+    back_to_dashboard_link_tac_code: uuid.UUID =  uuid.UUID(int=0)
 
     def load_data_provider_dict(self,data:dict):
             self.flavor_name = str(data["flavor_name"])

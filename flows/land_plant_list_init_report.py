@@ -11,13 +11,12 @@ import models as farm_models
 import managers as farm_managers
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.db_config import db_dialect,generate_uuid
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
-from pydantic import BaseModel, Field, UUID4
 from decimal import Decimal
-class FlowLandPlantListInitReportResult(BaseModel):
-    context_object_code:UUID4 =  uuid.UUID(int=0)
+class FlowLandPlantListInitReportResult():
+    context_object_code:uuid.UUID =  uuid.UUID(int=0)
     some_int_val:int = 0
     some_big_int_val:int = 0
     some_bit_val:bool = False
@@ -25,17 +24,17 @@ class FlowLandPlantListInitReportResult(BaseModel):
     is_delete_allowed:bool = False
     some_float_val:float = 0
     some_decimal_val:Decimal = Decimal(0)
-    some_min_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    some_min_date_val:date = Field(default_factory=TypeConversion.get_default_date)
+    some_min_utc_date_time_val:datetime = TypeConversion.get_default_date_time()
+    some_min_date_val:date = TypeConversion.get_default_date()
     some_money_val:Decimal = Decimal(0)
     some_n_var_char_val:str = ""
     some_var_char_val:str = ""
     some_text_val:str = ""
     some_phone_number:str = ""
     some_email_address:str = ""
-    flavor_code:UUID4 =  uuid.UUID(int=0)
-    land_code:UUID4 =  uuid.UUID(int=0)
-    tac_code:UUID4 =  uuid.UUID(int=0)
+    flavor_code:uuid.UUID =  uuid.UUID(int=0)
+    land_code:uuid.UUID =  uuid.UUID(int=0)
+    tac_code:uuid.UUID =  uuid.UUID(int=0)
     land_name:str = ""
     def __init__(self):
         pass

@@ -11,14 +11,13 @@ import models as farm_models
 import managers as farm_managers
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.db_config import db_dialect,generate_uuid
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
-from pydantic import BaseModel, Field, UUID4
 from decimal import Decimal
-class FlowLandAddPlantInitObjWFResult(BaseModel):
-    context_object_code:UUID4 =  uuid.UUID(int=0)
-    request_flavor_code:UUID4 =  uuid.UUID(int=0)
+class FlowLandAddPlantInitObjWFResult():
+    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    request_flavor_code:uuid.UUID =  uuid.UUID(int=0)
     request_other_flavor:str = ""
     request_some_int_val:int = 0
     request_some_big_int_val:int = 0
@@ -27,8 +26,8 @@ class FlowLandAddPlantInitObjWFResult(BaseModel):
     request_is_edit_allowed:bool = False
     request_some_float_val:float = 0
     request_some_decimal_val:Decimal = Decimal(0)
-    request_some_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    request_some_date_val:date = Field(default_factory=TypeConversion.get_default_date)
+    request_some_utc_date_time_val:datetime = TypeConversion.get_default_date_time()
+    request_some_date_val:date = TypeConversion.get_default_date()
     request_some_money_val:Decimal = Decimal(0)
     request_some_n_var_char_val:str = ""
     request_some_var_char_val:str = ""
@@ -36,7 +35,7 @@ class FlowLandAddPlantInitObjWFResult(BaseModel):
     request_some_phone_number:str = ""
     request_some_email_address:str = ""
     land_name:str = ""
-    tac_code:UUID4 =  uuid.UUID(int=0)
+    tac_code:uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
 class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):

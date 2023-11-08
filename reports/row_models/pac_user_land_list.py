@@ -1,10 +1,9 @@
 import uuid
-from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
-class ReportItemPacUserLandList(BaseModel):
-    land_code: UUID4 =  uuid.UUID(int=0)
+class ReportItemPacUserLandList():
+    land_code: uuid.UUID =  uuid.UUID(int=0)
     land_description: str = ""
     land_display_order: int = 0
     land_is_active: bool = False

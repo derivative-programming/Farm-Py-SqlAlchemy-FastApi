@@ -1,10 +1,9 @@
 import uuid
-from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
-class ReportItemPacUserDateGreaterThanFilterList(BaseModel):
-    date_greater_than_filter_code: UUID4 =  uuid.UUID(int=0)
+class ReportItemPacUserDateGreaterThanFilterList():
+    date_greater_than_filter_code: uuid.UUID =  uuid.UUID(int=0)
     date_greater_than_filter_day_count: int = 0
     date_greater_than_filter_description: str = ""
     date_greater_than_filter_display_order: int = 0

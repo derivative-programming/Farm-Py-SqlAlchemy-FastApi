@@ -1,10 +1,9 @@
 import uuid
-from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
-class ReportItemPacUserRoleList(BaseModel):
-    role_code: UUID4 =  uuid.UUID(int=0)
+class ReportItemPacUserRoleList():
+    role_code: uuid.UUID =  uuid.UUID(int=0)
     role_description: str = ""
     role_display_order: int = 0
     role_is_active: bool = False

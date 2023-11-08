@@ -1,10 +1,9 @@
 import uuid
-from pydantic import BaseModel, Field , UUID4
 from decimal import Decimal
 from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
-class ReportItemPacUserFlavorList(BaseModel):
-    flavor_code: UUID4 =  uuid.UUID(int=0)
+class ReportItemPacUserFlavorList():
+    flavor_code: uuid.UUID =  uuid.UUID(int=0)
     flavor_description: str = ""
     flavor_display_order: int = 0
     flavor_is_active: bool = False

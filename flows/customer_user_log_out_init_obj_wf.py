@@ -11,14 +11,13 @@ import models as farm_models
 import managers as farm_managers
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.db_config import db_dialect,generate_uuid
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
-from pydantic import BaseModel, Field, UUID4
 from decimal import Decimal
-class FlowCustomerUserLogOutInitObjWFResult(BaseModel):
-    context_object_code:UUID4 =  uuid.UUID(int=0)
-    tac_code:UUID4 =  uuid.UUID(int=0)
+class FlowCustomerUserLogOutInitObjWFResult():
+    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    tac_code:uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
 class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
