@@ -29,12 +29,8 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     request_some_text_val:str = Faker('text')
     request_some_phone_number:str = Faker('phone_number')
     request_some_email_address:str = Faker('email')
-    request_sample_image_upload_file:str = ""
-    @classmethod
-    def _create(cls, model_class, *args, **kwargs): 
-        return model_class(*args, **kwargs)
-
-
+    request_sample_image_upload_file:str = "" 
+ 
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> LandAddPlantPostModelRequest:
 

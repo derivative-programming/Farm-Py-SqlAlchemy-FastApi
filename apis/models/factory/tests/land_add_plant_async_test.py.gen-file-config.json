@@ -1,8 +1,18 @@
 {
-    "templateType":"report",  
+    "templateType":"object", 
+    "ForceFileNameFormat" : "Snake",
     "dimension" :{
-        "name":"LandPlantList"
+        "name":"Plant"
     },
-    "ignoreDimensionPropertyList": [   
+    "ignoreDimensionPropertyList": [
+        "prop.calculatedisFKObjectParentOFOwnerObject",
+        "prop.isNotPublishedToSubscriptions",
+        "prop.isFKLookup",
+        "prop.isQueryByAvailable",
+        "prop.calculatedIsDBColumnIndexed",
+        "prop.isEncrypted",
+        "prop.calculatedIsCodeNotLookup",
+        "prop.calculatedIsCodeAndLookup",
+        "prop.calculatedisLexiconEligible"
     ]
 } 
