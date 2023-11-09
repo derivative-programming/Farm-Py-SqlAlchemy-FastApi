@@ -1,5 +1,6 @@
 from datetime import date, datetime
-from decimal import Decimal 
+from decimal import Decimal
+import json 
 from typing import List
 import uuid 
 from helpers import TypeConversion 
@@ -60,6 +61,14 @@ class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
         self.request_some_email_address = data.request_some_email_address
         self.land_name = data.land_name
         self.tac_code = data.tac_code 
+    
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = { 
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 
 class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,

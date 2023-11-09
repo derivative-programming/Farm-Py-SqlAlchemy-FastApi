@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 import uuid 
 from helpers import TypeConversion
 from .post_reponse import PostResponse 
@@ -128,3 +129,10 @@ class LandAddPlantPostModelResponse(PostResponse):
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error) 
     
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = { 
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)

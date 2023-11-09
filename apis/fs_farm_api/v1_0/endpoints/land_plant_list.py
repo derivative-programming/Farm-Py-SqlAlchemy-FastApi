@@ -103,7 +103,7 @@ class LandPlantListRouter():
             try:
                 session_context = SessionContext(auth_dict)
                 land_code = session_context.check_context_code("LandCode", land_code) 
-                response.request = request
+                response.request = request_model
                 logging.debug("process request...") 
                 await response.process_request(
                     session,
@@ -128,7 +128,7 @@ class LandPlantListRouter():
 ##GENLearn[isGetToCsvAvailable=true]Start
     @staticmethod
     @router.get("/api/v1_0/land-plant-list/{land_code}/to-csv", response_model=api_models.LandPlantListGetModelResponse) 
-    async def request_get_with_id_to_csv(land_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    async def request_get_with_id_to_csv(land_code: str, request_model:api_models.LandPlantListGetModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.debug('LandPlantListRouter.request_get_with_id_to_csv start. landCode:' + land_code)
         if LandPlantListRouterConfig.isGetToCsvAvailable == False:
             raise HTTPException(

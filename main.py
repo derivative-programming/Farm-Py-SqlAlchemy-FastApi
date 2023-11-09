@@ -37,6 +37,7 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
         content={"detail": exc.detail}
     )
 
+
 @app.router.on_startup.append
 async def startup_event():
     async with get_db() as session:
