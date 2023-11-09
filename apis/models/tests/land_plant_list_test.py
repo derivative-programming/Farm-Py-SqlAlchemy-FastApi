@@ -81,7 +81,7 @@ class LandPlantListGetModelRequestFactoryAsync:
                 await session.rollback()   
   
     @pytest.mark.asyncio
-    async def test_plant_creation(self, session):
+    async def test_report_generation(self, session):
         model_instance = await LandPlantListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance,LandPlantListGetModelRequest)
         assert isinstance(model_instance.flavor_code,UUID4) 
