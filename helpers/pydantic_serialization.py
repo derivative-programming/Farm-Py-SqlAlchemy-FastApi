@@ -17,10 +17,10 @@ class CamelModel(BaseModel):
         alias_generator = to_camel
         # This will tell Pydantic to use the aliases in the generated schema
         # and when parsing and serializing data.
-        allow_population_by_field_name = True
+        populate_by_name = True
 
 # Base model with alias_generator
 class SnakeModel(BaseModel):
     class Config:
         alias_generator = to_snake
-        allow_population_by_field_name = True
+        populate_by_name = True

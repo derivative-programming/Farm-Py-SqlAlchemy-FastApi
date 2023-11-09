@@ -69,7 +69,7 @@ class PacUserFlavorListGetModelRequestFactoryAsync:
                 await session.flush()
                 await session.rollback()
     @pytest.mark.asyncio
-    async def test_flavor_creation(self, session):
+    async def test_report_generation(self, session):
         model_instance = await PacUserFlavorListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance,PacUserFlavorListGetModelRequest)
 

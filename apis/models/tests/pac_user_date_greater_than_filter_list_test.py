@@ -69,7 +69,7 @@ class PacUserDateGreaterThanFilterListGetModelRequestFactoryAsync:
                 await session.flush()
                 await session.rollback()
     @pytest.mark.asyncio
-    async def test_date_greater_than_filter_creation(self, session):
+    async def test_report_generation(self, session):
         model_instance = await PacUserDateGreaterThanFilterListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance,PacUserDateGreaterThanFilterListGetModelRequest)
 

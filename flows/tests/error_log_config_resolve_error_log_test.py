@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import uuid
 import pytest
 import pytest_asyncio
 import time
@@ -9,9 +10,13 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from ..pac_user_tri_state_filter_list import PacUserTriStateFilterListGetModelRequest
+from business.error_log import ErrorLogBusObj
+from flows.base.flow_validation_error import FlowValidationError
+from flows.error_log_config_resolve_error_log import FlowErrorLogConfigResolveErrorLog, FlowErrorLogConfigResolveErrorLogResult
+from helpers.session_context import SessionContext
+from helpers.type_conversion import TypeConversion
+from models.factory.error_log import ErrorLogFactory
 from models import Base
-from ..factory.pac_user_tri_state_filter_list import PacUserTriStateFilterListGetModelRequestFactory
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
@@ -20,6 +25,7 @@ from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field,UUID4
+import flows.constants.error_log_config_resolve_error_log as FlowConstants
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -29,7 +35,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class PacUserTriStateFilterListGetModelRequestFactoryAsync:
+class TestErrorLogConfigResolveErrorLogPostModelResponse:
     @pytest.fixture(scope="function")
     def event_loop(self) -> asyncio.AbstractEventLoop:
         loop = asyncio.get_event_loop_policy().new_event_loop()
@@ -68,10 +74,48 @@ class PacUserTriStateFilterListGetModelRequestFactoryAsync:
                 yield session
                 await session.flush()
                 await session.rollback()
+    #todo finish test
     @pytest.mark.asyncio
-    async def test_report_generation(self, session):
-        model_instance = await PacUserTriStateFilterListGetModelRequestFactory.create_async(session=session)
-        assert isinstance(model_instance,PacUserTriStateFilterListGetModelRequest)
+    async def test_flow_process_request(self, session):
+        session_context = SessionContext(dict())
+        flow = FlowErrorLogConfigResolveErrorLog(session_context)
+        error_log = await ErrorLogFactory.create_async(session)
+        error_log_bus_obj = ErrorLogBusObj(session)
+        await error_log_bus_obj.load(error_log_obj_instance=error_log)
+        role_required = "Config"
 
-        assert isinstance(model_instance.page_number,int)
-        assert isinstance(model_instance.item_count_per_page,int)
+        if len(role_required) > 0:
+            with pytest.raises(FlowValidationError):
+                flow_result = await flow.process(
+                    error_log_bus_obj,
+
+                )
+            # assert isinstance(flow_result,FlowErrorLogConfigResolveErrorLogResult)
+            # assert response_instance.success == False
+            # assert len(response_instance.validation_errors) == 1
+            # assert response_instance.validation_errors[0].message == "Unautorized access. " + role_required + " role not found."
+        session_context.role_name_csv = role_required
+        customerCodeMatchRequired = False
+        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed == True:
+            customerCodeMatchRequired = True
+        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed == True:
+            customerCodeMatchRequired = True
+        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
+            customerCodeMatchRequired = True
+        if customerCodeMatchRequired == True:
+            with pytest.raises(FlowValidationError):
+                flow_result = await flow.process(
+                    error_log_bus_obj,
+
+                )
+                # assert response_instance.success == False
+                # assert len(response_instance.validation_errors) == 1
+                # assert response_instance.validation_errors[0].message == "Unautorized access.  Invalid Config."
+        session_context.role_name_csv = role_required
+        # await response_instance.process_request(
+        #     session=session,
+        #     session_context=session_context,
+        #     error_log_code=error_log.code,
+        #     request=request_instance
+        #     )
+

@@ -14,7 +14,7 @@ from apis.fs_farm_api.v1_0.routers import fs_farm_api_v1_0_router
 
 app = FastAPI()
     
-app.include_router(fs_farm_api_v1_0_router.router)
+app.include_router(fs_farm_api_v1_0_router)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError): 

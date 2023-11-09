@@ -69,7 +69,7 @@ class PacUserTacListGetModelRequestFactoryAsync:
                 await session.flush()
                 await session.rollback()
     @pytest.mark.asyncio
-    async def test_tac_creation(self, session):
+    async def test_report_generation(self, session):
         model_instance = await PacUserTacListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance,PacUserTacListGetModelRequest)
 

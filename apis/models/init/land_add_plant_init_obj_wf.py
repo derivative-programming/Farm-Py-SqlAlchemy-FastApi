@@ -27,7 +27,7 @@ class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
     request_some_float_val:float = 0
     request_some_decimal_val:Decimal = Decimal(0)
     request_some_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    request_some_date_val:datetime.date = Field(default_factory=TypeConversion.get_default_date)
+    request_some_date_val:date = Field(default_factory=TypeConversion.get_default_date)
     request_some_money_val:Decimal = Decimal(0)
     request_some_n_var_char_val:str = ""
     request_some_var_char_val:str = ""

@@ -24,7 +24,7 @@ class LandPlantListInitReportGetInitModelResponse(CamelModel):
     some_float_val:float = 0
     some_decimal_val:Decimal = Decimal(0)
     some_min_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    some_min_date_val:datetime.date = Field(default_factory=TypeConversion.get_default_date)
+    some_min_date_val:date = Field(default_factory=TypeConversion.get_default_date)
     some_money_val:Decimal = Decimal(0)
     some_n_var_char_val:str = ""
     some_var_char_val:str = ""
