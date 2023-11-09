@@ -1,19 +1,17 @@
 from datetime import date, datetime
 from decimal import Decimal
-from apis.models import ValidationError
 from typing import List
 import uuid
 from helpers import TypeConversion
-from flows import FlowPacUserDateGreaterThanFilterListInitReportResult
+from flows.pac_user_date_greater_than_filter_list_init_report import FlowPacUserDateGreaterThanFilterListInitReportResult, FlowPacUserDateGreaterThanFilterListInitReport
 from helpers import SessionContext
-from models import Pac
-from flows import FlowPacUserDateGreaterThanFilterListInitReport
-from flows import FlowValidationError
+from business.pac import PacBusObj
+from flows.base.flow_validation_error import FlowValidationError
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field
-import apis.models as view_models
+from apis.models.validation_error import ValidationError
 import logging
-from models import Pac
+from sqlalchemy.ext.asyncio import AsyncSession
 class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel):
     success:bool = False
     message:str = ""
@@ -25,25 +23,28 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel)
         self.message = ""
 
 class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
-    def process_request(self,
+    async def process_request(self,
+                        session:AsyncSession,
                         session_context:SessionContext,
                         pac_code:uuid,
                         response:PacUserDateGreaterThanFilterListInitReportGetInitModelResponse) -> PacUserDateGreaterThanFilterListInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...")
-            pac = Pac.objects.get(code=pac_code)
-            logging.debug("process request...")
+            logging.debug("loading model...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
+            pac_bus_obj = PacBusObj(session=session)
+            await pac_bus_obj.load(code=pac_code)
             flow = FlowPacUserDateGreaterThanFilterListInitReport(session_context)
-            flowResponse = flow.process(
-                pac
+            logging.debug("process request...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
+            flowResponse = await flow.process(
+                pac_bus_obj
             )
             response.load_flow_response(flowResponse);
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
+            logging.debug("error...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
+                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
         return response
 

@@ -10,7 +10,7 @@ from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from ...land_plant_list import LandPlantListGetModelRequest
-from models import Base, Plant
+from models import Base
 from ..land_plant_list import LandPlantListGetModelRequestFactory
 from services.db_config import db_dialect 
 from sqlalchemy.dialects.postgresql import UUID
@@ -84,7 +84,7 @@ class TestLandPlantListGetModelRequestFactoryAsync:
     async def test_create_async(self, session):
         model_instance = await LandPlantListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance,LandPlantListGetModelRequest)
-        assert isinstance(model_instance.flavor_code,UUID4) 
+        assert isinstance(model_instance.flavor_code,str) 
         assert isinstance(model_instance.some_int_val,int)
         assert isinstance(model_instance.some_big_int_val,int)
         assert isinstance(model_instance.some_float_val,float)

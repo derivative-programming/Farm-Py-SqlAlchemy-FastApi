@@ -1,7 +1,8 @@
+import json
 from business.land import LandBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowLandPlantListInitReport
+from flows.base.land_plant_list_init_report import BaseFlowLandPlantListInitReport
 from models import Land
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -38,6 +39,32 @@ class FlowLandPlantListInitReportResult():
     land_name:str = ""
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+            'some_int_val': self.some_int_val,
+            'some_big_int_val': self.some_big_int_val,
+            'some_bit_val': self.some_bit_val,
+            'is_edit_allowed': self.is_edit_allowed,
+            'is_delete_allowed': self.is_delete_allowed,
+            'some_float_val': self.some_float_val,
+            'some_decimal_val': str(self.some_decimal_val),
+            'some_min_utc_date_time_val': self.some_min_utc_date_time_val.isoformat(),
+            'some_min_date_val': self.some_min_date_val.isoformat(),
+            'some_money_val': str(self.some_money_val),
+            'some_n_var_char_val': self.some_n_var_char_val,
+            'some_var_char_val': self.some_var_char_val,
+            'some_text_val': self.some_text_val,
+            'some_phone_number': self.some_phone_number,
+            'some_email_address': self.some_email_address,
+            'flavor_code': str(self.flavor_code),
+            'land_code': str(self.land_code),
+            'tac_code': str(self.tac_code),
+            'land_name': self.land_name,
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
     def __init__(self, session_context:SessionContext):
         super(FlowLandPlantListInitReport, self).__init__(session_context)

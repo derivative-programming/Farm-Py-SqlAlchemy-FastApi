@@ -1,7 +1,8 @@
+import json
 from business.plant import PlantBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowPlantUserDelete
+from flows.base.plant_user_delete import BaseFlowPlantUserDelete
 from models import Plant
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -20,6 +21,14 @@ class FlowPlantUserDeleteResult():
 
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowPlantUserDelete(BaseFlowPlantUserDelete):
     def __init__(self, session_context:SessionContext):
         super(FlowPlantUserDelete, self).__init__(session_context)

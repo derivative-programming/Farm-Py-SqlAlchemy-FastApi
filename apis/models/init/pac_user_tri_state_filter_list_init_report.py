@@ -1,19 +1,17 @@
 from datetime import date, datetime
 from decimal import Decimal
-from apis.models import ValidationError
 from typing import List
 import uuid
 from helpers import TypeConversion
-from flows import FlowPacUserTriStateFilterListInitReportResult
+from flows.pac_user_tri_state_filter_list_init_report import FlowPacUserTriStateFilterListInitReportResult, FlowPacUserTriStateFilterListInitReport
 from helpers import SessionContext
-from models import Pac
-from flows import FlowPacUserTriStateFilterListInitReport
-from flows import FlowValidationError
+from business.pac import PacBusObj
+from flows.base.flow_validation_error import FlowValidationError
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field
-import apis.models as view_models
+from apis.models.validation_error import ValidationError
 import logging
-from models import Pac
+from sqlalchemy.ext.asyncio import AsyncSession
 class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
     success:bool = False
     message:str = ""
@@ -25,25 +23,28 @@ class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
         self.message = ""
 
 class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
-    def process_request(self,
+    async def process_request(self,
+                        session:AsyncSession,
                         session_context:SessionContext,
                         pac_code:uuid,
                         response:PacUserTriStateFilterListInitReportGetInitModelResponse) -> PacUserTriStateFilterListInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...")
-            pac = Pac.objects.get(code=pac_code)
-            logging.debug("process request...")
+            logging.debug("loading model...PacUserTriStateFilterListInitReportGetInitModelRequest")
+            pac_bus_obj = PacBusObj(session=session)
+            await pac_bus_obj.load(code=pac_code)
             flow = FlowPacUserTriStateFilterListInitReport(session_context)
-            flowResponse = flow.process(
-                pac
+            logging.debug("process request...PacUserTriStateFilterListInitReportGetInitModelRequest")
+            flowResponse = await flow.process(
+                pac_bus_obj
             )
             response.load_flow_response(flowResponse);
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
+            logging.debug("error...PacUserTriStateFilterListInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
+                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
         return response
 

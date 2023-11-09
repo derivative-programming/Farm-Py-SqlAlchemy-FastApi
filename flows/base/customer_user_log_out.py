@@ -51,4 +51,5 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
                         if item.code != self._session_context.customer_code:
                             self._add_validation_error("Unautorized access.  Invalid User.")
 
-                item = await item.get_parent_object()
+                if val == True:
+                    item = await item.get_parent_obj()

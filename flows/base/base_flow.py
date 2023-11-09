@@ -33,7 +33,7 @@ class BaseFlow():
 
     def _throw_queued_validation_errors(self):
         if len(self.queued_validation_errors) > 0:
-            raise FlowValidationError(None,None,self.queued_validation_errors)
+            raise FlowValidationError(error_dict=self.queued_validation_errors)
  
     def _log_exception(self, ex:Exception):   
         self._log_message_and_severity(LogSeverity.error_occurred,str(ex))

@@ -1,7 +1,8 @@
+import json
 from business.pac import PacBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowPacUserRoleListInitReport
+from flows.base.pac_user_role_list_init_report import BaseFlowPacUserRoleListInitReport
 from models import Pac
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -20,6 +21,14 @@ class FlowPacUserRoleListInitReportResult():
 
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
     def __init__(self, session_context:SessionContext):
         super(FlowPacUserRoleListInitReport, self).__init__(session_context)

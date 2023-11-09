@@ -1,5 +1,5 @@
 # farm/models/factories.py
-import datetime
+from datetime import datetime
 import uuid
 import factory
 from factory import Faker, SubFactory
@@ -32,8 +32,8 @@ class CustomerRoleFactory(factory.Factory):
     is_placeholder = Faker('boolean')
     placeholder = Faker('boolean')
     #role_id = 0 #factory.LazyAttribute(lambda obj: obj.role.role_id)
-    insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
+    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
+    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
     customer_code_peek = factory.LazyFunction(generate_uuid) # CustomerID
     role_code_peek = factory.LazyFunction(generate_uuid)  # RoleID

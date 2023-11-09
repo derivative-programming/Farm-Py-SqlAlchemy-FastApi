@@ -1,7 +1,8 @@
+import json
 from business.land import LandBusObj 
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowLandAddPlant
+from flows.base.land_add_plant import BaseFlowLandAddPlant
 from models import Land 
 from flows.base import LogSeverity
 from helpers import SessionContext 
@@ -41,6 +42,34 @@ class FlowLandAddPlantResult():
 
     def __init__(self): 
         pass
+
+    
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+            'land_code': str(self.land_code),
+            'plant_code': str(self.plant_code),
+            'output_flavor_code': str(self.output_flavor_code),
+            'output_other_flavor': self.output_other_flavor,
+            'output_some_int_val': self.output_some_int_val,
+            'output_some_big_int_val': self.output_some_big_int_val,
+            'output_some_bit_val': self.output_some_bit_val,
+            'output_is_edit_allowed': self.output_is_edit_allowed,
+            'output_is_delete_allowed': self.output_is_delete_allowed,
+            'output_some_float_val': self.output_some_float_val,
+            'output_some_decimal_val': str(self.output_some_decimal_val),
+            'output_some_utc_date_time_val': self.output_some_utc_date_time_val.isoformat(),
+            'output_some_date_val': self.output_some_date_val.isoformat(),
+            'output_some_money_val': str(self.output_some_money_val),
+            'output_some_n_var_char_val': self.output_some_n_var_char_val,
+            'output_some_var_char_val': self.output_some_var_char_val,
+            'output_some_text_val': self.output_some_text_val,
+            'output_some_phone_number': self.output_some_phone_number,
+            'output_some_email_address': self.output_some_email_address
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 
 class FlowLandAddPlant(BaseFlowLandAddPlant):
     def __init__(self, session_context:SessionContext): 

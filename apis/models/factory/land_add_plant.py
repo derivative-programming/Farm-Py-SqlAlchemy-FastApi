@@ -12,6 +12,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     class Meta:
         model = LandAddPlantPostModelRequest
+    force_error_message:str = ""
+    request_other_flavor:str = ""
     request_flavor_code:UUID4 = uuid.UUID(int=0) 
     request_other_flavor:str = ""
     request_some_int_val:int = Faker('random_int')
@@ -21,7 +23,7 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     request_is_delete_allowed:bool = Faker('boolean')
     request_some_float_val:float = Faker('pyfloat', positive=True)
     request_some_decimal_val:Decimal = Faker('pydecimal', left_digits=5, right_digits=2, positive=True)
-    request_some_utc_date_time_val:datetime = factory.LazyFunction(datetime.datetime.utcnow)
+    request_some_utc_date_time_val:datetime = factory.LazyFunction(datetime.utcnow)
     request_some_date_val:date = Faker('date_object')
     request_some_money_val:Decimal = Faker('pydecimal', left_digits=5, right_digits=2, positive=True)
     request_some_n_var_char_val:str = Faker('sentence', nb_words=4)

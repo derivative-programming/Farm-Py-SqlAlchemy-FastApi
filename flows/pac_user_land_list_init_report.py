@@ -1,7 +1,8 @@
+import json
 from business.pac import PacBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowPacUserLandListInitReport
+from flows.base.pac_user_land_list_init_report import BaseFlowPacUserLandListInitReport
 from models import Pac
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -20,6 +21,14 @@ class FlowPacUserLandListInitReportResult():
 
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowPacUserLandListInitReport(BaseFlowPacUserLandListInitReport):
     def __init__(self, session_context:SessionContext):
         super(FlowPacUserLandListInitReport, self).__init__(session_context)

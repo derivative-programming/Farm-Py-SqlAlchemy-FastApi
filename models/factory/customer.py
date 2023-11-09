@@ -1,5 +1,5 @@
 # farm/models/factories.py
-import datetime
+from datetime import datetime
 import uuid
 import factory
 from factory import Faker, SubFactory
@@ -29,9 +29,9 @@ class CustomerFactory(factory.Factory):
     last_update_user_id = factory.LazyFunction(generate_uuid)
     active_organization_id = Faker('random_int')
     email = Faker('email')
-    email_confirmed_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
+    email_confirmed_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     first_name = Faker('sentence', nb_words=4)
-    forgot_password_key_expiration_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
+    forgot_password_key_expiration_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     forgot_password_key_value = Faker('sentence', nb_words=4)
     fs_user_code_value = factory.LazyFunction(generate_uuid)
     is_active = Faker('boolean')
@@ -41,17 +41,17 @@ class CustomerFactory(factory.Factory):
     is_locked = Faker('boolean')
     is_multiple_organizations_allowed = Faker('boolean')
     is_verbose_logging_forced = Faker('boolean')
-    last_login_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
+    last_login_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     last_name = Faker('sentence', nb_words=4)
     password = Faker('sentence', nb_words=4)
     phone = Faker('phone_number')
     province = Faker('sentence', nb_words=4)
-    registration_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
+    registration_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     #tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
     utc_offset_in_minutes = Faker('random_int')
     zip = Faker('sentence', nb_words=4)
-    insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
+    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
+    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
     tac_code_peek = factory.LazyFunction(generate_uuid) # TacID
     @classmethod

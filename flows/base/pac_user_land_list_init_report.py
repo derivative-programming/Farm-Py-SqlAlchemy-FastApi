@@ -46,4 +46,5 @@ class BaseFlowPacUserLandListInitReport(BaseFlow):
                 if item.get_object_name() == "pac":
                     val = False
 
-                item = await item.get_parent_object()
+                if val == True:
+                    item = await item.get_parent_obj()

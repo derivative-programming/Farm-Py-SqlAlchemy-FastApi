@@ -2,25 +2,27 @@ from typing import List
 from datetime import date, datetime
 import uuid
 from decimal import Decimal
+from business.plant import PlantBusObj
 from helpers import TypeConversion
-from reports.row_models import ReportItemPlantUserDetails
-from apis.models import ListModel
+from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+from apis.models.list_model import ListModel
 from helpers import SessionContext
 from models import Plant
-from reports import ReportManagerPlantUserDetails
-from reports import ReportRequestValidationError
+from reports.plant_user_details import ReportManagerPlantUserDetails
+from reports.report_request_validation_error import ReportRequestValidationError
 import apis.models as view_models
 from models import Plant
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field,UUID4
 import logging
+from sqlalchemy.ext.asyncio import AsyncSession
 ### request. expect camel case. use marshmallow to validate.
 class PlantUserDetailsGetModelRequest(SnakeModel):
-    pageNumber:int = 0
-    itemCountPerPage:int = 0
-    orderByColumnName:str = ""
-    orderByDescending:bool = False
-    forceErrorMessage:str = ""
+    page_number:int = 0
+    item_count_per_page:int = 0
+    order_by_column_name:str = ""
+    order_by_descending:bool = False
+    force_error_message:str = ""
 
 class PlantUserDetailsGetModelResponseItem(CamelModel):
     flavor_name:str = ""
@@ -44,7 +46,7 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
     phone_num_conditional_on_is_editable:str = ""
     n_var_char_as_url:str = ""
     update_button_text_link_plant_code:UUID4 = uuid.UUID(int=0)
-    random_property_updates_link_plant_code:uuid = uuid.UUID(int=0)
+    random_property_updates_link_plant_code:UUID4 = uuid.UUID(int=0)
     back_to_dashboard_link_tac_code:UUID4 = uuid.UUID(int=0)
 
     def load_report_item(self,data:ReportItemPlantUserDetails):
@@ -75,21 +77,24 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
 class PlantUserDetailsGetModelResponse(ListModel):
     request:PlantUserDetailsGetModelRequest = None
     items:List[PlantUserDetailsGetModelResponseItem] = Field(default_factory=list)
-    def process_request(self,
+    async def process_request(self,
+                        session:AsyncSession,
                         session_context:SessionContext,
                         plant_code:uuid,
                         request:PlantUserDetailsGetModelRequest):
         try:
-            logging.debug("loading model...")
-            plant = Plant.objects.get(code=plant_code)
+            logging.debug("loading model...PlantUserDetailsGetModelResponse")
+            # plant_bus_obj = PlantBusObj(session=session)
+            # await plant_bus_obj.load(code=plant_code)
             generator = ReportManagerPlantUserDetails(session_context)
-            items = generator.generate(
-                    plant.code,
+            logging.debug("processing...PlantUserDetailsGetModelResponse")
+            items = await generator.generate(
+                    plant_code,
 
-                    request.pageNumber,
-                    request.itemCountPerPage,
-                    request.orderByColumnName,
-                    request.orderByDescending)
+                    request.page_number,
+                    request.item_count_per_page,
+                    request.order_by_column_name,
+                    request.order_by_descending)
             self.items = list()
             for item in items:
                 report_item = PlantUserDetailsGetModelResponseItem()

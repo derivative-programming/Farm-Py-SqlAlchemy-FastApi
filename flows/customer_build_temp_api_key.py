@@ -1,7 +1,8 @@
+import json
 from business.customer import CustomerBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowCustomerBuildTempApiKey
+from flows.base.customer_build_temp_api_key import BaseFlowCustomerBuildTempApiKey
 from models import Customer
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -20,6 +21,14 @@ class FlowCustomerBuildTempApiKeyResult():
     tmp_org_api_key_code:uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+            'tmp_org_api_key_code': str(self.tmp_org_api_key_code),
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
     def __init__(self, session_context:SessionContext):
         super(FlowCustomerBuildTempApiKey, self).__init__(session_context)

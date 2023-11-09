@@ -1,5 +1,5 @@
 # farm/models/factories.py
-import datetime
+from datetime import datetime
 import uuid
 import factory
 from factory import Faker, SubFactory
@@ -30,15 +30,15 @@ class OrgApiKeyFactory(factory.Factory):
     last_update_user_id = factory.LazyFunction(generate_uuid)
     api_key_value = Faker('sentence', nb_words=4)
     created_by = Faker('sentence', nb_words=4)
-    created_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
-    expiration_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
+    created_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
+    expiration_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     is_active = Faker('boolean')
     is_temp_user_key = Faker('boolean')
     name = Faker('sentence', nb_words=4)
     #organization_id = 0 #factory.LazyAttribute(lambda obj: obj.organization.organization_id)
     #org_customer_id = 0 #factory.LazyAttribute(lambda obj: obj.org_customer.org_customer_id)
-    insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
+    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
+    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
     organization_code_peek = factory.LazyFunction(generate_uuid) # OrganizationID
     org_customer_code_peek = factory.LazyFunction(generate_uuid)  # OrgCustomerID

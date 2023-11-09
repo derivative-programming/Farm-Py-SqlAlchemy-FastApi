@@ -1,7 +1,8 @@
+import json
 from business.plant import PlantBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowPlantUserDetailsInitReport
+from flows.base.plant_user_details_init_report import BaseFlowPlantUserDetailsInitReport
 from models import Plant
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -21,6 +22,15 @@ class FlowPlantUserDetailsInitReportResult():
     tac_code:uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+            'land_code': str(self.land_code),
+            'tac_code': str(self.tac_code),
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
     def __init__(self, session_context:SessionContext):
         super(FlowPlantUserDetailsInitReport, self).__init__(session_context)

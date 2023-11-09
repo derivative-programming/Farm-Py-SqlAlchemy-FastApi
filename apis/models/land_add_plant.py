@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class LandAddPlantPostModelRequest(SnakeModel):
+    force_error_message:str = ""
     request_flavor_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
     request_other_flavor:str = ""
     request_some_int_val:int = 0
@@ -122,5 +123,8 @@ class LandAddPlantPostModelResponse(PostResponse):
             self.success = False 
             self.validation_errors = list()
             for key in ve.error_dict:
-                self.validation_errors.append(ValidationError(key,ve.error_dict[key])) 
+                validation_error = ValidationError()
+                validation_error.property = key
+                validation_error.message = ve.error_dict[key]
+                self.validation_errors.append(validation_error) 
     

@@ -1,7 +1,8 @@
+import json
 from business.tac import TacBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowTacFarmDashboardInitReport
+from flows.base.tac_farm_dashboard_init_report import BaseFlowTacFarmDashboardInitReport
 from models import Tac
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -20,6 +21,14 @@ class FlowTacFarmDashboardInitReportResult():
     customer_code:uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+            'customer_code': str(self.customer_code),
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
     def __init__(self, session_context:SessionContext):
         super(FlowTacFarmDashboardInitReport, self).__init__(session_context)

@@ -1,5 +1,5 @@
 # farm/models/factories.py
-import datetime
+from datetime import datetime
 import uuid
 import factory
 from factory import Faker, SubFactory
@@ -29,8 +29,8 @@ class OrganizationFactory(factory.Factory):
     last_update_user_id = factory.LazyFunction(generate_uuid)
     name = Faker('sentence', nb_words=4)
     #tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
-    insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
+    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
+    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
     tac_code_peek = factory.LazyFunction(generate_uuid) # TacID
     @classmethod

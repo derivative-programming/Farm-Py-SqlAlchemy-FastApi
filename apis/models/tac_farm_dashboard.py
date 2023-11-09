@@ -2,25 +2,27 @@ from typing import List
 from datetime import date, datetime
 import uuid
 from decimal import Decimal
+from business.tac import TacBusObj
 from helpers import TypeConversion
-from reports.row_models import ReportItemTacFarmDashboard
-from apis.models import ListModel
+from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
+from apis.models.list_model import ListModel
 from helpers import SessionContext
 from models import Tac
-from reports import ReportManagerTacFarmDashboard
-from reports import ReportRequestValidationError
+from reports.tac_farm_dashboard import ReportManagerTacFarmDashboard
+from reports.report_request_validation_error import ReportRequestValidationError
 import apis.models as view_models
 from models import Tac
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field,UUID4
 import logging
+from sqlalchemy.ext.asyncio import AsyncSession
 ### request. expect camel case. use marshmallow to validate.
 class TacFarmDashboardGetModelRequest(SnakeModel):
-    pageNumber:int = 0
-    itemCountPerPage:int = 0
-    orderByColumnName:str = ""
-    orderByDescending:bool = False
-    forceErrorMessage:str = ""
+    page_number:int = 0
+    item_count_per_page:int = 0
+    order_by_column_name:str = ""
+    order_by_descending:bool = False
+    force_error_message:str = ""
 
 class TacFarmDashboardGetModelResponseItem(CamelModel):
     field_one_plant_list_link_land_code:UUID4 = uuid.UUID(int=0)
@@ -35,21 +37,24 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
 class TacFarmDashboardGetModelResponse(ListModel):
     request:TacFarmDashboardGetModelRequest = None
     items:List[TacFarmDashboardGetModelResponseItem] = Field(default_factory=list)
-    def process_request(self,
+    async def process_request(self,
+                        session:AsyncSession,
                         session_context:SessionContext,
                         tac_code:uuid,
                         request:TacFarmDashboardGetModelRequest):
         try:
-            logging.debug("loading model...")
-            tac = Tac.objects.get(code=tac_code)
+            logging.debug("loading model...TacFarmDashboardGetModelResponse")
+            # tac_bus_obj = TacBusObj(session=session)
+            # await tac_bus_obj.load(code=tac_code)
             generator = ReportManagerTacFarmDashboard(session_context)
-            items = generator.generate(
-                    tac.code,
+            logging.debug("processing...TacFarmDashboardGetModelResponse")
+            items = await generator.generate(
+                    tac_code,
 
-                    request.pageNumber,
-                    request.itemCountPerPage,
-                    request.orderByColumnName,
-                    request.orderByDescending)
+                    request.page_number,
+                    request.item_count_per_page,
+                    request.order_by_column_name,
+                    request.order_by_descending)
             self.items = list()
             for item in items:
                 report_item = TacFarmDashboardGetModelResponseItem()

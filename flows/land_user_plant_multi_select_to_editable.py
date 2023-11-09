@@ -1,7 +1,8 @@
+import json
 from business.land import LandBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowLandUserPlantMultiSelectToEditable
+from flows.base.land_user_plant_multi_select_to_editable import BaseFlowLandUserPlantMultiSelectToEditable
 from models import Land
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -20,6 +21,14 @@ class FlowLandUserPlantMultiSelectToEditableResult():
 
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowLandUserPlantMultiSelectToEditable(BaseFlowLandUserPlantMultiSelectToEditable):
     def __init__(self, session_context:SessionContext):
         super(FlowLandUserPlantMultiSelectToEditable, self).__init__(session_context)

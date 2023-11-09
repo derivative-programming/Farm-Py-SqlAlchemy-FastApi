@@ -1,7 +1,8 @@
+import json
 from business.tac import TacBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowTacRegister
+from flows.base.tac_register import BaseFlowTacRegister
 from models import Tac
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -25,6 +26,19 @@ class FlowTacRegisterResult():
     api_key:str = ""
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+            'customer_code': str(self.customer_code),
+            'email': self.email,
+            'user_code_value': str(self.user_code_value),
+            'utc_offset_in_minutes': self.utc_offset_in_minutes,
+            'role_name_csv_list': self.role_name_csv_list,
+            'api_key': self.api_key,
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowTacRegister(BaseFlowTacRegister):
     def __init__(self, session_context:SessionContext):
         super(FlowTacRegister, self).__init__(session_context)

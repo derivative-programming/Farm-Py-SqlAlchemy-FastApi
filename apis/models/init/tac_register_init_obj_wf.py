@@ -1,28 +1,26 @@
 from datetime import date, datetime
 from decimal import Decimal
-from apis.models import ValidationError
 from typing import List
 import uuid
 from helpers import TypeConversion
-from flows import FlowTacRegisterInitObjWFResult
+from flows.tac_register_init_obj_wf import FlowTacRegisterInitObjWFResult, FlowTacRegisterInitObjWF
 from helpers import SessionContext
-from models import Tac
-from flows import FlowTacRegisterInitObjWF
-from flows import FlowValidationError
+from business.tac import TacBusObj
+from flows.base.flow_validation_error import FlowValidationError
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field
-import apis.models as view_models
+from apis.models.validation_error import ValidationError
 import logging
-from models import Tac
+from sqlalchemy.ext.asyncio import AsyncSession
 class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
     success:bool = False
     message:str = ""
     validation_errors:List[ValidationError] = Field(default_factory=list)
     email:str = ""
     password:str = ""
-    confirmPassword:str = ""
-    firstName:str = ""
-    lastName:str = ""
+    confirm_password:str = ""
+    first_name:str = ""
+    last_name:str = ""
 
     def load_flow_response(self,data:FlowTacRegisterInitObjWFResult):
         self.validation_errors = list()
@@ -30,29 +28,32 @@ class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
         self.message = ""
         self.email = data.email
         self.password = data.password
-        self.confirmPassword = data.confirm_password
-        self.firstName = data.first_name
-        self.lastName = data.last_name
+        self.confirm_password = data.confirm_password
+        self.first_name = data.first_name
+        self.last_name = data.last_name
 class TacRegisterInitObjWFGetInitModelRequest(SnakeModel):
-    def process_request(self,
+    async def process_request(self,
+                        session:AsyncSession,
                         session_context:SessionContext,
                         tac_code:uuid,
                         response:TacRegisterInitObjWFGetInitModelResponse) -> TacRegisterInitObjWFGetInitModelResponse:
         try:
-            logging.debug("loading model...")
-            tac = Tac.objects.get(code=tac_code)
-            logging.debug("process request...")
+            logging.debug("loading model...TacRegisterInitObjWFGetInitModelRequest")
+            tac_bus_obj = TacBusObj(session=session)
+            await tac_bus_obj.load(code=tac_code)
             flow = FlowTacRegisterInitObjWF(session_context)
-            flowResponse = flow.process(
-                tac
+            logging.debug("process request...TacRegisterInitObjWFGetInitModelRequest")
+            flowResponse = await flow.process(
+                tac_bus_obj
             )
             response.load_flow_response(flowResponse);
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
+            logging.debug("error...TacRegisterInitObjWFGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
+                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
         return response
 

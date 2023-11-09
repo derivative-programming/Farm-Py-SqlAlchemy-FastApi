@@ -168,5 +168,5 @@ class BaseFlowLandAddPlant(BaseFlow):
                             self._add_validation_error("Unautorized access. Invalid user in organization.") 
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End
- 
-                item = await item.get_parent_object()
+                if val == True:
+                    item = await item.get_parent_obj()

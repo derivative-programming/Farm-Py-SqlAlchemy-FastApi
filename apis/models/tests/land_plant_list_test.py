@@ -9,9 +9,9 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from ...land_plant_list import LandPlantListGetModelRequest
-from models import Base, Plant
-from ..land_plant_list import LandPlantListGetModelRequestFactory
+from ..land_plant_list import LandPlantListGetModelRequest
+from models import Base
+from ..factory.land_plant_list import LandPlantListGetModelRequestFactory
 from services.db_config import db_dialect 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER

@@ -1,7 +1,8 @@
+import json
 from business.tac import TacBusObj
 from datetime import date, datetime
 import uuid
-from flows.base import BaseFlowTacLoginInitObjWF
+from flows.base.tac_login_init_obj_wf import BaseFlowTacLoginInitObjWF
 from models import Tac
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -21,6 +22,15 @@ class FlowTacLoginInitObjWFResult():
     password:str = ""
     def __init__(self):
         pass
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            'context_object_code': str(self.context_object_code),
+            'email': self.email,
+            'password': self.password,
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
     def __init__(self, session_context:SessionContext):
         super(FlowTacLoginInitObjWF, self).__init__(session_context)

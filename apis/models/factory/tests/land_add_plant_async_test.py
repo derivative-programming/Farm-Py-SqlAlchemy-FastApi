@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import uuid
 import pytest
 import pytest_asyncio 
 import time
@@ -10,7 +11,7 @@ from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from ...land_add_plant import LandAddPlantPostModelRequest
-from models import Base, Plant
+from models import Base
 from ..land_add_plant import LandAddPlantPostModelRequestFactory
 from services.db_config import db_dialect 
 from sqlalchemy.dialects.postgresql import UUID
@@ -84,7 +85,7 @@ class TestLandAddPlantPostModelRequestFactoryAsync:
     async def test_create_async(self, session):
         model_instance = await LandAddPlantPostModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance,LandAddPlantPostModelRequest)
-        assert isinstance(model_instance.request_flavor_code,UUID4)
+        assert isinstance(model_instance.request_flavor_code,str)
         assert isinstance(model_instance.request_other_flavor,str)
         assert isinstance(model_instance.request_some_int_val,int)
         assert isinstance(model_instance.request_some_big_int_val,int)

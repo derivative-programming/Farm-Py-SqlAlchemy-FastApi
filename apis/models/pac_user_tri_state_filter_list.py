@@ -2,25 +2,27 @@ from typing import List
 from datetime import date, datetime
 import uuid
 from decimal import Decimal
+from business.pac import PacBusObj
 from helpers import TypeConversion
-from reports.row_models import ReportItemPacUserTriStateFilterList
-from apis.models import ListModel
+from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
+from apis.models.list_model import ListModel
 from helpers import SessionContext
 from models import Pac
-from reports import ReportManagerPacUserTriStateFilterList
-from reports import ReportRequestValidationError
+from reports.pac_user_tri_state_filter_list import ReportManagerPacUserTriStateFilterList
+from reports.report_request_validation_error import ReportRequestValidationError
 import apis.models as view_models
 from models import Pac
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field,UUID4
 import logging
+from sqlalchemy.ext.asyncio import AsyncSession
 ### request. expect camel case. use marshmallow to validate.
 class PacUserTriStateFilterListGetModelRequest(SnakeModel):
-    pageNumber:int = 0
-    itemCountPerPage:int = 0
-    orderByColumnName:str = ""
-    orderByDescending:bool = False
-    forceErrorMessage:str = ""
+    page_number:int = 0
+    item_count_per_page:int = 0
+    order_by_column_name:str = ""
+    order_by_descending:bool = False
+    force_error_message:str = ""
 
 class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
     tri_state_filter_code:UUID4 = uuid.UUID(int=0)
@@ -43,21 +45,24 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
 class PacUserTriStateFilterListGetModelResponse(ListModel):
     request:PacUserTriStateFilterListGetModelRequest = None
     items:List[PacUserTriStateFilterListGetModelResponseItem] = Field(default_factory=list)
-    def process_request(self,
+    async def process_request(self,
+                        session:AsyncSession,
                         session_context:SessionContext,
                         pac_code:uuid,
                         request:PacUserTriStateFilterListGetModelRequest):
         try:
-            logging.debug("loading model...")
-            pac = Pac.objects.get(code=pac_code)
+            logging.debug("loading model...PacUserTriStateFilterListGetModelResponse")
+            # pac_bus_obj = PacBusObj(session=session)
+            # await pac_bus_obj.load(code=pac_code)
             generator = ReportManagerPacUserTriStateFilterList(session_context)
-            items = generator.generate(
-                    pac.code,
+            logging.debug("processing...PacUserTriStateFilterListGetModelResponse")
+            items = await generator.generate(
+                    pac_code,
 
-                    request.pageNumber,
-                    request.itemCountPerPage,
-                    request.orderByColumnName,
-                    request.orderByDescending)
+                    request.page_number,
+                    request.item_count_per_page,
+                    request.order_by_column_name,
+                    request.order_by_descending)
             self.items = list()
             for item in items:
                 report_item = PacUserTriStateFilterListGetModelResponseItem()

@@ -3,44 +3,49 @@ from decimal import Decimal
 import uuid
 from helpers import TypeConversion
 from .post_reponse import PostResponse
-from flows import FlowErrorLogConfigResolveErrorLogResult
-from flows import FlowErrorLogConfigResolveErrorLog
+from flows.error_log_config_resolve_error_log import FlowErrorLogConfigResolveErrorLog, FlowErrorLogConfigResolveErrorLogResult
 from helpers import SessionContext
-from models import ErrorLog
-from flows import FlowValidationError
+from business.error_log import ErrorLogBusObj
+from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field,UUID4
 import logging
-from models import ErrorLog
+from apis.models.validation_error import ValidationError
+from sqlalchemy.ext.asyncio import AsyncSession
+class ErrorLogConfigResolveErrorLogPostModelRequest(SnakeModel):
+    force_error_message:str = ""
+
 class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
 
     def load_flow_response(self,data:FlowErrorLogConfigResolveErrorLogResult):
         placeholder = "" #to avoid pass line
 
-### request. expect camel case. use marshmallow to validate.
-class ErrorLogConfigResolveErrorLogPostModelRequest(SnakeModel):
-
-    def process_request(self,
+    async def process_request(self,
+                        session:AsyncSession,
                         session_context:SessionContext,
                         error_log_code:uuid,
-                        response:ErrorLogConfigResolveErrorLogPostModelResponse) -> ErrorLogConfigResolveErrorLogPostModelResponse:
+                        request:ErrorLogConfigResolveErrorLogPostModelRequest):
         try:
-            logging.debug("loading model...")
-            error_log = ErrorLog.objects.get(code=error_log_code)
+            logging.debug("loading model...ErrorLogConfigResolveErrorLogPostModelResponse")
+            error_log_bus_obj = ErrorLogBusObj(session=session)
+            await error_log_bus_obj.load(code=error_log_code)
             flow = FlowErrorLogConfigResolveErrorLog(session_context)
-            logging.debug("process flow...")
-            flowResponse = flow.process(
-                error_log,
+            logging.debug("process flow...ErrorLogConfigResolveErrorLogPostModelResponse")
+            flowResponse = await flow.process(
+                error_log_bus_obj,
 
             )
-            response.load_flow_response(flowResponse);
-            response.success = True
-            response.message = "Success."
+            self.load_flow_response(flowResponse);
+            self.success = True
+            self.message = "Success."
         except FlowValidationError as ve:
-            response.success = False
-            response.validation_errors = list()
+            logging.debug("error...ErrorLogConfigResolveErrorLogPostModelResponse")
+            self.success = False
+            self.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
-        return response
+                validation_error = ValidationError()
+                validation_error.property = key
+                validation_error.message = ve.error_dict[key]
+                self.validation_errors.append(validation_error)
 

@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 class LandPlantListGetModelRequestFactory(factory.base.Factory):
     class Meta:
         model = LandPlantListGetModelRequest
-    flavor_code:UUID4 = uuid.UUID(int=0) 
+    flavor_code:UUID4 = uuid.uuid4()#uuid.UUID(int=0) 
     some_int_val:int = Faker('random_int')
     some_big_int_val:int = Faker('random_int')
     some_float_val:float = Faker('pyfloat', positive=True)
@@ -20,7 +20,7 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
     is_edit_allowed:bool = Faker('boolean')
     is_delete_allowed:bool = Faker('boolean')
     some_decimal_val:Decimal = Faker('pydecimal', left_digits=5, right_digits=2, positive=True)
-    some_min_utc_date_time_val:datetime = factory.LazyFunction(datetime.datetime.utcnow)
+    some_min_utc_date_time_val:datetime = factory.LazyFunction(datetime.utcnow)
     some_min_date_val:date = Faker('date_object')
     some_money_val:Decimal = Faker('pydecimal', left_digits=5, right_digits=2, positive=True)
     some_n_var_char_val:str = Faker('sentence', nb_words=4)
@@ -38,15 +38,15 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
                 obj2 = model_class(*args, **kwargs)   
                 return obj2
  
-        request_flavor_code_instance = FlavorFactory.create(session=session) #requestFlavorCode  
+        flavor_code_instance = FlavorFactory.create(session=session) #FlavorCode  
 #endset
  
-        kwargs["request_flavor_code"] = request_flavor_code_instance.code #requestFlavorCode 
+        kwargs["flavor_code"] = flavor_code_instance.code #FlavorCode 
 #endset
 
         obj = model_class(*args, **kwargs) 
           
-        obj.request_flavor_code = request_flavor_code_instance.code #requestFlavorCode 
+        obj.flavor_code = flavor_code_instance.code #FlavorCode 
 #endset  
 
         return obj
@@ -54,15 +54,15 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
     @classmethod
     def _create(cls, model_class, session=None, *args, **kwargs) -> LandPlantListGetModelRequest:
  
-        request_flavor_code_instance = FlavorFactory.create(session=session) #requestFlavorCode  
+        flavor_code_instance = FlavorFactory.create(session=session) #requestFlavorCode  
 #endset
  
-        kwargs["request_flavor_code"] = request_flavor_code_instance.code #requestFlavorCode 
+        kwargs["flavor_code"] = flavor_code_instance.code #requestFlavorCode 
 #endset
 
         obj = model_class(*args, **kwargs) 
           
-        obj.request_flavor_code = request_flavor_code_instance.code #requestFlavorCode 
+        obj.flavor_code = flavor_code_instance.code #requestFlavorCode 
 #endset  
  
         return obj
@@ -70,15 +70,15 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
     @classmethod
     async def create_async(cls, session:AsyncSession, *args, **kwargs) -> LandPlantListGetModelRequest:
   
-        request_flavor_code_instance = await FlavorFactory.create_async(session=session) #requestFlavorCode 
+        flavor_code_instance = await FlavorFactory.create_async(session=session) #requestFlavorCode 
 #endset
   
-        kwargs["request_flavor_code"] = request_flavor_code_instance.code #requestFlavorCode 
+        kwargs["flavor_code"] = flavor_code_instance.code #requestFlavorCode 
 #endset
 
         obj = LandPlantListGetModelRequestFactory.build(session=None, *args, **kwargs)  
           
-        obj.request_flavor_code = request_flavor_code_instance.code #requestFlavorCode 
+        obj.flavor_code = flavor_code_instance.code #requestFlavorCode 
 #endset
  
         return obj 

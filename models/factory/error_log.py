@@ -1,5 +1,5 @@
 # farm/models/factories.py
-import datetime
+from datetime import datetime
 import uuid
 import factory
 from factory import Faker, SubFactory
@@ -29,14 +29,14 @@ class ErrorLogFactory(factory.Factory):
     last_update_user_id = factory.LazyFunction(generate_uuid)
     browser_code = factory.LazyFunction(generate_uuid)
     context_code = factory.LazyFunction(generate_uuid)
-    created_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
+    created_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
     description = Faker('sentence', nb_words=4)
     is_client_side_error = Faker('boolean')
     is_resolved = Faker('boolean')
     #pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
     url = Faker('sentence', nb_words=4)
-    insert_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.datetime.utcnow)
+    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
+    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
     pac_code_peek = factory.LazyFunction(generate_uuid) # PacID
     @classmethod
