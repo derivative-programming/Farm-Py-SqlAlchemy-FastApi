@@ -1,0 +1,10 @@
+{
+    "templateType":"ApiEndPoint",  
+    "IsEdgeCase": true,
+    "dimension" :{
+        "name":"LandAddPlant",
+        "isPostWithIdAvailable":"true"
+    },
+    "ignoreDimensionPropertyList": [   
+    ]
+} 

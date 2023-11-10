@@ -17,6 +17,22 @@ from sqlalchemy.ext.asyncio import AsyncSession
 class PlantUserPropertyRandomUpdatePostModelRequest(SnakeModel):
     force_error_message:str = ""
 
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
+    def to_dict_snake(self):
+        data = self.model_dump()
+    def to_dict_snake_serialized(self):
+        data = json.loads(self.model_dump_json() )
+    def _to_camel(self,string: str) -> str:
+        return ''.join(word.capitalize() if i != 0 else word for i, word in enumerate(string.split('_')))
+    def to_dict_camel(self):
+        data = self.model_dump()
+        return {self._to_camel(k): v for k, v in data.items()}
+    def to_dict_camel_serialized(self):
+        data = json.loads(self.model_dump_json() )
+        return {self._to_camel(k): v for k, v in data.items()}
 class PlantUserPropertyRandomUpdatePostModelResponse(PostResponse):
 
     def load_flow_response(self,data:FlowPlantUserPropertyRandomUpdateResult):
@@ -31,6 +47,9 @@ class PlantUserPropertyRandomUpdatePostModelResponse(PostResponse):
             logging.info("loading model...PlantUserPropertyRandomUpdatePostModelResponse")
             plant_bus_obj = PlantBusObj(session=session)
             await plant_bus_obj.load(code=plant_code)
+            if(plant_bus_obj.get_plant_obj() is None):
+                logging.info("Invalid plant_code")
+                raise ValueError("Invalid plant_code")
             flow = FlowPlantUserPropertyRandomUpdate(session_context)
             logging.info("process flow...PlantUserPropertyRandomUpdatePostModelResponse")
             flowResponse = await flow.process(
@@ -50,10 +69,5 @@ class PlantUserPropertyRandomUpdatePostModelResponse(PostResponse):
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 

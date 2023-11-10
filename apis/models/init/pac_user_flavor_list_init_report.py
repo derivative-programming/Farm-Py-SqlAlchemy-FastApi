@@ -24,12 +24,7 @@ class PacUserFlavorListInitReportGetInitModelResponse(CamelModel):
         self.message = ""
 
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -40,6 +35,9 @@ class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
             logging.info("loading model...PacUserFlavorListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session=session)
             await pac_bus_obj.load(code=pac_code)
+            if(pac_bus_obj.get_pac_obj() is None):
+                logging.info("Invalid pac_code")
+                raise ValueError("Invalid pac_code")
             flow = FlowPacUserFlavorListInitReport(session_context)
             logging.info("process request...PacUserFlavorListInitReportGetInitModelRequest")
             flowResponse = await flow.process(

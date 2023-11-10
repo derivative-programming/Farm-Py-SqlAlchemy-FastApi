@@ -18,6 +18,22 @@ class LandUserPlantMultiSelectToNotEditablePostModelRequest(SnakeModel):
     force_error_message:str = ""
     plant_code_list_csv:str = ""
 
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
+    def to_dict_snake(self):
+        data = self.model_dump()
+    def to_dict_snake_serialized(self):
+        data = json.loads(self.model_dump_json() )
+    def _to_camel(self,string: str) -> str:
+        return ''.join(word.capitalize() if i != 0 else word for i, word in enumerate(string.split('_')))
+    def to_dict_camel(self):
+        data = self.model_dump()
+        return {self._to_camel(k): v for k, v in data.items()}
+    def to_dict_camel_serialized(self):
+        data = json.loads(self.model_dump_json() )
+        return {self._to_camel(k): v for k, v in data.items()}
 class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
 
     def load_flow_response(self,data:FlowLandUserPlantMultiSelectToNotEditableResult):
@@ -32,6 +48,9 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
             logging.info("loading model...LandUserPlantMultiSelectToNotEditablePostModelResponse")
             land_bus_obj = LandBusObj(session=session)
             await land_bus_obj.load(code=land_code)
+            if(land_bus_obj.get_land_obj() is None):
+                logging.info("Invalid land_code")
+                raise ValueError("Invalid land_code")
             flow = FlowLandUserPlantMultiSelectToNotEditable(session_context)
             logging.info("process flow...LandUserPlantMultiSelectToNotEditablePostModelResponse")
             flowResponse = await flow.process(
@@ -52,10 +71,5 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 

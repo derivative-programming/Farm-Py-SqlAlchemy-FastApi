@@ -13,10 +13,11 @@ from reports.pac_user_tac_list import ReportManagerPacUserTacList
 from reports.report_request_validation_error import ReportRequestValidationError
 import apis.models as view_models
 from models import Pac
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel,SnakeModel,BaseModel
 from pydantic import Field,UUID4
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Optional
 ### request. expect camel case. use marshmallow to validate.
 class PacUserTacListGetModelRequest(SnakeModel):
     page_number:int = 0
@@ -25,6 +26,24 @@ class PacUserTacListGetModelRequest(SnakeModel):
     order_by_descending:bool = False
     force_error_message:str = ""
 
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
+    def to_dict_snake(self):
+        data = self.model_dump()
+        return data
+    def to_dict_snake_serialized(self):
+        data = json.loads(self.model_dump_json())
+        return data
+    def _to_camel(self,string: str) -> str:
+        return ''.join(word.capitalize() if i != 0 else word for i, word in enumerate(string.split('_')))
+    def to_dict_camel(self):
+        data = self.model_dump()
+        return {self._to_camel(k): v for k, v in data.items()}
+    def to_dict_camel_serialized(self):
+        data = json.loads(self.model_dump_json() )
+        return {self._to_camel(k): v for k, v in data.items()}
 class PacUserTacListGetModelResponseItem(CamelModel):
     tac_code:UUID4 = uuid.UUID(int=0)
     tac_description:str = ""
@@ -79,9 +98,4 @@ class PacUserTacListGetModelResponse(ListModel):
                 self.message = self.message + ve.error_dict[key] + ','
                 # self.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()

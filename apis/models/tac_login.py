@@ -19,6 +19,22 @@ class TacLoginPostModelRequest(SnakeModel):
     email:str = ""
     password:str = ""
 
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
+    def to_dict_snake(self):
+        data = self.model_dump()
+    def to_dict_snake_serialized(self):
+        data = json.loads(self.model_dump_json() )
+    def _to_camel(self,string: str) -> str:
+        return ''.join(word.capitalize() if i != 0 else word for i, word in enumerate(string.split('_')))
+    def to_dict_camel(self):
+        data = self.model_dump()
+        return {self._to_camel(k): v for k, v in data.items()}
+    def to_dict_camel_serialized(self):
+        data = json.loads(self.model_dump_json() )
+        return {self._to_camel(k): v for k, v in data.items()}
 class TacLoginPostModelResponse(PostResponse):
     customer_code:UUID4 = uuid.UUID(int=0)
     email:str = ""
@@ -45,6 +61,9 @@ class TacLoginPostModelResponse(PostResponse):
             logging.info("loading model...TacLoginPostModelResponse")
             tac_bus_obj = TacBusObj(session=session)
             await tac_bus_obj.load(code=tac_code)
+            if(tac_bus_obj.get_tac_obj() is None):
+                logging.info("Invalid tac_code")
+                raise ValueError("Invalid tac_code")
             flow = FlowTacLogin(session_context)
             logging.info("process flow...TacLoginPostModelResponse")
             flowResponse = await flow.process(
@@ -66,10 +85,5 @@ class TacLoginPostModelResponse(PostResponse):
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 

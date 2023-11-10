@@ -7,10 +7,7 @@ from helpers import SessionContext, ApiToken, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models 
 from database import get_db
- 
-router = APIRouter()
-
-logging.basicConfig(level=logging.DEBUG)
+   
 
 class LandAddPlantRouterConfig():
     #constants

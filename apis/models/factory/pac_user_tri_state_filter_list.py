@@ -14,6 +14,9 @@ class PacUserTriStateFilterListGetModelRequestFactory(factory.base.Factory):
 
     page_number = 1
     item_count_per_page = 1
+    order_by_column_name:str = ""
+    order_by_descending:bool = False
+    force_error_message:str = ""
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> PacUserTriStateFilterListGetModelRequest:
         if session is None:

@@ -27,7 +27,7 @@ class LandPlantListRouter():
 ##GENLearn[isGetInitAvailable=true]Start
     @staticmethod
     @router.get("/api/v1_0/land-plant-list/{land_code}/init", response_model=api_init_models.LandPlantListInitReportGetInitModelResponse)  
-    async def request_get_init(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    async def request_get_init(land_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandPlantListRouter.request_get_init start. landCode:' + land_code)
         if LandPlantListRouterConfig.isGetInitAvailable == False:
             raise HTTPException(

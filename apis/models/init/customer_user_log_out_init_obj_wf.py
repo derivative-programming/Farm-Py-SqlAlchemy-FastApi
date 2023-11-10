@@ -25,12 +25,7 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
         self.message = ""
         self.tac_code = data.tac_code
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -41,6 +36,9 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             logging.info("loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")
             customer_bus_obj = CustomerBusObj(session=session)
             await customer_bus_obj.load(code=customer_code)
+            if(customer_bus_obj.get_customer_obj() is None):
+                logging.info("Invalid customer_code")
+                raise ValueError("Invalid customer_code")
             flow = FlowCustomerUserLogOutInitObjWF(session_context)
             logging.info("process request...CustomerUserLogOutInitObjWFGetInitModelRequest")
             flowResponse = await flow.process(

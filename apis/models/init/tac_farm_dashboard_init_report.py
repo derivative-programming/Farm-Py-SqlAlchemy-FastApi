@@ -25,12 +25,7 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
         self.message = ""
         self.customer_code = data.customer_code
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -41,6 +36,9 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
             logging.info("loading model...TacFarmDashboardInitReportGetInitModelRequest")
             tac_bus_obj = TacBusObj(session=session)
             await tac_bus_obj.load(code=tac_code)
+            if(tac_bus_obj.get_tac_obj() is None):
+                logging.info("Invalid tac_code")
+                raise ValueError("Invalid tac_code")
             flow = FlowTacFarmDashboardInitReport(session_context)
             logging.info("process request...TacFarmDashboardInitReportGetInitModelRequest")
             flowResponse = await flow.process(

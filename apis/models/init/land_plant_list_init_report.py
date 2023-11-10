@@ -59,12 +59,7 @@ class LandPlantListInitReportGetInitModelResponse(CamelModel):
         self.tac_code = data.tac_code
         self.land_name = data.land_name
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 class LandPlantListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,

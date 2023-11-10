@@ -27,12 +27,7 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
         self.land_code = data.land_code
         self.tac_code = data.tac_code
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = {
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -43,6 +38,9 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
             logging.info("loading model...PlantUserDetailsInitReportGetInitModelRequest")
             plant_bus_obj = PlantBusObj(session=session)
             await plant_bus_obj.load(code=plant_code)
+            if(plant_bus_obj.get_plant_obj() is None):
+                logging.info("Invalid plant_code")
+                raise ValueError("Invalid plant_code")
             flow = FlowPlantUserDetailsInitReport(session_context)
             logging.info("process request...PlantUserDetailsInitReportGetInitModelRequest")
             flowResponse = await flow.process(
