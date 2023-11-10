@@ -25,7 +25,7 @@ class ReportManagerPlantUserDetails():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemPlantUserDetails]:
-        logging.debug('ReportManagerPlantUserDetails.generate Start')
+        logging.info('ReportManagerPlantUserDetails.generate Start')
         role_required = "User"
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerPlantUserDetails():
             reportItem:ReportItemPlantUserDetails = ReportItemPlantUserDetails()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerPlantUserDetails.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerPlantUserDetails.generate End')
+        logging.info("ReportManagerPlantUserDetails.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerPlantUserDetails.generate End')
         return result
 

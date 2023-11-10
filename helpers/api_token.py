@@ -10,20 +10,26 @@ class ApiToken:
 
     @staticmethod
     def create_token(payload:dict, expires_in_day_count:int): 
-        logging.debug("create_token Start")
+        logging.info("create_token Start")
 
         payload["exp"] = datetime.datetime.utcnow() + datetime.timedelta(days=expires_in_day_count)
 
-        logging.debug(str(payload))
+        logging.info(str(payload))
         token = ""
         # token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
         token = jwt.encode(payload, "xxxxx", algorithm='HS256')
-        logging.debug("create_token: " + token)
-        logging.debug("create_token End")
+        logging.info("create_token: " + token)
+        logging.info("create_token End")
         return token
 
     @staticmethod
-    def validate_token(token) -> dict:
+    def validate_token(token:str) -> dict:
+        if token is None:
+            logging.info("No auth token found") 
+            return dict()
+        if token == "":
+            logging.info("Empty auth token found") 
+            return dict()
         try:
             payload = ""
             # Decode the token and verify its validity
@@ -31,6 +37,8 @@ class ApiToken:
             payload = jwt.decode(token, "xxxxx", algorithms=['HS256'])
             return payload
         except jwt.ExpiredSignatureError:
+            logging.info("Auth token expired") 
             return dict()  # The token has expired
         except jwt.InvalidTokenError:
+            logging.info("Auth token invalid") 
             return dict()  # The token is invalid

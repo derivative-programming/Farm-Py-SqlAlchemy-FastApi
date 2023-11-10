@@ -24,7 +24,7 @@ class PlantUserDeleteRouter():
     @staticmethod
     @router.post("/api/v1_0/plant-user-delete/{plant_code}", response_model=api_models.PlantUserDeletePostModelResponse)
     async def request_post_with_id(plant_code: str, request_model:api_models.PlantUserDeletePostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('PlantUserDeleteRouter.request_post_with_id start. plantCode:' + plant_code)
+        logging.info('PlantUserDeleteRouter.request_post_with_id start. plantCode:' + plant_code)
         if PlantUserDeleteRouterConfig.isPostWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,14 +40,14 @@ class PlantUserDeleteRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 plant_code = session_context.check_context_code("PlantCode", plant_code)
-                flowResponse = await request_model.process_request(
+                await response.process_request(
                     session,
                     session_context,
                     plant_code,
-                    response
+                    request_model
                 )
             except TypeError as te:
                 response.success = False
@@ -62,6 +62,6 @@ class PlantUserDeleteRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('PlantUserDeleteRouter.submit get result:' + response.to_json())
+        logging.info('PlantUserDeleteRouter.submit get result:' + response.to_json())
         return response
 

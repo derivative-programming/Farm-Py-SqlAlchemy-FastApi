@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 from typing import List
 import uuid
 from helpers import TypeConversion
@@ -22,6 +23,13 @@ class PacUserFlavorListInitReportGetInitModelResponse(CamelModel):
         self.success = False
         self.message = ""
 
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -29,11 +37,11 @@ class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
                         pac_code:uuid,
                         response:PacUserFlavorListInitReportGetInitModelResponse) -> PacUserFlavorListInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...PacUserFlavorListInitReportGetInitModelRequest")
+            logging.info("loading model...PacUserFlavorListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session=session)
             await pac_bus_obj.load(code=pac_code)
             flow = FlowPacUserFlavorListInitReport(session_context)
-            logging.debug("process request...PacUserFlavorListInitReportGetInitModelRequest")
+            logging.info("process request...PacUserFlavorListInitReportGetInitModelRequest")
             flowResponse = await flow.process(
                 pac_bus_obj
             )
@@ -41,7 +49,7 @@ class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...PacUserFlavorListInitReportGetInitModelRequest")
+            logging.info("error...PacUserFlavorListInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

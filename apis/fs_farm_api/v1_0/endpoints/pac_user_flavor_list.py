@@ -24,7 +24,7 @@ class PacUserFlavorListRouter():
     @staticmethod
     @router.get("/api/v1_0/pac-user-flavor-list/{pac_code}/init", response_model=api_init_models.PacUserFlavorListInitReportGetInitModelResponse)
     async def request_get_init(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('PacUserFlavorListRouter.request_get_init start. pacCode:' + pac_code)
+        logging.info('PacUserFlavorListRouter.request_get_init start. pacCode:' + pac_code)
         if PacUserFlavorListRouterConfig.isGetInitAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,7 +40,7 @@ class PacUserFlavorListRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
                 init_request = api_init_models.PacUserFlavorListInitReportGetInitModelRequest()
@@ -63,13 +63,13 @@ class PacUserFlavorListRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('PacUserFlavorListRouter.init get result:' + response.to_json())
+        logging.info('PacUserFlavorListRouter.init get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.get("/api/v1_0/pac-user-flavor-list/{pac_code}", response_model=api_models.PacUserFlavorListGetModelResponse)
     async def request_get_with_id(pac_code: str, request_model:api_models.PacUserFlavorListGetModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('PacUserFlavorListRouter.request_get_with_id start. pacCode:' + pac_code)
+        logging.info('PacUserFlavorListRouter.request_get_with_id start. pacCode:' + pac_code)
         if PacUserFlavorListRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -87,8 +87,8 @@ class PacUserFlavorListRouter():
             try:
                 session_context = SessionContext(auth_dict)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
-                response.request = request
-                logging.debug("process request...")
+                response.request = request_model
+                logging.info("process request...")
                 await response.process_request(
                     session,
                     session_context,
@@ -104,13 +104,13 @@ class PacUserFlavorListRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('PacUserFlavorListRouter.submit get result:' + response.to_json())
+        logging.info('PacUserFlavorListRouter.submit get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.get("/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv", response_model=api_models.PacUserFlavorListGetModelResponse)
-    async def request_get_with_id_to_csv(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('PacUserFlavorListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
+    async def request_get_with_id_to_csv(pac_code: str, request_model:api_models.PacUserFlavorListGetModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+        logging.info('PacUserFlavorListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
         if PacUserFlavorListRouterConfig.isGetToCsvAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -129,7 +129,7 @@ class PacUserFlavorListRouter():
                 session_context = SessionContext(auth_dict)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
                 response.request = request_model
-                logging.debug("process request...")
+                logging.info("process request...")
                 await response.process_request(
                     session,
                     session_context,
@@ -145,6 +145,6 @@ class PacUserFlavorListRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('PacUserFlavorListRouter.submit get result:' + response.to_json())
+        logging.info('PacUserFlavorListRouter.submit get result:' + response.to_json())
         return response
 

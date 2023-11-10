@@ -25,7 +25,7 @@ class ReportManagerPacUserLandList():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemPacUserLandList]:
-        logging.debug('ReportManagerPacUserLandList.generate Start')
+        logging.info('ReportManagerPacUserLandList.generate Start')
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerPacUserLandList():
             reportItem:ReportItemPacUserLandList = ReportItemPacUserLandList()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerPacUserLandList.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerPacUserLandList.generate End')
+        logging.info("ReportManagerPacUserLandList.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerPacUserLandList.generate End')
         return result
 

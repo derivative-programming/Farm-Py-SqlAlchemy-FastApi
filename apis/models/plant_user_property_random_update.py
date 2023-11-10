@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 import uuid
 from helpers import TypeConversion
 from .post_reponse import PostResponse
@@ -27,11 +28,11 @@ class PlantUserPropertyRandomUpdatePostModelResponse(PostResponse):
                         plant_code:uuid,
                         request:PlantUserPropertyRandomUpdatePostModelRequest):
         try:
-            logging.debug("loading model...PlantUserPropertyRandomUpdatePostModelResponse")
+            logging.info("loading model...PlantUserPropertyRandomUpdatePostModelResponse")
             plant_bus_obj = PlantBusObj(session=session)
             await plant_bus_obj.load(code=plant_code)
             flow = FlowPlantUserPropertyRandomUpdate(session_context)
-            logging.debug("process flow...PlantUserPropertyRandomUpdatePostModelResponse")
+            logging.info("process flow...PlantUserPropertyRandomUpdatePostModelResponse")
             flowResponse = await flow.process(
                 plant_bus_obj,
 
@@ -40,7 +41,7 @@ class PlantUserPropertyRandomUpdatePostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...PlantUserPropertyRandomUpdatePostModelResponse")
+            logging.info("error...PlantUserPropertyRandomUpdatePostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -48,4 +49,11 @@ class PlantUserPropertyRandomUpdatePostModelResponse(PostResponse):
                 validation_error.property = key
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 

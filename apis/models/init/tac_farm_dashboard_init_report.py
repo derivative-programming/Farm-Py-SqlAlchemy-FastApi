@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 from typing import List
 import uuid
 from helpers import TypeConversion
@@ -23,6 +24,13 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
         self.success = False
         self.message = ""
         self.customer_code = data.customer_code
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -30,11 +38,11 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
                         tac_code:uuid,
                         response:TacFarmDashboardInitReportGetInitModelResponse) -> TacFarmDashboardInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...TacFarmDashboardInitReportGetInitModelRequest")
+            logging.info("loading model...TacFarmDashboardInitReportGetInitModelRequest")
             tac_bus_obj = TacBusObj(session=session)
             await tac_bus_obj.load(code=tac_code)
             flow = FlowTacFarmDashboardInitReport(session_context)
-            logging.debug("process request...TacFarmDashboardInitReportGetInitModelRequest")
+            logging.info("process request...TacFarmDashboardInitReportGetInitModelRequest")
             flowResponse = await flow.process(
                 tac_bus_obj
             )
@@ -42,7 +50,7 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...TacFarmDashboardInitReportGetInitModelRequest")
+            logging.info("error...TacFarmDashboardInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

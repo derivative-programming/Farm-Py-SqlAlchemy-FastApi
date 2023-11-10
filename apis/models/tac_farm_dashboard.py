@@ -1,3 +1,4 @@
+import json
 from typing import List
 from datetime import date, datetime
 import uuid
@@ -43,11 +44,11 @@ class TacFarmDashboardGetModelResponse(ListModel):
                         tac_code:uuid,
                         request:TacFarmDashboardGetModelRequest):
         try:
-            logging.debug("loading model...TacFarmDashboardGetModelResponse")
+            logging.info("loading model...TacFarmDashboardGetModelResponse")
             # tac_bus_obj = TacBusObj(session=session)
             # await tac_bus_obj.load(code=tac_code)
             generator = ReportManagerTacFarmDashboard(session_context)
-            logging.debug("processing...TacFarmDashboardGetModelResponse")
+            logging.info("processing...TacFarmDashboardGetModelResponse")
             items = await generator.generate(
                     tac_code,
 
@@ -69,3 +70,10 @@ class TacFarmDashboardGetModelResponse(ListModel):
             for key in ve.error_dict:
                 self.message = self.message + ve.error_dict[key] + ','
                 # self.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)

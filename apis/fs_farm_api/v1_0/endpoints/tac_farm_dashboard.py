@@ -24,7 +24,7 @@ class TacFarmDashboardRouter():
     @staticmethod
     @router.get("/api/v1_0/tac-farm-dashboard/{tac_code}/init", response_model=api_init_models.TacFarmDashboardInitReportGetInitModelResponse)
     async def request_get_init(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('TacFarmDashboardRouter.request_get_init start. tacCode:' + tac_code)
+        logging.info('TacFarmDashboardRouter.request_get_init start. tacCode:' + tac_code)
         if TacFarmDashboardRouterConfig.isGetInitAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,7 +40,7 @@ class TacFarmDashboardRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 tac_code = session_context.check_context_code("TacCode", tac_code)
                 init_request = api_init_models.TacFarmDashboardInitReportGetInitModelRequest()
@@ -63,13 +63,13 @@ class TacFarmDashboardRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('TacFarmDashboardRouter.init get result:' + response.to_json())
+        logging.info('TacFarmDashboardRouter.init get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.get("/api/v1_0/tac-farm-dashboard/{tac_code}", response_model=api_models.TacFarmDashboardGetModelResponse)
     async def request_get_with_id(tac_code: str, request_model:api_models.TacFarmDashboardGetModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('TacFarmDashboardRouter.request_get_with_id start. tacCode:' + tac_code)
+        logging.info('TacFarmDashboardRouter.request_get_with_id start. tacCode:' + tac_code)
         if TacFarmDashboardRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -87,8 +87,8 @@ class TacFarmDashboardRouter():
             try:
                 session_context = SessionContext(auth_dict)
                 tac_code = session_context.check_context_code("TacCode", tac_code)
-                response.request = request
-                logging.debug("process request...")
+                response.request = request_model
+                logging.info("process request...")
                 await response.process_request(
                     session,
                     session_context,
@@ -104,13 +104,13 @@ class TacFarmDashboardRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('TacFarmDashboardRouter.submit get result:' + response.to_json())
+        logging.info('TacFarmDashboardRouter.submit get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.get("/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv", response_model=api_models.TacFarmDashboardGetModelResponse)
-    async def request_get_with_id_to_csv(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('TacFarmDashboardRouter.request_get_with_id_to_csv start. tacCode:' + tac_code)
+    async def request_get_with_id_to_csv(tac_code: str, request_model:api_models.TacFarmDashboardGetModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+        logging.info('TacFarmDashboardRouter.request_get_with_id_to_csv start. tacCode:' + tac_code)
         if TacFarmDashboardRouterConfig.isGetToCsvAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -129,7 +129,7 @@ class TacFarmDashboardRouter():
                 session_context = SessionContext(auth_dict)
                 tac_code = session_context.check_context_code("TacCode", tac_code)
                 response.request = request_model
-                logging.debug("process request...")
+                logging.info("process request...")
                 await response.process_request(
                     session,
                     session_context,
@@ -145,6 +145,6 @@ class TacFarmDashboardRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('TacFarmDashboardRouter.submit get result:' + response.to_json())
+        logging.info('TacFarmDashboardRouter.submit get result:' + response.to_json())
         return response
 

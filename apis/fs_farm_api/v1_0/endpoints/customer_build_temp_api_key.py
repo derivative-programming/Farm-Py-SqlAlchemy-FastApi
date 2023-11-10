@@ -24,7 +24,7 @@ class CustomerBuildTempApiKeyRouter():
     @staticmethod
     @router.post("/api/v1_0/customer-build-temp-api-key/{customer_code}", response_model=api_models.CustomerBuildTempApiKeyPostModelResponse)
     async def request_post_with_id(customer_code: str, request_model:api_models.CustomerBuildTempApiKeyPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('CustomerBuildTempApiKeyRouter.request_post_with_id start. customerCode:' + customer_code)
+        logging.info('CustomerBuildTempApiKeyRouter.request_post_with_id start. customerCode:' + customer_code)
         if CustomerBuildTempApiKeyRouterConfig.isPostWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,14 +40,14 @@ class CustomerBuildTempApiKeyRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 customer_code = session_context.check_context_code("CustomerCode", customer_code)
-                flowResponse = await request_model.process_request(
+                await response.process_request(
                     session,
                     session_context,
                     customer_code,
-                    response
+                    request_model
                 )
             except TypeError as te:
                 response.success = False
@@ -62,6 +62,6 @@ class CustomerBuildTempApiKeyRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('CustomerBuildTempApiKeyRouter.submit get result:' + response.to_json())
+        logging.info('CustomerBuildTempApiKeyRouter.submit get result:' + response.model_dump_json())
         return response
 

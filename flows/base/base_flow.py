@@ -52,7 +52,7 @@ class BaseFlow():
             case LogSeverity.information_mid_detail:
                 logging.info(log_message)
             case LogSeverity.information_high_detail:
-                logging.debug(log_message)
+                logging.info(log_message)
 
     def _log_message(self, message:str):   
         self._log_message_and_severity(LogSeverity.information_high_detail,message)

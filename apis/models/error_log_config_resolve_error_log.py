@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 import uuid
 from helpers import TypeConversion
 from .post_reponse import PostResponse
@@ -27,11 +28,11 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
                         error_log_code:uuid,
                         request:ErrorLogConfigResolveErrorLogPostModelRequest):
         try:
-            logging.debug("loading model...ErrorLogConfigResolveErrorLogPostModelResponse")
+            logging.info("loading model...ErrorLogConfigResolveErrorLogPostModelResponse")
             error_log_bus_obj = ErrorLogBusObj(session=session)
             await error_log_bus_obj.load(code=error_log_code)
             flow = FlowErrorLogConfigResolveErrorLog(session_context)
-            logging.debug("process flow...ErrorLogConfigResolveErrorLogPostModelResponse")
+            logging.info("process flow...ErrorLogConfigResolveErrorLogPostModelResponse")
             flowResponse = await flow.process(
                 error_log_bus_obj,
 
@@ -40,7 +41,7 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...ErrorLogConfigResolveErrorLogPostModelResponse")
+            logging.info("error...ErrorLogConfigResolveErrorLogPostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -48,4 +49,11 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
                 validation_error.property = key
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 

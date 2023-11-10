@@ -1,3 +1,4 @@
+import json
 from typing import List
 from datetime import date, datetime
 import uuid
@@ -51,11 +52,11 @@ class PacUserTacListGetModelResponse(ListModel):
                         pac_code:uuid,
                         request:PacUserTacListGetModelRequest):
         try:
-            logging.debug("loading model...PacUserTacListGetModelResponse")
+            logging.info("loading model...PacUserTacListGetModelResponse")
             # pac_bus_obj = PacBusObj(session=session)
             # await pac_bus_obj.load(code=pac_code)
             generator = ReportManagerPacUserTacList(session_context)
-            logging.debug("processing...PacUserTacListGetModelResponse")
+            logging.info("processing...PacUserTacListGetModelResponse")
             items = await generator.generate(
                     pac_code,
 
@@ -77,3 +78,10 @@ class PacUserTacListGetModelResponse(ListModel):
             for key in ve.error_dict:
                 self.message = self.message + ve.error_dict[key] + ','
                 # self.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)

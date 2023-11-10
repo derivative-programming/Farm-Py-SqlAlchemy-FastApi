@@ -38,8 +38,8 @@ class ReportProviderLandPlantList():
 			order_by_column_name:str,
 			order_by_descending:bool,
 		) -> list[dict[str,any]]:
-			logging.debug("ReportProviderLandPlantList.generate_list Start")
-			logging.debug("ReportProviderLandPlantList.generate_list context_code:" + str(context_code))
+			logging.info("ReportProviderLandPlantList.generate_list Start")
+			logging.info("ReportProviderLandPlantList.generate_list context_code:" + str(context_code))
 			offset = (page_number - 1) * item_count_per_page
 			query_dict = dict()
 			query_dict["context_code"] = str(context_code)
@@ -97,8 +97,8 @@ class ReportProviderLandPlantList():
 			) 
 			  
 			results = self.dictfetchall(cursor)
-			logging.debug("ReportProviderLandPlantList.generate_list Results: " + json.dumps(results))
-			logging.debug("ReportProviderLandPlantList.generate_list End")
+			logging.info("ReportProviderLandPlantList.generate_list Results: " + json.dumps(results))
+			logging.info("ReportProviderLandPlantList.generate_list End")
 			return results
     
 		def dictfetchall(self, cursor) -> list[dict[str,any]]:

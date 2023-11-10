@@ -13,19 +13,21 @@ from reports.land_plant_list import ReportManagerLandPlantList
 from reports.report_request_validation_error import ReportRequestValidationError 
 import apis.models as view_models
 from models import Land 
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel,SnakeModel,BaseModel
 from pydantic import Field,UUID4
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Optional
 ### request. expect camel case. use marshmallow to validate.
 
-class LandPlantListGetModelRequest(SnakeModel):
+
+class LandPlantListGetModelRequest(BaseModel):
     page_number:int = 0
     item_count_per_page:int = 0
     order_by_column_name:str = ""
     order_by_descending:bool = False
     force_error_message:str = ""
-    flavor_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
+    flavor_code:Optional[UUID4] = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
     some_int_val:int = 0
     some_big_int_val:int = 0
     some_float_val:float = 0
@@ -33,8 +35,8 @@ class LandPlantListGetModelRequest(SnakeModel):
     is_edit_allowed:bool = False
     is_delete_allowed:bool = False
     some_decimal_val:Decimal = Decimal(0)
-    some_min_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    some_min_date_val:date = Field(default_factory=TypeConversion.get_default_date)
+    some_min_utc_date_time_val:Optional[datetime] = Field(default_factory=TypeConversion.get_default_date_time)
+    some_min_date_val:Optional[date] = Field(default_factory=TypeConversion.get_default_date)
     some_money_val:Decimal = Decimal(0)
     some_n_var_char_val:str = ""
     some_var_char_val:str = ""
@@ -42,6 +44,32 @@ class LandPlantListGetModelRequest(SnakeModel):
     some_phone_number:str = ""
     some_email_address:str = ""
 #endset 
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
+
+    def to_dict_snake(self):
+        data = self.model_dump() 
+        return data
+
+    def to_dict_snake_serialized(self):
+        data = json.loads(self.model_dump_json())
+        return data
+    
+    def _to_camel(self,string: str) -> str:
+        return ''.join(word.capitalize() if i != 0 else word for i, word in enumerate(string.split('_')))
+    
+    def to_dict_camel(self):
+        data = self.model_dump() 
+        return {self._to_camel(k): v for k, v in data.items()} 
+    
+    def to_dict_camel_serialized(self):
+        data = json.loads(self.model_dump_json() )
+        return {self._to_camel(k): v for k, v in data.items()} 
+    
+
 
 class LandPlantListGetModelResponseItem(CamelModel):
     plant_code:UUID4 = uuid.UUID(int=0)
@@ -103,11 +131,11 @@ class LandPlantListGetModelResponse(ListModel):
                         land_code:uuid,
                         request:LandPlantListGetModelRequest):
         try:
-            logging.debug("loading model...LandPlantListGetModelResponse")
+            logging.info("loading model...LandPlantListGetModelResponse")
             # land_bus_obj = LandBusObj(session=session)
             # await land_bus_obj.load(code=land_code)  
             generator = ReportManagerLandPlantList(session_context)
-            logging.debug("processing...LandPlantListGetModelResponse")
+            logging.info("processing...LandPlantListGetModelResponse")
             items = await generator.generate(
                     land_code,
                     request.flavor_code,
@@ -147,9 +175,4 @@ class LandPlantListGetModelResponse(ListModel):
                 # self.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
 
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = { 
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()

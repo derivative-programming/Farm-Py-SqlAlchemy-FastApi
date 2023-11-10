@@ -22,8 +22,8 @@ class ReportProviderPacUserTacList():
 			order_by_column_name:str,
 			order_by_descending:bool,
 		) -> list[dict[str,any]]:
-			logging.debug("ReportProviderPacUserTacList.generate_list Start")
-			logging.debug("ReportProviderPacUserTacList.generate_list context_code:" + str(context_code))
+			logging.info("ReportProviderPacUserTacList.generate_list Start")
+			logging.info("ReportProviderPacUserTacList.generate_list context_code:" + str(context_code))
 			offset = (page_number - 1) * item_count_per_page
 			query_dict = dict()
 			query_dict["context_code"] = str(context_code)
@@ -44,8 +44,8 @@ class ReportProviderPacUserTacList():
 				query_dict
 			)
 			results = self.dictfetchall(cursor)
-			logging.debug("ReportProviderPacUserTacList.generate_list Results: " + json.dumps(results))
-			logging.debug("ReportProviderPacUserTacList.generate_list End")
+			logging.info("ReportProviderPacUserTacList.generate_list Results: " + json.dumps(results))
+			logging.info("ReportProviderPacUserTacList.generate_list End")
 			return results
 		def dictfetchall(self, cursor) -> list[dict[str,any]]:
 			"Return all rows from a cursor as a dict"

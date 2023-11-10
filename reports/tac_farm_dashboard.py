@@ -25,7 +25,7 @@ class ReportManagerTacFarmDashboard():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemTacFarmDashboard]:
-        logging.debug('ReportManagerTacFarmDashboard.generate Start')
+        logging.info('ReportManagerTacFarmDashboard.generate Start')
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerTacFarmDashboard():
             reportItem:ReportItemTacFarmDashboard = ReportItemTacFarmDashboard()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerTacFarmDashboard.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerTacFarmDashboard.generate End')
+        logging.info("ReportManagerTacFarmDashboard.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerTacFarmDashboard.generate End')
         return result
 

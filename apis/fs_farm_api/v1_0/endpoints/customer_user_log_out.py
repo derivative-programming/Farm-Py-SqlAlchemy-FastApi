@@ -24,7 +24,7 @@ class CustomerUserLogOutRouter():
     @staticmethod
     @router.get("/api/v1_0/customer-user-log-out/{customer_code}/init", response_model=api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse)
     async def request_get_init(customer_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('CustomerUserLogOutRouter.request_get_init start. customerCode:' + customer_code)
+        logging.info('CustomerUserLogOutRouter.request_get_init start. customerCode:' + customer_code)
         if CustomerUserLogOutRouterConfig.isGetInitAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,7 +40,7 @@ class CustomerUserLogOutRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 customer_code = session_context.check_context_code("CustomerCode", customer_code)
                 init_request = api_init_models.CustomerUserLogOutInitObjWFGetInitModelRequest()
@@ -63,13 +63,13 @@ class CustomerUserLogOutRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('CustomerUserLogOutRouter.init get result:' + response.to_json())
+        logging.info('CustomerUserLogOutRouter.init get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.post("/api/v1_0/customer-user-log-out/{customer_code}", response_model=api_models.CustomerUserLogOutPostModelResponse)
     async def request_post_with_id(customer_code: str, request_model:api_models.CustomerUserLogOutPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('CustomerUserLogOutRouter.request_post_with_id start. customerCode:' + customer_code)
+        logging.info('CustomerUserLogOutRouter.request_post_with_id start. customerCode:' + customer_code)
         if CustomerUserLogOutRouterConfig.isPostWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -85,14 +85,14 @@ class CustomerUserLogOutRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 customer_code = session_context.check_context_code("CustomerCode", customer_code)
-                flowResponse = await request_model.process_request(
+                await response.process_request(
                     session,
                     session_context,
                     customer_code,
-                    response
+                    request_model
                 )
             except TypeError as te:
                 response.success = False
@@ -107,6 +107,6 @@ class CustomerUserLogOutRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('CustomerUserLogOutRouter.submit get result:' + response.to_json())
+        logging.info('CustomerUserLogOutRouter.submit get result:' + response.to_json())
         return response
 

@@ -63,12 +63,7 @@ class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
         self.tac_code = data.tac_code 
     
     def to_json(self):
-        # Create a dictionary representation of the instance
-        data = { 
-            #TODO finish to_json
-        }
-        # Serialize the dictionary to JSON
-        return json.dumps(data)
+        return self.model_dump_json()
 
 class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,
@@ -77,11 +72,13 @@ class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
                         land_code:uuid,
                         response:LandAddPlantInitObjWFGetInitModelResponse) -> LandAddPlantInitObjWFGetInitModelResponse:
         try:
-            logging.debug("loading model...LandAddPlantInitObjWFGetInitModelRequest")
+            logging.info("loading model...LandAddPlantInitObjWFGetInitModelRequest")
             land_bus_obj = LandBusObj(session=session)
             await land_bus_obj.load(code=land_code) 
+            if(land_bus_obj.land_id == 0):
+                logging.info("Invalid land_code")
             flow = FlowLandAddPlantInitObjWF(session_context)
-            logging.debug("process request...LandAddPlantInitObjWFGetInitModelRequest") 
+            logging.info("process request...LandAddPlantInitObjWFGetInitModelRequest") 
             flowResponse = await flow.process(
                 land_bus_obj
             )  
@@ -89,7 +86,7 @@ class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...LandAddPlantInitObjWFGetInitModelRequest") 
+            logging.info("error...LandAddPlantInitObjWFGetInitModelRequest") 
             response.success = False 
             response.validation_errors = list()
             for key in ve.error_dict:

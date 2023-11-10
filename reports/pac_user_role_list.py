@@ -25,7 +25,7 @@ class ReportManagerPacUserRoleList():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemPacUserRoleList]:
-        logging.debug('ReportManagerPacUserRoleList.generate Start')
+        logging.info('ReportManagerPacUserRoleList.generate Start')
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerPacUserRoleList():
             reportItem:ReportItemPacUserRoleList = ReportItemPacUserRoleList()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerPacUserRoleList.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerPacUserRoleList.generate End')
+        logging.info("ReportManagerPacUserRoleList.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerPacUserRoleList.generate End')
         return result
 

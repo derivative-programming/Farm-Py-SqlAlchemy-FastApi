@@ -25,7 +25,7 @@ class ReportManagerPacUserDateGreaterThanFilterList():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemPacUserDateGreaterThanFilterList]:
-        logging.debug('ReportManagerPacUserDateGreaterThanFilterList.generate Start')
+        logging.info('ReportManagerPacUserDateGreaterThanFilterList.generate Start')
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerPacUserDateGreaterThanFilterList():
             reportItem:ReportItemPacUserDateGreaterThanFilterList = ReportItemPacUserDateGreaterThanFilterList()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerPacUserDateGreaterThanFilterList.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerPacUserDateGreaterThanFilterList.generate End')
+        logging.info("ReportManagerPacUserDateGreaterThanFilterList.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerPacUserDateGreaterThanFilterList.generate End')
         return result
 

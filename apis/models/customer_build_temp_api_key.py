@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 import uuid
 from helpers import TypeConversion
 from .post_reponse import PostResponse
@@ -29,11 +30,11 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
                         customer_code:uuid,
                         request:CustomerBuildTempApiKeyPostModelRequest):
         try:
-            logging.debug("loading model...CustomerBuildTempApiKeyPostModelResponse")
+            logging.info("loading model...CustomerBuildTempApiKeyPostModelResponse")
             customer_bus_obj = CustomerBusObj(session=session)
             await customer_bus_obj.load(code=customer_code)
             flow = FlowCustomerBuildTempApiKey(session_context)
-            logging.debug("process flow...CustomerBuildTempApiKeyPostModelResponse")
+            logging.info("process flow...CustomerBuildTempApiKeyPostModelResponse")
             flowResponse = await flow.process(
                 customer_bus_obj,
 
@@ -42,7 +43,7 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...CustomerBuildTempApiKeyPostModelResponse")
+            logging.info("error...CustomerBuildTempApiKeyPostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -50,4 +51,11 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
                 validation_error.property = key
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 

@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 import uuid
 from helpers import TypeConversion
 from .post_reponse import PostResponse
@@ -28,11 +29,11 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
                         land_code:uuid,
                         request:LandUserPlantMultiSelectToNotEditablePostModelRequest):
         try:
-            logging.debug("loading model...LandUserPlantMultiSelectToNotEditablePostModelResponse")
+            logging.info("loading model...LandUserPlantMultiSelectToNotEditablePostModelResponse")
             land_bus_obj = LandBusObj(session=session)
             await land_bus_obj.load(code=land_code)
             flow = FlowLandUserPlantMultiSelectToNotEditable(session_context)
-            logging.debug("process flow...LandUserPlantMultiSelectToNotEditablePostModelResponse")
+            logging.info("process flow...LandUserPlantMultiSelectToNotEditablePostModelResponse")
             flowResponse = await flow.process(
                 land_bus_obj,
                 request.plant_code_list_csv,
@@ -42,7 +43,7 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...LandUserPlantMultiSelectToNotEditablePostModelResponse")
+            logging.info("error...LandUserPlantMultiSelectToNotEditablePostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -50,4 +51,11 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
                 validation_error.property = key
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 

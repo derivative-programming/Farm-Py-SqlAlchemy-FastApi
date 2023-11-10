@@ -24,7 +24,7 @@ class TacLoginRouter():
     @staticmethod
     @router.get("/api/v1_0/tac-login/{tac_code}/init", response_model=api_init_models.TacLoginInitObjWFGetInitModelResponse)
     async def request_get_init(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('TacLoginRouter.request_get_init start. tacCode:' + tac_code)
+        logging.info('TacLoginRouter.request_get_init start. tacCode:' + tac_code)
         if TacLoginRouterConfig.isGetInitAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,7 +40,7 @@ class TacLoginRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 tac_code = session_context.check_context_code("TacCode", tac_code)
                 init_request = api_init_models.TacLoginInitObjWFGetInitModelRequest()
@@ -63,13 +63,13 @@ class TacLoginRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('TacLoginRouter.init get result:' + response.to_json())
+        logging.info('TacLoginRouter.init get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.post("/api/v1_0/tac-login/{tac_code}", response_model=api_models.TacLoginPostModelResponse)
     async def request_post_with_id(tac_code: str, request_model:api_models.TacLoginPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('TacLoginRouter.request_post_with_id start. tacCode:' + tac_code)
+        logging.info('TacLoginRouter.request_post_with_id start. tacCode:' + tac_code)
         if TacLoginRouterConfig.isPostWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -85,14 +85,14 @@ class TacLoginRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 tac_code = session_context.check_context_code("TacCode", tac_code)
-                flowResponse = await request_model.process_request(
+                await response.process_request(
                     session,
                     session_context,
                     tac_code,
-                    response
+                    request_model
                 )
             except TypeError as te:
                 response.success = False
@@ -107,6 +107,6 @@ class TacLoginRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('TacLoginRouter.submit get result:' + response.to_json())
+        logging.info('TacLoginRouter.submit get result:' + response.to_json())
         return response
 

@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 from typing import List
 import uuid
 from helpers import TypeConversion
@@ -22,6 +23,13 @@ class PacUserLandListInitReportGetInitModelResponse(CamelModel):
         self.success = False
         self.message = ""
 
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class PacUserLandListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -29,11 +37,11 @@ class PacUserLandListInitReportGetInitModelRequest(SnakeModel):
                         pac_code:uuid,
                         response:PacUserLandListInitReportGetInitModelResponse) -> PacUserLandListInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...PacUserLandListInitReportGetInitModelRequest")
+            logging.info("loading model...PacUserLandListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session=session)
             await pac_bus_obj.load(code=pac_code)
             flow = FlowPacUserLandListInitReport(session_context)
-            logging.debug("process request...PacUserLandListInitReportGetInitModelRequest")
+            logging.info("process request...PacUserLandListInitReportGetInitModelRequest")
             flowResponse = await flow.process(
                 pac_bus_obj
             )
@@ -41,7 +49,7 @@ class PacUserLandListInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...PacUserLandListInitReportGetInitModelRequest")
+            logging.info("error...PacUserLandListInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

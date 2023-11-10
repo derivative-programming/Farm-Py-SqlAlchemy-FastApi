@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 from typing import List
 import uuid
 from helpers import TypeConversion
@@ -25,6 +26,13 @@ class TacLoginInitObjWFGetInitModelResponse(CamelModel):
         self.message = ""
         self.email = data.email
         self.password = data.password
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -32,11 +40,11 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
                         tac_code:uuid,
                         response:TacLoginInitObjWFGetInitModelResponse) -> TacLoginInitObjWFGetInitModelResponse:
         try:
-            logging.debug("loading model...TacLoginInitObjWFGetInitModelRequest")
+            logging.info("loading model...TacLoginInitObjWFGetInitModelRequest")
             tac_bus_obj = TacBusObj(session=session)
             await tac_bus_obj.load(code=tac_code)
             flow = FlowTacLoginInitObjWF(session_context)
-            logging.debug("process request...TacLoginInitObjWFGetInitModelRequest")
+            logging.info("process request...TacLoginInitObjWFGetInitModelRequest")
             flowResponse = await flow.process(
                 tac_bus_obj
             )
@@ -44,7 +52,7 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...TacLoginInitObjWFGetInitModelRequest")
+            logging.info("error...TacLoginInitObjWFGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

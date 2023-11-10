@@ -14,7 +14,7 @@ class PacUserTriStateFilterListViewSetTestCase(TestCase):
         CurrentRuntime.initialize()
         self.client = APIClient()
         self.pac = PacFactory.create()
-        logging.debug('call RequestFactory.create()')
+        logging.info('call RequestFactory.create()')
         self.request = RequestFactory.create()
         self.valid_request_data =  asdict(self.request)
         self.invalid_request_data = {
@@ -32,15 +32,15 @@ class PacUserTriStateFilterListViewSetTestCase(TestCase):
 
     def test_post_not_implemented(self):
         # Assuming you have a FlowPacUserTriStateFilterList.process method that handles valid data
-        logging.debug('/api/v1_0/pac-user-tri-state-filter-list/')
-        logging.debug(self.valid_request_data)
+        logging.info('/api/v1_0/pac-user-tri-state-filter-list/')
+        logging.info(self.valid_request_data)
         response = self.client.post('/api/v1_0/pac-user-tri-state-filter-list/', self.valid_request_data, content_type='application/json')
         self.assertEqual(response.status_code, 501)
 
     def test_submit_success(self):
         # Assuming you have a FlowPacUserTriStateFilterList.process method that handles valid data
-        logging.debug(f'/api/v1_0/pac-user-tri-state-filter-list/{self.pac.code}/')
-        logging.debug(self.valid_request_data)
+        logging.info(f'/api/v1_0/pac-user-tri-state-filter-list/{self.pac.code}/')
+        logging.info(self.valid_request_data)
         response = self.client.post(f'/api/v1_0/pac-user-tri-state-filter-list/{self.pac.code}/submit/', data=self.valid_request_data, **self.valid_header, format='json')
         self.assertEqual(response.status_code, 200)
         json_string = response.content.decode()
@@ -48,7 +48,7 @@ class PacUserTriStateFilterListViewSetTestCase(TestCase):
         self.assertTrue(response.data['success'])
 
     def test_submit_failure(self):
-        logging.debug(self.invalid_request_data)
+        logging.info(self.invalid_request_data)
         response = self.client.post(f'/api/v1_0/pac-user-tri-state-filter-list/{self.pac.code}/submit/', data=self.invalid_request_data, **self.valid_header, content_type='application/json')
         self.assertEqual(response.status_code, 200)
         json_string = response.content.decode()

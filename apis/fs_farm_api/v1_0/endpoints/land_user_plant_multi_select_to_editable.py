@@ -24,7 +24,7 @@ class LandUserPlantMultiSelectToEditableRouter():
     @staticmethod
     @router.post("/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}", response_model=api_models.LandUserPlantMultiSelectToEditablePostModelResponse)
     async def request_post_with_id(land_code: str, request_model:api_models.LandUserPlantMultiSelectToEditablePostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('LandUserPlantMultiSelectToEditableRouter.request_post_with_id start. landCode:' + land_code)
+        logging.info('LandUserPlantMultiSelectToEditableRouter.request_post_with_id start. landCode:' + land_code)
         if LandUserPlantMultiSelectToEditableRouterConfig.isPostWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,14 +40,14 @@ class LandUserPlantMultiSelectToEditableRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 land_code = session_context.check_context_code("LandCode", land_code)
-                flowResponse = await request_model.process_request(
+                await response.process_request(
                     session,
                     session_context,
                     land_code,
-                    response
+                    request_model
                 )
             except TypeError as te:
                 response.success = False
@@ -62,6 +62,6 @@ class LandUserPlantMultiSelectToEditableRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('LandUserPlantMultiSelectToEditableRouter.submit get result:' + response.to_json())
+        logging.info('LandUserPlantMultiSelectToEditableRouter.submit get result:' + response.to_json())
         return response
 

@@ -24,7 +24,7 @@ class PacUserTriStateFilterListRouter():
     @staticmethod
     @router.get("/api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init", response_model=api_init_models.PacUserTriStateFilterListInitReportGetInitModelResponse)
     async def request_get_init(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('PacUserTriStateFilterListRouter.request_get_init start. pacCode:' + pac_code)
+        logging.info('PacUserTriStateFilterListRouter.request_get_init start. pacCode:' + pac_code)
         if PacUserTriStateFilterListRouterConfig.isGetInitAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,7 +40,7 @@ class PacUserTriStateFilterListRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
                 init_request = api_init_models.PacUserTriStateFilterListInitReportGetInitModelRequest()
@@ -63,13 +63,13 @@ class PacUserTriStateFilterListRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('PacUserTriStateFilterListRouter.init get result:' + response.to_json())
+        logging.info('PacUserTriStateFilterListRouter.init get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.get("/api/v1_0/pac-user-tri-state-filter-list/{pac_code}", response_model=api_models.PacUserTriStateFilterListGetModelResponse)
     async def request_get_with_id(pac_code: str, request_model:api_models.PacUserTriStateFilterListGetModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('PacUserTriStateFilterListRouter.request_get_with_id start. pacCode:' + pac_code)
+        logging.info('PacUserTriStateFilterListRouter.request_get_with_id start. pacCode:' + pac_code)
         if PacUserTriStateFilterListRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -87,8 +87,8 @@ class PacUserTriStateFilterListRouter():
             try:
                 session_context = SessionContext(auth_dict)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
-                response.request = request
-                logging.debug("process request...")
+                response.request = request_model
+                logging.info("process request...")
                 await response.process_request(
                     session,
                     session_context,
@@ -104,13 +104,13 @@ class PacUserTriStateFilterListRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('PacUserTriStateFilterListRouter.submit get result:' + response.to_json())
+        logging.info('PacUserTriStateFilterListRouter.submit get result:' + response.to_json())
         return response
 
     @staticmethod
     @router.get("/api/v1_0/pac-user-tri-state-filter-list/{pac_code}/to-csv", response_model=api_models.PacUserTriStateFilterListGetModelResponse)
-    async def request_get_with_id_to_csv(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('PacUserTriStateFilterListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
+    async def request_get_with_id_to_csv(pac_code: str, request_model:api_models.PacUserTriStateFilterListGetModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+        logging.info('PacUserTriStateFilterListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
         if PacUserTriStateFilterListRouterConfig.isGetToCsvAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -129,7 +129,7 @@ class PacUserTriStateFilterListRouter():
                 session_context = SessionContext(auth_dict)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
                 response.request = request_model
-                logging.debug("process request...")
+                logging.info("process request...")
                 await response.process_request(
                     session,
                     session_context,
@@ -145,6 +145,6 @@ class PacUserTriStateFilterListRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('PacUserTriStateFilterListRouter.submit get result:' + response.to_json())
+        logging.info('PacUserTriStateFilterListRouter.submit get result:' + response.to_json())
         return response
 

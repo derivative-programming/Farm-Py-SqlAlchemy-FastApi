@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 from typing import List
 import uuid
 from helpers import TypeConversion
@@ -22,6 +23,13 @@ class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
         self.success = False
         self.message = ""
 
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -29,11 +37,11 @@ class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
                         pac_code:uuid,
                         response:PacUserTriStateFilterListInitReportGetInitModelResponse) -> PacUserTriStateFilterListInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...PacUserTriStateFilterListInitReportGetInitModelRequest")
+            logging.info("loading model...PacUserTriStateFilterListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session=session)
             await pac_bus_obj.load(code=pac_code)
             flow = FlowPacUserTriStateFilterListInitReport(session_context)
-            logging.debug("process request...PacUserTriStateFilterListInitReportGetInitModelRequest")
+            logging.info("process request...PacUserTriStateFilterListInitReportGetInitModelRequest")
             flowResponse = await flow.process(
                 pac_bus_obj
             )
@@ -41,7 +49,7 @@ class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...PacUserTriStateFilterListInitReportGetInitModelRequest")
+            logging.info("error...PacUserTriStateFilterListInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

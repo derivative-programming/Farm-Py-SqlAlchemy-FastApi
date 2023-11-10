@@ -30,6 +30,16 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
         return JSONResponse(
             status_code=501,
             content={"message": "This is not implemented."}
+        ) 
+    if exc.status_code == 403:
+        return JSONResponse(
+            status_code=401,
+            content={"message": "Unauthorized."}
+        )
+    if exc.status_code == 422:
+        return JSONResponse(
+            status_code=400,
+            content={"message": "Bad Request. Schema Failure."}
         )
     # You can add more custom handling for other status codes if needed
     return JSONResponse(

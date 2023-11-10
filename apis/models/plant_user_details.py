@@ -1,3 +1,4 @@
+import json
 from typing import List
 from datetime import date, datetime
 import uuid
@@ -83,11 +84,11 @@ class PlantUserDetailsGetModelResponse(ListModel):
                         plant_code:uuid,
                         request:PlantUserDetailsGetModelRequest):
         try:
-            logging.debug("loading model...PlantUserDetailsGetModelResponse")
+            logging.info("loading model...PlantUserDetailsGetModelResponse")
             # plant_bus_obj = PlantBusObj(session=session)
             # await plant_bus_obj.load(code=plant_code)
             generator = ReportManagerPlantUserDetails(session_context)
-            logging.debug("processing...PlantUserDetailsGetModelResponse")
+            logging.info("processing...PlantUserDetailsGetModelResponse")
             items = await generator.generate(
                     plant_code,
 
@@ -109,3 +110,10 @@ class PlantUserDetailsGetModelResponse(ListModel):
             for key in ve.error_dict:
                 self.message = self.message + ve.error_dict[key] + ','
                 # self.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)

@@ -25,7 +25,7 @@ class ReportManagerPacUserFlavorList():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemPacUserFlavorList]:
-        logging.debug('ReportManagerPacUserFlavorList.generate Start')
+        logging.info('ReportManagerPacUserFlavorList.generate Start')
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerPacUserFlavorList():
             reportItem:ReportItemPacUserFlavorList = ReportItemPacUserFlavorList()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerPacUserFlavorList.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerPacUserFlavorList.generate End')
+        logging.info("ReportManagerPacUserFlavorList.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerPacUserFlavorList.generate End')
         return result
 

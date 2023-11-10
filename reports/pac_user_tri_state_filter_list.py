@@ -25,7 +25,7 @@ class ReportManagerPacUserTriStateFilterList():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemPacUserTriStateFilterList]:
-        logging.debug('ReportManagerPacUserTriStateFilterList.generate Start')
+        logging.info('ReportManagerPacUserTriStateFilterList.generate Start')
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerPacUserTriStateFilterList():
             reportItem:ReportItemPacUserTriStateFilterList = ReportItemPacUserTriStateFilterList()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerPacUserTriStateFilterList.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerPacUserTriStateFilterList.generate End')
+        logging.info("ReportManagerPacUserTriStateFilterList.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerPacUserTriStateFilterList.generate End')
         return result
 

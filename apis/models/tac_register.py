@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 import uuid
 from helpers import TypeConversion
 from .post_reponse import PostResponse
@@ -44,11 +45,11 @@ class TacRegisterPostModelResponse(PostResponse):
                         tac_code:uuid,
                         request:TacRegisterPostModelRequest):
         try:
-            logging.debug("loading model...TacRegisterPostModelResponse")
+            logging.info("loading model...TacRegisterPostModelResponse")
             tac_bus_obj = TacBusObj(session=session)
             await tac_bus_obj.load(code=tac_code)
             flow = FlowTacRegister(session_context)
-            logging.debug("process flow...TacRegisterPostModelResponse")
+            logging.info("process flow...TacRegisterPostModelResponse")
             flowResponse = await flow.process(
                 tac_bus_obj,
                 request.email,
@@ -62,7 +63,7 @@ class TacRegisterPostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...TacRegisterPostModelResponse")
+            logging.info("error...TacRegisterPostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -70,4 +71,11 @@ class TacRegisterPostModelResponse(PostResponse):
                 validation_error.property = key
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 

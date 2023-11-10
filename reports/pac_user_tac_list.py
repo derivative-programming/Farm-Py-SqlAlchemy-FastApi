@@ -25,7 +25,7 @@ class ReportManagerPacUserTacList():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemPacUserTacList]:
-        logging.debug('ReportManagerPacUserTacList.generate Start')
+        logging.info('ReportManagerPacUserTacList.generate Start')
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -48,7 +48,7 @@ class ReportManagerPacUserTacList():
             reportItem:ReportItemPacUserTacList = ReportItemPacUserTacList()
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem)
-        logging.debug("ReportManagerPacUserTacList.generate Results: " + json.dumps(dataList))
-        logging.debug('ReportManagerPacUserTacList.generate End')
+        logging.info("ReportManagerPacUserTacList.generate Results: " + json.dumps(dataList))
+        logging.info('ReportManagerPacUserTacList.generate End')
         return result
 

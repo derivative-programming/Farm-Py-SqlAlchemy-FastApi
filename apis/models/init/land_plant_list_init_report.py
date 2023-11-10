@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 from typing import List
 import uuid
 from helpers import TypeConversion
@@ -57,6 +58,13 @@ class LandPlantListInitReportGetInitModelResponse(CamelModel):
         self.land_code = data.land_code
         self.tac_code = data.tac_code
         self.land_name = data.land_name
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class LandPlantListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -64,11 +72,14 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
                         land_code:uuid,
                         response:LandPlantListInitReportGetInitModelResponse) -> LandPlantListInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...LandPlantListInitReportGetInitModelRequest")
+            logging.info("loading model...LandPlantListInitReportGetInitModelRequest")
             land_bus_obj = LandBusObj(session=session)
             await land_bus_obj.load(code=land_code)
+            if(land_bus_obj.get_land_obj() is None):
+                logging.info("Invalid land_code")
+                raise ValueError("Invalid land_code")
             flow = FlowLandPlantListInitReport(session_context)
-            logging.debug("process request...LandPlantListInitReportGetInitModelRequest")
+            logging.info("process request...LandPlantListInitReportGetInitModelRequest")
             flowResponse = await flow.process(
                 land_bus_obj
             )
@@ -76,7 +87,7 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...LandPlantListInitReportGetInitModelRequest")
+            logging.info("error...LandPlantListInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

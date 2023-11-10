@@ -44,7 +44,7 @@ class ReportManagerLandPlantList():
                 order_by_column_name:str ="",
                 order_by_descending:bool = False,
                 ) -> List[ReportItemLandPlantList]:
-        logging.debug('ReportManagerLandPlantList.generate Start')
+        logging.info('ReportManagerLandPlantList.generate Start')
 
         role_required = "User"
 
@@ -94,9 +94,9 @@ class ReportManagerLandPlantList():
             reportItem.load_data_provider_dict(dataItem)
             result.append(reportItem) 
             
-        logging.debug("ReportManagerLandPlantList.generate Results: " + json.dumps(dataList))
+        logging.info("ReportManagerLandPlantList.generate Results: " + json.dumps(dataList))
 
-        logging.debug('ReportManagerLandPlantList.generate End')
+        logging.info('ReportManagerLandPlantList.generate End')
         return result
      
 

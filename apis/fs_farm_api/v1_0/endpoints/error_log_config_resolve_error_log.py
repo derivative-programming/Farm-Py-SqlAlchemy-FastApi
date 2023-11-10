@@ -24,7 +24,7 @@ class ErrorLogConfigResolveErrorLogRouter():
     @staticmethod
     @router.post("/api/v1_0/error-log-config-resolve-error-log/{error_log_code}", response_model=api_models.ErrorLogConfigResolveErrorLogPostModelResponse)
     async def request_post_with_id(error_log_code: str, request_model:api_models.ErrorLogConfigResolveErrorLogPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
-        logging.debug('ErrorLogConfigResolveErrorLogRouter.request_post_with_id start. errorLogCode:' + error_log_code)
+        logging.info('ErrorLogConfigResolveErrorLogRouter.request_post_with_id start. errorLogCode:' + error_log_code)
         if ErrorLogConfigResolveErrorLogRouterConfig.isPostWithIdAvailable == False:
             raise HTTPException(
                 status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -40,14 +40,14 @@ class ErrorLogConfigResolveErrorLogRouter():
         # Start a transaction
         async with session:
             try:
-                logging.debug("Start session...")
+                logging.info("Start session...")
                 session_context = SessionContext(auth_dict)
                 error_log_code = session_context.check_context_code("ErrorLogCode", error_log_code)
-                flowResponse = await request_model.process_request(
+                await response.process_request(
                     session,
                     session_context,
                     error_log_code,
-                    response
+                    request_model
                 )
             except TypeError as te:
                 response.success = False
@@ -62,6 +62,6 @@ class ErrorLogConfigResolveErrorLogRouter():
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.debug('ErrorLogConfigResolveErrorLogRouter.submit get result:' + response.to_json())
+        logging.info('ErrorLogConfigResolveErrorLogRouter.submit get result:' + response.to_json())
         return response
 

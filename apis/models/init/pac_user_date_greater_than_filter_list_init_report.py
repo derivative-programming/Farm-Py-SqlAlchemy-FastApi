@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+import json
 from typing import List
 import uuid
 from helpers import TypeConversion
@@ -22,6 +23,13 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel)
         self.success = False
         self.message = ""
 
+    def to_json(self):
+        # Create a dictionary representation of the instance
+        data = {
+            #TODO finish to_json
+        }
+        # Serialize the dictionary to JSON
+        return json.dumps(data)
 class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
                         session:AsyncSession,
@@ -29,11 +37,11 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
                         pac_code:uuid,
                         response:PacUserDateGreaterThanFilterListInitReportGetInitModelResponse) -> PacUserDateGreaterThanFilterListInitReportGetInitModelResponse:
         try:
-            logging.debug("loading model...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
+            logging.info("loading model...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session=session)
             await pac_bus_obj.load(code=pac_code)
             flow = FlowPacUserDateGreaterThanFilterListInitReport(session_context)
-            logging.debug("process request...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
+            logging.info("process request...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
             flowResponse = await flow.process(
                 pac_bus_obj
             )
@@ -41,7 +49,7 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.debug("error...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
+            logging.info("error...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
