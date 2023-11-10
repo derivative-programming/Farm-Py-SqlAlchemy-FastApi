@@ -146,7 +146,7 @@ async def test_get_success(overridden_get_db: AsyncSession):
     logging.info(request.model_dump_json()) 
     logging.info("Test Request json dict...")
     logging.info(json.loads(request.model_dump_json())) 
-    request_dict = request.to_dict_snake_serialized()
+    request_dict = request.to_dict_camel_serialized()
     logging.info("Test Request...")
     logging.info(request_dict) 
     async with AsyncClient(app=app, base_url="http://test") as ac:

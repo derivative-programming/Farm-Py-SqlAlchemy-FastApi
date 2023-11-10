@@ -11,11 +11,11 @@ from database import get_db
 class LandPlantListRouterConfig():
     #constants
     isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = False
+    isGetWithIdAvailable:bool = True
     isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = False
+    isGetToCsvAvailable:bool = True
     isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = True
+    isPostWithIdAvailable:bool = False
     isPutAvailable:bool = False 
     isDeleteAvailable:bool = False  
     isPublic: bool = False 
@@ -27,7 +27,7 @@ class LandPlantListRouter():
 ##GENLearn[isGetInitAvailable=true]Start
     @staticmethod
     @router.get("/api/v1_0/land-plant-list/{land_code}/init", response_model=api_init_models.LandPlantListInitReportGetInitModelResponse)  
-    async def request_get_init(land_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    async def request_get_init(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandPlantListRouter.request_get_init start. landCode:' + land_code)
         if LandPlantListRouterConfig.isGetInitAvailable == False:
             raise HTTPException(
@@ -84,7 +84,7 @@ class LandPlantListRouter():
 ##GENLearn[isGetWithIdAvailable=true]Start
     @staticmethod
     @router.get("/api/v1_0/land-plant-list/{land_code}", response_model=api_models.LandPlantListGetModelResponse)
-    async def request_get_with_id(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
+    async def request_get_with_id(land_code: str,  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
         logging.info('LandPlantListRouter.request_get_with_id start. landCode:' + land_code)
         if LandPlantListRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(

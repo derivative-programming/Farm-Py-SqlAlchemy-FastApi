@@ -21,7 +21,7 @@ from typing import Optional
 ### request. expect camel case. use marshmallow to validate.
 
 
-class LandPlantListGetModelRequest(BaseModel):
+class LandPlantListGetModelRequest(SnakeModel):
     page_number:int = 0
     item_count_per_page:int = 0
     order_by_column_name:str = ""
