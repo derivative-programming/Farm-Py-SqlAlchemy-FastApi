@@ -11,7 +11,6 @@ from sqlalchemy.orm import sessionmaker
 from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
-DATABASE_URL = "sqlite:///:memory:"
 class TestOrgCustomerSchema:
     # Sample data for a OrgCustomer instance
     sample_data = {
@@ -31,25 +30,6 @@ class TestOrgCustomerSchema:
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    @pytest.fixture(scope="module")
-    def engine(self):
-        engine = create_engine(DATABASE_URL, echo=False)
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
-        yield engine
-        engine.dispose()
-    @pytest.fixture(scope="function")
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture(scope="function")
-    def org_customer(self, session):
-        # Use the OrgCustomerFactory to create and return a org_customer instance
-        return OrgCustomerFactory.create(session=session)
-    # Tests
     def test_org_customer_serialization(self, org_customer:OrgCustomer, session):
         schema = OrgCustomerSchema()
         result = schema.dump(org_customer)

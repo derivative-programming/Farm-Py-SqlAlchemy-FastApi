@@ -10,15 +10,15 @@ from  .base_router import BaseRouter
 from database import get_db
 class ErrorLogConfigResolveErrorLogRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = False
-    isGetInitAvailable:bool = False
-    isGetToCsvAvailable:bool = False
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = True
-    isPutAvailable:bool = False
-    isDeleteAvailable:bool = False
-    isPublic: bool = False
+    is_get_available:bool = False
+    is_get_with_id_available:bool = False
+    is_get_init_available:bool = False
+    is_get_to_csv_available:bool = False
+    is_post_available:bool = False
+    is_post_with_id_available:bool = True
+    is_put_available:bool = False
+    is_delete_available:bool = False
+    is_public: bool = False
 class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
     router = APIRouter()
 
@@ -26,13 +26,13 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
     @router.post("/api/v1_0/error-log-config-resolve-error-log/{error_log_code}", response_model=api_models.ErrorLogConfigResolveErrorLogPostModelResponse)
     async def request_post_with_id(error_log_code: str, request_model:api_models.ErrorLogConfigResolveErrorLogPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('ErrorLogConfigResolveErrorLogRouter.request_post_with_id start. errorLogCode:' + error_log_code)
-        auth_dict = BaseRouter.implementation_check(ErrorLogConfigResolveErrorLogRouterConfig.isPostWithIdAvailable)
+        auth_dict = BaseRouter.implementation_check(ErrorLogConfigResolveErrorLogRouterConfig.is_post_with_id_available)
         # if ErrorLogConfigResolveErrorLogRouterConfig.isPostWithIdAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.ErrorLogConfigResolveErrorLogPostModelResponse()
-        auth_dict = BaseRouter.authorization_check(ErrorLogConfigResolveErrorLogRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(ErrorLogConfigResolveErrorLogRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if ErrorLogConfigResolveErrorLogRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")

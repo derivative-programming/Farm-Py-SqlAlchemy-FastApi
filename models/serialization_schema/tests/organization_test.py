@@ -11,7 +11,6 @@ from sqlalchemy.orm import sessionmaker
 from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
-DATABASE_URL = "sqlite:///:memory:"
 class TestOrganizationSchema:
     # Sample data for a Organization instance
     sample_data = {
@@ -29,25 +28,6 @@ class TestOrganizationSchema:
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    @pytest.fixture(scope="module")
-    def engine(self):
-        engine = create_engine(DATABASE_URL, echo=False)
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
-        yield engine
-        engine.dispose()
-    @pytest.fixture(scope="function")
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture(scope="function")
-    def organization(self, session):
-        # Use the OrganizationFactory to create and return a organization instance
-        return OrganizationFactory.create(session=session)
-    # Tests
     def test_organization_serialization(self, organization:Organization, session):
         schema = OrganizationSchema()
         result = schema.dump(organization)

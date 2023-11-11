@@ -10,15 +10,15 @@ from  .base_router import BaseRouter
 from database import get_db
 class PacUserTacListRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = True
-    isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = True
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = False
-    isPutAvailable:bool = False
-    isDeleteAvailable:bool = False
-    isPublic: bool = False
+    is_get_available:bool = False
+    is_get_with_id_available:bool = True
+    is_get_init_available:bool = True
+    is_get_to_csv_available:bool = True
+    is_post_available:bool = False
+    is_post_with_id_available:bool = False
+    is_put_available:bool = False
+    is_delete_available:bool = False
+    is_public: bool = False
 class PacUserTacListRouter(BaseRouter):
     router = APIRouter()
 
@@ -26,13 +26,13 @@ class PacUserTacListRouter(BaseRouter):
     @router.get("/api/v1_0/pac-user-tac-list/{pac_code}/init", response_model=api_init_models.PacUserTacListInitReportGetInitModelResponse)
     async def request_get_init(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_init start. pacCode:' + pac_code)
-        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.isGetInitAvailable)
+        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.is_get_init_available)
         # if PacUserTacListRouterConfig.isGetInitAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_init_models.PacUserTacListInitReportGetInitModelResponse()
-        auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PacUserTacListRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")
@@ -75,13 +75,13 @@ class PacUserTacListRouter(BaseRouter):
     @router.get("/api/v1_0/pac-user-tac-list/{pac_code}", response_model=api_models.PacUserTacListGetModelResponse)
     async def request_get_with_id(pac_code: str, request_model:api_models.PacUserTacListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_with_id start. pacCode:' + pac_code)
-        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.isGetWithIdAvailable)
+        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.is_get_with_id_available)
         # if PacUserTacListRouterConfig.isGetWithIdAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.PacUserTacListGetModelResponse()
-        auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PacUserTacListRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")
@@ -123,13 +123,13 @@ class PacUserTacListRouter(BaseRouter):
     @router.get("/api/v1_0/pac-user-tac-list/{pac_code}/to-csv", response_model=api_models.PacUserTacListGetModelResponse)
     async def request_get_with_id_to_csv(pac_code: str, request_model:api_models.PacUserTacListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
-        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.isGetToCsvAvailable)
+        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.is_get_to_csv_available)
         # if PacUserTacListRouterConfig.isGetToCsvAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.PacUserTacListGetModelResponse()
-        auth_dict = super().authorization_check(PacUserTacListRouterConfig.isPublic, api_key)
+        auth_dict = super().authorization_check(PacUserTacListRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PacUserTacListRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")

@@ -1,10 +1,9 @@
 from decimal import Decimal
-import pytest
-import uuid
+import pytest 
 import time
 from decimal import Decimal
 from datetime import datetime, date
-from sqlalchemy import Numeric, create_engine
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Plant
 from models.factory import PlantFactory

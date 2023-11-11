@@ -1,10 +1,8 @@
-import json
 import uuid
 import pytest
 from httpx import AsyncClient 
 from sqlalchemy.ext.asyncio import AsyncSession 
-from unittest.mock import patch, AsyncMock
-import flows 
+from unittest.mock import patch, AsyncMock 
 from  .....models import factory as request_factory
 from apis import models as apis_models
 from database import get_db
@@ -50,7 +48,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
             headers={'API_KEY': 'xxx'}
             
         )
-        if LandPlantListRouterConfig.isPublic == True:  
+        if LandPlantListRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -69,7 +67,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
             headers={'API_KEY': ''}
             
         )
-        if LandPlantListRouterConfig.isPublic == True:  
+        if LandPlantListRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -87,7 +85,7 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
             f'/api/v1_0/land-plant-list/{land_code}/init' 
             
         )
-        if LandPlantListRouterConfig.isPublic == True:  
+        if LandPlantListRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -191,7 +189,7 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
             
         )
         
-        if LandPlantListRouterConfig.isPublic == True:  
+        if LandPlantListRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -212,7 +210,7 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
             
         )
         
-        if LandPlantListRouterConfig.isPublic == True:  
+        if LandPlantListRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -231,7 +229,7 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
             
         )
         
-        if LandPlantListRouterConfig.isPublic == True:  
+        if LandPlantListRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 

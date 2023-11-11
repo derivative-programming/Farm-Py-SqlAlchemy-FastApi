@@ -10,15 +10,15 @@ from  .base_router import BaseRouter
 from database import get_db
 class TacLoginRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = False
-    isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = False
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = True
-    isPutAvailable:bool = False
-    isDeleteAvailable:bool = False
-    isPublic: bool = True
+    is_get_available:bool = False
+    is_get_with_id_available:bool = False
+    is_get_init_available:bool = True
+    is_get_to_csv_available:bool = False
+    is_post_available:bool = False
+    is_post_with_id_available:bool = True
+    is_put_available:bool = False
+    is_delete_available:bool = False
+    is_public: bool = True
 class TacLoginRouter(BaseRouter):
     router = APIRouter()
 
@@ -26,13 +26,13 @@ class TacLoginRouter(BaseRouter):
     @router.get("/api/v1_0/tac-login/{tac_code}/init", response_model=api_init_models.TacLoginInitObjWFGetInitModelResponse)
     async def request_get_init(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacLoginRouter.request_get_init start. tacCode:' + tac_code)
-        auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.isGetInitAvailable)
+        auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.is_get_init_available)
         # if TacLoginRouterConfig.isGetInitAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_init_models.TacLoginInitObjWFGetInitModelResponse()
-        auth_dict = BaseRouter.authorization_check(TacLoginRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(TacLoginRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if TacLoginRouterConfig.isPublic == True:
         #     logging.info("Authorization Required...")
@@ -75,13 +75,13 @@ class TacLoginRouter(BaseRouter):
     @router.post("/api/v1_0/tac-login/{tac_code}", response_model=api_models.TacLoginPostModelResponse)
     async def request_post_with_id(tac_code: str, request_model:api_models.TacLoginPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacLoginRouter.request_post_with_id start. tacCode:' + tac_code)
-        auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.isPostWithIdAvailable)
+        auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.is_post_with_id_available)
         # if TacLoginRouterConfig.isPostWithIdAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.TacLoginPostModelResponse()
-        auth_dict = BaseRouter.authorization_check(TacLoginRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(TacLoginRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if TacLoginRouterConfig.isPublic == True:
         #     logging.info("Authorization Required...")

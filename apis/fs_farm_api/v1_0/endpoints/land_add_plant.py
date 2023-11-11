@@ -12,15 +12,15 @@ from  .base_router import BaseRouter
 
 class LandAddPlantRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = False
-    isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = False
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = True
-    isPutAvailable:bool = False 
-    isDeleteAvailable:bool = False  
-    isPublic: bool = False 
+    is_get_available:bool = False
+    is_get_with_id_available:bool = False
+    is_get_init_available:bool = True
+    is_get_to_csv_available:bool = False
+    is_post_available:bool = False
+    is_post_with_id_available:bool = True
+    is_put_available:bool = False 
+    is_delete_available:bool = False  
+    is_public: bool = False 
 
 class LandAddPlantRouter(BaseRouter):    
     router = APIRouter() 
@@ -29,22 +29,12 @@ class LandAddPlantRouter(BaseRouter):
     @router.get("/api/v1_0/land-add-plant/{land_code}/init", response_model=api_init_models.LandAddPlantInitObjWFGetInitModelResponse)
     async def request_get_init(land_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandAddPlantRouter.request_get_init start. landCode:' + land_code)
-        auth_dict = BaseRouter.implementation_check(LandAddPlantRouterConfig.isGetInitAvailable)
-        # if LandAddPlantRouterConfig.isGetInitAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        #         detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(LandAddPlantRouterConfig.is_get_init_available)
+        
         response = api_init_models.LandAddPlantInitObjWFGetInitModelResponse()
-        auth_dict = BaseRouter.authorization_check(LandAddPlantRouterConfig.isPublic, api_key)
-        # if LandAddPlantRouterConfig.isPublic == False:
-        #     logging.info("Authorization Required...") 
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED,
-        #             detail="Unauthorized.")
-        #     logging.info("auth_dict:" + str(auth_dict))
-        # Start a transaction
+        
+        auth_dict = BaseRouter.authorization_check(LandAddPlantRouterConfig.is_public, api_key) 
+
         async with session:
             try:
                 logging.info("Start session...")
@@ -83,23 +73,11 @@ class LandAddPlantRouter(BaseRouter):
     @router.post("/api/v1_0/land-add-plant/{land_code}", response_model=api_models.LandAddPlantPostModelResponse) 
     async def request_post_with_id(land_code: str, request_model:api_models.LandAddPlantPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
         logging.info('LandAddPlantRouter.request_post_with_id start. landCode:' + land_code)
-        auth_dict = BaseRouter.implementation_check(LandAddPlantRouterConfig.isPostWithIdAvailable)
-        # if LandAddPlantRouterConfig.isPostWithIdAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED, 
-        #         detail="This method is not implemented.") 
+        auth_dict = BaseRouter.implementation_check(LandAddPlantRouterConfig.is_post_with_id_available)
+        
         response = api_models.LandAddPlantPostModelResponse()
 
-        auth_dict = BaseRouter.authorization_check(LandAddPlantRouterConfig.isPublic, api_key)
-        # auth_dict = dict()
-        # if LandAddPlantRouterConfig.isPublic == False:
-        #     logging.info("Authorization Required...") 
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0: 
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED, 
-        #             detail="Unauthorized.")      
-        #     logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(LandAddPlantRouterConfig.is_public, api_key) 
             
         # Start a transaction
         async with session:

@@ -10,15 +10,15 @@ from  .base_router import BaseRouter
 from database import get_db
 class PacUserFlavorListRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = True
-    isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = True
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = False
-    isPutAvailable:bool = False
-    isDeleteAvailable:bool = False
-    isPublic: bool = False
+    is_get_available:bool = False
+    is_get_with_id_available:bool = True
+    is_get_init_available:bool = True
+    is_get_to_csv_available:bool = True
+    is_post_available:bool = False
+    is_post_with_id_available:bool = False
+    is_put_available:bool = False
+    is_delete_available:bool = False
+    is_public: bool = False
 class PacUserFlavorListRouter(BaseRouter):
     router = APIRouter()
 
@@ -26,13 +26,13 @@ class PacUserFlavorListRouter(BaseRouter):
     @router.get("/api/v1_0/pac-user-flavor-list/{pac_code}/init", response_model=api_init_models.PacUserFlavorListInitReportGetInitModelResponse)
     async def request_get_init(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserFlavorListRouter.request_get_init start. pacCode:' + pac_code)
-        auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.isGetInitAvailable)
+        auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.is_get_init_available)
         # if PacUserFlavorListRouterConfig.isGetInitAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_init_models.PacUserFlavorListInitReportGetInitModelResponse()
-        auth_dict = BaseRouter.authorization_check(PacUserFlavorListRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(PacUserFlavorListRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PacUserFlavorListRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")
@@ -75,13 +75,13 @@ class PacUserFlavorListRouter(BaseRouter):
     @router.get("/api/v1_0/pac-user-flavor-list/{pac_code}", response_model=api_models.PacUserFlavorListGetModelResponse)
     async def request_get_with_id(pac_code: str, request_model:api_models.PacUserFlavorListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserFlavorListRouter.request_get_with_id start. pacCode:' + pac_code)
-        auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.isGetWithIdAvailable)
+        auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.is_get_with_id_available)
         # if PacUserFlavorListRouterConfig.isGetWithIdAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.PacUserFlavorListGetModelResponse()
-        auth_dict = BaseRouter.authorization_check(PacUserFlavorListRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(PacUserFlavorListRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PacUserFlavorListRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")
@@ -123,13 +123,13 @@ class PacUserFlavorListRouter(BaseRouter):
     @router.get("/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv", response_model=api_models.PacUserFlavorListGetModelResponse)
     async def request_get_with_id_to_csv(pac_code: str, request_model:api_models.PacUserFlavorListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserFlavorListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
-        auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.isGetToCsvAvailable)
+        auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.is_get_to_csv_available)
         # if PacUserFlavorListRouterConfig.isGetToCsvAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.PacUserFlavorListGetModelResponse()
-        auth_dict = super().authorization_check(PacUserFlavorListRouterConfig.isPublic, api_key)
+        auth_dict = super().authorization_check(PacUserFlavorListRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PacUserFlavorListRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")

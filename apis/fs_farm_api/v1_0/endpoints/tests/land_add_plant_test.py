@@ -8,8 +8,7 @@ from helpers.api_token import ApiToken
 import models.factory as model_factorys
 from apis import models as apis_models
 from unittest.mock import patch, AsyncMock
-from ..land_add_plant import LandAddPlantRouterConfig
-from .....models.factory.land_add_plant  import LandAddPlantPostModelRequestFactory 
+from ..land_add_plant import LandAddPlantRouterConfig 
 from main import app
 import logging
 # from main import app
@@ -74,7 +73,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             
         )
         
-        if LandAddPlantRouterConfig.isPublic == True:  
+        if LandAddPlantRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -96,7 +95,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             
         )
         
-        if LandAddPlantRouterConfig.isPublic == True:  
+        if LandAddPlantRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -116,7 +115,7 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             
         )
         
-        if LandAddPlantRouterConfig.isPublic == True:  
+        if LandAddPlantRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -207,7 +206,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
             
         )
         
-        if LandAddPlantRouterConfig.isPublic == True:  
+        if LandAddPlantRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -228,7 +227,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
             
         )
         
-        if LandAddPlantRouterConfig.isPublic == True:  
+        if LandAddPlantRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 
@@ -247,7 +246,7 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
             
         )
         
-        if LandAddPlantRouterConfig.isPublic == True:  
+        if LandAddPlantRouterConfig.is_public == True:  
             assert response.status_code == 200 
         else:
             assert response.status_code == 401 

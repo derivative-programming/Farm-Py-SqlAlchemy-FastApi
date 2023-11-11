@@ -11,7 +11,6 @@ from sqlalchemy.orm import sessionmaker
 from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
-DATABASE_URL = "sqlite:///:memory:"
 class TestFlavorSchema:
     # Sample data for a Flavor instance
     sample_data = {
@@ -33,25 +32,6 @@ class TestFlavorSchema:
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    @pytest.fixture(scope="module")
-    def engine(self):
-        engine = create_engine(DATABASE_URL, echo=False)
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
-        yield engine
-        engine.dispose()
-    @pytest.fixture(scope="function")
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
-    @pytest.fixture(scope="function")
-    def flavor(self, session):
-        # Use the FlavorFactory to create and return a flavor instance
-        return FlavorFactory.create(session=session)
-    # Tests
     def test_flavor_serialization(self, flavor:Flavor, session):
         schema = FlavorSchema()
         result = schema.dump(flavor)

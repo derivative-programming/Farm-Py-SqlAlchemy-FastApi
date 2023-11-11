@@ -10,15 +10,15 @@ from  .base_router import BaseRouter
 from database import get_db
 class CustomerUserLogOutRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = False
-    isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = False
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = True
-    isPutAvailable:bool = False
-    isDeleteAvailable:bool = False
-    isPublic: bool = False
+    is_get_available:bool = False
+    is_get_with_id_available:bool = False
+    is_get_init_available:bool = True
+    is_get_to_csv_available:bool = False
+    is_post_available:bool = False
+    is_post_with_id_available:bool = True
+    is_put_available:bool = False
+    is_delete_available:bool = False
+    is_public: bool = False
 class CustomerUserLogOutRouter(BaseRouter):
     router = APIRouter()
 
@@ -26,13 +26,13 @@ class CustomerUserLogOutRouter(BaseRouter):
     @router.get("/api/v1_0/customer-user-log-out/{customer_code}/init", response_model=api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse)
     async def request_get_init(customer_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('CustomerUserLogOutRouter.request_get_init start. customerCode:' + customer_code)
-        auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.isGetInitAvailable)
+        auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.is_get_init_available)
         # if CustomerUserLogOutRouterConfig.isGetInitAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse()
-        auth_dict = BaseRouter.authorization_check(CustomerUserLogOutRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(CustomerUserLogOutRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if CustomerUserLogOutRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")
@@ -75,13 +75,13 @@ class CustomerUserLogOutRouter(BaseRouter):
     @router.post("/api/v1_0/customer-user-log-out/{customer_code}", response_model=api_models.CustomerUserLogOutPostModelResponse)
     async def request_post_with_id(customer_code: str, request_model:api_models.CustomerUserLogOutPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('CustomerUserLogOutRouter.request_post_with_id start. customerCode:' + customer_code)
-        auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.isPostWithIdAvailable)
+        auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.is_post_with_id_available)
         # if CustomerUserLogOutRouterConfig.isPostWithIdAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.CustomerUserLogOutPostModelResponse()
-        auth_dict = BaseRouter.authorization_check(CustomerUserLogOutRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(CustomerUserLogOutRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if CustomerUserLogOutRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")

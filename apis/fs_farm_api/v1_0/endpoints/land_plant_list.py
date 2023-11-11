@@ -11,15 +11,15 @@ from database import get_db
   
 class LandPlantListRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = True
-    isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = True
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = False
-    isPutAvailable:bool = False 
-    isDeleteAvailable:bool = False  
-    isPublic: bool = False 
+    is_get_available:bool = False
+    is_get_with_id_available:bool = True
+    is_get_init_available:bool = True
+    is_get_to_csv_available:bool = True
+    is_post_available:bool = False
+    is_post_with_id_available:bool = False
+    is_put_available:bool = False 
+    is_delete_available:bool = False  
+    is_public: bool = False 
 
 class LandPlantListRouter(BaseRouter):   
     router = APIRouter()
@@ -30,24 +30,11 @@ class LandPlantListRouter(BaseRouter):
     @router.get("/api/v1_0/land-plant-list/{land_code}/init", response_model=api_init_models.LandPlantListInitReportGetInitModelResponse)  
     async def request_get_init(land_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandPlantListRouter.request_get_init start. landCode:' + land_code)
-        auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.isGetInitAvailable)
-        # if LandPlantListRouterConfig.isGetInitAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED, 
-        #         detail="This method is not implemented.") 
+        auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.is_get_init_available)
         
         response = api_init_models.LandPlantListInitReportGetInitModelResponse() 
 
-        auth_dict = BaseRouter.authorization_check(LandPlantListRouterConfig.isPublic, api_key)
-        # auth_dict = dict()
-        # if LandPlantListRouterConfig.isPublic == False: 
-        #     logging.info("Authorization Required...") 
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED, 
-        #             detail="Unauthorized.")    
-        #     logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(LandPlantListRouterConfig.is_public, api_key) 
             
         # Start a transaction
         async with session:
@@ -89,23 +76,11 @@ class LandPlantListRouter(BaseRouter):
     @router.get("/api/v1_0/land-plant-list/{land_code}", response_model=api_models.LandPlantListGetModelResponse)
     async def request_get_with_id(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
         logging.info('LandPlantListRouter.request_get_with_id start. landCode:' + land_code)
-        auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.isGetWithIdAvailable)
-        # if LandPlantListRouterConfig.isGetWithIdAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED, 
-        #         detail="This method is not implemented.") 
+        auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.is_get_with_id_available)
+        
         response = api_models.LandPlantListGetModelResponse()
  
-        auth_dict = BaseRouter.authorization_check(LandPlantListRouterConfig.isPublic, api_key)
-        # auth_dict = dict()
-        # if LandPlantListRouterConfig.isPublic == False: 
-        #     logging.info("Authorization Required...") 
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED, 
-        #             detail="Unauthorized.")    
-        #     logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(LandPlantListRouterConfig.is_public, api_key) 
             
         # Start a transaction
         async with session:
@@ -142,23 +117,11 @@ class LandPlantListRouter(BaseRouter):
     @router.get("/api/v1_0/land-plant-list/{land_code}/to-csv", response_model=api_models.LandPlantListGetModelResponse) 
     async def request_get_with_id_to_csv(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandPlantListRouter.request_get_with_id_to_csv start. landCode:' + land_code)
-        auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.isGetToCsvAvailable)
-        # if LandPlantListRouterConfig.isGetToCsvAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED, 
-        #         detail="This method is not implemented.") 
+        auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.is_get_to_csv_available)
+        
         response = api_models.LandPlantListGetModelResponse()
 
-        auth_dict = super().authorization_check(LandPlantListRouterConfig.isPublic, api_key)
-        # auth_dict = dict()
-        # if LandPlantListRouterConfig.isPublic == False: 
-        #     logging.info("Authorization Required...") 
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED, 
-        #             detail="Unauthorized.")    
-        #     logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = super().authorization_check(LandPlantListRouterConfig.is_public, api_key) 
             
         # Start a transaction
         async with session:

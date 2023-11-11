@@ -10,15 +10,15 @@ from  .base_router import BaseRouter
 from database import get_db
 class PlantUserDetailsRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = True
-    isGetInitAvailable:bool = True
-    isGetToCsvAvailable:bool = True
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = False
-    isPutAvailable:bool = False
-    isDeleteAvailable:bool = False
-    isPublic: bool = False
+    is_get_available:bool = False
+    is_get_with_id_available:bool = True
+    is_get_init_available:bool = True
+    is_get_to_csv_available:bool = True
+    is_post_available:bool = False
+    is_post_with_id_available:bool = False
+    is_put_available:bool = False
+    is_delete_available:bool = False
+    is_public: bool = False
 class PlantUserDetailsRouter(BaseRouter):
     router = APIRouter()
 
@@ -26,13 +26,13 @@ class PlantUserDetailsRouter(BaseRouter):
     @router.get("/api/v1_0/plant-user-details/{plant_code}/init", response_model=api_init_models.PlantUserDetailsInitReportGetInitModelResponse)
     async def request_get_init(plant_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDetailsRouter.request_get_init start. plantCode:' + plant_code)
-        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.isGetInitAvailable)
+        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.is_get_init_available)
         # if PlantUserDetailsRouterConfig.isGetInitAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_init_models.PlantUserDetailsInitReportGetInitModelResponse()
-        auth_dict = BaseRouter.authorization_check(PlantUserDetailsRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(PlantUserDetailsRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PlantUserDetailsRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")
@@ -75,13 +75,13 @@ class PlantUserDetailsRouter(BaseRouter):
     @router.get("/api/v1_0/plant-user-details/{plant_code}", response_model=api_models.PlantUserDetailsGetModelResponse)
     async def request_get_with_id(plant_code: str, request_model:api_models.PlantUserDetailsGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDetailsRouter.request_get_with_id start. plantCode:' + plant_code)
-        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.isGetWithIdAvailable)
+        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.is_get_with_id_available)
         # if PlantUserDetailsRouterConfig.isGetWithIdAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.PlantUserDetailsGetModelResponse()
-        auth_dict = BaseRouter.authorization_check(PlantUserDetailsRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(PlantUserDetailsRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PlantUserDetailsRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")
@@ -123,13 +123,13 @@ class PlantUserDetailsRouter(BaseRouter):
     @router.get("/api/v1_0/plant-user-details/{plant_code}/to-csv", response_model=api_models.PlantUserDetailsGetModelResponse)
     async def request_get_with_id_to_csv(plant_code: str, request_model:api_models.PlantUserDetailsGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDetailsRouter.request_get_with_id_to_csv start. plantCode:' + plant_code)
-        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.isGetToCsvAvailable)
+        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.is_get_to_csv_available)
         # if PlantUserDetailsRouterConfig.isGetToCsvAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.PlantUserDetailsGetModelResponse()
-        auth_dict = super().authorization_check(PlantUserDetailsRouterConfig.isPublic, api_key)
+        auth_dict = super().authorization_check(PlantUserDetailsRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if PlantUserDetailsRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")

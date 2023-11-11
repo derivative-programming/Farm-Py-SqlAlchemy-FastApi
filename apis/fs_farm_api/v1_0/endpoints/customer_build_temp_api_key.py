@@ -10,15 +10,15 @@ from  .base_router import BaseRouter
 from database import get_db
 class CustomerBuildTempApiKeyRouterConfig():
     #constants
-    isGetAvailable:bool = False
-    isGetWithIdAvailable:bool = False
-    isGetInitAvailable:bool = False
-    isGetToCsvAvailable:bool = False
-    isPostAvailable:bool = False
-    isPostWithIdAvailable:bool = True
-    isPutAvailable:bool = False
-    isDeleteAvailable:bool = False
-    isPublic: bool = False
+    is_get_available:bool = False
+    is_get_with_id_available:bool = False
+    is_get_init_available:bool = False
+    is_get_to_csv_available:bool = False
+    is_post_available:bool = False
+    is_post_with_id_available:bool = True
+    is_put_available:bool = False
+    is_delete_available:bool = False
+    is_public: bool = False
 class CustomerBuildTempApiKeyRouter(BaseRouter):
     router = APIRouter()
 
@@ -26,13 +26,13 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
     @router.post("/api/v1_0/customer-build-temp-api-key/{customer_code}", response_model=api_models.CustomerBuildTempApiKeyPostModelResponse)
     async def request_post_with_id(customer_code: str, request_model:api_models.CustomerBuildTempApiKeyPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('CustomerBuildTempApiKeyRouter.request_post_with_id start. customerCode:' + customer_code)
-        auth_dict = BaseRouter.implementation_check(CustomerBuildTempApiKeyRouterConfig.isPostWithIdAvailable)
+        auth_dict = BaseRouter.implementation_check(CustomerBuildTempApiKeyRouterConfig.is_post_with_id_available)
         # if CustomerBuildTempApiKeyRouterConfig.isPostWithIdAvailable == False:
         #     raise HTTPException(
         #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         #         detail="This method is not implemented.")
         response = api_models.CustomerBuildTempApiKeyPostModelResponse()
-        auth_dict = BaseRouter.authorization_check(CustomerBuildTempApiKeyRouterConfig.isPublic, api_key)
+        auth_dict = BaseRouter.authorization_check(CustomerBuildTempApiKeyRouterConfig.is_public, api_key)
         # auth_dict = dict()
         # if CustomerBuildTempApiKeyRouterConfig.isPublic == False:
         #     logging.info("Authorization Required...")

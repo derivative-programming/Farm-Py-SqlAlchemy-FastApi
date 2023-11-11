@@ -1,8 +1,7 @@
 import json
 from datetime import date, datetime
 import uuid
-from decimal import Decimal 
-from reports.row_models.land_plant_list import ReportItemLandPlantList
+from decimal import Decimal  
 import logging
 from helpers import SessionContext
 from sqlalchemy.ext.asyncio import AsyncSession

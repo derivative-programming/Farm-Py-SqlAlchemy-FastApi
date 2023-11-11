@@ -11,9 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
-
-DATABASE_URL = "sqlite:///:memory:"
-
+  
 class TestPlantSchema:
 
         
@@ -51,28 +49,7 @@ class TestPlantSchema:
 #endset
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-
-    @pytest.fixture(scope="module")
-    def engine(self):
-        engine = create_engine(DATABASE_URL, echo=False)
-        with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
-        yield engine
-        engine.dispose()
-
-    @pytest.fixture(scope="function")
-    def session(self, engine):
-        Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
-        yield session_instance
-        session_instance.close()
  
-    @pytest.fixture(scope="function")
-    def plant(self, session):
-        # Use the PlantFactory to create and return a plant instance
-        return PlantFactory.create(session=session)
-    # Tests
 
     def test_plant_serialization(self, plant:Plant, session):
         schema = PlantSchema()
