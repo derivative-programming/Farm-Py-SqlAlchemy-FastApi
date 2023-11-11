@@ -1,25 +1,16 @@
-import asyncio
-from decimal import Decimal
 import pytest
 import pytest_asyncio
-import time
-from decimal import Decimal
 from datetime import datetime, date
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from models import Base, DateGreaterThanFilter
+from sqlalchemy.ext.asyncio import AsyncSession
+from models import DateGreaterThanFilter
 from models.factory import DateGreaterThanFilterFactory
 from managers.date_greater_than_filter import DateGreaterThanFilterManager
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
-from models.serialization_schema.date_greater_than_filter import DateGreaterThanFilterSchema
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 db_dialect = "sqlite"

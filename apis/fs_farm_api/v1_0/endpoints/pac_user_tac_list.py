@@ -27,21 +27,8 @@ class PacUserTacListRouter(BaseRouter):
     async def request_get_init(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_init start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.is_get_init_available)
-        # if PacUserTacListRouterConfig.isGetInitAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        #         detail="This method is not implemented.")
         response = api_init_models.PacUserTacListInitReportGetInitModelResponse()
         auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.is_public, api_key)
-        # auth_dict = dict()
-        # if PacUserTacListRouterConfig.isPublic == False:
-        #     logging.info("Authorization Required...")
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED,
-        #             detail="Unauthorized.")
-        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -76,21 +63,8 @@ class PacUserTacListRouter(BaseRouter):
     async def request_get_with_id(pac_code: str, request_model:api_models.PacUserTacListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_with_id start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.is_get_with_id_available)
-        # if PacUserTacListRouterConfig.isGetWithIdAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        #         detail="This method is not implemented.")
         response = api_models.PacUserTacListGetModelResponse()
         auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.is_public, api_key)
-        # auth_dict = dict()
-        # if PacUserTacListRouterConfig.isPublic == False:
-        #     logging.info("Authorization Required...")
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED,
-        #             detail="Unauthorized.")
-        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -124,21 +98,8 @@ class PacUserTacListRouter(BaseRouter):
     async def request_get_with_id_to_csv(pac_code: str, request_model:api_models.PacUserTacListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.is_get_to_csv_available)
-        # if PacUserTacListRouterConfig.isGetToCsvAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        #         detail="This method is not implemented.")
         response = api_models.PacUserTacListGetModelResponse()
         auth_dict = super().authorization_check(PacUserTacListRouterConfig.is_public, api_key)
-        # auth_dict = dict()
-        # if PacUserTacListRouterConfig.isPublic == False:
-        #     logging.info("Authorization Required...")
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED,
-        #             detail="Unauthorized.")
-        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:

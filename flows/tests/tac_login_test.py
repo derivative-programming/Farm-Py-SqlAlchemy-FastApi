@@ -53,10 +53,6 @@ class TestTacLoginPostModelResponse:
                     email,
                     password,
                 )
-            # assert isinstance(flow_result,FlowTacLoginResult)
-            # assert response_instance.success == False
-            # assert len(response_instance.validation_errors) == 1
-            # assert response_instance.validation_errors[0].message == "Unautorized access. " + role_required + " role not found."
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
         if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed == True:
@@ -72,14 +68,12 @@ class TestTacLoginPostModelResponse:
                     email,
                     password,
                 )
-                # assert response_instance.success == False
-                # assert len(response_instance.validation_errors) == 1
-                # assert response_instance.validation_errors[0].message == "Unautorized access.  Invalid ."
         session_context.role_name_csv = role_required
-        # await response_instance.process_request(
+        # result = await response_instance.process_request(
         #     session=session,
         #     session_context=session_context,
         #     tac_code=tac.code,
         #     request=request_instance
         #     )
+        # assert isinstance(result,FlowTacLoginResult)
 

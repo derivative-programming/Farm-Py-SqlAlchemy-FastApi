@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import OrgCustomer
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import OrgCustomerSchema
 from models.factory import OrgCustomerFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def org_customer(session):
+    # Use the OrgCustomerFactory to create and return a org_customer instance
+    return OrgCustomerFactory.create(session=session)
 class TestOrgCustomerSchema:
     # Sample data for a OrgCustomer instance
     sample_data = {

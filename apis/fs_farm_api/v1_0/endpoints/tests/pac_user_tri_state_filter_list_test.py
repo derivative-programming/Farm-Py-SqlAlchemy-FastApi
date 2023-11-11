@@ -1,10 +1,8 @@
-import json
 import uuid
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch, AsyncMock
-import flows
 from  .....models import factory as request_factory
 from apis import models as apis_models
 from database import get_db
@@ -13,6 +11,7 @@ import models.factory as model_factorys
 from ..pac_user_tri_state_filter_list import PacUserTriStateFilterListRouterConfig
 from main import app
 import logging
+import json
 # from main import app
 
 @pytest.mark.asyncio
@@ -41,7 +40,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
             f'/api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init',
             headers={'API_KEY': 'xxx'}
         )
-        if PacUserTriStateFilterListRouterConfig.isPublic == True:
+        if PacUserTriStateFilterListRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -57,7 +56,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
             f'/api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init',
             headers={'API_KEY': ''}
         )
-        if PacUserTriStateFilterListRouterConfig.isPublic == True:
+        if PacUserTriStateFilterListRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -72,7 +71,7 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
         response = await ac.get(
             f'/api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init'
         )
-        if PacUserTriStateFilterListRouterConfig.isPublic == True:
+        if PacUserTriStateFilterListRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -152,7 +151,7 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
             f'/api/v1_0/pac-user-tri-state-filter-list/{pac_code}',
             headers={'API_KEY': 'xxx'}
         )
-        if PacUserTriStateFilterListRouterConfig.isPublic == True:
+        if PacUserTriStateFilterListRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -168,7 +167,7 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
             f'/api/v1_0/pac-user-tri-state-filter-list/{pac_code}',
             headers={'API_KEY': ''}
         )
-        if PacUserTriStateFilterListRouterConfig.isPublic == True:
+        if PacUserTriStateFilterListRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -183,7 +182,7 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
         response = await ac.get(
             f'/api/v1_0/pac-user-tri-state-filter-list/{pac_code}'
         )
-        if PacUserTriStateFilterListRouterConfig.isPublic == True:
+        if PacUserTriStateFilterListRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401

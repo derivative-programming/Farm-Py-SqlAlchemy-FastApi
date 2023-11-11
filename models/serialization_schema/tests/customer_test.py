@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import Customer
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import CustomerSchema
 from models.factory import CustomerFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def customer(session):
+    # Use the CustomerFactory to create and return a customer instance
+    return CustomerFactory.create(session=session)
 class TestCustomerSchema:
     # Sample data for a Customer instance
     sample_data = {

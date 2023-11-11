@@ -31,8 +31,4 @@ def session(engine):
     yield session_instance
     session_instance.close()
 
-
-@pytest.fixture(scope="function")
-def plant(session):
-    # Use the PlantFactory to create and return a plant instance
-    return PlantFactory.create(session=session)
+ 

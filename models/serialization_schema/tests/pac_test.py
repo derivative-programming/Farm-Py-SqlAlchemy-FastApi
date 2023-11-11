@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import Pac
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import PacSchema
 from models.factory import PacFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def pac(session):
+    # Use the PacFactory to create and return a pac instance
+    return PacFactory.create(session=session)
 class TestPacSchema:
     # Sample data for a Pac instance
     sample_data = {

@@ -27,21 +27,8 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
     async def request_post_with_id(land_code: str, request_model:api_models.LandUserPlantMultiSelectToNotEditablePostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandUserPlantMultiSelectToNotEditableRouter.request_post_with_id start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandUserPlantMultiSelectToNotEditableRouterConfig.is_post_with_id_available)
-        # if LandUserPlantMultiSelectToNotEditableRouterConfig.isPostWithIdAvailable == False:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        #         detail="This method is not implemented.")
         response = api_models.LandUserPlantMultiSelectToNotEditablePostModelResponse()
         auth_dict = BaseRouter.authorization_check(LandUserPlantMultiSelectToNotEditableRouterConfig.is_public, api_key)
-        # auth_dict = dict()
-        # if LandUserPlantMultiSelectToNotEditableRouterConfig.isPublic == False:
-        #     logging.info("Authorization Required...")
-        #     auth_dict = ApiToken.validate_token(api_key)
-        #     if auth_dict == None or len(auth_dict) == 0:
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED,
-        #             detail="Unauthorized.")
-        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:

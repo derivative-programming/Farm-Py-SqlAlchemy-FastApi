@@ -2,7 +2,6 @@ import json
 from datetime import date, datetime
 import uuid
 from decimal import Decimal
-from reports.row_models.pac_user_land_list import ReportItemPacUserLandList
 import logging
 from helpers import SessionContext
 from sqlalchemy.ext.asyncio import AsyncSession

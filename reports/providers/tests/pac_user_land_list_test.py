@@ -1,26 +1,15 @@
-import asyncio
 from decimal import Decimal
 import pytest
-import pytest_asyncio
-import time
-from typing import AsyncGenerator
 from decimal import Decimal
 from datetime import datetime, date
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models import Base, CustomerRole
-from models.factory import CustomerRoleFactory
 from models.factory.pac import PacFactory
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
 from reports.providers.pac_user_land_list import ReportProviderPacUserLandList
 import sqlite3
 # Register the adapter

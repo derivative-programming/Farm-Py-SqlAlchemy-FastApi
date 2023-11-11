@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import Organization
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import OrganizationSchema
 from models.factory import OrganizationFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def organization(session):
+    # Use the OrganizationFactory to create and return a organization instance
+    return OrganizationFactory.create(session=session)
 class TestOrganizationSchema:
     # Sample data for a Organization instance
     sample_data = {

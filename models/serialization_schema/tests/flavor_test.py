@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import Flavor
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import FlavorSchema
 from models.factory import FlavorFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def flavor(session):
+    # Use the FlavorFactory to create and return a flavor instance
+    return FlavorFactory.create(session=session)
 class TestFlavorSchema:
     # Sample data for a Flavor instance
     sample_data = {

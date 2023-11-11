@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import DateGreaterThanFilter
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import DateGreaterThanFilterSchema
 from models.factory import DateGreaterThanFilterFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def date_greater_than_filter(session):
+    # Use the DateGreaterThanFilterFactory to create and return a date_greater_than_filter instance
+    return DateGreaterThanFilterFactory.create(session=session)
 class TestDateGreaterThanFilterSchema:
     # Sample data for a DateGreaterThanFilter instance
     sample_data = {

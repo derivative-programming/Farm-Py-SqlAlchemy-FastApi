@@ -2,16 +2,19 @@ import json
 import pytest
 import pytz
 from models import Plant
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import PlantSchema
-from models.factory import PlantFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
+from models.factory import PlantFactory 
 from services.logging_config import get_logger
 logger = get_logger(__name__)
   
+  
+@pytest.fixture(scope="function")
+def plant(session):
+    # Use the PlantFactory to create and return a plant instance
+    return PlantFactory.create(session=session)
+
 class TestPlantSchema:
 
         

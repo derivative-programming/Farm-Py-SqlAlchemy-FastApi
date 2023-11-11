@@ -67,7 +67,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             headers={'API_KEY': 'xxx'}
         )
         
-        if PlantUserDeleteRouterConfig.isPublic == True:
+        if PlantUserDeleteRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -85,7 +85,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             headers={'API_KEY': ''}
         )
         
-        if PlantUserDeleteRouterConfig.isPublic == True:
+        if PlantUserDeleteRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -102,7 +102,7 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             json={}
         )
         
-        if PlantUserDeleteRouterConfig.isPublic == True:
+        if PlantUserDeleteRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401

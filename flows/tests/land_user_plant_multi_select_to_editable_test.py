@@ -51,10 +51,6 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
                     land_bus_obj,
                     plant_code_list_csv,
                 )
-            # assert isinstance(flow_result,FlowLandUserPlantMultiSelectToEditableResult)
-            # assert response_instance.success == False
-            # assert len(response_instance.validation_errors) == 1
-            # assert response_instance.validation_errors[0].message == "Unautorized access. " + role_required + " role not found."
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
         if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed == True:
@@ -69,14 +65,12 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
                     land_bus_obj,
                     plant_code_list_csv,
                 )
-                # assert response_instance.success == False
-                # assert len(response_instance.validation_errors) == 1
-                # assert response_instance.validation_errors[0].message == "Unautorized access.  Invalid User."
         session_context.role_name_csv = role_required
-        # await response_instance.process_request(
+        # result = await response_instance.process_request(
         #     session=session,
         #     session_context=session_context,
         #     land_code=land.code,
         #     request=request_instance
         #     )
+        # assert isinstance(result,FlowLandUserPlantMultiSelectToEditableResult)
 

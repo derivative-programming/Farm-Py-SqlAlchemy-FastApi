@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import CustomerRole
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import CustomerRoleSchema
 from models.factory import CustomerRoleFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def customer_role(session):
+    # Use the CustomerRoleFactory to create and return a customer_role instance
+    return CustomerRoleFactory.create(session=session)
 class TestCustomerRoleSchema:
     # Sample data for a CustomerRole instance
     sample_data = {

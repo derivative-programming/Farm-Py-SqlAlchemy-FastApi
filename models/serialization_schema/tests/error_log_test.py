@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import ErrorLog
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import ErrorLogSchema
 from models.factory import ErrorLogFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def error_log(session):
+    # Use the ErrorLogFactory to create and return a error_log instance
+    return ErrorLogFactory.create(session=session)
 class TestErrorLogSchema:
     # Sample data for a ErrorLog instance
     sample_data = {

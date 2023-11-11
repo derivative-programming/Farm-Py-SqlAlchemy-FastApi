@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import Land
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import LandSchema
 from models.factory import LandFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def land(session):
+    # Use the LandFactory to create and return a land instance
+    return LandFactory.create(session=session)
 class TestLandSchema:
     # Sample data for a Land instance
     sample_data = {

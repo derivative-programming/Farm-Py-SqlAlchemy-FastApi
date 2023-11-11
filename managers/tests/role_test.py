@@ -1,14 +1,7 @@
-import asyncio
-from decimal import Decimal
 import pytest
 import pytest_asyncio
-import time
-from decimal import Decimal
-from datetime import datetime, date
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from models import Base, Role
+from sqlalchemy.ext.asyncio import AsyncSession
+from models import Role
 from models.factory import RoleFactory
 from managers.role import RoleManager
 from models.serialization_schema.role import RoleSchema
@@ -17,7 +10,6 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"

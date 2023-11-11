@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import Tac
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import TacSchema
 from models.factory import TacFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def tac(session):
+    # Use the TacFactory to create and return a tac instance
+    return TacFactory.create(session=session)
 class TestTacSchema:
     # Sample data for a Tac instance
     sample_data = {

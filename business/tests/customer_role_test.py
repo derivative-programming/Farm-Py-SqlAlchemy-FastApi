@@ -1,25 +1,16 @@
-import asyncio
-from decimal import Decimal
 import pytest
 import pytest_asyncio
-import time
-from decimal import Decimal
 from datetime import datetime, date
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from models import Base, CustomerRole
+from sqlalchemy.ext.asyncio import AsyncSession
+from models import CustomerRole
 from models.factory import CustomerRoleFactory
 from managers.customer_role import CustomerRoleManager
 from business.customer_role import CustomerRoleBusObj
-from models.serialization_schema.customer_role import CustomerRoleSchema
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 db_dialect = "sqlite"

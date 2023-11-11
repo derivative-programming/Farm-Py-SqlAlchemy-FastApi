@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import OrgApiKey
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import OrgApiKeySchema
 from models.factory import OrgApiKeyFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def org_api_key(session):
+    # Use the OrgApiKeyFactory to create and return a org_api_key instance
+    return OrgApiKeyFactory.create(session=session)
 class TestOrgApiKeySchema:
     # Sample data for a OrgApiKey instance
     sample_data = {

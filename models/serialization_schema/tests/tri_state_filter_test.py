@@ -2,15 +2,16 @@ import json
 import pytest
 import pytz
 from models import TriStateFilter
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import TriStateFilterSchema
 from models.factory import TriStateFilterFactory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+@pytest.fixture(scope="function")
+def tri_state_filter(session):
+    # Use the TriStateFilterFactory to create and return a tri_state_filter instance
+    return TriStateFilterFactory.create(session=session)
 class TestTriStateFilterSchema:
     # Sample data for a TriStateFilter instance
     sample_data = {

@@ -1,10 +1,8 @@
-import json
 import uuid
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch, AsyncMock
-import flows
 from  .....models import factory as request_factory
 from apis import models as apis_models
 from database import get_db
@@ -13,6 +11,7 @@ import models.factory as model_factorys
 from ..customer_build_temp_api_key import CustomerBuildTempApiKeyRouterConfig
 from main import app
 import logging
+import json
 # from main import app
 
 @pytest.mark.asyncio
@@ -62,7 +61,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             json={},
             headers={'API_KEY': 'xxx'}
         )
-        if CustomerBuildTempApiKeyRouterConfig.isPublic == True:
+        if CustomerBuildTempApiKeyRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -79,7 +78,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             json={},
             headers={'API_KEY': ''}
         )
-        if CustomerBuildTempApiKeyRouterConfig.isPublic == True:
+        if CustomerBuildTempApiKeyRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -95,7 +94,7 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
             json={}
         )
-        if CustomerBuildTempApiKeyRouterConfig.isPublic == True:
+        if CustomerBuildTempApiKeyRouterConfig.is_public == True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
