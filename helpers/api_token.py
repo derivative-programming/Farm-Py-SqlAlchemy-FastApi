@@ -3,9 +3,16 @@ import datetime
 import os 
 import logging 
 from fastapi.security import APIKeyHeader
+from fastapi import Header, Depends
 
 api_key_header = APIKeyHeader(name='API_KEY', auto_error=False)
  
+async def get_api_key(api_key: str = Depends(api_key_header)):
+    if not api_key:
+        # API key is optional, return None if not provided
+        return None
+    return api_key
+
 class ApiToken:
 
     @staticmethod

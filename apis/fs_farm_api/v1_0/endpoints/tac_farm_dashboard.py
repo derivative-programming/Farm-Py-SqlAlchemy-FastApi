@@ -6,6 +6,7 @@ import logging
 from helpers import SessionContext, ApiToken, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
+from  .base_router import BaseRouter
 from database import get_db
 class TacFarmDashboardRouterConfig():
     #constants
@@ -18,27 +19,29 @@ class TacFarmDashboardRouterConfig():
     isPutAvailable:bool = False
     isDeleteAvailable:bool = False
     isPublic: bool = False
-class TacFarmDashboardRouter():
+class TacFarmDashboardRouter(BaseRouter):
     router = APIRouter()
 
     @staticmethod
     @router.get("/api/v1_0/tac-farm-dashboard/{tac_code}/init", response_model=api_init_models.TacFarmDashboardInitReportGetInitModelResponse)
     async def request_get_init(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacFarmDashboardRouter.request_get_init start. tacCode:' + tac_code)
-        if TacFarmDashboardRouterConfig.isGetInitAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(TacFarmDashboardRouterConfig.isGetInitAvailable)
+        # if TacFarmDashboardRouterConfig.isGetInitAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_init_models.TacFarmDashboardInitReportGetInitModelResponse()
-        auth_dict = dict()
-        if TacFarmDashboardRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(TacFarmDashboardRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if TacFarmDashboardRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -72,20 +75,22 @@ class TacFarmDashboardRouter():
     @router.get("/api/v1_0/tac-farm-dashboard/{tac_code}", response_model=api_models.TacFarmDashboardGetModelResponse)
     async def request_get_with_id(tac_code: str, request_model:api_models.TacFarmDashboardGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacFarmDashboardRouter.request_get_with_id start. tacCode:' + tac_code)
-        if TacFarmDashboardRouterConfig.isGetWithIdAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(TacFarmDashboardRouterConfig.isGetWithIdAvailable)
+        # if TacFarmDashboardRouterConfig.isGetWithIdAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.TacFarmDashboardGetModelResponse()
-        auth_dict = dict()
-        if TacFarmDashboardRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(TacFarmDashboardRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if TacFarmDashboardRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -118,20 +123,22 @@ class TacFarmDashboardRouter():
     @router.get("/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv", response_model=api_models.TacFarmDashboardGetModelResponse)
     async def request_get_with_id_to_csv(tac_code: str, request_model:api_models.TacFarmDashboardGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacFarmDashboardRouter.request_get_with_id_to_csv start. tacCode:' + tac_code)
-        if TacFarmDashboardRouterConfig.isGetToCsvAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(TacFarmDashboardRouterConfig.isGetToCsvAvailable)
+        # if TacFarmDashboardRouterConfig.isGetToCsvAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.TacFarmDashboardGetModelResponse()
-        auth_dict = dict()
-        if TacFarmDashboardRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = super().authorization_check(TacFarmDashboardRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if TacFarmDashboardRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:

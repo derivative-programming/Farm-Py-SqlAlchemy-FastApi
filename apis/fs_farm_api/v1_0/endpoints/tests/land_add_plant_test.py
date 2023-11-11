@@ -11,6 +11,7 @@ from unittest.mock import patch, AsyncMock
 from ..land_add_plant import LandAddPlantRouterConfig
 from .....models.factory.land_add_plant  import LandAddPlantPostModelRequestFactory 
 from main import app
+import logging
 # from main import app
     
 
@@ -34,6 +35,7 @@ async def test_submit_success(overridden_get_db):
                 json={},
                 headers={'API_KEY': test_api_key}
             )
+        
         assert response.status_code == 200
         assert response.json()['success'] is False
         mock_method.assert_awaited()
@@ -51,6 +53,7 @@ async def test_submit_request_validation_error(overridden_get_db):
             json=json.dumps({"xxxx":"yyyy"}),
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 400  # Expecting validation error for incorrect data
 
 
@@ -70,6 +73,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             headers={'API_KEY': 'xxx'}
             
         )
+        
         if LandAddPlantRouterConfig.isPublic == True:  
             assert response.status_code == 200 
         else:
@@ -91,6 +95,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             headers={'API_KEY': ''}
             
         )
+        
         if LandAddPlantRouterConfig.isPublic == True:  
             assert response.status_code == 200 
         else:
@@ -110,6 +115,7 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             json={}
             
         )
+        
         if LandAddPlantRouterConfig.isPublic == True:  
             assert response.status_code == 200 
         else:
@@ -129,6 +135,7 @@ async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
             json={},
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 501   
         
 @pytest.mark.asyncio
@@ -144,6 +151,7 @@ async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSess
             json={},
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 200 
         assert response.json()['success'] is False
 
@@ -161,6 +169,7 @@ async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
             f'/api/v1_0/land-add-plant/{land_code}', 
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 405
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=true]End
 ##GENTrainingBlock[caseisPostWithIdAvailable]End  
@@ -178,6 +187,7 @@ async def test_init_success(overridden_get_db: AsyncSession):
             f'/api/v1_0/land-add-plant/{land_code}/init',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 200
         assert response.json()['success'] is True
 
@@ -196,6 +206,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
             headers={'API_KEY': 'xxx'}
             
         )
+        
         if LandAddPlantRouterConfig.isPublic == True:  
             assert response.status_code == 200 
         else:
@@ -216,6 +227,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
             headers={'API_KEY': ''}
             
         )
+        
         if LandAddPlantRouterConfig.isPublic == True:  
             assert response.status_code == 200 
         else:
@@ -234,6 +246,7 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
             f'/api/v1_0/land-add-plant/{land_code}/init' 
             
         )
+        
         if LandAddPlantRouterConfig.isPublic == True:  
             assert response.status_code == 200 
         else:
@@ -252,6 +265,7 @@ async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession):
             f'/api/v1_0/land-add-plant/{land_code}/init/xxx',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 501 
         
 @pytest.mark.asyncio
@@ -266,6 +280,7 @@ async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSessio
             f'/api/v1_0/land-add-plant/{land_code}/init',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 200 
         assert response.json()['success'] is False
 
@@ -283,6 +298,7 @@ async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession):
             f'/api/v1_0/land-add-plant/{land_code}/init',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 405
   
 def teardown_module(module):

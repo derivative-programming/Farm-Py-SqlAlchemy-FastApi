@@ -6,6 +6,7 @@ import logging
 from helpers import SessionContext, ApiToken, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
+from  .base_router import BaseRouter
 from database import get_db
 class TacLoginRouterConfig():
     #constants
@@ -18,27 +19,29 @@ class TacLoginRouterConfig():
     isPutAvailable:bool = False
     isDeleteAvailable:bool = False
     isPublic: bool = True
-class TacLoginRouter():
+class TacLoginRouter(BaseRouter):
     router = APIRouter()
 
     @staticmethod
     @router.get("/api/v1_0/tac-login/{tac_code}/init", response_model=api_init_models.TacLoginInitObjWFGetInitModelResponse)
     async def request_get_init(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacLoginRouter.request_get_init start. tacCode:' + tac_code)
-        if TacLoginRouterConfig.isGetInitAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.isGetInitAvailable)
+        # if TacLoginRouterConfig.isGetInitAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_init_models.TacLoginInitObjWFGetInitModelResponse()
-        auth_dict = dict()
-        if TacLoginRouterConfig.isPublic == True:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(TacLoginRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if TacLoginRouterConfig.isPublic == True:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -72,20 +75,22 @@ class TacLoginRouter():
     @router.post("/api/v1_0/tac-login/{tac_code}", response_model=api_models.TacLoginPostModelResponse)
     async def request_post_with_id(tac_code: str, request_model:api_models.TacLoginPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacLoginRouter.request_post_with_id start. tacCode:' + tac_code)
-        if TacLoginRouterConfig.isPostWithIdAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.isPostWithIdAvailable)
+        # if TacLoginRouterConfig.isPostWithIdAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.TacLoginPostModelResponse()
-        auth_dict = dict()
-        if TacLoginRouterConfig.isPublic == True:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(TacLoginRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if TacLoginRouterConfig.isPublic == True:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:

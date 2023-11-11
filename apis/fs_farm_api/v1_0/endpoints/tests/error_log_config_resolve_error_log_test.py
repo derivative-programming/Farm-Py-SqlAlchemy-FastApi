@@ -32,9 +32,10 @@ async def test_submit_success(overridden_get_db):
                 json={},
                 headers={'API_KEY': test_api_key}
             )
-        assert response.status_code == 200
-        assert response.json()['success'] is False
-        mock_method.assert_awaited()
+            
+            assert response.status_code == 200
+            assert response.json()['success'] is False
+            mock_method.assert_awaited()
 @pytest.mark.asyncio
 async def test_submit_request_validation_error(overridden_get_db):
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
@@ -48,6 +49,7 @@ async def test_submit_request_validation_error(overridden_get_db):
             json=json.dumps({"xxxx":"yyyy"}),
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 400  # Expecting validation error for incorrect data
 @pytest.mark.asyncio
 async def test_submit_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
@@ -62,6 +64,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             json={},
             headers={'API_KEY': 'xxx'}
         )
+        
         if ErrorLogConfigResolveErrorLogRouterConfig.isPublic == True:
             assert response.status_code == 200
         else:
@@ -79,6 +82,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             json={},
             headers={'API_KEY': ''}
         )
+        
         if ErrorLogConfigResolveErrorLogRouterConfig.isPublic == True:
             assert response.status_code == 200
         else:
@@ -95,6 +99,7 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             f'/api/v1_0/error-log-config-resolve-error-log/{error_log_code}',
             json={}
         )
+        
         if ErrorLogConfigResolveErrorLogRouterConfig.isPublic == True:
             assert response.status_code == 200
         else:
@@ -112,6 +117,7 @@ async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
             json={},
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 501
 @pytest.mark.asyncio
 async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):
@@ -125,6 +131,7 @@ async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSess
             json={},
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 200
         assert response.json()['success'] is False
 @pytest.mark.asyncio
@@ -139,6 +146,7 @@ async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
             f'/api/v1_0/error-log-config-resolve-error-log/{error_log_code}',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 405
 
 def teardown_module(module):

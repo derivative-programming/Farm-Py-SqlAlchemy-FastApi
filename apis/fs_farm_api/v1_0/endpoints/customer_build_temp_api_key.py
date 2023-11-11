@@ -6,6 +6,7 @@ import logging
 from helpers import SessionContext, ApiToken, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
+from  .base_router import BaseRouter
 from database import get_db
 class CustomerBuildTempApiKeyRouterConfig():
     #constants
@@ -18,27 +19,29 @@ class CustomerBuildTempApiKeyRouterConfig():
     isPutAvailable:bool = False
     isDeleteAvailable:bool = False
     isPublic: bool = False
-class CustomerBuildTempApiKeyRouter():
+class CustomerBuildTempApiKeyRouter(BaseRouter):
     router = APIRouter()
 
     @staticmethod
     @router.post("/api/v1_0/customer-build-temp-api-key/{customer_code}", response_model=api_models.CustomerBuildTempApiKeyPostModelResponse)
     async def request_post_with_id(customer_code: str, request_model:api_models.CustomerBuildTempApiKeyPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('CustomerBuildTempApiKeyRouter.request_post_with_id start. customerCode:' + customer_code)
-        if CustomerBuildTempApiKeyRouterConfig.isPostWithIdAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(CustomerBuildTempApiKeyRouterConfig.isPostWithIdAvailable)
+        # if CustomerBuildTempApiKeyRouterConfig.isPostWithIdAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.CustomerBuildTempApiKeyPostModelResponse()
-        auth_dict = dict()
-        if CustomerBuildTempApiKeyRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(CustomerBuildTempApiKeyRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if CustomerBuildTempApiKeyRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:

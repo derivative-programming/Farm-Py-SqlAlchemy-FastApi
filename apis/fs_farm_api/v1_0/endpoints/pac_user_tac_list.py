@@ -6,6 +6,7 @@ import logging
 from helpers import SessionContext, ApiToken, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
+from  .base_router import BaseRouter
 from database import get_db
 class PacUserTacListRouterConfig():
     #constants
@@ -18,27 +19,29 @@ class PacUserTacListRouterConfig():
     isPutAvailable:bool = False
     isDeleteAvailable:bool = False
     isPublic: bool = False
-class PacUserTacListRouter():
+class PacUserTacListRouter(BaseRouter):
     router = APIRouter()
 
     @staticmethod
     @router.get("/api/v1_0/pac-user-tac-list/{pac_code}/init", response_model=api_init_models.PacUserTacListInitReportGetInitModelResponse)
     async def request_get_init(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_init start. pacCode:' + pac_code)
-        if PacUserTacListRouterConfig.isGetInitAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.isGetInitAvailable)
+        # if PacUserTacListRouterConfig.isGetInitAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_init_models.PacUserTacListInitReportGetInitModelResponse()
-        auth_dict = dict()
-        if PacUserTacListRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if PacUserTacListRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -72,20 +75,22 @@ class PacUserTacListRouter():
     @router.get("/api/v1_0/pac-user-tac-list/{pac_code}", response_model=api_models.PacUserTacListGetModelResponse)
     async def request_get_with_id(pac_code: str, request_model:api_models.PacUserTacListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_with_id start. pacCode:' + pac_code)
-        if PacUserTacListRouterConfig.isGetWithIdAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.isGetWithIdAvailable)
+        # if PacUserTacListRouterConfig.isGetWithIdAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.PacUserTacListGetModelResponse()
-        auth_dict = dict()
-        if PacUserTacListRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(PacUserTacListRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if PacUserTacListRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -118,20 +123,22 @@ class PacUserTacListRouter():
     @router.get("/api/v1_0/pac-user-tac-list/{pac_code}/to-csv", response_model=api_models.PacUserTacListGetModelResponse)
     async def request_get_with_id_to_csv(pac_code: str, request_model:api_models.PacUserTacListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTacListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
-        if PacUserTacListRouterConfig.isGetToCsvAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(PacUserTacListRouterConfig.isGetToCsvAvailable)
+        # if PacUserTacListRouterConfig.isGetToCsvAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.PacUserTacListGetModelResponse()
-        auth_dict = dict()
-        if PacUserTacListRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = super().authorization_check(PacUserTacListRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if PacUserTacListRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:

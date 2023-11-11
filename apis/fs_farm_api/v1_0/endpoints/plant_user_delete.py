@@ -6,6 +6,7 @@ import logging
 from helpers import SessionContext, ApiToken, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
+from  .base_router import BaseRouter
 from database import get_db
 class PlantUserDeleteRouterConfig():
     #constants
@@ -18,27 +19,29 @@ class PlantUserDeleteRouterConfig():
     isPutAvailable:bool = False
     isDeleteAvailable:bool = False
     isPublic: bool = False
-class PlantUserDeleteRouter():
+class PlantUserDeleteRouter(BaseRouter):
     router = APIRouter()
 
     @staticmethod
     @router.post("/api/v1_0/plant-user-delete/{plant_code}", response_model=api_models.PlantUserDeletePostModelResponse)
     async def request_post_with_id(plant_code: str, request_model:api_models.PlantUserDeletePostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDeleteRouter.request_post_with_id start. plantCode:' + plant_code)
-        if PlantUserDeleteRouterConfig.isPostWithIdAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(PlantUserDeleteRouterConfig.isPostWithIdAvailable)
+        # if PlantUserDeleteRouterConfig.isPostWithIdAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.PlantUserDeletePostModelResponse()
-        auth_dict = dict()
-        if PlantUserDeleteRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(PlantUserDeleteRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if PlantUserDeleteRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:

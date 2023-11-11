@@ -137,9 +137,10 @@ async def test_get_success(overridden_get_db: AsyncSession):
                 params=request_dict,
                 headers={'API_KEY': test_api_key}
             )
-        assert response.status_code == 200
-        assert response.json()['success'] is False
-        mock_method.assert_awaited()
+            
+            assert response.status_code == 200
+            assert response.json()['success'] is False
+            mock_method.assert_awaited()
 @pytest.mark.asyncio
 async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
@@ -152,6 +153,7 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
             f'/api/v1_0/pac-user-tac-list/{pac_code}',
             headers={'API_KEY': 'xxx'}
         )
+        
         if PacUserTacListRouterConfig.isPublic == True:
             assert response.status_code == 200
         else:
@@ -168,6 +170,7 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
             f'/api/v1_0/pac-user-tac-list/{pac_code}',
             headers={'API_KEY': ''}
         )
+        
         if PacUserTacListRouterConfig.isPublic == True:
             assert response.status_code == 200
         else:
@@ -183,6 +186,7 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}'
         )
+        
         if PacUserTacListRouterConfig.isPublic == True:
             assert response.status_code == 200
         else:
@@ -199,6 +203,7 @@ async def test_get_endpoint_url_failure(overridden_get_db: AsyncSession):
             f'/api/v1_0/pac-user-tac-list/{pac_code}/xxx',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 501
 @pytest.mark.asyncio
 async def test_get_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):
@@ -211,6 +216,7 @@ async def test_get_endpoint_invalid_code_failure(overridden_get_db: AsyncSession
             f'/api/v1_0/pac-user-tac-list/{pac_code}',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 200
         assert response.json()['success'] is False
 @pytest.mark.asyncio
@@ -225,6 +231,7 @@ async def test_get_endpoint_method_failure(overridden_get_db: AsyncSession):
             f'/api/v1_0/pac-user-tac-list/{pac_code}',
             headers={'API_KEY': test_api_key}
         )
+        
         assert response.status_code == 405
 
 def teardown_module(module):

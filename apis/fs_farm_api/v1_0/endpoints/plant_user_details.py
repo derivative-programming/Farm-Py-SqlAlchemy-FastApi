@@ -6,6 +6,7 @@ import logging
 from helpers import SessionContext, ApiToken, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
+from  .base_router import BaseRouter
 from database import get_db
 class PlantUserDetailsRouterConfig():
     #constants
@@ -18,27 +19,29 @@ class PlantUserDetailsRouterConfig():
     isPutAvailable:bool = False
     isDeleteAvailable:bool = False
     isPublic: bool = False
-class PlantUserDetailsRouter():
+class PlantUserDetailsRouter(BaseRouter):
     router = APIRouter()
 
     @staticmethod
     @router.get("/api/v1_0/plant-user-details/{plant_code}/init", response_model=api_init_models.PlantUserDetailsInitReportGetInitModelResponse)
     async def request_get_init(plant_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDetailsRouter.request_get_init start. plantCode:' + plant_code)
-        if PlantUserDetailsRouterConfig.isGetInitAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.isGetInitAvailable)
+        # if PlantUserDetailsRouterConfig.isGetInitAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_init_models.PlantUserDetailsInitReportGetInitModelResponse()
-        auth_dict = dict()
-        if PlantUserDetailsRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(PlantUserDetailsRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if PlantUserDetailsRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -72,20 +75,22 @@ class PlantUserDetailsRouter():
     @router.get("/api/v1_0/plant-user-details/{plant_code}", response_model=api_models.PlantUserDetailsGetModelResponse)
     async def request_get_with_id(plant_code: str, request_model:api_models.PlantUserDetailsGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDetailsRouter.request_get_with_id start. plantCode:' + plant_code)
-        if PlantUserDetailsRouterConfig.isGetWithIdAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.isGetWithIdAvailable)
+        # if PlantUserDetailsRouterConfig.isGetWithIdAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.PlantUserDetailsGetModelResponse()
-        auth_dict = dict()
-        if PlantUserDetailsRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = BaseRouter.authorization_check(PlantUserDetailsRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if PlantUserDetailsRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
@@ -118,20 +123,22 @@ class PlantUserDetailsRouter():
     @router.get("/api/v1_0/plant-user-details/{plant_code}/to-csv", response_model=api_models.PlantUserDetailsGetModelResponse)
     async def request_get_with_id_to_csv(plant_code: str, request_model:api_models.PlantUserDetailsGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDetailsRouter.request_get_with_id_to_csv start. plantCode:' + plant_code)
-        if PlantUserDetailsRouterConfig.isGetToCsvAvailable == False:
-            raise HTTPException(
-                status_code=status.HTTP_501_NOT_IMPLEMENTED,
-                detail="This method is not implemented.")
+        auth_dict = BaseRouter.implementation_check(PlantUserDetailsRouterConfig.isGetToCsvAvailable)
+        # if PlantUserDetailsRouterConfig.isGetToCsvAvailable == False:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        #         detail="This method is not implemented.")
         response = api_models.PlantUserDetailsGetModelResponse()
-        auth_dict = dict()
-        if PlantUserDetailsRouterConfig.isPublic == False:
-            logging.info("Authorization Required...")
-            auth_dict = ApiToken.validate_token(api_key)
-            if auth_dict == None or len(auth_dict) == 0:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized.")
-            logging.info("auth_dict:" + str(auth_dict))
+        auth_dict = super().authorization_check(PlantUserDetailsRouterConfig.isPublic, api_key)
+        # auth_dict = dict()
+        # if PlantUserDetailsRouterConfig.isPublic == False:
+        #     logging.info("Authorization Required...")
+        #     auth_dict = ApiToken.validate_token(api_key)
+        #     if auth_dict == None or len(auth_dict) == 0:
+        #         raise HTTPException(
+        #             status_code=status.HTTP_401_UNAUTHORIZED,
+        #             detail="Unauthorized.")
+        #     logging.info("auth_dict:" + str(auth_dict))
         # Start a transaction
         async with session:
             try:
