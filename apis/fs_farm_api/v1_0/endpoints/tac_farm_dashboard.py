@@ -70,7 +70,7 @@ class TacFarmDashboardRouter():
 
     @staticmethod
     @router.get("/api/v1_0/tac-farm-dashboard/{tac_code}", response_model=api_models.TacFarmDashboardGetModelResponse)
-    async def request_get_with_id(tac_code: str,  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    async def request_get_with_id(tac_code: str, request_model:api_models.TacFarmDashboardGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacFarmDashboardRouter.request_get_with_id start. tacCode:' + tac_code)
         if TacFarmDashboardRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
@@ -101,6 +101,7 @@ class TacFarmDashboardRouter():
                     tac_code,
                     request_model
                 )
+                logging.info('TacFarmDashboardRouter success')
             except Exception as e:
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))

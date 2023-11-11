@@ -70,7 +70,7 @@ class PacUserTriStateFilterListRouter():
 
     @staticmethod
     @router.get("/api/v1_0/pac-user-tri-state-filter-list/{pac_code}", response_model=api_models.PacUserTriStateFilterListGetModelResponse)
-    async def request_get_with_id(pac_code: str,  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    async def request_get_with_id(pac_code: str, request_model:api_models.PacUserTriStateFilterListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserTriStateFilterListRouter.request_get_with_id start. pacCode:' + pac_code)
         if PacUserTriStateFilterListRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
@@ -101,6 +101,7 @@ class PacUserTriStateFilterListRouter():
                     pac_code,
                     request_model
                 )
+                logging.info('PacUserTriStateFilterListRouter success')
             except Exception as e:
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))

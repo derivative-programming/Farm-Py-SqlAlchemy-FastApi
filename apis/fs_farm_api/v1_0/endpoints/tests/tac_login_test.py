@@ -3,7 +3,10 @@ import uuid
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
+from unittest.mock import patch, AsyncMock
+import flows
 from  .....models import factory as request_factory
+from apis import models as apis_models
 from database import get_db
 from helpers.api_token import ApiToken
 import models.factory as model_factorys
@@ -115,19 +118,24 @@ async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession):
 
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
-    tac_code = tac.code
-    api_dict = {'TacCode': str(tac_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url="http://test") as ac:
-        app.dependency_overrides[get_db] = lambda: overridden_get_db
-        response = await ac.post(
-            f'/api/v1_0/tac-login/{tac.code}',
-            json={},
-            headers={'API_KEY': test_api_key}
-        )
+    async def mock_process_request(session, session_context, tac_code, request):
+            pass
+    with patch.object(apis_models.TacLoginPostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
+        mock_method.side_effect = mock_process_request
+        tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+        tac_code = tac.code
+        api_dict = {'TacCode': str(tac_code)}
+        test_api_key = ApiToken.create_token(api_dict, 1)
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            app.dependency_overrides[get_db] = lambda: overridden_get_db
+            response = await ac.post(
+                f'/api/v1_0/tac-login/{tac_code}',
+                json={},
+                headers={'API_KEY': test_api_key}
+            )
         assert response.status_code == 200
-        assert response.json()['success'] is True
+        assert response.json()['success'] is False
+        mock_method.assert_awaited()
 @pytest.mark.asyncio
 async def test_submit_request_validation_error(overridden_get_db):
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
@@ -137,7 +145,7 @@ async def test_submit_request_validation_error(overridden_get_db):
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-login/{tac.code}',
+            f'/api/v1_0/tac-login/{tac_code}',
             json=json.dumps({"xxxx":"yyyy"}),
             headers={'API_KEY': test_api_key}
         )

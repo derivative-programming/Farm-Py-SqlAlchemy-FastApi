@@ -70,7 +70,7 @@ class PacUserFlavorListRouter():
 
     @staticmethod
     @router.get("/api/v1_0/pac-user-flavor-list/{pac_code}", response_model=api_models.PacUserFlavorListGetModelResponse)
-    async def request_get_with_id(pac_code: str,  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    async def request_get_with_id(pac_code: str, request_model:api_models.PacUserFlavorListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PacUserFlavorListRouter.request_get_with_id start. pacCode:' + pac_code)
         if PacUserFlavorListRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
@@ -101,6 +101,7 @@ class PacUserFlavorListRouter():
                     pac_code,
                     request_model
                 )
+                logging.info('PacUserFlavorListRouter success')
             except Exception as e:
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))

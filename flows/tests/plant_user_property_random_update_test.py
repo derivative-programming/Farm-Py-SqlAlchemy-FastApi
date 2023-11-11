@@ -43,7 +43,7 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
-        engine = create_async_engine(DATABASE_URL, echo=True)
+        engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")

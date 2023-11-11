@@ -22,7 +22,7 @@ class LandPlantListRouterConfig():
 
 class LandPlantListRouter():   
     router = APIRouter()
-    
+     
 ##GENTrainingBlock[caseisGetInitAvailable]Start
 ##GENLearn[isGetInitAvailable=true]Start
     @staticmethod
@@ -84,7 +84,7 @@ class LandPlantListRouter():
 ##GENLearn[isGetWithIdAvailable=true]Start
     @staticmethod
     @router.get("/api/v1_0/land-plant-list/{land_code}", response_model=api_models.LandPlantListGetModelResponse)
-    async def request_get_with_id(land_code: str,  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
+    async def request_get_with_id(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
         logging.info('LandPlantListRouter.request_get_with_id start. landCode:' + land_code)
         if LandPlantListRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
@@ -117,6 +117,7 @@ class LandPlantListRouter():
                     land_code,
                     request_model
                 )   
+                logging.info('LandPlantListRouter success')
             except Exception as e:
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))

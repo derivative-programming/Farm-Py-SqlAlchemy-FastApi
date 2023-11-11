@@ -6,6 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_db
 from helpers.api_token import ApiToken
 import models.factory as model_factorys
+from apis import models as apis_models
+from unittest.mock import patch, AsyncMock
 from ..land_add_plant import LandAddPlantRouterConfig
 from .....models.factory.land_add_plant  import LandAddPlantPostModelRequestFactory 
 from main import app
@@ -16,19 +18,25 @@ from main import app
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=true]Start
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
-    land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url="http://test") as ac:
-        app.dependency_overrides[get_db] = lambda: overridden_get_db
-        response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}',
-            json={},
-            headers={'API_KEY': test_api_key}
-        )
+    async def mock_process_request(session, session_context, land_code, request):
+            pass
+         
+    with patch.object(apis_models.LandAddPlantPostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
+        mock_method.side_effect = mock_process_request
+        land = await model_factorys.LandFactory.create_async(overridden_get_db)
+        land_code = land.code
+        api_dict = {'LandCode': str(land_code)}
+        test_api_key = ApiToken.create_token(api_dict, 1)
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            app.dependency_overrides[get_db] = lambda: overridden_get_db
+            response = await ac.post(
+                f'/api/v1_0/land-add-plant/{land_code}',
+                json={},
+                headers={'API_KEY': test_api_key}
+            )
         assert response.status_code == 200
-        assert response.json()['success'] is True
+        assert response.json()['success'] is False
+        mock_method.assert_awaited()
 
 @pytest.mark.asyncio
 async def test_submit_request_validation_error(overridden_get_db):

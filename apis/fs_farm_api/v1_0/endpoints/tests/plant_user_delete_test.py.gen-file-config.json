@@ -2,8 +2,9 @@
     "templateType":"ApiEndPoint",  
     "IsEdgeCase": true,
     "dimension" :{
-        "name":"LandAddPlant",
-        "isPostWithIdAvailable":"true"
+        "name":"PlantUserDelete",
+        "isPostWithIdAvailable":"true",
+        "isGetInitAvailable":"false"
     },
     "ignoreDimensionPropertyList": [   
     ]

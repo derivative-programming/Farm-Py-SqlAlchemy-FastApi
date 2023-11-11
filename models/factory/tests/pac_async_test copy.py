@@ -27,11 +27,11 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestPacFactoryAsync:
         
     async_engine = create_async_engine(
-        DATABASE_URL, echo=True
+        DATABASE_URL, echo=False
     )
     
     # Synchronous engine for table creation
-    sync_engine = create_engine(DATABASE_URL, echo=True)
+    sync_engine = create_engine(DATABASE_URL, echo=False)
 
     TestingAsyncSessionLocal = sessionmaker(
         async_engine,

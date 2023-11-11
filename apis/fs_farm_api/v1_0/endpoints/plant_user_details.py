@@ -70,7 +70,7 @@ class PlantUserDetailsRouter():
 
     @staticmethod
     @router.get("/api/v1_0/plant-user-details/{plant_code}", response_model=api_models.PlantUserDetailsGetModelResponse)
-    async def request_get_with_id(plant_code: str,  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    async def request_get_with_id(plant_code: str, request_model:api_models.PlantUserDetailsGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDetailsRouter.request_get_with_id start. plantCode:' + plant_code)
         if PlantUserDetailsRouterConfig.isGetWithIdAvailable == False:
             raise HTTPException(
@@ -101,6 +101,7 @@ class PlantUserDetailsRouter():
                     plant_code,
                     request_model
                 )
+                logging.info('PlantUserDetailsRouter success')
             except Exception as e:
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))

@@ -26,7 +26,7 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestErrorLogFactory:
     @pytest.fixture(scope="module")
     def engine(self):
-        engine = create_engine(DATABASE_URL, echo=True)
+        engine = create_engine(DATABASE_URL, echo=False)
         #FKs are not activated by default in sqllite
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")

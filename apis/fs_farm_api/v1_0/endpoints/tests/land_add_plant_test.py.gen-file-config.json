@@ -3,7 +3,8 @@
     "IsEdgeCase": true,
     "dimension" :{
         "name":"LandAddPlant",
-        "isPostWithIdAvailable":"true"
+        "isPostWithIdAvailable":"true",
+        "isGetInitAvailable":"true"
     },
     "ignoreDimensionPropertyList": [   
     ]
