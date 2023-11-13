@@ -2978,6 +2978,20 @@
             "parentObjectName": "Organization",
             "prop": [
               {
+                "name": "OrganizationID",
+                "codeDescription": "Org Customer Organization ID",
+                "sqlServerDBDataType": "int",
+                "isFK": "true",
+                "isEncrypted": "false",
+                "forceDBColumnIndex": "false",
+                "isFKLookup": "false",
+                "isNotPublishedToSubscriptions": "true",
+                "fKObjectName": "Organization",
+                "fKObjectPropertyName": "OrganizationID",
+                "isQueryByAvailable": "false",
+                "labelText": "Organization"
+              },
+              {
                 "name": "CustomerID",
                 "codeDescription": "Org Customer Customer ID",
                 "sqlServerDBDataType": "int",
@@ -3005,20 +3019,6 @@
                 "fKObjectPropertyName": "",
                 "isQueryByAvailable": "false",
                 "labelText": "Email"
-              },
-              {
-                "name": "OrganizationID",
-                "codeDescription": "Org Customer Organization ID",
-                "sqlServerDBDataType": "int",
-                "isFK": "true",
-                "isEncrypted": "false",
-                "forceDBColumnIndex": "false",
-                "isFKLookup": "false",
-                "isNotPublishedToSubscriptions": "true",
-                "fKObjectName": "Organization",
-                "fKObjectPropertyName": "OrganizationID",
-                "isQueryByAvailable": "false",
-                "labelText": "Organization"
               }
             ],
             "propSubscription": [],

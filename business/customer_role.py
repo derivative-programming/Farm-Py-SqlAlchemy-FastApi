@@ -11,6 +11,7 @@ from managers import CustomerManager as CustomerIDManager #CustomerID
 from managers import RoleManager as RoleIDManager #RoleID
 from managers import CustomerRoleManager
 from models import CustomerRole
+import managers as managers_and_enums
 class CustomerRoleSessionNotFoundError(Exception):
     pass
 class CustomerRoleInvalidInitError(Exception):
@@ -144,7 +145,12 @@ class CustomerRoleBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.customer_role.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, customer_role_id:int=None, customer_role_obj_instance:CustomerRole=None, customer_role_dict:dict=None):
+
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   customer_role_id:int=None,
+                   customer_role_obj_instance:CustomerRole=None,
+                   customer_role_dict:dict=None):
         if customer_role_id and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self.session)
             customer_role_obj = await customer_role_manager.get_by_id(customer_role_id)
@@ -163,6 +169,7 @@ class CustomerRoleBusObj:
         if customer_role_dict and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self.session)
             self.customer_role = customer_role_manager.from_dict(customer_role_dict)
+
     async def refresh(self):
         customer_role_manager = CustomerRoleManager(self.session)
         self.customer_role = await customer_role_manager.refresh(self.customer_role)

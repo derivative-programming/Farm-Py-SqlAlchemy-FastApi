@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
+import logging
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -215,13 +216,23 @@ class TestOrganizationManager:
         # Mocking organization instances
         organization1 = await OrganizationFactory.create_async(session=session)
         organization2 = await OrganizationFactory.create_async(session=session)
+        logging.info(organization1.__dict__)
         code_updated1 = generate_uuid()
         code_updated2 = generate_uuid()
+        logging.info(code_updated1)
+        logging.info(code_updated2)
         # Update organizations
         updates = [{"organization_id": 1, "code": code_updated1}, {"organization_id": 2, "code": code_updated2}]
         updated_organizations = await organization_manager.update_bulk(updates)
+        logging.info('bulk update results')
         # Assertions
         assert len(updated_organizations) == 2
+        logging.info(updated_organizations[0].__dict__)
+        logging.info(updated_organizations[1].__dict__)
+        logging.info('getall')
+        organizations = await organization_manager.get_list()
+        logging.info(organizations[0].__dict__)
+        logging.info(organizations[1].__dict__)
         assert updated_organizations[0].code == code_updated1
         assert updated_organizations[1].code == code_updated2
         result = await session.execute(select(Organization).filter(Organization.organization_id == 1))

@@ -1,32 +1,80 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.tac import Tac # TacID
 from models.customer import Customer
 from models.serialization_schema.customer import CustomerSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class CustomerNotFoundError(Exception):
     pass
+
 class CustomerManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pass
+
     async def build(self, **kwargs) -> Customer:
         return Customer(**kwargs)
     async def add(self, customer: Customer) -> Customer:
         self.session.add(customer)
         await self.session.commit()
         return customer
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(Customer, Tac, and_(Customer.tac_id == Tac.tac_id, Customer.tac_id != 0))
+
+        if join_condition is not None:
+            query = select(Customer
+                        ,Tac #tac_id
+                        ).select_from(join_condition)
+        else:
+            query = select(Customer)
+        return query
+    async def _run_query(self, query_filter) -> List[Customer]:
+        customer_query_all = self._build_query()
+        if query_filter is not None:
+            query = customer_query_all.filter(query_filter)
+        else:
+            query = customer_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            customer = query_result_row[0]
+
+            tac = query_result_row[1] #tac_id
+
+            customer.tac_code_peek = tac.code if tac else uuid.UUID(int=0) #tac_id
+
+            result.append(customer)
+        return result
+    def _first_or_none(self,customer_list:List) -> Customer:
+        return customer_list[0] if customer_list else None
     async def get_by_id(self, customer_id: int) -> Optional[Customer]:
+        logging.info("CustomerManager.get_by_id start customer_id:" + str(customer_id))
         if not isinstance(customer_id, int):
             raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
-        result = await self.session.execute(select(Customer).filter(Customer.customer_id == customer_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(Customer).filter(Customer.customer_id == customer_id))
+        # result = await self.session.execute(select(Customer).filter(Customer.customer_id == customer_id))
+        # return result.scalars().first()
+        query_filter = Customer.customer_id == customer_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Customer]:
-        result = await self.session.execute(select(Customer).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(Customer).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = Customer.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, customer: Customer, **kwargs) -> Optional[Customer]:
         if customer:
             for key, value in kwargs.items():
@@ -42,8 +90,10 @@ class CustomerManager:
         await self.session.delete(customer)
         await self.session.commit()
     async def get_list(self) -> List[Customer]:
-        result = await self.session.execute(select(Customer))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Customer))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, customer:Customer) -> str:
         """
         Serialize the Customer object to a JSON string using the CustomerSchema.
@@ -78,7 +128,7 @@ class CustomerManager:
         await self.session.commit()
         return customers
     async def update_bulk(self, customer_updates: List[Dict[int, Dict]]) -> List[Customer]:
-        """Update multiple customers at once."""
+        logging.info("CustomerManager.update_bulk start")
         updated_customers = []
         for update in customer_updates:
             customer_id = update.get("customer_id")
@@ -86,6 +136,7 @@ class CustomerManager:
                 raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
             if not customer_id:
                 continue
+            logging.info(f"CustomerManager.update_bulk customer_id:{customer_id}")
             customer = await self.get_by_id(customer_id)
             if not customer:
                 raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
@@ -94,6 +145,7 @@ class CustomerManager:
                     setattr(customer, key, value)
             updated_customers.append(customer)
         await self.session.commit()
+        logging.info("CustomerManager.update_bulk end")
         return updated_customers
     async def delete_bulk(self, customer_ids: List[int]) -> bool:
         """Delete multiple customers by their IDs."""
@@ -139,14 +191,14 @@ class CustomerManager:
             raise TypeError("The customer2 must be an Customer instance.")
         dict1 = self.to_dict(customer1)
         dict2 = self.to_dict(customer2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_tac_id(self, tac_id: int) -> List[Tac]: # TacID
         if not isinstance(tac_id, int):
             raise TypeError(f"The customer_id must be an integer, got {type(tac_id)} instead.")
-        result = await self.session.execute(select(Customer).filter(Customer.tac_id == tac_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Customer).filter(Customer.tac_id == tac_id))
+        # return result.scalars().all()
+        query_filter = Customer.tac_id == tac_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

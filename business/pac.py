@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 
 from managers import PacManager
 from models import Pac
+import managers as managers_and_enums
 class PacSessionNotFoundError(Exception):
     pass
 class PacInvalidInitError(Exception):
@@ -135,7 +136,16 @@ class PacBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.pac.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, pac_id:int=None, pac_obj_instance:Pac=None, pac_dict:dict=None):
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.PacEnum:
+        return managers_and_enums.PacEnum[self.pac.lookup_enum_name]
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   pac_id:int=None,
+                   pac_obj_instance:Pac=None,
+                   pac_dict:dict=None,
+                   pac_enum:managers_and_enums.PacEnum=None):
         if pac_id and self.pac.pac_id is None:
             pac_manager = PacManager(self.session)
             pac_obj = await pac_manager.get_by_id(pac_id)
@@ -154,6 +164,10 @@ class PacBusObj:
         if pac_dict and self.pac.pac_id is None:
             pac_manager = PacManager(self.session)
             self.pac = pac_manager.from_dict(pac_dict)
+        if pac_enum and self.pac.pac_id is None:
+            pac_manager = PacManager(self.session)
+            self.pac = await pac_manager.from_enum(pac_enum)
+
     async def refresh(self):
         pac_manager = PacManager(self.session)
         self.pac = await pac_manager.refresh(self.pac)

@@ -1,29 +1,143 @@
 import json
 import uuid
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.date_greater_than_filter import DateGreaterThanFilter
 from models.serialization_schema.date_greater_than_filter import DateGreaterThanFilterSchema
 from services.logging_config import get_logger
+from enum import Enum
+import logging
 logger = get_logger(__name__)
 class DateGreaterThanFilterNotFoundError(Exception):
     pass
+
+##GENTrainingBlock[caseLookupEnums]Start
+##GENLearn[isLookup=true]Start  
+class DateGreaterThanFilterEnum(Enum):
+    Last_24_Hours = 'Last_24_Hours'
+    Last_7_Days = 'Last_7_Days'
+    Last_30_Days = 'Last_30_Days'
+    Last_90_Days = 'Last_90_Days'
+    Last_365_Days = 'Last_365_Days'
+    Unknown = 'Unknown'
+##GENLearn[isLookup=true]End
+##GENTrainingBlock[caseLookupEnums]End 
+
 class DateGreaterThanFilterManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+##GENTrainingBlock[caseIsLookupObject]Start
+##GENLearn[isLookup=true]Start 
+    async def initialize(self):
+        logging.info("PlantMaanger.Initialize start")
+        pac:Pac = self.session.execute(select(Pac)).scalars().first() 
+        if self.from_enum(DateGreaterThanFilterEnum.Unknown) is None:
+            item = DateGreaterThanFilter()
+            item.pac_id = pac.pac_id
+            item.name = "Unknown"
+            item.lookup_enum_name = "Unknown"
+            item.description = "Unknown"
+            item.display_order = self.count()
+            item.is_active = True
+            # item.day_count = 1
+            await self.add(item) 
+        if self.from_enum(DateGreaterThanFilterEnum.Last_24_Hours) is None:
+            item = DateGreaterThanFilter.build(pac)  
+            item.name = "Last 24 Hours"
+            item.lookup_enum_name = "Last_24_Hours"
+            item.description = "Last 24 Hours"
+            item.display_order = self.count()
+            item.is_active = True
+            # item.day_count = 1
+            await self.add(item) 
+        if self.from_enum(DateGreaterThanFilterEnum.Last_7_Days) is None:
+            item = DateGreaterThanFilter.build(pac) 
+            item.name = "Last 7 Days"
+            item.lookup_enum_name = "Last_7_Days"
+            item.description = "Last 7 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item.day_count = 7
+            await self.add(item) 
+        if self.from_enum(DateGreaterThanFilterEnum.Last_30_Days) is None:
+            item = DateGreaterThanFilter.build(pac) 
+            item.name = "Last 30 Days"
+            item.lookup_enum_name = "Last_30_Days"
+            item.description = "Last 30 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item.day_count = 30
+            await self.add(item) 
+        if self.from_enum(DateGreaterThanFilterEnum.Last_90_Days) is None:
+            item = DateGreaterThanFilter.build(pac)  
+            item.name = "Last 90 Days"
+            item.lookup_enum_name = "Last_90_Days"
+            item.description = "Last 90 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item.day_count = 90
+            await self.add(item) 
+        if self.from_enum(DateGreaterThanFilterEnum.Last_365_Days) is None:
+            item = DateGreaterThanFilter.build(pac) 
+            item.name = "Last 365 Days"
+            item.lookup_enum_name = "Last_365_Days"
+            item.description = "Last 365 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item.day_count = 365
+            await self.add(item) 
+        logging.info("PlantMaanger.Initialize end")
+    async def from_enum(self, enum_val:DateGreaterThanFilterEnum) -> DateGreaterThanFilter:
+        # return self.get(lookup_enum_name=enum_val.value) 
+        query_filter = DateGreaterThanFilter.lookup_enum_name==enum_val.value
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
+##GENLearn[isLookup=true]End
+##GENTrainingBlock[caseIsLookupObject]End 
+
     async def build(self, **kwargs) -> DateGreaterThanFilter:
         return DateGreaterThanFilter(**kwargs)
     async def add(self, date_greater_than_filter: DateGreaterThanFilter) -> DateGreaterThanFilter:
         self.session.add(date_greater_than_filter)
         await self.session.commit()
         return date_greater_than_filter
+    def _build_query(self):
+
+        join_condition = outerjoin(DateGreaterThanFilter, Pac, and_(DateGreaterThanFilter.pac_id == Pac.pac_id, DateGreaterThanFilter.pac_id != 0))
+
+        query = select(DateGreaterThanFilter
+                       ,Pac #pac_id
+                       ).select_from(join_condition)
+        return query
+    async def _run_query(self, filter) -> List[DateGreaterThanFilter]:
+        date_greater_than_filter_query_all = self._build_query()
+        query = date_greater_than_filter_query_all.filter(filter)
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            date_greater_than_filter = query_result_row[0]
+
+            pac = query_result_row[1] #pac_id
+
+            date_greater_than_filter.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+
+            result.append(date_greater_than_filter)
+        return result
+    def _first_or_none(self,date_greater_than_filter_list:List) -> DateGreaterThanFilter:
+        return date_greater_than_filter_list[0] if date_greater_than_filter_list else None
     async def get_by_id(self, date_greater_than_filter_id: int) -> Optional[DateGreaterThanFilter]:
         if not isinstance(date_greater_than_filter_id, int):
             raise TypeError(f"The date_greater_than_filter_id must be an integer, got {type(date_greater_than_filter_id)} instead.")
-        result = await self.session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_id))
+        # result = await self.session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_id))
+        # return result.scalars().first()
+        query_filter = DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[DateGreaterThanFilter]:
         result = await self.session.execute(select(DateGreaterThanFilter).filter_by(code=code))
         return result.scalars().one_or_none()
@@ -139,9 +253,6 @@ class DateGreaterThanFilterManager:
             raise TypeError("The date_greater_than_filter2 must be an DateGreaterThanFilter instance.")
         dict1 = self.to_dict(date_greater_than_filter1)
         dict2 = self.to_dict(date_greater_than_filter2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID

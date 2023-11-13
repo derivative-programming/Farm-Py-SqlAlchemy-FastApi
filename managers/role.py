@@ -1,32 +1,145 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.role import Role
 from models.serialization_schema.role import RoleSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class RoleNotFoundError(Exception):
     pass
+
+class RoleEnum(Enum):
+    Unknown = 'Unknown'
+    Admin = 'Admin'
+    Config = 'Config'
+    User = 'User'
+
 class RoleManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pac:Pac = self.session.execute(select(Pac)).scalars().first()
+        if self.from_enum(RoleEnum.Unknown) is None:
+            item = Role()
+            item.description = "Unknown"
+            item.display_order = self.count()
+            item.is_active = True
+            item.lookup_enum_name = "Unknown"
+            item.name = "Unknown"
+            item.pac_id = pac.pac_id
+            await self.add(item)
+        if self.from_enum(RoleEnum.Last_24_Hours) is None:
+            item = Role.build(pac)
+            item.name = "Last 24 Hours"
+            item.lookup_enum_name = "Last_24_Hours"
+            item.description = "Last 24 Hours"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 1
+            await self.add(item)
+        if self.from_enum(RoleEnum.Last_7_Days) is None:
+            item = Role.build(pac)
+            item.name = "Last 7 Days"
+            item.lookup_enum_name = "Last_7_Days"
+            item.description = "Last 7 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 7
+            await self.add(item)
+        if self.from_enum(RoleEnum.Last_30_Days) is None:
+            item = Role.build(pac)
+            item.name = "Last 30 Days"
+            item.lookup_enum_name = "Last_30_Days"
+            item.description = "Last 30 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 30
+            await self.add(item)
+        if self.from_enum(RoleEnum.Last_90_Days) is None:
+            item = Role.build(pac)
+            item.name = "Last 90 Days"
+            item.lookup_enum_name = "Last_90_Days"
+            item.description = "Last 90 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 90
+            await self.add(item)
+        if self.from_enum(RoleEnum.Last_365_Days) is None:
+            item = Role.build(pac)
+            item.name = "Last 365 Days"
+            item.lookup_enum_name = "Last_365_Days"
+            item.description = "Last 365 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 365
+            await self.add(item)
+    async def from_enum(self, enum_val:RoleEnum) -> Role:
+        # return self.get(lookup_enum_name=enum_val.value)
+        query_filter = Role.lookup_enum_name==enum_val.value
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
+
     async def build(self, **kwargs) -> Role:
         return Role(**kwargs)
     async def add(self, role: Role) -> Role:
         self.session.add(role)
         await self.session.commit()
         return role
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(Role, Pac, and_(Role.pac_id == Pac.pac_id, Role.pac_id != 0))
+
+        if join_condition is not None:
+            query = select(Role
+                        ,Pac #pac_id
+                        ).select_from(join_condition)
+        else:
+            query = select(Role)
+        return query
+    async def _run_query(self, query_filter) -> List[Role]:
+        role_query_all = self._build_query()
+        if query_filter is not None:
+            query = role_query_all.filter(query_filter)
+        else:
+            query = role_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            role = query_result_row[0]
+
+            pac = query_result_row[1] #pac_id
+
+            role.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+
+            result.append(role)
+        return result
+    def _first_or_none(self,role_list:List) -> Role:
+        return role_list[0] if role_list else None
     async def get_by_id(self, role_id: int) -> Optional[Role]:
+        logging.info("RoleManager.get_by_id start role_id:" + str(role_id))
         if not isinstance(role_id, int):
             raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
-        result = await self.session.execute(select(Role).filter(Role.role_id == role_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(Role).filter(Role.role_id == role_id))
+        # result = await self.session.execute(select(Role).filter(Role.role_id == role_id))
+        # return result.scalars().first()
+        query_filter = Role.role_id == role_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Role]:
-        result = await self.session.execute(select(Role).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(Role).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = Role.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, role: Role, **kwargs) -> Optional[Role]:
         if role:
             for key, value in kwargs.items():
@@ -42,8 +155,10 @@ class RoleManager:
         await self.session.delete(role)
         await self.session.commit()
     async def get_list(self) -> List[Role]:
-        result = await self.session.execute(select(Role))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Role))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, role:Role) -> str:
         """
         Serialize the Role object to a JSON string using the RoleSchema.
@@ -78,7 +193,7 @@ class RoleManager:
         await self.session.commit()
         return roles
     async def update_bulk(self, role_updates: List[Dict[int, Dict]]) -> List[Role]:
-        """Update multiple roles at once."""
+        logging.info("RoleManager.update_bulk start")
         updated_roles = []
         for update in role_updates:
             role_id = update.get("role_id")
@@ -86,6 +201,7 @@ class RoleManager:
                 raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
             if not role_id:
                 continue
+            logging.info(f"RoleManager.update_bulk role_id:{role_id}")
             role = await self.get_by_id(role_id)
             if not role:
                 raise RoleNotFoundError(f"Role with ID {role_id} not found!")
@@ -94,6 +210,7 @@ class RoleManager:
                     setattr(role, key, value)
             updated_roles.append(role)
         await self.session.commit()
+        logging.info("RoleManager.update_bulk end")
         return updated_roles
     async def delete_bulk(self, role_ids: List[int]) -> bool:
         """Delete multiple roles by their IDs."""
@@ -139,14 +256,14 @@ class RoleManager:
             raise TypeError("The role2 must be an Role instance.")
         dict1 = self.to_dict(role1)
         dict2 = self.to_dict(role2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
         if not isinstance(pac_id, int):
             raise TypeError(f"The role_id must be an integer, got {type(pac_id)} instead.")
-        result = await self.session.execute(select(Role).filter(Role.pac_id == pac_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Role).filter(Role.pac_id == pac_id))
+        # return result.scalars().all()
+        query_filter = Role.pac_id == pac_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

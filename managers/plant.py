@@ -1,22 +1,37 @@
 import json
 import uuid
-from typing import List, Optional, Dict 
+from enum import Enum
+from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.flavor import Flavor # FlvrForeignKeyID
 from models.land import Land # LandID
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 
 class PlantNotFoundError(Exception):
     pass
 
+##GENTrainingBlock[caseLookupEnums]Start
+##GENLearn[isLookup=false]Start  
+##GENLearn[isLookup=false]End
+##GENTrainingBlock[caseLookupEnums]End 
+
 class PlantManager:
     
     def __init__(self, session: AsyncSession):
         self.session = session 
+
+##GENTrainingBlock[caseIsLookupObject]Start
+##GENLearn[isLookup=false]Start 
+    async def initialize(self):
+        logging.info("PlantMaanger.Initialize") 
+##GENLearn[isLookup=false]End
+##GENTrainingBlock[caseIsLookupObject]End 
 
     async def build(self, **kwargs) -> Plant:
         return Plant(**kwargs)  
@@ -26,15 +41,78 @@ class PlantManager:
         await self.session.commit()
         return plant
 
+    def _build_query(self): 
+        join_condition = None
+#endset
+        join_condition = outerjoin(Plant, Land, and_(Plant.land_id == Land.land_id, Plant.land_id != 0))
+        join_condition = outerjoin(join_condition, Flavor, and_(Plant.flvr_foreign_key_id == Flavor.flavor_id, Plant.flvr_foreign_key_id != 0))
+#endset
+        if join_condition is not None:
+            query = select(Plant
+                        ,Land #land_id
+                        ,Flavor #flvr_foreign_key_id
+                        ).select_from(join_condition)
+        else:
+            query = select(Plant)
+
+        return query
+
+    async def _run_query(self, query_filter) -> List[Plant]:
+        plant_query_all = self._build_query()  
+
+        if query_filter is not None:
+            query = plant_query_all.filter(query_filter)
+        else:
+            query = plant_query_all
+ 
+        result_proxy = await self.session.execute(query)
+        
+        query_results = result_proxy.all()
+
+        result = list()
+         
+        for query_result_row in query_results:
+            plant = query_result_row[0]
+#endset
+            land = query_result_row[1] #land_id
+            flavor = query_result_row[2] #flvr_foreign_key_id 
+#endset
+            plant.land_code_peek = land.code if land else uuid.UUID(int=0) #land_id
+            plant.flvr_foreign_key_code_peek = flavor.code if flavor else uuid.UUID(int=0) #flvr_foreign_key_id
+#endset 
+            result.append(plant) 
+
+        return result
+
+    def _first_or_none(self,plant_list:List) -> Plant:
+        return plant_list[0] if plant_list else None
+
     async def get_by_id(self, plant_id: int) -> Optional[Plant]:
+        logging.info("PlantManager.get_by_id start plant_id:" + str(plant_id))
         if not isinstance(plant_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
-        result = await self.session.execute(select(Plant).filter(Plant.plant_id == plant_id))
-        return result.scalars().first()
+         
+
+        # result = await self.session.execute(select(Plant).filter(Plant.plant_id == plant_id))
+
+        # result = await self.session.execute(select(Plant).filter(Plant.plant_id == plant_id))
+        # return result.scalars().first()
+
+        query_filter = Plant.plant_id == plant_id
+
+        query_results = await self._run_query(query_filter)
+
+        return self._first_or_none(query_results)
 
     async def get_by_code(self, code: uuid.UUID) -> Optional[Plant]:
-        result = await self.session.execute(select(Plant).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(Plant).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = Plant.code==code
+
+        query_results = await self._run_query(query_filter)
+
+        return self._first_or_none(query_results)
+
     
     async def update(self, plant: Plant, **kwargs) -> Optional[Plant]:
         if plant:
@@ -57,8 +135,11 @@ class PlantManager:
 
 
     async def get_list(self) -> List[Plant]:
-        result = await self.session.execute(select(Plant))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Plant))
+        # return result.scalars().all() 
+        query_results = await self._run_query(None)
+
+        return query_results
     
     def to_json(self, plant:Plant) -> str:
         """
@@ -108,7 +189,7 @@ class PlantManager:
         return plants
 
     async def update_bulk(self, plant_updates: List[Dict[int, Dict]]) -> List[Plant]:
-        """Update multiple plants at once."""
+        logging.info("PlantManager.update_bulk start") 
         updated_plants = []
         for update in plant_updates:
             plant_id = update.get("plant_id")
@@ -116,14 +197,16 @@ class PlantManager:
                 raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
             if not plant_id:
                 continue
+            logging.info(f"PlantManager.update_bulk plant_id:{plant_id}")
             plant = await self.get_by_id(plant_id)
             if not plant:
-                raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")  
+                raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")   
             for key, value in update.items():
                 if key != "plant_id":
                     setattr(plant, key, value)
             updated_plants.append(plant)
         await self.session.commit()
+        logging.info("PlantManager.update_bulk end") 
         return updated_plants
 
     async def delete_bulk(self, plant_ids: List[int]) -> bool:
@@ -181,25 +264,30 @@ class PlantManager:
         dict1 = self.to_dict(plant1)
 
         dict2 = self.to_dict(plant2)
-
-        logger.info("vrtest")
-        
-        logger.info(dict1)
-        
-        logger.info(dict2)
-
+ 
         return dict1 == dict2
     
 #endset
     async def get_by_flvr_foreign_key_id(self, flvr_foreign_key_id: int) -> List[Flavor]: # FlvrForeignKeyID
         if not isinstance(flvr_foreign_key_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(flvr_foreign_key_id)} instead.")
-        result = await self.session.execute(select(Plant).filter(Plant.flvr_foreign_key_id == flvr_foreign_key_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Plant).filter(Plant.flvr_foreign_key_id == flvr_foreign_key_id))
+        # return result.scalars().all()
+        query_filter = Plant.flvr_foreign_key_id == flvr_foreign_key_id
+
+        query_results = await self._run_query(query_filter)
+
+        return query_results
+
     
     async def get_by_land_id(self, land_id: int) -> List[Land]: # LandID
         if not isinstance(land_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(land_id)} instead.")
-        result = await self.session.execute(select(Plant).filter(Plant.land_id == land_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Plant).filter(Plant.land_id == land_id))
+        # return result.scalars().all()
+        query_filter = Plant.land_id == land_id
+
+        query_results = await self._run_query(query_filter)
+
+        return query_results
 #endset

@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import TriStateFilterManager
 from models import TriStateFilter
+import managers as managers_and_enums
 class TriStateFilterSessionNotFoundError(Exception):
     pass
 class TriStateFilterInvalidInitError(Exception):
@@ -160,7 +161,16 @@ class TriStateFilterBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.tri_state_filter.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, tri_state_filter_id:int=None, tri_state_filter_obj_instance:TriStateFilter=None, tri_state_filter_dict:dict=None):
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.TriStateFilterEnum:
+        return managers_and_enums.TriStateFilterEnum[self.tri_state_filter.lookup_enum_name]
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   tri_state_filter_id:int=None,
+                   tri_state_filter_obj_instance:TriStateFilter=None,
+                   tri_state_filter_dict:dict=None,
+                   tri_state_filter_enum:managers_and_enums.TriStateFilterEnum=None):
         if tri_state_filter_id and self.tri_state_filter.tri_state_filter_id is None:
             tri_state_filter_manager = TriStateFilterManager(self.session)
             tri_state_filter_obj = await tri_state_filter_manager.get_by_id(tri_state_filter_id)
@@ -179,6 +189,10 @@ class TriStateFilterBusObj:
         if tri_state_filter_dict and self.tri_state_filter.tri_state_filter_id is None:
             tri_state_filter_manager = TriStateFilterManager(self.session)
             self.tri_state_filter = tri_state_filter_manager.from_dict(tri_state_filter_dict)
+        if tri_state_filter_enum and self.tri_state_filter.tri_state_filter_id is None:
+            tri_state_filter_manager = TriStateFilterManager(self.session)
+            self.tri_state_filter = await tri_state_filter_manager.from_enum(tri_state_filter_enum)
+
     async def refresh(self):
         tri_state_filter_manager = TriStateFilterManager(self.session)
         self.tri_state_filter = await tri_state_filter_manager.refresh(self.tri_state_filter)

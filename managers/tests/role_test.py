@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
+import logging
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -215,13 +216,23 @@ class TestRoleManager:
         # Mocking role instances
         role1 = await RoleFactory.create_async(session=session)
         role2 = await RoleFactory.create_async(session=session)
+        logging.info(role1.__dict__)
         code_updated1 = generate_uuid()
         code_updated2 = generate_uuid()
+        logging.info(code_updated1)
+        logging.info(code_updated2)
         # Update roles
         updates = [{"role_id": 1, "code": code_updated1}, {"role_id": 2, "code": code_updated2}]
         updated_roles = await role_manager.update_bulk(updates)
+        logging.info('bulk update results')
         # Assertions
         assert len(updated_roles) == 2
+        logging.info(updated_roles[0].__dict__)
+        logging.info(updated_roles[1].__dict__)
+        logging.info('getall')
+        roles = await role_manager.get_list()
+        logging.info(roles[0].__dict__)
+        logging.info(roles[1].__dict__)
         assert updated_roles[0].code == code_updated1
         assert updated_roles[1].code == code_updated2
         result = await session.execute(select(Role).filter(Role.role_id == 1))

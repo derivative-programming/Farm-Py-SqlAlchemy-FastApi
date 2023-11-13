@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
+import logging
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -215,13 +216,23 @@ class TestTacManager:
         # Mocking tac instances
         tac1 = await TacFactory.create_async(session=session)
         tac2 = await TacFactory.create_async(session=session)
+        logging.info(tac1.__dict__)
         code_updated1 = generate_uuid()
         code_updated2 = generate_uuid()
+        logging.info(code_updated1)
+        logging.info(code_updated2)
         # Update tacs
         updates = [{"tac_id": 1, "code": code_updated1}, {"tac_id": 2, "code": code_updated2}]
         updated_tacs = await tac_manager.update_bulk(updates)
+        logging.info('bulk update results')
         # Assertions
         assert len(updated_tacs) == 2
+        logging.info(updated_tacs[0].__dict__)
+        logging.info(updated_tacs[1].__dict__)
+        logging.info('getall')
+        tacs = await tac_manager.get_list()
+        logging.info(tacs[0].__dict__)
+        logging.info(tacs[1].__dict__)
         assert updated_tacs[0].code == code_updated1
         assert updated_tacs[1].code == code_updated2
         result = await session.execute(select(Tac).filter(Tac.tac_id == 1))

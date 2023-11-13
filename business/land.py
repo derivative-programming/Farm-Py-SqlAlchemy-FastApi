@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import LandManager
 from models import Land
+import managers as managers_and_enums
 class LandSessionNotFoundError(Exception):
     pass
 class LandInvalidInitError(Exception):
@@ -151,7 +152,16 @@ class LandBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.land.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, land_id:int=None, land_obj_instance:Land=None, land_dict:dict=None):
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.LandEnum:
+        return managers_and_enums.LandEnum[self.land.lookup_enum_name]
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   land_id:int=None,
+                   land_obj_instance:Land=None,
+                   land_dict:dict=None,
+                   land_enum:managers_and_enums.LandEnum=None):
         if land_id and self.land.land_id is None:
             land_manager = LandManager(self.session)
             land_obj = await land_manager.get_by_id(land_id)
@@ -170,6 +180,10 @@ class LandBusObj:
         if land_dict and self.land.land_id is None:
             land_manager = LandManager(self.session)
             self.land = land_manager.from_dict(land_dict)
+        if land_enum and self.land.land_id is None:
+            land_manager = LandManager(self.session)
+            self.land = await land_manager.from_enum(land_enum)
+
     async def refresh(self):
         land_manager = LandManager(self.session)
         self.land = await land_manager.refresh(self.land)

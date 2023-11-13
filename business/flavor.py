@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import FlavorManager
 from models import Flavor
+import managers as managers_and_enums
 class FlavorSessionNotFoundError(Exception):
     pass
 class FlavorInvalidInitError(Exception):
@@ -151,7 +152,16 @@ class FlavorBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.flavor.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, flavor_id:int=None, flavor_obj_instance:Flavor=None, flavor_dict:dict=None):
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.FlavorEnum:
+        return managers_and_enums.FlavorEnum[self.flavor.lookup_enum_name]
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   flavor_id:int=None,
+                   flavor_obj_instance:Flavor=None,
+                   flavor_dict:dict=None,
+                   flavor_enum:managers_and_enums.FlavorEnum=None):
         if flavor_id and self.flavor.flavor_id is None:
             flavor_manager = FlavorManager(self.session)
             flavor_obj = await flavor_manager.get_by_id(flavor_id)
@@ -170,6 +180,10 @@ class FlavorBusObj:
         if flavor_dict and self.flavor.flavor_id is None:
             flavor_manager = FlavorManager(self.session)
             self.flavor = flavor_manager.from_dict(flavor_dict)
+        if flavor_enum and self.flavor.flavor_id is None:
+            flavor_manager = FlavorManager(self.session)
+            self.flavor = await flavor_manager.from_enum(flavor_enum)
+
     async def refresh(self):
         flavor_manager = FlavorManager(self.session)
         self.flavor = await flavor_manager.refresh(self.flavor)

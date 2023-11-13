@@ -1,32 +1,144 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.flavor import Flavor
 from models.serialization_schema.flavor import FlavorSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class FlavorNotFoundError(Exception):
     pass
+
+class FlavorEnum(Enum):
+    Unknown = 'Unknown'
+    Sweet = 'Sweet'
+    Sour = 'Sour'
+
 class FlavorManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pac:Pac = self.session.execute(select(Pac)).scalars().first()
+        if self.from_enum(FlavorEnum.Unknown) is None:
+            item = Flavor()
+            item.description = "Unknown"
+            item.display_order = self.count()
+            item.is_active = True
+            item.lookup_enum_name = "Unknown"
+            item.name = "Unknown"
+            item.pac_id = pac.pac_id
+            await self.add(item)
+        if self.from_enum(FlavorEnum.Last_24_Hours) is None:
+            item = Flavor.build(pac)
+            item.name = "Last 24 Hours"
+            item.lookup_enum_name = "Last_24_Hours"
+            item.description = "Last 24 Hours"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 1
+            await self.add(item)
+        if self.from_enum(FlavorEnum.Last_7_Days) is None:
+            item = Flavor.build(pac)
+            item.name = "Last 7 Days"
+            item.lookup_enum_name = "Last_7_Days"
+            item.description = "Last 7 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 7
+            await self.add(item)
+        if self.from_enum(FlavorEnum.Last_30_Days) is None:
+            item = Flavor.build(pac)
+            item.name = "Last 30 Days"
+            item.lookup_enum_name = "Last_30_Days"
+            item.description = "Last 30 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 30
+            await self.add(item)
+        if self.from_enum(FlavorEnum.Last_90_Days) is None:
+            item = Flavor.build(pac)
+            item.name = "Last 90 Days"
+            item.lookup_enum_name = "Last_90_Days"
+            item.description = "Last 90 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 90
+            await self.add(item)
+        if self.from_enum(FlavorEnum.Last_365_Days) is None:
+            item = Flavor.build(pac)
+            item.name = "Last 365 Days"
+            item.lookup_enum_name = "Last_365_Days"
+            item.description = "Last 365 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 365
+            await self.add(item)
+    async def from_enum(self, enum_val:FlavorEnum) -> Flavor:
+        # return self.get(lookup_enum_name=enum_val.value)
+        query_filter = Flavor.lookup_enum_name==enum_val.value
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
+
     async def build(self, **kwargs) -> Flavor:
         return Flavor(**kwargs)
     async def add(self, flavor: Flavor) -> Flavor:
         self.session.add(flavor)
         await self.session.commit()
         return flavor
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(Flavor, Pac, and_(Flavor.pac_id == Pac.pac_id, Flavor.pac_id != 0))
+
+        if join_condition is not None:
+            query = select(Flavor
+                        ,Pac #pac_id
+                        ).select_from(join_condition)
+        else:
+            query = select(Flavor)
+        return query
+    async def _run_query(self, query_filter) -> List[Flavor]:
+        flavor_query_all = self._build_query()
+        if query_filter is not None:
+            query = flavor_query_all.filter(query_filter)
+        else:
+            query = flavor_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            flavor = query_result_row[0]
+
+            pac = query_result_row[1] #pac_id
+
+            flavor.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+
+            result.append(flavor)
+        return result
+    def _first_or_none(self,flavor_list:List) -> Flavor:
+        return flavor_list[0] if flavor_list else None
     async def get_by_id(self, flavor_id: int) -> Optional[Flavor]:
+        logging.info("FlavorManager.get_by_id start flavor_id:" + str(flavor_id))
         if not isinstance(flavor_id, int):
             raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
-        result = await self.session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
+        # result = await self.session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
+        # return result.scalars().first()
+        query_filter = Flavor.flavor_id == flavor_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Flavor]:
-        result = await self.session.execute(select(Flavor).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(Flavor).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = Flavor.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, flavor: Flavor, **kwargs) -> Optional[Flavor]:
         if flavor:
             for key, value in kwargs.items():
@@ -42,8 +154,10 @@ class FlavorManager:
         await self.session.delete(flavor)
         await self.session.commit()
     async def get_list(self) -> List[Flavor]:
-        result = await self.session.execute(select(Flavor))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Flavor))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, flavor:Flavor) -> str:
         """
         Serialize the Flavor object to a JSON string using the FlavorSchema.
@@ -78,7 +192,7 @@ class FlavorManager:
         await self.session.commit()
         return flavors
     async def update_bulk(self, flavor_updates: List[Dict[int, Dict]]) -> List[Flavor]:
-        """Update multiple flavors at once."""
+        logging.info("FlavorManager.update_bulk start")
         updated_flavors = []
         for update in flavor_updates:
             flavor_id = update.get("flavor_id")
@@ -86,6 +200,7 @@ class FlavorManager:
                 raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
             if not flavor_id:
                 continue
+            logging.info(f"FlavorManager.update_bulk flavor_id:{flavor_id}")
             flavor = await self.get_by_id(flavor_id)
             if not flavor:
                 raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
@@ -94,6 +209,7 @@ class FlavorManager:
                     setattr(flavor, key, value)
             updated_flavors.append(flavor)
         await self.session.commit()
+        logging.info("FlavorManager.update_bulk end")
         return updated_flavors
     async def delete_bulk(self, flavor_ids: List[int]) -> bool:
         """Delete multiple flavors by their IDs."""
@@ -139,14 +255,14 @@ class FlavorManager:
             raise TypeError("The flavor2 must be an Flavor instance.")
         dict1 = self.to_dict(flavor1)
         dict2 = self.to_dict(flavor2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
         if not isinstance(pac_id, int):
             raise TypeError(f"The flavor_id must be an integer, got {type(pac_id)} instead.")
-        result = await self.session.execute(select(Flavor).filter(Flavor.pac_id == pac_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Flavor).filter(Flavor.pac_id == pac_id))
+        # return result.scalars().all()
+        query_filter = Flavor.pac_id == pac_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

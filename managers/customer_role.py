@@ -1,33 +1,85 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.customer import Customer # CustomerID
 from models.role import Role # RoleID
 from models.customer_role import CustomerRole
 from models.serialization_schema.customer_role import CustomerRoleSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class CustomerRoleNotFoundError(Exception):
     pass
+
 class CustomerRoleManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pass
+
     async def build(self, **kwargs) -> CustomerRole:
         return CustomerRole(**kwargs)
     async def add(self, customer_role: CustomerRole) -> CustomerRole:
         self.session.add(customer_role)
         await self.session.commit()
         return customer_role
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(CustomerRole, Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
+        join_condition = outerjoin(join_condition, Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
+
+        if join_condition is not None:
+            query = select(CustomerRole
+                        ,Customer #customer_id
+                        ,Role #role_id
+                        ).select_from(join_condition)
+        else:
+            query = select(CustomerRole)
+        return query
+    async def _run_query(self, query_filter) -> List[CustomerRole]:
+        customer_role_query_all = self._build_query()
+        if query_filter is not None:
+            query = customer_role_query_all.filter(query_filter)
+        else:
+            query = customer_role_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            customer_role = query_result_row[0]
+
+            customer = query_result_row[1] #customer_id
+            role = query_result_row[2] #role_id
+
+            customer_role.customer_code_peek = customer.code if customer else uuid.UUID(int=0) #customer_id
+            customer_role.role_code_peek = role.code if role else uuid.UUID(int=0) #role_id
+
+            result.append(customer_role)
+        return result
+    def _first_or_none(self,customer_role_list:List) -> CustomerRole:
+        return customer_role_list[0] if customer_role_list else None
     async def get_by_id(self, customer_role_id: int) -> Optional[CustomerRole]:
+        logging.info("CustomerRoleManager.get_by_id start customer_role_id:" + str(customer_role_id))
         if not isinstance(customer_role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
-        result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == customer_role_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == customer_role_id))
+        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == customer_role_id))
+        # return result.scalars().first()
+        query_filter = CustomerRole.customer_role_id == customer_role_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:
-        result = await self.session.execute(select(CustomerRole).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(CustomerRole).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = CustomerRole.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, customer_role: CustomerRole, **kwargs) -> Optional[CustomerRole]:
         if customer_role:
             for key, value in kwargs.items():
@@ -43,8 +95,10 @@ class CustomerRoleManager:
         await self.session.delete(customer_role)
         await self.session.commit()
     async def get_list(self) -> List[CustomerRole]:
-        result = await self.session.execute(select(CustomerRole))
-        return result.scalars().all()
+        # result = await self.session.execute(select(CustomerRole))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, customer_role:CustomerRole) -> str:
         """
         Serialize the CustomerRole object to a JSON string using the CustomerRoleSchema.
@@ -79,7 +133,7 @@ class CustomerRoleManager:
         await self.session.commit()
         return customer_roles
     async def update_bulk(self, customer_role_updates: List[Dict[int, Dict]]) -> List[CustomerRole]:
-        """Update multiple customer_roles at once."""
+        logging.info("CustomerRoleManager.update_bulk start")
         updated_customer_roles = []
         for update in customer_role_updates:
             customer_role_id = update.get("customer_role_id")
@@ -87,6 +141,7 @@ class CustomerRoleManager:
                 raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
             if not customer_role_id:
                 continue
+            logging.info(f"CustomerRoleManager.update_bulk customer_role_id:{customer_role_id}")
             customer_role = await self.get_by_id(customer_role_id)
             if not customer_role:
                 raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
@@ -95,6 +150,7 @@ class CustomerRoleManager:
                     setattr(customer_role, key, value)
             updated_customer_roles.append(customer_role)
         await self.session.commit()
+        logging.info("CustomerRoleManager.update_bulk end")
         return updated_customer_roles
     async def delete_bulk(self, customer_role_ids: List[int]) -> bool:
         """Delete multiple customer_roles by their IDs."""
@@ -140,19 +196,22 @@ class CustomerRoleManager:
             raise TypeError("The customer_role2 must be an CustomerRole instance.")
         dict1 = self.to_dict(customer_role1)
         dict2 = self.to_dict(customer_role2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_customer_id(self, customer_id: int) -> List[Customer]: # CustomerID
         if not isinstance(customer_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_id)} instead.")
-        result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_id == customer_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_id == customer_id))
+        # return result.scalars().all()
+        query_filter = CustomerRole.customer_id == customer_id
+        query_results = await self._run_query(query_filter)
+        return query_results
     async def get_by_role_id(self, role_id: int) -> List[Role]: # RoleID
         if not isinstance(role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(role_id)} instead.")
-        result = await self.session.execute(select(CustomerRole).filter(CustomerRole.role_id == role_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.role_id == role_id))
+        # return result.scalars().all()
+        query_filter = CustomerRole.role_id == role_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

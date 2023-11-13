@@ -8,6 +8,7 @@ from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import DateGreaterThanFilterManager
+import managers as managers_and_enums
 from models import DateGreaterThanFilter
 class DateGreaterThanFilterSessionNotFoundError(Exception):
     pass
@@ -160,7 +161,20 @@ class DateGreaterThanFilterBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.date_greater_than_filter.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, date_greater_than_filter_id:int=None, date_greater_than_filter_obj_instance:DateGreaterThanFilter=None, date_greater_than_filter_dict:dict=None):
+        
+##GENTrainingBlock[caseLookupEnums]Start
+##GENLearn[isLookup=true]Start   
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.DateGreaterThanFilterEnum:
+        return managers_and_enums.DateGreaterThanFilterEnum[self.date_greater_than_filter.lookup_enum_name]
+
+    async def load(self, json_data:str=None, 
+                   code:uuid.UUID=None, 
+                   date_greater_than_filter_id:int=None, 
+                   date_greater_than_filter_obj_instance:DateGreaterThanFilter=None, 
+                   date_greater_than_filter_dict:dict=None,
+                   date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum=None):
         if date_greater_than_filter_id and self.date_greater_than_filter.date_greater_than_filter_id is None:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
             date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_id)
@@ -179,6 +193,11 @@ class DateGreaterThanFilterBusObj:
         if date_greater_than_filter_dict and self.date_greater_than_filter.date_greater_than_filter_id is None:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
             self.date_greater_than_filter = date_greater_than_filter_manager.from_dict(date_greater_than_filter_dict)
+        if date_greater_than_filter_enum and self.date_greater_than_filter.date_greater_than_filter_id is None:
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            self.date_greater_than_filter = await date_greater_than_filter_manager.from_enum(date_greater_than_filter_enum)
+##GENLearn[isLookup=true]End
+##GENTrainingBlock[caseLookupEnums]End 
     async def refresh(self):
         date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
         self.date_greater_than_filter = await date_greater_than_filter_manager.refresh(self.date_greater_than_filter)

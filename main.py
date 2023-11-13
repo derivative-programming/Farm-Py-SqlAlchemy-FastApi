@@ -10,8 +10,11 @@ from fastapi.exceptions import RequestValidationError
 from database import get_db
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from apis.fs_farm_api.v1_0.routers import fs_farm_api_v1_0_router
+import current_runtime
+import logging
  
-
+logging.basicConfig(level=logging.INFO)
+logging.info('Start Main')
 app = FastAPI()
     
 app.include_router(fs_farm_api_v1_0_router)
@@ -51,9 +54,4 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
 @app.router.on_startup.append
 async def startup_event():
     async with get_db() as session:
-        land_manager = LandManager(session)
-        flavor_manager = FlavorManager(session)
-        await land_manager.create()
-        await flavor_manager.create(name='unknown')
-        await flavor_manager.create(name='sweet')
-        await flavor_manager.create(name='sour')
+        await current_runtime.initialize(session) 

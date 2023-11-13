@@ -11,6 +11,7 @@ from managers import CustomerManager as CustomerIDManager #CustomerID
 from managers import OrganizationManager as OrganizationIDManager #OrganizationID
 from managers import OrgCustomerManager
 from models import OrgCustomer
+import managers as managers_and_enums
 class OrgCustomerSessionNotFoundError(Exception):
     pass
 class OrgCustomerInvalidInitError(Exception):
@@ -133,7 +134,12 @@ class OrgCustomerBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.org_customer.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, org_customer_id:int=None, org_customer_obj_instance:OrgCustomer=None, org_customer_dict:dict=None):
+
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   org_customer_id:int=None,
+                   org_customer_obj_instance:OrgCustomer=None,
+                   org_customer_dict:dict=None):
         if org_customer_id and self.org_customer.org_customer_id is None:
             org_customer_manager = OrgCustomerManager(self.session)
             org_customer_obj = await org_customer_manager.get_by_id(org_customer_id)
@@ -152,6 +158,7 @@ class OrgCustomerBusObj:
         if org_customer_dict and self.org_customer.org_customer_id is None:
             org_customer_manager = OrgCustomerManager(self.session)
             self.org_customer = org_customer_manager.from_dict(org_customer_dict)
+
     async def refresh(self):
         org_customer_manager = OrgCustomerManager(self.session)
         self.org_customer = await org_customer_manager.refresh(self.org_customer)

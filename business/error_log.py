@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import ErrorLogManager
 from models import ErrorLog
+import managers as managers_and_enums
 class ErrorLogSessionNotFoundError(Exception):
     pass
 class ErrorLogInvalidInitError(Exception):
@@ -170,7 +171,12 @@ class ErrorLogBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.error_log.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, error_log_id:int=None, error_log_obj_instance:ErrorLog=None, error_log_dict:dict=None):
+
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   error_log_id:int=None,
+                   error_log_obj_instance:ErrorLog=None,
+                   error_log_dict:dict=None):
         if error_log_id and self.error_log.error_log_id is None:
             error_log_manager = ErrorLogManager(self.session)
             error_log_obj = await error_log_manager.get_by_id(error_log_id)
@@ -189,6 +195,7 @@ class ErrorLogBusObj:
         if error_log_dict and self.error_log.error_log_id is None:
             error_log_manager = ErrorLogManager(self.session)
             self.error_log = error_log_manager.from_dict(error_log_dict)
+
     async def refresh(self):
         error_log_manager = ErrorLogManager(self.session)
         self.error_log = await error_log_manager.refresh(self.error_log)

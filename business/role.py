@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import RoleManager
 from models import Role
+import managers as managers_and_enums
 class RoleSessionNotFoundError(Exception):
     pass
 class RoleInvalidInitError(Exception):
@@ -151,7 +152,16 @@ class RoleBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.role.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, role_id:int=None, role_obj_instance:Role=None, role_dict:dict=None):
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.RoleEnum:
+        return managers_and_enums.RoleEnum[self.role.lookup_enum_name]
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   role_id:int=None,
+                   role_obj_instance:Role=None,
+                   role_dict:dict=None,
+                   role_enum:managers_and_enums.RoleEnum=None):
         if role_id and self.role.role_id is None:
             role_manager = RoleManager(self.session)
             role_obj = await role_manager.get_by_id(role_id)
@@ -170,6 +180,10 @@ class RoleBusObj:
         if role_dict and self.role.role_id is None:
             role_manager = RoleManager(self.session)
             self.role = role_manager.from_dict(role_dict)
+        if role_enum and self.role.role_id is None:
+            role_manager = RoleManager(self.session)
+            self.role = await role_manager.from_enum(role_enum)
+
     async def refresh(self):
         role_manager = RoleManager(self.session)
         self.role = await role_manager.refresh(self.role)

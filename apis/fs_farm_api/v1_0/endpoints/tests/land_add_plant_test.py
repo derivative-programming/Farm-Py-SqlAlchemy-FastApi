@@ -20,7 +20,7 @@ import logging
 async def test_submit_success(overridden_get_db):
     async def mock_process_request(session, session_context, land_code, request):
             pass
-         
+          
     with patch.object(apis_models.LandAddPlantPostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
         mock_method.side_effect = mock_process_request
         land = await model_factorys.LandFactory.create_async(overridden_get_db)

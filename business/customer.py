@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import TacManager as TacIDManager #TacID
 from managers import CustomerManager
 from models import Customer
+import managers as managers_and_enums
 class CustomerSessionNotFoundError(Exception):
     pass
 class CustomerInvalidInitError(Exception):
@@ -310,7 +311,12 @@ class CustomerBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.customer.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, customer_id:int=None, customer_obj_instance:Customer=None, customer_dict:dict=None):
+
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   customer_id:int=None,
+                   customer_obj_instance:Customer=None,
+                   customer_dict:dict=None):
         if customer_id and self.customer.customer_id is None:
             customer_manager = CustomerManager(self.session)
             customer_obj = await customer_manager.get_by_id(customer_id)
@@ -329,6 +335,7 @@ class CustomerBusObj:
         if customer_dict and self.customer.customer_id is None:
             customer_manager = CustomerManager(self.session)
             self.customer = customer_manager.from_dict(customer_dict)
+
     async def refresh(self):
         customer_manager = CustomerManager(self.session)
         self.customer = await customer_manager.refresh(self.customer)

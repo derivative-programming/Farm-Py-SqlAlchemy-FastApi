@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
+import logging
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -215,13 +216,23 @@ class TestErrorLogManager:
         # Mocking error_log instances
         error_log1 = await ErrorLogFactory.create_async(session=session)
         error_log2 = await ErrorLogFactory.create_async(session=session)
+        logging.info(error_log1.__dict__)
         code_updated1 = generate_uuid()
         code_updated2 = generate_uuid()
+        logging.info(code_updated1)
+        logging.info(code_updated2)
         # Update error_logs
         updates = [{"error_log_id": 1, "code": code_updated1}, {"error_log_id": 2, "code": code_updated2}]
         updated_error_logs = await error_log_manager.update_bulk(updates)
+        logging.info('bulk update results')
         # Assertions
         assert len(updated_error_logs) == 2
+        logging.info(updated_error_logs[0].__dict__)
+        logging.info(updated_error_logs[1].__dict__)
+        logging.info('getall')
+        error_logs = await error_log_manager.get_list()
+        logging.info(error_logs[0].__dict__)
+        logging.info(error_logs[1].__dict__)
         assert updated_error_logs[0].code == code_updated1
         assert updated_error_logs[1].code == code_updated2
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == 1))

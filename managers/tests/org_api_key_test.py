@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
+import logging
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -215,13 +216,23 @@ class TestOrgApiKeyManager:
         # Mocking org_api_key instances
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
         org_api_key2 = await OrgApiKeyFactory.create_async(session=session)
+        logging.info(org_api_key1.__dict__)
         code_updated1 = generate_uuid()
         code_updated2 = generate_uuid()
+        logging.info(code_updated1)
+        logging.info(code_updated2)
         # Update org_api_keys
         updates = [{"org_api_key_id": 1, "code": code_updated1}, {"org_api_key_id": 2, "code": code_updated2}]
         updated_org_api_keys = await org_api_key_manager.update_bulk(updates)
+        logging.info('bulk update results')
         # Assertions
         assert len(updated_org_api_keys) == 2
+        logging.info(updated_org_api_keys[0].__dict__)
+        logging.info(updated_org_api_keys[1].__dict__)
+        logging.info('getall')
+        org_api_keys = await org_api_key_manager.get_list()
+        logging.info(org_api_keys[0].__dict__)
+        logging.info(org_api_keys[1].__dict__)
         assert updated_org_api_keys[0].code == code_updated1
         assert updated_org_api_keys[1].code == code_updated2
         result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == 1))

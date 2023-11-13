@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import TacManager
 from models import Tac
+import managers as managers_and_enums
 class TacSessionNotFoundError(Exception):
     pass
 class TacInvalidInitError(Exception):
@@ -151,7 +152,16 @@ class TacBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.tac.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, tac_id:int=None, tac_obj_instance:Tac=None, tac_dict:dict=None):
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.TacEnum:
+        return managers_and_enums.TacEnum[self.tac.lookup_enum_name]
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   tac_id:int=None,
+                   tac_obj_instance:Tac=None,
+                   tac_dict:dict=None,
+                   tac_enum:managers_and_enums.TacEnum=None):
         if tac_id and self.tac.tac_id is None:
             tac_manager = TacManager(self.session)
             tac_obj = await tac_manager.get_by_id(tac_id)
@@ -170,6 +180,10 @@ class TacBusObj:
         if tac_dict and self.tac.tac_id is None:
             tac_manager = TacManager(self.session)
             self.tac = tac_manager.from_dict(tac_dict)
+        if tac_enum and self.tac.tac_id is None:
+            tac_manager = TacManager(self.session)
+            self.tac = await tac_manager.from_enum(tac_enum)
+
     async def refresh(self):
         tac_manager = TacManager(self.session)
         self.tac = await tac_manager.refresh(self.tac)

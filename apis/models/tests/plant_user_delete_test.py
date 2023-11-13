@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import uuid
 import pytest
 import pytest_asyncio
 import time
@@ -9,8 +10,11 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from business.plant import PlantBusObj
 from flows.base.flow_validation_error import FlowValidationError
+from flows.plant_user_delete import FlowPlantUserDelete, FlowPlantUserDeleteResult
 from helpers.session_context import SessionContext
+from helpers.type_conversion import TypeConversion
 from models.factory.plant import PlantFactory
 from ...models.plant_user_delete import PlantUserDeletePostModelRequest,PlantUserDeletePostModelResponse
 from models import Base
@@ -24,9 +28,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field,UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
-
+from unittest.mock import patch, AsyncMock
 db_dialect = "sqlite"
-
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -34,57 +37,26 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-
 class TestPlantUserDeletePostModelResponse:
-
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        request_instance = await PlantUserDeletePostModelRequestFactory.create_async(session=session)
-        response_instance = PlantUserDeletePostModelResponse()
-        session_context = SessionContext(dict())
+        async def mock_process(
+            plant_bus_obj: PlantBusObj,
 
-        plant = await PlantFactory.create_async(session)
-
-        role_required = "User"
-
-        if len(role_required) > 0:
+            ):
+            return FlowPlantUserDeleteResult()
+        with patch.object(FlowPlantUserDelete, 'process', new_callable=AsyncMock) as mock_method:
+            mock_method.side_effect = mock_process
+            request_instance = await PlantUserDeletePostModelRequestFactory.create_async(session=session)
+            response_instance = PlantUserDeletePostModelResponse()
+            session_context = SessionContext(dict())
+            plant = await PlantFactory.create_async(session)
             await response_instance.process_request(
                 session=session,
                 session_context=session_context,
                 plant_code=plant.code,
                 request=request_instance
-            )
-            assert response_instance.success == False
-            assert len(response_instance.validation_errors) == 1
-            assert response_instance.validation_errors[0].message == "Unautorized access. " + role_required + " role not found."
-
-        session_context.role_name_csv = role_required
-
-        customerCodeMatchRequired = False
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed == True:
-            customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed == True:
-            customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
-            customerCodeMatchRequired = True
-
-        if customerCodeMatchRequired == True:
-            await response_instance.process_request(
-                session=session,
-                session_context=session_context,
-                plant_code=plant.code,
-                request=request_instance
-            )
-            assert response_instance.success == False
-            assert len(response_instance.validation_errors) == 1
-            assert response_instance.validation_errors[0].message == "Unautorized access.  Invalid User."
-
-        session_context.role_name_csv = role_required
-
-        await response_instance.process_request(
-            session=session,
-            session_context=session_context,
-            plant_code=plant.code,
-            request=request_instance
-            )
+                )
+            assert response_instance.success == True
+            mock_method.assert_awaited()
 

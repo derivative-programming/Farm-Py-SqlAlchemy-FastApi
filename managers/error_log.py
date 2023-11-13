@@ -1,32 +1,80 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.error_log import ErrorLog
 from models.serialization_schema.error_log import ErrorLogSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class ErrorLogNotFoundError(Exception):
     pass
+
 class ErrorLogManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pass
+
     async def build(self, **kwargs) -> ErrorLog:
         return ErrorLog(**kwargs)
     async def add(self, error_log: ErrorLog) -> ErrorLog:
         self.session.add(error_log)
         await self.session.commit()
         return error_log
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(ErrorLog, Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
+
+        if join_condition is not None:
+            query = select(ErrorLog
+                        ,Pac #pac_id
+                        ).select_from(join_condition)
+        else:
+            query = select(ErrorLog)
+        return query
+    async def _run_query(self, query_filter) -> List[ErrorLog]:
+        error_log_query_all = self._build_query()
+        if query_filter is not None:
+            query = error_log_query_all.filter(query_filter)
+        else:
+            query = error_log_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            error_log = query_result_row[0]
+
+            pac = query_result_row[1] #pac_id
+
+            error_log.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+
+            result.append(error_log)
+        return result
+    def _first_or_none(self,error_log_list:List) -> ErrorLog:
+        return error_log_list[0] if error_log_list else None
     async def get_by_id(self, error_log_id: int) -> Optional[ErrorLog]:
+        logging.info("ErrorLogManager.get_by_id start error_log_id:" + str(error_log_id))
         if not isinstance(error_log_id, int):
             raise TypeError(f"The error_log_id must be an integer, got {type(error_log_id)} instead.")
-        result = await self.session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log_id))
+        # result = await self.session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log_id))
+        # return result.scalars().first()
+        query_filter = ErrorLog.error_log_id == error_log_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[ErrorLog]:
-        result = await self.session.execute(select(ErrorLog).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(ErrorLog).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = ErrorLog.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, error_log: ErrorLog, **kwargs) -> Optional[ErrorLog]:
         if error_log:
             for key, value in kwargs.items():
@@ -42,8 +90,10 @@ class ErrorLogManager:
         await self.session.delete(error_log)
         await self.session.commit()
     async def get_list(self) -> List[ErrorLog]:
-        result = await self.session.execute(select(ErrorLog))
-        return result.scalars().all()
+        # result = await self.session.execute(select(ErrorLog))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, error_log:ErrorLog) -> str:
         """
         Serialize the ErrorLog object to a JSON string using the ErrorLogSchema.
@@ -78,7 +128,7 @@ class ErrorLogManager:
         await self.session.commit()
         return error_logs
     async def update_bulk(self, error_log_updates: List[Dict[int, Dict]]) -> List[ErrorLog]:
-        """Update multiple error_logs at once."""
+        logging.info("ErrorLogManager.update_bulk start")
         updated_error_logs = []
         for update in error_log_updates:
             error_log_id = update.get("error_log_id")
@@ -86,6 +136,7 @@ class ErrorLogManager:
                 raise TypeError(f"The error_log_id must be an integer, got {type(error_log_id)} instead.")
             if not error_log_id:
                 continue
+            logging.info(f"ErrorLogManager.update_bulk error_log_id:{error_log_id}")
             error_log = await self.get_by_id(error_log_id)
             if not error_log:
                 raise ErrorLogNotFoundError(f"ErrorLog with ID {error_log_id} not found!")
@@ -94,6 +145,7 @@ class ErrorLogManager:
                     setattr(error_log, key, value)
             updated_error_logs.append(error_log)
         await self.session.commit()
+        logging.info("ErrorLogManager.update_bulk end")
         return updated_error_logs
     async def delete_bulk(self, error_log_ids: List[int]) -> bool:
         """Delete multiple error_logs by their IDs."""
@@ -139,14 +191,14 @@ class ErrorLogManager:
             raise TypeError("The error_log2 must be an ErrorLog instance.")
         dict1 = self.to_dict(error_log1)
         dict2 = self.to_dict(error_log2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
         if not isinstance(pac_id, int):
             raise TypeError(f"The error_log_id must be an integer, got {type(pac_id)} instead.")
-        result = await self.session.execute(select(ErrorLog).filter(ErrorLog.pac_id == pac_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(ErrorLog).filter(ErrorLog.pac_id == pac_id))
+        # return result.scalars().all()
+        query_filter = ErrorLog.pac_id == pac_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

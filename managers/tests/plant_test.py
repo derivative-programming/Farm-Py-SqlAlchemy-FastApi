@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String 
 from sqlalchemy.future import select
+import logging
 
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
@@ -332,16 +333,28 @@ class TestPlantManager:
         # Mocking plant instances
         plant1 = await PlantFactory.create_async(session=session)
         plant2 = await PlantFactory.create_async(session=session)
+        logging.info(plant1.__dict__) 
 
         code_updated1 = generate_uuid()
         code_updated2 = generate_uuid()
+        logging.info(code_updated1) 
+        logging.info(code_updated2) 
  
         # Update plants
         updates = [{"plant_id": 1, "code": code_updated1}, {"plant_id": 2, "code": code_updated2}]
         updated_plants = await plant_manager.update_bulk(updates)
 
+        logging.info('bulk update results')
         # Assertions
         assert len(updated_plants) == 2
+        logging.info(updated_plants[0].__dict__) 
+        logging.info(updated_plants[1].__dict__) 
+        
+        logging.info('getall')
+        plants = await plant_manager.get_list()
+        logging.info(plants[0].__dict__) 
+        logging.info(plants[1].__dict__) 
+
         assert updated_plants[0].code == code_updated1
         assert updated_plants[1].code == code_updated2
         

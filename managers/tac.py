@@ -1,32 +1,143 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.tac import Tac
 from models.serialization_schema.tac import TacSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class TacNotFoundError(Exception):
     pass
+
+class TacEnum(Enum):
+    Unknown = 'Unknown'
+    Primary = 'Primary'
+
 class TacManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pac:Pac = self.session.execute(select(Pac)).scalars().first()
+        if self.from_enum(TacEnum.Unknown) is None:
+            item = Tac()
+            item.description = "Unknown"
+            item.display_order = self.count()
+            item.is_active = True
+            item.lookup_enum_name = "Unknown"
+            item.name = "Unknown"
+            item.pac_id = pac.pac_id
+            await self.add(item)
+        if self.from_enum(TacEnum.Last_24_Hours) is None:
+            item = Tac.build(pac)
+            item.name = "Last 24 Hours"
+            item.lookup_enum_name = "Last_24_Hours"
+            item.description = "Last 24 Hours"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 1
+            await self.add(item)
+        if self.from_enum(TacEnum.Last_7_Days) is None:
+            item = Tac.build(pac)
+            item.name = "Last 7 Days"
+            item.lookup_enum_name = "Last_7_Days"
+            item.description = "Last 7 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 7
+            await self.add(item)
+        if self.from_enum(TacEnum.Last_30_Days) is None:
+            item = Tac.build(pac)
+            item.name = "Last 30 Days"
+            item.lookup_enum_name = "Last_30_Days"
+            item.description = "Last 30 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 30
+            await self.add(item)
+        if self.from_enum(TacEnum.Last_90_Days) is None:
+            item = Tac.build(pac)
+            item.name = "Last 90 Days"
+            item.lookup_enum_name = "Last_90_Days"
+            item.description = "Last 90 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 90
+            await self.add(item)
+        if self.from_enum(TacEnum.Last_365_Days) is None:
+            item = Tac.build(pac)
+            item.name = "Last 365 Days"
+            item.lookup_enum_name = "Last_365_Days"
+            item.description = "Last 365 Days"
+            item.display_order = self.count()
+            item.is_active = True
+            # item. = 365
+            await self.add(item)
+    async def from_enum(self, enum_val:TacEnum) -> Tac:
+        # return self.get(lookup_enum_name=enum_val.value)
+        query_filter = Tac.lookup_enum_name==enum_val.value
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
+
     async def build(self, **kwargs) -> Tac:
         return Tac(**kwargs)
     async def add(self, tac: Tac) -> Tac:
         self.session.add(tac)
         await self.session.commit()
         return tac
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(Tac, Pac, and_(Tac.pac_id == Pac.pac_id, Tac.pac_id != 0))
+
+        if join_condition is not None:
+            query = select(Tac
+                        ,Pac #pac_id
+                        ).select_from(join_condition)
+        else:
+            query = select(Tac)
+        return query
+    async def _run_query(self, query_filter) -> List[Tac]:
+        tac_query_all = self._build_query()
+        if query_filter is not None:
+            query = tac_query_all.filter(query_filter)
+        else:
+            query = tac_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            tac = query_result_row[0]
+
+            pac = query_result_row[1] #pac_id
+
+            tac.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+
+            result.append(tac)
+        return result
+    def _first_or_none(self,tac_list:List) -> Tac:
+        return tac_list[0] if tac_list else None
     async def get_by_id(self, tac_id: int) -> Optional[Tac]:
+        logging.info("TacManager.get_by_id start tac_id:" + str(tac_id))
         if not isinstance(tac_id, int):
             raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
-        result = await self.session.execute(select(Tac).filter(Tac.tac_id == tac_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(Tac).filter(Tac.tac_id == tac_id))
+        # result = await self.session.execute(select(Tac).filter(Tac.tac_id == tac_id))
+        # return result.scalars().first()
+        query_filter = Tac.tac_id == tac_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
-        result = await self.session.execute(select(Tac).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(Tac).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = Tac.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, tac: Tac, **kwargs) -> Optional[Tac]:
         if tac:
             for key, value in kwargs.items():
@@ -42,8 +153,10 @@ class TacManager:
         await self.session.delete(tac)
         await self.session.commit()
     async def get_list(self) -> List[Tac]:
-        result = await self.session.execute(select(Tac))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Tac))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, tac:Tac) -> str:
         """
         Serialize the Tac object to a JSON string using the TacSchema.
@@ -78,7 +191,7 @@ class TacManager:
         await self.session.commit()
         return tacs
     async def update_bulk(self, tac_updates: List[Dict[int, Dict]]) -> List[Tac]:
-        """Update multiple tacs at once."""
+        logging.info("TacManager.update_bulk start")
         updated_tacs = []
         for update in tac_updates:
             tac_id = update.get("tac_id")
@@ -86,6 +199,7 @@ class TacManager:
                 raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
             if not tac_id:
                 continue
+            logging.info(f"TacManager.update_bulk tac_id:{tac_id}")
             tac = await self.get_by_id(tac_id)
             if not tac:
                 raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
@@ -94,6 +208,7 @@ class TacManager:
                     setattr(tac, key, value)
             updated_tacs.append(tac)
         await self.session.commit()
+        logging.info("TacManager.update_bulk end")
         return updated_tacs
     async def delete_bulk(self, tac_ids: List[int]) -> bool:
         """Delete multiple tacs by their IDs."""
@@ -139,14 +254,14 @@ class TacManager:
             raise TypeError("The tac2 must be an Tac instance.")
         dict1 = self.to_dict(tac1)
         dict2 = self.to_dict(tac2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
         if not isinstance(pac_id, int):
             raise TypeError(f"The tac_id must be an integer, got {type(pac_id)} instead.")
-        result = await self.session.execute(select(Tac).filter(Tac.pac_id == pac_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Tac).filter(Tac.pac_id == pac_id))
+        # return result.scalars().all()
+        query_filter = Tac.pac_id == pac_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

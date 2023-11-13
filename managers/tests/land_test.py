@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
+import logging
 # DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -215,13 +216,23 @@ class TestLandManager:
         # Mocking land instances
         land1 = await LandFactory.create_async(session=session)
         land2 = await LandFactory.create_async(session=session)
+        logging.info(land1.__dict__)
         code_updated1 = generate_uuid()
         code_updated2 = generate_uuid()
+        logging.info(code_updated1)
+        logging.info(code_updated2)
         # Update lands
         updates = [{"land_id": 1, "code": code_updated1}, {"land_id": 2, "code": code_updated2}]
         updated_lands = await land_manager.update_bulk(updates)
+        logging.info('bulk update results')
         # Assertions
         assert len(updated_lands) == 2
+        logging.info(updated_lands[0].__dict__)
+        logging.info(updated_lands[1].__dict__)
+        logging.info('getall')
+        lands = await land_manager.get_list()
+        logging.info(lands[0].__dict__)
+        logging.info(lands[1].__dict__)
         assert updated_lands[0].code == code_updated1
         assert updated_lands[1].code == code_updated2
         result = await session.execute(select(Land).filter(Land.land_id == 1))

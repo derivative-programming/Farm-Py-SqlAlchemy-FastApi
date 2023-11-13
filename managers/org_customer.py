@@ -1,33 +1,85 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.customer import Customer # CustomerID
 from models.organization import Organization # OrganizationID
 from models.org_customer import OrgCustomer
 from models.serialization_schema.org_customer import OrgCustomerSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class OrgCustomerNotFoundError(Exception):
     pass
+
 class OrgCustomerManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pass
+
     async def build(self, **kwargs) -> OrgCustomer:
         return OrgCustomer(**kwargs)
     async def add(self, org_customer: OrgCustomer) -> OrgCustomer:
         self.session.add(org_customer)
         await self.session.commit()
         return org_customer
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(join_condition, Customer, and_(OrgCustomer.customer_id == Customer.customer_id, OrgCustomer.customer_id != 0))
+        join_condition = outerjoin(OrgCustomer, Organization, and_(OrgCustomer.organization_id == Organization.organization_id, OrgCustomer.organization_id != 0))
+
+        if join_condition is not None:
+            query = select(OrgCustomer
+                        ,Customer #customer_id
+                        ,Organization #organization_id
+                        ).select_from(join_condition)
+        else:
+            query = select(OrgCustomer)
+        return query
+    async def _run_query(self, query_filter) -> List[OrgCustomer]:
+        org_customer_query_all = self._build_query()
+        if query_filter is not None:
+            query = org_customer_query_all.filter(query_filter)
+        else:
+            query = org_customer_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            org_customer = query_result_row[0]
+
+            customer = query_result_row[2] #customer_id
+            organization = query_result_row[1] #organization_id
+
+            org_customer.customer_code_peek = customer.code if customer else uuid.UUID(int=0) #customer_id
+            org_customer.organization_code_peek = organization.code if organization else uuid.UUID(int=0) #organization_id
+
+            result.append(org_customer)
+        return result
+    def _first_or_none(self,org_customer_list:List) -> OrgCustomer:
+        return org_customer_list[0] if org_customer_list else None
     async def get_by_id(self, org_customer_id: int) -> Optional[OrgCustomer]:
+        logging.info("OrgCustomerManager.get_by_id start org_customer_id:" + str(org_customer_id))
         if not isinstance(org_customer_id, int):
             raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
-        result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_id))
+        # result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_id))
+        # return result.scalars().first()
+        query_filter = OrgCustomer.org_customer_id == org_customer_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgCustomer]:
-        result = await self.session.execute(select(OrgCustomer).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(OrgCustomer).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = OrgCustomer.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, org_customer: OrgCustomer, **kwargs) -> Optional[OrgCustomer]:
         if org_customer:
             for key, value in kwargs.items():
@@ -43,8 +95,10 @@ class OrgCustomerManager:
         await self.session.delete(org_customer)
         await self.session.commit()
     async def get_list(self) -> List[OrgCustomer]:
-        result = await self.session.execute(select(OrgCustomer))
-        return result.scalars().all()
+        # result = await self.session.execute(select(OrgCustomer))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, org_customer:OrgCustomer) -> str:
         """
         Serialize the OrgCustomer object to a JSON string using the OrgCustomerSchema.
@@ -79,7 +133,7 @@ class OrgCustomerManager:
         await self.session.commit()
         return org_customers
     async def update_bulk(self, org_customer_updates: List[Dict[int, Dict]]) -> List[OrgCustomer]:
-        """Update multiple org_customers at once."""
+        logging.info("OrgCustomerManager.update_bulk start")
         updated_org_customers = []
         for update in org_customer_updates:
             org_customer_id = update.get("org_customer_id")
@@ -87,6 +141,7 @@ class OrgCustomerManager:
                 raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
             if not org_customer_id:
                 continue
+            logging.info(f"OrgCustomerManager.update_bulk org_customer_id:{org_customer_id}")
             org_customer = await self.get_by_id(org_customer_id)
             if not org_customer:
                 raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
@@ -95,6 +150,7 @@ class OrgCustomerManager:
                     setattr(org_customer, key, value)
             updated_org_customers.append(org_customer)
         await self.session.commit()
+        logging.info("OrgCustomerManager.update_bulk end")
         return updated_org_customers
     async def delete_bulk(self, org_customer_ids: List[int]) -> bool:
         """Delete multiple org_customers by their IDs."""
@@ -140,19 +196,22 @@ class OrgCustomerManager:
             raise TypeError("The org_customer2 must be an OrgCustomer instance.")
         dict1 = self.to_dict(org_customer1)
         dict2 = self.to_dict(org_customer2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_customer_id(self, customer_id: int) -> List[Customer]: # CustomerID
         if not isinstance(customer_id, int):
             raise TypeError(f"The org_customer_id must be an integer, got {type(customer_id)} instead.")
-        result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.customer_id == customer_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.customer_id == customer_id))
+        # return result.scalars().all()
+        query_filter = OrgCustomer.customer_id == customer_id
+        query_results = await self._run_query(query_filter)
+        return query_results
     async def get_by_organization_id(self, organization_id: int) -> List[Organization]: # OrganizationID
         if not isinstance(organization_id, int):
             raise TypeError(f"The org_customer_id must be an integer, got {type(organization_id)} instead.")
-        result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.organization_id == organization_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(OrgCustomer).filter(OrgCustomer.organization_id == organization_id))
+        # return result.scalars().all()
+        query_filter = OrgCustomer.organization_id == organization_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

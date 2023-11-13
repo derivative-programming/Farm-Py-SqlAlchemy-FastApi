@@ -3,8 +3,7 @@
     "dimension" :{
         "name":"Farm"
     },
-    "ignoreDimensionPropertyList": [ 
-        "object.isLookup", 
+    "ignoreDimensionPropertyList": [  
         "object.isSoftDeleteUsed", 
         "object.isFullResearchDatabaseViewAllowed", 
         "object.calculatedIsParentObjectAvailable", 

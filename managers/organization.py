@@ -1,32 +1,80 @@
 import json
 import uuid
+from enum import Enum
 from typing import List, Optional, Dict
+from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select#, join, outerjoin, and_
 from models.tac import Tac # TacID
 from models.organization import Organization
 from models.serialization_schema.organization import OrganizationSchema
 from services.logging_config import get_logger
+import logging
 logger = get_logger(__name__)
 class OrganizationNotFoundError(Exception):
     pass
+
 class OrganizationManager:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def initialize(self):
+        pass
+
     async def build(self, **kwargs) -> Organization:
         return Organization(**kwargs)
     async def add(self, organization: Organization) -> Organization:
         self.session.add(organization)
         await self.session.commit()
         return organization
+    def _build_query(self):
+        join_condition = None
+
+        join_condition = outerjoin(Organization, Tac, and_(Organization.tac_id == Tac.tac_id, Organization.tac_id != 0))
+
+        if join_condition is not None:
+            query = select(Organization
+                        ,Tac #tac_id
+                        ).select_from(join_condition)
+        else:
+            query = select(Organization)
+        return query
+    async def _run_query(self, query_filter) -> List[Organization]:
+        organization_query_all = self._build_query()
+        if query_filter is not None:
+            query = organization_query_all.filter(query_filter)
+        else:
+            query = organization_query_all
+        result_proxy = await self.session.execute(query)
+        query_results = result_proxy.all()
+        result = list()
+        for query_result_row in query_results:
+            organization = query_result_row[0]
+
+            tac = query_result_row[1] #tac_id
+
+            organization.tac_code_peek = tac.code if tac else uuid.UUID(int=0) #tac_id
+
+            result.append(organization)
+        return result
+    def _first_or_none(self,organization_list:List) -> Organization:
+        return organization_list[0] if organization_list else None
     async def get_by_id(self, organization_id: int) -> Optional[Organization]:
+        logging.info("OrganizationManager.get_by_id start organization_id:" + str(organization_id))
         if not isinstance(organization_id, int):
             raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
-        result = await self.session.execute(select(Organization).filter(Organization.organization_id == organization_id))
-        return result.scalars().first()
+        # result = await self.session.execute(select(Organization).filter(Organization.organization_id == organization_id))
+        # result = await self.session.execute(select(Organization).filter(Organization.organization_id == organization_id))
+        # return result.scalars().first()
+        query_filter = Organization.organization_id == organization_id
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Organization]:
-        result = await self.session.execute(select(Organization).filter_by(code=code))
-        return result.scalars().one_or_none()
+        # result = await self.session.execute(select(Organization).filter_by(code=code))
+        # return result.scalars().one_or_none()
+        query_filter = Organization.code==code
+        query_results = await self._run_query(query_filter)
+        return self._first_or_none(query_results)
     async def update(self, organization: Organization, **kwargs) -> Optional[Organization]:
         if organization:
             for key, value in kwargs.items():
@@ -42,8 +90,10 @@ class OrganizationManager:
         await self.session.delete(organization)
         await self.session.commit()
     async def get_list(self) -> List[Organization]:
-        result = await self.session.execute(select(Organization))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Organization))
+        # return result.scalars().all()
+        query_results = await self._run_query(None)
+        return query_results
     def to_json(self, organization:Organization) -> str:
         """
         Serialize the Organization object to a JSON string using the OrganizationSchema.
@@ -78,7 +128,7 @@ class OrganizationManager:
         await self.session.commit()
         return organizations
     async def update_bulk(self, organization_updates: List[Dict[int, Dict]]) -> List[Organization]:
-        """Update multiple organizations at once."""
+        logging.info("OrganizationManager.update_bulk start")
         updated_organizations = []
         for update in organization_updates:
             organization_id = update.get("organization_id")
@@ -86,6 +136,7 @@ class OrganizationManager:
                 raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
             if not organization_id:
                 continue
+            logging.info(f"OrganizationManager.update_bulk organization_id:{organization_id}")
             organization = await self.get_by_id(organization_id)
             if not organization:
                 raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
@@ -94,6 +145,7 @@ class OrganizationManager:
                     setattr(organization, key, value)
             updated_organizations.append(organization)
         await self.session.commit()
+        logging.info("OrganizationManager.update_bulk end")
         return updated_organizations
     async def delete_bulk(self, organization_ids: List[int]) -> bool:
         """Delete multiple organizations by their IDs."""
@@ -139,14 +191,14 @@ class OrganizationManager:
             raise TypeError("The organization2 must be an Organization instance.")
         dict1 = self.to_dict(organization1)
         dict2 = self.to_dict(organization2)
-        logger.info("vrtest")
-        logger.info(dict1)
-        logger.info(dict2)
         return dict1 == dict2
 
     async def get_by_tac_id(self, tac_id: int) -> List[Tac]: # TacID
         if not isinstance(tac_id, int):
             raise TypeError(f"The organization_id must be an integer, got {type(tac_id)} instead.")
-        result = await self.session.execute(select(Organization).filter(Organization.tac_id == tac_id))
-        return result.scalars().all()
+        # result = await self.session.execute(select(Organization).filter(Organization.tac_id == tac_id))
+        # return result.scalars().all()
+        query_filter = Organization.tac_id == tac_id
+        query_results = await self._run_query(query_filter)
+        return query_results
 

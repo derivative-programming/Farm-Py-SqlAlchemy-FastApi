@@ -1,0 +1,20 @@
+{
+    "templateType":"object", 
+    "IsEdgeCase": true, 
+    "dimension" :{
+        "name":"DateGreaterThanFilter",
+        "isLookup":"true"
+    },
+    "ignoreDimensionPropertyList": [
+        "prop.isNotPublishedToSubscriptions",
+        "prop.isFKLookup",
+        "prop.isQueryByAvailable",
+        "prop.calculatedIsDBColumnIndexed",
+        "prop.isEncrypted",
+        "prop.calculatedIsCodeNotLookup",
+        "prop.calculatedIsCodeAndLookup",
+        "prop.calculatedisLexiconEligible",
+        "lookupItem.calculatedIsCustomIntProp1ValueAvailable",
+        "lookupItem.isActive"
+    ]
+} 

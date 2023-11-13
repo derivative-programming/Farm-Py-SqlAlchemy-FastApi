@@ -9,6 +9,7 @@ from services.db_config import db_dialect,generate_uuid
 from managers import TacManager as TacIDManager #TacID
 from managers import OrganizationManager
 from models import Organization
+import managers as managers_and_enums
 class OrganizationSessionNotFoundError(Exception):
     pass
 class OrganizationInvalidInitError(Exception):
@@ -114,7 +115,12 @@ class OrganizationBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.organization.last_update_utc_date_time = value
-    async def load(self, json_data:str=None, code:uuid.UUID=None, organization_id:int=None, organization_obj_instance:Organization=None, organization_dict:dict=None):
+
+    async def load(self, json_data:str=None,
+                   code:uuid.UUID=None,
+                   organization_id:int=None,
+                   organization_obj_instance:Organization=None,
+                   organization_dict:dict=None):
         if organization_id and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self.session)
             organization_obj = await organization_manager.get_by_id(organization_id)
@@ -133,6 +139,7 @@ class OrganizationBusObj:
         if organization_dict and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self.session)
             self.organization = organization_manager.from_dict(organization_dict)
+
     async def refresh(self):
         organization_manager = OrganizationManager(self.session)
         self.organization = await organization_manager.refresh(self.organization)

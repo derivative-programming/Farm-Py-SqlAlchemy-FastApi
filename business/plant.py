@@ -11,6 +11,7 @@ from managers import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
 from managers import LandManager as LandIDManager #LandID
 from managers import PlantManager
 from models import Plant
+import managers as managers_and_enums
 
 class PlantSessionNotFoundError(Exception):
     pass
@@ -302,10 +303,10 @@ class PlantBusObj:
     def flvr_foreign_key_code_peek(self):
         return self.plant.flvr_foreign_key_code_peek
 
-    @flvr_foreign_key_code_peek.setter
-    def flvr_foreign_key_code_peek(self, value):
-        assert isinstance(value, UUIDType), "flvr_foreign_key_code_peek must be a UUID"
-        self.plant.flvr_foreign_key_code_peek = value
+    # @flvr_foreign_key_code_peek.setter
+    # def flvr_foreign_key_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "flvr_foreign_key_code_peek must be a UUID"
+    #     self.plant.flvr_foreign_key_code_peek = value
 
     #LandID
     @property
@@ -321,10 +322,10 @@ class PlantBusObj:
     def land_code_peek(self):
         return self.plant.land_code_peek
 
-    @land_code_peek.setter
-    def land_code_peek(self, value):
-        assert isinstance(value, UUIDType), "land_code_peek must be a UUID"
-        self.plant.land_code_peek = value
+    # @land_code_peek.setter
+    # def land_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "land_code_peek must be a UUID"
+    #     self.plant.land_code_peek = value
 
 
     #somePhoneNumber,
@@ -354,7 +355,13 @@ class PlantBusObj:
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.plant.last_update_utc_date_time = value
 
-    async def load(self, json_data:str=None, code:uuid.UUID=None, plant_id:int=None, plant_obj_instance:Plant=None, plant_dict:dict=None):
+##GENTrainingBlock[caseLookupEnums]Start
+##GENLearn[isLookup=false]Start  
+    async def load(self, json_data:str=None, 
+                   code:uuid.UUID=None, 
+                   plant_id:int=None, 
+                   plant_obj_instance:Plant=None, 
+                   plant_dict:dict=None):
          
         if plant_id and self.plant.plant_id is None:
             plant_manager = PlantManager(self.session)
@@ -378,6 +385,8 @@ class PlantBusObj:
         if plant_dict and self.plant.plant_id is None: 
             plant_manager = PlantManager(self.session)
             self.plant = plant_manager.from_dict(plant_dict)  
+##GENLearn[isLookup=false]End
+##GENTrainingBlock[caseLookupEnums]End 
     
     async def refresh(self):
         plant_manager = PlantManager(self.session)
