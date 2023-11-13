@@ -106,10 +106,10 @@ class CustomerRoleBusObj:
     @property
     def customer_code_peek(self):
         return self.customer_role.customer_code_peek
-    @customer_code_peek.setter
-    def customer_code_peek(self, value):
-        assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
-        self.customer_role.customer_code_peek = value
+    # @customer_code_peek.setter
+    # def customer_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
+    #     self.customer_role.customer_code_peek = value
     #isPlaceholder,
     #placeholder,
     #RoleID
@@ -124,10 +124,10 @@ class CustomerRoleBusObj:
     @property
     def role_code_peek(self):
         return self.customer_role.role_code_peek
-    @role_code_peek.setter
-    def role_code_peek(self, value):
-        assert isinstance(value, UUIDType), "role_code_peek must be a UUID"
-        self.customer_role.role_code_peek = value
+    # @role_code_peek.setter
+    # def role_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "role_code_peek must be a UUID"
+    #     self.customer_role.role_code_peek = value
 
     #insert_utc_date_time
     @property

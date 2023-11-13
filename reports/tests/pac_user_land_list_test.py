@@ -132,4 +132,38 @@ class TestReportManagerPacUserLandList:
                     order_by_column_name,
                     order_by_descending
                 )
+    @pytest.mark.asyncio
+    async def test_build_csv(self,session):
+        session_context = SessionContext(dict())
+        test_obj = ReportManagerPacUserLandList(session, session_context)
+        test_data = [ReportItemPacUserLandList(), ReportItemPacUserLandList()]  # Replace with sample data
+        file_name = 'test_output.csv'
+        await test_obj.build_csv(file_name, test_data)
+        # Verify the file is created
+        assert os.path.exists(file_name)
+        # Further checks can be added to verify the content of the file
+    @pytest.mark.asyncio
+    async def test_read_csv(self,session):
+        session_context = SessionContext(dict())
+        test_obj = ReportManagerPacUserLandList(session, session_context)
+        file_name = 'test_input.csv'
+        # Ensure 'test_input.csv' exists and contains valid data for testing
+        result = await test_obj.read_csv(file_name)
+        assert isinstance(result, list)
+        assert all(isinstance(item, ReportItemPacUserLandList) for item in result)
+        # Further checks can be added to verify the data in the objects
+    def test_parse_bool(self,session):
+        session_context = SessionContext(dict())
+        test_obj = ReportManagerPacUserLandList(session, session_context)
+        # True values
+        assert test_obj._parse_bool('true')
+        assert test_obj._parse_bool('1')
+        assert test_obj._parse_bool('yes')
+        # False values
+        assert not test_obj._parse_bool('false')
+        assert not test_obj._parse_bool('0')
+        assert not test_obj._parse_bool('no')
+        # Case insensitivity
+        assert test_obj._parse_bool('True')
+        assert test_obj._parse_bool('YeS')
 

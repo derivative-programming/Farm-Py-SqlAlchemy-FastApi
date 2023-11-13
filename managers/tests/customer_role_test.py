@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import CustomerRole
+import models
 from models.factory import CustomerRoleFactory
 from managers.customer_role import CustomerRoleManager
 from models.serialization_schema.customer_role import CustomerRoleSchema
@@ -379,7 +380,12 @@ class TestCustomerRoleManager:
         # Fetch the customer_role using the manager function
         fetched_customer_roles = await customer_role_manager.get_by_customer_id(customer_role1.customer_id)
         assert len(fetched_customer_roles) == 1
+        assert isinstance(fetched_customer_roles[0],CustomerRole)
         assert fetched_customer_roles[0].code == customer_role1.code
+        stmt = select(models.Customer).where(models.Customer.customer_id==customer_role1.customer_id)
+        result = await session.execute(stmt)
+        customer = result.scalars().first()
+        assert fetched_customer_roles[0].customer_code_peek == customer.code
     @pytest.mark.asyncio
     async def test_get_by_customer_id_nonexistent(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
         non_existent_id = 999
@@ -401,7 +407,12 @@ class TestCustomerRoleManager:
         # Fetch the customer_role using the manager function
         fetched_customer_roles = await customer_role_manager.get_by_role_id(customer_role1.role_id)
         assert len(fetched_customer_roles) == 1
+        assert isinstance(fetched_customer_roles[0],CustomerRole)
         assert fetched_customer_roles[0].code == customer_role1.code
+        stmt = select(models.Role).where(models.Role.role_id==customer_role1.role_id)
+        result = await session.execute(stmt)
+        role = result.scalars().first()
+        assert fetched_customer_roles[0].role_code_peek == role.code
     @pytest.mark.asyncio
     async def test_get_by_role_id_nonexistent(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
         non_existent_id = 999

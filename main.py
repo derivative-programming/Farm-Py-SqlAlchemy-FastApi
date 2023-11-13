@@ -3,11 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession,create_async_engine
 from sqlalchemy.orm import sessionmaker 
 from managers import LandManager
 from managers import FlavorManager
-from models import Plant
+from models import Plant, Base
 import configparser
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
-from database import get_db
+from database import get_db, engine
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from apis.fs_farm_api.v1_0.routers import fs_farm_api_v1_0_router
 import current_runtime
@@ -51,7 +51,10 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
     )
 
 
-@app.router.on_startup.append
+@app.on_event("startup")
 async def startup_event():
-    async with get_db() as session:
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async for session in get_db():
         await current_runtime.initialize(session) 
+        break

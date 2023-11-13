@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.organization as organization_constants
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -24,8 +25,16 @@ class Organization(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    name = Column('name', String, default="", nullable=True)
-    tac_id = Column('tac_id', Integer, ForeignKey('farm_' + snake_case('Tac') + '.tac_id'), nullable=True)
+    name = Column('name',
+                          String,
+                          default="",
+                                index=organization_constants.name_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    tac_id = Column('tac_id',
+                     Integer,
+                     ForeignKey('farm_' + snake_case('Tac') + '.tac_id'),
+                     index=organization_constants.tac_id_calculatedIsDBColumnIndexed,
+                     nullable=True)
     tac_code_peek = UUIDType # TacID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
@@ -50,7 +59,7 @@ class Organization(Base):
 
 # Define the index separately from the column
 # Index('index_code', Organization.code)
-Index('farm_organization_index_tac_id', Organization.tac_id) #TacID
+# Index('farm_organization_index_tac_id', Organization.tac_id) #TacID
 @event.listens_for(Organization, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

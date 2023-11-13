@@ -22,62 +22,35 @@ class LandManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
+    async def _build_lookup_item(self, pac:Pac):
+        item = self.build()
+        item.pac_id = pac.pac_id
+        return item
     async def initialize(self):
-        pac:Pac = self.session.execute(select(Pac)).scalars().first()
+        logging.info("PlantManager.Initialize start")
+        pac_result = await self.session.execute(select(Pac))
+        pac = pac_result.scalars().first()
+
         if self.from_enum(LandEnum.Unknown) is None:
-            item = Land()
-            item.description = "Unknown"
-            item.display_order = self.count()
-            item.is_active = True
-            item.lookup_enum_name = "Unknown"
+            item = self._build_lookup_item(pac)
             item.name = "Unknown"
-            item.pac_id = pac.pac_id
-            await self.add(item)
-        if self.from_enum(LandEnum.Last_24_Hours) is None:
-            item = Land.build(pac)
-            item.name = "Last 24 Hours"
-            item.lookup_enum_name = "Last_24_Hours"
-            item.description = "Last 24 Hours"
+            item.lookup_enum_name = "Unknown"
+            item.description = "Unknown"
             item.display_order = self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(LandEnum.Last_7_Days) is None:
-            item = Land.build(pac)
-            item.name = "Last 7 Days"
-            item.lookup_enum_name = "Last_7_Days"
-            item.description = "Last 7 Days"
+        if self.from_enum(LandEnum.Field_One) is None:
+            item = self._build_lookup_item(pac)
+            item.name = "Field One"
+            item.lookup_enum_name = "Field_One"
+            item.description = "Field One"
             item.display_order = self.count()
             item.is_active = True
-            # item. = 7
+            # item. = 1
             await self.add(item)
-        if self.from_enum(LandEnum.Last_30_Days) is None:
-            item = Land.build(pac)
-            item.name = "Last 30 Days"
-            item.lookup_enum_name = "Last_30_Days"
-            item.description = "Last 30 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 30
-            await self.add(item)
-        if self.from_enum(LandEnum.Last_90_Days) is None:
-            item = Land.build(pac)
-            item.name = "Last 90 Days"
-            item.lookup_enum_name = "Last_90_Days"
-            item.description = "Last 90 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 90
-            await self.add(item)
-        if self.from_enum(LandEnum.Last_365_Days) is None:
-            item = Land.build(pac)
-            item.name = "Last 365 Days"
-            item.lookup_enum_name = "Last_365_Days"
-            item.description = "Last 365 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 365
-            await self.add(item)
+
+        logging.info("PlantMaanger.Initialize end")
     async def from_enum(self, enum_val:LandEnum) -> Land:
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Land.lookup_enum_name==enum_val.value
@@ -85,24 +58,34 @@ class LandManager:
         return self._first_or_none(query_results)
 
     async def build(self, **kwargs) -> Land:
+        logging.info("LandManager.build")
         return Land(**kwargs)
     async def add(self, land: Land) -> Land:
+        logging.info("LandManager.add")
         self.session.add(land)
         await self.session.commit()
         return land
     def _build_query(self):
-        join_condition = None
+        logging.info("LandManager._build_query")
+#         join_condition = None
+#
+#         join_condition = outerjoin(join_condition, Pac, and_(Land.pac_id == Pac.pac_id, Land.pac_id != 0))
+#
+#         if join_condition is not None:
+#             query = select(Land
+#                         ,Pac #pac_id
+#                         ).select_from(join_condition)
+#         else:
+#             query = select(Land)
+        query = select(Land
+                    ,Pac #pac_id
+                    )
 
-        join_condition = outerjoin(Land, Pac, and_(Land.pac_id == Pac.pac_id, Land.pac_id != 0))
+        query = query.outerjoin(Pac, and_(Land.pac_id == Pac.pac_id, Land.pac_id != 0))
 
-        if join_condition is not None:
-            query = select(Land
-                        ,Pac #pac_id
-                        ).select_from(join_condition)
-        else:
-            query = select(Land)
         return query
     async def _run_query(self, query_filter) -> List[Land]:
+        logging.info("LandManager._run_query")
         land_query_all = self._build_query()
         if query_filter is not None:
             query = land_query_all.filter(query_filter)
@@ -112,9 +95,12 @@ class LandManager:
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
-            land = query_result_row[0]
+            i = 0
+            land = query_result_row[i]
+            i = i + 1
 
-            pac = query_result_row[1] #pac_id
+            pac = query_result_row[i] #pac_id
+            i = i + 1
 
             land.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
 
@@ -133,18 +119,21 @@ class LandManager:
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Land]:
+        logging.info(f"LandManager.get_by_code {code}")
         # result = await self.session.execute(select(Land).filter_by(code=code))
         # return result.scalars().one_or_none()
         query_filter = Land.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, land: Land, **kwargs) -> Optional[Land]:
+        logging.info("LandManager.update")
         if land:
             for key, value in kwargs.items():
                 setattr(land, key, value)
             await self.session.commit()
         return land
     async def delete(self, land_id: int):
+        logging.info(f"LandManager.delete {land_id}")
         if not isinstance(land_id, int):
             raise TypeError(f"The land_id must be an integer, got {type(land_id)} instead.")
         land = await self.get_by_id(land_id)
@@ -153,11 +142,13 @@ class LandManager:
         await self.session.delete(land)
         await self.session.commit()
     async def get_list(self) -> List[Land]:
+        logging.info("LandManager.get_list")
         # result = await self.session.execute(select(Land))
         # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, land:Land) -> str:
+        logging.info("LandManager.to_json")
         """
         Serialize the Land object to a JSON string using the LandSchema.
         """
@@ -165,6 +156,7 @@ class LandManager:
         land_data = schema.dump(land)
         return json.dumps(land_data)
     def to_dict(self, land:Land) -> dict:
+        logging.info("LandManager.to_dict")
         """
         Serialize the Land object to a JSON string using the LandSchema.
         """
@@ -172,6 +164,7 @@ class LandManager:
         land_data = schema.dump(land)
         return land_data
     def from_json(self, json_str: str) -> Land:
+        logging.info("LandManager.from_json")
         """
         Deserialize a JSON string into a Land object using the LandSchema.
         """
@@ -181,11 +174,13 @@ class LandManager:
         new_land = Land(**land_dict)
         return new_land
     def from_dict(self, land_dict: str) -> Land:
+        logging.info("LandManager.from_dict")
         schema = LandSchema()
         land_dict_converted = schema.load(land_dict)
         new_land = Land(**land_dict_converted)
         return new_land
     async def add_bulk(self, lands: List[Land]) -> List[Land]:
+        logging.info("LandManager.add_bulk")
         """Add multiple lands at once."""
         self.session.add_all(lands)
         await self.session.commit()
@@ -211,6 +206,7 @@ class LandManager:
         logging.info("LandManager.update_bulk end")
         return updated_lands
     async def delete_bulk(self, land_ids: List[int]) -> bool:
+        logging.info("LandManager.delete_bulk")
         """Delete multiple lands by their IDs."""
         for land_id in land_ids:
             if not isinstance(land_id, int):
@@ -223,9 +219,11 @@ class LandManager:
         await self.session.commit()
         return True
     async def count(self) -> int:
+        logging.info("LandManager.count")
         """Return the total number of lands."""
         result = await self.session.execute(select(Land))
         return len(result.scalars().all())
+    #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Land]:
         """Retrieve lands sorted by a particular attribute."""
         if order == "asc":
@@ -234,10 +232,12 @@ class LandManager:
             result = await self.session.execute(select(Land).order_by(getattr(Land, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, land: Land) -> Land:
+        logging.info("LandManager.refresh")
         """Refresh the state of a given land instance from the database."""
         await self.session.refresh(land)
         return land
     async def exists(self, land_id: int) -> bool:
+        logging.info(f"LandManager.exists {land_id}")
         """Check if a land with the given ID exists."""
         if not isinstance(land_id, int):
             raise TypeError(f"The land_id must be an integer, got {type(land_id)} instead.")
@@ -256,7 +256,8 @@ class LandManager:
         dict2 = self.to_dict(land2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[Land]: # PacID
+        logging.info("LandManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(f"The land_id must be an integer, got {type(pac_id)} instead.")
         # result = await self.session.execute(select(Land).filter(Land.pac_id == pac_id))

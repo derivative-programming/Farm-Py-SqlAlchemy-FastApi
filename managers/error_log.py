@@ -19,27 +19,37 @@ class ErrorLogManager:
         self.session = session
 
     async def initialize(self):
-        pass
+        logging.info("ErrorLogManager.Initialize")
 
     async def build(self, **kwargs) -> ErrorLog:
+        logging.info("ErrorLogManager.build")
         return ErrorLog(**kwargs)
     async def add(self, error_log: ErrorLog) -> ErrorLog:
+        logging.info("ErrorLogManager.add")
         self.session.add(error_log)
         await self.session.commit()
         return error_log
     def _build_query(self):
-        join_condition = None
+        logging.info("ErrorLogManager._build_query")
+#         join_condition = None
+#
+#         join_condition = outerjoin(join_condition, Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
+#
+#         if join_condition is not None:
+#             query = select(ErrorLog
+#                         ,Pac #pac_id
+#                         ).select_from(join_condition)
+#         else:
+#             query = select(ErrorLog)
+        query = select(ErrorLog
+                    ,Pac #pac_id
+                    )
 
-        join_condition = outerjoin(ErrorLog, Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
+        query = query.outerjoin(Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
 
-        if join_condition is not None:
-            query = select(ErrorLog
-                        ,Pac #pac_id
-                        ).select_from(join_condition)
-        else:
-            query = select(ErrorLog)
         return query
     async def _run_query(self, query_filter) -> List[ErrorLog]:
+        logging.info("ErrorLogManager._run_query")
         error_log_query_all = self._build_query()
         if query_filter is not None:
             query = error_log_query_all.filter(query_filter)
@@ -49,9 +59,12 @@ class ErrorLogManager:
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
-            error_log = query_result_row[0]
+            i = 0
+            error_log = query_result_row[i]
+            i = i + 1
 
-            pac = query_result_row[1] #pac_id
+            pac = query_result_row[i] #pac_id
+            i = i + 1
 
             error_log.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
 
@@ -70,18 +83,21 @@ class ErrorLogManager:
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[ErrorLog]:
+        logging.info(f"ErrorLogManager.get_by_code {code}")
         # result = await self.session.execute(select(ErrorLog).filter_by(code=code))
         # return result.scalars().one_or_none()
         query_filter = ErrorLog.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, error_log: ErrorLog, **kwargs) -> Optional[ErrorLog]:
+        logging.info("ErrorLogManager.update")
         if error_log:
             for key, value in kwargs.items():
                 setattr(error_log, key, value)
             await self.session.commit()
         return error_log
     async def delete(self, error_log_id: int):
+        logging.info(f"ErrorLogManager.delete {error_log_id}")
         if not isinstance(error_log_id, int):
             raise TypeError(f"The error_log_id must be an integer, got {type(error_log_id)} instead.")
         error_log = await self.get_by_id(error_log_id)
@@ -90,11 +106,13 @@ class ErrorLogManager:
         await self.session.delete(error_log)
         await self.session.commit()
     async def get_list(self) -> List[ErrorLog]:
+        logging.info("ErrorLogManager.get_list")
         # result = await self.session.execute(select(ErrorLog))
         # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, error_log:ErrorLog) -> str:
+        logging.info("ErrorLogManager.to_json")
         """
         Serialize the ErrorLog object to a JSON string using the ErrorLogSchema.
         """
@@ -102,6 +120,7 @@ class ErrorLogManager:
         error_log_data = schema.dump(error_log)
         return json.dumps(error_log_data)
     def to_dict(self, error_log:ErrorLog) -> dict:
+        logging.info("ErrorLogManager.to_dict")
         """
         Serialize the ErrorLog object to a JSON string using the ErrorLogSchema.
         """
@@ -109,6 +128,7 @@ class ErrorLogManager:
         error_log_data = schema.dump(error_log)
         return error_log_data
     def from_json(self, json_str: str) -> ErrorLog:
+        logging.info("ErrorLogManager.from_json")
         """
         Deserialize a JSON string into a ErrorLog object using the ErrorLogSchema.
         """
@@ -118,11 +138,13 @@ class ErrorLogManager:
         new_error_log = ErrorLog(**error_log_dict)
         return new_error_log
     def from_dict(self, error_log_dict: str) -> ErrorLog:
+        logging.info("ErrorLogManager.from_dict")
         schema = ErrorLogSchema()
         error_log_dict_converted = schema.load(error_log_dict)
         new_error_log = ErrorLog(**error_log_dict_converted)
         return new_error_log
     async def add_bulk(self, error_logs: List[ErrorLog]) -> List[ErrorLog]:
+        logging.info("ErrorLogManager.add_bulk")
         """Add multiple error_logs at once."""
         self.session.add_all(error_logs)
         await self.session.commit()
@@ -148,6 +170,7 @@ class ErrorLogManager:
         logging.info("ErrorLogManager.update_bulk end")
         return updated_error_logs
     async def delete_bulk(self, error_log_ids: List[int]) -> bool:
+        logging.info("ErrorLogManager.delete_bulk")
         """Delete multiple error_logs by their IDs."""
         for error_log_id in error_log_ids:
             if not isinstance(error_log_id, int):
@@ -160,9 +183,11 @@ class ErrorLogManager:
         await self.session.commit()
         return True
     async def count(self) -> int:
+        logging.info("ErrorLogManager.count")
         """Return the total number of error_logs."""
         result = await self.session.execute(select(ErrorLog))
         return len(result.scalars().all())
+    #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[ErrorLog]:
         """Retrieve error_logs sorted by a particular attribute."""
         if order == "asc":
@@ -171,10 +196,12 @@ class ErrorLogManager:
             result = await self.session.execute(select(ErrorLog).order_by(getattr(ErrorLog, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, error_log: ErrorLog) -> ErrorLog:
+        logging.info("ErrorLogManager.refresh")
         """Refresh the state of a given error_log instance from the database."""
         await self.session.refresh(error_log)
         return error_log
     async def exists(self, error_log_id: int) -> bool:
+        logging.info(f"ErrorLogManager.exists {error_log_id}")
         """Check if a error_log with the given ID exists."""
         if not isinstance(error_log_id, int):
             raise TypeError(f"The error_log_id must be an integer, got {type(error_log_id)} instead.")
@@ -193,7 +220,8 @@ class ErrorLogManager:
         dict2 = self.to_dict(error_log2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[ErrorLog]: # PacID
+        logging.info("ErrorLogManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(f"The error_log_id must be an integer, got {type(pac_id)} instead.")
         # result = await self.session.execute(select(ErrorLog).filter(ErrorLog.pac_id == pac_id))

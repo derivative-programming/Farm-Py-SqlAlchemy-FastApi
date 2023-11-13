@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Organization
+import models
 from models.factory import OrganizationFactory
 from managers.organization import OrganizationManager
 from models.serialization_schema.organization import OrganizationSchema
@@ -380,7 +381,12 @@ class TestOrganizationManager:
         # Fetch the organization using the manager function
         fetched_organizations = await organization_manager.get_by_tac_id(organization1.tac_id)
         assert len(fetched_organizations) == 1
+        assert isinstance(fetched_organizations[0],Organization)
         assert fetched_organizations[0].code == organization1.code
+        stmt = select(models.Tac).where(models.Tac.tac_id==organization1.tac_id)
+        result = await session.execute(stmt)
+        tac = result.scalars().first()
+        assert fetched_organizations[0].tac_code_peek == tac.code
     @pytest.mark.asyncio
     async def test_get_by_tac_id_nonexistent(self, organization_manager:OrganizationManager, session:AsyncSession):
         non_existent_id = 999

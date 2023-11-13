@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.error_log as error_log_constants
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -24,14 +25,46 @@ class ErrorLog(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    browser_code = Column('browser_code', UUIDType, default=generate_uuid,  nullable=True)
-    context_code = Column('context_code', UUIDType, default=generate_uuid,  nullable=True)
-    created_utc_date_time = Column('created_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    description = Column('description', String, default="", nullable=True)
-    is_client_side_error = Column('is_client_side_error', Boolean, default=False, nullable=True)
-    is_resolved = Column('is_resolved', Boolean, default=False, nullable=True)
-    pac_id = Column('pac_id', Integer, ForeignKey('farm_' + snake_case('Pac') + '.pac_id'), nullable=True)
-    url = Column('url', String, default="", nullable=True)
+    browser_code = Column('browser_code',
+                                       UUIDType,
+                                       default=generate_uuid,
+                                index=error_log_constants.browser_code_calculatedIsDBColumnIndexed,
+                                       nullable=True)
+    context_code = Column('context_code',
+                                       UUIDType,
+                                       default=generate_uuid,
+                                index=error_log_constants.context_code_calculatedIsDBColumnIndexed,
+                                       nullable=True)
+    created_utc_date_time = Column('created_utc_date_time',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
+                                index=error_log_constants.created_utc_date_time_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    description = Column('description',
+                          String,
+                          default="",
+                                index=error_log_constants.description_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    is_client_side_error = Column('is_client_side_error',
+                               Boolean,
+                               default=False,
+                                index=error_log_constants.is_client_side_error_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_resolved = Column('is_resolved',
+                               Boolean,
+                               default=False,
+                                index=error_log_constants.is_resolved_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    pac_id = Column('pac_id',
+                     Integer,
+                     ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
+                     index=error_log_constants.pac_id_calculatedIsDBColumnIndexed,
+                     nullable=True)
+    url = Column('url',
+                          String,
+                          default="",
+                                index=error_log_constants.url_calculatedIsDBColumnIndexed,
+                          nullable=True)
     pac_code_peek = UUIDType # PacID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
@@ -62,7 +95,7 @@ class ErrorLog(Base):
 
 # Define the index separately from the column
 # Index('index_code', ErrorLog.code)
-Index('farm_error_log_index_pac_id', ErrorLog.pac_id) #PacID
+# Index('farm_error_log_index_pac_id', ErrorLog.pac_id) #PacID
 @event.listens_for(ErrorLog, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

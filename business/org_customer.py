@@ -97,10 +97,10 @@ class OrgCustomerBusObj:
     @property
     def customer_code_peek(self):
         return self.org_customer.customer_code_peek
-    @customer_code_peek.setter
-    def customer_code_peek(self, value):
-        assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
-        self.org_customer.customer_code_peek = value
+    # @customer_code_peek.setter
+    # def customer_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
+    #     self.org_customer.customer_code_peek = value
     #email,
     #OrganizationID
     @property
@@ -113,10 +113,10 @@ class OrgCustomerBusObj:
     @property
     def organization_code_peek(self):
         return self.org_customer.organization_code_peek
-    @organization_code_peek.setter
-    def organization_code_peek(self, value):
-        assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
-        self.org_customer.organization_code_peek = value
+    # @organization_code_peek.setter
+    # def organization_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
+    #     self.org_customer.organization_code_peek = value
 
     #insert_utc_date_time
     @property

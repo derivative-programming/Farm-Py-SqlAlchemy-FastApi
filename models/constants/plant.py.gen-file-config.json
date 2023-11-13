@@ -1,0 +1,23 @@
+{
+    "templateType":"object", 
+    "ForceFileNameFormat" : "Snake",
+    "dimension" :{
+        "name":"Plant"
+    },
+    "ignoreDimensionPropertyList": [
+        "prop.isNotPublishedToSubscriptions",
+        "prop.isFKLookup",
+        "prop.isQueryByAvailable",
+        "prop.calculatedIsDBColumnIndexed",
+        "prop.calculatedSqlServerDBDataType",
+        "prop.calculatedIsConditionalVisible",
+        "prop.isFKNonLookupIncludedInXMLFunction",
+        "prop.calculatedIsDefaultValueSet",
+        "prop.isFK",
+        "prop.isEncrypted",
+        "prop.calculatedIsDBColumnIndexed",
+        "prop.calculatedIsCodeNotLookup",
+        "prop.calculatedIsCodeAndLookup",
+        "prop.calculatedisLexiconEligible"
+    ]
+} 

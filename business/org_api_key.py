@@ -153,10 +153,10 @@ class OrgApiKeyBusObj:
     @property
     def organization_code_peek(self):
         return self.org_api_key.organization_code_peek
-    @organization_code_peek.setter
-    def organization_code_peek(self, value):
-        assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
-        self.org_api_key.organization_code_peek = value
+    # @organization_code_peek.setter
+    # def organization_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
+    #     self.org_api_key.organization_code_peek = value
     #OrgCustomerID
     @property
     def org_customer_id(self):
@@ -169,10 +169,10 @@ class OrgApiKeyBusObj:
     @property
     def org_customer_code_peek(self):
         return self.org_api_key.org_customer_code_peek
-    @org_customer_code_peek.setter
-    def org_customer_code_peek(self, value):
-        assert isinstance(value, UUIDType), "org_customer_code_peek must be a UUID"
-        self.org_api_key.org_customer_code_peek = value
+    # @org_customer_code_peek.setter
+    # def org_customer_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "org_customer_code_peek must be a UUID"
+    #     self.org_api_key.org_customer_code_peek = value
 
     #insert_utc_date_time
     @property

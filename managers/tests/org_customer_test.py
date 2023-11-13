@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import OrgCustomer
+import models
 from models.factory import OrgCustomerFactory
 from managers.org_customer import OrgCustomerManager
 from models.serialization_schema.org_customer import OrgCustomerSchema
@@ -379,7 +380,12 @@ class TestOrgCustomerManager:
         # Fetch the org_customer using the manager function
         fetched_org_customers = await org_customer_manager.get_by_customer_id(org_customer1.customer_id)
         assert len(fetched_org_customers) == 1
+        assert isinstance(fetched_org_customers[0],OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
+        stmt = select(models.Customer).where(models.Customer.customer_id==org_customer1.customer_id)
+        result = await session.execute(stmt)
+        customer = result.scalars().first()
+        assert fetched_org_customers[0].customer_code_peek == customer.code
     @pytest.mark.asyncio
     async def test_get_by_customer_id_nonexistent(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
         non_existent_id = 999
@@ -400,7 +406,12 @@ class TestOrgCustomerManager:
         # Fetch the org_customer using the manager function
         fetched_org_customers = await org_customer_manager.get_by_organization_id(org_customer1.organization_id)
         assert len(fetched_org_customers) == 1
+        assert isinstance(fetched_org_customers[0],OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
+        stmt = select(models.Organization).where(models.Organization.organization_id==org_customer1.organization_id)
+        result = await session.execute(stmt)
+        organization = result.scalars().first()
+        assert fetched_org_customers[0].organization_code_peek == organization.code
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
         non_existent_id = 999

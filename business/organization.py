@@ -94,10 +94,10 @@ class OrganizationBusObj:
     @property
     def tac_code_peek(self):
         return self.organization.tac_code_peek
-    @tac_code_peek.setter
-    def tac_code_peek(self, value):
-        assert isinstance(value, UUIDType), "tac_code_peek must be a UUID"
-        self.organization.tac_code_peek = value
+    # @tac_code_peek.setter
+    # def tac_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "tac_code_peek must be a UUID"
+    #     self.organization.tac_code_peek = value
 
     #insert_utc_date_time
     @property

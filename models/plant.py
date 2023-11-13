@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.plant as plant_constants 
 
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -28,25 +29,101 @@ class Plant(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    flvr_foreign_key_id = Column('flvr_foreign_key_id', Integer, ForeignKey('farm_' + snake_case('Flavor') + '.flavor_id'), nullable=True)
-    is_delete_allowed = Column('is_delete_allowed', Boolean, default=False, nullable=True)
-    is_edit_allowed = Column('is_edit_allowed', Boolean, default=False, nullable=True)
-    land_id = Column('land_id', Integer, ForeignKey('farm_' + snake_case('Land') + '.land_id'), nullable=True)
-    other_flavor = Column('other_flavor', String, default="", nullable=True)
-    some_big_int_val = Column('some_big_int_val', BigInteger, default=0, nullable=True)
-    some_bit_val = Column('some_bit_val', Boolean, default=False, nullable=True)
-    some_date_val = Column('some_date_val', Date, default=date(1753, 1, 1), nullable=True)
-    some_decimal_val = Column('some_decimal_val', Numeric(precision=18, scale=6), default=0, nullable=True)
-    some_email_address = Column('some_email_address', String, default="", nullable=True)
-    some_float_val = Column('some_float_val', Float, default=0.0, nullable=True)
-    some_int_val = Column('some_int_val', Integer, default=0, nullable=True)
-    some_money_val = Column('some_money_val', Numeric(precision=18, scale=2), default=0, nullable=True)
-    some_n_var_char_val = Column('some_n_var_char_val', String, default="", nullable=True)
-    some_phone_number = Column('some_phone_number', String, default="", nullable=True)
-    some_text_val = Column('some_text_val', String, default="", nullable=True)
-    some_uniqueidentifier_val = Column('some_uniqueidentifier_val', UUIDType, default=generate_uuid,  nullable=True)
-    some_utc_date_time_val = Column('some_utc_date_time_val', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    some_var_char_val = Column('some_var_char_val', String, default="", nullable=True)
+    flvr_foreign_key_id = Column('flvr_foreign_key_id', 
+                                 Integer, 
+                                 ForeignKey('farm_' + snake_case('Flavor') + '.flavor_id'), 
+                                index=plant_constants.flvr_foreign_key_id_calculatedIsDBColumnIndexed,
+                                 nullable=True)
+    is_delete_allowed = Column('is_delete_allowed', 
+                               Boolean, 
+                               default=False,  
+                                index=plant_constants.is_delete_allowed_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_edit_allowed = Column('is_edit_allowed', 
+                             Boolean, 
+                             default=False,  
+                                index=plant_constants.is_edit_allowed_calculatedIsDBColumnIndexed,
+                             nullable=True)
+    land_id = Column('land_id', 
+                     Integer, 
+                     ForeignKey('farm_' + snake_case('Land') + '.land_id'), 
+                     index=plant_constants.land_id_calculatedIsDBColumnIndexed,
+                     nullable=True)
+    other_flavor = Column('other_flavor', 
+                          String, 
+                          default="",  
+                                index=plant_constants.other_flavor_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    some_big_int_val = Column('some_big_int_val', 
+                              BigInteger, 
+                              default=0,  
+                                index=plant_constants.some_big_int_val_calculatedIsDBColumnIndexed,
+                              nullable=True)
+    some_bit_val = Column('some_bit_val', 
+                          Boolean, 
+                          default=False,  
+                                index=plant_constants.some_bit_val_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    some_date_val = Column('some_date_val', 
+                           Date, 
+                           default=date(1753, 1, 1),  
+                                index=plant_constants.some_date_val_calculatedIsDBColumnIndexed,
+                           nullable=True)
+    some_decimal_val = Column('some_decimal_val', 
+                              Numeric(precision=18, scale=6), 
+                              default=0,  
+                                index=plant_constants.some_decimal_val_calculatedIsDBColumnIndexed,
+                              nullable=True)
+    some_email_address = Column('some_email_address', 
+                                String, 
+                                default="",  
+                                index=plant_constants.some_email_address_calculatedIsDBColumnIndexed,
+                                nullable=True)
+    some_float_val = Column('some_float_val', 
+                            Float, 
+                            default=0.0,  
+                                index=plant_constants.some_float_val_calculatedIsDBColumnIndexed,
+                            nullable=True)
+    some_int_val = Column('some_int_val', 
+                          Integer, 
+                          default=0,  
+                                index=plant_constants.some_int_val_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    some_money_val = Column('some_money_val', 
+                            Numeric(precision=18, scale=2), 
+                            default=0,  
+                                index=plant_constants.some_money_val_calculatedIsDBColumnIndexed,
+                            nullable=True)
+    some_n_var_char_val = Column('some_n_var_char_val', 
+                                 String, 
+                                 default="",  
+                                index=plant_constants.some_n_var_char_val_calculatedIsDBColumnIndexed,
+                                 nullable=True)
+    some_phone_number = Column('some_phone_number', 
+                               String, 
+                               default="",  
+                                index=plant_constants.some_phone_number_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    some_text_val = Column('some_text_val', 
+                           String, 
+                           default="",  
+                                index=plant_constants.some_text_val_calculatedIsDBColumnIndexed,
+                           nullable=True)
+    some_uniqueidentifier_val = Column('some_uniqueidentifier_val', 
+                                       UUIDType, 
+                                       default=generate_uuid,   
+                                index=plant_constants.some_uniqueidentifier_val_calculatedIsDBColumnIndexed,
+                                       nullable=True)
+    some_utc_date_time_val = Column('some_utc_date_time_val', 
+                                    DateTime, 
+                                    default=datetime(1753, 1, 1),  
+                                index=plant_constants.some_utc_date_time_val_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    some_var_char_val = Column('some_var_char_val', 
+                               String, 
+                               default="",  
+                                index=plant_constants.some_var_char_val_calculatedIsDBColumnIndexed,
+                               nullable=True)
     flvr_foreign_key_code_peek = UUIDType  # FlvrForeignKeyID
     land_code_peek = UUIDType # LandID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
@@ -98,8 +175,8 @@ class Plant(Base):
 
 # Define the index separately from the column
 # Index('index_code', Plant.code)
-Index('farm_plant_index_land_id', Plant.land_id) #LandID
-Index('farm_plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id) #FlvrForeignKeyID
+# Index('farm_plant_index_land_id', Plant.land_id) #LandID
+# Index('farm_plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id) #FlvrForeignKeyID
 
     
 @event.listens_for(Plant, 'before_insert')

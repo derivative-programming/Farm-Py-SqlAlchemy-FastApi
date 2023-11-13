@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio  
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Plant
+import models
 from models.factory import PlantFactory
 from managers.plant import PlantManager
 from models.serialization_schema.plant import PlantSchema
@@ -602,7 +603,14 @@ class TestPlantManager:
         
         fetched_plants = await plant_manager.get_by_flvr_foreign_key_id(plant1.flvr_foreign_key_id)
         assert len(fetched_plants) == 1
-        assert fetched_plants[0].code == plant1.code
+        assert isinstance(fetched_plants[0],Plant)
+        assert fetched_plants[0].code == plant1.code 
+        
+        stmt = select(models.Flavor).where(models.Flavor.flavor_id==plant1.flvr_foreign_key_id)
+        result = await session.execute(stmt)
+        flavor = result.scalars().first()
+        
+        assert fetched_plants[0].flvr_foreign_key_code_peek == flavor.code 
 
     @pytest.mark.asyncio
     async def test_get_by_flvr_foreign_key_id_nonexistent(self, plant_manager:PlantManager, session:AsyncSession):
@@ -630,7 +638,14 @@ class TestPlantManager:
         
         fetched_plants = await plant_manager.get_by_land_id(plant1.land_id)
         assert len(fetched_plants) == 1
-        assert fetched_plants[0].code == plant1.code
+        assert isinstance(fetched_plants[0],Plant)
+        assert fetched_plants[0].code == plant1.code 
+        
+        stmt = select(models.Land).where(models.Land.land_id==plant1.land_id)
+        result = await session.execute(stmt)
+        land = result.scalars().first()
+        
+        assert fetched_plants[0].land_code_peek == land.code 
 
     @pytest.mark.asyncio
     async def test_get_by_land_id_nonexistent(self, plant_manager:PlantManager, session:AsyncSession):

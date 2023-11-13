@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.customer as customer_constants
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -24,29 +25,121 @@ class Customer(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    active_organization_id = Column('active_organization_id', Integer, default=0, nullable=True)
-    email = Column('email', String, default="", nullable=True)
-    email_confirmed_utc_date_time = Column('email_confirmed_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    first_name = Column('first_name', String, default="", nullable=True)
-    forgot_password_key_expiration_utc_date_time = Column('forgot_password_key_expiration_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    forgot_password_key_value = Column('forgot_password_key_value', String, default="", nullable=True)
-    fs_user_code_value = Column('fs_user_code_value', UUIDType, default=generate_uuid,  nullable=True)
-    is_active = Column('is_active', Boolean, default=False, nullable=True)
-    is_email_allowed = Column('is_email_allowed', Boolean, default=False, nullable=True)
-    is_email_confirmed = Column('is_email_confirmed', Boolean, default=False, nullable=True)
-    is_email_marketing_allowed = Column('is_email_marketing_allowed', Boolean, default=False, nullable=True)
-    is_locked = Column('is_locked', Boolean, default=False, nullable=True)
-    is_multiple_organizations_allowed = Column('is_multiple_organizations_allowed', Boolean, default=False, nullable=True)
-    is_verbose_logging_forced = Column('is_verbose_logging_forced', Boolean, default=False, nullable=True)
-    last_login_utc_date_time = Column('last_login_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    last_name = Column('last_name', String, default="", nullable=True)
-    password = Column('password', String, default="", nullable=True)
-    phone = Column('phone', String, default="", nullable=True)
-    province = Column('province', String, default="", nullable=True)
-    registration_utc_date_time = Column('registration_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    tac_id = Column('tac_id', Integer, ForeignKey('farm_' + snake_case('Tac') + '.tac_id'), nullable=True)
-    utc_offset_in_minutes = Column('utc_offset_in_minutes', Integer, default=0, nullable=True)
-    zip = Column('zip', String, default="", nullable=True)
+    active_organization_id = Column('active_organization_id',
+                          Integer,
+                          default=0,
+                                index=customer_constants.active_organization_id_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    email = Column('email',
+                                String,
+                                default="",
+                                index=customer_constants.email_calculatedIsDBColumnIndexed,
+                                nullable=True)
+    email_confirmed_utc_date_time = Column('email_confirmed_utc_date_time',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
+                                index=customer_constants.email_confirmed_utc_date_time_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    first_name = Column('first_name',
+                          String,
+                          default="",
+                                index=customer_constants.first_name_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    forgot_password_key_expiration_utc_date_time = Column('forgot_password_key_expiration_utc_date_time',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
+                                index=customer_constants.forgot_password_key_expiration_utc_date_time_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    forgot_password_key_value = Column('forgot_password_key_value',
+                          String,
+                          default="",
+                                index=customer_constants.forgot_password_key_value_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    fs_user_code_value = Column('fs_user_code_value',
+                                       UUIDType,
+                                       default=generate_uuid,
+                                index=customer_constants.fs_user_code_value_calculatedIsDBColumnIndexed,
+                                       nullable=True)
+    is_active = Column('is_active',
+                               Boolean,
+                               default=False,
+                                index=customer_constants.is_active_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_email_allowed = Column('is_email_allowed',
+                               Boolean,
+                               default=False,
+                                index=customer_constants.is_email_allowed_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_email_confirmed = Column('is_email_confirmed',
+                               Boolean,
+                               default=False,
+                                index=customer_constants.is_email_confirmed_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_email_marketing_allowed = Column('is_email_marketing_allowed',
+                               Boolean,
+                               default=False,
+                                index=customer_constants.is_email_marketing_allowed_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_locked = Column('is_locked',
+                               Boolean,
+                               default=False,
+                                index=customer_constants.is_locked_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_multiple_organizations_allowed = Column('is_multiple_organizations_allowed',
+                               Boolean,
+                               default=False,
+                                index=customer_constants.is_multiple_organizations_allowed_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_verbose_logging_forced = Column('is_verbose_logging_forced',
+                               Boolean,
+                               default=False,
+                                index=customer_constants.is_verbose_logging_forced_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    last_login_utc_date_time = Column('last_login_utc_date_time',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
+                                index=customer_constants.last_login_utc_date_time_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    last_name = Column('last_name',
+                          String,
+                          default="",
+                                index=customer_constants.last_name_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    password = Column('password',
+                          String,
+                          default="",
+                                index=customer_constants.password_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    phone = Column('phone',
+                               String,
+                               default="",
+                                index=customer_constants.phone_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    province = Column('province',
+                          String,
+                          default="",
+                                index=customer_constants.province_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    registration_utc_date_time = Column('registration_utc_date_time',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
+                                index=customer_constants.registration_utc_date_time_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    tac_id = Column('tac_id',
+                     Integer,
+                     ForeignKey('farm_' + snake_case('Tac') + '.tac_id'),
+                     index=customer_constants.tac_id_calculatedIsDBColumnIndexed,
+                     nullable=True)
+    utc_offset_in_minutes = Column('utc_offset_in_minutes',
+                          Integer,
+                          default=0,
+                                index=customer_constants.utc_offset_in_minutes_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    zip = Column('zip',
+                          String,
+                          default="",
+                                index=customer_constants.zip_calculatedIsDBColumnIndexed,
+                          nullable=True)
     tac_code_peek = UUIDType # TacID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
@@ -92,7 +185,7 @@ class Customer(Base):
 
 # Define the index separately from the column
 # Index('index_code', Customer.code)
-Index('farm_customer_index_tac_id', Customer.tac_id) #TacID
+# Index('farm_customer_index_tac_id', Customer.tac_id) #TacID
 @event.listens_for(Customer, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

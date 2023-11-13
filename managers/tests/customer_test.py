@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Customer
+import models
 from models.factory import CustomerFactory
 from managers.customer import CustomerManager
 from models.serialization_schema.customer import CustomerSchema
@@ -399,7 +400,12 @@ class TestCustomerManager:
         # Fetch the customer using the manager function
         fetched_customers = await customer_manager.get_by_tac_id(customer1.tac_id)
         assert len(fetched_customers) == 1
+        assert isinstance(fetched_customers[0],Customer)
         assert fetched_customers[0].code == customer1.code
+        stmt = select(models.Tac).where(models.Tac.tac_id==customer1.tac_id)
+        result = await session.execute(stmt)
+        tac = result.scalars().first()
+        assert fetched_customers[0].tac_code_peek == tac.code
     @pytest.mark.asyncio
     async def test_get_by_tac_id_nonexistent(self, customer_manager:CustomerManager, session:AsyncSession):
         non_existent_id = 999

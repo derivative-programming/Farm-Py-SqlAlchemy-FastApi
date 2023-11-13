@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Flavor
+import models
 from models.factory import FlavorFactory
 from managers.flavor import FlavorManager
 from models.serialization_schema.flavor import FlavorSchema
@@ -384,7 +385,12 @@ class TestFlavorManager:
         # Fetch the flavor using the manager function
         fetched_flavors = await flavor_manager.get_by_pac_id(flavor1.pac_id)
         assert len(fetched_flavors) == 1
+        assert isinstance(fetched_flavors[0],Flavor)
         assert fetched_flavors[0].code == flavor1.code
+        stmt = select(models.Pac).where(models.Pac.pac_id==flavor1.pac_id)
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert fetched_flavors[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(self, flavor_manager:FlavorManager, session:AsyncSession):
         non_existent_id = 999

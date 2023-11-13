@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.org_customer as org_customer_constants
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -24,9 +25,21 @@ class OrgCustomer(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    customer_id = Column('customer_id', Integer, ForeignKey('farm_' + snake_case('Customer') + '.customer_id'), nullable=True)
-    email = Column('email', String, default="", nullable=True)
-    organization_id = Column('organization_id', Integer, ForeignKey('farm_' + snake_case('Organization') + '.organization_id'), nullable=True)
+    customer_id = Column('customer_id',
+                                 Integer,
+                                 ForeignKey('farm_' + snake_case('Customer') + '.customer_id'),
+                                index=org_customer_constants.customer_id_calculatedIsDBColumnIndexed,
+                                 nullable=True)
+    email = Column('email',
+                                String,
+                                default="",
+                                index=org_customer_constants.email_calculatedIsDBColumnIndexed,
+                                nullable=True)
+    organization_id = Column('organization_id',
+                     Integer,
+                     ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
+                     index=org_customer_constants.organization_id_calculatedIsDBColumnIndexed,
+                     nullable=True)
     customer_code_peek = UUIDType  # CustomerID
     organization_code_peek = UUIDType # OrganizationID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
@@ -54,8 +67,8 @@ class OrgCustomer(Base):
 
 # Define the index separately from the column
 # Index('index_code', OrgCustomer.code)
-Index('farm_org_customer_index_customer_id', OrgCustomer.customer_id) #CustomerID
-Index('farm_org_customer_index_organization_id', OrgCustomer.organization_id) #OrganizationID
+# Index('farm_org_customer_index_customer_id', OrgCustomer.customer_id) #CustomerID
+# Index('farm_org_customer_index_organization_id', OrgCustomer.organization_id) #OrganizationID
 @event.listens_for(OrgCustomer, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

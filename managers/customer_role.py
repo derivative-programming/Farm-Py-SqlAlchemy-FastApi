@@ -20,29 +20,41 @@ class CustomerRoleManager:
         self.session = session
 
     async def initialize(self):
-        pass
+        logging.info("CustomerRoleManager.Initialize")
 
     async def build(self, **kwargs) -> CustomerRole:
+        logging.info("CustomerRoleManager.build")
         return CustomerRole(**kwargs)
     async def add(self, customer_role: CustomerRole) -> CustomerRole:
+        logging.info("CustomerRoleManager.add")
         self.session.add(customer_role)
         await self.session.commit()
         return customer_role
     def _build_query(self):
-        join_condition = None
+        logging.info("CustomerRoleManager._build_query")
+#         join_condition = None
+#
+#         join_condition = outerjoin(join_condition, Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
+#         join_condition = outerjoin(CustomerRole, Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
+#
+#         if join_condition is not None:
+#             query = select(CustomerRole
+#                         ,Customer #customer_id
+#                         ,Role #role_id
+#                         ).select_from(join_condition)
+#         else:
+#             query = select(CustomerRole)
+        query = select(CustomerRole
+                    ,Customer #customer_id
+                    ,Role #role_id
+                    )
 
-        join_condition = outerjoin(CustomerRole, Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
-        join_condition = outerjoin(join_condition, Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
+        query = query.outerjoin(Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
+        query = query.outerjoin(Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
 
-        if join_condition is not None:
-            query = select(CustomerRole
-                        ,Customer #customer_id
-                        ,Role #role_id
-                        ).select_from(join_condition)
-        else:
-            query = select(CustomerRole)
         return query
     async def _run_query(self, query_filter) -> List[CustomerRole]:
+        logging.info("CustomerRoleManager._run_query")
         customer_role_query_all = self._build_query()
         if query_filter is not None:
             query = customer_role_query_all.filter(query_filter)
@@ -52,10 +64,14 @@ class CustomerRoleManager:
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
-            customer_role = query_result_row[0]
+            i = 0
+            customer_role = query_result_row[i]
+            i = i + 1
 
-            customer = query_result_row[1] #customer_id
-            role = query_result_row[2] #role_id
+            customer = query_result_row[i] #customer_id
+            i = i + 1
+            role = query_result_row[i] #role_id
+            i = i + 1
 
             customer_role.customer_code_peek = customer.code if customer else uuid.UUID(int=0) #customer_id
             customer_role.role_code_peek = role.code if role else uuid.UUID(int=0) #role_id
@@ -75,18 +91,21 @@ class CustomerRoleManager:
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:
+        logging.info(f"CustomerRoleManager.get_by_code {code}")
         # result = await self.session.execute(select(CustomerRole).filter_by(code=code))
         # return result.scalars().one_or_none()
         query_filter = CustomerRole.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, customer_role: CustomerRole, **kwargs) -> Optional[CustomerRole]:
+        logging.info("CustomerRoleManager.update")
         if customer_role:
             for key, value in kwargs.items():
                 setattr(customer_role, key, value)
             await self.session.commit()
         return customer_role
     async def delete(self, customer_role_id: int):
+        logging.info(f"CustomerRoleManager.delete {customer_role_id}")
         if not isinstance(customer_role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
         customer_role = await self.get_by_id(customer_role_id)
@@ -95,11 +114,13 @@ class CustomerRoleManager:
         await self.session.delete(customer_role)
         await self.session.commit()
     async def get_list(self) -> List[CustomerRole]:
+        logging.info("CustomerRoleManager.get_list")
         # result = await self.session.execute(select(CustomerRole))
         # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, customer_role:CustomerRole) -> str:
+        logging.info("CustomerRoleManager.to_json")
         """
         Serialize the CustomerRole object to a JSON string using the CustomerRoleSchema.
         """
@@ -107,6 +128,7 @@ class CustomerRoleManager:
         customer_role_data = schema.dump(customer_role)
         return json.dumps(customer_role_data)
     def to_dict(self, customer_role:CustomerRole) -> dict:
+        logging.info("CustomerRoleManager.to_dict")
         """
         Serialize the CustomerRole object to a JSON string using the CustomerRoleSchema.
         """
@@ -114,6 +136,7 @@ class CustomerRoleManager:
         customer_role_data = schema.dump(customer_role)
         return customer_role_data
     def from_json(self, json_str: str) -> CustomerRole:
+        logging.info("CustomerRoleManager.from_json")
         """
         Deserialize a JSON string into a CustomerRole object using the CustomerRoleSchema.
         """
@@ -123,11 +146,13 @@ class CustomerRoleManager:
         new_customer_role = CustomerRole(**customer_role_dict)
         return new_customer_role
     def from_dict(self, customer_role_dict: str) -> CustomerRole:
+        logging.info("CustomerRoleManager.from_dict")
         schema = CustomerRoleSchema()
         customer_role_dict_converted = schema.load(customer_role_dict)
         new_customer_role = CustomerRole(**customer_role_dict_converted)
         return new_customer_role
     async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
+        logging.info("CustomerRoleManager.add_bulk")
         """Add multiple customer_roles at once."""
         self.session.add_all(customer_roles)
         await self.session.commit()
@@ -153,6 +178,7 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.update_bulk end")
         return updated_customer_roles
     async def delete_bulk(self, customer_role_ids: List[int]) -> bool:
+        logging.info("CustomerRoleManager.delete_bulk")
         """Delete multiple customer_roles by their IDs."""
         for customer_role_id in customer_role_ids:
             if not isinstance(customer_role_id, int):
@@ -165,9 +191,11 @@ class CustomerRoleManager:
         await self.session.commit()
         return True
     async def count(self) -> int:
+        logging.info("CustomerRoleManager.count")
         """Return the total number of customer_roles."""
         result = await self.session.execute(select(CustomerRole))
         return len(result.scalars().all())
+    #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[CustomerRole]:
         """Retrieve customer_roles sorted by a particular attribute."""
         if order == "asc":
@@ -176,10 +204,12 @@ class CustomerRoleManager:
             result = await self.session.execute(select(CustomerRole).order_by(getattr(CustomerRole, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, customer_role: CustomerRole) -> CustomerRole:
+        logging.info("CustomerRoleManager.refresh")
         """Refresh the state of a given customer_role instance from the database."""
         await self.session.refresh(customer_role)
         return customer_role
     async def exists(self, customer_role_id: int) -> bool:
+        logging.info(f"CustomerRoleManager.exists {customer_role_id}")
         """Check if a customer_role with the given ID exists."""
         if not isinstance(customer_role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
@@ -198,7 +228,8 @@ class CustomerRoleManager:
         dict2 = self.to_dict(customer_role2)
         return dict1 == dict2
 
-    async def get_by_customer_id(self, customer_id: int) -> List[Customer]: # CustomerID
+    async def get_by_customer_id(self, customer_id: int) -> List[CustomerRole]: # CustomerID
+        logging.info("CustomerRoleManager.get_by_customer_id")
         if not isinstance(customer_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_id)} instead.")
         # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_id == customer_id))
@@ -206,7 +237,8 @@ class CustomerRoleManager:
         query_filter = CustomerRole.customer_id == customer_id
         query_results = await self._run_query(query_filter)
         return query_results
-    async def get_by_role_id(self, role_id: int) -> List[Role]: # RoleID
+    async def get_by_role_id(self, role_id: int) -> List[CustomerRole]: # RoleID
+        logging.info("CustomerRoleManager.get_by_role_id")
         if not isinstance(role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(role_id)} instead.")
         # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.role_id == role_id))

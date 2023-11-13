@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import TriStateFilter
+import models
 from models.factory import TriStateFilterFactory
 from managers.tri_state_filter import TriStateFilterManager
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
@@ -384,7 +385,12 @@ class TestTriStateFilterManager:
         # Fetch the tri_state_filter using the manager function
         fetched_tri_state_filters = await tri_state_filter_manager.get_by_pac_id(tri_state_filter1.pac_id)
         assert len(fetched_tri_state_filters) == 1
+        assert isinstance(fetched_tri_state_filters[0],TriStateFilter)
         assert fetched_tri_state_filters[0].code == tri_state_filter1.code
+        stmt = select(models.Pac).where(models.Pac.pac_id==tri_state_filter1.pac_id)
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert fetched_tri_state_filters[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
         non_existent_id = 999

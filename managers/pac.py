@@ -21,61 +21,26 @@ class PacManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
+    async def _build_lookup_item(self, pac:Pac):
+        item = self.build()
+
+        return item
     async def initialize(self):
-        pac:Pac = self.session.execute(select(Pac)).scalars().first()
+        logging.info("PlantManager.Initialize start")
+        pac_result = await self.session.execute(select(Pac))
+        pac = pac_result.scalars().first()
+
         if self.from_enum(PacEnum.Unknown) is None:
-            item = Pac()
-            item.description = "Unknown"
-            item.display_order = self.count()
-            item.is_active = True
+            item = self._build_lookup_item(pac)
+            item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.name = "Unknown"
-            await self.add(item)
-        if self.from_enum(PacEnum.Last_24_Hours) is None:
-            item = Pac.build(pac)
-            item.name = "Last 24 Hours"
-            item.lookup_enum_name = "Last_24_Hours"
-            item.description = "Last 24 Hours"
+            item.description = ""
             item.display_order = self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(PacEnum.Last_7_Days) is None:
-            item = Pac.build(pac)
-            item.name = "Last 7 Days"
-            item.lookup_enum_name = "Last_7_Days"
-            item.description = "Last 7 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 7
-            await self.add(item)
-        if self.from_enum(PacEnum.Last_30_Days) is None:
-            item = Pac.build(pac)
-            item.name = "Last 30 Days"
-            item.lookup_enum_name = "Last_30_Days"
-            item.description = "Last 30 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 30
-            await self.add(item)
-        if self.from_enum(PacEnum.Last_90_Days) is None:
-            item = Pac.build(pac)
-            item.name = "Last 90 Days"
-            item.lookup_enum_name = "Last_90_Days"
-            item.description = "Last 90 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 90
-            await self.add(item)
-        if self.from_enum(PacEnum.Last_365_Days) is None:
-            item = Pac.build(pac)
-            item.name = "Last 365 Days"
-            item.lookup_enum_name = "Last_365_Days"
-            item.description = "Last 365 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 365
-            await self.add(item)
+
+        logging.info("PlantMaanger.Initialize end")
     async def from_enum(self, enum_val:PacEnum) -> Pac:
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Pac.lookup_enum_name==enum_val.value
@@ -83,22 +48,32 @@ class PacManager:
         return self._first_or_none(query_results)
 
     async def build(self, **kwargs) -> Pac:
+        logging.info("PacManager.build")
         return Pac(**kwargs)
     async def add(self, pac: Pac) -> Pac:
+        logging.info("PacManager.add")
         self.session.add(pac)
         await self.session.commit()
         return pac
     def _build_query(self):
-        join_condition = None
+        logging.info("PacManager._build_query")
+#         join_condition = None
+#
 
-        if join_condition is not None:
-            query = select(Pac
+#
+#         if join_condition is not None:
+#             query = select(Pac
 
-                        ).select_from(join_condition)
-        else:
-            query = select(Pac)
+#                         ).select_from(join_condition)
+#         else:
+#             query = select(Pac)
+        query = select(Pac
+
+                    )
+
         return query
     async def _run_query(self, query_filter) -> List[Pac]:
+        logging.info("PacManager._run_query")
         pac_query_all = self._build_query()
         if query_filter is not None:
             query = pac_query_all.filter(query_filter)
@@ -108,7 +83,9 @@ class PacManager:
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
-            pac = query_result_row[0]
+            i = 0
+            pac = query_result_row[i]
+            i = i + 1
 
             result.append(pac)
         return result
@@ -125,18 +102,21 @@ class PacManager:
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Pac]:
+        logging.info(f"PacManager.get_by_code {code}")
         # result = await self.session.execute(select(Pac).filter_by(code=code))
         # return result.scalars().one_or_none()
         query_filter = Pac.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, pac: Pac, **kwargs) -> Optional[Pac]:
+        logging.info("PacManager.update")
         if pac:
             for key, value in kwargs.items():
                 setattr(pac, key, value)
             await self.session.commit()
         return pac
     async def delete(self, pac_id: int):
+        logging.info(f"PacManager.delete {pac_id}")
         if not isinstance(pac_id, int):
             raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
         pac = await self.get_by_id(pac_id)
@@ -145,11 +125,13 @@ class PacManager:
         await self.session.delete(pac)
         await self.session.commit()
     async def get_list(self) -> List[Pac]:
+        logging.info("PacManager.get_list")
         # result = await self.session.execute(select(Pac))
         # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, pac:Pac) -> str:
+        logging.info("PacManager.to_json")
         """
         Serialize the Pac object to a JSON string using the PacSchema.
         """
@@ -157,6 +139,7 @@ class PacManager:
         pac_data = schema.dump(pac)
         return json.dumps(pac_data)
     def to_dict(self, pac:Pac) -> dict:
+        logging.info("PacManager.to_dict")
         """
         Serialize the Pac object to a JSON string using the PacSchema.
         """
@@ -164,6 +147,7 @@ class PacManager:
         pac_data = schema.dump(pac)
         return pac_data
     def from_json(self, json_str: str) -> Pac:
+        logging.info("PacManager.from_json")
         """
         Deserialize a JSON string into a Pac object using the PacSchema.
         """
@@ -173,11 +157,13 @@ class PacManager:
         new_pac = Pac(**pac_dict)
         return new_pac
     def from_dict(self, pac_dict: str) -> Pac:
+        logging.info("PacManager.from_dict")
         schema = PacSchema()
         pac_dict_converted = schema.load(pac_dict)
         new_pac = Pac(**pac_dict_converted)
         return new_pac
     async def add_bulk(self, pacs: List[Pac]) -> List[Pac]:
+        logging.info("PacManager.add_bulk")
         """Add multiple pacs at once."""
         self.session.add_all(pacs)
         await self.session.commit()
@@ -203,6 +189,7 @@ class PacManager:
         logging.info("PacManager.update_bulk end")
         return updated_pacs
     async def delete_bulk(self, pac_ids: List[int]) -> bool:
+        logging.info("PacManager.delete_bulk")
         """Delete multiple pacs by their IDs."""
         for pac_id in pac_ids:
             if not isinstance(pac_id, int):
@@ -215,9 +202,11 @@ class PacManager:
         await self.session.commit()
         return True
     async def count(self) -> int:
+        logging.info("PacManager.count")
         """Return the total number of pacs."""
         result = await self.session.execute(select(Pac))
         return len(result.scalars().all())
+    #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Pac]:
         """Retrieve pacs sorted by a particular attribute."""
         if order == "asc":
@@ -226,10 +215,12 @@ class PacManager:
             result = await self.session.execute(select(Pac).order_by(getattr(Pac, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, pac: Pac) -> Pac:
+        logging.info("PacManager.refresh")
         """Refresh the state of a given pac instance from the database."""
         await self.session.refresh(pac)
         return pac
     async def exists(self, pac_id: int) -> bool:
+        logging.info(f"PacManager.exists {pac_id}")
         """Check if a pac with the given ID exists."""
         if not isinstance(pac_id, int):
             raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")

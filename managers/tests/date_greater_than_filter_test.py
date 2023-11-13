@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import DateGreaterThanFilter
+import models
 from models.factory import DateGreaterThanFilterFactory
 from managers.date_greater_than_filter import DateGreaterThanFilterManager
 from models.serialization_schema.date_greater_than_filter import DateGreaterThanFilterSchema
@@ -385,7 +386,12 @@ class TestDateGreaterThanFilterManager:
         # Fetch the date_greater_than_filter using the manager function
         fetched_date_greater_than_filters = await date_greater_than_filter_manager.get_by_pac_id(date_greater_than_filter1.pac_id)
         assert len(fetched_date_greater_than_filters) == 1
+        assert isinstance(fetched_date_greater_than_filters[0],DateGreaterThanFilter)
         assert fetched_date_greater_than_filters[0].code == date_greater_than_filter1.code
+        stmt = select(models.Pac).where(models.Pac.pac_id==date_greater_than_filter1.pac_id)
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert fetched_date_greater_than_filters[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         non_existent_id = 999

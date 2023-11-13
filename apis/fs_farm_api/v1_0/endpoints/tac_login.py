@@ -1,11 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import APIKeyHeader
+import tempfile
+import uuid
+from fastapi import APIRouter, Depends
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
 import logging
-from helpers import SessionContext, ApiToken, api_key_header
+from helpers import SessionContext, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
+import reports
 from  .base_router import BaseRouter
 from database import get_db
 class TacLoginRouterConfig():

@@ -3,6 +3,8 @@ import managers
 import logging
 
 async def initialize(session: AsyncSession):
+    await managers.PacManager(session).initialize()  
+#endset
     
     await managers.CustomerManager(session).initialize() 
     await managers.CustomerRoleManager(session).initialize()  

@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Role
+import models
 from models.factory import RoleFactory
 from managers.role import RoleManager
 from models.serialization_schema.role import RoleSchema
@@ -384,7 +385,12 @@ class TestRoleManager:
         # Fetch the role using the manager function
         fetched_roles = await role_manager.get_by_pac_id(role1.pac_id)
         assert len(fetched_roles) == 1
+        assert isinstance(fetched_roles[0],Role)
         assert fetched_roles[0].code == role1.code
+        stmt = select(models.Pac).where(models.Pac.pac_id==role1.pac_id)
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert fetched_roles[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(self, role_manager:RoleManager, session:AsyncSession):
         non_existent_id = 999

@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Land
+import models
 from models.factory import LandFactory
 from managers.land import LandManager
 from models.serialization_schema.land import LandSchema
@@ -384,7 +385,12 @@ class TestLandManager:
         # Fetch the land using the manager function
         fetched_lands = await land_manager.get_by_pac_id(land1.pac_id)
         assert len(fetched_lands) == 1
+        assert isinstance(fetched_lands[0],Land)
         assert fetched_lands[0].code == land1.code
+        stmt = select(models.Pac).where(models.Pac.pac_id==land1.pac_id)
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert fetched_lands[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(self, land_manager:LandManager, session:AsyncSession):
         non_existent_id = 999

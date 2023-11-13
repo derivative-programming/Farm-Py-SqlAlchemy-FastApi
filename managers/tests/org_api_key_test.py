@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import OrgApiKey
+import models
 from models.factory import OrgApiKeyFactory
 from managers.org_api_key import OrgApiKeyManager
 from models.serialization_schema.org_api_key import OrgApiKeySchema
@@ -386,7 +387,12 @@ class TestOrgApiKeyManager:
         # Fetch the org_api_key using the manager function
         fetched_org_api_keys = await org_api_key_manager.get_by_organization_id(org_api_key1.organization_id)
         assert len(fetched_org_api_keys) == 1
+        assert isinstance(fetched_org_api_keys[0],OrgApiKey)
         assert fetched_org_api_keys[0].code == org_api_key1.code
+        stmt = select(models.Organization).where(models.Organization.organization_id==org_api_key1.organization_id)
+        result = await session.execute(stmt)
+        organization = result.scalars().first()
+        assert fetched_org_api_keys[0].organization_code_peek == organization.code
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
         non_existent_id = 999
@@ -406,7 +412,12 @@ class TestOrgApiKeyManager:
         # Fetch the org_api_key using the manager function
         fetched_org_api_keys = await org_api_key_manager.get_by_org_customer_id(org_api_key1.org_customer_id)
         assert len(fetched_org_api_keys) == 1
+        assert isinstance(fetched_org_api_keys[0],OrgApiKey)
         assert fetched_org_api_keys[0].code == org_api_key1.code
+        stmt = select(models.OrgCustomer).where(models.OrgCustomer.org_customer_id==org_api_key1.org_customer_id)
+        result = await session.execute(stmt)
+        org_customer = result.scalars().first()
+        assert fetched_org_api_keys[0].org_customer_code_peek == org_customer.code
     @pytest.mark.asyncio
     async def test_get_by_org_customer_id_nonexistent(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
         non_existent_id = 999

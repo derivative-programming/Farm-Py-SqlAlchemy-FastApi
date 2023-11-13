@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.land as land_constants
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -24,12 +25,36 @@ class Land(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    description = Column('description', String, default="", nullable=True)
-    display_order = Column('display_order', Integer, default=0, nullable=True)
-    is_active = Column('is_active', Boolean, default=False, nullable=True)
-    lookup_enum_name = Column('lookup_enum_name', String, default="", nullable=True)
-    name = Column('name', String, default="", nullable=True)
-    pac_id = Column('pac_id', Integer, ForeignKey('farm_' + snake_case('Pac') + '.pac_id'), nullable=True)
+    description = Column('description',
+                          String,
+                          default="",
+                                index=land_constants.description_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    display_order = Column('display_order',
+                          Integer,
+                          default=0,
+                                index=land_constants.display_order_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    is_active = Column('is_active',
+                               Boolean,
+                               default=False,
+                                index=land_constants.is_active_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    lookup_enum_name = Column('lookup_enum_name',
+                          String,
+                          default="",
+                                index=land_constants.lookup_enum_name_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    name = Column('name',
+                          String,
+                          default="",
+                                index=land_constants.name_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    pac_id = Column('pac_id',
+                     Integer,
+                     ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
+                     index=land_constants.pac_id_calculatedIsDBColumnIndexed,
+                     nullable=True)
     pac_code_peek = UUIDType # PacID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
@@ -58,7 +83,7 @@ class Land(Base):
 
 # Define the index separately from the column
 # Index('index_code', Land.code)
-Index('farm_land_index_pac_id', Land.pac_id) #PacID
+# Index('farm_land_index_pac_id', Land.pac_id) #PacID
 @event.listens_for(Land, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

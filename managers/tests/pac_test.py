@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Pac
+import models
 from models.factory import PacFactory
 from managers.pac import PacManager
 from models.serialization_schema.pac import PacSchema

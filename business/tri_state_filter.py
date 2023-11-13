@@ -139,10 +139,10 @@ class TriStateFilterBusObj:
     @property
     def pac_code_peek(self):
         return self.tri_state_filter.pac_code_peek
-    @pac_code_peek.setter
-    def pac_code_peek(self, value):
-        assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
-        self.tri_state_filter.pac_code_peek = value
+    # @pac_code_peek.setter
+    # def pac_code_peek(self, value):
+    #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
+    #     self.tri_state_filter.pac_code_peek = value
     #stateIntValue,
 
     #insert_utc_date_time

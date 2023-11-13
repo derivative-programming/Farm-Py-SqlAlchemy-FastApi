@@ -23,62 +23,44 @@ class FlavorManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
+    async def _build_lookup_item(self, pac:Pac):
+        item = self.build()
+        item.pac_id = pac.pac_id
+        return item
     async def initialize(self):
-        pac:Pac = self.session.execute(select(Pac)).scalars().first()
+        logging.info("PlantManager.Initialize start")
+        pac_result = await self.session.execute(select(Pac))
+        pac = pac_result.scalars().first()
+
         if self.from_enum(FlavorEnum.Unknown) is None:
-            item = Flavor()
-            item.description = "Unknown"
-            item.display_order = self.count()
-            item.is_active = True
-            item.lookup_enum_name = "Unknown"
+            item = self._build_lookup_item(pac)
             item.name = "Unknown"
-            item.pac_id = pac.pac_id
-            await self.add(item)
-        if self.from_enum(FlavorEnum.Last_24_Hours) is None:
-            item = Flavor.build(pac)
-            item.name = "Last 24 Hours"
-            item.lookup_enum_name = "Last_24_Hours"
-            item.description = "Last 24 Hours"
+            item.lookup_enum_name = "Unknown"
+            item.description = "Unknown"
             item.display_order = self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(FlavorEnum.Last_7_Days) is None:
-            item = Flavor.build(pac)
-            item.name = "Last 7 Days"
-            item.lookup_enum_name = "Last_7_Days"
-            item.description = "Last 7 Days"
+        if self.from_enum(FlavorEnum.Sweet) is None:
+            item = self._build_lookup_item(pac)
+            item.name = "Sweet"
+            item.lookup_enum_name = "Sweet"
+            item.description = "Sweet"
             item.display_order = self.count()
             item.is_active = True
-            # item. = 7
+            # item. = 1
             await self.add(item)
-        if self.from_enum(FlavorEnum.Last_30_Days) is None:
-            item = Flavor.build(pac)
-            item.name = "Last 30 Days"
-            item.lookup_enum_name = "Last_30_Days"
-            item.description = "Last 30 Days"
+        if self.from_enum(FlavorEnum.Sour) is None:
+            item = self._build_lookup_item(pac)
+            item.name = "Sour"
+            item.lookup_enum_name = "Sour"
+            item.description = "Sour"
             item.display_order = self.count()
             item.is_active = True
-            # item. = 30
+            # item. = 1
             await self.add(item)
-        if self.from_enum(FlavorEnum.Last_90_Days) is None:
-            item = Flavor.build(pac)
-            item.name = "Last 90 Days"
-            item.lookup_enum_name = "Last_90_Days"
-            item.description = "Last 90 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 90
-            await self.add(item)
-        if self.from_enum(FlavorEnum.Last_365_Days) is None:
-            item = Flavor.build(pac)
-            item.name = "Last 365 Days"
-            item.lookup_enum_name = "Last_365_Days"
-            item.description = "Last 365 Days"
-            item.display_order = self.count()
-            item.is_active = True
-            # item. = 365
-            await self.add(item)
+
+        logging.info("PlantMaanger.Initialize end")
     async def from_enum(self, enum_val:FlavorEnum) -> Flavor:
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Flavor.lookup_enum_name==enum_val.value
@@ -86,24 +68,34 @@ class FlavorManager:
         return self._first_or_none(query_results)
 
     async def build(self, **kwargs) -> Flavor:
+        logging.info("FlavorManager.build")
         return Flavor(**kwargs)
     async def add(self, flavor: Flavor) -> Flavor:
+        logging.info("FlavorManager.add")
         self.session.add(flavor)
         await self.session.commit()
         return flavor
     def _build_query(self):
-        join_condition = None
+        logging.info("FlavorManager._build_query")
+#         join_condition = None
+#
+#         join_condition = outerjoin(join_condition, Pac, and_(Flavor.pac_id == Pac.pac_id, Flavor.pac_id != 0))
+#
+#         if join_condition is not None:
+#             query = select(Flavor
+#                         ,Pac #pac_id
+#                         ).select_from(join_condition)
+#         else:
+#             query = select(Flavor)
+        query = select(Flavor
+                    ,Pac #pac_id
+                    )
 
-        join_condition = outerjoin(Flavor, Pac, and_(Flavor.pac_id == Pac.pac_id, Flavor.pac_id != 0))
+        query = query.outerjoin(Pac, and_(Flavor.pac_id == Pac.pac_id, Flavor.pac_id != 0))
 
-        if join_condition is not None:
-            query = select(Flavor
-                        ,Pac #pac_id
-                        ).select_from(join_condition)
-        else:
-            query = select(Flavor)
         return query
     async def _run_query(self, query_filter) -> List[Flavor]:
+        logging.info("FlavorManager._run_query")
         flavor_query_all = self._build_query()
         if query_filter is not None:
             query = flavor_query_all.filter(query_filter)
@@ -113,9 +105,12 @@ class FlavorManager:
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
-            flavor = query_result_row[0]
+            i = 0
+            flavor = query_result_row[i]
+            i = i + 1
 
-            pac = query_result_row[1] #pac_id
+            pac = query_result_row[i] #pac_id
+            i = i + 1
 
             flavor.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
 
@@ -134,18 +129,21 @@ class FlavorManager:
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Flavor]:
+        logging.info(f"FlavorManager.get_by_code {code}")
         # result = await self.session.execute(select(Flavor).filter_by(code=code))
         # return result.scalars().one_or_none()
         query_filter = Flavor.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, flavor: Flavor, **kwargs) -> Optional[Flavor]:
+        logging.info("FlavorManager.update")
         if flavor:
             for key, value in kwargs.items():
                 setattr(flavor, key, value)
             await self.session.commit()
         return flavor
     async def delete(self, flavor_id: int):
+        logging.info(f"FlavorManager.delete {flavor_id}")
         if not isinstance(flavor_id, int):
             raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
         flavor = await self.get_by_id(flavor_id)
@@ -154,11 +152,13 @@ class FlavorManager:
         await self.session.delete(flavor)
         await self.session.commit()
     async def get_list(self) -> List[Flavor]:
+        logging.info("FlavorManager.get_list")
         # result = await self.session.execute(select(Flavor))
         # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, flavor:Flavor) -> str:
+        logging.info("FlavorManager.to_json")
         """
         Serialize the Flavor object to a JSON string using the FlavorSchema.
         """
@@ -166,6 +166,7 @@ class FlavorManager:
         flavor_data = schema.dump(flavor)
         return json.dumps(flavor_data)
     def to_dict(self, flavor:Flavor) -> dict:
+        logging.info("FlavorManager.to_dict")
         """
         Serialize the Flavor object to a JSON string using the FlavorSchema.
         """
@@ -173,6 +174,7 @@ class FlavorManager:
         flavor_data = schema.dump(flavor)
         return flavor_data
     def from_json(self, json_str: str) -> Flavor:
+        logging.info("FlavorManager.from_json")
         """
         Deserialize a JSON string into a Flavor object using the FlavorSchema.
         """
@@ -182,11 +184,13 @@ class FlavorManager:
         new_flavor = Flavor(**flavor_dict)
         return new_flavor
     def from_dict(self, flavor_dict: str) -> Flavor:
+        logging.info("FlavorManager.from_dict")
         schema = FlavorSchema()
         flavor_dict_converted = schema.load(flavor_dict)
         new_flavor = Flavor(**flavor_dict_converted)
         return new_flavor
     async def add_bulk(self, flavors: List[Flavor]) -> List[Flavor]:
+        logging.info("FlavorManager.add_bulk")
         """Add multiple flavors at once."""
         self.session.add_all(flavors)
         await self.session.commit()
@@ -212,6 +216,7 @@ class FlavorManager:
         logging.info("FlavorManager.update_bulk end")
         return updated_flavors
     async def delete_bulk(self, flavor_ids: List[int]) -> bool:
+        logging.info("FlavorManager.delete_bulk")
         """Delete multiple flavors by their IDs."""
         for flavor_id in flavor_ids:
             if not isinstance(flavor_id, int):
@@ -224,9 +229,11 @@ class FlavorManager:
         await self.session.commit()
         return True
     async def count(self) -> int:
+        logging.info("FlavorManager.count")
         """Return the total number of flavors."""
         result = await self.session.execute(select(Flavor))
         return len(result.scalars().all())
+    #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Flavor]:
         """Retrieve flavors sorted by a particular attribute."""
         if order == "asc":
@@ -235,10 +242,12 @@ class FlavorManager:
             result = await self.session.execute(select(Flavor).order_by(getattr(Flavor, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, flavor: Flavor) -> Flavor:
+        logging.info("FlavorManager.refresh")
         """Refresh the state of a given flavor instance from the database."""
         await self.session.refresh(flavor)
         return flavor
     async def exists(self, flavor_id: int) -> bool:
+        logging.info(f"FlavorManager.exists {flavor_id}")
         """Check if a flavor with the given ID exists."""
         if not isinstance(flavor_id, int):
             raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
@@ -257,7 +266,8 @@ class FlavorManager:
         dict2 = self.to_dict(flavor2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int) -> List[Pac]: # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[Flavor]: # PacID
+        logging.info("FlavorManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(f"The flavor_id must be an integer, got {type(pac_id)} instead.")
         # result = await self.session.execute(select(Flavor).filter(Flavor.pac_id == pac_id))

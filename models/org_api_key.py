@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.org_api_key as org_api_key_constants
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -24,15 +25,51 @@ class OrgApiKey(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    api_key_value = Column('api_key_value', String, default="", nullable=True)
-    created_by = Column('created_by', String, default="", nullable=True)
-    created_utc_date_time = Column('created_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    expiration_utc_date_time = Column('expiration_utc_date_time', DateTime, default=datetime(1753, 1, 1), nullable=True)
-    is_active = Column('is_active', Boolean, default=False, nullable=True)
-    is_temp_user_key = Column('is_temp_user_key', Boolean, default=False, nullable=True)
-    name = Column('name', String, default="", nullable=True)
-    organization_id = Column('organization_id', Integer, ForeignKey('farm_' + snake_case('Organization') + '.organization_id'), nullable=True)
-    org_customer_id = Column('org_customer_id', Integer, ForeignKey('farm_' + snake_case('OrgCustomer') + '.org_customer_id'), nullable=True)
+    api_key_value = Column('api_key_value',
+                          String,
+                          default="",
+                                index=org_api_key_constants.api_key_value_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    created_by = Column('created_by',
+                          String,
+                          default="",
+                                index=org_api_key_constants.created_by_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    created_utc_date_time = Column('created_utc_date_time',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
+                                index=org_api_key_constants.created_utc_date_time_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    expiration_utc_date_time = Column('expiration_utc_date_time',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
+                                index=org_api_key_constants.expiration_utc_date_time_calculatedIsDBColumnIndexed,
+                                    nullable=True)
+    is_active = Column('is_active',
+                               Boolean,
+                               default=False,
+                                index=org_api_key_constants.is_active_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    is_temp_user_key = Column('is_temp_user_key',
+                               Boolean,
+                               default=False,
+                                index=org_api_key_constants.is_temp_user_key_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    name = Column('name',
+                          String,
+                          default="",
+                                index=org_api_key_constants.name_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    organization_id = Column('organization_id',
+                     Integer,
+                     ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
+                     index=org_api_key_constants.organization_id_calculatedIsDBColumnIndexed,
+                     nullable=True)
+    org_customer_id = Column('org_customer_id',
+                                 Integer,
+                                 ForeignKey('farm_' + snake_case('OrgCustomer') + '.org_customer_id'),
+                                index=org_api_key_constants.org_customer_id_calculatedIsDBColumnIndexed,
+                                 nullable=True)
     organization_code_peek = UUIDType # OrganizationID
     org_customer_code_peek = UUIDType  # OrgCustomerID
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
@@ -66,8 +103,8 @@ class OrgApiKey(Base):
 
 # Define the index separately from the column
 # Index('index_code', OrgApiKey.code)
-Index('farm_org_api_key_index_organization_id', OrgApiKey.organization_id) #OrganizationID
-Index('farm_org_api_key_index_org_customer_id', OrgApiKey.org_customer_id) #OrgCustomerID
+# Index('farm_org_api_key_index_organization_id', OrgApiKey.organization_id) #OrganizationID
+# Index('farm_org_api_key_index_org_customer_id', OrgApiKey.org_customer_id) #OrgCustomerID
 @event.listens_for(OrgApiKey, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

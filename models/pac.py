@@ -10,6 +10,7 @@ from .base import Base  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
+import models.constants.pac as pac_constants
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -24,11 +25,31 @@ class Pac(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    description = Column('description', String, default="", nullable=True)
-    display_order = Column('display_order', Integer, default=0, nullable=True)
-    is_active = Column('is_active', Boolean, default=False, nullable=True)
-    lookup_enum_name = Column('lookup_enum_name', String, default="", nullable=True)
-    name = Column('name', String, default="", nullable=True)
+    description = Column('description',
+                          String,
+                          default="",
+                                index=pac_constants.description_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    display_order = Column('display_order',
+                          Integer,
+                          default=0,
+                                index=pac_constants.display_order_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    is_active = Column('is_active',
+                               Boolean,
+                               default=False,
+                                index=pac_constants.is_active_calculatedIsDBColumnIndexed,
+                               nullable=True)
+    lookup_enum_name = Column('lookup_enum_name',
+                          String,
+                          default="",
+                                index=pac_constants.lookup_enum_name_calculatedIsDBColumnIndexed,
+                          nullable=True)
+    name = Column('name',
+                          String,
+                          default="",
+                                index=pac_constants.name_calculatedIsDBColumnIndexed,
+                          nullable=True)
 
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)

@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Tac
+import models
 from models.factory import TacFactory
 from managers.tac import TacManager
 from models.serialization_schema.tac import TacSchema
@@ -384,7 +385,12 @@ class TestTacManager:
         # Fetch the tac using the manager function
         fetched_tacs = await tac_manager.get_by_pac_id(tac1.pac_id)
         assert len(fetched_tacs) == 1
+        assert isinstance(fetched_tacs[0],Tac)
         assert fetched_tacs[0].code == tac1.code
+        stmt = select(models.Pac).where(models.Pac.pac_id==tac1.pac_id)
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert fetched_tacs[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(self, tac_manager:TacManager, session:AsyncSession):
         non_existent_id = 999
