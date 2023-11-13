@@ -1,4 +1,5 @@
 from decimal import Decimal
+import os
 import pytest 
 import uuid
 from typing import List
@@ -313,7 +314,11 @@ class TestReportManagerLandPlantList:
     async def test_read_csv(self,session): 
         session_context = SessionContext(dict())
         test_obj = ReportManagerLandPlantList(session, session_context) 
+        
+        test_data = [ReportItemLandPlantList(), ReportItemLandPlantList()]   
         file_name = 'test_input.csv'
+        await test_obj.build_csv(file_name, test_data)
+
         # Ensure 'test_input.csv' exists and contains valid data for testing
 
         result = await test_obj.read_csv(file_name)
