@@ -1,5 +1,6 @@
 import json
 from datetime import date, datetime
+import os
 import uuid
 from decimal import Decimal
 import logging
@@ -9,6 +10,7 @@ from sqlalchemy import text
 class ReportProviderTacFarmDashboard():
 		_session_context:SessionContext
 		_session:AsyncSession
+		_cached_sql_query: str = None  # Static variable for caching the SQL query
 		def __init__(self, session:AsyncSession, session_context:SessionContext):
 			self._session = session
 			self._session_context = session_context
@@ -32,14 +34,21 @@ class ReportProviderTacFarmDashboard():
 			query_dict["order_by_column_name"] = order_by_column_name
 			query_dict["order_by_descending"] = order_by_descending
 			query_dict["user_id"] = str(self._session_context.customer_code)
-			# The hardcoded path to the SQL file in the 'sql' subfolder
-			file_path = "reports/providers/sql/tac_farm_dashboard.gen.sql"
-			# Read SQL from the hardcoded file path
-			with open(file_path, 'r') as file:
-				sql_query = file.read()
+			if ReportProviderTacFarmDashboard._cached_sql_query is None:
+				# Prioritize 'tac_farm_dashboard.inc.sql' if it exists
+				inc_file_path = "reports/providers/sql/tac_farm_dashboard.inc.sql"
+				gen_file_path = "reports/providers/sql/tac_farm_dashboard.gen.sql"
+				if os.path.exists(inc_file_path):
+					file_to_read = inc_file_path
+				elif os.path.exists(gen_file_path):
+					file_to_read = gen_file_path
+				else:
+					raise FileNotFoundError("SQL file not found")
+				with open(file_to_read, 'r') as file:
+					ReportProviderTacFarmDashboard._cached_sql_query = file.read()
 			# Execute the SQL query with the provided parameters
 			cursor = await self._session.execute(
-				text(sql_query),
+				text(ReportProviderTacFarmDashboard._cached_sql_query),
 				query_dict
 			)
 			results = self.dictfetchall(cursor)

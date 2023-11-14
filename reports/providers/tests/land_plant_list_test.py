@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String 
 from reports.providers.land_plant_list import ReportProviderLandPlantList
+import current_runtime
 import sqlite3
 
 
@@ -28,6 +29,7 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestReportProviderLandPlantList: 
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
+        await current_runtime.initialize(session=session)
         session_context = SessionContext(dict())
         report_provider = ReportProviderLandPlantList(session, session_context) 
         land = await LandFactory.create_async(session=session)

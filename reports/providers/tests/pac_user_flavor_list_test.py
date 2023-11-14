@@ -11,6 +11,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from reports.providers.pac_user_flavor_list import ReportProviderPacUserFlavorList
+import current_runtime
 import sqlite3
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
@@ -25,6 +26,7 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestReportProviderPacUserFlavorList:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
+        await current_runtime.initialize(session=session)
         session_context = SessionContext(dict())
         report_provider = ReportProviderPacUserFlavorList(session, session_context)
         pac = await PacFactory.create_async(session=session)
