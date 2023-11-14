@@ -427,10 +427,10 @@ class CustomerBusObj(BaseBusObj):
         customer_manager = CustomerManager(self.session)
         return customer_manager.to_json(self.customer)
     async def save(self):
-        if self.customer.customer_id > 0:
+        if self.customer.customer_id is not None and self.customer.customer_id > 0:
             customer_manager = CustomerManager(self.session)
             self.customer = await customer_manager.update(self.customer)
-        if self.customer.customer_id == 0:
+        if self.customer.customer_id is None or self.customer.customer_id == 0:
             customer_manager = CustomerManager(self.session)
             self.customer = await customer_manager.add(self.customer)
     async def delete(self):
@@ -511,22 +511,23 @@ class CustomerBusObj(BaseBusObj):
     async def build_customer_role(self) -> CustomerRoleBusObj:
         item = CustomerRoleBusObj(self.session)
         role_manager = managers_and_enums.RoleManager(self.session)
-        role_id_role = await role_id_role.from_enum(
+        role_id_role = await role_manager.from_enum(
             managers_and_enums.RoleEnum.Unknown)
-        item.role_id_id = role_id_role.customer_id
-        item.role_id_code_peek = role_id_role.code
+        item.role_id = role_id_role.role_id
+        item.customer_role.role_id_code_peek = role_id_role.code
 
         item.customer_id = self.customer_id
-        item.customer_code_peek = self.code
+        item.customer_role.customer_code_peek = self.code
 
         return item
 
     async def get_all_customer_role(self) -> List[CustomerRoleBusObj]:
         results = list()
         customer_role_manager = managers_and_enums.CustomerRoleManager(self.session)
-        obj_list = customer_role_manager.get_by_customer_id(self.customer_id)
+        obj_list = await customer_role_manager.get_by_customer_id(self.customer_id)
         for obj_item in obj_list:
-            bus_obj_item = await CustomerRoleBusObj(self.session).load(customer_role_obj_instance=obj_item)
+            bus_obj_item = CustomerRoleBusObj(self.session)
+            await bus_obj_item.load(customer_role_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 

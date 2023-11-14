@@ -209,10 +209,10 @@ class DateGreaterThanFilterBusObj:
         date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
         return date_greater_than_filter_manager.to_json(self.date_greater_than_filter)
     async def save(self):
-        if self.date_greater_than_filter.date_greater_than_filter_id > 0:
+        if self.date_greater_than_filter.date_greater_than_filter_id is not None and self.date_greater_than_filter.date_greater_than_filter_id > 0:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
             self.date_greater_than_filter = await date_greater_than_filter_manager.update(self.date_greater_than_filter)
-        if self.date_greater_than_filter.date_greater_than_filter_id == 0:
+        if self.date_greater_than_filter.date_greater_than_filter_id is None or self.date_greater_than_filter.date_greater_than_filter_id == 0:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
             self.date_greater_than_filter = await date_greater_than_filter_manager.add(self.date_greater_than_filter)
     async def delete(self):

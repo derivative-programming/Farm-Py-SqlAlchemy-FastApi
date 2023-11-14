@@ -489,10 +489,10 @@ class PlantBusObj(BaseBusObj):
         return plant_manager.to_json(self.plant)
     
     async def save(self):
-        if self.plant.plant_id > 0:
+        if self.plant.plant_id is not None and self.plant.plant_id > 0:
             plant_manager = PlantManager(self.session)
             self.plant = await plant_manager.update(self.plant)
-        if self.plant.plant_id == 0:
+        if self.plant.plant_id is None or self.plant.plant_id == 0:
             plant_manager = PlantManager(self.session)
             self.plant = await plant_manager.add(self.plant)
  

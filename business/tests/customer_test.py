@@ -12,6 +12,9 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
+import managers as managers_and_enums
+import current_runtime
+
 logger = get_logger(__name__)
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -124,3 +127,39 @@ class TestCustomerBusObj:
         await customer_bus_obj.delete()
         new_customer = await customer_manager.get_by_id(new_customer.customer_id)
         assert new_customer is None
+
+    @pytest.mark.asyncio
+    async def test_build_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+
+        await current_runtime.initialize(session=customer_manager.session)
+
+        await customer_bus_obj.load(customer_id=new_customer.customer_id)
+
+        customer_role_bus_obj = await customer_bus_obj.build_customer_role()
+
+        assert customer_role_bus_obj.customer_id == customer_bus_obj.customer_id
+        assert customer_role_bus_obj.customer_code_peek == customer_bus_obj.code
+
+        await customer_role_bus_obj.save()
+
+        assert customer_role_bus_obj.customer_role_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+
+        await current_runtime.initialize(session=customer_manager.session)
+
+        await customer_bus_obj.load(customer_id=new_customer.customer_id)
+
+        customer_role_bus_obj = await customer_bus_obj.build_customer_role()
+
+        await customer_role_bus_obj.save()
+
+        customer_role_list = await customer_bus_obj.get_all_customer_role()
+
+        assert len(customer_role_list) >= 1
+
+        #assert customer_role_list[0].customer_role_id > 0
+
+        #assert customer_role_list[0].customer_role_id == customer_role_bus_obj.customer_role_id
+

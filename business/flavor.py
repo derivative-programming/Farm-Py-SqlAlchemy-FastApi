@@ -222,10 +222,10 @@ class FlavorBusObj(BaseBusObj):
         flavor_manager = FlavorManager(self.session)
         return flavor_manager.to_json(self.flavor)
     async def save(self):
-        if self.flavor.flavor_id > 0:
+        if self.flavor.flavor_id is not None and self.flavor.flavor_id > 0:
             flavor_manager = FlavorManager(self.session)
             self.flavor = await flavor_manager.update(self.flavor)
-        if self.flavor.flavor_id == 0:
+        if self.flavor.flavor_id is None or self.flavor.flavor_id == 0:
             flavor_manager = FlavorManager(self.session)
             self.flavor = await flavor_manager.add(self.flavor)
     async def delete(self):

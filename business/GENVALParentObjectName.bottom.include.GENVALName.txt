@@ -7,23 +7,24 @@
         ##GENLOOPPropStart
         ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]Start
         GENVALSnakefKObjectName_manager = managers_and_enums.GENVALPascalfKObjectNameManager(self.session)
-        GENVALSnakeName_GENVALSnakefKObjectName = await GENVALSnakeName_GENVALSnakefKObjectName.from_enum(
+        GENVALSnakeName_GENVALSnakefKObjectName = await GENVALSnakefKObjectName_manager.from_enum(
             managers_and_enums.GENVALPascalfKObjectNameEnum.Unknown)
-        item.GENVALSnakeName_id = GENVALSnakeName_GENVALSnakefKObjectName.GENVALSnakeParentObjectName_id
-        item.GENVALSnakeName_code_peek = GENVALSnakeName_GENVALSnakefKObjectName.code
+        item.GENVALSnakeName = GENVALSnakeName_GENVALSnakefKObjectName.GENVALSnakefKObjectName_id
+        item.GENVALSnakeObjectName.GENVALSnakeName_code_peek = GENVALSnakeName_GENVALSnakefKObjectName.code
         ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]End
         ##GENLOOPPropEnd
         
         item.GENVALSnakeParentObjectName_id = self.GENVALSnakeParentObjectName_id
-        item.GENVALSnakeParentObjectName_code_peek = self.code
+        item.GENVALSnakeObjectName.GENVALSnakeParentObjectName_code_peek = self.code
 
         return item
 
     async def get_all_GENVALSnakeName(self) -> List[GENVALPascalNameBusObj]:
         results = list()
         GENVALSnakeName_manager = managers_and_enums.GENVALPascalNameManager(self.session)
-        obj_list = GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(self.GENVALSnakeParentObjectName_id)
+        obj_list = await GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(self.GENVALSnakeParentObjectName_id)
         for obj_item in obj_list:
-            bus_obj_item = await GENVALPascalNameBusObj(self.session).load(GENVALSnakeObjectName_obj_instance=obj_item)
+            bus_obj_item = GENVALPascalNameBusObj(self.session)
+            await bus_obj_item.load(GENVALSnakeObjectName_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results

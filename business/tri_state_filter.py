@@ -234,10 +234,10 @@ class TriStateFilterBusObj(BaseBusObj):
         tri_state_filter_manager = TriStateFilterManager(self.session)
         return tri_state_filter_manager.to_json(self.tri_state_filter)
     async def save(self):
-        if self.tri_state_filter.tri_state_filter_id > 0:
+        if self.tri_state_filter.tri_state_filter_id is not None and self.tri_state_filter.tri_state_filter_id > 0:
             tri_state_filter_manager = TriStateFilterManager(self.session)
             self.tri_state_filter = await tri_state_filter_manager.update(self.tri_state_filter)
-        if self.tri_state_filter.tri_state_filter_id == 0:
+        if self.tri_state_filter.tri_state_filter_id is None or self.tri_state_filter.tri_state_filter_id == 0:
             tri_state_filter_manager = TriStateFilterManager(self.session)
             self.tri_state_filter = await tri_state_filter_manager.add(self.tri_state_filter)
     async def delete(self):

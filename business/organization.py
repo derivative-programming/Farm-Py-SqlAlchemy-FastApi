@@ -170,10 +170,10 @@ class OrganizationBusObj(BaseBusObj):
         organization_manager = OrganizationManager(self.session)
         return organization_manager.to_json(self.organization)
     async def save(self):
-        if self.organization.organization_id > 0:
+        if self.organization.organization_id is not None and self.organization.organization_id > 0:
             organization_manager = OrganizationManager(self.session)
             self.organization = await organization_manager.update(self.organization)
-        if self.organization.organization_id == 0:
+        if self.organization.organization_id is None or self.organization.organization_id == 0:
             organization_manager = OrganizationManager(self.session)
             self.organization = await organization_manager.add(self.organization)
     async def delete(self):
@@ -213,16 +213,17 @@ class OrganizationBusObj(BaseBusObj):
         item = OrgCustomerBusObj(self.session)
 
         item.organization_id = self.organization_id
-        item.organization_code_peek = self.code
+        item.org_customer.organization_code_peek = self.code
 
         return item
 
     async def get_all_org_customer(self) -> List[OrgCustomerBusObj]:
         results = list()
         org_customer_manager = managers_and_enums.OrgCustomerManager(self.session)
-        obj_list = org_customer_manager.get_by_organization_id(self.organization_id)
+        obj_list = await org_customer_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
-            bus_obj_item = await OrgCustomerBusObj(self.session).load(org_customer_obj_instance=obj_item)
+            bus_obj_item = OrgCustomerBusObj(self.session)
+            await bus_obj_item.load(org_customer_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -230,16 +231,17 @@ class OrganizationBusObj(BaseBusObj):
         item = OrgApiKeyBusObj(self.session)
 
         item.organization_id = self.organization_id
-        item.organization_code_peek = self.code
+        item.org_api_key.organization_code_peek = self.code
 
         return item
 
     async def get_all_org_api_key(self) -> List[OrgApiKeyBusObj]:
         results = list()
         org_api_key_manager = managers_and_enums.OrgApiKeyManager(self.session)
-        obj_list = org_api_key_manager.get_by_organization_id(self.organization_id)
+        obj_list = await org_api_key_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
-            bus_obj_item = await OrgApiKeyBusObj(self.session).load(org_api_key_obj_instance=obj_item)
+            bus_obj_item = OrgApiKeyBusObj(self.session)
+            await bus_obj_item.load(org_api_key_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 

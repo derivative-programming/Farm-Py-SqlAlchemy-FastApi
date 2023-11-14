@@ -188,10 +188,10 @@ class OrgCustomerBusObj(BaseBusObj):
         org_customer_manager = OrgCustomerManager(self.session)
         return org_customer_manager.to_json(self.org_customer)
     async def save(self):
-        if self.org_customer.org_customer_id > 0:
+        if self.org_customer.org_customer_id is not None and self.org_customer.org_customer_id > 0:
             org_customer_manager = OrgCustomerManager(self.session)
             self.org_customer = await org_customer_manager.update(self.org_customer)
-        if self.org_customer.org_customer_id == 0:
+        if self.org_customer.org_customer_id is None or self.org_customer.org_customer_id == 0:
             org_customer_manager = OrgCustomerManager(self.session)
             self.org_customer = await org_customer_manager.add(self.org_customer)
     async def delete(self):

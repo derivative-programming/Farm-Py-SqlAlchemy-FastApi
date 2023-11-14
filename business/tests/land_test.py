@@ -12,6 +12,9 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
+import managers as managers_and_enums
+import current_runtime
+
 logger = get_logger(__name__)
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -101,3 +104,39 @@ class TestLandBusObj:
         await land_bus_obj.delete()
         new_land = await land_manager.get_by_id(new_land.land_id)
         assert new_land is None
+
+    @pytest.mark.asyncio
+    async def test_build_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+
+        await current_runtime.initialize(session=land_manager.session)
+
+        await land_bus_obj.load(land_id=new_land.land_id)
+
+        plant_bus_obj = await land_bus_obj.build_plant()
+
+        assert plant_bus_obj.land_id == land_bus_obj.land_id
+        assert plant_bus_obj.land_code_peek == land_bus_obj.code
+
+        await plant_bus_obj.save()
+
+        assert plant_bus_obj.plant_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+
+        await current_runtime.initialize(session=land_manager.session)
+
+        await land_bus_obj.load(land_id=new_land.land_id)
+
+        plant_bus_obj = await land_bus_obj.build_plant()
+
+        await plant_bus_obj.save()
+
+        plant_list = await land_bus_obj.get_all_plant()
+
+        assert len(plant_list) >= 1
+
+        #assert plant_list[0].plant_id > 0
+
+        #assert plant_list[0].plant_id == plant_bus_obj.plant_id
+

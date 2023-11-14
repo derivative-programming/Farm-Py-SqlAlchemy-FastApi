@@ -1,30 +1,40 @@
 ##GENIF[calculatedIsParentObjectAvailable=false]Start
 //GENDELETETHISFILE
-##GENIF[calculatedIsParentObjectAvailable=false]End
-//GENDELETETHISFILE
-    async def build_GENVALSnakeName(self) -> GENVALPascalNameBusObj:
-        item = GENVALPascalNameBusObj(self.session)
+##GENIF[calculatedIsParentObjectAvailable=false]End  
 
-        ##GENLOOPPropStart
-        ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]Start
-        GENVALSnakefKObjectName_manager = managers_and_enums.GENVALPascalfKObjectNameManager(self.session)
-        GENVALSnakeName_GENVALSnakefKObjectName = await GENVALSnakeName_GENVALSnakefKObjectName.from_enum(
-            managers_and_enums.GENVALPascalfKObjectNameEnum.Unknown)
-        item.GENVALSnakeName_id = GENVALSnakeName_GENVALSnakefKObjectName.GENVALSnakeParentObjectName_id
-        item.GENVALSnakeName_code_peek = GENVALSnakeName_GENVALSnakefKObjectName.code
-        ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]End
-        ##GENLOOPPropEnd
+    @pytest.mark.asyncio
+    async def test_build_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName):
         
-        item.GENVALSnakeParentObjectName_id = self.GENVALSnakeParentObjectName_id
-        item.GENVALSnakeParentObjectName_code_peek = self.code
+        await current_runtime.initialize(session=GENVALSnakeParentObjectName_manager.session)
 
-        return item
+        await GENVALSnakeParentObjectName_bus_obj.load(GENVALSnakeParentObjectName_id=new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id) 
+        
+        GENVALSnakeName_bus_obj = await GENVALSnakeParentObjectName_bus_obj.build_GENVALSnakeName()
 
-    async def get_all_GENVALSnakeName(self) -> List[GENVALPascalNameBusObj]:
-        results = list()
-        GENVALSnakeName_manager = managers_and_enums.GENVALPascalNameManager(self.session)
-        obj_list = GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(self.GENVALSnakeParentObjectName_id)
-        for obj_item in obj_list:
-            bus_obj_item = await GENVALPascalNameBusObj(self.session).load(GENVALSnakeObjectName_obj_instance=obj_item)
-            results.append(bus_obj_item)
-        return results
+        assert GENVALSnakeName_bus_obj.GENVALSnakeParentObjectName_id == GENVALSnakeParentObjectName_bus_obj.GENVALSnakeParentObjectName_id
+        assert GENVALSnakeName_bus_obj.GENVALSnakeParentObjectName_code_peek == GENVALSnakeParentObjectName_bus_obj.code
+
+        await GENVALSnakeName_bus_obj.save()
+
+        assert GENVALSnakeName_bus_obj.GENVALSnakeName_id > 0
+
+    
+    @pytest.mark.asyncio
+    async def test_get_all_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName):
+        
+        await current_runtime.initialize(session=GENVALSnakeParentObjectName_manager.session)
+
+        await GENVALSnakeParentObjectName_bus_obj.load(GENVALSnakeParentObjectName_id=new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id) 
+        
+        GENVALSnakeName_bus_obj = await GENVALSnakeParentObjectName_bus_obj.build_GENVALSnakeName() 
+
+        await GENVALSnakeName_bus_obj.save() 
+
+        GENVALSnakeName_list = await GENVALSnakeParentObjectName_bus_obj.get_all_GENVALSnakeName()
+
+        assert len(GENVALSnakeName_list) >= 1
+        
+        #assert GENVALSnakeName_list[0].GENVALSnakeName_id > 0 
+
+        #assert GENVALSnakeName_list[0].GENVALSnakeName_id == GENVALSnakeName_bus_obj.GENVALSnakeName_id
+  

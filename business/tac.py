@@ -226,10 +226,10 @@ class TacBusObj(BaseBusObj):
         tac_manager = TacManager(self.session)
         return tac_manager.to_json(self.tac)
     async def save(self):
-        if self.tac.tac_id > 0:
+        if self.tac.tac_id is not None and self.tac.tac_id > 0:
             tac_manager = TacManager(self.session)
             self.tac = await tac_manager.update(self.tac)
-        if self.tac.tac_id == 0:
+        if self.tac.tac_id is None or self.tac.tac_id == 0:
             tac_manager = TacManager(self.session)
             self.tac = await tac_manager.add(self.tac)
     async def delete(self):
@@ -277,16 +277,17 @@ class TacBusObj(BaseBusObj):
         item = OrganizationBusObj(self.session)
 
         item.tac_id = self.tac_id
-        item.tac_code_peek = self.code
+        item.organization.tac_code_peek = self.code
 
         return item
 
     async def get_all_organization(self) -> List[OrganizationBusObj]:
         results = list()
         organization_manager = managers_and_enums.OrganizationManager(self.session)
-        obj_list = organization_manager.get_by_tac_id(self.tac_id)
+        obj_list = await organization_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
-            bus_obj_item = await OrganizationBusObj(self.session).load(organization_obj_instance=obj_item)
+            bus_obj_item = OrganizationBusObj(self.session)
+            await bus_obj_item.load(organization_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -294,16 +295,17 @@ class TacBusObj(BaseBusObj):
         item = CustomerBusObj(self.session)
 
         item.tac_id = self.tac_id
-        item.tac_code_peek = self.code
+        item.customer.tac_code_peek = self.code
 
         return item
 
     async def get_all_customer(self) -> List[CustomerBusObj]:
         results = list()
         customer_manager = managers_and_enums.CustomerManager(self.session)
-        obj_list = customer_manager.get_by_tac_id(self.tac_id)
+        obj_list = await customer_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
-            bus_obj_item = await CustomerBusObj(self.session).load(customer_obj_instance=obj_item)
+            bus_obj_item = CustomerBusObj(self.session)
+            await bus_obj_item.load(customer_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 

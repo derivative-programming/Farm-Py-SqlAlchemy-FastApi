@@ -224,10 +224,10 @@ class LandBusObj(BaseBusObj):
         land_manager = LandManager(self.session)
         return land_manager.to_json(self.land)
     async def save(self):
-        if self.land.land_id > 0:
+        if self.land.land_id is not None and self.land.land_id > 0:
             land_manager = LandManager(self.session)
             self.land = await land_manager.update(self.land)
-        if self.land.land_id == 0:
+        if self.land.land_id is None or self.land.land_id == 0:
             land_manager = LandManager(self.session)
             self.land = await land_manager.add(self.land)
     async def delete(self):
@@ -274,22 +274,23 @@ class LandBusObj(BaseBusObj):
     async def build_plant(self) -> PlantBusObj:
         item = PlantBusObj(self.session)
         flavor_manager = managers_and_enums.FlavorManager(self.session)
-        flvr_foreign_key_id_flavor = await flvr_foreign_key_id_flavor.from_enum(
+        flvr_foreign_key_id_flavor = await flavor_manager.from_enum(
             managers_and_enums.FlavorEnum.Unknown)
-        item.flvr_foreign_key_id_id = flvr_foreign_key_id_flavor.land_id
-        item.flvr_foreign_key_id_code_peek = flvr_foreign_key_id_flavor.code
+        item.flvr_foreign_key_id = flvr_foreign_key_id_flavor.flavor_id
+        item.plant.flvr_foreign_key_id_code_peek = flvr_foreign_key_id_flavor.code
 
         item.land_id = self.land_id
-        item.land_code_peek = self.code
+        item.plant.land_code_peek = self.code
 
         return item
 
     async def get_all_plant(self) -> List[PlantBusObj]:
         results = list()
         plant_manager = managers_and_enums.PlantManager(self.session)
-        obj_list = plant_manager.get_by_land_id(self.land_id)
+        obj_list = await plant_manager.get_by_land_id(self.land_id)
         for obj_item in obj_list:
-            bus_obj_item = await PlantBusObj(self.session).load(plant_obj_instance=obj_item)
+            bus_obj_item = PlantBusObj(self.session)
+            await bus_obj_item.load(plant_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 

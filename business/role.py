@@ -222,10 +222,10 @@ class RoleBusObj(BaseBusObj):
         role_manager = RoleManager(self.session)
         return role_manager.to_json(self.role)
     async def save(self):
-        if self.role.role_id > 0:
+        if self.role.role_id is not None and self.role.role_id > 0:
             role_manager = RoleManager(self.session)
             self.role = await role_manager.update(self.role)
-        if self.role.role_id == 0:
+        if self.role.role_id is None or self.role.role_id == 0:
             role_manager = RoleManager(self.session)
             self.role = await role_manager.add(self.role)
     async def delete(self):

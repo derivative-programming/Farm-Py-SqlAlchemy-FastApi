@@ -262,10 +262,10 @@ class OrgApiKeyBusObj(BaseBusObj):
         org_api_key_manager = OrgApiKeyManager(self.session)
         return org_api_key_manager.to_json(self.org_api_key)
     async def save(self):
-        if self.org_api_key.org_api_key_id > 0:
+        if self.org_api_key.org_api_key_id is not None and self.org_api_key.org_api_key_id > 0:
             org_api_key_manager = OrgApiKeyManager(self.session)
             self.org_api_key = await org_api_key_manager.update(self.org_api_key)
-        if self.org_api_key.org_api_key_id == 0:
+        if self.org_api_key.org_api_key_id is None or self.org_api_key.org_api_key_id == 0:
             org_api_key_manager = OrgApiKeyManager(self.session)
             self.org_api_key = await org_api_key_manager.add(self.org_api_key)
     async def delete(self):

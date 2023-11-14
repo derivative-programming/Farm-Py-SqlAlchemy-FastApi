@@ -240,10 +240,10 @@ class ErrorLogBusObj(BaseBusObj):
         error_log_manager = ErrorLogManager(self.session)
         return error_log_manager.to_json(self.error_log)
     async def save(self):
-        if self.error_log.error_log_id > 0:
+        if self.error_log.error_log_id is not None and self.error_log.error_log_id > 0:
             error_log_manager = ErrorLogManager(self.session)
             self.error_log = await error_log_manager.update(self.error_log)
-        if self.error_log.error_log_id == 0:
+        if self.error_log.error_log_id is None or self.error_log.error_log_id == 0:
             error_log_manager = ErrorLogManager(self.session)
             self.error_log = await error_log_manager.add(self.error_log)
     async def delete(self):

@@ -202,10 +202,10 @@ class CustomerRoleBusObj(BaseBusObj):
         customer_role_manager = CustomerRoleManager(self.session)
         return customer_role_manager.to_json(self.customer_role)
     async def save(self):
-        if self.customer_role.customer_role_id > 0:
+        if self.customer_role.customer_role_id is not None and self.customer_role.customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(self.session)
             self.customer_role = await customer_role_manager.update(self.customer_role)
-        if self.customer_role.customer_role_id == 0:
+        if self.customer_role.customer_role_id is None or self.customer_role.customer_role_id == 0:
             customer_role_manager = CustomerRoleManager(self.session)
             self.customer_role = await customer_role_manager.add(self.customer_role)
     async def delete(self):

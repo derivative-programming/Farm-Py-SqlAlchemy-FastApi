@@ -12,6 +12,9 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
+import managers as managers_and_enums
+import current_runtime
+
 logger = get_logger(__name__)
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -101,3 +104,74 @@ class TestTacBusObj:
         await tac_bus_obj.delete()
         new_tac = await tac_manager.get_by_id(new_tac.tac_id)
         assert new_tac is None
+
+    @pytest.mark.asyncio
+    async def test_build_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+
+        await current_runtime.initialize(session=tac_manager.session)
+
+        await tac_bus_obj.load(tac_id=new_tac.tac_id)
+
+        organization_bus_obj = await tac_bus_obj.build_organization()
+
+        assert organization_bus_obj.tac_id == tac_bus_obj.tac_id
+        assert organization_bus_obj.tac_code_peek == tac_bus_obj.code
+
+        await organization_bus_obj.save()
+
+        assert organization_bus_obj.organization_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+
+        await current_runtime.initialize(session=tac_manager.session)
+
+        await tac_bus_obj.load(tac_id=new_tac.tac_id)
+
+        organization_bus_obj = await tac_bus_obj.build_organization()
+
+        await organization_bus_obj.save()
+
+        organization_list = await tac_bus_obj.get_all_organization()
+
+        assert len(organization_list) >= 1
+
+        #assert organization_list[0].organization_id > 0
+
+        #assert organization_list[0].organization_id == organization_bus_obj.organization_id
+
+    @pytest.mark.asyncio
+    async def test_build_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+
+        await current_runtime.initialize(session=tac_manager.session)
+
+        await tac_bus_obj.load(tac_id=new_tac.tac_id)
+
+        customer_bus_obj = await tac_bus_obj.build_customer()
+
+        assert customer_bus_obj.tac_id == tac_bus_obj.tac_id
+        assert customer_bus_obj.tac_code_peek == tac_bus_obj.code
+
+        await customer_bus_obj.save()
+
+        assert customer_bus_obj.customer_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+
+        await current_runtime.initialize(session=tac_manager.session)
+
+        await tac_bus_obj.load(tac_id=new_tac.tac_id)
+
+        customer_bus_obj = await tac_bus_obj.build_customer()
+
+        await customer_bus_obj.save()
+
+        customer_list = await tac_bus_obj.get_all_customer()
+
+        assert len(customer_list) >= 1
+
+        #assert customer_list[0].customer_id > 0
+
+        #assert customer_list[0].customer_id == customer_bus_obj.customer_id
+
