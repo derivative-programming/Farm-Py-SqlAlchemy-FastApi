@@ -23,7 +23,7 @@ class TacManager:
         self.session = session
 
     async def _build_lookup_item(self, pac:Pac):
-        item = self.build()
+        item = await self.build()
         item.pac_id = pac.pac_id
         return item
     async def initialize(self):
@@ -32,7 +32,7 @@ class TacManager:
         pac = pac_result.scalars().first()
 
         if self.from_enum(TacEnum.Unknown) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
             item.description = ""
@@ -41,7 +41,7 @@ class TacManager:
             # item. = 1
             await self.add(item)
         if self.from_enum(TacEnum.Primary) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Primary"
             item.lookup_enum_name = "Primary"
             item.description = "Primary"
@@ -63,7 +63,7 @@ class TacManager:
     async def add(self, tac: Tac) -> Tac:
         logging.info("TacManager.add")
         self.session.add(tac)
-        await self.session.commit()
+        await self.session.flush()
         return tac
     def _build_query(self):
         logging.info("TacManager._build_query")
@@ -130,7 +130,7 @@ class TacManager:
         if tac:
             for key, value in kwargs.items():
                 setattr(tac, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return tac
     async def delete(self, tac_id: int):
         logging.info(f"TacManager.delete {tac_id}")
@@ -140,7 +140,7 @@ class TacManager:
         if not tac:
             raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
         await self.session.delete(tac)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[Tac]:
         logging.info("TacManager.get_list")
         # result = await self.session.execute(select(Tac))
@@ -183,7 +183,7 @@ class TacManager:
         logging.info("TacManager.add_bulk")
         """Add multiple tacs at once."""
         self.session.add_all(tacs)
-        await self.session.commit()
+        await self.session.flush()
         return tacs
     async def update_bulk(self, tac_updates: List[Dict[int, Dict]]) -> List[Tac]:
         logging.info("TacManager.update_bulk start")
@@ -202,7 +202,7 @@ class TacManager:
                 if key != "tac_id":
                     setattr(tac, key, value)
             updated_tacs.append(tac)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("TacManager.update_bulk end")
         return updated_tacs
     async def delete_bulk(self, tac_ids: List[int]) -> bool:
@@ -216,7 +216,7 @@ class TacManager:
                 raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
             if tac:
                 await self.session.delete(tac)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("TacManager.count")

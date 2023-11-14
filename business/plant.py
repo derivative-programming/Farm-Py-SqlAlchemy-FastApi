@@ -7,11 +7,13 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.land import LandBusObj #LandID
 from business.flavor import FlavorBusObj #FlvrForeignKeyID
 from services.db_config import db_dialect,generate_uuid
-from managers import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
-from managers import LandManager as LandIDManager #LandID
+# from managers import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
+# from managers import LandManager as LandIDManager #LandID
 from managers import PlantManager
 from models import Plant
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
+##GENINCLUDEFILE[GENVALPascalName.include.top.*]
 
 class PlantSessionNotFoundError(Exception):
     pass
@@ -28,7 +30,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 
-class PlantBusObj:
+class PlantBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         
         if not session:
@@ -486,6 +488,6 @@ class PlantBusObj:
     #someTextVal,
     #someUniqueidentifierVal, 
     #someVarCharVal,
-        
-    
-    
+          
+    ##GENINCLUDEFILE[GENVALPascalName.include.bottom.*]
+     

@@ -24,7 +24,7 @@ class TriStateFilterManager:
         self.session = session
 
     async def _build_lookup_item(self, pac:Pac):
-        item = self.build()
+        item = await self.build()
         item.pac_id = pac.pac_id
         return item
     async def initialize(self):
@@ -33,7 +33,7 @@ class TriStateFilterManager:
         pac = pac_result.scalars().first()
 
         if self.from_enum(TriStateFilterEnum.Unknown) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
             item.description = ""
@@ -42,7 +42,7 @@ class TriStateFilterManager:
             # item.state_int_value = 1
             await self.add(item)
         if self.from_enum(TriStateFilterEnum.Yes) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Yes"
             item.lookup_enum_name = "Yes"
             item.description = "Yes"
@@ -51,7 +51,7 @@ class TriStateFilterManager:
             # item.state_int_value = 1
             await self.add(item)
         if self.from_enum(TriStateFilterEnum.No) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "No"
             item.lookup_enum_name = "No"
             item.description = "No"
@@ -73,7 +73,7 @@ class TriStateFilterManager:
     async def add(self, tri_state_filter: TriStateFilter) -> TriStateFilter:
         logging.info("TriStateFilterManager.add")
         self.session.add(tri_state_filter)
-        await self.session.commit()
+        await self.session.flush()
         return tri_state_filter
     def _build_query(self):
         logging.info("TriStateFilterManager._build_query")
@@ -140,7 +140,7 @@ class TriStateFilterManager:
         if tri_state_filter:
             for key, value in kwargs.items():
                 setattr(tri_state_filter, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return tri_state_filter
     async def delete(self, tri_state_filter_id: int):
         logging.info(f"TriStateFilterManager.delete {tri_state_filter_id}")
@@ -150,7 +150,7 @@ class TriStateFilterManager:
         if not tri_state_filter:
             raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
         await self.session.delete(tri_state_filter)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[TriStateFilter]:
         logging.info("TriStateFilterManager.get_list")
         # result = await self.session.execute(select(TriStateFilter))
@@ -193,7 +193,7 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.add_bulk")
         """Add multiple tri_state_filters at once."""
         self.session.add_all(tri_state_filters)
-        await self.session.commit()
+        await self.session.flush()
         return tri_state_filters
     async def update_bulk(self, tri_state_filter_updates: List[Dict[int, Dict]]) -> List[TriStateFilter]:
         logging.info("TriStateFilterManager.update_bulk start")
@@ -212,7 +212,7 @@ class TriStateFilterManager:
                 if key != "tri_state_filter_id":
                     setattr(tri_state_filter, key, value)
             updated_tri_state_filters.append(tri_state_filter)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("TriStateFilterManager.update_bulk end")
         return updated_tri_state_filters
     async def delete_bulk(self, tri_state_filter_ids: List[int]) -> bool:
@@ -226,7 +226,7 @@ class TriStateFilterManager:
                 raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
             if tri_state_filter:
                 await self.session.delete(tri_state_filter)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("TriStateFilterManager.count")

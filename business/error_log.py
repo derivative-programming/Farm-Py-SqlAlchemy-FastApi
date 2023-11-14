@@ -6,10 +6,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
-from managers import PacManager as PacIDManager #PacID
+# from managers import PacManager as PacIDManager #PacID
 from managers import ErrorLogManager
 from models import ErrorLog
 import managers as managers_and_enums
+
 class ErrorLogSessionNotFoundError(Exception):
     pass
 class ErrorLogInvalidInitError(Exception):
@@ -252,3 +253,4 @@ class ErrorLogBusObj:
     async def get_parent_obj(self) -> PacBusObj:
         return await self.get_pac_id_rel_bus_obj()
     #url,
+

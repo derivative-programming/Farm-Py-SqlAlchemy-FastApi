@@ -23,7 +23,7 @@ class LandManager:
         self.session = session
 
     async def _build_lookup_item(self, pac:Pac):
-        item = self.build()
+        item = await self.build()
         item.pac_id = pac.pac_id
         return item
     async def initialize(self):
@@ -32,7 +32,7 @@ class LandManager:
         pac = pac_result.scalars().first()
 
         if self.from_enum(LandEnum.Unknown) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
             item.description = "Unknown"
@@ -41,7 +41,7 @@ class LandManager:
             # item. = 1
             await self.add(item)
         if self.from_enum(LandEnum.Field_One) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Field One"
             item.lookup_enum_name = "Field_One"
             item.description = "Field One"
@@ -63,7 +63,7 @@ class LandManager:
     async def add(self, land: Land) -> Land:
         logging.info("LandManager.add")
         self.session.add(land)
-        await self.session.commit()
+        await self.session.flush()
         return land
     def _build_query(self):
         logging.info("LandManager._build_query")
@@ -130,7 +130,7 @@ class LandManager:
         if land:
             for key, value in kwargs.items():
                 setattr(land, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return land
     async def delete(self, land_id: int):
         logging.info(f"LandManager.delete {land_id}")
@@ -140,7 +140,7 @@ class LandManager:
         if not land:
             raise LandNotFoundError(f"Land with ID {land_id} not found!")
         await self.session.delete(land)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[Land]:
         logging.info("LandManager.get_list")
         # result = await self.session.execute(select(Land))
@@ -183,7 +183,7 @@ class LandManager:
         logging.info("LandManager.add_bulk")
         """Add multiple lands at once."""
         self.session.add_all(lands)
-        await self.session.commit()
+        await self.session.flush()
         return lands
     async def update_bulk(self, land_updates: List[Dict[int, Dict]]) -> List[Land]:
         logging.info("LandManager.update_bulk start")
@@ -202,7 +202,7 @@ class LandManager:
                 if key != "land_id":
                     setattr(land, key, value)
             updated_lands.append(land)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("LandManager.update_bulk end")
         return updated_lands
     async def delete_bulk(self, land_ids: List[int]) -> bool:
@@ -216,7 +216,7 @@ class LandManager:
                 raise LandNotFoundError(f"Land with ID {land_id} not found!")
             if land:
                 await self.session.delete(land)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("LandManager.count")

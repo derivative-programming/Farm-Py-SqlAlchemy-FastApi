@@ -22,7 +22,7 @@ class PacManager:
         self.session = session
 
     async def _build_lookup_item(self, pac:Pac):
-        item = self.build()
+        item = await self.build()
 
         return item
     async def initialize(self):
@@ -31,7 +31,7 @@ class PacManager:
         pac = pac_result.scalars().first()
 
         if self.from_enum(PacEnum.Unknown) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
             item.description = ""
@@ -53,7 +53,7 @@ class PacManager:
     async def add(self, pac: Pac) -> Pac:
         logging.info("PacManager.add")
         self.session.add(pac)
-        await self.session.commit()
+        await self.session.flush()
         return pac
     def _build_query(self):
         logging.info("PacManager._build_query")
@@ -113,7 +113,7 @@ class PacManager:
         if pac:
             for key, value in kwargs.items():
                 setattr(pac, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return pac
     async def delete(self, pac_id: int):
         logging.info(f"PacManager.delete {pac_id}")
@@ -123,7 +123,7 @@ class PacManager:
         if not pac:
             raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
         await self.session.delete(pac)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[Pac]:
         logging.info("PacManager.get_list")
         # result = await self.session.execute(select(Pac))
@@ -166,7 +166,7 @@ class PacManager:
         logging.info("PacManager.add_bulk")
         """Add multiple pacs at once."""
         self.session.add_all(pacs)
-        await self.session.commit()
+        await self.session.flush()
         return pacs
     async def update_bulk(self, pac_updates: List[Dict[int, Dict]]) -> List[Pac]:
         logging.info("PacManager.update_bulk start")
@@ -185,7 +185,7 @@ class PacManager:
                 if key != "pac_id":
                     setattr(pac, key, value)
             updated_pacs.append(pac)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("PacManager.update_bulk end")
         return updated_pacs
     async def delete_bulk(self, pac_ids: List[int]) -> bool:
@@ -199,7 +199,7 @@ class PacManager:
                 raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
             if pac:
                 await self.session.delete(pac)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("PacManager.count")

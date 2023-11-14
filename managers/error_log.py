@@ -27,7 +27,7 @@ class ErrorLogManager:
     async def add(self, error_log: ErrorLog) -> ErrorLog:
         logging.info("ErrorLogManager.add")
         self.session.add(error_log)
-        await self.session.commit()
+        await self.session.flush()
         return error_log
     def _build_query(self):
         logging.info("ErrorLogManager._build_query")
@@ -94,7 +94,7 @@ class ErrorLogManager:
         if error_log:
             for key, value in kwargs.items():
                 setattr(error_log, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return error_log
     async def delete(self, error_log_id: int):
         logging.info(f"ErrorLogManager.delete {error_log_id}")
@@ -104,7 +104,7 @@ class ErrorLogManager:
         if not error_log:
             raise ErrorLogNotFoundError(f"ErrorLog with ID {error_log_id} not found!")
         await self.session.delete(error_log)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[ErrorLog]:
         logging.info("ErrorLogManager.get_list")
         # result = await self.session.execute(select(ErrorLog))
@@ -147,7 +147,7 @@ class ErrorLogManager:
         logging.info("ErrorLogManager.add_bulk")
         """Add multiple error_logs at once."""
         self.session.add_all(error_logs)
-        await self.session.commit()
+        await self.session.flush()
         return error_logs
     async def update_bulk(self, error_log_updates: List[Dict[int, Dict]]) -> List[ErrorLog]:
         logging.info("ErrorLogManager.update_bulk start")
@@ -166,7 +166,7 @@ class ErrorLogManager:
                 if key != "error_log_id":
                     setattr(error_log, key, value)
             updated_error_logs.append(error_log)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("ErrorLogManager.update_bulk end")
         return updated_error_logs
     async def delete_bulk(self, error_log_ids: List[int]) -> bool:
@@ -180,7 +180,7 @@ class ErrorLogManager:
                 raise ErrorLogNotFoundError(f"ErrorLog with ID {error_log_id} not found!")
             if error_log:
                 await self.session.delete(error_log)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("ErrorLogManager.count")

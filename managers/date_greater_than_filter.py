@@ -32,7 +32,7 @@ class DateGreaterThanFilterManager:
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=true]Start 
     async def _build_lookup_item(self, pac:Pac):
-        item = self.build()
+        item = await self.build()
         item.pac_id = pac.pac_id
         return item
     async def initialize(self):
@@ -41,7 +41,7 @@ class DateGreaterThanFilterManager:
         pac = pac_result.scalars().first()
 #endset
         if self.from_enum(DateGreaterThanFilterEnum.Unknown) is None:
-            item = self._build_lookup_item(pac) 
+            item = await self._build_lookup_item(pac) 
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
             item.description = "Unknown"
@@ -50,7 +50,7 @@ class DateGreaterThanFilterManager:
             # item.day_count = 1
             await self.add(item) 
         if self.from_enum(DateGreaterThanFilterEnum.Last_24_Hours) is None:
-            item = self._build_lookup_item(pac) 
+            item = await self._build_lookup_item(pac) 
             item.name = "Last 24 Hours"
             item.lookup_enum_name = "Last_24_Hours"
             item.description = "Last 24 Hours"
@@ -59,7 +59,7 @@ class DateGreaterThanFilterManager:
             # item.day_count = 1
             await self.add(item) 
         if self.from_enum(DateGreaterThanFilterEnum.Last_7_Days) is None:
-            item = self._build_lookup_item(pac) 
+            item = await self._build_lookup_item(pac) 
             item.name = "Last 7 Days"
             item.lookup_enum_name = "Last_7_Days"
             item.description = "Last 7 Days"
@@ -68,7 +68,7 @@ class DateGreaterThanFilterManager:
             # item.day_count = 7
             await self.add(item) 
         if self.from_enum(DateGreaterThanFilterEnum.Last_30_Days) is None:
-            item = self._build_lookup_item(pac) 
+            item = await self._build_lookup_item(pac) 
             item.name = "Last 30 Days"
             item.lookup_enum_name = "Last_30_Days"
             item.description = "Last 30 Days"
@@ -77,7 +77,7 @@ class DateGreaterThanFilterManager:
             # item.day_count = 30
             await self.add(item) 
         if self.from_enum(DateGreaterThanFilterEnum.Last_90_Days) is None:
-            item = self._build_lookup_item(pac) 
+            item = await self._build_lookup_item(pac) 
             item.name = "Last 90 Days"
             item.lookup_enum_name = "Last_90_Days"
             item.description = "Last 90 Days"
@@ -86,7 +86,7 @@ class DateGreaterThanFilterManager:
             # item.day_count = 90
             await self.add(item) 
         if self.from_enum(DateGreaterThanFilterEnum.Last_365_Days) is None:
-            item = self._build_lookup_item(pac) 
+            item = await self._build_lookup_item(pac) 
             item.name = "Last 365 Days"
             item.lookup_enum_name = "Last_365_Days"
             item.description = "Last 365 Days"

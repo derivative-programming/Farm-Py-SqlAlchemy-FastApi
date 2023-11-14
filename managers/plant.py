@@ -40,7 +40,7 @@ class PlantManager:
     async def add(self, plant: Plant) -> Plant:
         logging.info("PlantManager.add") 
         self.session.add(plant)
-        await self.session.commit()
+        await self.session.flush()
         return plant
 
     def _build_query(self): 
@@ -139,7 +139,7 @@ class PlantManager:
         if plant:
             for key, value in kwargs.items():
                 setattr(plant, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return plant
 
 
@@ -152,7 +152,7 @@ class PlantManager:
             raise PlantNotFoundError(f"Plant with ID {plant_id} not found!") 
         
         await self.session.delete(plant)
-        await self.session.commit() 
+        await self.session.flush() 
 
 
 
@@ -213,7 +213,7 @@ class PlantManager:
         logging.info("PlantManager.add_bulk") 
         """Add multiple plants at once.""" 
         self.session.add_all(plants) 
-        await self.session.commit()
+        await self.session.flush()
         return plants
 
     async def update_bulk(self, plant_updates: List[Dict[int, Dict]]) -> List[Plant]:
@@ -233,7 +233,7 @@ class PlantManager:
                 if key != "plant_id":
                     setattr(plant, key, value)
             updated_plants.append(plant)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("PlantManager.update_bulk end") 
         return updated_plants
 
@@ -248,7 +248,7 @@ class PlantManager:
                 raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")  
             if plant:
                 await self.session.delete(plant)
-        await self.session.commit()
+        await self.session.flush()
         return True
 
     async def count(self) -> int:

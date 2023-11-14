@@ -6,10 +6,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
-from managers import PacManager as PacIDManager #PacID
+# from managers import PacManager as PacIDManager #PacID
 from managers import FlavorManager
 from models import Flavor
 import managers as managers_and_enums
+
 class FlavorSessionNotFoundError(Exception):
     pass
 class FlavorInvalidInitError(Exception):
@@ -236,3 +237,4 @@ class FlavorBusObj:
     #PacID
     async def get_parent_obj(self) -> PacBusObj:
         return await self.get_pac_id_rel_bus_obj()
+

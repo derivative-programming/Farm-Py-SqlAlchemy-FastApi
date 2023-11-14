@@ -28,7 +28,7 @@ class CustomerRoleManager:
     async def add(self, customer_role: CustomerRole) -> CustomerRole:
         logging.info("CustomerRoleManager.add")
         self.session.add(customer_role)
-        await self.session.commit()
+        await self.session.flush()
         return customer_role
     def _build_query(self):
         logging.info("CustomerRoleManager._build_query")
@@ -102,7 +102,7 @@ class CustomerRoleManager:
         if customer_role:
             for key, value in kwargs.items():
                 setattr(customer_role, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return customer_role
     async def delete(self, customer_role_id: int):
         logging.info(f"CustomerRoleManager.delete {customer_role_id}")
@@ -112,7 +112,7 @@ class CustomerRoleManager:
         if not customer_role:
             raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
         await self.session.delete(customer_role)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[CustomerRole]:
         logging.info("CustomerRoleManager.get_list")
         # result = await self.session.execute(select(CustomerRole))
@@ -155,7 +155,7 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.add_bulk")
         """Add multiple customer_roles at once."""
         self.session.add_all(customer_roles)
-        await self.session.commit()
+        await self.session.flush()
         return customer_roles
     async def update_bulk(self, customer_role_updates: List[Dict[int, Dict]]) -> List[CustomerRole]:
         logging.info("CustomerRoleManager.update_bulk start")
@@ -174,7 +174,7 @@ class CustomerRoleManager:
                 if key != "customer_role_id":
                     setattr(customer_role, key, value)
             updated_customer_roles.append(customer_role)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("CustomerRoleManager.update_bulk end")
         return updated_customer_roles
     async def delete_bulk(self, customer_role_ids: List[int]) -> bool:
@@ -188,7 +188,7 @@ class CustomerRoleManager:
                 raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
             if customer_role:
                 await self.session.delete(customer_role)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("CustomerRoleManager.count")

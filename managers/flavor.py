@@ -24,7 +24,7 @@ class FlavorManager:
         self.session = session
 
     async def _build_lookup_item(self, pac:Pac):
-        item = self.build()
+        item = await self.build()
         item.pac_id = pac.pac_id
         return item
     async def initialize(self):
@@ -33,7 +33,7 @@ class FlavorManager:
         pac = pac_result.scalars().first()
 
         if self.from_enum(FlavorEnum.Unknown) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
             item.description = "Unknown"
@@ -42,7 +42,7 @@ class FlavorManager:
             # item. = 1
             await self.add(item)
         if self.from_enum(FlavorEnum.Sweet) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Sweet"
             item.lookup_enum_name = "Sweet"
             item.description = "Sweet"
@@ -51,7 +51,7 @@ class FlavorManager:
             # item. = 1
             await self.add(item)
         if self.from_enum(FlavorEnum.Sour) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Sour"
             item.lookup_enum_name = "Sour"
             item.description = "Sour"
@@ -73,7 +73,7 @@ class FlavorManager:
     async def add(self, flavor: Flavor) -> Flavor:
         logging.info("FlavorManager.add")
         self.session.add(flavor)
-        await self.session.commit()
+        await self.session.flush()
         return flavor
     def _build_query(self):
         logging.info("FlavorManager._build_query")
@@ -140,7 +140,7 @@ class FlavorManager:
         if flavor:
             for key, value in kwargs.items():
                 setattr(flavor, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return flavor
     async def delete(self, flavor_id: int):
         logging.info(f"FlavorManager.delete {flavor_id}")
@@ -150,7 +150,7 @@ class FlavorManager:
         if not flavor:
             raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
         await self.session.delete(flavor)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[Flavor]:
         logging.info("FlavorManager.get_list")
         # result = await self.session.execute(select(Flavor))
@@ -193,7 +193,7 @@ class FlavorManager:
         logging.info("FlavorManager.add_bulk")
         """Add multiple flavors at once."""
         self.session.add_all(flavors)
-        await self.session.commit()
+        await self.session.flush()
         return flavors
     async def update_bulk(self, flavor_updates: List[Dict[int, Dict]]) -> List[Flavor]:
         logging.info("FlavorManager.update_bulk start")
@@ -212,7 +212,7 @@ class FlavorManager:
                 if key != "flavor_id":
                     setattr(flavor, key, value)
             updated_flavors.append(flavor)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("FlavorManager.update_bulk end")
         return updated_flavors
     async def delete_bulk(self, flavor_ids: List[int]) -> bool:
@@ -226,7 +226,7 @@ class FlavorManager:
                 raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
             if flavor:
                 await self.session.delete(flavor)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("FlavorManager.count")

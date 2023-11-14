@@ -6,10 +6,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.tac import TacBusObj #TacID
 from services.db_config import db_dialect,generate_uuid
-from managers import TacManager as TacIDManager #TacID
+# from managers import TacManager as TacIDManager #TacID
 from managers import OrganizationManager
 from models import Organization
 import managers as managers_and_enums
+
 class OrganizationSessionNotFoundError(Exception):
     pass
 class OrganizationInvalidInitError(Exception):
@@ -184,3 +185,4 @@ class OrganizationBusObj:
     #TacID
     async def get_parent_obj(self) -> TacBusObj:
         return await self.get_tac_id_rel_bus_obj()
+

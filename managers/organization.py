@@ -27,7 +27,7 @@ class OrganizationManager:
     async def add(self, organization: Organization) -> Organization:
         logging.info("OrganizationManager.add")
         self.session.add(organization)
-        await self.session.commit()
+        await self.session.flush()
         return organization
     def _build_query(self):
         logging.info("OrganizationManager._build_query")
@@ -94,7 +94,7 @@ class OrganizationManager:
         if organization:
             for key, value in kwargs.items():
                 setattr(organization, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return organization
     async def delete(self, organization_id: int):
         logging.info(f"OrganizationManager.delete {organization_id}")
@@ -104,7 +104,7 @@ class OrganizationManager:
         if not organization:
             raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
         await self.session.delete(organization)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[Organization]:
         logging.info("OrganizationManager.get_list")
         # result = await self.session.execute(select(Organization))
@@ -147,7 +147,7 @@ class OrganizationManager:
         logging.info("OrganizationManager.add_bulk")
         """Add multiple organizations at once."""
         self.session.add_all(organizations)
-        await self.session.commit()
+        await self.session.flush()
         return organizations
     async def update_bulk(self, organization_updates: List[Dict[int, Dict]]) -> List[Organization]:
         logging.info("OrganizationManager.update_bulk start")
@@ -166,7 +166,7 @@ class OrganizationManager:
                 if key != "organization_id":
                     setattr(organization, key, value)
             updated_organizations.append(organization)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("OrganizationManager.update_bulk end")
         return updated_organizations
     async def delete_bulk(self, organization_ids: List[int]) -> bool:
@@ -180,7 +180,7 @@ class OrganizationManager:
                 raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
             if organization:
                 await self.session.delete(organization)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("OrganizationManager.count")

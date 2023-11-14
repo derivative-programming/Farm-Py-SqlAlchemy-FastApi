@@ -1,0 +1,8 @@
+{
+    "templateType":"object",  
+    "dimension" :{
+        "name":"Plant" 
+    },
+    "ignoreDimensionPropertyList": [ 
+    ]
+} 

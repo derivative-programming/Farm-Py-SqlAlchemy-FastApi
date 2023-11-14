@@ -102,7 +102,7 @@ class PacUserRoleListRouter(BaseRouter):
         logging.info('PacUserRoleListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserRoleListRouterConfig.is_get_to_csv_available)
         response = api_models.PacUserRoleListGetModelResponse()
-        auth_dict = super().authorization_check(PacUserRoleListRouterConfig.is_public, api_key)
+        auth_dict = BaseRouter.authorization_check(PacUserRoleListRouterConfig.is_public, api_key)
         tmp_file_path = ""
         with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.csv', encoding='utf-8') as tmp_file:
             tmp_file_path = tmp_file.name
@@ -133,6 +133,6 @@ class PacUserRoleListRouter(BaseRouter):
                 else:
                     await session.rollback()
         logging.info('PacUserRoleListRouter.submit get result:' + response.model_dump_json())
-        output_file_name = 'pac_user_role_list_' + pac_code + '_' + str(uuid.UUID()) + '.csv'
+        output_file_name = 'pac_user_role_list_' + pac_code + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(tmp_file_path, media_type='text/csv', filename=output_file_name)
 

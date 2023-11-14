@@ -287,6 +287,146 @@ async def test_get_endpoint_method_failure(overridden_get_db: AsyncSession):
 ##GENTrainingBlock[caseisGetWithIdAvailable]End
 ##GENTrainingBlock[caseisGetToCsvAvailable]Start 
 ##GENLearn[isGetToCsvAvailable=true]Start 
+@pytest.mark.asyncio
+async def test_get_csv_success(overridden_get_db: AsyncSession):
+    async def mock_process_request(session, session_context, land_code, request):
+        pass
+         
+    with patch.object(apis_models.LandPlantListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
+        mock_method.side_effect = mock_process_request
+
+        land = await model_factorys.LandFactory.create_async(overridden_get_db)
+        land_code = land.code
+        api_dict = {'LandCode': str(land_code)}
+        test_api_key = ApiToken.create_token(api_dict, 1)
+        request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+        request_dict = request.to_dict_camel_serialized()
+        logging.info("Test Request...")
+        logging.info(request_dict) 
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            
+            app.dependency_overrides[get_db] = lambda: overridden_get_db
+            response = await ac.get(
+                f'/api/v1_0/land-plant-list/{land_code}/to-csv', 
+                params=request_dict,
+                headers={'API_KEY': test_api_key}
+            )
+            
+            assert response.status_code == 200
+            assert response.headers['content-type'].startswith('text/csv') 
+            mock_method.assert_awaited()
+
+@pytest.mark.asyncio
+async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land_code = land.code
+    api_dict = {}
+    # test_api_key = ApiToken.create_token(api_dict, 1)
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        
+        app.dependency_overrides[get_db] = lambda: overridden_get_db
+        response = await ac.get(
+            f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            headers={'API_KEY': 'xxx'}
+            
+        )
+        
+        if LandPlantListRouterConfig.is_public == True:  
+            assert response.status_code == 200 
+            assert response.headers['content-type'].startswith('text/csv') 
+        else:
+            assert response.status_code == 401 
+
+
+@pytest.mark.asyncio
+async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land_code = land.code
+    api_dict = {}
+    # test_api_key = ApiToken.create_token(api_dict, 1)
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        
+        app.dependency_overrides[get_db] = lambda: overridden_get_db
+        response = await ac.get(
+            f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            headers={'API_KEY': ''}
+            
+        )
+        
+        if LandPlantListRouterConfig.is_public == True:  
+            assert response.status_code == 200 
+            assert response.headers['content-type'].startswith('text/csv') 
+        else:
+            assert response.status_code == 401 
+
+@pytest.mark.asyncio
+async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncSession):
+    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land_code = land.code
+    api_dict = {}
+    # test_api_key = ApiToken.create_token(api_dict, 1)
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        
+        app.dependency_overrides[get_db] = lambda: overridden_get_db
+        response = await ac.get(
+            f'/api/v1_0/land-plant-list/{land_code}/to-csv' 
+            
+        )
+        
+        if LandPlantListRouterConfig.is_public == True:  
+            assert response.status_code == 200 
+            assert response.headers['content-type'].startswith('text/csv') 
+        else:
+            assert response.status_code == 401 
+
+@pytest.mark.asyncio
+async def test_get_csv_endpoint_url_failure(overridden_get_db: AsyncSession): 
+    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land_code = land.code
+    api_dict = {'LandCode': str(land_code)}
+    test_api_key = ApiToken.create_token(api_dict, 1)
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        
+        app.dependency_overrides[get_db] = lambda: overridden_get_db
+        response = await ac.get(
+            f'/api/v1_0/land-plant-list/{land_code}/to-csv/xxx',
+            headers={'API_KEY': test_api_key}
+        )
+        
+        assert response.status_code == 501 
+        
+@pytest.mark.asyncio
+async def test_get_csv_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):  
+    land_code = uuid.UUID(int=0)
+    api_dict = {'LandCode': str(land_code)}
+    test_api_key = ApiToken.create_token(api_dict, 1)
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        
+        app.dependency_overrides[get_db] = lambda: overridden_get_db
+        response = await ac.get(
+            f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            headers={'API_KEY': test_api_key}
+        )
+        
+        assert response.status_code == 200 
+        assert response.headers['content-type'].startswith('text/csv') 
+
+
+@pytest.mark.asyncio
+async def test_get_csv_endpoint_method_failure(overridden_get_db: AsyncSession): 
+    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land_code = land.code
+    api_dict = {'LandCode': str(land_code)}
+    test_api_key = ApiToken.create_token(api_dict, 1)
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        
+        app.dependency_overrides[get_db] = lambda: overridden_get_db
+        response = await ac.post(
+            f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            headers={'API_KEY': test_api_key}
+        )
+        
+        assert response.status_code == 405
 ##GENLearn[isGetToCsvAvailable=true]End
 ##GENTrainingBlock[caseisGetToCsvAvailable]End 
 ##GENTrainingBlock[caseisPostAvailable]Start

@@ -28,7 +28,7 @@ class OrgApiKeyManager:
     async def add(self, org_api_key: OrgApiKey) -> OrgApiKey:
         logging.info("OrgApiKeyManager.add")
         self.session.add(org_api_key)
-        await self.session.commit()
+        await self.session.flush()
         return org_api_key
     def _build_query(self):
         logging.info("OrgApiKeyManager._build_query")
@@ -102,7 +102,7 @@ class OrgApiKeyManager:
         if org_api_key:
             for key, value in kwargs.items():
                 setattr(org_api_key, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return org_api_key
     async def delete(self, org_api_key_id: int):
         logging.info(f"OrgApiKeyManager.delete {org_api_key_id}")
@@ -112,7 +112,7 @@ class OrgApiKeyManager:
         if not org_api_key:
             raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
         await self.session.delete(org_api_key)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[OrgApiKey]:
         logging.info("OrgApiKeyManager.get_list")
         # result = await self.session.execute(select(OrgApiKey))
@@ -155,7 +155,7 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.add_bulk")
         """Add multiple org_api_keys at once."""
         self.session.add_all(org_api_keys)
-        await self.session.commit()
+        await self.session.flush()
         return org_api_keys
     async def update_bulk(self, org_api_key_updates: List[Dict[int, Dict]]) -> List[OrgApiKey]:
         logging.info("OrgApiKeyManager.update_bulk start")
@@ -174,7 +174,7 @@ class OrgApiKeyManager:
                 if key != "org_api_key_id":
                     setattr(org_api_key, key, value)
             updated_org_api_keys.append(org_api_key)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("OrgApiKeyManager.update_bulk end")
         return updated_org_api_keys
     async def delete_bulk(self, org_api_key_ids: List[int]) -> bool:
@@ -188,7 +188,7 @@ class OrgApiKeyManager:
                 raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
             if org_api_key:
                 await self.session.delete(org_api_key)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("OrgApiKeyManager.count")

@@ -25,7 +25,7 @@ class RoleManager:
         self.session = session
 
     async def _build_lookup_item(self, pac:Pac):
-        item = self.build()
+        item = await self.build()
         item.pac_id = pac.pac_id
         return item
     async def initialize(self):
@@ -34,7 +34,7 @@ class RoleManager:
         pac = pac_result.scalars().first()
 
         if self.from_enum(RoleEnum.Unknown) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
             item.description = ""
@@ -43,7 +43,7 @@ class RoleManager:
             # item. = 1
             await self.add(item)
         if self.from_enum(RoleEnum.Admin) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Admin"
             item.lookup_enum_name = "Admin"
             item.description = "Admin"
@@ -52,7 +52,7 @@ class RoleManager:
             # item. = 1
             await self.add(item)
         if self.from_enum(RoleEnum.Config) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "Config"
             item.lookup_enum_name = "Config"
             item.description = "Config"
@@ -61,7 +61,7 @@ class RoleManager:
             # item. = 1
             await self.add(item)
         if self.from_enum(RoleEnum.User) is None:
-            item = self._build_lookup_item(pac)
+            item = await self._build_lookup_item(pac)
             item.name = "User"
             item.lookup_enum_name = "User"
             item.description = "User"
@@ -83,7 +83,7 @@ class RoleManager:
     async def add(self, role: Role) -> Role:
         logging.info("RoleManager.add")
         self.session.add(role)
-        await self.session.commit()
+        await self.session.flush()
         return role
     def _build_query(self):
         logging.info("RoleManager._build_query")
@@ -150,7 +150,7 @@ class RoleManager:
         if role:
             for key, value in kwargs.items():
                 setattr(role, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return role
     async def delete(self, role_id: int):
         logging.info(f"RoleManager.delete {role_id}")
@@ -160,7 +160,7 @@ class RoleManager:
         if not role:
             raise RoleNotFoundError(f"Role with ID {role_id} not found!")
         await self.session.delete(role)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[Role]:
         logging.info("RoleManager.get_list")
         # result = await self.session.execute(select(Role))
@@ -203,7 +203,7 @@ class RoleManager:
         logging.info("RoleManager.add_bulk")
         """Add multiple roles at once."""
         self.session.add_all(roles)
-        await self.session.commit()
+        await self.session.flush()
         return roles
     async def update_bulk(self, role_updates: List[Dict[int, Dict]]) -> List[Role]:
         logging.info("RoleManager.update_bulk start")
@@ -222,7 +222,7 @@ class RoleManager:
                 if key != "role_id":
                     setattr(role, key, value)
             updated_roles.append(role)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("RoleManager.update_bulk end")
         return updated_roles
     async def delete_bulk(self, role_ids: List[int]) -> bool:
@@ -236,7 +236,7 @@ class RoleManager:
                 raise RoleNotFoundError(f"Role with ID {role_id} not found!")
             if role:
                 await self.session.delete(role)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("RoleManager.count")

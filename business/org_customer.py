@@ -7,11 +7,12 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.customer import CustomerBusObj #CustomerID
 from business.organization import OrganizationBusObj #OrganizationID
 from services.db_config import db_dialect,generate_uuid
-from managers import CustomerManager as CustomerIDManager #CustomerID
-from managers import OrganizationManager as OrganizationIDManager #OrganizationID
+# from managers import CustomerManager as CustomerIDManager #CustomerID
+# from managers import OrganizationManager as OrganizationIDManager #OrganizationID
 from managers import OrgCustomerManager
 from models import OrgCustomer
 import managers as managers_and_enums
+
 class OrgCustomerSessionNotFoundError(Exception):
     pass
 class OrgCustomerInvalidInitError(Exception):
@@ -209,3 +210,4 @@ class OrgCustomerBusObj:
     #OrganizationID
     async def get_parent_obj(self) -> OrganizationBusObj:
         return await self.get_organization_id_rel_bus_obj()
+

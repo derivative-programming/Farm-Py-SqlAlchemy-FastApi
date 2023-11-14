@@ -124,7 +124,7 @@ class LandPlantListRouter(BaseRouter):
         
         response = api_models.LandPlantListGetModelResponse()
 
-        auth_dict = super().authorization_check(LandPlantListRouterConfig.is_public, api_key) 
+        auth_dict = BaseRouter.authorization_check(LandPlantListRouterConfig.is_public, api_key) 
             
         tmp_file_path = "" 
         
@@ -158,7 +158,7 @@ class LandPlantListRouter(BaseRouter):
                 else:
                     await session.rollback()
         logging.info('LandPlantListRouter.submit get result:' + response.model_dump_json()) 
-        output_file_name = 'land_plant_list_' + land_code + '_' + str(uuid.UUID()) + '.csv'
+        output_file_name = 'land_plant_list_' + land_code + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(tmp_file_path, media_type='text/csv', filename=output_file_name)
 
 ##GENLearn[isGetToCsvAvailable=true]End

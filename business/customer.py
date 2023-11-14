@@ -6,10 +6,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.tac import TacBusObj #TacID
 from services.db_config import db_dialect,generate_uuid
-from managers import TacManager as TacIDManager #TacID
+# from managers import TacManager as TacIDManager #TacID
 from managers import CustomerManager
 from models import Customer
 import managers as managers_and_enums
+
 class CustomerSessionNotFoundError(Exception):
     pass
 class CustomerInvalidInitError(Exception):
@@ -422,3 +423,4 @@ class CustomerBusObj:
         return await self.get_tac_id_rel_bus_obj()
     #uTCOffsetInMinutes,
     #zip,
+

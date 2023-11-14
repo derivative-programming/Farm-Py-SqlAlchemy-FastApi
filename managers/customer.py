@@ -27,7 +27,7 @@ class CustomerManager:
     async def add(self, customer: Customer) -> Customer:
         logging.info("CustomerManager.add")
         self.session.add(customer)
-        await self.session.commit()
+        await self.session.flush()
         return customer
     def _build_query(self):
         logging.info("CustomerManager._build_query")
@@ -94,7 +94,7 @@ class CustomerManager:
         if customer:
             for key, value in kwargs.items():
                 setattr(customer, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return customer
     async def delete(self, customer_id: int):
         logging.info(f"CustomerManager.delete {customer_id}")
@@ -104,7 +104,7 @@ class CustomerManager:
         if not customer:
             raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
         await self.session.delete(customer)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[Customer]:
         logging.info("CustomerManager.get_list")
         # result = await self.session.execute(select(Customer))
@@ -147,7 +147,7 @@ class CustomerManager:
         logging.info("CustomerManager.add_bulk")
         """Add multiple customers at once."""
         self.session.add_all(customers)
-        await self.session.commit()
+        await self.session.flush()
         return customers
     async def update_bulk(self, customer_updates: List[Dict[int, Dict]]) -> List[Customer]:
         logging.info("CustomerManager.update_bulk start")
@@ -166,7 +166,7 @@ class CustomerManager:
                 if key != "customer_id":
                     setattr(customer, key, value)
             updated_customers.append(customer)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("CustomerManager.update_bulk end")
         return updated_customers
     async def delete_bulk(self, customer_ids: List[int]) -> bool:
@@ -180,7 +180,7 @@ class CustomerManager:
                 raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
             if customer:
                 await self.session.delete(customer)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("CustomerManager.count")

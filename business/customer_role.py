@@ -7,11 +7,12 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.customer import CustomerBusObj #CustomerID
 from business.role import RoleBusObj #RoleID
 from services.db_config import db_dialect,generate_uuid
-from managers import CustomerManager as CustomerIDManager #CustomerID
-from managers import RoleManager as RoleIDManager #RoleID
+# from managers import CustomerManager as CustomerIDManager #CustomerID
+# from managers import RoleManager as RoleIDManager #RoleID
 from managers import CustomerRoleManager
 from models import CustomerRole
 import managers as managers_and_enums
+
 class CustomerRoleSessionNotFoundError(Exception):
     pass
 class CustomerRoleInvalidInitError(Exception):
@@ -222,3 +223,4 @@ class CustomerRoleBusObj:
     #isPlaceholder,
     #placeholder,
     #RoleID
+

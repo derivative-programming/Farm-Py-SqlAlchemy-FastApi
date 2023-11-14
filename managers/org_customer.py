@@ -28,7 +28,7 @@ class OrgCustomerManager:
     async def add(self, org_customer: OrgCustomer) -> OrgCustomer:
         logging.info("OrgCustomerManager.add")
         self.session.add(org_customer)
-        await self.session.commit()
+        await self.session.flush()
         return org_customer
     def _build_query(self):
         logging.info("OrgCustomerManager._build_query")
@@ -102,7 +102,7 @@ class OrgCustomerManager:
         if org_customer:
             for key, value in kwargs.items():
                 setattr(org_customer, key, value)
-            await self.session.commit()
+            await self.session.flush()
         return org_customer
     async def delete(self, org_customer_id: int):
         logging.info(f"OrgCustomerManager.delete {org_customer_id}")
@@ -112,7 +112,7 @@ class OrgCustomerManager:
         if not org_customer:
             raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
         await self.session.delete(org_customer)
-        await self.session.commit()
+        await self.session.flush()
     async def get_list(self) -> List[OrgCustomer]:
         logging.info("OrgCustomerManager.get_list")
         # result = await self.session.execute(select(OrgCustomer))
@@ -155,7 +155,7 @@ class OrgCustomerManager:
         logging.info("OrgCustomerManager.add_bulk")
         """Add multiple org_customers at once."""
         self.session.add_all(org_customers)
-        await self.session.commit()
+        await self.session.flush()
         return org_customers
     async def update_bulk(self, org_customer_updates: List[Dict[int, Dict]]) -> List[OrgCustomer]:
         logging.info("OrgCustomerManager.update_bulk start")
@@ -174,7 +174,7 @@ class OrgCustomerManager:
                 if key != "org_customer_id":
                     setattr(org_customer, key, value)
             updated_org_customers.append(org_customer)
-        await self.session.commit()
+        await self.session.flush()
         logging.info("OrgCustomerManager.update_bulk end")
         return updated_org_customers
     async def delete_bulk(self, org_customer_ids: List[int]) -> bool:
@@ -188,7 +188,7 @@ class OrgCustomerManager:
                 raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
             if org_customer:
                 await self.session.delete(org_customer)
-        await self.session.commit()
+        await self.session.flush()
         return True
     async def count(self) -> int:
         logging.info("OrgCustomerManager.count")
