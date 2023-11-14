@@ -1,15 +1,20 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.pac import PacBusObj #PacID
+# from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 # from managers import PacManager as PacIDManager #PacID
 from managers import LandManager
 from models import Land
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
+
+from business.plant import PlantBusObj
 
 class LandSessionNotFoundError(Exception):
     pass
@@ -22,7 +27,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class LandBusObj:
+class LandBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise LandSessionNotFoundError("session required")
@@ -63,6 +68,9 @@ class LandBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.land.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -72,6 +80,9 @@ class LandBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.land.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #Description
     @property
@@ -81,6 +92,9 @@ class LandBusObj:
     def description(self, value):
         assert isinstance(value, str), "description must be a string"
         self.land.description = value
+    def set_prop_description(self, value):
+        self.description = value
+        return self
     #DisplayOrder
     @property
     def display_order(self):
@@ -89,6 +103,9 @@ class LandBusObj:
     def display_order(self, value):
         assert isinstance(value, int), "display_order must be an integer"
         self.land.display_order = value
+    def set_prop_display_order(self, value):
+        self.display_order = value
+        return self
     #IsActive
     @property
     def is_active(self):
@@ -98,6 +115,9 @@ class LandBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.land.is_active = value
+    def set_prop_is_active(self, value: bool):
+        self.is_active = value
+        return self
     #LookupEnumName
     @property
     def lookup_enum_name(self):
@@ -106,6 +126,9 @@ class LandBusObj:
     def lookup_enum_name(self, value):
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.land.lookup_enum_name = value
+    def set_prop_lookup_enum_name(self, value):
+        self.lookup_enum_name = value
+        return self
     #Name
     @property
     def name(self):
@@ -114,6 +137,9 @@ class LandBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.land.name = value
+    def set_prop_name(self, value):
+        self.name = value
+        return self
     #PacID
 
     #description,
@@ -129,6 +155,9 @@ class LandBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.land.pac_id = value
+    def set_prop_pac_id(self, value):
+        self.pac_id = value
+        return self
     @property
     def pac_code_peek(self):
         return self.land.pac_code_peek
@@ -218,10 +247,10 @@ class LandBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_pac_id_rel_bus_obj(self) -> PacBusObj:
-        pac_bus_obj = PacBusObj(self.session)
-        await pac_bus_obj.load(pac_id=self.land.pac_id)
-        return pac_bus_obj
+    async def get_pac_id_rel_obj(self) -> models.Pac:
+        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        return pac_obj
 
     def get_obj(self) -> Land:
         return self.land
@@ -235,6 +264,32 @@ class LandBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_parent_obj(self) -> PacBusObj:
-        return await self.get_pac_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> PacBusObj:
+    #     return await self.get_pac_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Pac'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.pac_code_peek
+
+    async def build_plant(self) -> PlantBusObj:
+        item = PlantBusObj(self.session)
+        flavor_manager = managers_and_enums.FlavorManager(self.session)
+        flvr_foreign_key_id_flavor = await flvr_foreign_key_id_flavor.from_enum(
+            managers_and_enums.FlavorEnum.Unknown)
+        item.flvr_foreign_key_id_id = flvr_foreign_key_id_flavor.land_id
+        item.flvr_foreign_key_id_code_peek = flvr_foreign_key_id_flavor.code
+
+        item.land_id = self.land_id
+        item.land_code_peek = self.code
+
+        return item
+
+    async def get_all_plant(self) -> List[PlantBusObj]:
+        results = list()
+        plant_manager = managers_and_enums.PlantManager(self.session)
+        obj_list = plant_manager.get_by_land_id(self.land_id)
+        for obj_item in obj_list:
+            bus_obj_item = await PlantBusObj(self.session).load(plant_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
 

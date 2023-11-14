@@ -40,57 +40,57 @@ class DateGreaterThanFilterManager:
         pac_result = await self.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 #endset
-        if self.from_enum(DateGreaterThanFilterEnum.Unknown) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Unknown) is None:
             item = await self._build_lookup_item(pac) 
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
             item.description = "Unknown"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.day_count = 1
             await self.add(item) 
-        if self.from_enum(DateGreaterThanFilterEnum.Last_24_Hours) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_24_Hours) is None:
             item = await self._build_lookup_item(pac) 
             item.name = "Last 24 Hours"
             item.lookup_enum_name = "Last_24_Hours"
             item.description = "Last 24 Hours"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.day_count = 1
             await self.add(item) 
-        if self.from_enum(DateGreaterThanFilterEnum.Last_7_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_7_Days) is None:
             item = await self._build_lookup_item(pac) 
             item.name = "Last 7 Days"
             item.lookup_enum_name = "Last_7_Days"
             item.description = "Last 7 Days"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.day_count = 7
             await self.add(item) 
-        if self.from_enum(DateGreaterThanFilterEnum.Last_30_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_30_Days) is None:
             item = await self._build_lookup_item(pac) 
             item.name = "Last 30 Days"
             item.lookup_enum_name = "Last_30_Days"
             item.description = "Last 30 Days"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.day_count = 30
             await self.add(item) 
-        if self.from_enum(DateGreaterThanFilterEnum.Last_90_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_90_Days) is None:
             item = await self._build_lookup_item(pac) 
             item.name = "Last 90 Days"
             item.lookup_enum_name = "Last_90_Days"
             item.description = "Last 90 Days"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.day_count = 90
             await self.add(item) 
-        if self.from_enum(DateGreaterThanFilterEnum.Last_365_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_365_Days) is None:
             item = await self._build_lookup_item(pac) 
             item.name = "Last 365 Days"
             item.lookup_enum_name = "Last_365_Days"
             item.description = "Last 365 Days"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.day_count = 365
             await self.add(item) 

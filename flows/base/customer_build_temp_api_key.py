@@ -11,6 +11,7 @@ from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.customer_build_temp_api_key as FlowConstants
 import models as farm_models
+from business.factory import BusObjFactory
 class BaseFlowCustomerBuildTempApiKey(BaseFlow):
     def __init__(self, session_context:SessionContext):
         super(BaseFlowCustomerBuildTempApiKey, self).__init__(
@@ -47,4 +48,5 @@ class BaseFlowCustomerBuildTempApiKey(BaseFlow):
                     val = False
 
                 if val == True:
-                    item = await item.get_parent_obj()
+                    # item = await item.get_parent_obj()
+                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

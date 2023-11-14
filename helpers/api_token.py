@@ -4,6 +4,7 @@ import os
 import logging 
 from fastapi.security import APIKeyHeader
 from fastapi import Header, Depends
+from config import API_KEY_SECRET
 
 api_key_header = APIKeyHeader(name='API_KEY', auto_error=False)
  
@@ -24,7 +25,7 @@ class ApiToken:
         logging.info(str(payload))
         token = ""
         # token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-        token = jwt.encode(payload, "xxxxx", algorithm='HS256')
+        token = jwt.encode(payload, API_KEY_SECRET, algorithm='HS256')
         logging.info("create_token: " + token)
         logging.info("create_token End")
         return token
@@ -41,7 +42,7 @@ class ApiToken:
             payload = ""
             # Decode the token and verify its validity
             # payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-            payload = jwt.decode(token, "xxxxx", algorithms=['HS256'])
+            payload = jwt.decode(token, API_KEY_SECRET, algorithms=['HS256'])
             return payload
         except jwt.ExpiredSignatureError:
             logging.info("Auth token expired") 

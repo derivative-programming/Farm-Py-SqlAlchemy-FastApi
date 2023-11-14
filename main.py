@@ -57,4 +57,5 @@ async def startup_event():
         await conn.run_sync(Base.metadata.create_all)
     async for session in get_db():
         await current_runtime.initialize(session) 
+        await session.commit()
         break

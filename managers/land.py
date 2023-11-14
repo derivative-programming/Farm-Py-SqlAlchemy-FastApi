@@ -31,21 +31,21 @@ class LandManager:
         pac_result = await self.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
-        if self.from_enum(LandEnum.Unknown) is None:
+        if await self.from_enum(LandEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
             item.description = "Unknown"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(LandEnum.Field_One) is None:
+        if await self.from_enum(LandEnum.Field_One) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Field One"
             item.lookup_enum_name = "Field_One"
             item.description = "Field One"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)

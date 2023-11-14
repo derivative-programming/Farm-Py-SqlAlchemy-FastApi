@@ -1,4 +1,5 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
@@ -9,7 +10,23 @@ from services.db_config import db_dialect,generate_uuid
 
 from managers import PacManager
 from models import Pac
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
+
+from business.tri_state_filter import TriStateFilterBusObj
+
+from business.tac import TacBusObj
+
+from business.role import RoleBusObj
+
+from business.land import LandBusObj
+
+from business.flavor import FlavorBusObj
+
+from business.error_log import ErrorLogBusObj
+
+from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 
 class PacSessionNotFoundError(Exception):
     pass
@@ -22,7 +39,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class PacBusObj:
+class PacBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise PacSessionNotFoundError("session required")
@@ -63,6 +80,9 @@ class PacBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.pac.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -72,6 +92,9 @@ class PacBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.pac.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #Description
     @property
@@ -81,6 +104,9 @@ class PacBusObj:
     def description(self, value):
         assert isinstance(value, str), "description must be a string"
         self.pac.description = value
+    def set_prop_description(self, value):
+        self.description = value
+        return self
     #DisplayOrder
     @property
     def display_order(self):
@@ -89,6 +115,9 @@ class PacBusObj:
     def display_order(self, value):
         assert isinstance(value, int), "display_order must be an integer"
         self.pac.display_order = value
+    def set_prop_display_order(self, value):
+        self.display_order = value
+        return self
     #IsActive
     @property
     def is_active(self):
@@ -98,6 +127,9 @@ class PacBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.pac.is_active = value
+    def set_prop_is_active(self, value: bool):
+        self.is_active = value
+        return self
     #LookupEnumName
     @property
     def lookup_enum_name(self):
@@ -106,6 +138,9 @@ class PacBusObj:
     def lookup_enum_name(self, value):
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.pac.lookup_enum_name = value
+    def set_prop_lookup_enum_name(self, value):
+        self.lookup_enum_name = value
+        return self
     #Name
     @property
     def name(self):
@@ -114,6 +149,9 @@ class PacBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.pac.name = value
+    def set_prop_name(self, value):
+        self.name = value
+        return self
 
     #description,
     #displayOrder,
@@ -213,4 +251,123 @@ class PacBusObj:
     #isActive,
     #lookupEnumName,
     #name,
+
+    async def build_tri_state_filter(self) -> TriStateFilterBusObj:
+        item = TriStateFilterBusObj(self.session)
+
+        item.pac_id = self.pac_id
+        item.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_tri_state_filter(self) -> List[TriStateFilterBusObj]:
+        results = list()
+        tri_state_filter_manager = managers_and_enums.TriStateFilterManager(self.session)
+        obj_list = tri_state_filter_manager.get_by_pac_id(self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = await TriStateFilterBusObj(self.session).load(tri_state_filter_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+
+    async def build_tac(self) -> TacBusObj:
+        item = TacBusObj(self.session)
+
+        item.pac_id = self.pac_id
+        item.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_tac(self) -> List[TacBusObj]:
+        results = list()
+        tac_manager = managers_and_enums.TacManager(self.session)
+        obj_list = tac_manager.get_by_pac_id(self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = await TacBusObj(self.session).load(tac_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+
+    async def build_role(self) -> RoleBusObj:
+        item = RoleBusObj(self.session)
+
+        item.pac_id = self.pac_id
+        item.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_role(self) -> List[RoleBusObj]:
+        results = list()
+        role_manager = managers_and_enums.RoleManager(self.session)
+        obj_list = role_manager.get_by_pac_id(self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = await RoleBusObj(self.session).load(role_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+
+    async def build_land(self) -> LandBusObj:
+        item = LandBusObj(self.session)
+
+        item.pac_id = self.pac_id
+        item.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_land(self) -> List[LandBusObj]:
+        results = list()
+        land_manager = managers_and_enums.LandManager(self.session)
+        obj_list = land_manager.get_by_pac_id(self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = await LandBusObj(self.session).load(land_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+
+    async def build_flavor(self) -> FlavorBusObj:
+        item = FlavorBusObj(self.session)
+
+        item.pac_id = self.pac_id
+        item.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_flavor(self) -> List[FlavorBusObj]:
+        results = list()
+        flavor_manager = managers_and_enums.FlavorManager(self.session)
+        obj_list = flavor_manager.get_by_pac_id(self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = await FlavorBusObj(self.session).load(flavor_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+
+    async def build_error_log(self) -> ErrorLogBusObj:
+        item = ErrorLogBusObj(self.session)
+
+        item.pac_id = self.pac_id
+        item.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_error_log(self) -> List[ErrorLogBusObj]:
+        results = list()
+        error_log_manager = managers_and_enums.ErrorLogManager(self.session)
+        obj_list = error_log_manager.get_by_pac_id(self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = await ErrorLogBusObj(self.session).load(error_log_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+
+    async def build_date_greater_than_filter(self) -> DateGreaterThanFilterBusObj:
+        item = DateGreaterThanFilterBusObj(self.session)
+
+        item.pac_id = self.pac_id
+        item.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_date_greater_than_filter(self) -> List[DateGreaterThanFilterBusObj]:
+        results = list()
+        date_greater_than_filter_manager = managers_and_enums.DateGreaterThanFilterManager(self.session)
+        obj_list = date_greater_than_filter_manager.get_by_pac_id(self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = await DateGreaterThanFilterBusObj(self.session).load(date_greater_than_filter_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
 

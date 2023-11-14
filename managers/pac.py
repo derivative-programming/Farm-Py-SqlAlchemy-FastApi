@@ -30,12 +30,12 @@ class PacManager:
         pac_result = await self.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
-        if self.from_enum(PacEnum.Unknown) is None:
+        if await self.from_enum(PacEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
             item.description = ""
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)

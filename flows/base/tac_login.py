@@ -11,6 +11,7 @@ from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.tac_login as FlowConstants
 import models as farm_models
+from business.factory import BusObjFactory
 class BaseFlowTacLogin(BaseFlow):
     def __init__(self, session_context:SessionContext):
         super(BaseFlowTacLogin, self).__init__(
@@ -51,4 +52,5 @@ class BaseFlowTacLogin(BaseFlow):
                     val = False
 
                 if val == True:
-                    item = await item.get_parent_obj()
+                    # item = await item.get_parent_obj()
+                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

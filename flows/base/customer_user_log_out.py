@@ -11,6 +11,7 @@ from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.customer_user_log_out as FlowConstants
 import models as farm_models
+from business.factory import BusObjFactory
 class BaseFlowCustomerUserLogOut(BaseFlow):
     def __init__(self, session_context:SessionContext):
         super(BaseFlowCustomerUserLogOut, self).__init__(
@@ -52,4 +53,5 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
                             self._add_validation_error("Unautorized access.  Invalid User.")
 
                 if val == True:
-                    item = await item.get_parent_obj()
+                    # item = await item.get_parent_obj()
+                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

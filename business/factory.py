@@ -16,37 +16,37 @@ from .tri_state_filter import TriStateFilterBusObj
 from sqlalchemy.ext.asyncio import AsyncSession
 #endset
 
-class BusObjFactory:
+class BusObjFactory: 
     @staticmethod
     async def create(session:AsyncSession, name, code:uuid.UUID=None, id:int=None):
         if code is not None:
             if name == 'Customer':
                 return await CustomerBusObj(session=session).load(code=code)
-            elif name == 'CustomerRoleBusObj':
+            elif name == 'CustomerRole':
                 return await CustomerRoleBusObj(session=session).load(code=code)
-            elif name == 'DateGreaterThanFilterBusObj':
+            elif name == 'DateGreaterThanFilter':
                 return await DateGreaterThanFilterBusObj(session=session).load(code=code)
-            elif name == 'ErrorLogBusObj':
+            elif name == 'ErrorLog':
                 return await ErrorLogBusObj(session=session).load(code=code)
-            elif name == 'FlavorBusObj':
+            elif name == 'Flavor':
                 return await FlavorBusObj(session=session).load(code=code)
-            elif name == 'LandBusObj':
+            elif name == 'Land':
                 return await LandBusObj(session=session).load(code=code)
-            elif name == 'OrganizationBusObj':
+            elif name == 'Organization':
                 return await OrganizationBusObj(session=session).load(code=code)
-            elif name == 'OrgApiKeyBusObj':
+            elif name == 'OrgApiKey':
                 return await OrgApiKeyBusObj(session=session).load(code=code)
-            elif name == 'OrgCustomerBusObj':
+            elif name == 'OrgCustomer':
                 return await OrgCustomerBusObj(session=session).load(code=code)
-            elif name == 'PacBusObj':
+            elif name == 'Pac':
                 return await PacBusObj(session=session).load(code=code)
-            elif name == 'PlantBusObj':
+            elif name == 'Plant':
                 return await PlantBusObj(session=session).load(code=code)
-            elif name == 'RoleBusObj':
+            elif name == 'Role':
                 return await RoleBusObj(session=session).load(code=code)
-            elif name == 'TacBusObj':
+            elif name == 'Tac':
                 return await TacBusObj(session=session).load(code=code)
-            elif name == 'TriStateFilterBusObj':
+            elif name == 'TriStateFilter':
                 return await TriStateFilterBusObj(session=session).load(code=code) 
     #endset
             else:
@@ -54,31 +54,31 @@ class BusObjFactory:
         else:
             if name == 'Customer':
                 return await CustomerBusObj(session=session).load(customer_id=id)
-            elif name == 'CustomerRoleBusObj':
+            elif name == 'CustomerRole':
                 return await CustomerRoleBusObj(session=session).load(customer_role_id=id)
-            elif name == 'DateGreaterThanFilterBusObj':
+            elif name == 'DateGreaterThanFilter':
                 return await DateGreaterThanFilterBusObj(session=session).load(date_greater_than_filter_id=id)
-            elif name == 'ErrorLogBusObj':
+            elif name == 'ErrorLog':
                 return await ErrorLogBusObj(session=session).load(error_log_id=id)
-            elif name == 'FlavorBusObj':
+            elif name == 'Flavor':
                 return await FlavorBusObj(session=session).load(flavor_id=id)
-            elif name == 'LandBusObj':
+            elif name == 'Land':
                 return await LandBusObj(session=session).load(land_id=id)
-            elif name == 'OrganizationBusObj':
+            elif name == 'Organization':
                 return await OrganizationBusObj(session=session).load(organization_id=id)
-            elif name == 'OrgApiKeyBusObj':
+            elif name == 'OrgApiKey':
                 return await OrgApiKeyBusObj(session=session).load(org_api_key_id=id)
-            elif name == 'OrgCustomerBusObj':
+            elif name == 'OrgCustomer':
                 return await OrgCustomerBusObj(session=session).load(org_customer_id=id)
-            elif name == 'PacBusObj':
+            elif name == 'Pac':
                 return await PacBusObj(session=session).load(pac_id=id)
-            elif name == 'PlantBusObj':
+            elif name == 'Plant':
                 return await PlantBusObj(session=session).load(plant_id=id)
-            elif name == 'RoleBusObj':
+            elif name == 'Role':
                 return await RoleBusObj(session=session).load(role_id=id)
-            elif name == 'TacBusObj':
+            elif name == 'Tac':
                 return await TacBusObj(session=session).load(tac_id=id)
-            elif name == 'TriStateFilterBusObj':
+            elif name == 'TriStateFilter':
                 return await TriStateFilterBusObj(session=session).load(tri_state_filter_id=id) 
     #endset
             else:

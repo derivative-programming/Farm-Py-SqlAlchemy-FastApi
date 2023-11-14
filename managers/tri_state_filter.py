@@ -32,30 +32,30 @@ class TriStateFilterManager:
         pac_result = await self.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
-        if self.from_enum(TriStateFilterEnum.Unknown) is None:
+        if await self.from_enum(TriStateFilterEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
             item.description = ""
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)
-        if self.from_enum(TriStateFilterEnum.Yes) is None:
+        if await self.from_enum(TriStateFilterEnum.Yes) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Yes"
             item.lookup_enum_name = "Yes"
             item.description = "Yes"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)
-        if self.from_enum(TriStateFilterEnum.No) is None:
+        if await self.from_enum(TriStateFilterEnum.No) is None:
             item = await self._build_lookup_item(pac)
             item.name = "No"
             item.lookup_enum_name = "No"
             item.description = "No"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)

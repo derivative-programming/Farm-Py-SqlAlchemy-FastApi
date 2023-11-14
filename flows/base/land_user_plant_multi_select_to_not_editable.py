@@ -11,6 +11,7 @@ from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.land_user_plant_multi_select_to_not_editable as FlowConstants
 import models as farm_models
+from business.factory import BusObjFactory
 class BaseFlowLandUserPlantMultiSelectToNotEditable(BaseFlow):
     def __init__(self, session_context:SessionContext):
         super(BaseFlowLandUserPlantMultiSelectToNotEditable, self).__init__(
@@ -48,4 +49,5 @@ class BaseFlowLandUserPlantMultiSelectToNotEditable(BaseFlow):
                     val = False
 
                 if val == True:
-                    item = await item.get_parent_obj()
+                    # item = await item.get_parent_obj()
+                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

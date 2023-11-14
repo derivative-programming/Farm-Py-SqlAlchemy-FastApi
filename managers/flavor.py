@@ -32,30 +32,30 @@ class FlavorManager:
         pac_result = await self.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
-        if self.from_enum(FlavorEnum.Unknown) is None:
+        if await self.from_enum(FlavorEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
             item.description = "Unknown"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(FlavorEnum.Sweet) is None:
+        if await self.from_enum(FlavorEnum.Sweet) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Sweet"
             item.lookup_enum_name = "Sweet"
             item.description = "Sweet"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(FlavorEnum.Sour) is None:
+        if await self.from_enum(FlavorEnum.Sour) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Sour"
             item.lookup_enum_name = "Sour"
             item.description = "Sour"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)

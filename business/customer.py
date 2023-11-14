@@ -1,15 +1,20 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.tac import TacBusObj #TacID
+# from business.tac import TacBusObj #TacID
 from services.db_config import db_dialect,generate_uuid
 # from managers import TacManager as TacIDManager #TacID
 from managers import CustomerManager
 from models import Customer
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
+
+from business.customer_role import CustomerRoleBusObj
 
 class CustomerSessionNotFoundError(Exception):
     pass
@@ -22,7 +27,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class CustomerBusObj:
+class CustomerBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise CustomerSessionNotFoundError("session required")
@@ -63,6 +68,9 @@ class CustomerBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.customer.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -72,6 +80,9 @@ class CustomerBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.customer.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #ActiveOrganizationID
     @property
@@ -81,6 +92,9 @@ class CustomerBusObj:
     def active_organization_id(self, value):
         assert isinstance(value, int), "active_organization_id must be an integer"
         self.customer.active_organization_id = value
+    def set_prop_active_organization_id(self, value):
+        self.active_organization_id = value
+        return self
     #Email
     @property
     def email(self):
@@ -89,6 +103,9 @@ class CustomerBusObj:
     def email(self, value):
         assert isinstance(value, str), "email must be a string"
         self.customer.email = value
+    def set_prop_email(self, value):
+        self.email = value
+        return self
     #EmailConfirmedUTCDateTime
     @property
     def email_confirmed_utc_date_time(self):
@@ -97,6 +114,9 @@ class CustomerBusObj:
     def email_confirmed_utc_date_time(self, value):
         assert isinstance(value, datetime), "email_confirmed_utc_date_time must be a datetime object"
         self.customer.email_confirmed_utc_date_time = value
+    def set_prop_email_confirmed_utc_date_time(self, value):
+        self.email_confirmed_utc_date_time = value
+        return self
     #FirstName
     @property
     def first_name(self):
@@ -105,6 +125,9 @@ class CustomerBusObj:
     def first_name(self, value):
         assert isinstance(value, str), "first_name must be a string"
         self.customer.first_name = value
+    def set_prop_first_name(self, value):
+        self.first_name = value
+        return self
     #ForgotPasswordKeyExpirationUTCDateTime
     @property
     def forgot_password_key_expiration_utc_date_time(self):
@@ -113,6 +136,9 @@ class CustomerBusObj:
     def forgot_password_key_expiration_utc_date_time(self, value):
         assert isinstance(value, datetime), "forgot_password_key_expiration_utc_date_time must be a datetime object"
         self.customer.forgot_password_key_expiration_utc_date_time = value
+    def set_prop_forgot_password_key_expiration_utc_date_time(self, value):
+        self.forgot_password_key_expiration_utc_date_time = value
+        return self
     #ForgotPasswordKeyValue
     @property
     def forgot_password_key_value(self):
@@ -121,6 +147,9 @@ class CustomerBusObj:
     def forgot_password_key_value(self, value):
         assert isinstance(value, str), "forgot_password_key_value must be a string"
         self.customer.forgot_password_key_value = value
+    def set_prop_forgot_password_key_value(self, value):
+        self.forgot_password_key_value = value
+        return self
     #FSUserCodeValue
     @property
     def fs_user_code_value(self):
@@ -129,6 +158,9 @@ class CustomerBusObj:
     def fs_user_code_value(self, value):
         assert isinstance(value, UUIDType), "fs_user_code_value must be a UUID"
         self.customer.fs_user_code_value = value
+    def set_prop_fs_user_code_value(self, value):
+        self.fs_user_code_value = value
+        return self
     #IsActive
     @property
     def is_active(self):
@@ -138,6 +170,9 @@ class CustomerBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.customer.is_active = value
+    def set_prop_is_active(self, value: bool):
+        self.is_active = value
+        return self
     #IsEmailAllowed
     @property
     def is_email_allowed(self):
@@ -147,6 +182,9 @@ class CustomerBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_email_allowed must be a boolean.")
         self.customer.is_email_allowed = value
+    def set_prop_is_email_allowed(self, value: bool):
+        self.is_email_allowed = value
+        return self
     #IsEmailConfirmed
     @property
     def is_email_confirmed(self):
@@ -156,6 +194,9 @@ class CustomerBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_email_confirmed must be a boolean.")
         self.customer.is_email_confirmed = value
+    def set_prop_is_email_confirmed(self, value: bool):
+        self.is_email_confirmed = value
+        return self
     #IsEmailMarketingAllowed
     @property
     def is_email_marketing_allowed(self):
@@ -165,6 +206,9 @@ class CustomerBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_email_marketing_allowed must be a boolean.")
         self.customer.is_email_marketing_allowed = value
+    def set_prop_is_email_marketing_allowed(self, value: bool):
+        self.is_email_marketing_allowed = value
+        return self
     #IsLocked
     @property
     def is_locked(self):
@@ -174,6 +218,9 @@ class CustomerBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_locked must be a boolean.")
         self.customer.is_locked = value
+    def set_prop_is_locked(self, value: bool):
+        self.is_locked = value
+        return self
     #IsMultipleOrganizationsAllowed
     @property
     def is_multiple_organizations_allowed(self):
@@ -183,6 +230,9 @@ class CustomerBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_multiple_organizations_allowed must be a boolean.")
         self.customer.is_multiple_organizations_allowed = value
+    def set_prop_is_multiple_organizations_allowed(self, value: bool):
+        self.is_multiple_organizations_allowed = value
+        return self
     #IsVerboseLoggingForced
     @property
     def is_verbose_logging_forced(self):
@@ -192,6 +242,9 @@ class CustomerBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_verbose_logging_forced must be a boolean.")
         self.customer.is_verbose_logging_forced = value
+    def set_prop_is_verbose_logging_forced(self, value: bool):
+        self.is_verbose_logging_forced = value
+        return self
     #LastLoginUTCDateTime
     @property
     def last_login_utc_date_time(self):
@@ -200,6 +253,9 @@ class CustomerBusObj:
     def last_login_utc_date_time(self, value):
         assert isinstance(value, datetime), "last_login_utc_date_time must be a datetime object"
         self.customer.last_login_utc_date_time = value
+    def set_prop_last_login_utc_date_time(self, value):
+        self.last_login_utc_date_time = value
+        return self
     #LastName
     @property
     def last_name(self):
@@ -208,6 +264,9 @@ class CustomerBusObj:
     def last_name(self, value):
         assert isinstance(value, str), "last_name must be a string"
         self.customer.last_name = value
+    def set_prop_last_name(self, value):
+        self.last_name = value
+        return self
     #Password
     @property
     def password(self):
@@ -216,6 +275,9 @@ class CustomerBusObj:
     def password(self, value):
         assert isinstance(value, str), "password must be a string"
         self.customer.password = value
+    def set_prop_password(self, value):
+        self.password = value
+        return self
     #phone
     @property
     def phone(self):
@@ -224,6 +286,9 @@ class CustomerBusObj:
     def phone(self, value):
         assert isinstance(value, str), "phone must be a string"
         self.customer.phone = value
+    def set_prop_phone(self, value):
+        self.phone = value
+        return self
     #Province
     @property
     def province(self):
@@ -232,6 +297,9 @@ class CustomerBusObj:
     def province(self, value):
         assert isinstance(value, str), "province must be a string"
         self.customer.province = value
+    def set_prop_province(self, value):
+        self.province = value
+        return self
     #RegistrationUTCDateTime
     @property
     def registration_utc_date_time(self):
@@ -240,6 +308,9 @@ class CustomerBusObj:
     def registration_utc_date_time(self, value):
         assert isinstance(value, datetime), "registration_utc_date_time must be a datetime object"
         self.customer.registration_utc_date_time = value
+    def set_prop_registration_utc_date_time(self, value):
+        self.registration_utc_date_time = value
+        return self
     #TacID
     #UTCOffsetInMinutes
     @property
@@ -249,6 +320,9 @@ class CustomerBusObj:
     def utc_offset_in_minutes(self, value):
         assert isinstance(value, int), "utc_offset_in_minutes must be an integer"
         self.customer.utc_offset_in_minutes = value
+    def set_prop_utc_offset_in_minutes(self, value):
+        self.utc_offset_in_minutes = value
+        return self
     #Zip
     @property
     def zip(self):
@@ -257,6 +331,9 @@ class CustomerBusObj:
     def zip(self, value):
         assert isinstance(value, str), "zip must be a string"
         self.customer.zip = value
+    def set_prop_zip(self, value):
+        self.zip = value
+        return self
 
     #activeOrganizationID,
     #email,
@@ -286,6 +363,9 @@ class CustomerBusObj:
     def tac_id(self, value):
         assert isinstance(value, int) or value is None, "tac_id must be an integer or None"
         self.customer.tac_id = value
+    def set_prop_tac_id(self, value):
+        self.tac_id = value
+        return self
     @property
     def tac_code_peek(self):
         return self.customer.tac_code_peek
@@ -385,10 +465,10 @@ class CustomerBusObj:
     #province,
     #registrationUTCDateTime
     #TacID
-    async def get_tac_id_rel_bus_obj(self) -> TacBusObj:
-        tac_bus_obj = TacBusObj(self.session)
-        await tac_bus_obj.load(tac_id=self.customer.tac_id)
-        return tac_bus_obj
+    async def get_tac_id_rel_obj(self) -> models.Tac:
+        tac_manager = managers_and_enums.TacManager(self.session)
+        tac_obj = await tac_manager.get_by_id(self.tac_id)
+        return tac_obj
     #uTCOffsetInMinutes,
     #zip,
 
@@ -419,8 +499,34 @@ class CustomerBusObj:
     #province,
     #registrationUTCDateTime
     #TacID
-    async def get_parent_obj(self) -> TacBusObj:
-        return await self.get_tac_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> TacBusObj:
+    #     return await self.get_tac_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Tac'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.tac_code_peek
     #uTCOffsetInMinutes,
     #zip,
+
+    async def build_customer_role(self) -> CustomerRoleBusObj:
+        item = CustomerRoleBusObj(self.session)
+        role_manager = managers_and_enums.RoleManager(self.session)
+        role_id_role = await role_id_role.from_enum(
+            managers_and_enums.RoleEnum.Unknown)
+        item.role_id_id = role_id_role.customer_id
+        item.role_id_code_peek = role_id_role.code
+
+        item.customer_id = self.customer_id
+        item.customer_code_peek = self.code
+
+        return item
+
+    async def get_all_customer_role(self) -> List[CustomerRoleBusObj]:
+        results = list()
+        customer_role_manager = managers_and_enums.CustomerRoleManager(self.session)
+        obj_list = customer_role_manager.get_by_customer_id(self.customer_id)
+        for obj_item in obj_list:
+            bus_obj_item = await CustomerRoleBusObj(self.session).load(customer_role_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
 

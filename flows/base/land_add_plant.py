@@ -11,6 +11,7 @@ from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.land_add_plant as FlowConstants
 import models as farm_models  
+from business.factory import BusObjFactory
  
 
 class BaseFlowLandAddPlant(BaseFlow):
@@ -169,4 +170,5 @@ class BaseFlowLandAddPlant(BaseFlow):
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End
                 if val == True:
-                    item = await item.get_parent_obj()
+                    # item = await item.get_parent_obj()
+                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

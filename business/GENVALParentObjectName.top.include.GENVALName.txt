@@ -1,7 +1,6 @@
 
-    async def build_GENVALSnakeName(self) -> GENVALPascalNameBusObj:
-        item = CustomerBusObj(self.session)
-        item.GENVALSnakePArentObjectName_id = self.GENVALSnakePArentObjectName_id
-        item.GENVALSnakePArentObjectName_code_peek = self.code
-        return item
+##GENIF[calculatedIsParentObjectAvailable=false]Start
+//GENDELETETHISFILE
+##GENIF[calculatedIsParentObjectAvailable=false]End
+from business.GENVALSnakeName import GENVALPascalNameBusObj
 

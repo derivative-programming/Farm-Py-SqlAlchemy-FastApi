@@ -306,7 +306,9 @@ class TestReportManagerLandPlantList:
         await test_obj.build_csv(file_name, test_data)
 
         # Verify the file is created
-        assert os.path.exists(file_name)
+        assert os.path.exists(file_name) 
+
+        os.remove(file_name)
         
         # Further checks can be added to verify the content of the file
 
@@ -324,6 +326,8 @@ class TestReportManagerLandPlantList:
         result = await test_obj.read_csv(file_name)
         assert isinstance(result, list)
         assert all(isinstance(item, ReportItemLandPlantList) for item in result)
+
+        os.remove(file_name)
         # Further checks can be added to verify the data in the objects
 
     def test_parse_bool(self,session): 

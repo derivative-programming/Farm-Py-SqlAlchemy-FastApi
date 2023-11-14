@@ -142,6 +142,7 @@ class TestReportManagerPlantUserDetails:
         await test_obj.build_csv(file_name, test_data)
         # Verify the file is created
         assert os.path.exists(file_name)
+        os.remove(file_name)
         # Further checks can be added to verify the content of the file
     @pytest.mark.asyncio
     async def test_read_csv(self,session):
@@ -154,6 +155,7 @@ class TestReportManagerPlantUserDetails:
         result = await test_obj.read_csv(file_name)
         assert isinstance(result, list)
         assert all(isinstance(item, ReportItemPlantUserDetails) for item in result)
+        os.remove(file_name)
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self,session):
         session_context = SessionContext(dict())

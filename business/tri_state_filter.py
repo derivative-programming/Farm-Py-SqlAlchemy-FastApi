@@ -1,15 +1,18 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.pac import PacBusObj #PacID
+# from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 # from managers import PacManager as PacIDManager #PacID
 from managers import TriStateFilterManager
 from models import TriStateFilter
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
 
 class TriStateFilterSessionNotFoundError(Exception):
     pass
@@ -22,7 +25,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class TriStateFilterBusObj:
+class TriStateFilterBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise TriStateFilterSessionNotFoundError("session required")
@@ -63,6 +66,9 @@ class TriStateFilterBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.tri_state_filter.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -72,6 +78,9 @@ class TriStateFilterBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.tri_state_filter.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #Description
     @property
@@ -81,6 +90,9 @@ class TriStateFilterBusObj:
     def description(self, value):
         assert isinstance(value, str), "description must be a string"
         self.tri_state_filter.description = value
+    def set_prop_description(self, value):
+        self.description = value
+        return self
     #DisplayOrder
     @property
     def display_order(self):
@@ -89,6 +101,9 @@ class TriStateFilterBusObj:
     def display_order(self, value):
         assert isinstance(value, int), "display_order must be an integer"
         self.tri_state_filter.display_order = value
+    def set_prop_display_order(self, value):
+        self.display_order = value
+        return self
     #IsActive
     @property
     def is_active(self):
@@ -98,6 +113,9 @@ class TriStateFilterBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.tri_state_filter.is_active = value
+    def set_prop_is_active(self, value: bool):
+        self.is_active = value
+        return self
     #LookupEnumName
     @property
     def lookup_enum_name(self):
@@ -106,6 +124,9 @@ class TriStateFilterBusObj:
     def lookup_enum_name(self, value):
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.tri_state_filter.lookup_enum_name = value
+    def set_prop_lookup_enum_name(self, value):
+        self.lookup_enum_name = value
+        return self
     #Name
     @property
     def name(self):
@@ -114,6 +135,9 @@ class TriStateFilterBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.tri_state_filter.name = value
+    def set_prop_name(self, value):
+        self.name = value
+        return self
     #PacID
     #StateIntValue
     @property
@@ -123,6 +147,9 @@ class TriStateFilterBusObj:
     def state_int_value(self, value):
         assert isinstance(value, int), "state_int_value must be an integer"
         self.tri_state_filter.state_int_value = value
+    def set_prop_state_int_value(self, value):
+        self.state_int_value = value
+        return self
 
     #description,
     #displayOrder,
@@ -137,6 +164,9 @@ class TriStateFilterBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.tri_state_filter.pac_id = value
+    def set_prop_pac_id(self, value):
+        self.pac_id = value
+        return self
     @property
     def pac_code_peek(self):
         return self.tri_state_filter.pac_code_peek
@@ -227,10 +257,10 @@ class TriStateFilterBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_pac_id_rel_bus_obj(self) -> PacBusObj:
-        pac_bus_obj = PacBusObj(self.session)
-        await pac_bus_obj.load(pac_id=self.tri_state_filter.pac_id)
-        return pac_bus_obj
+    async def get_pac_id_rel_obj(self) -> models.Pac:
+        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        return pac_obj
     #stateIntValue,
 
     def get_obj(self) -> TriStateFilter:
@@ -245,7 +275,11 @@ class TriStateFilterBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_parent_obj(self) -> PacBusObj:
-        return await self.get_pac_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> PacBusObj:
+    #     return await self.get_pac_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Pac'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.pac_code_peek
     #stateIntValue,
 

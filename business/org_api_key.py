@@ -1,17 +1,20 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.organization import OrganizationBusObj #OrganizationID
+# from business.organization import OrganizationBusObj #OrganizationID
 from business.org_customer import OrgCustomerBusObj #OrgCustomerID
 from services.db_config import db_dialect,generate_uuid
 # from managers import OrganizationManager as OrganizationIDManager #OrganizationID
 # from managers import OrgCustomerManager as OrgCustomerIDManager #OrgCustomerID
 from managers import OrgApiKeyManager
 from models import OrgApiKey
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
 
 class OrgApiKeySessionNotFoundError(Exception):
     pass
@@ -24,7 +27,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class OrgApiKeyBusObj:
+class OrgApiKeyBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise OrgApiKeySessionNotFoundError("session required")
@@ -65,6 +68,9 @@ class OrgApiKeyBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.org_api_key.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -74,6 +80,9 @@ class OrgApiKeyBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.org_api_key.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #ApiKeyValue
     @property
@@ -83,6 +92,9 @@ class OrgApiKeyBusObj:
     def api_key_value(self, value):
         assert isinstance(value, str), "api_key_value must be a string"
         self.org_api_key.api_key_value = value
+    def set_prop_api_key_value(self, value):
+        self.api_key_value = value
+        return self
     #CreatedBy
     @property
     def created_by(self):
@@ -91,6 +103,9 @@ class OrgApiKeyBusObj:
     def created_by(self, value):
         assert isinstance(value, str), "created_by must be a string"
         self.org_api_key.created_by = value
+    def set_prop_created_by(self, value):
+        self.created_by = value
+        return self
     #CreatedUTCDateTime
     @property
     def created_utc_date_time(self):
@@ -99,6 +114,9 @@ class OrgApiKeyBusObj:
     def created_utc_date_time(self, value):
         assert isinstance(value, datetime), "created_utc_date_time must be a datetime object"
         self.org_api_key.created_utc_date_time = value
+    def set_prop_created_utc_date_time(self, value):
+        self.created_utc_date_time = value
+        return self
     #ExpirationUTCDateTime
     @property
     def expiration_utc_date_time(self):
@@ -107,6 +125,9 @@ class OrgApiKeyBusObj:
     def expiration_utc_date_time(self, value):
         assert isinstance(value, datetime), "expiration_utc_date_time must be a datetime object"
         self.org_api_key.expiration_utc_date_time = value
+    def set_prop_expiration_utc_date_time(self, value):
+        self.expiration_utc_date_time = value
+        return self
     #IsActive
     @property
     def is_active(self):
@@ -116,6 +137,9 @@ class OrgApiKeyBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.org_api_key.is_active = value
+    def set_prop_is_active(self, value: bool):
+        self.is_active = value
+        return self
     #IsTempUserKey
     @property
     def is_temp_user_key(self):
@@ -125,6 +149,9 @@ class OrgApiKeyBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_temp_user_key must be a boolean.")
         self.org_api_key.is_temp_user_key = value
+    def set_prop_is_temp_user_key(self, value: bool):
+        self.is_temp_user_key = value
+        return self
     #Name
     @property
     def name(self):
@@ -133,6 +160,9 @@ class OrgApiKeyBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.org_api_key.name = value
+    def set_prop_name(self, value):
+        self.name = value
+        return self
     #OrganizationID
     #OrgCustomerID
 
@@ -151,6 +181,9 @@ class OrgApiKeyBusObj:
     def organization_id(self, value):
         assert isinstance(value, int) or value is None, "organization_id must be an integer or None"
         self.org_api_key.organization_id = value
+    def set_prop_organization_id(self, value):
+        self.organization_id = value
+        return self
     @property
     def organization_code_peek(self):
         return self.org_api_key.organization_code_peek
@@ -167,6 +200,9 @@ class OrgApiKeyBusObj:
         if not isinstance(value, int):
             raise ValueError("org_customer_id must be an integer.")
         self.org_api_key.org_customer_id = value
+    def set_prop_org_customer_id(self, value):
+        self.org_customer_id = value
+        return self
     @property
     def org_customer_code_peek(self):
         return self.org_api_key.org_customer_code_peek
@@ -251,15 +287,15 @@ class OrgApiKeyBusObj:
     #isTempUserKey,
     #name,
     #OrganizationID
-    async def get_organization_id_rel_bus_obj(self) -> OrganizationBusObj:
-        organization_bus_obj = OrganizationBusObj(self.session)
-        await organization_bus_obj.load(organization_id=self.org_api_key.organization_id)
-        return organization_bus_obj
+    async def get_organization_id_rel_obj(self) -> models.Organization:
+        organization_manager = managers_and_enums.OrganizationManager(self.session)
+        organization_obj = await organization_manager.get_by_id(self.organization_id)
+        return organization_obj
     #OrgCustomerID
-    async def get_org_customer_id_rel_bus_obj(self) -> OrgCustomerBusObj:
-        org_customer_bus_obj = OrgCustomerBusObj(self.session)
-        await org_customer_bus_obj.load(org_customer_id=self.org_api_key.org_customer_id)
-        return org_customer_bus_obj
+    async def get_org_customer_id_rel_obj(self) -> models.OrgCustomer:
+        org_customer_manager = managers_and_enums.OrgCustomerManager(self.session)
+        org_customer_obj = await org_customer_manager.get_by_id(self.org_customer_id)
+        return org_customer_obj
 
     def get_obj(self) -> OrgApiKey:
         return self.org_api_key
@@ -275,7 +311,11 @@ class OrgApiKeyBusObj:
     #isTempUserKey,
     #name,
     #OrganizationID
-    async def get_parent_obj(self) -> OrganizationBusObj:
-        return await self.get_organization_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> OrganizationBusObj:
+    #     return await self.get_organization_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Organization'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.organization_code_peek
     #OrgCustomerID
 

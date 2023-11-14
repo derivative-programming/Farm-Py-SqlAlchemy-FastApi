@@ -4,12 +4,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.pac import PacBusObj #PacID
+# from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
 from managers import DateGreaterThanFilterManager
 import managers as managers_and_enums
 from models import DateGreaterThanFilter
+import models
 class DateGreaterThanFilterSessionNotFoundError(Exception):
     pass
 class DateGreaterThanFilterInvalidInitError(Exception):
@@ -232,10 +233,10 @@ class DateGreaterThanFilterBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_pac_id_rel_bus_obj(self) -> PacBusObj:
-        pac_bus_obj = PacBusObj(self.session)
-        await pac_bus_obj.load(pac_id=self.date_greater_than_filter.pac_id)
-        return pac_bus_obj
+    async def get_pac_id_rel_obj(self) -> models.Pac:
+        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        return pac_obj
 
     def get_obj(self) -> DateGreaterThanFilter:
         return self.date_greater_than_filter
@@ -250,5 +251,10 @@ class DateGreaterThanFilterBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_parent_obj(self) -> PacBusObj:
-        return await self.get_pac_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> PacBusObj:
+    #     return await self.get_pac_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Pac'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.pac_code_peek
+

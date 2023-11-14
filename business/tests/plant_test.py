@@ -12,6 +12,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String 
 from services.logging_config import get_logger
+##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 
 logger = get_logger(__name__) 
 
@@ -173,3 +174,5 @@ class TestPlantBusObj:
 
         assert new_plant is None 
  
+
+    ##GENINCLUDEFILE[GENVALPascalName.bottom.include.*]

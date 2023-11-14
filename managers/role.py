@@ -33,39 +33,39 @@ class RoleManager:
         pac_result = await self.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
-        if self.from_enum(RoleEnum.Unknown) is None:
+        if await self.from_enum(RoleEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
             item.description = ""
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(RoleEnum.Admin) is None:
+        if await self.from_enum(RoleEnum.Admin) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Admin"
             item.lookup_enum_name = "Admin"
             item.description = "Admin"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(RoleEnum.Config) is None:
+        if await self.from_enum(RoleEnum.Config) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Config"
             item.lookup_enum_name = "Config"
             item.description = "Config"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if self.from_enum(RoleEnum.User) is None:
+        if await self.from_enum(RoleEnum.User) is None:
             item = await self._build_lookup_item(pac)
             item.name = "User"
             item.lookup_enum_name = "User"
             item.description = "User"
-            item.display_order = self.count()
+            item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)

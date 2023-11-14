@@ -1,15 +1,22 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.tac import TacBusObj #TacID
+# from business.tac import TacBusObj #TacID
 from services.db_config import db_dialect,generate_uuid
 # from managers import TacManager as TacIDManager #TacID
 from managers import OrganizationManager
 from models import Organization
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
+
+from business.org_customer import OrgCustomerBusObj
+
+from business.org_api_key import OrgApiKeyBusObj
 
 class OrganizationSessionNotFoundError(Exception):
     pass
@@ -22,7 +29,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class OrganizationBusObj:
+class OrganizationBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise OrganizationSessionNotFoundError("session required")
@@ -63,6 +70,9 @@ class OrganizationBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.organization.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -72,6 +82,9 @@ class OrganizationBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.organization.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #Name
     @property
@@ -81,6 +94,9 @@ class OrganizationBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.organization.name = value
+    def set_prop_name(self, value):
+        self.name = value
+        return self
     #TacID
 
     #name,
@@ -92,6 +108,9 @@ class OrganizationBusObj:
     def tac_id(self, value):
         assert isinstance(value, int) or value is None, "tac_id must be an integer or None"
         self.organization.tac_id = value
+    def set_prop_tac_id(self, value):
+        self.tac_id = value
+        return self
     @property
     def tac_code_peek(self):
         return self.organization.tac_code_peek
@@ -170,10 +189,10 @@ class OrganizationBusObj:
 
     #name,
     #TacID
-    async def get_tac_id_rel_bus_obj(self) -> TacBusObj:
-        tac_bus_obj = TacBusObj(self.session)
-        await tac_bus_obj.load(tac_id=self.organization.tac_id)
-        return tac_bus_obj
+    async def get_tac_id_rel_obj(self) -> models.Tac:
+        tac_manager = managers_and_enums.TacManager(self.session)
+        tac_obj = await tac_manager.get_by_id(self.tac_id)
+        return tac_obj
 
     def get_obj(self) -> Organization:
         return self.organization
@@ -183,6 +202,44 @@ class OrganizationBusObj:
         return self.organization_id
     #name,
     #TacID
-    async def get_parent_obj(self) -> TacBusObj:
-        return await self.get_tac_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> TacBusObj:
+    #     return await self.get_tac_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Tac'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.tac_code_peek
+
+    async def build_org_customer(self) -> OrgCustomerBusObj:
+        item = OrgCustomerBusObj(self.session)
+
+        item.organization_id = self.organization_id
+        item.organization_code_peek = self.code
+
+        return item
+
+    async def get_all_org_customer(self) -> List[OrgCustomerBusObj]:
+        results = list()
+        org_customer_manager = managers_and_enums.OrgCustomerManager(self.session)
+        obj_list = org_customer_manager.get_by_organization_id(self.organization_id)
+        for obj_item in obj_list:
+            bus_obj_item = await OrgCustomerBusObj(self.session).load(org_customer_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+
+    async def build_org_api_key(self) -> OrgApiKeyBusObj:
+        item = OrgApiKeyBusObj(self.session)
+
+        item.organization_id = self.organization_id
+        item.organization_code_peek = self.code
+
+        return item
+
+    async def get_all_org_api_key(self) -> List[OrgApiKeyBusObj]:
+        results = list()
+        org_api_key_manager = managers_and_enums.OrgApiKeyManager(self.session)
+        obj_list = org_api_key_manager.get_by_organization_id(self.organization_id)
+        for obj_item in obj_list:
+            bus_obj_item = await OrgApiKeyBusObj(self.session).load(org_api_key_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
 

@@ -1,15 +1,18 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.pac import PacBusObj #PacID
+# from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 # from managers import PacManager as PacIDManager #PacID
 from managers import FlavorManager
 from models import Flavor
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
 
 class FlavorSessionNotFoundError(Exception):
     pass
@@ -22,7 +25,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class FlavorBusObj:
+class FlavorBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise FlavorSessionNotFoundError("session required")
@@ -63,6 +66,9 @@ class FlavorBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.flavor.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -72,6 +78,9 @@ class FlavorBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.flavor.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #Description
     @property
@@ -81,6 +90,9 @@ class FlavorBusObj:
     def description(self, value):
         assert isinstance(value, str), "description must be a string"
         self.flavor.description = value
+    def set_prop_description(self, value):
+        self.description = value
+        return self
     #DisplayOrder
     @property
     def display_order(self):
@@ -89,6 +101,9 @@ class FlavorBusObj:
     def display_order(self, value):
         assert isinstance(value, int), "display_order must be an integer"
         self.flavor.display_order = value
+    def set_prop_display_order(self, value):
+        self.display_order = value
+        return self
     #IsActive
     @property
     def is_active(self):
@@ -98,6 +113,9 @@ class FlavorBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.flavor.is_active = value
+    def set_prop_is_active(self, value: bool):
+        self.is_active = value
+        return self
     #LookupEnumName
     @property
     def lookup_enum_name(self):
@@ -106,6 +124,9 @@ class FlavorBusObj:
     def lookup_enum_name(self, value):
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.flavor.lookup_enum_name = value
+    def set_prop_lookup_enum_name(self, value):
+        self.lookup_enum_name = value
+        return self
     #Name
     @property
     def name(self):
@@ -114,6 +135,9 @@ class FlavorBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.flavor.name = value
+    def set_prop_name(self, value):
+        self.name = value
+        return self
     #PacID
 
     #description,
@@ -129,6 +153,9 @@ class FlavorBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.flavor.pac_id = value
+    def set_prop_pac_id(self, value):
+        self.pac_id = value
+        return self
     @property
     def pac_code_peek(self):
         return self.flavor.pac_code_peek
@@ -218,10 +245,10 @@ class FlavorBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_pac_id_rel_bus_obj(self) -> PacBusObj:
-        pac_bus_obj = PacBusObj(self.session)
-        await pac_bus_obj.load(pac_id=self.flavor.pac_id)
-        return pac_bus_obj
+    async def get_pac_id_rel_obj(self) -> models.Pac:
+        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        return pac_obj
 
     def get_obj(self) -> Flavor:
         return self.flavor
@@ -235,6 +262,10 @@ class FlavorBusObj:
     #lookupEnumName,
     #name,
     #PacID
-    async def get_parent_obj(self) -> PacBusObj:
-        return await self.get_pac_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> PacBusObj:
+    #     return await self.get_pac_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Pac'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.pac_code_peek
 

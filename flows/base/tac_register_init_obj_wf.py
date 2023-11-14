@@ -11,6 +11,7 @@ from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.tac_register_init_obj_wf as FlowConstants
 import models as farm_models
+from business.factory import BusObjFactory
 class BaseFlowTacRegisterInitObjWF(BaseFlow):
     def __init__(self, session_context:SessionContext):
         super(BaseFlowTacRegisterInitObjWF, self).__init__(
@@ -47,4 +48,5 @@ class BaseFlowTacRegisterInitObjWF(BaseFlow):
                     val = False
 
                 if val == True:
-                    item = await item.get_parent_obj()
+                    # item = await item.get_parent_obj()
+                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

@@ -1,17 +1,20 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from business.customer import CustomerBusObj #CustomerID
-from business.organization import OrganizationBusObj #OrganizationID
+# from business.organization import OrganizationBusObj #OrganizationID
 from services.db_config import db_dialect,generate_uuid
 # from managers import CustomerManager as CustomerIDManager #CustomerID
 # from managers import OrganizationManager as OrganizationIDManager #OrganizationID
 from managers import OrgCustomerManager
 from models import OrgCustomer
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
 
 class OrgCustomerSessionNotFoundError(Exception):
     pass
@@ -24,7 +27,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class OrgCustomerBusObj:
+class OrgCustomerBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise OrgCustomerSessionNotFoundError("session required")
@@ -65,6 +68,9 @@ class OrgCustomerBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.org_customer.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -74,6 +80,9 @@ class OrgCustomerBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.org_customer.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #CustomerID
     #Email
@@ -84,6 +93,9 @@ class OrgCustomerBusObj:
     def email(self, value):
         assert isinstance(value, str), "email must be a string"
         self.org_customer.email = value
+    def set_prop_email(self, value):
+        self.email = value
+        return self
     #OrganizationID
 
     #CustomerID
@@ -95,6 +107,9 @@ class OrgCustomerBusObj:
         if not isinstance(value, int):
             raise ValueError("customer_id must be an integer.")
         self.org_customer.customer_id = value
+    def set_prop_customer_id(self, value):
+        self.customer_id = value
+        return self
     @property
     def customer_code_peek(self):
         return self.org_customer.customer_code_peek
@@ -111,6 +126,9 @@ class OrgCustomerBusObj:
     def organization_id(self, value):
         assert isinstance(value, int) or value is None, "organization_id must be an integer or None"
         self.org_customer.organization_id = value
+    def set_prop_organization_id(self, value):
+        self.organization_id = value
+        return self
     @property
     def organization_code_peek(self):
         return self.org_customer.organization_code_peek
@@ -188,16 +206,16 @@ class OrgCustomerBusObj:
         return org_customer_manager.is_equal(org_customer, my_org_customer)
 
     #CustomerID
-    async def get_customer_id_rel_bus_obj(self) -> CustomerBusObj:
-        customer_bus_obj = CustomerBusObj(self.session)
-        await customer_bus_obj.load(customer_id=self.org_customer.customer_id)
-        return customer_bus_obj
+    async def get_customer_id_rel_obj(self) -> models.Customer:
+        customer_manager = managers_and_enums.CustomerManager(self.session)
+        customer_obj = await customer_manager.get_by_id(self.customer_id)
+        return customer_obj
     #email,
     #OrganizationID
-    async def get_organization_id_rel_bus_obj(self) -> OrganizationBusObj:
-        organization_bus_obj = OrganizationBusObj(self.session)
-        await organization_bus_obj.load(organization_id=self.org_customer.organization_id)
-        return organization_bus_obj
+    async def get_organization_id_rel_obj(self) -> models.Organization:
+        organization_manager = managers_and_enums.OrganizationManager(self.session)
+        organization_obj = await organization_manager.get_by_id(self.organization_id)
+        return organization_obj
 
     def get_obj(self) -> OrgCustomer:
         return self.org_customer
@@ -208,6 +226,10 @@ class OrgCustomerBusObj:
     #CustomerID
     #email,
     #OrganizationID
-    async def get_parent_obj(self) -> OrganizationBusObj:
-        return await self.get_organization_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> OrganizationBusObj:
+    #     return await self.get_organization_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Organization'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.organization_code_peek
 

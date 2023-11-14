@@ -1,6 +1,7 @@
 ##GENIF[calculatedIsParentObjectAvailable=false]Start
 //GENDELETETHISFILE
 ##GENIF[calculatedIsParentObjectAvailable=false]End
+//GENDELETETHISFILE
     async def build_GENVALSnakeName(self) -> GENVALPascalNameBusObj:
         item = GENVALPascalNameBusObj(self.session)
 

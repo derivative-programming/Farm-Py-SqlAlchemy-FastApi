@@ -11,6 +11,7 @@ from datetime import date, datetime
 from helpers import TypeConversion
 import flows.constants.pac_user_date_greater_than_filter_list_init_report as FlowConstants
 import models as farm_models
+from business.factory import BusObjFactory
 class BaseFlowPacUserDateGreaterThanFilterListInitReport(BaseFlow):
     def __init__(self, session_context:SessionContext):
         super(BaseFlowPacUserDateGreaterThanFilterListInitReport, self).__init__(
@@ -47,4 +48,5 @@ class BaseFlowPacUserDateGreaterThanFilterListInitReport(BaseFlow):
                     val = False
 
                 if val == True:
-                    item = await item.get_parent_obj()
+                    # item = await item.get_parent_obj()
+                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

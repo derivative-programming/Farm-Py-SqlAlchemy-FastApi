@@ -1,15 +1,18 @@
 import uuid
+from typing import List
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from business.pac import PacBusObj #PacID
+# from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 # from managers import PacManager as PacIDManager #PacID
 from managers import ErrorLogManager
 from models import ErrorLog
+import models
 import managers as managers_and_enums
+from .base_bus_obj import BaseBusObj
 
 class ErrorLogSessionNotFoundError(Exception):
     pass
@@ -22,7 +25,7 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class ErrorLogBusObj:
+class ErrorLogBusObj(BaseBusObj):
     def __init__(self, session:AsyncSession=None):
         if not session:
             raise ErrorLogSessionNotFoundError("session required")
@@ -63,6 +66,9 @@ class ErrorLogBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.error_log.insert_user_id = value
+    def set_prop_insert_user_id(self, value: uuid.UUID):
+        self.insert_user_id = value
+        return self
     #last_update_user_id
     @property
     def last_update_user_id(self):
@@ -72,6 +78,9 @@ class ErrorLogBusObj:
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.error_log.last_update_user_id = value
+    def set_prop_last_update_user_id(self, value: uuid.UUID):
+        self.last_update_user_id = value
+        return self
 
     #BrowserCode
     @property
@@ -81,6 +90,9 @@ class ErrorLogBusObj:
     def browser_code(self, value):
         assert isinstance(value, UUIDType), "browser_code must be a UUID"
         self.error_log.browser_code = value
+    def set_prop_browser_code(self, value):
+        self.browser_code = value
+        return self
     #ContextCode
     @property
     def context_code(self):
@@ -89,6 +101,9 @@ class ErrorLogBusObj:
     def context_code(self, value):
         assert isinstance(value, UUIDType), "context_code must be a UUID"
         self.error_log.context_code = value
+    def set_prop_context_code(self, value):
+        self.context_code = value
+        return self
     #CreatedUTCDateTime
     @property
     def created_utc_date_time(self):
@@ -97,6 +112,9 @@ class ErrorLogBusObj:
     def created_utc_date_time(self, value):
         assert isinstance(value, datetime), "created_utc_date_time must be a datetime object"
         self.error_log.created_utc_date_time = value
+    def set_prop_created_utc_date_time(self, value):
+        self.created_utc_date_time = value
+        return self
     #Description
     @property
     def description(self):
@@ -105,6 +123,9 @@ class ErrorLogBusObj:
     def description(self, value):
         assert isinstance(value, str), "description must be a string"
         self.error_log.description = value
+    def set_prop_description(self, value):
+        self.description = value
+        return self
     #IsClientSideError
     @property
     def is_client_side_error(self):
@@ -114,6 +135,9 @@ class ErrorLogBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_client_side_error must be a boolean.")
         self.error_log.is_client_side_error = value
+    def set_prop_is_client_side_error(self, value: bool):
+        self.is_client_side_error = value
+        return self
     #IsResolved
     @property
     def is_resolved(self):
@@ -123,6 +147,9 @@ class ErrorLogBusObj:
         if not isinstance(value, bool):
             raise ValueError("is_resolved must be a boolean.")
         self.error_log.is_resolved = value
+    def set_prop_is_resolved(self, value: bool):
+        self.is_resolved = value
+        return self
     #PacID
     #Url
     @property
@@ -132,6 +159,9 @@ class ErrorLogBusObj:
     def url(self, value):
         assert isinstance(value, str), "url must be a string"
         self.error_log.url = value
+    def set_prop_url(self, value):
+        self.url = value
+        return self
 
     #browserCode,
     #contextCode,
@@ -147,6 +177,9 @@ class ErrorLogBusObj:
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
         self.error_log.pac_id = value
+    def set_prop_pac_id(self, value):
+        self.pac_id = value
+        return self
     @property
     def pac_code_peek(self):
         return self.error_log.pac_code_peek
@@ -231,10 +264,10 @@ class ErrorLogBusObj:
     #isClientSideError,
     #isResolved,
     #PacID
-    async def get_pac_id_rel_bus_obj(self) -> PacBusObj:
-        pac_bus_obj = PacBusObj(self.session)
-        await pac_bus_obj.load(pac_id=self.error_log.pac_id)
-        return pac_bus_obj
+    async def get_pac_id_rel_obj(self) -> models.Pac:
+        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        return pac_obj
     #url,
 
     def get_obj(self) -> ErrorLog:
@@ -250,7 +283,11 @@ class ErrorLogBusObj:
     #isClientSideError,
     #isResolved,
     #PacID
-    async def get_parent_obj(self) -> PacBusObj:
-        return await self.get_pac_id_rel_bus_obj()
+    # async def get_parent_obj(self) -> PacBusObj:
+    #     return await self.get_pac_id_rel_bus_obj()
+    async def get_parent_name(self) -> str:
+        return 'Pac'
+    async def get_parent_code(self) -> uuid.UUID:
+        return self.pac_code_peek
     #url,
 
