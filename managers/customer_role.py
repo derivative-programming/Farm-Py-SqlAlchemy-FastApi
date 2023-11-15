@@ -1,5 +1,7 @@
 import json
+import random
 import uuid
+from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
@@ -9,6 +11,7 @@ from models.customer import Customer # CustomerID
 from models.role import Role # RoleID
 from models.customer_role import CustomerRole
 from models.serialization_schema.customer_role import CustomerRoleSchema
+from services.db_config import generate_uuid
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)

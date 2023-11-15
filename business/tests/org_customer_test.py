@@ -81,7 +81,8 @@ class TestOrgCustomerBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_org_customer(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
         # Test retrieving a nonexistent org_customer raises an exception
-        assert await org_customer_bus_obj.load(org_customer_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await org_customer_bus_obj.load(org_customer_id=-1)
+        assert org_customer_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_org_customer(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
         # Test updating a org_customer's data

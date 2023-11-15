@@ -1,8 +1,9 @@
 import json
 from business.customer import CustomerBusObj
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import uuid
 from flows.base.customer_build_temp_api_key import BaseFlowCustomerBuildTempApiKey
+from managers.org_customer import OrgCustomerManager
 from models import Customer
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -16,6 +17,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
+from services import encryption
 class FlowCustomerBuildTempApiKeyResult():
     context_object_code:uuid.UUID =  uuid.UUID(int=0)
     tmp_org_api_key_code:uuid.UUID =  uuid.UUID(int=0)
@@ -45,6 +47,20 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
         super()._throw_queued_validation_errors()
         tmp_org_api_key_code_output:uuid = uuid.UUID(int=0)
         # TODO: add flow logic
+
+        expiration_utc_date_time = datetime.utcnow + timedelta(days=1)
+
+        if customer_bus_obj.active_organization_id == 0:
+            raise ValueError("Active organization not set")
+        
+        org_customer_manager = OrgCustomerManager(customer_bus_obj.session)
+        org_customer_list = await org_customer_manager.get_by_customer_id(customer_id=customer_bus_obj.customer_id)
+        org_customer_list_active_org = []
+        for org_customer in org_customer_list:
+            if org_customer.organization_id == customer_bus_obj.active_organization_id:
+                org_customer_list_active_org.append(org_customer)
+
+        
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowCustomerBuildTempApiKeyResult()

@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -211,10 +212,31 @@ class RoleBusObj(BaseBusObj):
         if role_enum and self.role.role_id is None:
             role_manager = RoleManager(self.session)
             self.role = await role_manager.from_enum(role_enum)
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   role_id:int=None,
+                   role_obj_instance:Role=None,
+                   role_dict:dict=None,
+                   role_enum:managers_and_enums.RoleEnum=None):
+        result = Role(session=session)
+        await result.load(
+            json_data,
+            code,
+            role_id,
+            role_obj_instance,
+            role_dict,
+            role_enum
+        )
+        return result
 
     async def refresh(self):
         role_manager = RoleManager(self.session)
         self.role = await role_manager.refresh(self.role)
+        return self
+    def is_valid(self):
+        return (self.role is not None)
     def to_dict(self):
         role_manager = RoleManager(self.session)
         return role_manager.to_dict(self.role)
@@ -228,10 +250,20 @@ class RoleBusObj(BaseBusObj):
         if self.role.role_id is None or self.role.role_id == 0:
             role_manager = RoleManager(self.session)
             self.role = await role_manager.add(self.role)
+        return self
     async def delete(self):
         if self.role.role_id > 0:
             role_manager = RoleManager(self.session)
-            self.role = await role_manager.delete(self.role.role_id)
+            await role_manager.delete(self.role.role_id)
+            self.role = None
+    async def randomize_properties(self):
+        self.role.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.role.display_order = random.randint(0, 100)
+        self.role.is_active = random.choice([True, False])
+        self.role.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.role.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        # self.role.pac_id = random.randint(0, 100)
+        return self
     def get_role_obj(self) -> Role:
         return self.role
     def is_equal(self,role:Role) -> Role:

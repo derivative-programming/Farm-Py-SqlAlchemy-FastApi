@@ -85,7 +85,8 @@ class TestTriStateFilterBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_tri_state_filter(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         # Test retrieving a nonexistent tri_state_filter raises an exception
-        assert await tri_state_filter_bus_obj.load(tri_state_filter_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await tri_state_filter_bus_obj.load(tri_state_filter_id=-1)
+        assert tri_state_filter_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_tri_state_filter(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         # Test updating a tri_state_filter's data

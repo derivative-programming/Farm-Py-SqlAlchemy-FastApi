@@ -82,7 +82,8 @@ class TestCustomerRoleBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_customer_role(self, customer_role_manager:CustomerRoleManager, customer_role_bus_obj:CustomerRoleBusObj, new_customer_role:CustomerRole):
         # Test retrieving a nonexistent customer_role raises an exception
-        assert await customer_role_bus_obj.load(customer_role_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await customer_role_bus_obj.load(customer_role_id=-1)
+        assert customer_role_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_customer_role(self, customer_role_manager:CustomerRoleManager, customer_role_bus_obj:CustomerRoleBusObj, new_customer_role:CustomerRole):
         # Test updating a customer_role's data

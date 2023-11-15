@@ -1,5 +1,7 @@
 import json
+import random
 import uuid
+from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
@@ -8,6 +10,7 @@ from sqlalchemy.future import select#, join, outerjoin, and_
 from models.tac import Tac # TacID
 from models.customer import Customer
 from models.serialization_schema.customer import CustomerSchema
+from services.db_config import generate_uuid
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -230,3 +233,13 @@ class CustomerManager:
         query_results = await self._run_query(query_filter)
         return query_results
 
+    async def get_by_email_prop(self, email) -> List[Customer]:
+        logging.info("CustomerManager.get_by_email_prop")
+        query_filter = Customer.email == email
+        query_results = await self._run_query(query_filter)
+        return query_results
+    async def get_by_fs_user_code_value_prop(self, fs_user_code_value) -> List[Customer]:
+        logging.info("CustomerManager.get_by_fs_user_code_value_prop")
+        query_filter = Customer.fs_user_code_value == fs_user_code_value
+        query_results = await self._run_query(query_filter)
+        return query_results

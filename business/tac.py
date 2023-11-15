@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -215,10 +216,31 @@ class TacBusObj(BaseBusObj):
         if tac_enum and self.tac.tac_id is None:
             tac_manager = TacManager(self.session)
             self.tac = await tac_manager.from_enum(tac_enum)
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   tac_id:int=None,
+                   tac_obj_instance:Tac=None,
+                   tac_dict:dict=None,
+                   tac_enum:managers_and_enums.TacEnum=None):
+        result = Tac(session=session)
+        await result.load(
+            json_data,
+            code,
+            tac_id,
+            tac_obj_instance,
+            tac_dict,
+            tac_enum
+        )
+        return result
 
     async def refresh(self):
         tac_manager = TacManager(self.session)
         self.tac = await tac_manager.refresh(self.tac)
+        return self
+    def is_valid(self):
+        return (self.tac is not None)
     def to_dict(self):
         tac_manager = TacManager(self.session)
         return tac_manager.to_dict(self.tac)
@@ -232,10 +254,20 @@ class TacBusObj(BaseBusObj):
         if self.tac.tac_id is None or self.tac.tac_id == 0:
             tac_manager = TacManager(self.session)
             self.tac = await tac_manager.add(self.tac)
+        return self
     async def delete(self):
         if self.tac.tac_id > 0:
             tac_manager = TacManager(self.session)
-            self.tac = await tac_manager.delete(self.tac.tac_id)
+            await tac_manager.delete(self.tac.tac_id)
+            self.tac = None
+    async def randomize_properties(self):
+        self.tac.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.tac.display_order = random.randint(0, 100)
+        self.tac.is_active = random.choice([True, False])
+        self.tac.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.tac.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        # self.tac.pac_id = random.randint(0, 100)
+        return self
     def get_tac_obj(self) -> Tac:
         return self.tac
     def is_equal(self,tac:Tac) -> Tac:
@@ -303,6 +335,24 @@ class TacBusObj(BaseBusObj):
         results = list()
         customer_manager = managers_and_enums.CustomerManager(self.session)
         obj_list = await customer_manager.get_by_tac_id(self.tac_id)
+        for obj_item in obj_list:
+            bus_obj_item = CustomerBusObj(self.session)
+            await bus_obj_item.load(customer_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+    async def get_customer_by_email_prop(self, email) -> List[CustomerBusObj]:
+        results = list()
+        customer_manager = managers_and_enums.CustomerManager(self.session)
+        obj_list = await customer_manager.get_by_email_prop(email)
+        for obj_item in obj_list:
+            bus_obj_item = CustomerBusObj(self.session)
+            await bus_obj_item.load(customer_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results
+    async def get_customer_by_fs_user_code_value_prop(self, fs_user_code_value) -> List[CustomerBusObj]:
+        results = list()
+        customer_manager = managers_and_enums.CustomerManager(self.session)
+        obj_list = await customer_manager.get_by_fs_user_code_value_prop(fs_user_code_value)
         for obj_item in obj_list:
             bus_obj_item = CustomerBusObj(self.session)
             await bus_obj_item.load(customer_obj_instance=obj_item)

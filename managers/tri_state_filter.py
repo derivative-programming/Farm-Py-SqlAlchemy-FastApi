@@ -1,5 +1,7 @@
 import json
+import random
 import uuid
+from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
@@ -8,6 +10,7 @@ from sqlalchemy.future import select#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.tri_state_filter import TriStateFilter
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
+from services.db_config import generate_uuid
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)

@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -159,10 +160,30 @@ class OrganizationBusObj(BaseBusObj):
         if organization_dict and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self.session)
             self.organization = organization_manager.from_dict(organization_dict)
+        return self
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   organization_id:int=None,
+                   organization_obj_instance:Organization=None,
+                   organization_dict:dict=None):
+        result = OrganizationBusObj(session=session)
+        await result.load(
+            json_data,
+            code,
+            organization_id,
+            organization_obj_instance,
+            organization_dict
+        )
+        return result
 
     async def refresh(self):
         organization_manager = OrganizationManager(self.session)
         self.organization = await organization_manager.refresh(self.organization)
+        return self
+    def is_valid(self):
+        return (self.organization is not None)
     def to_dict(self):
         organization_manager = OrganizationManager(self.session)
         return organization_manager.to_dict(self.organization)
@@ -176,10 +197,16 @@ class OrganizationBusObj(BaseBusObj):
         if self.organization.organization_id is None or self.organization.organization_id == 0:
             organization_manager = OrganizationManager(self.session)
             self.organization = await organization_manager.add(self.organization)
+        return self
     async def delete(self):
         if self.organization.organization_id > 0:
             organization_manager = OrganizationManager(self.session)
-            self.organization = await organization_manager.delete(self.organization.organization_id)
+            await organization_manager.delete(self.organization.organization_id)
+            self.organization = None
+    async def randomize_properties(self):
+        self.organization.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        # self.organization.tac_id = random.randint(0, 100)
+        return self
     def get_organization_obj(self) -> Organization:
         return self.organization
     def is_equal(self,organization:Organization) -> Organization:

@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -213,10 +214,31 @@ class LandBusObj(BaseBusObj):
         if land_enum and self.land.land_id is None:
             land_manager = LandManager(self.session)
             self.land = await land_manager.from_enum(land_enum)
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   land_id:int=None,
+                   land_obj_instance:Land=None,
+                   land_dict:dict=None,
+                   land_enum:managers_and_enums.LandEnum=None):
+        result = Land(session=session)
+        await result.load(
+            json_data,
+            code,
+            land_id,
+            land_obj_instance,
+            land_dict,
+            land_enum
+        )
+        return result
 
     async def refresh(self):
         land_manager = LandManager(self.session)
         self.land = await land_manager.refresh(self.land)
+        return self
+    def is_valid(self):
+        return (self.land is not None)
     def to_dict(self):
         land_manager = LandManager(self.session)
         return land_manager.to_dict(self.land)
@@ -230,10 +252,20 @@ class LandBusObj(BaseBusObj):
         if self.land.land_id is None or self.land.land_id == 0:
             land_manager = LandManager(self.session)
             self.land = await land_manager.add(self.land)
+        return self
     async def delete(self):
         if self.land.land_id > 0:
             land_manager = LandManager(self.session)
-            self.land = await land_manager.delete(self.land.land_id)
+            await land_manager.delete(self.land.land_id)
+            self.land = None
+    async def randomize_properties(self):
+        self.land.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.land.display_order = random.randint(0, 100)
+        self.land.is_active = random.choice([True, False])
+        self.land.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.land.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        # self.land.pac_id = random.randint(0, 100)
+        return self
     def get_land_obj(self) -> Land:
         return self.land
     def is_equal(self,land:Land) -> Land:

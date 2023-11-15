@@ -3,6 +3,8 @@ from business.tac import TacBusObj
 from datetime import date, datetime
 import uuid
 from flows.base.tac_login import BaseFlowTacLogin
+from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey
+from managers.customer import CustomerManager
 from models import Tac
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -16,6 +18,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
+import business
 class FlowTacLoginResult():
     context_object_code:uuid.UUID =  uuid.UUID(int=0)
     customer_code:uuid.UUID =  uuid.UUID(int=0)
@@ -54,14 +57,58 @@ class FlowTacLogin(BaseFlowTacLogin):
             email,
             password,
         )
-        super()._throw_queued_validation_errors()
-        customer_code_output:uuid = uuid.UUID(int=0)
-        email_output:str = ""
-        user_code_value_output:uuid = uuid.UUID(int=0)
+        
+        similar_email_list = None
+
+        if len(email) > 0:
+            similar_email_list = await tac_bus_obj.get_customer_by_email_prop(email)
+            if len(similar_email_list) > 0:
+                self._add_field_validation_error("email","This email is already registered")
+            
+        if similar_email_list is None or len(similar_email_list) == 0:
+            self._add_field_validation_error("","Invalid email or password")
+
+        customer_bus_obj = similar_email_list[0]
+
+        if customer_bus_obj.password != password:
+            self._add_field_validation_error("","Invalid email or password")
+            
+        if customer_bus_obj.is_active == False:
+            self._add_field_validation_error("","Invalid user")
+            
+        if customer_bus_obj.is_locked == True:
+            self._add_field_validation_error("","This user account has been locked.")
+
+        super()._throw_queued_validation_errors() 
+        email_output:str = "" 
         utc_offset_in_minutes_output:int = 0
         role_name_csv_list_output:str = ""
-        api_key_output:str = ""
-        # TODO: add flow logic
+        api_key_output:str = "" 
+
+        customer_bus_obj.last_login_utc_date_time = datetime.utcnow
+        await customer_bus_obj.save()
+
+        customer_code_output = customer_bus_obj.code
+        email_output = customer_bus_obj.email
+        user_code_value_output = customer_bus_obj.code
+        
+        customer_role_list = await customer_bus_obj.get_all_customer_role()
+         
+        for customer_role in customer_role_list:
+            role = await customer_role.get_role_id_rel_obj()
+            role_name_csv_list_output = role_name_csv_list_output + ',' + role.name
+
+            
+        api_key_flow = FlowCustomerBuildTempApiKey(self._session_context)
+        api_key_flow_result = await api_key_flow.process(
+            customer_bus_obj
+        )
+
+        api_key = await business.OrgApiKeyBusObj.get(
+            customer_bus_obj.session,
+            code=api_key_flow_result.tmp_org_api_key_code)
+        
+        api_key_output = api_key.api_key_value
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacLoginResult()

@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -177,10 +178,30 @@ class OrgCustomerBusObj(BaseBusObj):
         if org_customer_dict and self.org_customer.org_customer_id is None:
             org_customer_manager = OrgCustomerManager(self.session)
             self.org_customer = org_customer_manager.from_dict(org_customer_dict)
+        return self
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   org_customer_id:int=None,
+                   org_customer_obj_instance:OrgCustomer=None,
+                   org_customer_dict:dict=None):
+        result = OrgCustomerBusObj(session=session)
+        await result.load(
+            json_data,
+            code,
+            org_customer_id,
+            org_customer_obj_instance,
+            org_customer_dict
+        )
+        return result
 
     async def refresh(self):
         org_customer_manager = OrgCustomerManager(self.session)
         self.org_customer = await org_customer_manager.refresh(self.org_customer)
+        return self
+    def is_valid(self):
+        return (self.org_customer is not None)
     def to_dict(self):
         org_customer_manager = OrgCustomerManager(self.session)
         return org_customer_manager.to_dict(self.org_customer)
@@ -194,10 +215,17 @@ class OrgCustomerBusObj(BaseBusObj):
         if self.org_customer.org_customer_id is None or self.org_customer.org_customer_id == 0:
             org_customer_manager = OrgCustomerManager(self.session)
             self.org_customer = await org_customer_manager.add(self.org_customer)
+        return self
     async def delete(self):
         if self.org_customer.org_customer_id > 0:
             org_customer_manager = OrgCustomerManager(self.session)
-            self.org_customer = await org_customer_manager.delete(self.org_customer.org_customer_id)
+            await org_customer_manager.delete(self.org_customer.org_customer_id)
+            self.org_customer = None
+    async def randomize_properties(self):
+        self.org_customer.customer_id =  random.choice(await managers_and_enums.CustomerManager(self.session).get_list()).customer_id
+        self.org_customer.email = f"user{random.randint(1, 1000)}@example.com"
+        # self.org_customer.organization_id = random.randint(0, 100)
+        return self
     def get_org_customer_obj(self) -> OrgCustomer:
         return self.org_customer
     def is_equal(self,org_customer:OrgCustomer) -> OrgCustomer:

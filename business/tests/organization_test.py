@@ -80,7 +80,8 @@ class TestOrganizationBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_organization(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         # Test retrieving a nonexistent organization raises an exception
-        assert await organization_bus_obj.load(organization_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await organization_bus_obj.load(organization_id=-1)
+        assert organization_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_organization(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         # Test updating a organization's data

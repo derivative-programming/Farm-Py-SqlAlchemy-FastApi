@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -223,10 +224,31 @@ class TriStateFilterBusObj(BaseBusObj):
         if tri_state_filter_enum and self.tri_state_filter.tri_state_filter_id is None:
             tri_state_filter_manager = TriStateFilterManager(self.session)
             self.tri_state_filter = await tri_state_filter_manager.from_enum(tri_state_filter_enum)
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   tri_state_filter_id:int=None,
+                   tri_state_filter_obj_instance:TriStateFilter=None,
+                   tri_state_filter_dict:dict=None,
+                   tri_state_filter_enum:managers_and_enums.TriStateFilterEnum=None):
+        result = TriStateFilter(session=session)
+        await result.load(
+            json_data,
+            code,
+            tri_state_filter_id,
+            tri_state_filter_obj_instance,
+            tri_state_filter_dict,
+            tri_state_filter_enum
+        )
+        return result
 
     async def refresh(self):
         tri_state_filter_manager = TriStateFilterManager(self.session)
         self.tri_state_filter = await tri_state_filter_manager.refresh(self.tri_state_filter)
+        return self
+    def is_valid(self):
+        return (self.tri_state_filter is not None)
     def to_dict(self):
         tri_state_filter_manager = TriStateFilterManager(self.session)
         return tri_state_filter_manager.to_dict(self.tri_state_filter)
@@ -240,10 +262,21 @@ class TriStateFilterBusObj(BaseBusObj):
         if self.tri_state_filter.tri_state_filter_id is None or self.tri_state_filter.tri_state_filter_id == 0:
             tri_state_filter_manager = TriStateFilterManager(self.session)
             self.tri_state_filter = await tri_state_filter_manager.add(self.tri_state_filter)
+        return self
     async def delete(self):
         if self.tri_state_filter.tri_state_filter_id > 0:
             tri_state_filter_manager = TriStateFilterManager(self.session)
-            self.tri_state_filter = await tri_state_filter_manager.delete(self.tri_state_filter.tri_state_filter_id)
+            await tri_state_filter_manager.delete(self.tri_state_filter.tri_state_filter_id)
+            self.tri_state_filter = None
+    async def randomize_properties(self):
+        self.tri_state_filter.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.tri_state_filter.display_order = random.randint(0, 100)
+        self.tri_state_filter.is_active = random.choice([True, False])
+        self.tri_state_filter.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.tri_state_filter.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        # self.tri_state_filter.pac_id = random.randint(0, 100)
+        self.tri_state_filter.state_int_value = random.randint(0, 100)
+        return self
     def get_tri_state_filter_obj(self) -> TriStateFilter:
         return self.tri_state_filter
     def is_equal(self,tri_state_filter:TriStateFilter) -> TriStateFilter:

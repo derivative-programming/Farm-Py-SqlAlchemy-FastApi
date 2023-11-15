@@ -87,7 +87,8 @@ class TestOrgApiKeyBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_org_api_key(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         # Test retrieving a nonexistent org_api_key raises an exception
-        assert await org_api_key_bus_obj.load(org_api_key_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await org_api_key_bus_obj.load(org_api_key_id=-1)
+        assert org_api_key_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_org_api_key(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         # Test updating a org_api_key's data

@@ -98,7 +98,8 @@ class TestErrorLogBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_error_log(self, error_log_manager:ErrorLogManager, error_log_bus_obj:ErrorLogBusObj, new_error_log:ErrorLog):
         # Test retrieving a nonexistent error_log raises an exception
-        assert await error_log_bus_obj.load(error_log_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await error_log_bus_obj.load(error_log_id=-1)
+        assert error_log_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_error_log(self, error_log_manager:ErrorLogManager, error_log_bus_obj:ErrorLogBusObj, new_error_log:ErrorLog):
         # Test updating a error_log's data

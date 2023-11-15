@@ -84,7 +84,8 @@ class TestTacBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_tac(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
         # Test retrieving a nonexistent tac raises an exception
-        assert await tac_bus_obj.load(tac_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await tac_bus_obj.load(tac_id=-1)
+        assert tac_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_tac(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
         # Test updating a tac's data

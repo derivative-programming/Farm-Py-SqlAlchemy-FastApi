@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date 
@@ -445,6 +446,7 @@ class PlantBusObj(BaseBusObj):
 
 ##GENTrainingBlock[caseLookupEnums]Start
 ##GENLearn[isLookup=false]Start  
+
     async def load(self, json_data:str=None, 
                    code:uuid.UUID=None, 
                    plant_id:int=None, 
@@ -473,12 +475,38 @@ class PlantBusObj(BaseBusObj):
         if plant_dict and self.plant.plant_id is None: 
             plant_manager = PlantManager(self.session)
             self.plant = plant_manager.from_dict(plant_dict)  
+
+        return self
+            
+    @staticmethod
+    async def get(session:AsyncSession, 
+                    json_data:str=None, 
+                   code:uuid.UUID=None, 
+                   plant_id:int=None, 
+                   plant_obj_instance:Plant=None, 
+                   plant_dict:dict=None):
+        result = PlantBusObj(session=session)
+
+        await result.load(
+            json_data,
+            code,
+            plant_id,
+            plant_obj_instance,
+            plant_dict
+        )
+        
+        return result
 ##GENLearn[isLookup=false]End
 ##GENTrainingBlock[caseLookupEnums]End 
     
     async def refresh(self):
         plant_manager = PlantManager(self.session)
         self.plant = await plant_manager.refresh(self.plant)
+
+        return self
+    
+    def is_valid(self):
+        return (self.plant is not None)
     
     def to_dict(self):
         plant_manager = PlantManager(self.session)
@@ -488,6 +516,7 @@ class PlantBusObj(BaseBusObj):
         plant_manager = PlantManager(self.session)
         return plant_manager.to_json(self.plant)
     
+    
     async def save(self):
         if self.plant.plant_id is not None and self.plant.plant_id > 0:
             plant_manager = PlantManager(self.session)
@@ -495,6 +524,8 @@ class PlantBusObj(BaseBusObj):
         if self.plant.plant_id is None or self.plant.plant_id == 0:
             plant_manager = PlantManager(self.session)
             self.plant = await plant_manager.add(self.plant)
+
+        return self
  
     
     async def delete(self):
@@ -502,6 +533,30 @@ class PlantBusObj(BaseBusObj):
             plant_manager = PlantManager(self.session)
             await plant_manager.delete(self.plant.plant_id)
             self.plant = None
+
+    
+    async def randomize_properties(self):
+        self.plant.flvr_foreign_key_id =  random.choice(await managers_and_enums.FlavorManager(self.session).get_list()).flavor_id
+        self.plant.is_delete_allowed = random.choice([True, False])
+        self.plant.is_edit_allowed = random.choice([True, False])
+        # self.plant.land_id = random.randint(0, 100)
+        self.plant.other_flavor = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.plant.some_big_int_val = random.randint(0, 1000000)
+        self.plant.some_bit_val = random.choice([True, False])
+        self.plant.some_date_val = date(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.plant.some_decimal_val = round(random.uniform(0, 100), 2)
+        self.plant.some_email_address = f"user{random.randint(1, 1000)}@example.com"
+        self.plant.some_float_val = random.uniform(0, 100)
+        self.plant.some_int_val = random.randint(0, 100)
+        self.plant.some_money_val = round(random.uniform(0, 10000), 2)
+        self.plant.some_n_var_char_val = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.plant.some_phone_number = f"+1{random.randint(1000000000, 9999999999)}"
+        self.plant.some_text_val = "Random text"
+        self.plant.some_uniqueidentifier_val = generate_uuid()
+        self.plant.some_utc_date_time_val = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.plant.some_var_char_val = "".join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=10))
+
+        return self
  
     def get_plant_obj(self) -> Plant:
         return self.plant

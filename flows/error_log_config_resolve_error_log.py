@@ -44,7 +44,12 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
         )
         super()._throw_queued_validation_errors()
 
-        # TODO: add flow logic
+        error_log_bus_obj = (
+            error_log_bus_obj
+            .set_prop_is_resolved(True)
+            .set_prop_last_update_user_id(self._session_context.customer_code) 
+        )
+        await error_log_bus_obj.save()
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowErrorLogConfigResolveErrorLogResult()

@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -229,10 +230,30 @@ class ErrorLogBusObj(BaseBusObj):
         if error_log_dict and self.error_log.error_log_id is None:
             error_log_manager = ErrorLogManager(self.session)
             self.error_log = error_log_manager.from_dict(error_log_dict)
+        return self
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   error_log_id:int=None,
+                   error_log_obj_instance:ErrorLog=None,
+                   error_log_dict:dict=None):
+        result = ErrorLogBusObj(session=session)
+        await result.load(
+            json_data,
+            code,
+            error_log_id,
+            error_log_obj_instance,
+            error_log_dict
+        )
+        return result
 
     async def refresh(self):
         error_log_manager = ErrorLogManager(self.session)
         self.error_log = await error_log_manager.refresh(self.error_log)
+        return self
+    def is_valid(self):
+        return (self.error_log is not None)
     def to_dict(self):
         error_log_manager = ErrorLogManager(self.session)
         return error_log_manager.to_dict(self.error_log)
@@ -246,10 +267,22 @@ class ErrorLogBusObj(BaseBusObj):
         if self.error_log.error_log_id is None or self.error_log.error_log_id == 0:
             error_log_manager = ErrorLogManager(self.session)
             self.error_log = await error_log_manager.add(self.error_log)
+        return self
     async def delete(self):
         if self.error_log.error_log_id > 0:
             error_log_manager = ErrorLogManager(self.session)
-            self.error_log = await error_log_manager.delete(self.error_log.error_log_id)
+            await error_log_manager.delete(self.error_log.error_log_id)
+            self.error_log = None
+    async def randomize_properties(self):
+        self.error_log.browser_code = generate_uuid()
+        self.error_log.context_code = generate_uuid()
+        self.error_log.created_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.error_log.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.error_log.is_client_side_error = random.choice([True, False])
+        self.error_log.is_resolved = random.choice([True, False])
+        # self.error_log.pac_id = random.randint(0, 100)
+        self.error_log.url = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        return self
     def get_error_log_obj(self) -> ErrorLog:
         return self.error_log
     def is_equal(self,error_log:ErrorLog) -> ErrorLog:

@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -191,10 +192,30 @@ class CustomerRoleBusObj(BaseBusObj):
         if customer_role_dict and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self.session)
             self.customer_role = customer_role_manager.from_dict(customer_role_dict)
+        return self
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   customer_role_id:int=None,
+                   customer_role_obj_instance:CustomerRole=None,
+                   customer_role_dict:dict=None):
+        result = CustomerRoleBusObj(session=session)
+        await result.load(
+            json_data,
+            code,
+            customer_role_id,
+            customer_role_obj_instance,
+            customer_role_dict
+        )
+        return result
 
     async def refresh(self):
         customer_role_manager = CustomerRoleManager(self.session)
         self.customer_role = await customer_role_manager.refresh(self.customer_role)
+        return self
+    def is_valid(self):
+        return (self.customer_role is not None)
     def to_dict(self):
         customer_role_manager = CustomerRoleManager(self.session)
         return customer_role_manager.to_dict(self.customer_role)
@@ -208,10 +229,18 @@ class CustomerRoleBusObj(BaseBusObj):
         if self.customer_role.customer_role_id is None or self.customer_role.customer_role_id == 0:
             customer_role_manager = CustomerRoleManager(self.session)
             self.customer_role = await customer_role_manager.add(self.customer_role)
+        return self
     async def delete(self):
         if self.customer_role.customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(self.session)
-            self.customer_role = await customer_role_manager.delete(self.customer_role.customer_role_id)
+            await customer_role_manager.delete(self.customer_role.customer_role_id)
+            self.customer_role = None
+    async def randomize_properties(self):
+        # self.customer_role.customer_id = random.randint(0, 100)
+        self.customer_role.is_placeholder = random.choice([True, False])
+        self.customer_role.placeholder = random.choice([True, False])
+        self.customer_role.role_id =  random.choice(await managers_and_enums.RoleManager(self.session).get_list()).role_id
+        return self
     def get_customer_role_obj(self) -> CustomerRole:
         return self.customer_role
     def is_equal(self,customer_role:CustomerRole) -> CustomerRole:

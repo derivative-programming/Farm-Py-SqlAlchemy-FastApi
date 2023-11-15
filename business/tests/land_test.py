@@ -84,7 +84,8 @@ class TestLandBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_land(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
         # Test retrieving a nonexistent land raises an exception
-        assert await land_bus_obj.load(land_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await land_bus_obj.load(land_id=-1)
+        assert land_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_land(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
         # Test updating a land's data

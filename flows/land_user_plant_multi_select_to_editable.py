@@ -2,6 +2,7 @@ import json
 from business.land import LandBusObj
 from datetime import date, datetime
 import uuid
+from business.plant import PlantBusObj
 from flows.base.land_user_plant_multi_select_to_editable import BaseFlowLandUserPlantMultiSelectToEditable
 from models import Land
 from flows.base import LogSeverity
@@ -43,8 +44,16 @@ class FlowLandUserPlantMultiSelectToEditable(BaseFlowLandUserPlantMultiSelectToE
             plant_code_list_csv,
         )
         super()._throw_queued_validation_errors()
+ 
+        code_list = self._parse_csv_string_to_guids(plant_code_list_csv)
+        
+        for code in code_list:
+            plant_bus_obj = PlantBusObj(land_bus_obj.session)
+            await plant_bus_obj.load(code=code)
+            plant_bus_obj.is_edit_allowed = False
+            await plant_bus_obj.save()
 
-        # TODO: add flow logic
+
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowLandUserPlantMultiSelectToEditableResult()
@@ -53,3 +62,23 @@ class FlowLandUserPlantMultiSelectToEditable(BaseFlowLandUserPlantMultiSelectToE
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result
+
+
+    def _is_valid_guid(self,guid):
+        try:
+            uuid.UUID(guid)
+            return True
+        except ValueError:
+            return False
+
+    def _parse_csv_string_to_guids(self,csv_string):
+        guids = []
+        lines = csv_string.strip().split('\n')
+
+        reader = csv.reader(lines)
+        for row in reader:
+            for cell in row:
+                if self._is_valid_guid(cell.strip()):
+                    guids.append(cell.strip())
+
+        return guids

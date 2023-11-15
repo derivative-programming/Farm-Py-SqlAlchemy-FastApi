@@ -83,7 +83,8 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_pac(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac):
         # Test retrieving a nonexistent pac raises an exception
-        assert await pac_bus_obj.load(pac_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await pac_bus_obj.load(pac_id=-1)
+        assert pac_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_pac(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac):
         # Test updating a pac's data

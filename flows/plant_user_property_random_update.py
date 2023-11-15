@@ -42,9 +42,9 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
             plant_bus_obj,
 
         )
-        super()._throw_queued_validation_errors()
+        super()._throw_queued_validation_errors() 
 
-        # TODO: add flow logic
+        await plant_bus_obj.randomize_properties().save()
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowPlantUserPropertyRandomUpdateResult()

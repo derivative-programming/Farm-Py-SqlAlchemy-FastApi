@@ -79,26 +79,48 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
 
         )
         super()._throw_queued_validation_errors()
-        request_flavor_code_output:uuid = uuid.UUID(int=0)
-        request_other_flavor_output:str = ""
-        request_some_int_val_output:int = 0
-        request_some_big_int_val_output:int = 0
-        request_some_bit_val_output:bool = False
-        request_is_delete_allowed_output:bool = False
-        request_is_edit_allowed_output:bool = False
-        request_some_float_val_output:float = 0
-        request_some_decimal_val_output:Decimal = Decimal(0)
-        request_some_utc_date_time_val_output:datetime = TypeConversion.get_default_date_time()
-        request_some_date_val_output:date = TypeConversion.get_default_date()
-        request_some_money_val_output:Decimal = 0
-        request_some_n_var_char_val_output:str = ""
-        request_some_var_char_val_output:str = ""
-        request_some_text_val_output:str = ""
-        request_some_phone_number_output:str = ""
-        request_some_email_address_output:str = ""
-        land_name_output:str = ""
-        tac_code_output:uuid = uuid.UUID(int=0)
-        # TODO: add flow logic
+        # request_flavor_code_output:uuid = uuid.UUID(int=0)
+        # request_other_flavor_output:str = ""
+        # request_some_int_val_output:int = 0
+        # request_some_big_int_val_output:int = 0
+        # request_some_bit_val_output:bool = False
+        # request_is_delete_allowed_output:bool = False
+        # request_is_edit_allowed_output:bool = False
+        # request_some_float_val_output:float = 0
+        # request_some_decimal_val_output:Decimal = Decimal(0)
+        # request_some_utc_date_time_val_output:datetime = TypeConversion.get_default_date_time()
+        # request_some_date_val_output:date = TypeConversion.get_default_date()
+        # request_some_money_val_output:Decimal = 0
+        # request_some_n_var_char_val_output:str = ""
+        # request_some_var_char_val_output:str = ""
+        # request_some_text_val_output:str = ""
+        # request_some_phone_number_output:str = ""
+        # request_some_email_address_output:str = ""
+        # land_name_output:str = ""
+        # tac_code_output:uuid = uuid.UUID(int=0) 
+
+        plant_bus_obj = await land_bus_obj.build_plant()
+        request_flavor_code_output = plant_bus_obj.flvr_foreign_key_code_peek
+        request_other_flavor_output = plant_bus_obj.other_flavor
+        request_some_int_val_output = plant_bus_obj.some_int_val
+        request_some_big_int_val_output = plant_bus_obj.some_big_int_val
+        request_some_bit_val_output = plant_bus_obj.some_bit_val
+        request_is_delete_allowed_output = plant_bus_obj.is_delete_allowed
+        request_is_edit_allowed_output = plant_bus_obj.is_edit_allowed
+        request_some_float_val_output = plant_bus_obj.some_float_val
+        request_some_decimal_val_output = plant_bus_obj.some_decimal_val
+        request_some_utc_date_time_val_output = plant_bus_obj.some_utc_date_time_val
+        request_some_date_val_output = plant_bus_obj.some_date_val
+        request_some_money_val_output = plant_bus_obj.some_money_val
+        request_some_n_var_char_val_output = plant_bus_obj.some_n_var_char_val
+        request_some_var_char_val_output = plant_bus_obj.some_var_char_val
+        request_some_text_val_output = plant_bus_obj.some_text_val
+        request_some_phone_number_output = plant_bus_obj.some_phone_number
+        request_some_email_address_output = plant_bus_obj.some_email_address
+        land_name_output:str = land_bus_obj.name
+        tac_code_output = self._session_context.tac_code
+
+
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowLandAddPlantInitObjWFResult()

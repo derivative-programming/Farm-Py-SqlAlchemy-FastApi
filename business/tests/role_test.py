@@ -84,7 +84,8 @@ class TestRoleBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_role(self, role_manager:RoleManager, role_bus_obj:RoleBusObj, new_role:Role):
         # Test retrieving a nonexistent role raises an exception
-        assert await role_bus_obj.load(role_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await role_bus_obj.load(role_id=-1)
+        assert role_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_role(self, role_manager:RoleManager, role_bus_obj:RoleBusObj, new_role:Role):
         # Test updating a role's data

@@ -1,5 +1,7 @@
 import json
+import random
 import uuid
+from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin 
@@ -9,6 +11,7 @@ from models.flavor import Flavor # FlvrForeignKeyID
 from models.land import Land # LandID
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
+from services.db_config import generate_uuid
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -154,7 +157,7 @@ class PlantManager:
         await self.session.delete(plant)
         await self.session.flush() 
 
-
+        
 
     async def get_list(self) -> List[Plant]:
         logging.info("PlantManager.get_list") 
@@ -326,3 +329,13 @@ class PlantManager:
 
         return query_results
 #endset
+
+    ##GENLOOPPropStart
+    ##GENIF[isFK=false,forceDBColumnIndex=true]Start
+    ##GENREMOVECOMMENTasync def get_by_GENVALSnakeName_prop(self, GENVALSnakeName) -> List[GENVALPascalObjectName]: 
+    ##GENREMOVECOMMENT    logging.info("GENVALPascalObjectNameManager.get_by_GENVALSnakeName_prop")  
+    ##GENREMOVECOMMENT    query_filter = GENVALPascalObjectName.GENVALSnakeName == GENVALSnakeName 
+    ##GENREMOVECOMMENT    query_results = await self._run_query(query_filter) 
+    ##GENREMOVECOMMENT    return query_results
+    ##GENIF[isFK=false,forceDBColumnIndex=true]End
+    ##GENLOOPPropEnd

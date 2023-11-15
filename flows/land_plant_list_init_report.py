@@ -1,8 +1,10 @@
 import json
+from business.flavor import FlavorBusObj
 from business.land import LandBusObj
 from datetime import date, datetime
 import uuid
 from flows.base.land_plant_list_init_report import BaseFlowLandPlantListInitReport
+from managers.flavor import FlavorEnum
 from models import Land
 from flows.base import LogSeverity
 from helpers import SessionContext
@@ -93,12 +95,16 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         some_var_char_val_output:str = ""
         some_text_val_output:str = ""
         some_phone_number_output:str = ""
-        some_email_address_output:str = ""
-        flavor_code_output:uuid = uuid.UUID(int=0)
-        land_code_output:uuid = uuid.UUID(int=0)
-        tac_code_output:uuid = uuid.UUID(int=0)
-        land_name_output:str = ""
-        # TODO: add flow logic
+        some_email_address_output:str = "" 
+        land_name_output:str = "" 
+
+        flavor_bus_obj = FlavorBusObj(land_bus_obj.session)
+        await flavor_bus_obj.load(flavor_enum=FlavorEnum.Unknown)
+        flavor_code_output = flavor_bus_obj.code
+
+        land_code_output = land_bus_obj.code
+
+        tac_code_output = self._session_context.tac_code
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowLandPlantListInitReportResult()

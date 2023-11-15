@@ -43,9 +43,7 @@ class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
 
         )
         super()._throw_queued_validation_errors()
-
-        # TODO: add flow logic
-
+ 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowCustomerUserLogOutResult()
         result.context_object_code = customer_bus_obj.code

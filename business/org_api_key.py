@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -251,10 +252,30 @@ class OrgApiKeyBusObj(BaseBusObj):
         if org_api_key_dict and self.org_api_key.org_api_key_id is None:
             org_api_key_manager = OrgApiKeyManager(self.session)
             self.org_api_key = org_api_key_manager.from_dict(org_api_key_dict)
+        return self
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   org_api_key_id:int=None,
+                   org_api_key_obj_instance:OrgApiKey=None,
+                   org_api_key_dict:dict=None):
+        result = OrgApiKeyBusObj(session=session)
+        await result.load(
+            json_data,
+            code,
+            org_api_key_id,
+            org_api_key_obj_instance,
+            org_api_key_dict
+        )
+        return result
 
     async def refresh(self):
         org_api_key_manager = OrgApiKeyManager(self.session)
         self.org_api_key = await org_api_key_manager.refresh(self.org_api_key)
+        return self
+    def is_valid(self):
+        return (self.org_api_key is not None)
     def to_dict(self):
         org_api_key_manager = OrgApiKeyManager(self.session)
         return org_api_key_manager.to_dict(self.org_api_key)
@@ -268,10 +289,23 @@ class OrgApiKeyBusObj(BaseBusObj):
         if self.org_api_key.org_api_key_id is None or self.org_api_key.org_api_key_id == 0:
             org_api_key_manager = OrgApiKeyManager(self.session)
             self.org_api_key = await org_api_key_manager.add(self.org_api_key)
+        return self
     async def delete(self):
         if self.org_api_key.org_api_key_id > 0:
             org_api_key_manager = OrgApiKeyManager(self.session)
-            self.org_api_key = await org_api_key_manager.delete(self.org_api_key.org_api_key_id)
+            await org_api_key_manager.delete(self.org_api_key.org_api_key_id)
+            self.org_api_key = None
+    async def randomize_properties(self):
+        self.org_api_key.api_key_value = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.org_api_key.created_by = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.org_api_key.created_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.org_api_key.expiration_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.org_api_key.is_active = random.choice([True, False])
+        self.org_api_key.is_temp_user_key = random.choice([True, False])
+        self.org_api_key.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        # self.org_api_key.organization_id = random.randint(0, 100)
+        self.org_api_key.org_customer_id =  random.choice(await managers_and_enums.OrgCustomerManager(self.session).get_list()).org_customer_id
+        return self
     def get_org_api_key_obj(self) -> OrgApiKey:
         return self.org_api_key
     def is_equal(self,org_api_key:OrgApiKey) -> OrgApiKey:

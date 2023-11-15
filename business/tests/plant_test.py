@@ -138,7 +138,8 @@ class TestPlantBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_plant(self, plant_manager:PlantManager, plant_bus_obj:PlantBusObj, new_plant:Plant):
         # Test retrieving a nonexistent plant raises an exception
-        assert await plant_bus_obj.load(plant_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await plant_bus_obj.load(plant_id=-1)
+        assert plant_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
 
     @pytest.mark.asyncio
     async def test_update_plant(self, plant_manager:PlantManager, plant_bus_obj:PlantBusObj, new_plant:Plant):

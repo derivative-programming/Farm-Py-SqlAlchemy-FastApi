@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -211,10 +212,31 @@ class FlavorBusObj(BaseBusObj):
         if flavor_enum and self.flavor.flavor_id is None:
             flavor_manager = FlavorManager(self.session)
             self.flavor = await flavor_manager.from_enum(flavor_enum)
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   flavor_id:int=None,
+                   flavor_obj_instance:Flavor=None,
+                   flavor_dict:dict=None,
+                   flavor_enum:managers_and_enums.FlavorEnum=None):
+        result = Flavor(session=session)
+        await result.load(
+            json_data,
+            code,
+            flavor_id,
+            flavor_obj_instance,
+            flavor_dict,
+            flavor_enum
+        )
+        return result
 
     async def refresh(self):
         flavor_manager = FlavorManager(self.session)
         self.flavor = await flavor_manager.refresh(self.flavor)
+        return self
+    def is_valid(self):
+        return (self.flavor is not None)
     def to_dict(self):
         flavor_manager = FlavorManager(self.session)
         return flavor_manager.to_dict(self.flavor)
@@ -228,10 +250,20 @@ class FlavorBusObj(BaseBusObj):
         if self.flavor.flavor_id is None or self.flavor.flavor_id == 0:
             flavor_manager = FlavorManager(self.session)
             self.flavor = await flavor_manager.add(self.flavor)
+        return self
     async def delete(self):
         if self.flavor.flavor_id > 0:
             flavor_manager = FlavorManager(self.session)
-            self.flavor = await flavor_manager.delete(self.flavor.flavor_id)
+            await flavor_manager.delete(self.flavor.flavor_id)
+            self.flavor = None
+    async def randomize_properties(self):
+        self.flavor.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.flavor.display_order = random.randint(0, 100)
+        self.flavor.is_active = random.choice([True, False])
+        self.flavor.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.flavor.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        # self.flavor.pac_id = random.randint(0, 100)
+        return self
     def get_flavor_obj(self) -> Flavor:
         return self.flavor
     def is_equal(self,flavor:Flavor) -> Flavor:

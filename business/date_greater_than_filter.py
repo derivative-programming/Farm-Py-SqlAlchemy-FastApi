@@ -197,8 +197,32 @@ class DateGreaterThanFilterBusObj:
         if date_greater_than_filter_enum and self.date_greater_than_filter.date_greater_than_filter_id is None:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
             self.date_greater_than_filter = await date_greater_than_filter_manager.from_enum(date_greater_than_filter_enum)
+
+
+    @staticmethod
+    async def get(session:AsyncSession, 
+                    json_data:str=None, 
+                   code:uuid.UUID=None, 
+                   date_greater_than_filter_id:int=None, 
+                   date_greater_than_filter_obj_instance:DateGreaterThanFilter=None, 
+                   date_greater_than_filter_dict:dict=None,
+                   date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum=None):
+        result = DateGreaterThanFilter(session=session)
+
+        await result.load(
+            json_data,
+            code,
+            date_greater_than_filter_id,
+            date_greater_than_filter_obj_instance,
+            date_greater_than_filter_dict,
+            date_greater_than_filter_enum
+        )
+        
+        return result
 ##GENLearn[isLookup=true]End
 ##GENTrainingBlock[caseLookupEnums]End 
+    def is_valid(self):
+        return (self.date_greater_than_filter is not None)
     async def refresh(self):
         date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
         self.date_greater_than_filter = await date_greater_than_filter_manager.refresh(self.date_greater_than_filter)

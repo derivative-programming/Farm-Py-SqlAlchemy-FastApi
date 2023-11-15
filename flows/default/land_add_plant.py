@@ -10,6 +10,7 @@ from helpers import ApiToken
 from helpers import TypeConversion
 import models as farm_models 
 import managers as farm_managers
+import business
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.db_config import db_dialect,generate_uuid
 # from sqlalchemy.dialects.postgresql import UUID
@@ -150,9 +151,9 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 ##GENTrainingBlock[caseFlowLogic]Start
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]Start   
  
-        # plant:PlantBusObj = PlantBusObj(land_bus_obj.session)
-        # plant.land_id = land_bus_obj.land_id
-        # plant.flvr_foreign_key_id = 0
+        # plant:PlantBusObj = land_bus_obj.build_plant() 
+        ## plant.land_id = land_bus_obj.land_id
+        # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session,code=request_flavor_code).code
         # plant.other_flavor = request_other_flavor    
         # plant.some_int_val = request_some_int_val   
         # plant.some_big_int_val = request_some_big_int_val   

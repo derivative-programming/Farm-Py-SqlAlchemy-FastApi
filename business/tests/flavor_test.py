@@ -84,7 +84,8 @@ class TestFlavorBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_flavor(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
         # Test retrieving a nonexistent flavor raises an exception
-        assert await flavor_bus_obj.load(flavor_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await flavor_bus_obj.load(flavor_id=-1)
+        assert flavor_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_flavor(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
         # Test updating a flavor's data

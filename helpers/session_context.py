@@ -1,5 +1,6 @@
 
 import uuid
+from sqlalchemy.ext.asyncio import AsyncSession
  
 class SessionContext:
     user_name:str = "" 
@@ -9,8 +10,10 @@ class SessionContext:
     api_key_dict:dict = dict()
     session_code:uuid = uuid.UUID(int=0) 
     role_name_csv:str = ""
+    session:AsyncSession = None
 
-    def __init__(self, api_key_dict:dict) -> None:
+
+    def __init__(self, api_key_dict:dict, session:AsyncSession=None) -> None:
         self.api_key_dict = api_key_dict
         self.session_code = uuid.uuid4()
 

@@ -42,9 +42,9 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
             tac_bus_obj,
 
         )
-        super()._throw_queued_validation_errors()
-        customer_code_output:uuid = uuid.UUID(int=0)
-        # TODO: add flow logic
+        super()._throw_queued_validation_errors() 
+
+        customer_code_output = self._session_context.customer_code
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacFarmDashboardInitReportResult()

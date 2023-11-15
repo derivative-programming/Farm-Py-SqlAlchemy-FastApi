@@ -85,7 +85,8 @@ class TestDateGreaterThanFilterBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, date_greater_than_filter_bus_obj:DateGreaterThanFilterBusObj, new_date_greater_than_filter:DateGreaterThanFilter):
         # Test retrieving a nonexistent date_greater_than_filter raises an exception
-        assert await date_greater_than_filter_bus_obj.load(date_greater_than_filter_id=-1) is None # Assuming -1 is an id that wouldn't exist
+        await date_greater_than_filter_bus_obj.load(date_greater_than_filter_id=-1)
+        assert date_greater_than_filter_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_date_greater_than_filter(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, date_greater_than_filter_bus_obj:DateGreaterThanFilterBusObj, new_date_greater_than_filter:DateGreaterThanFilter):
         # Test updating a date_greater_than_filter's data

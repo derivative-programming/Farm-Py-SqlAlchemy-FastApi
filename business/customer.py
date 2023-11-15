@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -416,10 +417,30 @@ class CustomerBusObj(BaseBusObj):
         if customer_dict and self.customer.customer_id is None:
             customer_manager = CustomerManager(self.session)
             self.customer = customer_manager.from_dict(customer_dict)
+        return self
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   customer_id:int=None,
+                   customer_obj_instance:Customer=None,
+                   customer_dict:dict=None):
+        result = CustomerBusObj(session=session)
+        await result.load(
+            json_data,
+            code,
+            customer_id,
+            customer_obj_instance,
+            customer_dict
+        )
+        return result
 
     async def refresh(self):
         customer_manager = CustomerManager(self.session)
         self.customer = await customer_manager.refresh(self.customer)
+        return self
+    def is_valid(self):
+        return (self.customer is not None)
     def to_dict(self):
         customer_manager = CustomerManager(self.session)
         return customer_manager.to_dict(self.customer)
@@ -433,10 +454,37 @@ class CustomerBusObj(BaseBusObj):
         if self.customer.customer_id is None or self.customer.customer_id == 0:
             customer_manager = CustomerManager(self.session)
             self.customer = await customer_manager.add(self.customer)
+        return self
     async def delete(self):
         if self.customer.customer_id > 0:
             customer_manager = CustomerManager(self.session)
-            self.customer = await customer_manager.delete(self.customer.customer_id)
+            await customer_manager.delete(self.customer.customer_id)
+            self.customer = None
+    async def randomize_properties(self):
+        self.customer.active_organization_id = random.randint(0, 100)
+        self.customer.email = f"user{random.randint(1, 1000)}@example.com"
+        self.customer.email_confirmed_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.customer.first_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.forgot_password_key_expiration_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.customer.forgot_password_key_value = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.fs_user_code_value = generate_uuid()
+        self.customer.is_active = random.choice([True, False])
+        self.customer.is_email_allowed = random.choice([True, False])
+        self.customer.is_email_confirmed = random.choice([True, False])
+        self.customer.is_email_marketing_allowed = random.choice([True, False])
+        self.customer.is_locked = random.choice([True, False])
+        self.customer.is_multiple_organizations_allowed = random.choice([True, False])
+        self.customer.is_verbose_logging_forced = random.choice([True, False])
+        self.customer.last_login_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.customer.last_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.password = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.phone = f"+1{random.randint(1000000000, 9999999999)}"
+        self.customer.province = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.registration_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        # self.customer.tac_id = random.randint(0, 100)
+        self.customer.utc_offset_in_minutes = random.randint(0, 100)
+        self.customer.zip = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        return self
     def get_customer_obj(self) -> Customer:
         return self.customer
     def is_equal(self,customer:Customer) -> Customer:

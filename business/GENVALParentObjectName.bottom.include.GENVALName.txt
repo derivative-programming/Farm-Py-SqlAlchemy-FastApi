@@ -28,3 +28,18 @@
             await bus_obj_item.load(GENVALSnakeObjectName_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
+
+    
+    ##GENLOOPPropStart
+    ##GENIF[isFK=false,forceDBColumnIndex=true]Start
+    async def get_GENVALSnakeObjectName_by_GENVALSnakeName_prop(self, GENVALSnakeName) -> List[GENVALPascalObjectNameBusObj]: 
+        results = list()
+        GENVALSnakeObjectName_manager = managers_and_enums.GENVALPascalObjectNameManager(self.session)
+        obj_list = await GENVALSnakeObjectName_manager.get_by_GENVALSnakeName_prop(GENVALSnakeName)
+        for obj_item in obj_list:
+            bus_obj_item = GENVALPascalObjectNameBusObj(self.session)
+            await bus_obj_item.load(GENVALSnakeObjectName_obj_instance=obj_item)
+            results.append(bus_obj_item)
+        return results   
+    ##GENIF[isFK=false,forceDBColumnIndex=true]End
+    ##GENLOOPPropEnd

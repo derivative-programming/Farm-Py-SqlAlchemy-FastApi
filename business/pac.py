@@ -1,3 +1,4 @@
+import random
 import uuid
 from typing import List
 from datetime import datetime, date
@@ -206,10 +207,31 @@ class PacBusObj(BaseBusObj):
         if pac_enum and self.pac.pac_id is None:
             pac_manager = PacManager(self.session)
             self.pac = await pac_manager.from_enum(pac_enum)
+    @staticmethod
+    async def get(session:AsyncSession,
+                    json_data:str=None,
+                   code:uuid.UUID=None,
+                   pac_id:int=None,
+                   pac_obj_instance:Pac=None,
+                   pac_dict:dict=None,
+                   pac_enum:managers_and_enums.PacEnum=None):
+        result = Pac(session=session)
+        await result.load(
+            json_data,
+            code,
+            pac_id,
+            pac_obj_instance,
+            pac_dict,
+            pac_enum
+        )
+        return result
 
     async def refresh(self):
         pac_manager = PacManager(self.session)
         self.pac = await pac_manager.refresh(self.pac)
+        return self
+    def is_valid(self):
+        return (self.pac is not None)
     def to_dict(self):
         pac_manager = PacManager(self.session)
         return pac_manager.to_dict(self.pac)
@@ -223,10 +245,19 @@ class PacBusObj(BaseBusObj):
         if self.pac.pac_id is None or self.pac.pac_id == 0:
             pac_manager = PacManager(self.session)
             self.pac = await pac_manager.add(self.pac)
+        return self
     async def delete(self):
         if self.pac.pac_id > 0:
             pac_manager = PacManager(self.session)
-            self.pac = await pac_manager.delete(self.pac.pac_id)
+            await pac_manager.delete(self.pac.pac_id)
+            self.pac = None
+    async def randomize_properties(self):
+        self.pac.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.pac.display_order = random.randint(0, 100)
+        self.pac.is_active = random.choice([True, False])
+        self.pac.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.pac.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        return self
     def get_pac_obj(self) -> Pac:
         return self.pac
     def is_equal(self,pac:Pac) -> Pac:
