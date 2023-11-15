@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
-from .base import Base  # Importing the Base from central module
+from .base import Base,EncryptedType  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -50,7 +50,12 @@ class Plant(Base):
                      index=plant_constants.land_id_calculatedIsDBColumnIndexed,
                      nullable=True)
     other_flavor = Column('other_flavor', 
-                          String, 
+                            ##GENIF[isEncrypted=false]Start
+                            String, 
+                            ##GENIF[isEncrypted=false]End
+                            ##GENIF[isEncrypted=true]Start
+                            ##GENREMOVECOMMENTEncryptedType(),
+                            ##GENIF[isEncrypted=true]End 
                           default="",  
                                 index=plant_constants.other_flavor_calculatedIsDBColumnIndexed,
                           nullable=True)
@@ -75,7 +80,12 @@ class Plant(Base):
                                 index=plant_constants.some_decimal_val_calculatedIsDBColumnIndexed,
                               nullable=True)
     some_email_address = Column('some_email_address', 
-                                String, 
+                                 ##GENIF[isEncrypted=false]Start
+                                 String, 
+                                 ##GENIF[isEncrypted=false]End
+                                 ##GENIF[isEncrypted=true]Start
+                                 ##GENREMOVECOMMENTEncryptedType(),
+                                 ##GENIF[isEncrypted=true]End 
                                 default="",  
                                 index=plant_constants.some_email_address_calculatedIsDBColumnIndexed,
                                 nullable=True)
@@ -95,12 +105,22 @@ class Plant(Base):
                                 index=plant_constants.some_money_val_calculatedIsDBColumnIndexed,
                             nullable=True)
     some_n_var_char_val = Column('some_n_var_char_val', 
+                                 ##GENIF[isEncrypted=false]Start
                                  String, 
+                                 ##GENIF[isEncrypted=false]End
+                                 ##GENIF[isEncrypted=true]Start
+                                 ##GENREMOVECOMMENTEncryptedType(),
+                                 ##GENIF[isEncrypted=true]End 
                                  default="",  
                                 index=plant_constants.some_n_var_char_val_calculatedIsDBColumnIndexed,
                                  nullable=True)
     some_phone_number = Column('some_phone_number', 
-                               String, 
+                                 ##GENIF[isEncrypted=false]Start
+                                 String, 
+                                 ##GENIF[isEncrypted=false]End
+                                 ##GENIF[isEncrypted=true]Start
+                                 ##GENREMOVECOMMENTEncryptedType(),
+                                 ##GENIF[isEncrypted=true]End 
                                default="",  
                                 index=plant_constants.some_phone_number_calculatedIsDBColumnIndexed,
                                nullable=True)
@@ -120,7 +140,12 @@ class Plant(Base):
                                 index=plant_constants.some_utc_date_time_val_calculatedIsDBColumnIndexed,
                                     nullable=True)
     some_var_char_val = Column('some_var_char_val', 
-                               String, 
+                                 ##GENIF[isEncrypted=false]Start
+                                 String, 
+                                 ##GENIF[isEncrypted=false]End
+                                 ##GENIF[isEncrypted=true]Start
+                                 ##GENREMOVECOMMENTEncryptedType(),
+                                 ##GENIF[isEncrypted=true]End 
                                default="",  
                                 index=plant_constants.some_var_char_val_calculatedIsDBColumnIndexed,
                                nullable=True)

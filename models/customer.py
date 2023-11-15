@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
-from .base import Base  # Importing the Base from central module
+from .base import Base,EncryptedType  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -31,7 +31,7 @@ class Customer(Base):
                                 index=customer_constants.active_organization_id_calculatedIsDBColumnIndexed,
                           nullable=True)
     email = Column('email',
-                                String,
+                                 String,
                                 default="",
                                 index=customer_constants.email_calculatedIsDBColumnIndexed,
                                 nullable=True)
@@ -41,7 +41,7 @@ class Customer(Base):
                                 index=customer_constants.email_confirmed_utc_date_time_calculatedIsDBColumnIndexed,
                                     nullable=True)
     first_name = Column('first_name',
-                          String,
+                            String,
                           default="",
                                 index=customer_constants.first_name_calculatedIsDBColumnIndexed,
                           nullable=True)
@@ -51,7 +51,7 @@ class Customer(Base):
                                 index=customer_constants.forgot_password_key_expiration_utc_date_time_calculatedIsDBColumnIndexed,
                                     nullable=True)
     forgot_password_key_value = Column('forgot_password_key_value',
-                          String,
+                            EncryptedType(),
                           default="",
                                 index=customer_constants.forgot_password_key_value_calculatedIsDBColumnIndexed,
                           nullable=True)
@@ -101,22 +101,22 @@ class Customer(Base):
                                 index=customer_constants.last_login_utc_date_time_calculatedIsDBColumnIndexed,
                                     nullable=True)
     last_name = Column('last_name',
-                          String,
+                            String,
                           default="",
                                 index=customer_constants.last_name_calculatedIsDBColumnIndexed,
                           nullable=True)
     password = Column('password',
-                          String,
+                            EncryptedType(),
                           default="",
                                 index=customer_constants.password_calculatedIsDBColumnIndexed,
                           nullable=True)
     phone = Column('phone',
-                               String,
+                                 String,
                                default="",
                                 index=customer_constants.phone_calculatedIsDBColumnIndexed,
                                nullable=True)
     province = Column('province',
-                          String,
+                            String,
                           default="",
                                 index=customer_constants.province_calculatedIsDBColumnIndexed,
                           nullable=True)
@@ -136,7 +136,7 @@ class Customer(Base):
                                 index=customer_constants.utc_offset_in_minutes_calculatedIsDBColumnIndexed,
                           nullable=True)
     zip = Column('zip',
-                          String,
+                            String,
                           default="",
                                 index=customer_constants.zip_calculatedIsDBColumnIndexed,
                           nullable=True)

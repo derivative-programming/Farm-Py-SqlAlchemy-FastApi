@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
-from .base import Base  # Importing the Base from central module
+from .base import Base,EncryptedType  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -26,7 +26,7 @@ class Organization(Base):
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
     name = Column('name',
-                          String,
+                            String,
                           default="",
                                 index=organization_constants.name_calculatedIsDBColumnIndexed,
                           nullable=True)

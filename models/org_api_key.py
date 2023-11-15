@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
-from .base import Base  # Importing the Base from central module
+from .base import Base,EncryptedType  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -26,12 +26,12 @@ class OrgApiKey(Base):
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
     api_key_value = Column('api_key_value',
-                          String,
+                            String,
                           default="",
                                 index=org_api_key_constants.api_key_value_calculatedIsDBColumnIndexed,
                           nullable=True)
     created_by = Column('created_by',
-                          String,
+                            String,
                           default="",
                                 index=org_api_key_constants.created_by_calculatedIsDBColumnIndexed,
                           nullable=True)
@@ -56,7 +56,7 @@ class OrgApiKey(Base):
                                 index=org_api_key_constants.is_temp_user_key_calculatedIsDBColumnIndexed,
                                nullable=True)
     name = Column('name',
-                          String,
+                            String,
                           default="",
                                 index=org_api_key_constants.name_calculatedIsDBColumnIndexed,
                           nullable=True)

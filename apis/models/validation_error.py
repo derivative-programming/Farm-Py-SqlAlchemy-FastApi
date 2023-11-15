@@ -1,8 +1,9 @@
 
 from helpers.pydantic_serialization import CamelModel,SnakeModel
+from pydantic import Field
 
 
-class ValidationError(CamelModel):
-    property:str = ""
-    message:str  = ""
+class ValidationErrorItem(CamelModel):
+    property:str = Field(default="",description="Property")
+    message:str  = Field(default="",description="Message")
      

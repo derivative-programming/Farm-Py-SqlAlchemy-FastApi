@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class ErrorLogConfigResolveErrorLogRouterConfig():
     is_delete_available:bool = False
     is_public: bool = False
 class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["ErrorLogConfigResolveErrorLog"])
 
     @staticmethod
-    @router.post("/api/v1_0/error-log-config-resolve-error-log/{error_log_code}", response_model=api_models.ErrorLogConfigResolveErrorLogPostModelResponse)
-    async def request_post_with_id(error_log_code: str, request_model:api_models.ErrorLogConfigResolveErrorLogPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/error-log-config-resolve-error-log/{error_log_code}",
+                 response_model=api_models.ErrorLogConfigResolveErrorLogPostModelResponse,
+                summary="Error Log Config Resolve Error Log Business Flow")
+    async def request_post_with_id(error_log_code: str,
+                                   request_model:api_models.ErrorLogConfigResolveErrorLogPostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('ErrorLogConfigResolveErrorLogRouter.request_post_with_id start. errorLogCode:' + error_log_code)
         auth_dict = BaseRouter.implementation_check(ErrorLogConfigResolveErrorLogRouterConfig.is_post_with_id_available)
         response = api_models.ErrorLogConfigResolveErrorLogPostModelResponse()

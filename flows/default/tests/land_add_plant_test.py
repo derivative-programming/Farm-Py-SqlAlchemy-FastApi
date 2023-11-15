@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import json
 import uuid
 import pytest
 import pytest_asyncio 
@@ -38,7 +39,64 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
     
 class TestLandAddPlantPostModelResponse:
- 
+    @pytest.mark.asyncio
+    async def test_flow_land_add_plant_initialization(self,session):
+        session_context = SessionContext(dict()) 
+        flow = FlowLandAddPlant(session_context)
+        assert flow is not None
+
+    def test_flow_land_add_plant_result_to_json(self):
+        # Create an instance and set attributes
+        result = FlowLandAddPlantResult()
+        result.context_object_code = uuid.uuid4()
+        result.land_code = uuid.uuid4()
+        result.plant_code = uuid.uuid4()
+        result.output_flavor_code = uuid.uuid4()
+        result.output_other_flavor = "test flavor"
+        result.output_some_int_val = 123
+        result.output_some_big_int_val = 123456789
+        result.output_some_bit_val = True
+        result.output_is_edit_allowed = True
+        result.output_is_delete_allowed = False
+        result.output_some_float_val = 12.34
+        result.output_some_decimal_val = Decimal("123.45")
+        result.output_some_utc_date_time_val = datetime.utcnow()
+        result.output_some_date_val = date.today()
+        result.output_some_money_val = Decimal("67.89")
+        result.output_some_n_var_char_val = "nvarchar test"
+        result.output_some_var_char_val = "varchar test"
+        result.output_some_text_val = "text value"
+        result.output_some_phone_number = "123-456-7890"
+        result.output_some_email_address = "test@example.com"
+
+        # Call to_json method
+        json_output = result.to_json()
+
+        # Parse JSON output
+        data = json.loads(json_output)
+
+        # Assert individual fields
+        assert data["context_object_code"] == str(result.context_object_code)
+        assert data["land_code"] == str(result.land_code)
+        assert data["plant_code"] == str(result.plant_code)
+        assert data["output_flavor_code"] == str(result.output_flavor_code)
+        assert data["output_other_flavor"] == result.output_other_flavor
+        assert data["output_some_int_val"] == result.output_some_int_val
+        assert data["output_some_big_int_val"] == result.output_some_big_int_val
+        assert data["output_some_bit_val"] == result.output_some_bit_val
+        assert data["output_is_edit_allowed"] == result.output_is_edit_allowed
+        assert data["output_is_delete_allowed"] == result.output_is_delete_allowed
+        assert data["output_some_float_val"] == result.output_some_float_val
+        assert data["output_some_decimal_val"] == str(result.output_some_decimal_val)
+        assert data["output_some_utc_date_time_val"] == result.output_some_utc_date_time_val.isoformat()
+        assert data["output_some_date_val"] == result.output_some_date_val.isoformat()
+        assert data["output_some_money_val"] == str(result.output_some_money_val)
+        assert data["output_some_n_var_char_val"] == result.output_some_n_var_char_val
+        assert data["output_some_var_char_val"] == result.output_some_var_char_val
+        assert data["output_some_text_val"] == result.output_some_text_val
+        assert data["output_some_phone_number"] == result.output_some_phone_number
+        assert data["output_some_email_address"] == result.output_some_email_address
+        
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session): 

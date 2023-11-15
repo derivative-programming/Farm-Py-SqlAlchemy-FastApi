@@ -9,14 +9,15 @@ from helpers import SessionContext
 from business.land import LandBusObj
 from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
+from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field,UUID4
 import logging
-from apis.models.validation_error import ValidationError
+from apis.models.validation_error import ValidationErrorItem
 from sqlalchemy.ext.asyncio import AsyncSession
-class LandUserPlantMultiSelectToNotEditablePostModelRequest(SnakeModel):
-    force_error_message:str = ""
-    plant_code_list_csv:str = ""
+class LandUserPlantMultiSelectToNotEditablePostModelRequest(CamelModel):
+    force_error_message:str = Field(default="", description="Force Error Message")
+    plant_code_list_csv:str = Field(default="", description="plant Code List Csv")
 
     class Config:
         json_encoders = {
@@ -26,14 +27,12 @@ class LandUserPlantMultiSelectToNotEditablePostModelRequest(SnakeModel):
         data = self.model_dump()
     def to_dict_snake_serialized(self):
         data = json.loads(self.model_dump_json() )
-    def _to_camel(self,string: str) -> str:
-        return ''.join(word.capitalize() if i != 0 else word for i, word in enumerate(string.split('_')))
     def to_dict_camel(self):
         data = self.model_dump()
-        return {self._to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         data = json.loads(self.model_dump_json() )
-        return {self._to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
 class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
 
     def load_flow_response(self,data:FlowLandUserPlantMultiSelectToNotEditableResult):
@@ -66,8 +65,8 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
-                validation_error = ValidationError()
-                validation_error.property = key
+                validation_error = ValidationErrorItem()
+                validation_error.property = snake_to_camel(key)
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
     def to_json(self):

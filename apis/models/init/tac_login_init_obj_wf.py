@@ -10,15 +10,15 @@ from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field
-from apis.models.validation_error import ValidationError
+from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class TacLoginInitObjWFGetInitModelResponse(CamelModel):
-    success:bool = False
-    message:str = ""
-    validation_errors:List[ValidationError] = Field(default_factory=list)
-    email:str = ""
-    password:str = ""
+    success:bool = Field(default=False, description="Success")
+    message:str = Field(default="", description="Message")
+    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
+    email:str = Field(default="", description="Email")
+    password:str = Field(default="", description="Password")
 
     def load_flow_response(self,data:FlowTacLoginInitObjWFResult):
         self.validation_errors = list()

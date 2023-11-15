@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class TacLoginRouterConfig():
     is_delete_available:bool = False
     is_public: bool = True
 class TacLoginRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["TacLogin"])
 
     @staticmethod
-    @router.get("/api/v1_0/tac-login/{tac_code}/init", response_model=api_init_models.TacLoginInitObjWFGetInitModelResponse)
-    async def request_get_init(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/tac-login/{tac_code}/init",
+                response_model=api_init_models.TacLoginInitObjWFGetInitModelResponse,
+                summary="Tac Login Init Page")
+    async def request_get_init(tac_code: str = Path(..., description="Tac Code"),
+                               session:AsyncSession = Depends(get_db),
+                               api_key: str = Depends(api_key_header)):
         logging.info('TacLoginRouter.request_get_init start. tacCode:' + tac_code)
         auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.is_get_init_available)
         response = api_init_models.TacLoginInitObjWFGetInitModelResponse()
@@ -62,8 +66,12 @@ class TacLoginRouter(BaseRouter):
         return response
 
     @staticmethod
-    @router.post("/api/v1_0/tac-login/{tac_code}", response_model=api_models.TacLoginPostModelResponse)
-    async def request_post_with_id(tac_code: str, request_model:api_models.TacLoginPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/tac-login/{tac_code}",
+                 response_model=api_models.TacLoginPostModelResponse,
+                summary="Tac Login Business Flow")
+    async def request_post_with_id(tac_code: str,
+                                   request_model:api_models.TacLoginPostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacLoginRouter.request_post_with_id start. tacCode:' + tac_code)
         auth_dict = BaseRouter.implementation_check(TacLoginRouterConfig.is_post_with_id_available)
         response = api_models.TacLoginPostModelResponse()

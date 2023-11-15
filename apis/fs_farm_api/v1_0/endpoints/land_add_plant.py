@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status 
+from fastapi import APIRouter, Depends, HTTPException, status, Path
 from fastapi.security import APIKeyHeader 
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback  
@@ -23,11 +23,15 @@ class LandAddPlantRouterConfig():
     is_public: bool = False 
 
 class LandAddPlantRouter(BaseRouter):    
-    router = APIRouter() 
+    router = APIRouter(tags=["LandAddPlant"]) 
     
     @staticmethod
-    @router.get("/api/v1_0/land-add-plant/{land_code}/init", response_model=api_init_models.LandAddPlantInitObjWFGetInitModelResponse)
-    async def request_get_init(land_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/land-add-plant/{land_code}/init", 
+                response_model=api_init_models.LandAddPlantInitObjWFGetInitModelResponse,
+                summary="Land Add Plant Init Page")
+    async def request_get_init(land_code: str = Path(..., description="Land Code"), 
+                               session:AsyncSession = Depends(get_db), 
+                               api_key: str = Depends(api_key_header)):
         logging.info('LandAddPlantRouter.request_get_init start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandAddPlantRouterConfig.is_get_init_available)
         
@@ -70,8 +74,12 @@ class LandAddPlantRouter(BaseRouter):
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true]Start
     @staticmethod
-    @router.post("/api/v1_0/land-add-plant/{land_code}", response_model=api_models.LandAddPlantPostModelResponse) 
-    async def request_post_with_id(land_code: str, request_model:api_models.LandAddPlantPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
+    @router.post("/api/v1_0/land-add-plant/{land_code}", 
+                 response_model=api_models.LandAddPlantPostModelResponse,
+                summary="Land Add Plant Business Flow") 
+    async def request_post_with_id(land_code: str, 
+                                   request_model:api_models.LandAddPlantPostModelRequest, 
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
         logging.info('LandAddPlantRouter.request_post_with_id start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandAddPlantRouterConfig.is_post_with_id_available)
         

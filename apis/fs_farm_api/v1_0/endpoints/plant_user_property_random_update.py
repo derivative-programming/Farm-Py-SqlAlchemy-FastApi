@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class PlantUserPropertyRandomUpdateRouterConfig():
     is_delete_available:bool = False
     is_public: bool = False
 class PlantUserPropertyRandomUpdateRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["PlantUserPropertyRandomUpdate"])
 
     @staticmethod
-    @router.post("/api/v1_0/plant-user-property-random-update/{plant_code}", response_model=api_models.PlantUserPropertyRandomUpdatePostModelResponse)
-    async def request_post_with_id(plant_code: str, request_model:api_models.PlantUserPropertyRandomUpdatePostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/plant-user-property-random-update/{plant_code}",
+                 response_model=api_models.PlantUserPropertyRandomUpdatePostModelResponse,
+                summary="Plant User Property Random Update Business Flow")
+    async def request_post_with_id(plant_code: str,
+                                   request_model:api_models.PlantUserPropertyRandomUpdatePostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserPropertyRandomUpdateRouter.request_post_with_id start. plantCode:' + plant_code)
         auth_dict = BaseRouter.implementation_check(PlantUserPropertyRandomUpdateRouterConfig.is_post_with_id_available)
         response = api_models.PlantUserPropertyRandomUpdatePostModelResponse()

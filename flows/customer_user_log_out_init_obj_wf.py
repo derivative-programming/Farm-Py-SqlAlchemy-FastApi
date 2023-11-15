@@ -42,9 +42,9 @@ class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
             customer_bus_obj,
 
         )
-        super()._throw_queued_validation_errors()
-        tac_code_output:uuid = uuid.UUID(int=0)
-        # TODO: add flow logic
+        super()._throw_queued_validation_errors() 
+
+        tac_code_output = self._session_context.tac_code
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowCustomerUserLogOutInitObjWFResult()

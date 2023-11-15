@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class CustomerBuildTempApiKeyRouterConfig():
     is_delete_available:bool = False
     is_public: bool = False
 class CustomerBuildTempApiKeyRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["CustomerBuildTempApiKey"])
 
     @staticmethod
-    @router.post("/api/v1_0/customer-build-temp-api-key/{customer_code}", response_model=api_models.CustomerBuildTempApiKeyPostModelResponse)
-    async def request_post_with_id(customer_code: str, request_model:api_models.CustomerBuildTempApiKeyPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/customer-build-temp-api-key/{customer_code}",
+                 response_model=api_models.CustomerBuildTempApiKeyPostModelResponse,
+                summary="Customer Build Temp Api Key Business Flow")
+    async def request_post_with_id(customer_code: str,
+                                   request_model:api_models.CustomerBuildTempApiKeyPostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('CustomerBuildTempApiKeyRouter.request_post_with_id start. customerCode:' + customer_code)
         auth_dict = BaseRouter.implementation_check(CustomerBuildTempApiKeyRouterConfig.is_post_with_id_available)
         response = api_models.CustomerBuildTempApiKeyPostModelResponse()

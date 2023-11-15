@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
-from .base import Base  # Importing the Base from central module
+from .base import Base,EncryptedType  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -31,7 +31,7 @@ class OrgCustomer(Base):
                                 index=org_customer_constants.customer_id_calculatedIsDBColumnIndexed,
                                  nullable=True)
     email = Column('email',
-                                String,
+                                 String,
                                 default="",
                                 index=org_customer_constants.email_calculatedIsDBColumnIndexed,
                                 nullable=True)

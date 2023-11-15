@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import json
 import uuid
 import pytest
 import pytest_asyncio
@@ -35,6 +36,23 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestPlantUserPropertyRandomUpdatePostModelResponse:
+    @pytest.mark.asyncio
+    async def test_flow_plant_user_property_random_update_initialization(self,session):
+        session_context = SessionContext(dict())
+        flow = FlowPlantUserPropertyRandomUpdate(session_context)
+        assert flow is not None
+    def test_flow_plant_user_property_random_update_result_to_json(self):
+        # Create an instance and set attributes
+        result = FlowPlantUserPropertyRandomUpdateResult()
+        result.context_object_code = uuid.uuid4()
+
+        # Call to_json method
+        json_output = result.to_json()
+        # Parse JSON output
+        data = json.loads(json_output)
+        # Assert individual fields
+        assert data["context_object_code"] == str(result.context_object_code)
+
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):

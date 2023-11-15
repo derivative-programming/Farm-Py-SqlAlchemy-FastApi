@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class CustomerUserLogOutRouterConfig():
     is_delete_available:bool = False
     is_public: bool = False
 class CustomerUserLogOutRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["CustomerUserLogOut"])
 
     @staticmethod
-    @router.get("/api/v1_0/customer-user-log-out/{customer_code}/init", response_model=api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse)
-    async def request_get_init(customer_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/customer-user-log-out/{customer_code}/init",
+                response_model=api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse,
+                summary="Customer User Log Out Init Page")
+    async def request_get_init(customer_code: str = Path(..., description="Customer Code"),
+                               session:AsyncSession = Depends(get_db),
+                               api_key: str = Depends(api_key_header)):
         logging.info('CustomerUserLogOutRouter.request_get_init start. customerCode:' + customer_code)
         auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.is_get_init_available)
         response = api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse()
@@ -62,8 +66,12 @@ class CustomerUserLogOutRouter(BaseRouter):
         return response
 
     @staticmethod
-    @router.post("/api/v1_0/customer-user-log-out/{customer_code}", response_model=api_models.CustomerUserLogOutPostModelResponse)
-    async def request_post_with_id(customer_code: str, request_model:api_models.CustomerUserLogOutPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/customer-user-log-out/{customer_code}",
+                 response_model=api_models.CustomerUserLogOutPostModelResponse,
+                summary="Customer User Log Out Business Flow")
+    async def request_post_with_id(customer_code: str,
+                                   request_model:api_models.CustomerUserLogOutPostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('CustomerUserLogOutRouter.request_post_with_id start. customerCode:' + customer_code)
         auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.is_post_with_id_available)
         response = api_models.CustomerUserLogOutPostModelResponse()

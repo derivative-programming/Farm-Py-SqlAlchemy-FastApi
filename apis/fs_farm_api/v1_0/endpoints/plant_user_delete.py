@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class PlantUserDeleteRouterConfig():
     is_delete_available:bool = False
     is_public: bool = False
 class PlantUserDeleteRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["PlantUserDelete"])
 
     @staticmethod
-    @router.post("/api/v1_0/plant-user-delete/{plant_code}", response_model=api_models.PlantUserDeletePostModelResponse)
-    async def request_post_with_id(plant_code: str, request_model:api_models.PlantUserDeletePostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/plant-user-delete/{plant_code}",
+                 response_model=api_models.PlantUserDeletePostModelResponse,
+                summary="Plant User Delete Business Flow")
+    async def request_post_with_id(plant_code: str,
+                                   request_model:api_models.PlantUserDeletePostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('PlantUserDeleteRouter.request_post_with_id start. plantCode:' + plant_code)
         auth_dict = BaseRouter.implementation_check(PlantUserDeleteRouterConfig.is_post_with_id_available)
         response = api_models.PlantUserDeletePostModelResponse()

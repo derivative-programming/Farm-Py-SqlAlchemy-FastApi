@@ -1,10 +1,10 @@
 
 from helpers.pydantic_serialization import CamelModel,SnakeModel
-from .validation_error import ValidationError
+from .validation_error import ValidationErrorItem
 from typing import List
 from pydantic import Field
 
 class PostResponse(CamelModel):
-    success:bool = False
-    message:str = ""
-    validation_errors:List[ValidationError] = Field(default_factory=list)
+    success:bool = Field(default=False,description="Success")
+    message:str = Field(default="",description="Message")
+    validation_errors:List[ValidationErrorItem] = Field(default_factory=list, description="Validation Errors")

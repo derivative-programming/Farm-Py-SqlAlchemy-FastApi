@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import json
 import uuid
 import pytest
 import pytest_asyncio
@@ -10,12 +11,12 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from business.error_log import ErrorLogBusObj
+from business.plant import PlantBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.error_log_config_resolve_error_log import FlowErrorLogConfigResolveErrorLog, FlowErrorLogConfigResolveErrorLogResult
+from flows.plant_user_delete import FlowPlantUserDelete, FlowPlantUserDeleteResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.error_log import ErrorLogFactory
+from models.factory.plant import PlantFactory
 from models import Base
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
@@ -34,21 +35,38 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class TestErrorLogConfigResolveErrorLogPostModelResponse:
+class TestPlantUserDeletePostModelResponse:
+    @pytest.mark.asyncio
+    async def test_flow_plant_user_delete_initialization(self,session):
+        session_context = SessionContext(dict())
+        flow = FlowPlantUserDelete(session_context)
+        assert flow is not None
+    def test_flow_plant_user_delete_result_to_json(self):
+        # Create an instance and set attributes
+        result = FlowPlantUserDeleteResult()
+        result.context_object_code = uuid.uuid4()
+
+        # Call to_json method
+        json_output = result.to_json()
+        # Parse JSON output
+        data = json.loads(json_output)
+        # Assert individual fields
+        assert data["context_object_code"] == str(result.context_object_code)
+
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         session_context = SessionContext(dict())
-        flow = FlowErrorLogConfigResolveErrorLog(session_context)
-        error_log = await ErrorLogFactory.create_async(session)
-        error_log_bus_obj = ErrorLogBusObj(session)
-        await error_log_bus_obj.load(error_log_obj_instance=error_log)
-        role_required = "Config"
+        flow = FlowPlantUserDelete(session_context)
+        plant = await PlantFactory.create_async(session)
+        plant_bus_obj = PlantBusObj(session)
+        await plant_bus_obj.load(plant_obj_instance=plant)
+        role_required = "User"
 
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    error_log_bus_obj,
+                    plant_bus_obj,
 
                 )
         session_context.role_name_csv = role_required
@@ -62,15 +80,15 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
         if customerCodeMatchRequired == True:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    error_log_bus_obj,
+                    plant_bus_obj,
 
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(
         #     session=session,
         #     session_context=session_context,
-        #     error_log_code=error_log.code,
+        #     plant_code=plant.code,
         #     request=request_instance
         #     )
-        # assert isinstance(result,FlowErrorLogConfigResolveErrorLogResult)
+        # assert isinstance(result,FlowPlantUserDeleteResult)
 

@@ -46,8 +46,7 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
         )
         super()._throw_queued_validation_errors()
         email_output:str = ""
-        password_output:str = ""
-        # TODO: add flow logic
+        password_output:str = "" 
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacLoginInitObjWFResult()

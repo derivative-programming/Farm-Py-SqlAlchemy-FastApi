@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class LandUserPlantMultiSelectToEditableRouterConfig():
     is_delete_available:bool = False
     is_public: bool = False
 class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["LandUserPlantMultiSelectToEditable"])
 
     @staticmethod
-    @router.post("/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}", response_model=api_models.LandUserPlantMultiSelectToEditablePostModelResponse)
-    async def request_post_with_id(land_code: str, request_model:api_models.LandUserPlantMultiSelectToEditablePostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}",
+                 response_model=api_models.LandUserPlantMultiSelectToEditablePostModelResponse,
+                summary="Land User Plant Multi Select To Editable Business Flow")
+    async def request_post_with_id(land_code: str,
+                                   request_model:api_models.LandUserPlantMultiSelectToEditablePostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandUserPlantMultiSelectToEditableRouter.request_post_with_id start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandUserPlantMultiSelectToEditableRouterConfig.is_post_with_id_available)
         response = api_models.LandUserPlantMultiSelectToEditablePostModelResponse()

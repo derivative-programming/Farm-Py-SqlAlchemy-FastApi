@@ -5,7 +5,7 @@ from managers import LandManager
 from managers import FlavorManager
 from models import Plant, Base
 import configparser
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.exceptions import RequestValidationError
 from database import get_db, engine
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -50,6 +50,10 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
         content={"detail": exc.detail}
     )
 
+
+@app.get("/")
+async def read_root():
+	return RedirectResponse(url="/redoc")
 
 @app.on_event("startup")
 async def startup_event():

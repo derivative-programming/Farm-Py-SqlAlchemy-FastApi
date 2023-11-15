@@ -10,14 +10,15 @@ from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field
-from apis.models.validation_error import ValidationError
+from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
-    success:bool = False
-    message:str = ""
-    validation_errors:List[ValidationError] = Field(default_factory=list)
-    tac_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
+    success:bool = Field(default=False, description="Success")
+    message:str = Field(default="", description="Message")
+    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
+    tac_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+                                      description="Tac Code")
 
     def load_flow_response(self,data:FlowCustomerUserLogOutInitObjWFResult):
         self.validation_errors = list()

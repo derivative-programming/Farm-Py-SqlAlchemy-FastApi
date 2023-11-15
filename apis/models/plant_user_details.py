@@ -8,9 +8,11 @@ from helpers import TypeConversion
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 from apis.models.list_model import ListModel
 from helpers import SessionContext
+from helpers.formatting import snake_to_camel
 from models import Plant
 from reports.plant_user_details import ReportManagerPlantUserDetails
 from reports.report_request_validation_error import ReportRequestValidationError
+from apis.models.validation_error import ValidationErrorItem
 import apis.models as view_models
 from models import Plant
 from helpers.pydantic_serialization import CamelModel,SnakeModel,BaseModel
@@ -19,12 +21,12 @@ import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
 ### request. expect camel case. use marshmallow to validate.
-class PlantUserDetailsGetModelRequest(SnakeModel):
-    page_number:int = 0
-    item_count_per_page:int = 0
-    order_by_column_name:str = ""
-    order_by_descending:bool = False
-    force_error_message:str = ""
+class PlantUserDetailsGetModelRequest(CamelModel):
+    page_number:int = Field(default=0, description="Page Number")
+    item_count_per_page:int = Field(default=0, description="Item Count Per Page")
+    order_by_column_name:str = Field(default="", description="Order By Column Name")
+    order_by_descending:bool = Field(default=False, description="Order By Decending")
+    force_error_message:str = Field(default="", description="Force Error Message")
 
     class Config:
         json_encoders = {
@@ -36,38 +38,36 @@ class PlantUserDetailsGetModelRequest(SnakeModel):
     def to_dict_snake_serialized(self):
         data = json.loads(self.model_dump_json())
         return data
-    def _to_camel(self,string: str) -> str:
-        return ''.join(word.capitalize() if i != 0 else word for i, word in enumerate(string.split('_')))
     def to_dict_camel(self):
         data = self.model_dump()
-        return {self._to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         data = json.loads(self.model_dump_json() )
-        return {self._to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
 class PlantUserDetailsGetModelResponseItem(CamelModel):
-    flavor_name:str = ""
-    is_delete_allowed:bool = False
-    is_edit_allowed:bool = False
-    other_flavor:str = ""
-    some_big_int_val:int = 0
-    some_bit_val:bool = False
-    some_date_val:date = Field(default_factory=TypeConversion.get_default_date)
-    some_decimal_val:Decimal = Decimal(0)
-    some_email_address:str = ""
-    some_float_val:float = 0
-    some_int_val:int = 0
-    some_money_val:Decimal = Decimal(0)
-    some_n_var_char_val:str = ""
-    some_phone_number:str = ""
-    some_text_val:str = ""
-    some_uniqueidentifier_val:UUID4 = uuid.UUID(int=0)
-    some_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    some_var_char_val:str = ""
-    phone_num_conditional_on_is_editable:str = ""
-    n_var_char_as_url:str = ""
-    update_button_text_link_plant_code:UUID4 = uuid.UUID(int=0)
-    random_property_updates_link_plant_code:UUID4 = uuid.UUID(int=0)
-    back_to_dashboard_link_tac_code:UUID4 = uuid.UUID(int=0)
+    flavor_name:str = Field(default="", description="Flavor Name")
+    is_delete_allowed:bool = Field(default=False, description="Is Delete Allowed")
+    is_edit_allowed:bool = Field(default=False, description="Is Edit Allowed")
+    other_flavor:str = Field(default="", description="Other Flavor")
+    some_big_int_val:int = Field(default=0, description="Some Big Int Val")
+    some_bit_val:bool = Field(default=False, description="Some Bit Val")
+    some_date_val:date = Field(default_factory=TypeConversion.get_default_date, description="Some Date Time Val")
+    some_decimal_val:Decimal = Field(default=Decimal(0), description="Some Decimal Val")
+    some_email_address:str = Field(default="", description="Some Email Address")
+    some_float_val:float = Field(default=0, description="Some Float Val")
+    some_int_val:int = Field(default=0, description="Some Int Val")
+    some_money_val:Decimal = Field(default=Decimal(0), description="Some Money Val")
+    some_n_var_char_val:str = Field(default="", description="Some N Var Char Val")
+    some_phone_number:str = Field(default="", description="Some Phone Number")
+    some_text_val:str = Field(default="", description="Some Text Val")
+    some_uniqueidentifier_val:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Some Uniqueidentifier Val")
+    some_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time, description="Some UTC Date Time Val")
+    some_var_char_val:str = Field(default="", description="Some Var Char Val")
+    phone_num_conditional_on_is_editable:str = Field(default="", description="Phone Num Conditional On Is Editable")
+    n_var_char_as_url:str = Field(default="", description="N Var Char As Url")
+    update_button_text_link_plant_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Update Button Text Link Plant Code")
+    random_property_updates_link_plant_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Random Property Updates Link Plant Code")
+    back_to_dashboard_link_tac_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Back To Dashboard Link Tac Code")
 
     def load_report_item(self,data:ReportItemPlantUserDetails):
         self.flavor_name = data.flavor_name
@@ -128,6 +128,9 @@ class PlantUserDetailsGetModelResponse(ListModel):
             self.validation_errors = list()
             for key in ve.error_dict:
                 self.message = self.message + ve.error_dict[key] + ','
-                # self.validation_errors.append(view_models.ValidationError(key,ve.error_dict[key]))
+                validation_error = ValidationErrorItem()
+                validation_error.property = snake_to_camel(key)
+                validation_error.message = ve.error_dict[key]
+                self.validation_errors.append(validation_error)
     def to_json(self):
         return self.model_dump_json()

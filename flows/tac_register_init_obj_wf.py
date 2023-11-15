@@ -55,8 +55,7 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         password_output:str = ""
         confirm_password_output:str = ""
         first_name_output:str = ""
-        last_name_output:str = ""
-        # TODO: add flow logic
+        last_name_output:str = "" 
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacRegisterInitObjWFResult()

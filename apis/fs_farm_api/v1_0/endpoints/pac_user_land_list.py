@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class PacUserLandListRouterConfig():
     is_delete_available:bool = False
     is_public: bool = False
 class PacUserLandListRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["PacUserLandList"])
 
     @staticmethod
-    @router.get("/api/v1_0/pac-user-land-list/{pac_code}/init", response_model=api_init_models.PacUserLandListInitReportGetInitModelResponse)
-    async def request_get_init(pac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/pac-user-land-list/{pac_code}/init",
+                response_model=api_init_models.PacUserLandListInitReportGetInitModelResponse,
+                summary="Pac User Land List Init Page")
+    async def request_get_init(pac_code: str = Path(..., description="Pac Code"),
+                               session:AsyncSession = Depends(get_db),
+                               api_key: str = Depends(api_key_header)):
         logging.info('PacUserLandListRouter.request_get_init start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserLandListRouterConfig.is_get_init_available)
         response = api_init_models.PacUserLandListInitReportGetInitModelResponse()
@@ -62,8 +66,13 @@ class PacUserLandListRouter(BaseRouter):
         return response
 
     @staticmethod
-    @router.get("/api/v1_0/pac-user-land-list/{pac_code}", response_model=api_models.PacUserLandListGetModelResponse)
-    async def request_get_with_id(pac_code: str, request_model:api_models.PacUserLandListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/pac-user-land-list/{pac_code}",
+                response_model=api_models.PacUserLandListGetModelResponse,
+                summary="Pac User Land List Report")
+    async def request_get_with_id(pac_code: str = Path(..., description="Pac Code"),
+                                  request_model:api_models.PacUserLandListGetModelRequest = Depends(),
+                                  session:AsyncSession = Depends(get_db),
+                                  api_key: str = Depends(api_key_header)):
         logging.info('PacUserLandListRouter.request_get_with_id start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserLandListRouterConfig.is_get_with_id_available)
         response = api_models.PacUserLandListGetModelResponse()
@@ -97,8 +106,13 @@ class PacUserLandListRouter(BaseRouter):
         return response
 
     @staticmethod
-    @router.get("/api/v1_0/pac-user-land-list/{pac_code}/to-csv", response_class=FileResponse)
-    async def request_get_with_id_to_csv(pac_code: str, request_model:api_models.PacUserLandListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/pac-user-land-list/{pac_code}/to-csv",
+                response_class=FileResponse,
+                summary="Pac User Land List Report to CSV")
+    async def request_get_with_id_to_csv(pac_code: str = Path(..., description="Pac Code"),
+                                         request_model:api_models.PacUserLandListGetModelRequest = Depends(),
+                                         session:AsyncSession = Depends(get_db),
+                                         api_key: str = Depends(api_key_header)):
         logging.info('PacUserLandListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserLandListRouterConfig.is_get_to_csv_available)
         response = api_models.PacUserLandListGetModelResponse()

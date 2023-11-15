@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
-from .base import Base  # Importing the Base from central module
+from .base import Base,EncryptedType  # Importing the Base from central module
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -31,7 +31,7 @@ class DateGreaterThanFilter(Base):
                                 index=date_greater_than_filter_constants.day_count_calculatedIsDBColumnIndexed,
                           nullable=True)
     description = Column('description',
-                          String,
+                            String,
                           default="",
                                 index=date_greater_than_filter_constants.description_calculatedIsDBColumnIndexed,
                           nullable=True)
@@ -46,12 +46,12 @@ class DateGreaterThanFilter(Base):
                                 index=date_greater_than_filter_constants.is_active_calculatedIsDBColumnIndexed,
                                nullable=True)
     lookup_enum_name = Column('lookup_enum_name',
-                          String,
+                            String,
                           default="",
                                 index=date_greater_than_filter_constants.lookup_enum_name_calculatedIsDBColumnIndexed,
                           nullable=True)
     name = Column('name',
-                          String,
+                            String,
                           default="",
                                 index=date_greater_than_filter_constants.name_calculatedIsDBColumnIndexed,
                           nullable=True)

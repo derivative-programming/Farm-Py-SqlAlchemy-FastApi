@@ -1,6 +1,12 @@
 ##GENIF[calculatedIsParentObjectAvailable=false]Start
 //GENDELETETHISFILE
 ##GENIF[calculatedIsParentObjectAvailable=false]End  
+##GENLOOPPropStart
+##GENIF[isFK=true,isFKLookup=false,calculatedisFKObjectParentOFOwnerObject=false]Start 
+#TODO this is an intersection table. skip the test for now
+//GENDELETETHISFILE
+##GENIF[isFK=true,isFKLookup=false,calculatedisFKObjectParentOFOwnerObject=false]End
+##GENLOOPPropEnd
 
     @pytest.mark.asyncio
     async def test_build_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName):

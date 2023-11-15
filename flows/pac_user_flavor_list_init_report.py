@@ -43,9 +43,7 @@ class FlowPacUserFlavorListInitReport(BaseFlowPacUserFlavorListInitReport):
 
         )
         super()._throw_queued_validation_errors()
-
-        # TODO: add flow logic
-
+ 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowPacUserFlavorListInitReportResult()
         result.context_object_code = pac_bus_obj.code

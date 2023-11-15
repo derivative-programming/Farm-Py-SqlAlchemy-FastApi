@@ -44,7 +44,7 @@ class FlowPlantUserDelete(BaseFlowPlantUserDelete):
         )
         super()._throw_queued_validation_errors()
 
-        # TODO: add flow logic
+        await plant_bus_obj.delete()
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowPlantUserDeleteResult()

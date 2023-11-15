@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
@@ -23,11 +23,15 @@ class TacRegisterRouterConfig():
     is_delete_available:bool = False
     is_public: bool = True
 class TacRegisterRouter(BaseRouter):
-    router = APIRouter()
+    router = APIRouter(tags=["TacRegister"])
 
     @staticmethod
-    @router.get("/api/v1_0/tac-register/{tac_code}/init", response_model=api_init_models.TacRegisterInitObjWFGetInitModelResponse)
-    async def request_get_init(tac_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/tac-register/{tac_code}/init",
+                response_model=api_init_models.TacRegisterInitObjWFGetInitModelResponse,
+                summary="Tac Register Init Page")
+    async def request_get_init(tac_code: str = Path(..., description="Tac Code"),
+                               session:AsyncSession = Depends(get_db),
+                               api_key: str = Depends(api_key_header)):
         logging.info('TacRegisterRouter.request_get_init start. tacCode:' + tac_code)
         auth_dict = BaseRouter.implementation_check(TacRegisterRouterConfig.is_get_init_available)
         response = api_init_models.TacRegisterInitObjWFGetInitModelResponse()
@@ -62,8 +66,12 @@ class TacRegisterRouter(BaseRouter):
         return response
 
     @staticmethod
-    @router.post("/api/v1_0/tac-register/{tac_code}", response_model=api_models.TacRegisterPostModelResponse)
-    async def request_post_with_id(tac_code: str, request_model:api_models.TacRegisterPostModelRequest, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post("/api/v1_0/tac-register/{tac_code}",
+                 response_model=api_models.TacRegisterPostModelResponse,
+                summary="Tac Register Business Flow")
+    async def request_post_with_id(tac_code: str,
+                                   request_model:api_models.TacRegisterPostModelRequest,
+                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('TacRegisterRouter.request_post_with_id start. tacCode:' + tac_code)
         auth_dict = BaseRouter.implementation_check(TacRegisterRouterConfig.is_post_with_id_available)
         response = api_models.TacRegisterPostModelResponse()

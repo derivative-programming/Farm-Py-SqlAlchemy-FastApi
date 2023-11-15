@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import json
 import uuid
 import pytest
 import pytest_asyncio
@@ -12,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey, FlowCustomerBuildTempApiKeyResult
+from flows.customer_user_log_out import FlowCustomerUserLogOut, FlowCustomerUserLogOutResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
@@ -34,16 +35,33 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class TestCustomerBuildTempApiKeyPostModelResponse:
+class TestCustomerUserLogOutPostModelResponse:
+    @pytest.mark.asyncio
+    async def test_flow_customer_user_log_out_initialization(self,session):
+        session_context = SessionContext(dict())
+        flow = FlowCustomerUserLogOut(session_context)
+        assert flow is not None
+    def test_flow_customer_user_log_out_result_to_json(self):
+        # Create an instance and set attributes
+        result = FlowCustomerUserLogOutResult()
+        result.context_object_code = uuid.uuid4()
+
+        # Call to_json method
+        json_output = result.to_json()
+        # Parse JSON output
+        data = json.loads(json_output)
+        # Assert individual fields
+        assert data["context_object_code"] == str(result.context_object_code)
+
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         session_context = SessionContext(dict())
-        flow = FlowCustomerBuildTempApiKey(session_context)
+        flow = FlowCustomerUserLogOut(session_context)
         customer = await CustomerFactory.create_async(session)
         customer_bus_obj = CustomerBusObj(session)
         await customer_bus_obj.load(customer_obj_instance=customer)
-        role_required = ""
+        role_required = "User"
 
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
@@ -72,5 +90,5 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         #     customer_code=customer.code,
         #     request=request_instance
         #     )
-        # assert isinstance(result,FlowCustomerBuildTempApiKeyResult)
+        # assert isinstance(result,FlowCustomerUserLogOutResult)
 

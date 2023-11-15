@@ -9,7 +9,7 @@ class EncryptedType(TypeDecorator):
 
     def process_bind_param(self, value, dialect):
         if value is not None:
-            value = encrypt_message(value.encode())
+            value = encrypt_message(value)
         return value
 
     def process_result_value(self, value, dialect):

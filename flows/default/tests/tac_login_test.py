@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import json
 import uuid
 import pytest
 import pytest_asyncio
@@ -10,12 +11,12 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from business.customer import CustomerBusObj
+from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.customer_user_log_out import FlowCustomerUserLogOut, FlowCustomerUserLogOutResult
+from flows.tac_login import FlowTacLogin, FlowTacLoginResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.customer import CustomerFactory
+from models.factory.tac import TacFactory
 from models import Base
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
@@ -34,22 +35,51 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class TestCustomerUserLogOutPostModelResponse:
+class TestTacLoginPostModelResponse:
+    @pytest.mark.asyncio
+    async def test_flow_tac_login_initialization(self,session):
+        session_context = SessionContext(dict())
+        flow = FlowTacLogin(session_context)
+        assert flow is not None
+    def test_flow_tac_login_result_to_json(self):
+        # Create an instance and set attributes
+        result = FlowTacLoginResult()
+        result.context_object_code = uuid.uuid4()
+        result.customer_code = uuid.uuid4()
+        result.email = "test flavor"
+        result.user_code_value = uuid.uuid4()
+        result.utc_offset_in_minutes = 123
+        result.role_name_csv_list = "test flavor"
+        result.api_key = "test flavor"
+        # Call to_json method
+        json_output = result.to_json()
+        # Parse JSON output
+        data = json.loads(json_output)
+        # Assert individual fields
+        assert data["context_object_code"] == str(result.context_object_code)
+        assert data["customer_code"] == str(result.customer_code)
+        assert data["email"] == result.email
+        assert data["user_code_value"] == str(result.user_code_value)
+        assert data["utc_offset_in_minutes"] == result.utc_offset_in_minutes
+        assert data["role_name_csv_list"] == result.role_name_csv_list
+        assert data["api_key"] == result.api_key
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         session_context = SessionContext(dict())
-        flow = FlowCustomerUserLogOut(session_context)
-        customer = await CustomerFactory.create_async(session)
-        customer_bus_obj = CustomerBusObj(session)
-        await customer_bus_obj.load(customer_obj_instance=customer)
-        role_required = "User"
-
+        flow = FlowTacLogin(session_context)
+        tac = await TacFactory.create_async(session)
+        tac_bus_obj = TacBusObj(session)
+        await tac_bus_obj.load(tac_obj_instance=tac)
+        role_required = ""
+        email:str = "",
+        password:str = "",
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    customer_bus_obj,
-
+                    tac_bus_obj,
+                    email,
+                    password,
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -62,15 +92,16 @@ class TestCustomerUserLogOutPostModelResponse:
         if customerCodeMatchRequired == True:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    customer_bus_obj,
-
+                    tac_bus_obj,
+                    email,
+                    password,
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(
         #     session=session,
         #     session_context=session_context,
-        #     customer_code=customer.code,
+        #     tac_code=tac.code,
         #     request=request_instance
         #     )
-        # assert isinstance(result,FlowCustomerUserLogOutResult)
+        # assert isinstance(result,FlowTacLoginResult)
 

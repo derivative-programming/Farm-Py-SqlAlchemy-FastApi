@@ -1,6 +1,6 @@
 import tempfile
 import uuid
-from fastapi import APIRouter, Depends 
+from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback  
@@ -25,13 +25,17 @@ class LandPlantListRouterConfig():
     is_public: bool = False 
 
 class LandPlantListRouter(BaseRouter):   
-    router = APIRouter()
+    router = APIRouter(tags=["LandPlantList"])
      
 ##GENTrainingBlock[caseisGetInitAvailable]Start
 ##GENLearn[isGetInitAvailable=true]Start
     @staticmethod
-    @router.get("/api/v1_0/land-plant-list/{land_code}/init", response_model=api_init_models.LandPlantListInitReportGetInitModelResponse)  
-    async def request_get_init(land_code: str, session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/land-plant-list/{land_code}/init", 
+                response_model=api_init_models.LandPlantListInitReportGetInitModelResponse,
+                summary="Land Plant List Init Page")  
+    async def request_get_init(land_code: str = Path(..., description="Land Code"), 
+                               session:AsyncSession = Depends(get_db), 
+                               api_key: str = Depends(api_key_header)):
         logging.info('LandPlantListRouter.request_get_init start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.is_get_init_available)
         
@@ -76,8 +80,13 @@ class LandPlantListRouter(BaseRouter):
 ##GENTrainingBlock[caseisGetWithIdAvailable]Start 
 ##GENLearn[isGetWithIdAvailable=true]Start
     @staticmethod
-    @router.get("/api/v1_0/land-plant-list/{land_code}", response_model=api_models.LandPlantListGetModelResponse)
-    async def request_get_with_id(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(),  session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)): 
+    @router.get("/api/v1_0/land-plant-list/{land_code}", 
+                response_model=api_models.LandPlantListGetModelResponse,
+                summary="Land Plant List Report")
+    async def request_get_with_id(land_code: str = Path(..., description="Land Code"), 
+                                  request_model:api_models.LandPlantListGetModelRequest = Depends(),  
+                                  session:AsyncSession = Depends(get_db), 
+                                  api_key: str = Depends(api_key_header)): 
         logging.info('LandPlantListRouter.request_get_with_id start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.is_get_with_id_available)
         
@@ -117,8 +126,13 @@ class LandPlantListRouter(BaseRouter):
 ##GENTrainingBlock[caseisGetToCsvAvailable]Start 
 ##GENLearn[isGetToCsvAvailable=true]Start
     @staticmethod
-    @router.get("/api/v1_0/land-plant-list/{land_code}/to-csv", response_class=FileResponse) 
-    async def request_get_with_id_to_csv(land_code: str, request_model:api_models.LandPlantListGetModelRequest = Depends(), session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.get("/api/v1_0/land-plant-list/{land_code}/to-csv", 
+                response_class=FileResponse,
+                summary="Land Plant List Report to CSV") 
+    async def request_get_with_id_to_csv(land_code: str = Path(..., description="Land Code"), 
+                                         request_model:api_models.LandPlantListGetModelRequest = Depends(), 
+                                         session:AsyncSession = Depends(get_db), 
+                                         api_key: str = Depends(api_key_header)):
         logging.info('LandPlantListRouter.request_get_with_id_to_csv start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandPlantListRouterConfig.is_get_to_csv_available)
         

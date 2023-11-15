@@ -10,31 +10,33 @@ from business.land import LandBusObj
 from flows.base.flow_validation_error import FlowValidationError
 from helpers.pydantic_serialization import CamelModel,SnakeModel
 from pydantic import Field
-from apis.models.validation_error import ValidationError
+from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class LandPlantListInitReportGetInitModelResponse(CamelModel):
-    success:bool = False
-    message:str = ""
-    validation_errors:List[ValidationError] = Field(default_factory=list)
-    some_int_val:int = 0
-    some_big_int_val:int = 0
-    some_bit_val:bool = False
-    is_edit_allowed:bool = False
-    is_delete_allowed:bool = False
-    some_float_val:float = 0
-    some_decimal_val:Decimal = Decimal(0)
-    some_min_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time)
-    some_min_date_val:date = Field(default_factory=TypeConversion.get_default_date)
-    some_money_val:Decimal = Decimal(0)
-    some_n_var_char_val:str = ""
-    some_var_char_val:str = ""
-    some_text_val:str = ""
-    some_phone_number:str = ""
-    some_email_address:str = ""
-    land_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
-    tac_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'))
-    land_name:str=""
+    success:bool = Field(default=False, description="Success")
+    message:str = Field(default="", description="Message")
+    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
+    some_int_val:int = Field(default=0, description="Some Int Val")
+    some_big_int_val:int = Field(default=0, description="Some Big Int Val")
+    some_bit_val:bool = Field(default=False, description="Some Bit Val")
+    is_edit_allowed:bool = Field(default=False, description="Is Edit Allowed")
+    is_delete_allowed:bool = Field(default=False, description="Is Delete Allowed")
+    some_float_val:float = Field(default=0, description="Some Float Val")
+    some_decimal_val:Decimal = Field(default=Decimal(0), description="Some Decimal Val")
+    some_min_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time, description="Some Min UTC Date Time Val")
+    some_min_date_val:date = Field(default_factory=TypeConversion.get_default_date, description="Some Min Date Val")
+    some_money_val:Decimal = Field(default=Decimal(0), description="Some Money Val")
+    some_n_var_char_val:str = Field(default="", description="Some N Var Char Val")
+    some_var_char_val:str = Field(default="", description="Some Var Char Val")
+    some_text_val:str = Field(default="", description="Some Text Val")
+    some_phone_number:str = Field(default="", description="Some Phone Number")
+    some_email_address:str = Field(default="", description="Some Email Address")
+    land_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+                                      description="Land Code")
+    tac_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+                                      description="Tac Code")
+    land_name:str=Field(default="", description="Land Name")
 
     def load_flow_response(self,data:FlowLandPlantListInitReportResult):
         self.validation_errors = list()

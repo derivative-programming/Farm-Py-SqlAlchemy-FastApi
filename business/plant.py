@@ -500,7 +500,8 @@ class PlantBusObj(BaseBusObj):
     async def delete(self):
         if self.plant.plant_id > 0:
             plant_manager = PlantManager(self.session)
-            self.plant = await plant_manager.delete(self.plant.plant_id)
+            await plant_manager.delete(self.plant.plant_id)
+            self.plant = None
  
     def get_plant_obj(self) -> Plant:
         return self.plant

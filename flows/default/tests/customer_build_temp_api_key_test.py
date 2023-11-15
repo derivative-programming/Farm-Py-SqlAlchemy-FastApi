@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import json
 import uuid
 import pytest
 import pytest_asyncio
@@ -10,12 +11,12 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from business.tac import TacBusObj
+from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.tac_login import FlowTacLogin, FlowTacLoginResult
+from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey, FlowCustomerBuildTempApiKeyResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.tac import TacFactory
+from models.factory.customer import CustomerFactory
 from models import Base
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
@@ -34,24 +35,39 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class TestTacLoginPostModelResponse:
+class TestCustomerBuildTempApiKeyPostModelResponse:
+    @pytest.mark.asyncio
+    async def test_flow_customer_build_temp_api_key_initialization(self,session):
+        session_context = SessionContext(dict())
+        flow = FlowCustomerBuildTempApiKey(session_context)
+        assert flow is not None
+    def test_flow_customer_build_temp_api_key_result_to_json(self):
+        # Create an instance and set attributes
+        result = FlowCustomerBuildTempApiKeyResult()
+        result.context_object_code = uuid.uuid4()
+        result.tmp_org_api_key_code = uuid.uuid4()
+        # Call to_json method
+        json_output = result.to_json()
+        # Parse JSON output
+        data = json.loads(json_output)
+        # Assert individual fields
+        assert data["context_object_code"] == str(result.context_object_code)
+        assert data["tmp_org_api_key_code"] == str(result.tmp_org_api_key_code)
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         session_context = SessionContext(dict())
-        flow = FlowTacLogin(session_context)
-        tac = await TacFactory.create_async(session)
-        tac_bus_obj = TacBusObj(session)
-        await tac_bus_obj.load(tac_obj_instance=tac)
+        flow = FlowCustomerBuildTempApiKey(session_context)
+        customer = await CustomerFactory.create_async(session)
+        customer_bus_obj = CustomerBusObj(session)
+        await customer_bus_obj.load(customer_obj_instance=customer)
         role_required = ""
-        email:str = "",
-        password:str = "",
+
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    tac_bus_obj,
-                    email,
-                    password,
+                    customer_bus_obj,
+
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -64,16 +80,15 @@ class TestTacLoginPostModelResponse:
         if customerCodeMatchRequired == True:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    tac_bus_obj,
-                    email,
-                    password,
+                    customer_bus_obj,
+
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(
         #     session=session,
         #     session_context=session_context,
-        #     tac_code=tac.code,
+        #     customer_code=customer.code,
         #     request=request_instance
         #     )
-        # assert isinstance(result,FlowTacLoginResult)
+        # assert isinstance(result,FlowCustomerBuildTempApiKeyResult)
 

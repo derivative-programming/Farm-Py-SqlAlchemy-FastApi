@@ -1,5 +1,6 @@
 import asyncio
 from decimal import Decimal
+import json
 import uuid
 import pytest
 import pytest_asyncio
@@ -10,12 +11,12 @@ from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from business.land import LandBusObj
+from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.land_user_plant_multi_select_to_not_editable import FlowLandUserPlantMultiSelectToNotEditable, FlowLandUserPlantMultiSelectToNotEditableResult
+from flows.tac_register import FlowTacRegister, FlowTacRegisterResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.land import LandFactory
+from models.factory.tac import TacFactory
 from models import Base
 from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
@@ -34,22 +35,57 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
+class TestTacRegisterPostModelResponse:
+    @pytest.mark.asyncio
+    async def test_flow_tac_register_initialization(self,session):
+        session_context = SessionContext(dict())
+        flow = FlowTacRegister(session_context)
+        assert flow is not None
+    def test_flow_tac_register_result_to_json(self):
+        # Create an instance and set attributes
+        result = FlowTacRegisterResult()
+        result.context_object_code = uuid.uuid4()
+        result.customer_code = uuid.uuid4()
+        result.email = "test flavor"
+        result.user_code_value = uuid.uuid4()
+        result.utc_offset_in_minutes = 123
+        result.role_name_csv_list = "test flavor"
+        result.api_key = "test flavor"
+        # Call to_json method
+        json_output = result.to_json()
+        # Parse JSON output
+        data = json.loads(json_output)
+        # Assert individual fields
+        assert data["context_object_code"] == str(result.context_object_code)
+        assert data["customer_code"] == str(result.customer_code)
+        assert data["email"] == result.email
+        assert data["user_code_value"] == str(result.user_code_value)
+        assert data["utc_offset_in_minutes"] == result.utc_offset_in_minutes
+        assert data["role_name_csv_list"] == result.role_name_csv_list
+        assert data["api_key"] == result.api_key
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         session_context = SessionContext(dict())
-        flow = FlowLandUserPlantMultiSelectToNotEditable(session_context)
-        land = await LandFactory.create_async(session)
-        land_bus_obj = LandBusObj(session)
-        await land_bus_obj.load(land_obj_instance=land)
-        role_required = "User"
-        plant_code_list_csv:str = "",
+        flow = FlowTacRegister(session_context)
+        tac = await TacFactory.create_async(session)
+        tac_bus_obj = TacBusObj(session)
+        await tac_bus_obj.load(tac_obj_instance=tac)
+        role_required = ""
+        email:str = "",
+        password:str = "",
+        confirm_password:str = "",
+        first_name:str = "",
+        last_name:str = "",
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    land_bus_obj,
-                    plant_code_list_csv,
+                    tac_bus_obj,
+                    email,
+                    password,
+                    confirm_password,
+                    first_name,
+                    last_name,
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -62,15 +98,19 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
         if customerCodeMatchRequired == True:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    land_bus_obj,
-                    plant_code_list_csv,
+                    tac_bus_obj,
+                    email,
+                    password,
+                    confirm_password,
+                    first_name,
+                    last_name,
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(
         #     session=session,
         #     session_context=session_context,
-        #     land_code=land.code,
+        #     tac_code=tac.code,
         #     request=request_instance
         #     )
-        # assert isinstance(result,FlowLandUserPlantMultiSelectToNotEditableResult)
+        # assert isinstance(result,FlowTacRegisterResult)
 

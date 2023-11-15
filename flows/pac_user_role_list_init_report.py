@@ -43,9 +43,7 @@ class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
 
         )
         super()._throw_queued_validation_errors()
-
-        # TODO: add flow logic
-
+ 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowPacUserRoleListInitReportResult()
         result.context_object_code = pac_bus_obj.code
