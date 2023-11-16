@@ -40,11 +40,10 @@ class CustomerUserLogOutRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 customer_code = session_context.check_context_code("CustomerCode", customer_code)
                 init_request = api_init_models.CustomerUserLogOutInitObjWFGetInitModelRequest()
                 response = await init_request.process_request(
-                    session,
                     session_context,
                     customer_code,
                     response
@@ -80,12 +79,11 @@ class CustomerUserLogOutRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 customer_code = session_context.check_context_code("CustomerCode", customer_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
-                    session,
                     session_context,
                     customer_code,
                     request_model

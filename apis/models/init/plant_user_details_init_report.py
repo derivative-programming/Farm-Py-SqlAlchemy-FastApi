@@ -3,6 +3,7 @@ from decimal import Decimal
 import json
 from typing import List
 import uuid
+from apis.models import validation_error
 from helpers import TypeConversion
 from flows.plant_user_details_init_report import FlowPlantUserDetailsInitReportResult, FlowPlantUserDetailsInitReport
 from helpers import SessionContext
@@ -32,13 +33,12 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         plant_code:uuid,
                         response:PlantUserDetailsInitReportGetInitModelResponse) -> PlantUserDetailsInitReportGetInitModelResponse:
         try:
             logging.info("loading model...PlantUserDetailsInitReportGetInitModelRequest")
-            plant_bus_obj = PlantBusObj(session=session)
+            plant_bus_obj = PlantBusObj(session_context)
             await plant_bus_obj.load(code=plant_code)
             if(plant_bus_obj.get_plant_obj() is None):
                 logging.info("Invalid plant_code")
@@ -56,6 +56,6 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
+                response.validation_errors.append(validation_error(key,ve.error_dict[key]))
         return response
 

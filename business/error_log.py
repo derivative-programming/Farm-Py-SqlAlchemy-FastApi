@@ -2,21 +2,17 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.pac import PacBusObj #PacID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import PacManager as PacIDManager #PacID
 from managers import ErrorLogManager
 from models import ErrorLog
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-class ErrorLogSessionNotFoundError(Exception):
-    pass
 class ErrorLogInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -27,10 +23,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class ErrorLogBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise ErrorLogSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.error_log = ErrorLog()
     @property
     def error_log_id(self):
@@ -213,32 +209,32 @@ class ErrorLogBusObj(BaseBusObj):
                    error_log_obj_instance:ErrorLog=None,
                    error_log_dict:dict=None):
         if error_log_id and self.error_log.error_log_id is None:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             error_log_obj = await error_log_manager.get_by_id(error_log_id)
             self.error_log = error_log_obj
         if code and self.error_log.error_log_id is None:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             error_log_obj = await error_log_manager.get_by_code(code)
             self.error_log = error_log_obj
         if error_log_obj_instance and self.error_log.error_log_id is None:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             error_log_obj = await error_log_manager.get_by_id(error_log_obj_instance.error_log_id)
             self.error_log = error_log_obj
         if json_data and self.error_log.error_log_id is None:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             self.error_log = error_log_manager.from_json(json_data)
         if error_log_dict and self.error_log.error_log_id is None:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             self.error_log = error_log_manager.from_dict(error_log_dict)
         return self
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    error_log_id:int=None,
                    error_log_obj_instance:ErrorLog=None,
                    error_log_dict:dict=None):
-        result = ErrorLogBusObj(session=session)
+        result = ErrorLogBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -249,28 +245,28 @@ class ErrorLogBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        error_log_manager = ErrorLogManager(self.session)
+        error_log_manager = ErrorLogManager(self._session_context)
         self.error_log = await error_log_manager.refresh(self.error_log)
         return self
     def is_valid(self):
         return (self.error_log is not None)
     def to_dict(self):
-        error_log_manager = ErrorLogManager(self.session)
+        error_log_manager = ErrorLogManager(self._session_context)
         return error_log_manager.to_dict(self.error_log)
     def to_json(self):
-        error_log_manager = ErrorLogManager(self.session)
+        error_log_manager = ErrorLogManager(self._session_context)
         return error_log_manager.to_json(self.error_log)
     async def save(self):
         if self.error_log.error_log_id is not None and self.error_log.error_log_id > 0:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             self.error_log = await error_log_manager.update(self.error_log)
         if self.error_log.error_log_id is None or self.error_log.error_log_id == 0:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             self.error_log = await error_log_manager.add(self.error_log)
         return self
     async def delete(self):
         if self.error_log.error_log_id > 0:
-            error_log_manager = ErrorLogManager(self.session)
+            error_log_manager = ErrorLogManager(self._session_context)
             await error_log_manager.delete(self.error_log.error_log_id)
             self.error_log = None
     async def randomize_properties(self):
@@ -282,11 +278,12 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.is_resolved = random.choice([True, False])
         # self.error_log.pac_id = random.randint(0, 100)
         self.error_log.url = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+
         return self
     def get_error_log_obj(self) -> ErrorLog:
         return self.error_log
     def is_equal(self,error_log:ErrorLog) -> ErrorLog:
-        error_log_manager = ErrorLogManager(self.session)
+        error_log_manager = ErrorLogManager(self._session_context)
         my_error_log = self.get_error_log_obj()
         return error_log_manager.is_equal(error_log, my_error_log)
 
@@ -298,7 +295,7 @@ class ErrorLogBusObj(BaseBusObj):
     #isResolved,
     #PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
-        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
     #url,
@@ -316,8 +313,6 @@ class ErrorLogBusObj(BaseBusObj):
     #isClientSideError,
     #isResolved,
     #PacID
-    # async def get_parent_obj(self) -> PacBusObj:
-    #     return await self.get_pac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:

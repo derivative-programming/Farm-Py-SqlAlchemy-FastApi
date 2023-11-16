@@ -66,14 +66,11 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
     request:PacUserTriStateFilterListGetModelRequest = None
     items:List[PacUserTriStateFilterListGetModelResponseItem] = Field(default_factory=list)
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         pac_code:uuid,
                         request:PacUserTriStateFilterListGetModelRequest):
         try:
             logging.info("loading model...PacUserTriStateFilterListGetModelResponse")
-            # pac_bus_obj = PacBusObj(session=session)
-            # await pac_bus_obj.load(code=pac_code)
             generator = ReportManagerPacUserTriStateFilterList(session_context)
             logging.info("processing...PacUserTriStateFilterListGetModelResponse")
             items = await generator.generate(

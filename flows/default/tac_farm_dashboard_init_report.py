@@ -20,6 +20,7 @@ from decimal import Decimal
 class FlowTacFarmDashboardInitReportResult():
     context_object_code:uuid.UUID =  uuid.UUID(int=0)
     customer_code:uuid.UUID =  uuid.UUID(int=0)
+
     def __init__(self):
         pass
     def to_json(self):
@@ -27,6 +28,7 @@ class FlowTacFarmDashboardInitReportResult():
         data = {
             'context_object_code': str(self.context_object_code),
             'customer_code': str(self.customer_code),
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -45,12 +47,14 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
         )
         super()._throw_queued_validation_errors()
         customer_code_output:uuid = uuid.UUID(int=0)
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacFarmDashboardInitReportResult()
         result.context_object_code = tac_bus_obj.code
         result.customer_code = customer_code_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

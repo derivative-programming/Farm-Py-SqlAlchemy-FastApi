@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Organization
 from models.factory import OrganizationFactory
 from managers.organization import OrganizationManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestOrganizationBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session:AsyncSession):
-        return OrganizationManager(session)
+        session_context = SessionContext(dict(),session)
+        return OrganizationManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def organization_bus_obj(self, session):
-        # Assuming that the OrganizationBusObj requires a session object
-        return OrganizationBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return OrganizationBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_organization(self, session):
         # Use the OrganizationFactory to create a new organization instance

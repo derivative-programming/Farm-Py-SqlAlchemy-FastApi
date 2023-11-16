@@ -9,9 +9,11 @@
 ##GENLOOPPropEnd
 
     @pytest.mark.asyncio
-    async def test_build_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName):
+    async def test_build_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName, session:AsyncSession):
         
-        await current_runtime.initialize(session=GENVALSnakeParentObjectName_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await GENVALSnakeParentObjectName_bus_obj.load(GENVALSnakeParentObjectName_id=new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id) 
         
@@ -26,9 +28,11 @@
 
     
     @pytest.mark.asyncio
-    async def test_get_all_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName):
+    async def test_get_all_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName, session:AsyncSession):
         
-        await current_runtime.initialize(session=GENVALSnakeParentObjectName_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await GENVALSnakeParentObjectName_bus_obj.load(GENVALSnakeParentObjectName_id=new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id) 
         

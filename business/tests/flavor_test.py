@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Flavor
 from models.factory import FlavorFactory
 from managers.flavor import FlavorManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestFlavorBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def flavor_manager(self, session:AsyncSession):
-        return FlavorManager(session)
+        session_context = SessionContext(dict(),session)
+        return FlavorManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def flavor_bus_obj(self, session):
-        # Assuming that the FlavorBusObj requires a session object
-        return FlavorBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return FlavorBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_flavor(self, session):
         # Use the FlavorFactory to create a new flavor instance

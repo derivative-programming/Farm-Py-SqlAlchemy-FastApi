@@ -2,13 +2,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-
 from managers import PacManager
 from models import Pac
 import models
@@ -29,8 +27,6 @@ from business.error_log import ErrorLogBusObj
 
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 
-class PacSessionNotFoundError(Exception):
-    pass
 class PacInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -41,10 +37,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class PacBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise PacSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.pac = Pac()
     @property
     def pac_id(self):
@@ -187,35 +183,35 @@ class PacBusObj(BaseBusObj):
                    pac_dict:dict=None,
                    pac_enum:managers_and_enums.PacEnum=None):
         if pac_id and self.pac.pac_id is None:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             pac_obj = await pac_manager.get_by_id(pac_id)
             self.pac = pac_obj
         if code and self.pac.pac_id is None:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             pac_obj = await pac_manager.get_by_code(code)
             self.pac = pac_obj
         if pac_obj_instance and self.pac.pac_id is None:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             pac_obj = await pac_manager.get_by_id(pac_obj_instance.pac_id)
             self.pac = pac_obj
         if json_data and self.pac.pac_id is None:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             self.pac = pac_manager.from_json(json_data)
         if pac_dict and self.pac.pac_id is None:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             self.pac = pac_manager.from_dict(pac_dict)
         if pac_enum and self.pac.pac_id is None:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.from_enum(pac_enum)
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    pac_id:int=None,
                    pac_obj_instance:Pac=None,
                    pac_dict:dict=None,
                    pac_enum:managers_and_enums.PacEnum=None):
-        result = Pac(session=session)
+        result = PacBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -227,28 +223,28 @@ class PacBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        pac_manager = PacManager(self.session)
+        pac_manager = PacManager(self._session_context)
         self.pac = await pac_manager.refresh(self.pac)
         return self
     def is_valid(self):
         return (self.pac is not None)
     def to_dict(self):
-        pac_manager = PacManager(self.session)
+        pac_manager = PacManager(self._session_context)
         return pac_manager.to_dict(self.pac)
     def to_json(self):
-        pac_manager = PacManager(self.session)
+        pac_manager = PacManager(self._session_context)
         return pac_manager.to_json(self.pac)
     async def save(self):
         if self.pac.pac_id is not None and self.pac.pac_id > 0:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.update(self.pac)
         if self.pac.pac_id is None or self.pac.pac_id == 0:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.add(self.pac)
         return self
     async def delete(self):
         if self.pac.pac_id > 0:
-            pac_manager = PacManager(self.session)
+            pac_manager = PacManager(self._session_context)
             await pac_manager.delete(self.pac.pac_id)
             self.pac = None
     async def randomize_properties(self):
@@ -257,11 +253,12 @@ class PacBusObj(BaseBusObj):
         self.pac.is_active = random.choice([True, False])
         self.pac.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.pac.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+
         return self
     def get_pac_obj(self) -> Pac:
         return self.pac
     def is_equal(self,pac:Pac) -> Pac:
-        pac_manager = PacManager(self.session)
+        pac_manager = PacManager(self._session_context)
         my_pac = self.get_pac_obj()
         return pac_manager.is_equal(pac, my_pac)
 
@@ -284,7 +281,7 @@ class PacBusObj(BaseBusObj):
     #name,
 
     async def build_tri_state_filter(self) -> TriStateFilterBusObj:
-        item = TriStateFilterBusObj(self.session)
+        item = TriStateFilterBusObj(self._session_context)
 
         item.pac_id = self.pac_id
         item.tri_state_filter.pac_code_peek = self.code
@@ -293,16 +290,16 @@ class PacBusObj(BaseBusObj):
 
     async def get_all_tri_state_filter(self) -> List[TriStateFilterBusObj]:
         results = list()
-        tri_state_filter_manager = managers_and_enums.TriStateFilterManager(self.session)
+        tri_state_filter_manager = managers_and_enums.TriStateFilterManager(self._session_context)
         obj_list = await tri_state_filter_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
-            bus_obj_item = TriStateFilterBusObj(self.session)
+            bus_obj_item = TriStateFilterBusObj(self._session_context)
             await bus_obj_item.load(tri_state_filter_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_tac(self) -> TacBusObj:
-        item = TacBusObj(self.session)
+        item = TacBusObj(self._session_context)
 
         item.pac_id = self.pac_id
         item.tac.pac_code_peek = self.code
@@ -311,16 +308,16 @@ class PacBusObj(BaseBusObj):
 
     async def get_all_tac(self) -> List[TacBusObj]:
         results = list()
-        tac_manager = managers_and_enums.TacManager(self.session)
+        tac_manager = managers_and_enums.TacManager(self._session_context)
         obj_list = await tac_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
-            bus_obj_item = TacBusObj(self.session)
+            bus_obj_item = TacBusObj(self._session_context)
             await bus_obj_item.load(tac_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_role(self) -> RoleBusObj:
-        item = RoleBusObj(self.session)
+        item = RoleBusObj(self._session_context)
 
         item.pac_id = self.pac_id
         item.role.pac_code_peek = self.code
@@ -329,16 +326,16 @@ class PacBusObj(BaseBusObj):
 
     async def get_all_role(self) -> List[RoleBusObj]:
         results = list()
-        role_manager = managers_and_enums.RoleManager(self.session)
+        role_manager = managers_and_enums.RoleManager(self._session_context)
         obj_list = await role_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
-            bus_obj_item = RoleBusObj(self.session)
+            bus_obj_item = RoleBusObj(self._session_context)
             await bus_obj_item.load(role_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_land(self) -> LandBusObj:
-        item = LandBusObj(self.session)
+        item = LandBusObj(self._session_context)
 
         item.pac_id = self.pac_id
         item.land.pac_code_peek = self.code
@@ -347,16 +344,16 @@ class PacBusObj(BaseBusObj):
 
     async def get_all_land(self) -> List[LandBusObj]:
         results = list()
-        land_manager = managers_and_enums.LandManager(self.session)
+        land_manager = managers_and_enums.LandManager(self._session_context)
         obj_list = await land_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
-            bus_obj_item = LandBusObj(self.session)
+            bus_obj_item = LandBusObj(self._session_context)
             await bus_obj_item.load(land_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_flavor(self) -> FlavorBusObj:
-        item = FlavorBusObj(self.session)
+        item = FlavorBusObj(self._session_context)
 
         item.pac_id = self.pac_id
         item.flavor.pac_code_peek = self.code
@@ -365,16 +362,16 @@ class PacBusObj(BaseBusObj):
 
     async def get_all_flavor(self) -> List[FlavorBusObj]:
         results = list()
-        flavor_manager = managers_and_enums.FlavorManager(self.session)
+        flavor_manager = managers_and_enums.FlavorManager(self._session_context)
         obj_list = await flavor_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
-            bus_obj_item = FlavorBusObj(self.session)
+            bus_obj_item = FlavorBusObj(self._session_context)
             await bus_obj_item.load(flavor_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_error_log(self) -> ErrorLogBusObj:
-        item = ErrorLogBusObj(self.session)
+        item = ErrorLogBusObj(self._session_context)
 
         item.pac_id = self.pac_id
         item.error_log.pac_code_peek = self.code
@@ -383,16 +380,16 @@ class PacBusObj(BaseBusObj):
 
     async def get_all_error_log(self) -> List[ErrorLogBusObj]:
         results = list()
-        error_log_manager = managers_and_enums.ErrorLogManager(self.session)
+        error_log_manager = managers_and_enums.ErrorLogManager(self._session_context)
         obj_list = await error_log_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
-            bus_obj_item = ErrorLogBusObj(self.session)
+            bus_obj_item = ErrorLogBusObj(self._session_context)
             await bus_obj_item.load(error_log_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_date_greater_than_filter(self) -> DateGreaterThanFilterBusObj:
-        item = DateGreaterThanFilterBusObj(self.session)
+        item = DateGreaterThanFilterBusObj(self._session_context)
 
         item.pac_id = self.pac_id
         item.date_greater_than_filter.pac_code_peek = self.code
@@ -401,10 +398,10 @@ class PacBusObj(BaseBusObj):
 
     async def get_all_date_greater_than_filter(self) -> List[DateGreaterThanFilterBusObj]:
         results = list()
-        date_greater_than_filter_manager = managers_and_enums.DateGreaterThanFilterManager(self.session)
+        date_greater_than_filter_manager = managers_and_enums.DateGreaterThanFilterManager(self._session_context)
         obj_list = await date_greater_than_filter_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
-            bus_obj_item = DateGreaterThanFilterBusObj(self.session)
+            bus_obj_item = DateGreaterThanFilterBusObj(self._session_context)
             await bus_obj_item.load(date_greater_than_filter_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results

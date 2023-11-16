@@ -2,11 +2,11 @@
 //GENDELETETHISFILE
 ##GENIF[calculatedIsParentObjectAvailable=false]End
     async def build_GENVALSnakeName(self) -> GENVALPascalNameBusObj:
-        item = GENVALPascalNameBusObj(self.session)
+        item = GENVALPascalNameBusObj(self._session_context)
 
         ##GENLOOPPropStart
         ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]Start
-        GENVALSnakefKObjectName_manager = managers_and_enums.GENVALPascalfKObjectNameManager(self.session)
+        GENVALSnakefKObjectName_manager = managers_and_enums.GENVALPascalfKObjectNameManager(self._session_context)
         GENVALSnakeName_GENVALSnakefKObjectName = await GENVALSnakefKObjectName_manager.from_enum(
             managers_and_enums.GENVALPascalfKObjectNameEnum.Unknown)
         item.GENVALSnakeName = GENVALSnakeName_GENVALSnakefKObjectName.GENVALSnakefKObjectName_id
@@ -21,10 +21,10 @@
 
     async def get_all_GENVALSnakeName(self) -> List[GENVALPascalNameBusObj]:
         results = list()
-        GENVALSnakeName_manager = managers_and_enums.GENVALPascalNameManager(self.session)
+        GENVALSnakeName_manager = managers_and_enums.GENVALPascalNameManager(self._session_context)
         obj_list = await GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(self.GENVALSnakeParentObjectName_id)
         for obj_item in obj_list:
-            bus_obj_item = GENVALPascalNameBusObj(self.session)
+            bus_obj_item = GENVALPascalNameBusObj(self._session_context)
             await bus_obj_item.load(GENVALSnakeObjectName_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
@@ -34,10 +34,10 @@
     ##GENIF[isFK=false,forceDBColumnIndex=true]Start
     async def get_GENVALSnakeObjectName_by_GENVALSnakeName_prop(self, GENVALSnakeName) -> List[GENVALPascalObjectNameBusObj]: 
         results = list()
-        GENVALSnakeObjectName_manager = managers_and_enums.GENVALPascalObjectNameManager(self.session)
+        GENVALSnakeObjectName_manager = managers_and_enums.GENVALPascalObjectNameManager(self._session_context)
         obj_list = await GENVALSnakeObjectName_manager.get_by_GENVALSnakeName_prop(GENVALSnakeName)
         for obj_item in obj_list:
-            bus_obj_item = GENVALPascalObjectNameBusObj(self.session)
+            bus_obj_item = GENVALPascalObjectNameBusObj(self._session_context)
             await bus_obj_item.load(GENVALSnakeObjectName_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results   

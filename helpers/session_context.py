@@ -16,6 +16,7 @@ class SessionContext:
     def __init__(self, api_key_dict:dict, session:AsyncSession=None) -> None:
         self.api_key_dict = api_key_dict
         self.session_code = uuid.uuid4()
+        self.session = session
 
     
     def check_context_code(self, 

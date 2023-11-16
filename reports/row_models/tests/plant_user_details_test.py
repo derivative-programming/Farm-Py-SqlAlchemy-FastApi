@@ -30,6 +30,7 @@ class TestReportItemPlantUserDetails:
         assert report_item.update_button_text_link_plant_code.int == 0
         assert report_item.random_property_updates_link_plant_code.int == 0
         assert report_item.back_to_dashboard_link_tac_code.int == 0
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -56,6 +57,7 @@ class TestReportItemPlantUserDetails:
             "update_button_text_link_plant_code": str(UUID(int=5)),
             "random_property_updates_link_plant_code": str(UUID(int=4)),
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
+
         }
         # report_item = ReportItemPlantUserDetails(**data)
         report_item = ReportItemPlantUserDetails()

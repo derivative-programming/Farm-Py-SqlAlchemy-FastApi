@@ -5,7 +5,7 @@ import pytest_asyncio
 import time
 from typing import AsyncGenerator
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -104,9 +104,8 @@ class TestErrorLogFactoryAsync:
         error_log = await ErrorLogFactory.build_async(session=session)
         assert error_log.insert_utc_date_time is not None
         assert isinstance(error_log.insert_utc_date_time, datetime)
-        initial_time = error_log.insert_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         error_log.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert error_log.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -129,9 +128,8 @@ class TestErrorLogFactoryAsync:
         error_log = await ErrorLogFactory.build_async(session=session)
         assert error_log.last_update_utc_date_time is not None
         assert isinstance(error_log.last_update_utc_date_time, datetime)
-        initial_time = error_log.last_update_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         error_log.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert error_log.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

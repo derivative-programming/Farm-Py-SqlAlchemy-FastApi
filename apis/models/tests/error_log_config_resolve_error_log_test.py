@@ -49,10 +49,9 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
             mock_method.side_effect = mock_process
             request_instance = await ErrorLogConfigResolveErrorLogPostModelRequestFactory.create_async(session=session)
             response_instance = ErrorLogConfigResolveErrorLogPostModelResponse()
-            session_context = SessionContext(dict())
+            session_context = SessionContext(dict(), session)
             error_log = await ErrorLogFactory.create_async(session)
             await response_instance.process_request(
-                session=session,
                 session_context=session_context,
                 error_log_code=error_log.code,
                 request=request_instance

@@ -1,6 +1,7 @@
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Pac
 import models
 from models.factory import PacFactory
@@ -13,7 +14,6 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-# DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -25,7 +25,8 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestPacManager:
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session:AsyncSession):
-        return PacManager(session)
+        session_context = SessionContext(dict(),session)
+        return PacManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, pac_manager:PacManager, session:AsyncSession):
         # Define some mock data for our pac

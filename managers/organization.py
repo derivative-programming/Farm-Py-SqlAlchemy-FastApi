@@ -6,11 +6,12 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 from models.tac import Tac # TacID
 from models.organization import Organization
 from models.serialization_schema.organization import OrganizationSchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -18,8 +19,18 @@ class OrganizationNotFoundError(Exception):
     pass
 
 class OrganizationManager:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
+    def convert_uuid_to_model_uuid(self,value:uuid):
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
 
     async def initialize(self):
         logging.info("OrganizationManager.Initialize")
@@ -29,8 +40,10 @@ class OrganizationManager:
         return Organization(**kwargs)
     async def add(self, organization: Organization) -> Organization:
         logging.info("OrganizationManager.add")
-        self.session.add(organization)
-        await self.session.flush()
+        organization.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        organization.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(organization)
+        await self._session_context.session.flush()
         return organization
     def _build_query(self):
         logging.info("OrganizationManager._build_query")
@@ -58,7 +71,7 @@ class OrganizationManager:
             query = organization_query_all.filter(query_filter)
         else:
             query = organization_query_all
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
@@ -79,25 +92,21 @@ class OrganizationManager:
         logging.info("OrganizationManager.get_by_id start organization_id:" + str(organization_id))
         if not isinstance(organization_id, int):
             raise TypeError(f"The organization_id must be an integer, got {type(organization_id)} instead.")
-        # result = await self.session.execute(select(Organization).filter(Organization.organization_id == organization_id))
-        # result = await self.session.execute(select(Organization).filter(Organization.organization_id == organization_id))
-        # return result.scalars().first()
         query_filter = Organization.organization_id == organization_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Organization]:
         logging.info(f"OrganizationManager.get_by_code {code}")
-        # result = await self.session.execute(select(Organization).filter_by(code=code))
-        # return result.scalars().one_or_none()
         query_filter = Organization.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, organization: Organization, **kwargs) -> Optional[Organization]:
         logging.info("OrganizationManager.update")
         if organization:
+            organization.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(organization, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return organization
     async def delete(self, organization_id: int):
         logging.info(f"OrganizationManager.delete {organization_id}")
@@ -106,12 +115,10 @@ class OrganizationManager:
         organization = await self.get_by_id(organization_id)
         if not organization:
             raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
-        await self.session.delete(organization)
-        await self.session.flush()
+        await self._session_context.session.delete(organization)
+        await self._session_context.session.flush()
     async def get_list(self) -> List[Organization]:
         logging.info("OrganizationManager.get_list")
-        # result = await self.session.execute(select(Organization))
-        # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, organization:Organization) -> str:
@@ -149,8 +156,13 @@ class OrganizationManager:
     async def add_bulk(self, organizations: List[Organization]) -> List[Organization]:
         logging.info("OrganizationManager.add_bulk")
         """Add multiple organizations at once."""
-        self.session.add_all(organizations)
-        await self.session.flush()
+        for organization in organizations:
+            if organization.organization_id is not None and organization.organization_id > 0:
+                raise ValueError("Organization is already added: " + str(organization.code) + " " + str(organization.organization_id))
+            organization.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            organization.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(organizations)
+        await self._session_context.session.flush()
         return organizations
     async def update_bulk(self, organization_updates: List[Dict[int, Dict]]) -> List[Organization]:
         logging.info("OrganizationManager.update_bulk start")
@@ -168,8 +180,9 @@ class OrganizationManager:
             for key, value in update.items():
                 if key != "organization_id":
                     setattr(organization, key, value)
+            organization.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_organizations.append(organization)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("OrganizationManager.update_bulk end")
         return updated_organizations
     async def delete_bulk(self, organization_ids: List[int]) -> bool:
@@ -182,26 +195,26 @@ class OrganizationManager:
             if not organization:
                 raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
             if organization:
-                await self.session.delete(organization)
-        await self.session.flush()
+                await self._session_context.session.delete(organization)
+        await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         logging.info("OrganizationManager.count")
         """Return the total number of organizations."""
-        result = await self.session.execute(select(Organization))
+        result = await self._session_context.session.execute(select(Organization))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Organization]:
         """Retrieve organizations sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(Organization).order_by(getattr(Organization, sort_by).asc()))
+            result = await self._session_context.session.execute(select(Organization).order_by(getattr(Organization, sort_by).asc()))
         else:
-            result = await self.session.execute(select(Organization).order_by(getattr(Organization, sort_by).desc()))
+            result = await self._session_context.session.execute(select(Organization).order_by(getattr(Organization, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, organization: Organization) -> Organization:
         logging.info("OrganizationManager.refresh")
         """Refresh the state of a given organization instance from the database."""
-        await self.session.refresh(organization)
+        await self._session_context.session.refresh(organization)
         return organization
     async def exists(self, organization_id: int) -> bool:
         logging.info(f"OrganizationManager.exists {organization_id}")
@@ -227,8 +240,6 @@ class OrganizationManager:
         logging.info("OrganizationManager.get_by_tac_id")
         if not isinstance(tac_id, int):
             raise TypeError(f"The organization_id must be an integer, got {type(tac_id)} instead.")
-        # result = await self.session.execute(select(Organization).filter(Organization.tac_id == tac_id))
-        # return result.scalars().all()
         query_filter = Organization.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return query_results

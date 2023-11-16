@@ -14,6 +14,7 @@ class TestReportItemPacUserLandList:
         assert report_item.land_lookup_enum_name == ""
         assert report_item.land_name == ""
         assert report_item.pac_name == ""
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -24,6 +25,7 @@ class TestReportItemPacUserLandList:
             "land_lookup_enum_name": "test",
             "land_name": "test",
             "pac_name": "test",
+
         }
         # report_item = ReportItemPacUserLandList(**data)
         report_item = ReportItemPacUserLandList()

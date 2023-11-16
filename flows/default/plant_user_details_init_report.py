@@ -21,6 +21,7 @@ class FlowPlantUserDetailsInitReportResult():
     context_object_code:uuid.UUID =  uuid.UUID(int=0)
     land_code:uuid.UUID =  uuid.UUID(int=0)
     tac_code:uuid.UUID =  uuid.UUID(int=0)
+
     def __init__(self):
         pass
     def to_json(self):
@@ -29,6 +30,7 @@ class FlowPlantUserDetailsInitReportResult():
             'context_object_code': str(self.context_object_code),
             'land_code': str(self.land_code),
             'tac_code': str(self.tac_code),
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -48,6 +50,7 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
         super()._throw_queued_validation_errors()
         land_code_output:uuid = uuid.UUID(int=0)
         tac_code_output:uuid = uuid.UUID(int=0)
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
@@ -55,6 +58,7 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
         result.context_object_code = plant_bus_obj.code
         result.land_code = land_code_output
         result.tac_code = tac_code_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

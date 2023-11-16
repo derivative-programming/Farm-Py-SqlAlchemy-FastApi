@@ -5,7 +5,7 @@ import pytest_asyncio
 import time
 from typing import AsyncGenerator
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -122,9 +122,8 @@ class TestPlantFactoryAsync:
         plant = await PlantFactory.build_async(session=session)
         assert plant.insert_utc_date_time is not None 
         assert isinstance(plant.insert_utc_date_time, datetime)
-        initial_time = plant.insert_utc_date_time
-        plant.code = generate_uuid()
-        time.sleep(1)
+        initial_time = datetime.utcnow() + timedelta(days=-1)
+        plant.code = generate_uuid()  
         await session.commit()
         assert plant.insert_utc_date_time > initial_time
 
@@ -151,11 +150,10 @@ class TestPlantFactoryAsync:
         plant = await PlantFactory.build_async(session=session)
         assert plant.last_update_utc_date_time is not None 
         assert isinstance(plant.last_update_utc_date_time, datetime)
-        initial_time = plant.last_update_utc_date_time
-        plant.code = generate_uuid()
-        time.sleep(1)
+        initial_time = datetime.utcnow() + timedelta(days=-1)
+        plant.code = generate_uuid() 
         await session.commit()
-        assert plant.last_update_utc_date_time > initial_time
+        assert plant.last_update_utc_date_time > initial_time 
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):

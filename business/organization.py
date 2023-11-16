@@ -2,13 +2,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.tac import TacBusObj #TacID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import TacManager as TacIDManager #TacID
 from managers import OrganizationManager
 from models import Organization
 import models
@@ -19,8 +17,6 @@ from business.org_customer import OrgCustomerBusObj
 
 from business.org_api_key import OrgApiKeyBusObj
 
-class OrganizationSessionNotFoundError(Exception):
-    pass
 class OrganizationInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -31,10 +27,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrganizationBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise OrganizationSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.organization = Organization()
     @property
     def organization_id(self):
@@ -143,32 +139,32 @@ class OrganizationBusObj(BaseBusObj):
                    organization_obj_instance:Organization=None,
                    organization_dict:dict=None):
         if organization_id and self.organization.organization_id is None:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             organization_obj = await organization_manager.get_by_id(organization_id)
             self.organization = organization_obj
         if code and self.organization.organization_id is None:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             organization_obj = await organization_manager.get_by_code(code)
             self.organization = organization_obj
         if organization_obj_instance and self.organization.organization_id is None:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             organization_obj = await organization_manager.get_by_id(organization_obj_instance.organization_id)
             self.organization = organization_obj
         if json_data and self.organization.organization_id is None:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             self.organization = organization_manager.from_json(json_data)
         if organization_dict and self.organization.organization_id is None:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             self.organization = organization_manager.from_dict(organization_dict)
         return self
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    organization_id:int=None,
                    organization_obj_instance:Organization=None,
                    organization_dict:dict=None):
-        result = OrganizationBusObj(session=session)
+        result = OrganizationBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -179,45 +175,46 @@ class OrganizationBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        organization_manager = OrganizationManager(self.session)
+        organization_manager = OrganizationManager(self._session_context)
         self.organization = await organization_manager.refresh(self.organization)
         return self
     def is_valid(self):
         return (self.organization is not None)
     def to_dict(self):
-        organization_manager = OrganizationManager(self.session)
+        organization_manager = OrganizationManager(self._session_context)
         return organization_manager.to_dict(self.organization)
     def to_json(self):
-        organization_manager = OrganizationManager(self.session)
+        organization_manager = OrganizationManager(self._session_context)
         return organization_manager.to_json(self.organization)
     async def save(self):
         if self.organization.organization_id is not None and self.organization.organization_id > 0:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             self.organization = await organization_manager.update(self.organization)
         if self.organization.organization_id is None or self.organization.organization_id == 0:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             self.organization = await organization_manager.add(self.organization)
         return self
     async def delete(self):
         if self.organization.organization_id > 0:
-            organization_manager = OrganizationManager(self.session)
+            organization_manager = OrganizationManager(self._session_context)
             await organization_manager.delete(self.organization.organization_id)
             self.organization = None
     async def randomize_properties(self):
         self.organization.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.organization.tac_id = random.randint(0, 100)
+
         return self
     def get_organization_obj(self) -> Organization:
         return self.organization
     def is_equal(self,organization:Organization) -> Organization:
-        organization_manager = OrganizationManager(self.session)
+        organization_manager = OrganizationManager(self._session_context)
         my_organization = self.get_organization_obj()
         return organization_manager.is_equal(organization, my_organization)
 
     #name,
     #TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
-        tac_manager = managers_and_enums.TacManager(self.session)
+        tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
         return tac_obj
 
@@ -229,15 +226,13 @@ class OrganizationBusObj(BaseBusObj):
         return self.organization_id
     #name,
     #TacID
-    # async def get_parent_obj(self) -> TacBusObj:
-    #     return await self.get_tac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.tac_code_peek
 
     async def build_org_customer(self) -> OrgCustomerBusObj:
-        item = OrgCustomerBusObj(self.session)
+        item = OrgCustomerBusObj(self._session_context)
 
         item.organization_id = self.organization_id
         item.org_customer.organization_code_peek = self.code
@@ -246,16 +241,16 @@ class OrganizationBusObj(BaseBusObj):
 
     async def get_all_org_customer(self) -> List[OrgCustomerBusObj]:
         results = list()
-        org_customer_manager = managers_and_enums.OrgCustomerManager(self.session)
+        org_customer_manager = managers_and_enums.OrgCustomerManager(self._session_context)
         obj_list = await org_customer_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
-            bus_obj_item = OrgCustomerBusObj(self.session)
+            bus_obj_item = OrgCustomerBusObj(self._session_context)
             await bus_obj_item.load(org_customer_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_org_api_key(self) -> OrgApiKeyBusObj:
-        item = OrgApiKeyBusObj(self.session)
+        item = OrgApiKeyBusObj(self._session_context)
 
         item.organization_id = self.organization_id
         item.org_api_key.organization_code_peek = self.code
@@ -264,10 +259,10 @@ class OrganizationBusObj(BaseBusObj):
 
     async def get_all_org_api_key(self) -> List[OrgApiKeyBusObj]:
         results = list()
-        org_api_key_manager = managers_and_enums.OrgApiKeyManager(self.session)
+        org_api_key_manager = managers_and_enums.OrgApiKeyManager(self._session_context)
         obj_list = await org_api_key_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
-            bus_obj_item = OrgApiKeyBusObj(self.session)
+            bus_obj_item = OrgApiKeyBusObj(self._session_context)
             await bus_obj_item.load(org_api_key_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results

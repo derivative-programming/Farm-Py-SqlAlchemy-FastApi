@@ -5,7 +5,7 @@ import pytest_asyncio
 import time
 from typing import AsyncGenerator
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -104,9 +104,8 @@ class TestLandFactoryAsync:
         land = await LandFactory.build_async(session=session)
         assert land.insert_utc_date_time is not None
         assert isinstance(land.insert_utc_date_time, datetime)
-        initial_time = land.insert_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         land.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert land.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -129,9 +128,8 @@ class TestLandFactoryAsync:
         land = await LandFactory.build_async(session=session)
         assert land.last_update_utc_date_time is not None
         assert isinstance(land.last_update_utc_date_time, datetime)
-        initial_time = land.last_update_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         land.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert land.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

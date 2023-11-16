@@ -38,6 +38,7 @@ class FlowLandPlantListInitReportResult():
     land_code:uuid.UUID =  uuid.UUID(int=0)
     tac_code:uuid.UUID =  uuid.UUID(int=0)
     land_name:str = ""
+
     def __init__(self):
         pass
     def to_json(self):
@@ -63,6 +64,7 @@ class FlowLandPlantListInitReportResult():
             'land_code': str(self.land_code),
             'tac_code': str(self.tac_code),
             'land_name': self.land_name,
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -99,6 +101,7 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         land_code_output:uuid = uuid.UUID(int=0)
         tac_code_output:uuid = uuid.UUID(int=0)
         land_name_output:str = ""
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
@@ -123,6 +126,7 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         result.land_code = land_code_output
         result.tac_code = tac_code_output
         result.land_name = land_name_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

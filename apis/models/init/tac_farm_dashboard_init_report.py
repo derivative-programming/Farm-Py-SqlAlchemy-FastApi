@@ -3,6 +3,7 @@ from decimal import Decimal
 import json
 from typing import List
 import uuid
+from apis.models import validation_error
 from helpers import TypeConversion
 from flows.tac_farm_dashboard_init_report import FlowTacFarmDashboardInitReportResult, FlowTacFarmDashboardInitReport
 from helpers import SessionContext
@@ -29,13 +30,12 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         tac_code:uuid,
                         response:TacFarmDashboardInitReportGetInitModelResponse) -> TacFarmDashboardInitReportGetInitModelResponse:
         try:
             logging.info("loading model...TacFarmDashboardInitReportGetInitModelRequest")
-            tac_bus_obj = TacBusObj(session=session)
+            tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load(code=tac_code)
             if(tac_bus_obj.get_tac_obj() is None):
                 logging.info("Invalid tac_code")
@@ -53,6 +53,6 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
+                response.validation_errors.append(validation_error(key,ve.error_dict[key]))
         return response
 

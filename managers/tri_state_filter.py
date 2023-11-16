@@ -6,11 +6,12 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.tri_state_filter import TriStateFilter
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -23,8 +24,18 @@ class TriStateFilterEnum(Enum):
     No = 'No'
 
 class TriStateFilterManager:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
+    def convert_uuid_to_model_uuid(self,value:uuid):
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
 
     async def _build_lookup_item(self, pac:Pac):
         item = await self.build()
@@ -32,7 +43,7 @@ class TriStateFilterManager:
         return item
     async def initialize(self):
         logging.info("PlantManager.Initialize start")
-        pac_result = await self.session.execute(select(Pac))
+        pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
         if await self.from_enum(TriStateFilterEnum.Unknown) is None:
@@ -75,8 +86,10 @@ class TriStateFilterManager:
         return TriStateFilter(**kwargs)
     async def add(self, tri_state_filter: TriStateFilter) -> TriStateFilter:
         logging.info("TriStateFilterManager.add")
-        self.session.add(tri_state_filter)
-        await self.session.flush()
+        tri_state_filter.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(tri_state_filter)
+        await self._session_context.session.flush()
         return tri_state_filter
     def _build_query(self):
         logging.info("TriStateFilterManager._build_query")
@@ -104,7 +117,7 @@ class TriStateFilterManager:
             query = tri_state_filter_query_all.filter(query_filter)
         else:
             query = tri_state_filter_query_all
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
@@ -125,25 +138,21 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.get_by_id start tri_state_filter_id:" + str(tri_state_filter_id))
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
-        # result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == tri_state_filter_id))
-        # result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == tri_state_filter_id))
-        # return result.scalars().first()
         query_filter = TriStateFilter.tri_state_filter_id == tri_state_filter_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[TriStateFilter]:
         logging.info(f"TriStateFilterManager.get_by_code {code}")
-        # result = await self.session.execute(select(TriStateFilter).filter_by(code=code))
-        # return result.scalars().one_or_none()
         query_filter = TriStateFilter.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, tri_state_filter: TriStateFilter, **kwargs) -> Optional[TriStateFilter]:
         logging.info("TriStateFilterManager.update")
         if tri_state_filter:
+            tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(tri_state_filter, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return tri_state_filter
     async def delete(self, tri_state_filter_id: int):
         logging.info(f"TriStateFilterManager.delete {tri_state_filter_id}")
@@ -152,12 +161,10 @@ class TriStateFilterManager:
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
         if not tri_state_filter:
             raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
-        await self.session.delete(tri_state_filter)
-        await self.session.flush()
+        await self._session_context.session.delete(tri_state_filter)
+        await self._session_context.session.flush()
     async def get_list(self) -> List[TriStateFilter]:
         logging.info("TriStateFilterManager.get_list")
-        # result = await self.session.execute(select(TriStateFilter))
-        # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, tri_state_filter:TriStateFilter) -> str:
@@ -195,8 +202,13 @@ class TriStateFilterManager:
     async def add_bulk(self, tri_state_filters: List[TriStateFilter]) -> List[TriStateFilter]:
         logging.info("TriStateFilterManager.add_bulk")
         """Add multiple tri_state_filters at once."""
-        self.session.add_all(tri_state_filters)
-        await self.session.flush()
+        for tri_state_filter in tri_state_filters:
+            if tri_state_filter.tri_state_filter_id is not None and tri_state_filter.tri_state_filter_id > 0:
+                raise ValueError("TriStateFilter is already added: " + str(tri_state_filter.code) + " " + str(tri_state_filter.tri_state_filter_id))
+            tri_state_filter.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(tri_state_filters)
+        await self._session_context.session.flush()
         return tri_state_filters
     async def update_bulk(self, tri_state_filter_updates: List[Dict[int, Dict]]) -> List[TriStateFilter]:
         logging.info("TriStateFilterManager.update_bulk start")
@@ -214,8 +226,9 @@ class TriStateFilterManager:
             for key, value in update.items():
                 if key != "tri_state_filter_id":
                     setattr(tri_state_filter, key, value)
+            tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_tri_state_filters.append(tri_state_filter)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("TriStateFilterManager.update_bulk end")
         return updated_tri_state_filters
     async def delete_bulk(self, tri_state_filter_ids: List[int]) -> bool:
@@ -228,26 +241,26 @@ class TriStateFilterManager:
             if not tri_state_filter:
                 raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
             if tri_state_filter:
-                await self.session.delete(tri_state_filter)
-        await self.session.flush()
+                await self._session_context.session.delete(tri_state_filter)
+        await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         logging.info("TriStateFilterManager.count")
         """Return the total number of tri_state_filters."""
-        result = await self.session.execute(select(TriStateFilter))
+        result = await self._session_context.session.execute(select(TriStateFilter))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[TriStateFilter]:
         """Retrieve tri_state_filters sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(TriStateFilter).order_by(getattr(TriStateFilter, sort_by).asc()))
+            result = await self._session_context.session.execute(select(TriStateFilter).order_by(getattr(TriStateFilter, sort_by).asc()))
         else:
-            result = await self.session.execute(select(TriStateFilter).order_by(getattr(TriStateFilter, sort_by).desc()))
+            result = await self._session_context.session.execute(select(TriStateFilter).order_by(getattr(TriStateFilter, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, tri_state_filter: TriStateFilter) -> TriStateFilter:
         logging.info("TriStateFilterManager.refresh")
         """Refresh the state of a given tri_state_filter instance from the database."""
-        await self.session.refresh(tri_state_filter)
+        await self._session_context.session.refresh(tri_state_filter)
         return tri_state_filter
     async def exists(self, tri_state_filter_id: int) -> bool:
         logging.info(f"TriStateFilterManager.exists {tri_state_filter_id}")
@@ -273,8 +286,6 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(f"The tri_state_filter_id must be an integer, got {type(pac_id)} instead.")
-        # result = await self.session.execute(select(TriStateFilter).filter(TriStateFilter.pac_id == pac_id))
-        # return result.scalars().all()
         query_filter = TriStateFilter.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

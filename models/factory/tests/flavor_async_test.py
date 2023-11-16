@@ -5,7 +5,7 @@ import pytest_asyncio
 import time
 from typing import AsyncGenerator
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -104,9 +104,8 @@ class TestFlavorFactoryAsync:
         flavor = await FlavorFactory.build_async(session=session)
         assert flavor.insert_utc_date_time is not None
         assert isinstance(flavor.insert_utc_date_time, datetime)
-        initial_time = flavor.insert_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         flavor.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert flavor.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -129,9 +128,8 @@ class TestFlavorFactoryAsync:
         flavor = await FlavorFactory.build_async(session=session)
         assert flavor.last_update_utc_date_time is not None
         assert isinstance(flavor.last_update_utc_date_time, datetime)
-        initial_time = flavor.last_update_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         flavor.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert flavor.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

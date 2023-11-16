@@ -57,7 +57,7 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code #CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code #OrganizationID
 
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -120,6 +120,6 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code #CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code #OrganizationID
 
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

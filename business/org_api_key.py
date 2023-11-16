@@ -2,23 +2,17 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.organization import OrganizationBusObj #OrganizationID
-from business.org_customer import OrgCustomerBusObj #OrgCustomerID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import OrganizationManager as OrganizationIDManager #OrganizationID
-# from managers import OrgCustomerManager as OrgCustomerIDManager #OrgCustomerID
 from managers import OrgApiKeyManager
 from models import OrgApiKey
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-class OrgApiKeySessionNotFoundError(Exception):
-    pass
 class OrgApiKeyInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -29,10 +23,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrgApiKeyBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise OrgApiKeySessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.org_api_key = OrgApiKey()
     @property
     def org_api_key_id(self):
@@ -235,32 +229,32 @@ class OrgApiKeyBusObj(BaseBusObj):
                    org_api_key_obj_instance:OrgApiKey=None,
                    org_api_key_dict:dict=None):
         if org_api_key_id and self.org_api_key.org_api_key_id is None:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             org_api_key_obj = await org_api_key_manager.get_by_id(org_api_key_id)
             self.org_api_key = org_api_key_obj
         if code and self.org_api_key.org_api_key_id is None:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             org_api_key_obj = await org_api_key_manager.get_by_code(code)
             self.org_api_key = org_api_key_obj
         if org_api_key_obj_instance and self.org_api_key.org_api_key_id is None:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             org_api_key_obj = await org_api_key_manager.get_by_id(org_api_key_obj_instance.org_api_key_id)
             self.org_api_key = org_api_key_obj
         if json_data and self.org_api_key.org_api_key_id is None:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             self.org_api_key = org_api_key_manager.from_json(json_data)
         if org_api_key_dict and self.org_api_key.org_api_key_id is None:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             self.org_api_key = org_api_key_manager.from_dict(org_api_key_dict)
         return self
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    org_api_key_id:int=None,
                    org_api_key_obj_instance:OrgApiKey=None,
                    org_api_key_dict:dict=None):
-        result = OrgApiKeyBusObj(session=session)
+        result = OrgApiKeyBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -271,28 +265,28 @@ class OrgApiKeyBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        org_api_key_manager = OrgApiKeyManager(self.session)
+        org_api_key_manager = OrgApiKeyManager(self._session_context)
         self.org_api_key = await org_api_key_manager.refresh(self.org_api_key)
         return self
     def is_valid(self):
         return (self.org_api_key is not None)
     def to_dict(self):
-        org_api_key_manager = OrgApiKeyManager(self.session)
+        org_api_key_manager = OrgApiKeyManager(self._session_context)
         return org_api_key_manager.to_dict(self.org_api_key)
     def to_json(self):
-        org_api_key_manager = OrgApiKeyManager(self.session)
+        org_api_key_manager = OrgApiKeyManager(self._session_context)
         return org_api_key_manager.to_json(self.org_api_key)
     async def save(self):
         if self.org_api_key.org_api_key_id is not None and self.org_api_key.org_api_key_id > 0:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             self.org_api_key = await org_api_key_manager.update(self.org_api_key)
         if self.org_api_key.org_api_key_id is None or self.org_api_key.org_api_key_id == 0:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             self.org_api_key = await org_api_key_manager.add(self.org_api_key)
         return self
     async def delete(self):
         if self.org_api_key.org_api_key_id > 0:
-            org_api_key_manager = OrgApiKeyManager(self.session)
+            org_api_key_manager = OrgApiKeyManager(self._session_context)
             await org_api_key_manager.delete(self.org_api_key.org_api_key_id)
             self.org_api_key = None
     async def randomize_properties(self):
@@ -304,12 +298,13 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.is_temp_user_key = random.choice([True, False])
         self.org_api_key.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.org_api_key.organization_id = random.randint(0, 100)
-        self.org_api_key.org_customer_id =  random.choice(await managers_and_enums.OrgCustomerManager(self.session).get_list()).org_customer_id
+        self.org_api_key.org_customer_id =  random.choice(await managers_and_enums.OrgCustomerManager(self._session_context).get_list()).org_customer_id
+
         return self
     def get_org_api_key_obj(self) -> OrgApiKey:
         return self.org_api_key
     def is_equal(self,org_api_key:OrgApiKey) -> OrgApiKey:
-        org_api_key_manager = OrgApiKeyManager(self.session)
+        org_api_key_manager = OrgApiKeyManager(self._session_context)
         my_org_api_key = self.get_org_api_key_obj()
         return org_api_key_manager.is_equal(org_api_key, my_org_api_key)
 
@@ -322,12 +317,12 @@ class OrgApiKeyBusObj(BaseBusObj):
     #name,
     #OrganizationID
     async def get_organization_id_rel_obj(self) -> models.Organization:
-        organization_manager = managers_and_enums.OrganizationManager(self.session)
+        organization_manager = managers_and_enums.OrganizationManager(self._session_context)
         organization_obj = await organization_manager.get_by_id(self.organization_id)
         return organization_obj
     #OrgCustomerID
     async def get_org_customer_id_rel_obj(self) -> models.OrgCustomer:
-        org_customer_manager = managers_and_enums.OrgCustomerManager(self.session)
+        org_customer_manager = managers_and_enums.OrgCustomerManager(self._session_context)
         org_customer_obj = await org_customer_manager.get_by_id(self.org_customer_id)
         return org_customer_obj
 
@@ -345,8 +340,6 @@ class OrgApiKeyBusObj(BaseBusObj):
     #isTempUserKey,
     #name,
     #OrganizationID
-    # async def get_parent_obj(self) -> OrganizationBusObj:
-    #     return await self.get_organization_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Organization'
     async def get_parent_code(self) -> uuid.UUID:

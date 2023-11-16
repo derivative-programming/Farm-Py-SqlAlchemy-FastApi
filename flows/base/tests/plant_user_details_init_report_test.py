@@ -14,7 +14,6 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect
 from sqlalchemy import String
 import flows.constants.plant_user_details_init_report as FlowConstants
-# DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -26,7 +25,7 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestBaseFlowPlantUserDetailsInitReport():
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = BaseFlowPlantUserDetailsInitReport(session_context)
         plant = await PlantFactory.create_async(session)
         flavor = await FlavorFactory.create_async(session)
@@ -36,8 +35,6 @@ class TestBaseFlowPlantUserDetailsInitReport():
             plant,
 
             )
-        # Add assertions here to validate the expected behavior
-        #TODO add validation checks - is required,
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
@@ -46,7 +43,7 @@ class TestBaseFlowPlantUserDetailsInitReport():
 
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         plant = await PlantFactory.create_async(session)
         flow = BaseFlowPlantUserDetailsInitReport(session_context)
         role_required = ""
@@ -54,4 +51,3 @@ class TestBaseFlowPlantUserDetailsInitReport():
             await flow._process_security_rules(plant)
             assert '' in flow.queued_validation_errors and flow.queued_validation_errors[''] == "Unautorized access. " + role_required + " role not found."
             session_context.role_name_csv = role_required
-        # Add assertions here to validate the expected behavior

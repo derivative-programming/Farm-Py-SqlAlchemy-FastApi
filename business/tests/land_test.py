@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Land
 from models.factory import LandFactory
 from managers.land import LandManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestLandBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def land_manager(self, session:AsyncSession):
-        return LandManager(session)
+        session_context = SessionContext(dict(),session)
+        return LandManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def land_bus_obj(self, session):
-        # Assuming that the LandBusObj requires a session object
-        return LandBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return LandBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_land(self, session):
         # Use the LandFactory to create a new land instance
@@ -107,9 +109,11 @@ class TestLandBusObj:
         assert new_land is None
 
     @pytest.mark.asyncio
-    async def test_build_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_build_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land, session:AsyncSession):
 
-        await current_runtime.initialize(session=land_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await land_bus_obj.load(land_id=new_land.land_id)
 
@@ -123,9 +127,11 @@ class TestLandBusObj:
         assert plant_bus_obj.plant_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_get_all_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land, session:AsyncSession):
 
-        await current_runtime.initialize(session=land_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await land_bus_obj.load(land_id=new_land.land_id)
 

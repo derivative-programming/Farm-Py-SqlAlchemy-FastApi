@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import ErrorLog
 from models.factory import ErrorLogFactory
 from managers.error_log import ErrorLogManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestErrorLogBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def error_log_manager(self, session:AsyncSession):
-        return ErrorLogManager(session)
+        session_context = SessionContext(dict(),session)
+        return ErrorLogManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def error_log_bus_obj(self, session):
-        # Assuming that the ErrorLogBusObj requires a session object
-        return ErrorLogBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return ErrorLogBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_error_log(self, session):
         # Use the ErrorLogFactory to create a new error_log instance

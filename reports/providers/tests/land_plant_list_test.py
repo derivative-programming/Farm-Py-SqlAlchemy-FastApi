@@ -29,9 +29,9 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestReportProviderLandPlantList: 
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
-        await current_runtime.initialize(session=session)
-        session_context = SessionContext(dict())
-        report_provider = ReportProviderLandPlantList(session, session_context) 
+        session_context = SessionContext(dict(), session)
+        await current_runtime.initialize(session_context)
+        report_provider = ReportProviderLandPlantList(session_context) 
         land = await LandFactory.create_async(session=session)
         land_code = land.code  
 
@@ -51,6 +51,7 @@ class TestReportProviderLandPlantList:
         some_phone_number: str = ""
         some_email_address: str = ""
         flavor_code: UUIDType = generate_uuid()
+#endset
 
         page_number = 1
         item_count_per_page = 10
@@ -74,6 +75,7 @@ class TestReportProviderLandPlantList:
             some_phone_number,
             some_email_address,
             flavor_code, 
+#endset
             page_number,
             item_count_per_page,
             order_by_column_name,
@@ -108,6 +110,7 @@ class TestReportProviderLandPlantList:
                 "update_link_plant_code", 
                 "delete_async_button_link_plant_code",
                 "details_link_plant_code"
+#endset
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result" 

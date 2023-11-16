@@ -54,4 +54,5 @@ class ReportItemLandPlantList():
             self.update_link_plant_code = TypeConversion.get_uuid(data["update_link_plant_code"])
             self.delete_async_button_link_plant_code = TypeConversion.get_uuid(data["delete_async_button_link_plant_code"])
             self.details_link_plant_code = TypeConversion.get_uuid(data["details_link_plant_code"])
+#endset
  

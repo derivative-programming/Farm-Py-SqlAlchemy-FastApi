@@ -38,13 +38,12 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
         placeholder = "" #to avoid pass line
 
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         error_log_code:uuid,
                         request:ErrorLogConfigResolveErrorLogPostModelRequest):
         try:
             logging.info("loading model...ErrorLogConfigResolveErrorLogPostModelResponse")
-            error_log_bus_obj = ErrorLogBusObj(session=session)
+            error_log_bus_obj = ErrorLogBusObj(session_context)
             await error_log_bus_obj.load(code=error_log_code)
             if(error_log_bus_obj.get_error_log_obj() is None):
                 logging.info("Invalid error_log_code")

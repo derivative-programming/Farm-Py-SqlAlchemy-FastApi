@@ -2,21 +2,17 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.pac import PacBusObj #PacID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import PacManager as PacIDManager #PacID
 from managers import RoleManager
 from models import Role
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-class RoleSessionNotFoundError(Exception):
-    pass
 class RoleInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -27,10 +23,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class RoleBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise RoleSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.role = Role()
     @property
     def role_id(self):
@@ -192,35 +188,35 @@ class RoleBusObj(BaseBusObj):
                    role_dict:dict=None,
                    role_enum:managers_and_enums.RoleEnum=None):
         if role_id and self.role.role_id is None:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             role_obj = await role_manager.get_by_id(role_id)
             self.role = role_obj
         if code and self.role.role_id is None:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             role_obj = await role_manager.get_by_code(code)
             self.role = role_obj
         if role_obj_instance and self.role.role_id is None:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             role_obj = await role_manager.get_by_id(role_obj_instance.role_id)
             self.role = role_obj
         if json_data and self.role.role_id is None:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             self.role = role_manager.from_json(json_data)
         if role_dict and self.role.role_id is None:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             self.role = role_manager.from_dict(role_dict)
         if role_enum and self.role.role_id is None:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             self.role = await role_manager.from_enum(role_enum)
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    role_id:int=None,
                    role_obj_instance:Role=None,
                    role_dict:dict=None,
                    role_enum:managers_and_enums.RoleEnum=None):
-        result = Role(session=session)
+        result = RoleBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -232,28 +228,28 @@ class RoleBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        role_manager = RoleManager(self.session)
+        role_manager = RoleManager(self._session_context)
         self.role = await role_manager.refresh(self.role)
         return self
     def is_valid(self):
         return (self.role is not None)
     def to_dict(self):
-        role_manager = RoleManager(self.session)
+        role_manager = RoleManager(self._session_context)
         return role_manager.to_dict(self.role)
     def to_json(self):
-        role_manager = RoleManager(self.session)
+        role_manager = RoleManager(self._session_context)
         return role_manager.to_json(self.role)
     async def save(self):
         if self.role.role_id is not None and self.role.role_id > 0:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             self.role = await role_manager.update(self.role)
         if self.role.role_id is None or self.role.role_id == 0:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             self.role = await role_manager.add(self.role)
         return self
     async def delete(self):
         if self.role.role_id > 0:
-            role_manager = RoleManager(self.session)
+            role_manager = RoleManager(self._session_context)
             await role_manager.delete(self.role.role_id)
             self.role = None
     async def randomize_properties(self):
@@ -263,11 +259,12 @@ class RoleBusObj(BaseBusObj):
         self.role.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.role.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.role.pac_id = random.randint(0, 100)
+
         return self
     def get_role_obj(self) -> Role:
         return self.role
     def is_equal(self,role:Role) -> Role:
-        role_manager = RoleManager(self.session)
+        role_manager = RoleManager(self._session_context)
         my_role = self.get_role_obj()
         return role_manager.is_equal(role, my_role)
 
@@ -278,7 +275,7 @@ class RoleBusObj(BaseBusObj):
     #name,
     #PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
-        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
 
@@ -294,8 +291,6 @@ class RoleBusObj(BaseBusObj):
     #lookupEnumName,
     #name,
     #PacID
-    # async def get_parent_obj(self) -> PacBusObj:
-    #     return await self.get_pac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:

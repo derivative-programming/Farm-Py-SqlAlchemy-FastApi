@@ -24,6 +24,7 @@ class FlowTacRegisterInitObjWFResult():
     confirm_password:str = ""
     first_name:str = ""
     last_name:str = ""
+
     def __init__(self):
         pass
     def to_json(self):
@@ -35,6 +36,7 @@ class FlowTacRegisterInitObjWFResult():
             'confirm_password': self.confirm_password,
             'first_name': self.first_name,
             'last_name': self.last_name,
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -57,6 +59,7 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         confirm_password_output:str = ""
         first_name_output:str = ""
         last_name_output:str = ""
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
@@ -67,6 +70,7 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         result.confirm_password = confirm_password_output
         result.first_name = first_name_output
         result.last_name = last_name_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

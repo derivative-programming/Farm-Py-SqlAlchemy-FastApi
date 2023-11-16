@@ -36,16 +36,12 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestCustomerBuildTempApiKeyPostModelResponse:
-    @pytest.mark.asyncio
-    async def test_flow_customer_build_temp_api_key_initialization(self,session):
-        session_context = SessionContext(dict())
-        flow = FlowCustomerBuildTempApiKey(session_context)
-        assert flow is not None
     def test_flow_customer_build_temp_api_key_result_to_json(self):
         # Create an instance and set attributes
         result = FlowCustomerBuildTempApiKeyResult()
         result.context_object_code = uuid.uuid4()
         result.tmp_org_api_key_code = uuid.uuid4()
+
         # Call to_json method
         json_output = result.to_json()
         # Parse JSON output
@@ -53,13 +49,14 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         # Assert individual fields
         assert data["context_object_code"] == str(result.context_object_code)
         assert data["tmp_org_api_key_code"] == str(result.tmp_org_api_key_code)
+
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = FlowCustomerBuildTempApiKey(session_context)
         customer = await CustomerFactory.create_async(session)
-        customer_bus_obj = CustomerBusObj(session)
+        customer_bus_obj = CustomerBusObj(session_context)
         await customer_bus_obj.load(customer_obj_instance=customer)
         role_required = ""
 

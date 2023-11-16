@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Role
 from models.factory import RoleFactory
 from managers.role import RoleManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestRoleBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def role_manager(self, session:AsyncSession):
-        return RoleManager(session)
+        session_context = SessionContext(dict(),session)
+        return RoleManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def role_bus_obj(self, session):
-        # Assuming that the RoleBusObj requires a session object
-        return RoleBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return RoleBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_role(self, session):
         # Use the RoleFactory to create a new role instance

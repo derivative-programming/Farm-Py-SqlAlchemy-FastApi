@@ -49,10 +49,9 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
             mock_method.side_effect = mock_process
             request_instance = await LandUserPlantMultiSelectToEditablePostModelRequestFactory.create_async(session=session)
             response_instance = LandUserPlantMultiSelectToEditablePostModelResponse()
-            session_context = SessionContext(dict())
+            session_context = SessionContext(dict(), session)
             land = await LandFactory.create_async(session)
             await response_instance.process_request(
-                session=session,
                 session_context=session_context,
                 land_code=land.code,
                 request=request_instance

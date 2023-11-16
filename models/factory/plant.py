@@ -88,7 +88,7 @@ class PlantFactory(factory.Factory):
 #endset
 
 
-        session.add(obj) 
+        # session.add(obj) 
         # session.commit() 
         return obj
  
@@ -174,6 +174,6 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code #FlvrForeignKeyID 
 #endset
 
-        session.add(obj) 
+        # session.add(obj) 
         # await session.flush()
         return obj

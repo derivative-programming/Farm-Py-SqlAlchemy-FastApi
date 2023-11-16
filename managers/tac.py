@@ -6,11 +6,12 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.tac import Tac
 from models.serialization_schema.tac import TacSchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -22,8 +23,18 @@ class TacEnum(Enum):
     Primary = 'Primary'
 
 class TacManager:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
+    def convert_uuid_to_model_uuid(self,value:uuid):
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
 
     async def _build_lookup_item(self, pac:Pac):
         item = await self.build()
@@ -31,7 +42,7 @@ class TacManager:
         return item
     async def initialize(self):
         logging.info("PlantManager.Initialize start")
-        pac_result = await self.session.execute(select(Pac))
+        pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
         if await self.from_enum(TacEnum.Unknown) is None:
@@ -65,8 +76,10 @@ class TacManager:
         return Tac(**kwargs)
     async def add(self, tac: Tac) -> Tac:
         logging.info("TacManager.add")
-        self.session.add(tac)
-        await self.session.flush()
+        tac.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        tac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(tac)
+        await self._session_context.session.flush()
         return tac
     def _build_query(self):
         logging.info("TacManager._build_query")
@@ -94,7 +107,7 @@ class TacManager:
             query = tac_query_all.filter(query_filter)
         else:
             query = tac_query_all
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
@@ -115,25 +128,21 @@ class TacManager:
         logging.info("TacManager.get_by_id start tac_id:" + str(tac_id))
         if not isinstance(tac_id, int):
             raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
-        # result = await self.session.execute(select(Tac).filter(Tac.tac_id == tac_id))
-        # result = await self.session.execute(select(Tac).filter(Tac.tac_id == tac_id))
-        # return result.scalars().first()
         query_filter = Tac.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
         logging.info(f"TacManager.get_by_code {code}")
-        # result = await self.session.execute(select(Tac).filter_by(code=code))
-        # return result.scalars().one_or_none()
         query_filter = Tac.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, tac: Tac, **kwargs) -> Optional[Tac]:
         logging.info("TacManager.update")
         if tac:
+            tac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(tac, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return tac
     async def delete(self, tac_id: int):
         logging.info(f"TacManager.delete {tac_id}")
@@ -142,12 +151,10 @@ class TacManager:
         tac = await self.get_by_id(tac_id)
         if not tac:
             raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
-        await self.session.delete(tac)
-        await self.session.flush()
+        await self._session_context.session.delete(tac)
+        await self._session_context.session.flush()
     async def get_list(self) -> List[Tac]:
         logging.info("TacManager.get_list")
-        # result = await self.session.execute(select(Tac))
-        # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, tac:Tac) -> str:
@@ -185,8 +192,13 @@ class TacManager:
     async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
         logging.info("TacManager.add_bulk")
         """Add multiple tacs at once."""
-        self.session.add_all(tacs)
-        await self.session.flush()
+        for tac in tacs:
+            if tac.tac_id is not None and tac.tac_id > 0:
+                raise ValueError("Tac is already added: " + str(tac.code) + " " + str(tac.tac_id))
+            tac.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            tac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(tacs)
+        await self._session_context.session.flush()
         return tacs
     async def update_bulk(self, tac_updates: List[Dict[int, Dict]]) -> List[Tac]:
         logging.info("TacManager.update_bulk start")
@@ -204,8 +216,9 @@ class TacManager:
             for key, value in update.items():
                 if key != "tac_id":
                     setattr(tac, key, value)
+            tac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_tacs.append(tac)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("TacManager.update_bulk end")
         return updated_tacs
     async def delete_bulk(self, tac_ids: List[int]) -> bool:
@@ -218,26 +231,26 @@ class TacManager:
             if not tac:
                 raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
             if tac:
-                await self.session.delete(tac)
-        await self.session.flush()
+                await self._session_context.session.delete(tac)
+        await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         logging.info("TacManager.count")
         """Return the total number of tacs."""
-        result = await self.session.execute(select(Tac))
+        result = await self._session_context.session.execute(select(Tac))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Tac]:
         """Retrieve tacs sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(Tac).order_by(getattr(Tac, sort_by).asc()))
+            result = await self._session_context.session.execute(select(Tac).order_by(getattr(Tac, sort_by).asc()))
         else:
-            result = await self.session.execute(select(Tac).order_by(getattr(Tac, sort_by).desc()))
+            result = await self._session_context.session.execute(select(Tac).order_by(getattr(Tac, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, tac: Tac) -> Tac:
         logging.info("TacManager.refresh")
         """Refresh the state of a given tac instance from the database."""
-        await self.session.refresh(tac)
+        await self._session_context.session.refresh(tac)
         return tac
     async def exists(self, tac_id: int) -> bool:
         logging.info(f"TacManager.exists {tac_id}")
@@ -263,8 +276,6 @@ class TacManager:
         logging.info("TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(f"The tac_id must be an integer, got {type(pac_id)} instead.")
-        # result = await self.session.execute(select(Tac).filter(Tac.pac_id == pac_id))
-        # return result.scalars().all()
         query_filter = Tac.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from sqlalchemy.ext.asyncio import AsyncSession,create_async_engine
-from sqlalchemy.orm import sessionmaker 
+from sqlalchemy.orm import sessionmaker
+from helpers.session_context import SessionContext 
 from managers import LandManager
 from managers import FlavorManager
 from models import Plant, Base
@@ -60,6 +61,7 @@ async def startup_event():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     async for session in get_db():
-        await current_runtime.initialize(session) 
+        session_context = SessionContext(dict(), session)
+        await current_runtime.initialize(session_context) 
         await session.commit()
         break

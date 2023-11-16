@@ -11,8 +11,9 @@ class ReportProviderTacFarmDashboard():
 		_session_context:SessionContext
 		_session:AsyncSession
 		_cached_sql_query: str = None  # Static variable for caching the SQL query
-		def __init__(self, session:AsyncSession, session_context:SessionContext):
-			self._session = session
+		def __init__(self, session_context:SessionContext):
+			if not session_context.session:
+				raise ValueError("session required")
 			self._session_context = session_context
 		async def generate_list(
 			self,
@@ -47,7 +48,7 @@ class ReportProviderTacFarmDashboard():
 				with open(file_to_read, 'r') as file:
 					ReportProviderTacFarmDashboard._cached_sql_query = file.read()
 			# Execute the SQL query with the provided parameters
-			cursor = await self._session.execute(
+			cursor = await self._session_context.session.execute(
 				text(ReportProviderTacFarmDashboard._cached_sql_query),
 				query_dict
 			)

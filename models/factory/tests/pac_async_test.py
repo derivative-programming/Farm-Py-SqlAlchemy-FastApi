@@ -5,7 +5,7 @@ import pytest_asyncio
 import time
 from typing import AsyncGenerator
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -104,9 +104,8 @@ class TestPacFactoryAsync:
         pac = await PacFactory.build_async(session=session)
         assert pac.insert_utc_date_time is not None
         assert isinstance(pac.insert_utc_date_time, datetime)
-        initial_time = pac.insert_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         pac.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert pac.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -129,9 +128,8 @@ class TestPacFactoryAsync:
         pac = await PacFactory.build_async(session=session)
         assert pac.last_update_utc_date_time is not None
         assert isinstance(pac.last_update_utc_date_time, datetime)
-        initial_time = pac.last_update_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         pac.code = generate_uuid()
-        time.sleep(1)
         await session.commit()
         assert pac.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

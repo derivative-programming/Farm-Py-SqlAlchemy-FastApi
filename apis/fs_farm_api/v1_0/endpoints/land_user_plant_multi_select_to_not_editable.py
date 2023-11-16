@@ -40,12 +40,11 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code("LandCode", land_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
-                    session,
                     session_context,
                     land_code,
                     request_model

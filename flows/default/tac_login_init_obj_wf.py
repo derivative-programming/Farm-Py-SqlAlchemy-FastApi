@@ -21,6 +21,7 @@ class FlowTacLoginInitObjWFResult():
     context_object_code:uuid.UUID =  uuid.UUID(int=0)
     email:str = ""
     password:str = ""
+
     def __init__(self):
         pass
     def to_json(self):
@@ -29,6 +30,7 @@ class FlowTacLoginInitObjWFResult():
             'context_object_code': str(self.context_object_code),
             'email': self.email,
             'password': self.password,
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -48,6 +50,7 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
         super()._throw_queued_validation_errors()
         email_output:str = ""
         password_output:str = ""
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
@@ -55,6 +58,7 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
         result.context_object_code = tac_bus_obj.code
         result.email = email_output
         result.password = password_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

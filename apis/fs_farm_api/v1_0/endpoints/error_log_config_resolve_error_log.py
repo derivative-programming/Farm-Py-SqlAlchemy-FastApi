@@ -40,12 +40,11 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 error_log_code = session_context.check_context_code("ErrorLogCode", error_log_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
-                    session,
                     session_context,
                     error_log_code,
                     request_model

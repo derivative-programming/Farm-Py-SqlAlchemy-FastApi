@@ -2,13 +2,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.pac import PacBusObj #PacID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import PacManager as PacIDManager #PacID
 from managers import TacManager
 from models import Tac
 import models
@@ -19,8 +17,6 @@ from business.organization import OrganizationBusObj
 
 from business.customer import CustomerBusObj
 
-class TacSessionNotFoundError(Exception):
-    pass
 class TacInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -31,10 +27,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TacBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise TacSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.tac = Tac()
     @property
     def tac_id(self):
@@ -196,35 +192,35 @@ class TacBusObj(BaseBusObj):
                    tac_dict:dict=None,
                    tac_enum:managers_and_enums.TacEnum=None):
         if tac_id and self.tac.tac_id is None:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             tac_obj = await tac_manager.get_by_id(tac_id)
             self.tac = tac_obj
         if code and self.tac.tac_id is None:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             tac_obj = await tac_manager.get_by_code(code)
             self.tac = tac_obj
         if tac_obj_instance and self.tac.tac_id is None:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             tac_obj = await tac_manager.get_by_id(tac_obj_instance.tac_id)
             self.tac = tac_obj
         if json_data and self.tac.tac_id is None:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             self.tac = tac_manager.from_json(json_data)
         if tac_dict and self.tac.tac_id is None:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             self.tac = tac_manager.from_dict(tac_dict)
         if tac_enum and self.tac.tac_id is None:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             self.tac = await tac_manager.from_enum(tac_enum)
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    tac_id:int=None,
                    tac_obj_instance:Tac=None,
                    tac_dict:dict=None,
                    tac_enum:managers_and_enums.TacEnum=None):
-        result = Tac(session=session)
+        result = TacBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -236,28 +232,28 @@ class TacBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        tac_manager = TacManager(self.session)
+        tac_manager = TacManager(self._session_context)
         self.tac = await tac_manager.refresh(self.tac)
         return self
     def is_valid(self):
         return (self.tac is not None)
     def to_dict(self):
-        tac_manager = TacManager(self.session)
+        tac_manager = TacManager(self._session_context)
         return tac_manager.to_dict(self.tac)
     def to_json(self):
-        tac_manager = TacManager(self.session)
+        tac_manager = TacManager(self._session_context)
         return tac_manager.to_json(self.tac)
     async def save(self):
         if self.tac.tac_id is not None and self.tac.tac_id > 0:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             self.tac = await tac_manager.update(self.tac)
         if self.tac.tac_id is None or self.tac.tac_id == 0:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             self.tac = await tac_manager.add(self.tac)
         return self
     async def delete(self):
         if self.tac.tac_id > 0:
-            tac_manager = TacManager(self.session)
+            tac_manager = TacManager(self._session_context)
             await tac_manager.delete(self.tac.tac_id)
             self.tac = None
     async def randomize_properties(self):
@@ -267,11 +263,12 @@ class TacBusObj(BaseBusObj):
         self.tac.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tac.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.tac.pac_id = random.randint(0, 100)
+
         return self
     def get_tac_obj(self) -> Tac:
         return self.tac
     def is_equal(self,tac:Tac) -> Tac:
-        tac_manager = TacManager(self.session)
+        tac_manager = TacManager(self._session_context)
         my_tac = self.get_tac_obj()
         return tac_manager.is_equal(tac, my_tac)
 
@@ -282,7 +279,7 @@ class TacBusObj(BaseBusObj):
     #name,
     #PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
-        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
 
@@ -298,15 +295,13 @@ class TacBusObj(BaseBusObj):
     #lookupEnumName,
     #name,
     #PacID
-    # async def get_parent_obj(self) -> PacBusObj:
-    #     return await self.get_pac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
 
     async def build_organization(self) -> OrganizationBusObj:
-        item = OrganizationBusObj(self.session)
+        item = OrganizationBusObj(self._session_context)
 
         item.tac_id = self.tac_id
         item.organization.tac_code_peek = self.code
@@ -315,16 +310,16 @@ class TacBusObj(BaseBusObj):
 
     async def get_all_organization(self) -> List[OrganizationBusObj]:
         results = list()
-        organization_manager = managers_and_enums.OrganizationManager(self.session)
+        organization_manager = managers_and_enums.OrganizationManager(self._session_context)
         obj_list = await organization_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
-            bus_obj_item = OrganizationBusObj(self.session)
+            bus_obj_item = OrganizationBusObj(self._session_context)
             await bus_obj_item.load(organization_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
 
     async def build_customer(self) -> CustomerBusObj:
-        item = CustomerBusObj(self.session)
+        item = CustomerBusObj(self._session_context)
 
         item.tac_id = self.tac_id
         item.customer.tac_code_peek = self.code
@@ -333,28 +328,28 @@ class TacBusObj(BaseBusObj):
 
     async def get_all_customer(self) -> List[CustomerBusObj]:
         results = list()
-        customer_manager = managers_and_enums.CustomerManager(self.session)
+        customer_manager = managers_and_enums.CustomerManager(self._session_context)
         obj_list = await customer_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
-            bus_obj_item = CustomerBusObj(self.session)
+            bus_obj_item = CustomerBusObj(self._session_context)
             await bus_obj_item.load(customer_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
     async def get_customer_by_email_prop(self, email) -> List[CustomerBusObj]:
         results = list()
-        customer_manager = managers_and_enums.CustomerManager(self.session)
+        customer_manager = managers_and_enums.CustomerManager(self._session_context)
         obj_list = await customer_manager.get_by_email_prop(email)
         for obj_item in obj_list:
-            bus_obj_item = CustomerBusObj(self.session)
+            bus_obj_item = CustomerBusObj(self._session_context)
             await bus_obj_item.load(customer_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results
     async def get_customer_by_fs_user_code_value_prop(self, fs_user_code_value) -> List[CustomerBusObj]:
         results = list()
-        customer_manager = managers_and_enums.CustomerManager(self.session)
+        customer_manager = managers_and_enums.CustomerManager(self._session_context)
         obj_list = await customer_manager.get_by_fs_user_code_value_prop(fs_user_code_value)
         for obj_item in obj_list:
-            bus_obj_item = CustomerBusObj(self.session)
+            bus_obj_item = CustomerBusObj(self._session_context)
             await bus_obj_item.load(customer_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results

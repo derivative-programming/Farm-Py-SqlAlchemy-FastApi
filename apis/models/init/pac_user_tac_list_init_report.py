@@ -3,6 +3,7 @@ from decimal import Decimal
 import json
 from typing import List
 import uuid
+from apis.models import validation_error
 from helpers import TypeConversion
 from flows.pac_user_tac_list_init_report import FlowPacUserTacListInitReportResult, FlowPacUserTacListInitReport
 from helpers import SessionContext
@@ -27,13 +28,12 @@ class PacUserTacListInitReportGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         pac_code:uuid,
                         response:PacUserTacListInitReportGetInitModelResponse) -> PacUserTacListInitReportGetInitModelResponse:
         try:
             logging.info("loading model...PacUserTacListInitReportGetInitModelRequest")
-            pac_bus_obj = PacBusObj(session=session)
+            pac_bus_obj = PacBusObj(session_context)
             await pac_bus_obj.load(code=pac_code)
             if(pac_bus_obj.get_pac_obj() is None):
                 logging.info("Invalid pac_code")
@@ -51,6 +51,6 @@ class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
+                response.validation_errors.append(validation_error(key,ve.error_dict[key]))
         return response
 

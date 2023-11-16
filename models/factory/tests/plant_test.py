@@ -2,7 +2,7 @@ from decimal import Decimal
 import pytest 
 import time
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Plant
@@ -82,9 +82,8 @@ class TestPlantFactory:
         plant = PlantFactory.build(session=session)
         assert plant.insert_utc_date_time is not None 
         assert isinstance(plant.insert_utc_date_time, datetime)
-        initial_time = plant.insert_utc_date_time
-        plant.code = generate_uuid()
-        time.sleep(1)
+        initial_time = datetime.utcnow() + timedelta(days=-1)
+        plant.code = generate_uuid() 
         session.commit()
         assert plant.insert_utc_date_time > initial_time
 
@@ -108,9 +107,8 @@ class TestPlantFactory:
         plant = PlantFactory.build(session=session)
         assert plant.last_update_utc_date_time is not None 
         assert isinstance(plant.last_update_utc_date_time, datetime)
-        initial_time = plant.last_update_utc_date_time
-        plant.code = generate_uuid()
-        time.sleep(1)
+        initial_time = datetime.utcnow() + timedelta(days=-1)
+        plant.code = generate_uuid() 
         session.commit()
         assert plant.last_update_utc_date_time > initial_time
 

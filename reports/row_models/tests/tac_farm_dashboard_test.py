@@ -10,12 +10,14 @@ class TestReportItemTacFarmDashboard:
         assert report_item.field_one_plant_list_link_land_code.int == 0
         assert report_item.conditional_btn_example_link_land_code.int == 0
         assert report_item.is_conditional_btn_available is False
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
             "field_one_plant_list_link_land_code": str(UUID(int=5)),
             "conditional_btn_example_link_land_code": str(UUID(int=5)),
             "is_conditional_btn_available": True,
+
         }
         # report_item = ReportItemTacFarmDashboard(**data)
         report_item = ReportItemTacFarmDashboard()

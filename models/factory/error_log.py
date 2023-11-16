@@ -55,7 +55,7 @@ class ErrorLogFactory(factory.Factory):
 
         obj.pac_code_peek = pac_id_pac_instance.code #PacID
 
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -103,6 +103,6 @@ class ErrorLogFactory(factory.Factory):
 
         obj.pac_code_peek = pac_id_pac_instance.code #PacID
 
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

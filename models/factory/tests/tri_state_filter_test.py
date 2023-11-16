@@ -2,7 +2,7 @@ from decimal import Decimal
 import pytest
 import time
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, TriStateFilter
@@ -69,9 +69,8 @@ class TestTriStateFilterFactory:
         tri_state_filter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.insert_utc_date_time is not None
         assert isinstance(tri_state_filter.insert_utc_date_time, datetime)
-        initial_time = tri_state_filter.insert_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         tri_state_filter.code = generate_uuid()
-        time.sleep(1)
         session.commit()
         assert tri_state_filter.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -91,9 +90,8 @@ class TestTriStateFilterFactory:
         tri_state_filter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.last_update_utc_date_time is not None
         assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
-        initial_time = tri_state_filter.last_update_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         tri_state_filter.code = generate_uuid()
-        time.sleep(1)
         session.commit()
         assert tri_state_filter.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):

@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio  
 from datetime import datetime, date 
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Plant
 from models.factory import PlantFactory
 from managers.plant import PlantManager
@@ -32,12 +33,13 @@ class TestPlantBusObj:
 
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session:AsyncSession):
-        return PlantManager(session)
+        session_context = SessionContext(dict(),session)
+        return PlantManager(session_context)
      
     @pytest_asyncio.fixture(scope="function")
-    async def plant_bus_obj(self, session):
-        # Assuming that the PlantBusObj requires a session object
-        return PlantBusObj(session)
+    async def plant_bus_obj(self, session): 
+        session_context = SessionContext(dict(),session)
+        return PlantBusObj(session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_plant(self, session):

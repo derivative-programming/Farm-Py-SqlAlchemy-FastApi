@@ -26,9 +26,9 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestReportProviderPacUserRoleList:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
-        await current_runtime.initialize(session=session)
-        session_context = SessionContext(dict())
-        report_provider = ReportProviderPacUserRoleList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        await current_runtime.initialize(session_context)
+        report_provider = ReportProviderPacUserRoleList(session_context)
         pac = await PacFactory.create_async(session=session)
         pac_code = pac.code
 
@@ -55,6 +55,7 @@ class TestReportProviderPacUserRoleList:
                 "role_lookup_enum_name",
                 "role_name",
                 "pac_name",
+
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result"

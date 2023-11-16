@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Tac
 from models.factory import TacFactory
 from managers.tac import TacManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestTacBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session:AsyncSession):
-        return TacManager(session)
+        session_context = SessionContext(dict(),session)
+        return TacManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def tac_bus_obj(self, session):
-        # Assuming that the TacBusObj requires a session object
-        return TacBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return TacBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_tac(self, session):
         # Use the TacFactory to create a new tac instance
@@ -107,9 +109,11 @@ class TestTacBusObj:
         assert new_tac is None
 
     @pytest.mark.asyncio
-    async def test_build_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_build_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
-        await current_runtime.initialize(session=tac_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await tac_bus_obj.load(tac_id=new_tac.tac_id)
 
@@ -123,9 +127,11 @@ class TestTacBusObj:
         assert organization_bus_obj.organization_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_get_all_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
-        await current_runtime.initialize(session=tac_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await tac_bus_obj.load(tac_id=new_tac.tac_id)
 
@@ -142,9 +148,11 @@ class TestTacBusObj:
         #assert organization_list[0].organization_id == organization_bus_obj.organization_id
 
     @pytest.mark.asyncio
-    async def test_build_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_build_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
-        await current_runtime.initialize(session=tac_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await tac_bus_obj.load(tac_id=new_tac.tac_id)
 
@@ -158,9 +166,11 @@ class TestTacBusObj:
         assert customer_bus_obj.customer_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_get_all_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
-        await current_runtime.initialize(session=tac_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await tac_bus_obj.load(tac_id=new_tac.tac_id)
 

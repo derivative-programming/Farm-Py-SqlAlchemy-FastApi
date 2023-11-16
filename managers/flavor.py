@@ -6,11 +6,12 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 from models.pac import Pac # PacID
 from models.flavor import Flavor
 from models.serialization_schema.flavor import FlavorSchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -23,8 +24,18 @@ class FlavorEnum(Enum):
     Sour = 'Sour'
 
 class FlavorManager:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
+    def convert_uuid_to_model_uuid(self,value:uuid):
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
 
     async def _build_lookup_item(self, pac:Pac):
         item = await self.build()
@@ -32,7 +43,7 @@ class FlavorManager:
         return item
     async def initialize(self):
         logging.info("PlantManager.Initialize start")
-        pac_result = await self.session.execute(select(Pac))
+        pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
         if await self.from_enum(FlavorEnum.Unknown) is None:
@@ -75,8 +86,10 @@ class FlavorManager:
         return Flavor(**kwargs)
     async def add(self, flavor: Flavor) -> Flavor:
         logging.info("FlavorManager.add")
-        self.session.add(flavor)
-        await self.session.flush()
+        flavor.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        flavor.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(flavor)
+        await self._session_context.session.flush()
         return flavor
     def _build_query(self):
         logging.info("FlavorManager._build_query")
@@ -104,7 +117,7 @@ class FlavorManager:
             query = flavor_query_all.filter(query_filter)
         else:
             query = flavor_query_all
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
@@ -125,25 +138,21 @@ class FlavorManager:
         logging.info("FlavorManager.get_by_id start flavor_id:" + str(flavor_id))
         if not isinstance(flavor_id, int):
             raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
-        # result = await self.session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
-        # result = await self.session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
-        # return result.scalars().first()
         query_filter = Flavor.flavor_id == flavor_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Flavor]:
         logging.info(f"FlavorManager.get_by_code {code}")
-        # result = await self.session.execute(select(Flavor).filter_by(code=code))
-        # return result.scalars().one_or_none()
         query_filter = Flavor.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, flavor: Flavor, **kwargs) -> Optional[Flavor]:
         logging.info("FlavorManager.update")
         if flavor:
+            flavor.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(flavor, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return flavor
     async def delete(self, flavor_id: int):
         logging.info(f"FlavorManager.delete {flavor_id}")
@@ -152,12 +161,10 @@ class FlavorManager:
         flavor = await self.get_by_id(flavor_id)
         if not flavor:
             raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
-        await self.session.delete(flavor)
-        await self.session.flush()
+        await self._session_context.session.delete(flavor)
+        await self._session_context.session.flush()
     async def get_list(self) -> List[Flavor]:
         logging.info("FlavorManager.get_list")
-        # result = await self.session.execute(select(Flavor))
-        # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, flavor:Flavor) -> str:
@@ -195,8 +202,13 @@ class FlavorManager:
     async def add_bulk(self, flavors: List[Flavor]) -> List[Flavor]:
         logging.info("FlavorManager.add_bulk")
         """Add multiple flavors at once."""
-        self.session.add_all(flavors)
-        await self.session.flush()
+        for flavor in flavors:
+            if flavor.flavor_id is not None and flavor.flavor_id > 0:
+                raise ValueError("Flavor is already added: " + str(flavor.code) + " " + str(flavor.flavor_id))
+            flavor.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            flavor.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(flavors)
+        await self._session_context.session.flush()
         return flavors
     async def update_bulk(self, flavor_updates: List[Dict[int, Dict]]) -> List[Flavor]:
         logging.info("FlavorManager.update_bulk start")
@@ -214,8 +226,9 @@ class FlavorManager:
             for key, value in update.items():
                 if key != "flavor_id":
                     setattr(flavor, key, value)
+            flavor.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_flavors.append(flavor)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("FlavorManager.update_bulk end")
         return updated_flavors
     async def delete_bulk(self, flavor_ids: List[int]) -> bool:
@@ -228,26 +241,26 @@ class FlavorManager:
             if not flavor:
                 raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
             if flavor:
-                await self.session.delete(flavor)
-        await self.session.flush()
+                await self._session_context.session.delete(flavor)
+        await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         logging.info("FlavorManager.count")
         """Return the total number of flavors."""
-        result = await self.session.execute(select(Flavor))
+        result = await self._session_context.session.execute(select(Flavor))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Flavor]:
         """Retrieve flavors sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(Flavor).order_by(getattr(Flavor, sort_by).asc()))
+            result = await self._session_context.session.execute(select(Flavor).order_by(getattr(Flavor, sort_by).asc()))
         else:
-            result = await self.session.execute(select(Flavor).order_by(getattr(Flavor, sort_by).desc()))
+            result = await self._session_context.session.execute(select(Flavor).order_by(getattr(Flavor, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, flavor: Flavor) -> Flavor:
         logging.info("FlavorManager.refresh")
         """Refresh the state of a given flavor instance from the database."""
-        await self.session.refresh(flavor)
+        await self._session_context.session.refresh(flavor)
         return flavor
     async def exists(self, flavor_id: int) -> bool:
         logging.info(f"FlavorManager.exists {flavor_id}")
@@ -273,8 +286,6 @@ class FlavorManager:
         logging.info("FlavorManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(f"The flavor_id must be an integer, got {type(pac_id)} instead.")
-        # result = await self.session.execute(select(Flavor).filter(Flavor.pac_id == pac_id))
-        # return result.scalars().all()
         query_filter = Flavor.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

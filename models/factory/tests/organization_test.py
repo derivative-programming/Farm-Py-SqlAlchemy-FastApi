@@ -2,7 +2,7 @@ from decimal import Decimal
 import pytest
 import time
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Organization
@@ -69,9 +69,8 @@ class TestOrganizationFactory:
         organization = OrganizationFactory.build(session=session)
         assert organization.insert_utc_date_time is not None
         assert isinstance(organization.insert_utc_date_time, datetime)
-        initial_time = organization.insert_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = generate_uuid()
-        time.sleep(1)
         session.commit()
         assert organization.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -91,9 +90,8 @@ class TestOrganizationFactory:
         organization = OrganizationFactory.build(session=session)
         assert organization.last_update_utc_date_time is not None
         assert isinstance(organization.last_update_utc_date_time, datetime)
-        initial_time = organization.last_update_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = generate_uuid()
-        time.sleep(1)
         session.commit()
         assert organization.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):

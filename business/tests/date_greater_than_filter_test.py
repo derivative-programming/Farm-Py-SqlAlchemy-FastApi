@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import DateGreaterThanFilter
 from models.factory import DateGreaterThanFilterFactory
 from managers.date_greater_than_filter import DateGreaterThanFilterManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestDateGreaterThanFilterBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def date_greater_than_filter_manager(self, session:AsyncSession):
-        return DateGreaterThanFilterManager(session)
+        session_context = SessionContext(dict(),session)
+        return DateGreaterThanFilterManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def date_greater_than_filter_bus_obj(self, session):
-        # Assuming that the DateGreaterThanFilterBusObj requires a session object
-        return DateGreaterThanFilterBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return DateGreaterThanFilterBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_date_greater_than_filter(self, session):
         # Use the DateGreaterThanFilterFactory to create a new date_greater_than_filter instance

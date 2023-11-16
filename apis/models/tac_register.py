@@ -55,13 +55,12 @@ class TacRegisterPostModelResponse(PostResponse):
         self.api_key = data.api_key
 
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         tac_code:uuid,
                         request:TacRegisterPostModelRequest):
         try:
             logging.info("loading model...TacRegisterPostModelResponse")
-            tac_bus_obj = TacBusObj(session=session)
+            tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load(code=tac_code)
             if(tac_bus_obj.get_tac_obj() is None):
                 logging.info("Invalid tac_code")

@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Customer
 from models.factory import CustomerFactory
 from managers.customer import CustomerManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestCustomerBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def customer_manager(self, session:AsyncSession):
-        return CustomerManager(session)
+        session_context = SessionContext(dict(),session)
+        return CustomerManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def customer_bus_obj(self, session):
-        # Assuming that the CustomerBusObj requires a session object
-        return CustomerBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return CustomerBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_customer(self, session):
         # Use the CustomerFactory to create a new customer instance
@@ -130,9 +132,11 @@ class TestCustomerBusObj:
         assert new_customer is None
 
     @pytest.mark.asyncio
-    async def test_build_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_build_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer, session:AsyncSession):
 
-        await current_runtime.initialize(session=customer_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await customer_bus_obj.load(customer_id=new_customer.customer_id)
 
@@ -146,9 +150,11 @@ class TestCustomerBusObj:
         assert customer_role_bus_obj.customer_role_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_get_all_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer, session:AsyncSession):
 
-        await current_runtime.initialize(session=customer_manager.session)
+        session_context = SessionContext(dict(),session)
+
+        await current_runtime.initialize(session_context)
 
         await customer_bus_obj.load(customer_id=new_customer.customer_id)
 

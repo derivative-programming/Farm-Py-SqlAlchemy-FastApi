@@ -20,6 +20,7 @@ from decimal import Decimal
 class FlowCustomerUserLogOutInitObjWFResult():
     context_object_code:uuid.UUID =  uuid.UUID(int=0)
     tac_code:uuid.UUID =  uuid.UUID(int=0)
+
     def __init__(self):
         pass
     def to_json(self):
@@ -27,6 +28,7 @@ class FlowCustomerUserLogOutInitObjWFResult():
         data = {
             'context_object_code': str(self.context_object_code),
             'tac_code': str(self.tac_code),
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -45,12 +47,14 @@ class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
         )
         super()._throw_queued_validation_errors()
         tac_code_output:uuid = uuid.UUID(int=0)
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowCustomerUserLogOutInitObjWFResult()
         result.context_object_code = customer_bus_obj.code
         result.tac_code = tac_code_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

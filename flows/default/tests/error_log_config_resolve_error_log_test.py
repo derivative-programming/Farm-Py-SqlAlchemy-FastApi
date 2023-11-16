@@ -36,11 +36,6 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestErrorLogConfigResolveErrorLogPostModelResponse:
-    @pytest.mark.asyncio
-    async def test_flow_error_log_config_resolve_error_log_initialization(self,session):
-        session_context = SessionContext(dict())
-        flow = FlowErrorLogConfigResolveErrorLog(session_context)
-        assert flow is not None
     def test_flow_error_log_config_resolve_error_log_result_to_json(self):
         # Create an instance and set attributes
         result = FlowErrorLogConfigResolveErrorLogResult()
@@ -56,10 +51,10 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = FlowErrorLogConfigResolveErrorLog(session_context)
         error_log = await ErrorLogFactory.create_async(session)
-        error_log_bus_obj = ErrorLogBusObj(session)
+        error_log_bus_obj = ErrorLogBusObj(session_context)
         await error_log_bus_obj.load(error_log_obj_instance=error_log)
         role_required = "Config"
 

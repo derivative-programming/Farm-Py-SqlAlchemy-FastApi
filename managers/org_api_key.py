@@ -6,12 +6,13 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 from models.organization import Organization # OrganizationID
 from models.org_customer import OrgCustomer # OrgCustomerID
 from models.org_api_key import OrgApiKey
 from models.serialization_schema.org_api_key import OrgApiKeySchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -19,8 +20,18 @@ class OrgApiKeyNotFoundError(Exception):
     pass
 
 class OrgApiKeyManager:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
+    def convert_uuid_to_model_uuid(self,value:uuid):
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
 
     async def initialize(self):
         logging.info("OrgApiKeyManager.Initialize")
@@ -30,8 +41,10 @@ class OrgApiKeyManager:
         return OrgApiKey(**kwargs)
     async def add(self, org_api_key: OrgApiKey) -> OrgApiKey:
         logging.info("OrgApiKeyManager.add")
-        self.session.add(org_api_key)
-        await self.session.flush()
+        org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(org_api_key)
+        await self._session_context.session.flush()
         return org_api_key
     def _build_query(self):
         logging.info("OrgApiKeyManager._build_query")
@@ -63,7 +76,7 @@ class OrgApiKeyManager:
             query = org_api_key_query_all.filter(query_filter)
         else:
             query = org_api_key_query_all
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
@@ -87,25 +100,21 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.get_by_id start org_api_key_id:" + str(org_api_key_id))
         if not isinstance(org_api_key_id, int):
             raise TypeError(f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
-        # result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_id))
-        # result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_id))
-        # return result.scalars().first()
         query_filter = OrgApiKey.org_api_key_id == org_api_key_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgApiKey]:
         logging.info(f"OrgApiKeyManager.get_by_code {code}")
-        # result = await self.session.execute(select(OrgApiKey).filter_by(code=code))
-        # return result.scalars().one_or_none()
         query_filter = OrgApiKey.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, org_api_key: OrgApiKey, **kwargs) -> Optional[OrgApiKey]:
         logging.info("OrgApiKeyManager.update")
         if org_api_key:
+            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(org_api_key, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return org_api_key
     async def delete(self, org_api_key_id: int):
         logging.info(f"OrgApiKeyManager.delete {org_api_key_id}")
@@ -114,12 +123,10 @@ class OrgApiKeyManager:
         org_api_key = await self.get_by_id(org_api_key_id)
         if not org_api_key:
             raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
-        await self.session.delete(org_api_key)
-        await self.session.flush()
+        await self._session_context.session.delete(org_api_key)
+        await self._session_context.session.flush()
     async def get_list(self) -> List[OrgApiKey]:
         logging.info("OrgApiKeyManager.get_list")
-        # result = await self.session.execute(select(OrgApiKey))
-        # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, org_api_key:OrgApiKey) -> str:
@@ -157,8 +164,13 @@ class OrgApiKeyManager:
     async def add_bulk(self, org_api_keys: List[OrgApiKey]) -> List[OrgApiKey]:
         logging.info("OrgApiKeyManager.add_bulk")
         """Add multiple org_api_keys at once."""
-        self.session.add_all(org_api_keys)
-        await self.session.flush()
+        for org_api_key in org_api_keys:
+            if org_api_key.org_api_key_id is not None and org_api_key.org_api_key_id > 0:
+                raise ValueError("OrgApiKey is already added: " + str(org_api_key.code) + " " + str(org_api_key.org_api_key_id))
+            org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(org_api_keys)
+        await self._session_context.session.flush()
         return org_api_keys
     async def update_bulk(self, org_api_key_updates: List[Dict[int, Dict]]) -> List[OrgApiKey]:
         logging.info("OrgApiKeyManager.update_bulk start")
@@ -176,8 +188,9 @@ class OrgApiKeyManager:
             for key, value in update.items():
                 if key != "org_api_key_id":
                     setattr(org_api_key, key, value)
+            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_org_api_keys.append(org_api_key)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("OrgApiKeyManager.update_bulk end")
         return updated_org_api_keys
     async def delete_bulk(self, org_api_key_ids: List[int]) -> bool:
@@ -190,26 +203,26 @@ class OrgApiKeyManager:
             if not org_api_key:
                 raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
             if org_api_key:
-                await self.session.delete(org_api_key)
-        await self.session.flush()
+                await self._session_context.session.delete(org_api_key)
+        await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         logging.info("OrgApiKeyManager.count")
         """Return the total number of org_api_keys."""
-        result = await self.session.execute(select(OrgApiKey))
+        result = await self._session_context.session.execute(select(OrgApiKey))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[OrgApiKey]:
         """Retrieve org_api_keys sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).asc()))
+            result = await self._session_context.session.execute(select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).asc()))
         else:
-            result = await self.session.execute(select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).desc()))
+            result = await self._session_context.session.execute(select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, org_api_key: OrgApiKey) -> OrgApiKey:
         logging.info("OrgApiKeyManager.refresh")
         """Refresh the state of a given org_api_key instance from the database."""
-        await self.session.refresh(org_api_key)
+        await self._session_context.session.refresh(org_api_key)
         return org_api_key
     async def exists(self, org_api_key_id: int) -> bool:
         logging.info(f"OrgApiKeyManager.exists {org_api_key_id}")
@@ -235,8 +248,6 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.get_by_organization_id")
         if not isinstance(organization_id, int):
             raise TypeError(f"The org_api_key_id must be an integer, got {type(organization_id)} instead.")
-        # result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.organization_id == organization_id))
-        # return result.scalars().all()
         query_filter = OrgApiKey.organization_id == organization_id
         query_results = await self._run_query(query_filter)
         return query_results
@@ -244,8 +255,6 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.get_by_org_customer_id")
         if not isinstance(org_customer_id, int):
             raise TypeError(f"The org_api_key_id must be an integer, got {type(org_customer_id)} instead.")
-        # result = await self.session.execute(select(OrgApiKey).filter(OrgApiKey.org_customer_id == org_customer_id))
-        # return result.scalars().all()
         query_filter = OrgApiKey.org_customer_id == org_customer_id
         query_results = await self._run_query(query_filter)
         return query_results

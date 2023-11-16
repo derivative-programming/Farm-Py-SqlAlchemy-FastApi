@@ -17,7 +17,7 @@ import logging
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=true]Start
 @pytest.mark.asyncio
-async def test_submit_success(overridden_get_db):
+async def test_submit_success(overridden_get_db, api_key_fixture:str):
     async def mock_process_request(session, session_context, land_code, request):
             pass
           
@@ -25,8 +25,7 @@ async def test_submit_success(overridden_get_db):
         mock_method.side_effect = mock_process_request
         land = await model_factorys.LandFactory.create_async(overridden_get_db)
         land_code = land.code
-        api_dict = {'LandCode': str(land_code)}
-        test_api_key = ApiToken.create_token(api_dict, 1)
+        test_api_key = api_key_fixture 
         async with AsyncClient(app=app, base_url="http://test") as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
@@ -40,11 +39,10 @@ async def test_submit_success(overridden_get_db):
         mock_method.assert_awaited()
 
 @pytest.mark.asyncio
-async def test_submit_request_validation_error(overridden_get_db):
+async def test_submit_request_validation_error(overridden_get_db, api_key_fixture:str):
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -121,11 +119,10 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             assert response.status_code == 401 
 
 @pytest.mark.asyncio
-async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession): 
+async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture:str): 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         
         app.dependency_overrides[get_db] = lambda: overridden_get_db
@@ -138,10 +135,9 @@ async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
         assert response.status_code == 501   
         
 @pytest.mark.asyncio
-async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):  
+async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture:str):  
     land_code = uuid.UUID(int=0)
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         
         app.dependency_overrides[get_db] = lambda: overridden_get_db
@@ -156,11 +152,10 @@ async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSess
 
 
 @pytest.mark.asyncio
-async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession): 
+async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture:str): 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         
         app.dependency_overrides[get_db] = lambda: overridden_get_db
@@ -174,11 +169,10 @@ async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
 ##GENTrainingBlock[caseisPostWithIdAvailable]End  
 
 @pytest.mark.asyncio
-async def test_init_success(overridden_get_db: AsyncSession):
+async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture:str):
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         
         app.dependency_overrides[get_db] = lambda: overridden_get_db
@@ -252,11 +246,10 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
             assert response.status_code == 401 
 
 @pytest.mark.asyncio
-async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession): 
+async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture:str): 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         
         app.dependency_overrides[get_db] = lambda: overridden_get_db
@@ -268,10 +261,9 @@ async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession):
         assert response.status_code == 501 
         
 @pytest.mark.asyncio
-async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):  
+async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture:str):  
     land_code = uuid.UUID(int=0)
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         
         app.dependency_overrides[get_db] = lambda: overridden_get_db
@@ -285,11 +277,10 @@ async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSessio
 
 
 @pytest.mark.asyncio
-async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession): 
+async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture:str): 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
-    test_api_key = ApiToken.create_token(api_dict, 1)
+    test_api_key = api_key_fixture 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         
         app.dependency_overrides[get_db] = lambda: overridden_get_db

@@ -3,6 +3,7 @@ from decimal import Decimal
 import json
 from typing import List
 import uuid
+from apis.models import validation_error
 from helpers import TypeConversion
 from flows.customer_user_log_out_init_obj_wf import FlowCustomerUserLogOutInitObjWFResult, FlowCustomerUserLogOutInitObjWF
 from helpers import SessionContext
@@ -29,13 +30,12 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         customer_code:uuid,
                         response:CustomerUserLogOutInitObjWFGetInitModelResponse) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
         try:
             logging.info("loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")
-            customer_bus_obj = CustomerBusObj(session=session)
+            customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load(code=customer_code)
             if(customer_bus_obj.get_customer_obj() is None):
                 logging.info("Invalid customer_code")
@@ -53,6 +53,6 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(ValidationError(key,ve.error_dict[key]))
+                response.validation_errors.append(validation_error(key,ve.error_dict[key]))
         return response
 

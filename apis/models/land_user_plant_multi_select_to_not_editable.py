@@ -39,13 +39,12 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
         placeholder = "" #to avoid pass line
 
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         land_code:uuid,
                         request:LandUserPlantMultiSelectToNotEditablePostModelRequest):
         try:
             logging.info("loading model...LandUserPlantMultiSelectToNotEditablePostModelResponse")
-            land_bus_obj = LandBusObj(session=session)
+            land_bus_obj = LandBusObj(session_context)
             await land_bus_obj.load(code=land_code)
             if(land_bus_obj.get_land_obj() is None):
                 logging.info("Invalid land_code")

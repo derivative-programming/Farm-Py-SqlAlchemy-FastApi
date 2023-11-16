@@ -44,8 +44,8 @@ class TestReportManagerPacUserTriStateFilterList:
             return result
         with patch.object(ReportProviderPacUserTriStateFilterList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerPacUserTriStateFilterList(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerPacUserTriStateFilterList(session_context)
             pac = await PacFactory.create_async(session=session)
             pac_code = pac.code
             role_required = ""
@@ -79,8 +79,8 @@ class TestReportManagerPacUserTriStateFilterList:
             return result
         with patch.object(ReportProviderPacUserTriStateFilterList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerPacUserTriStateFilterList(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerPacUserTriStateFilterList(session_context)
             pac = await PacFactory.create_async(session=session)
             pac_code = pac.code
             role_required = ""
@@ -113,8 +113,8 @@ class TestReportManagerPacUserTriStateFilterList:
             return result
         with patch.object(ReportProviderPacUserTriStateFilterList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerPacUserTriStateFilterList(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerPacUserTriStateFilterList(session_context)
             pac = await PacFactory.create_async(session=session)
             pac_code = pac.code
             role_required = ""
@@ -135,8 +135,8 @@ class TestReportManagerPacUserTriStateFilterList:
                 )
     @pytest.mark.asyncio
     async def test_build_csv(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerPacUserTriStateFilterList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerPacUserTriStateFilterList(session_context)
         test_data = [ReportItemPacUserTriStateFilterList(), ReportItemPacUserTriStateFilterList()]  # Replace with sample data
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
@@ -146,8 +146,8 @@ class TestReportManagerPacUserTriStateFilterList:
         # Further checks can be added to verify the content of the file
     @pytest.mark.asyncio
     async def test_read_csv(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerPacUserTriStateFilterList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerPacUserTriStateFilterList(session_context)
         test_data = [ReportItemPacUserTriStateFilterList(), ReportItemPacUserTriStateFilterList()]
         file_name = 'test_input.csv'
         await test_obj.build_csv(file_name, test_data)
@@ -158,8 +158,8 @@ class TestReportManagerPacUserTriStateFilterList:
         os.remove(file_name)
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerPacUserTriStateFilterList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerPacUserTriStateFilterList(session_context)
         # True values
         assert test_obj._parse_bool('true')
         assert test_obj._parse_bool('1')

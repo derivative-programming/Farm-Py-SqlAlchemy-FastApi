@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import OrgApiKey
 from models.factory import OrgApiKeyFactory
 from managers.org_api_key import OrgApiKeyManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestOrgApiKeyBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_manager(self, session:AsyncSession):
-        return OrgApiKeyManager(session)
+        session_context = SessionContext(dict(),session)
+        return OrgApiKeyManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_bus_obj(self, session):
-        # Assuming that the OrgApiKeyBusObj requires a session object
-        return OrgApiKeyBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return OrgApiKeyBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_org_api_key(self, session):
         # Use the OrgApiKeyFactory to create a new org_api_key instance

@@ -36,11 +36,6 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestCustomerUserLogOutPostModelResponse:
-    @pytest.mark.asyncio
-    async def test_flow_customer_user_log_out_initialization(self,session):
-        session_context = SessionContext(dict())
-        flow = FlowCustomerUserLogOut(session_context)
-        assert flow is not None
     def test_flow_customer_user_log_out_result_to_json(self):
         # Create an instance and set attributes
         result = FlowCustomerUserLogOutResult()
@@ -56,10 +51,10 @@ class TestCustomerUserLogOutPostModelResponse:
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = FlowCustomerUserLogOut(session_context)
         customer = await CustomerFactory.create_async(session)
-        customer_bus_obj = CustomerBusObj(session)
+        customer_bus_obj = CustomerBusObj(session_context)
         await customer_bus_obj.load(customer_obj_instance=customer)
         role_required = "User"
 

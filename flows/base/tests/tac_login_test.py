@@ -14,7 +14,6 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect
 from sqlalchemy import String
 import flows.constants.tac_login as FlowConstants
-# DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -26,7 +25,7 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestBaseFlowTacLogin():
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = BaseFlowTacLogin(session_context)
         tac = await TacFactory.create_async(session)
         flavor = await FlavorFactory.create_async(session)
@@ -38,8 +37,6 @@ class TestBaseFlowTacLogin():
             email,
             password,
             )
-        # Add assertions here to validate the expected behavior
-        #TODO add validation checks - is required,
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
@@ -51,7 +48,7 @@ class TestBaseFlowTacLogin():
             assert 'password' in flow.queued_validation_errors and flow.queued_validation_errors['password'] == 'Please enter a '
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         tac = await TacFactory.create_async(session)
         flow = BaseFlowTacLogin(session_context)
         role_required = ""
@@ -59,4 +56,3 @@ class TestBaseFlowTacLogin():
             await flow._process_security_rules(tac)
             assert '' in flow.queued_validation_errors and flow.queued_validation_errors[''] == "Unautorized access. " + role_required + " role not found."
             session_context.role_name_csv = role_required
-        # Add assertions here to validate the expected behavior

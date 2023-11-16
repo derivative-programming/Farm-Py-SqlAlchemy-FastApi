@@ -6,12 +6,13 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 from models.customer import Customer # CustomerID
 from models.role import Role # RoleID
 from models.customer_role import CustomerRole
 from models.serialization_schema.customer_role import CustomerRoleSchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -19,8 +20,18 @@ class CustomerRoleNotFoundError(Exception):
     pass
 
 class CustomerRoleManager:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
+    def convert_uuid_to_model_uuid(self,value:uuid):
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
 
     async def initialize(self):
         logging.info("CustomerRoleManager.Initialize")
@@ -30,8 +41,10 @@ class CustomerRoleManager:
         return CustomerRole(**kwargs)
     async def add(self, customer_role: CustomerRole) -> CustomerRole:
         logging.info("CustomerRoleManager.add")
-        self.session.add(customer_role)
-        await self.session.flush()
+        customer_role.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(customer_role)
+        await self._session_context.session.flush()
         return customer_role
     def _build_query(self):
         logging.info("CustomerRoleManager._build_query")
@@ -63,7 +76,7 @@ class CustomerRoleManager:
             query = customer_role_query_all.filter(query_filter)
         else:
             query = customer_role_query_all
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
@@ -87,25 +100,21 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.get_by_id start customer_role_id:" + str(customer_role_id))
         if not isinstance(customer_role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_role_id)} instead.")
-        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == customer_role_id))
-        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == customer_role_id))
-        # return result.scalars().first()
         query_filter = CustomerRole.customer_role_id == customer_role_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:
         logging.info(f"CustomerRoleManager.get_by_code {code}")
-        # result = await self.session.execute(select(CustomerRole).filter_by(code=code))
-        # return result.scalars().one_or_none()
         query_filter = CustomerRole.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, customer_role: CustomerRole, **kwargs) -> Optional[CustomerRole]:
         logging.info("CustomerRoleManager.update")
         if customer_role:
+            customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(customer_role, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return customer_role
     async def delete(self, customer_role_id: int):
         logging.info(f"CustomerRoleManager.delete {customer_role_id}")
@@ -114,12 +123,10 @@ class CustomerRoleManager:
         customer_role = await self.get_by_id(customer_role_id)
         if not customer_role:
             raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
-        await self.session.delete(customer_role)
-        await self.session.flush()
+        await self._session_context.session.delete(customer_role)
+        await self._session_context.session.flush()
     async def get_list(self) -> List[CustomerRole]:
         logging.info("CustomerRoleManager.get_list")
-        # result = await self.session.execute(select(CustomerRole))
-        # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, customer_role:CustomerRole) -> str:
@@ -157,8 +164,13 @@ class CustomerRoleManager:
     async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
         logging.info("CustomerRoleManager.add_bulk")
         """Add multiple customer_roles at once."""
-        self.session.add_all(customer_roles)
-        await self.session.flush()
+        for customer_role in customer_roles:
+            if customer_role.customer_role_id is not None and customer_role.customer_role_id > 0:
+                raise ValueError("CustomerRole is already added: " + str(customer_role.code) + " " + str(customer_role.customer_role_id))
+            customer_role.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(customer_roles)
+        await self._session_context.session.flush()
         return customer_roles
     async def update_bulk(self, customer_role_updates: List[Dict[int, Dict]]) -> List[CustomerRole]:
         logging.info("CustomerRoleManager.update_bulk start")
@@ -176,8 +188,9 @@ class CustomerRoleManager:
             for key, value in update.items():
                 if key != "customer_role_id":
                     setattr(customer_role, key, value)
+            customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_customer_roles.append(customer_role)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("CustomerRoleManager.update_bulk end")
         return updated_customer_roles
     async def delete_bulk(self, customer_role_ids: List[int]) -> bool:
@@ -190,26 +203,26 @@ class CustomerRoleManager:
             if not customer_role:
                 raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
             if customer_role:
-                await self.session.delete(customer_role)
-        await self.session.flush()
+                await self._session_context.session.delete(customer_role)
+        await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         logging.info("CustomerRoleManager.count")
         """Return the total number of customer_roles."""
-        result = await self.session.execute(select(CustomerRole))
+        result = await self._session_context.session.execute(select(CustomerRole))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[CustomerRole]:
         """Retrieve customer_roles sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(CustomerRole).order_by(getattr(CustomerRole, sort_by).asc()))
+            result = await self._session_context.session.execute(select(CustomerRole).order_by(getattr(CustomerRole, sort_by).asc()))
         else:
-            result = await self.session.execute(select(CustomerRole).order_by(getattr(CustomerRole, sort_by).desc()))
+            result = await self._session_context.session.execute(select(CustomerRole).order_by(getattr(CustomerRole, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, customer_role: CustomerRole) -> CustomerRole:
         logging.info("CustomerRoleManager.refresh")
         """Refresh the state of a given customer_role instance from the database."""
-        await self.session.refresh(customer_role)
+        await self._session_context.session.refresh(customer_role)
         return customer_role
     async def exists(self, customer_role_id: int) -> bool:
         logging.info(f"CustomerRoleManager.exists {customer_role_id}")
@@ -235,8 +248,6 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.get_by_customer_id")
         if not isinstance(customer_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(customer_id)} instead.")
-        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.customer_id == customer_id))
-        # return result.scalars().all()
         query_filter = CustomerRole.customer_id == customer_id
         query_results = await self._run_query(query_filter)
         return query_results
@@ -244,8 +255,6 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.get_by_role_id")
         if not isinstance(role_id, int):
             raise TypeError(f"The customer_role_id must be an integer, got {type(role_id)} instead.")
-        # result = await self.session.execute(select(CustomerRole).filter(CustomerRole.role_id == role_id))
-        # return result.scalars().all()
         query_filter = CustomerRole.role_id == role_id
         query_results = await self._run_query(query_filter)
         return query_results

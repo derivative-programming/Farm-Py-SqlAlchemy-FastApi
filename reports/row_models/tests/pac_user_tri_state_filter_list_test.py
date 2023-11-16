@@ -14,6 +14,7 @@ class TestReportItemPacUserTriStateFilterList:
         assert report_item.tri_state_filter_lookup_enum_name == ""
         assert report_item.tri_state_filter_name == ""
         assert report_item.tri_state_filter_state_int_value == 0
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -24,6 +25,7 @@ class TestReportItemPacUserTriStateFilterList:
             "tri_state_filter_lookup_enum_name": "test",
             "tri_state_filter_name": "test",
             "tri_state_filter_state_int_value": 1,
+
         }
         # report_item = ReportItemPacUserTriStateFilterList(**data)
         report_item = ReportItemPacUserTriStateFilterList()

@@ -36,11 +36,6 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
-    @pytest.mark.asyncio
-    async def test_flow_land_user_plant_multi_select_to_not_editable_initialization(self,session):
-        session_context = SessionContext(dict())
-        flow = FlowLandUserPlantMultiSelectToNotEditable(session_context)
-        assert flow is not None
     def test_flow_land_user_plant_multi_select_to_not_editable_result_to_json(self):
         # Create an instance and set attributes
         result = FlowLandUserPlantMultiSelectToNotEditableResult()
@@ -56,18 +51,20 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = FlowLandUserPlantMultiSelectToNotEditable(session_context)
         land = await LandFactory.create_async(session)
-        land_bus_obj = LandBusObj(session)
+        land_bus_obj = LandBusObj(session_context)
         await land_bus_obj.load(land_obj_instance=land)
         role_required = "User"
         plant_code_list_csv:str = "",
+
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
+
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -82,6 +79,7 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
                 flow_result = await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
+
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(

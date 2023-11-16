@@ -20,6 +20,7 @@ from decimal import Decimal
 class FlowCustomerBuildTempApiKeyResult():
     context_object_code:uuid.UUID =  uuid.UUID(int=0)
     tmp_org_api_key_code:uuid.UUID =  uuid.UUID(int=0)
+
     def __init__(self):
         pass
     def to_json(self):
@@ -27,6 +28,7 @@ class FlowCustomerBuildTempApiKeyResult():
         data = {
             'context_object_code': str(self.context_object_code),
             'tmp_org_api_key_code': str(self.tmp_org_api_key_code),
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -45,12 +47,14 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
         )
         super()._throw_queued_validation_errors()
         tmp_org_api_key_code_output:uuid = uuid.UUID(int=0)
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowCustomerBuildTempApiKeyResult()
         result.context_object_code = customer_bus_obj.code
         result.tmp_org_api_key_code = tmp_org_api_key_code_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

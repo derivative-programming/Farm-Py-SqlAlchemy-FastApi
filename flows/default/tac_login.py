@@ -25,6 +25,7 @@ class FlowTacLoginResult():
     utc_offset_in_minutes:int = 0
     role_name_csv_list:str = ""
     api_key:str = ""
+
     def __init__(self):
         pass
     def to_json(self):
@@ -37,6 +38,7 @@ class FlowTacLoginResult():
             'utc_offset_in_minutes': self.utc_offset_in_minutes,
             'role_name_csv_list': self.role_name_csv_list,
             'api_key': self.api_key,
+
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,6 +49,7 @@ class FlowTacLogin(BaseFlowTacLogin):
         tac_bus_obj: TacBusObj,
         email:str = "",
         password:str = "",
+
         ) -> FlowTacLoginResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(tac_bus_obj.code))
@@ -54,6 +57,7 @@ class FlowTacLogin(BaseFlowTacLogin):
             tac_bus_obj,
             email,
             password,
+
         )
         super()._throw_queued_validation_errors()
         customer_code_output:uuid = uuid.UUID(int=0)
@@ -62,6 +66,7 @@ class FlowTacLogin(BaseFlowTacLogin):
         utc_offset_in_minutes_output:int = 0
         role_name_csv_list_output:str = ""
         api_key_output:str = ""
+
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
@@ -73,6 +78,7 @@ class FlowTacLogin(BaseFlowTacLogin):
         result.utc_offset_in_minutes = utc_offset_in_minutes_output
         result.role_name_csv_list = role_name_csv_list_output
         result.api_key = api_key_output
+
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

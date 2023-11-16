@@ -2,21 +2,17 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.pac import PacBusObj #PacID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import PacManager as PacIDManager #PacID
 from managers import TriStateFilterManager
 from models import TriStateFilter
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-class TriStateFilterSessionNotFoundError(Exception):
-    pass
 class TriStateFilterInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -27,10 +23,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TriStateFilterBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise TriStateFilterSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.tri_state_filter = TriStateFilter()
     @property
     def tri_state_filter_id(self):
@@ -204,35 +200,35 @@ class TriStateFilterBusObj(BaseBusObj):
                    tri_state_filter_dict:dict=None,
                    tri_state_filter_enum:managers_and_enums.TriStateFilterEnum=None):
         if tri_state_filter_id and self.tri_state_filter.tri_state_filter_id is None:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             tri_state_filter_obj = await tri_state_filter_manager.get_by_id(tri_state_filter_id)
             self.tri_state_filter = tri_state_filter_obj
         if code and self.tri_state_filter.tri_state_filter_id is None:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             tri_state_filter_obj = await tri_state_filter_manager.get_by_code(code)
             self.tri_state_filter = tri_state_filter_obj
         if tri_state_filter_obj_instance and self.tri_state_filter.tri_state_filter_id is None:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             tri_state_filter_obj = await tri_state_filter_manager.get_by_id(tri_state_filter_obj_instance.tri_state_filter_id)
             self.tri_state_filter = tri_state_filter_obj
         if json_data and self.tri_state_filter.tri_state_filter_id is None:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = tri_state_filter_manager.from_json(json_data)
         if tri_state_filter_dict and self.tri_state_filter.tri_state_filter_id is None:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = tri_state_filter_manager.from_dict(tri_state_filter_dict)
         if tri_state_filter_enum and self.tri_state_filter.tri_state_filter_id is None:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = await tri_state_filter_manager.from_enum(tri_state_filter_enum)
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    tri_state_filter_id:int=None,
                    tri_state_filter_obj_instance:TriStateFilter=None,
                    tri_state_filter_dict:dict=None,
                    tri_state_filter_enum:managers_and_enums.TriStateFilterEnum=None):
-        result = TriStateFilter(session=session)
+        result = TriStateFilterBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -244,28 +240,28 @@ class TriStateFilterBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        tri_state_filter_manager = TriStateFilterManager(self.session)
+        tri_state_filter_manager = TriStateFilterManager(self._session_context)
         self.tri_state_filter = await tri_state_filter_manager.refresh(self.tri_state_filter)
         return self
     def is_valid(self):
         return (self.tri_state_filter is not None)
     def to_dict(self):
-        tri_state_filter_manager = TriStateFilterManager(self.session)
+        tri_state_filter_manager = TriStateFilterManager(self._session_context)
         return tri_state_filter_manager.to_dict(self.tri_state_filter)
     def to_json(self):
-        tri_state_filter_manager = TriStateFilterManager(self.session)
+        tri_state_filter_manager = TriStateFilterManager(self._session_context)
         return tri_state_filter_manager.to_json(self.tri_state_filter)
     async def save(self):
         if self.tri_state_filter.tri_state_filter_id is not None and self.tri_state_filter.tri_state_filter_id > 0:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = await tri_state_filter_manager.update(self.tri_state_filter)
         if self.tri_state_filter.tri_state_filter_id is None or self.tri_state_filter.tri_state_filter_id == 0:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = await tri_state_filter_manager.add(self.tri_state_filter)
         return self
     async def delete(self):
         if self.tri_state_filter.tri_state_filter_id > 0:
-            tri_state_filter_manager = TriStateFilterManager(self.session)
+            tri_state_filter_manager = TriStateFilterManager(self._session_context)
             await tri_state_filter_manager.delete(self.tri_state_filter.tri_state_filter_id)
             self.tri_state_filter = None
     async def randomize_properties(self):
@@ -276,11 +272,12 @@ class TriStateFilterBusObj(BaseBusObj):
         self.tri_state_filter.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.tri_state_filter.pac_id = random.randint(0, 100)
         self.tri_state_filter.state_int_value = random.randint(0, 100)
+
         return self
     def get_tri_state_filter_obj(self) -> TriStateFilter:
         return self.tri_state_filter
     def is_equal(self,tri_state_filter:TriStateFilter) -> TriStateFilter:
-        tri_state_filter_manager = TriStateFilterManager(self.session)
+        tri_state_filter_manager = TriStateFilterManager(self._session_context)
         my_tri_state_filter = self.get_tri_state_filter_obj()
         return tri_state_filter_manager.is_equal(tri_state_filter, my_tri_state_filter)
 
@@ -291,7 +288,7 @@ class TriStateFilterBusObj(BaseBusObj):
     #name,
     #PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
-        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
     #stateIntValue,
@@ -308,8 +305,6 @@ class TriStateFilterBusObj(BaseBusObj):
     #lookupEnumName,
     #name,
     #PacID
-    # async def get_parent_obj(self) -> PacBusObj:
-    #     return await self.get_pac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:

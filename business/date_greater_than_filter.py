@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from helpers.session_context import SessionContext
 # from business.pac import PacBusObj #PacID
 from services.db_config import db_dialect,generate_uuid
 from managers import PacManager as PacIDManager #PacID
@@ -23,10 +24,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class DateGreaterThanFilterBusObj:
-    def __init__(self, session:AsyncSession=None):
-        if not session:
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
             raise DateGreaterThanFilterSessionNotFoundError("session required")
-        self.session = session
+        self._session_context = session_context
         self.date_greater_than_filter = DateGreaterThanFilter()
     @property
     def date_greater_than_filter_id(self):
@@ -177,37 +178,37 @@ class DateGreaterThanFilterBusObj:
                    date_greater_than_filter_dict:dict=None,
                    date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum=None):
         if date_greater_than_filter_id and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_id)
             self.date_greater_than_filter = date_greater_than_filter_obj
         if code and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_code(code)
             self.date_greater_than_filter = date_greater_than_filter_obj
         if date_greater_than_filter_obj_instance and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_obj_instance.date_greater_than_filter_id)
             self.date_greater_than_filter = date_greater_than_filter_obj
         if json_data and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = date_greater_than_filter_manager.from_json(json_data)
         if date_greater_than_filter_dict and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = date_greater_than_filter_manager.from_dict(date_greater_than_filter_dict)
         if date_greater_than_filter_enum and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = await date_greater_than_filter_manager.from_enum(date_greater_than_filter_enum)
 
 
     @staticmethod
-    async def get(session:AsyncSession, 
+    async def get(session_context:SessionContext, 
                     json_data:str=None, 
                    code:uuid.UUID=None, 
                    date_greater_than_filter_id:int=None, 
                    date_greater_than_filter_obj_instance:DateGreaterThanFilter=None, 
                    date_greater_than_filter_dict:dict=None,
                    date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum=None):
-        result = DateGreaterThanFilter(session=session)
+        result = DateGreaterThanFilterBusObj(session_context)
 
         await result.load(
             json_data,
@@ -224,29 +225,29 @@ class DateGreaterThanFilterBusObj:
     def is_valid(self):
         return (self.date_greater_than_filter is not None)
     async def refresh(self):
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         self.date_greater_than_filter = await date_greater_than_filter_manager.refresh(self.date_greater_than_filter)
     def to_dict(self):
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         return date_greater_than_filter_manager.to_dict(self.date_greater_than_filter)
     def to_json(self):
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         return date_greater_than_filter_manager.to_json(self.date_greater_than_filter)
     async def save(self):
         if self.date_greater_than_filter.date_greater_than_filter_id is not None and self.date_greater_than_filter.date_greater_than_filter_id > 0:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = await date_greater_than_filter_manager.update(self.date_greater_than_filter)
         if self.date_greater_than_filter.date_greater_than_filter_id is None or self.date_greater_than_filter.date_greater_than_filter_id == 0:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = await date_greater_than_filter_manager.add(self.date_greater_than_filter)
     async def delete(self):
         if self.date_greater_than_filter.date_greater_than_filter_id > 0:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = await date_greater_than_filter_manager.delete(self.date_greater_than_filter.date_greater_than_filter_id)
     def get_date_greater_than_filter_obj(self) -> DateGreaterThanFilter:
         return self.date_greater_than_filter
     def is_equal(self,date_greater_than_filter:DateGreaterThanFilter) -> DateGreaterThanFilter:
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self.session)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         my_date_greater_than_filter = self.get_date_greater_than_filter_obj()
         return date_greater_than_filter_manager.is_equal(date_greater_than_filter, my_date_greater_than_filter)
 
@@ -258,7 +259,7 @@ class DateGreaterThanFilterBusObj:
     #name,
     #PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
-        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
 

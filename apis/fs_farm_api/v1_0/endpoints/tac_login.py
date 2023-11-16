@@ -40,11 +40,10 @@ class TacLoginRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 tac_code = session_context.check_context_code("TacCode", tac_code)
                 init_request = api_init_models.TacLoginInitObjWFGetInitModelRequest()
                 response = await init_request.process_request(
-                    session,
                     session_context,
                     tac_code,
                     response
@@ -80,12 +79,11 @@ class TacLoginRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 tac_code = session_context.check_context_code("TacCode", tac_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
-                    session,
                     session_context,
                     tac_code,
                     request_model

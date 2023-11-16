@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import TriStateFilter
 from models.factory import TriStateFilterFactory
 from managers.tri_state_filter import TriStateFilterManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestTriStateFilterBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_manager(self, session:AsyncSession):
-        return TriStateFilterManager(session)
+        session_context = SessionContext(dict(),session)
+        return TriStateFilterManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_bus_obj(self, session):
-        # Assuming that the TriStateFilterBusObj requires a session object
-        return TriStateFilterBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return TriStateFilterBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_tri_state_filter(self, session):
         # Use the TriStateFilterFactory to create a new tri_state_filter instance

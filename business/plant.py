@@ -1,25 +1,18 @@
 import random
 import uuid
 from typing import List
-from datetime import datetime, date 
-from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import datetime, date
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.land import LandBusObj #LandID
-from business.flavor import FlavorBusObj #FlvrForeignKeyID
-from services.db_config import db_dialect,generate_uuid
-# from managers import FlavorManager as FlvrForeignKeyIDManager #FlvrForeignKeyID
-# from managers import LandManager as LandIDManager #LandID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER 
+from helpers.session_context import SessionContext 
+from services.db_config import db_dialect,generate_uuid 
 from managers import PlantManager
 from models import Plant
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
-
-class PlantSessionNotFoundError(Exception):
-    pass
 
 class PlantInvalidInitError(Exception):
     pass
@@ -34,12 +27,12 @@ else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 
 class PlantBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
+    def __init__(self, session_context:SessionContext):
         
-        if not session:
-            raise PlantSessionNotFoundError("session required") 
+        if not session_context.session:
+            raise ValueError("session required") 
          
-        self.session = session 
+        self._session_context = session_context 
         self.plant = Plant()
 
 
@@ -454,38 +447,38 @@ class PlantBusObj(BaseBusObj):
                    plant_dict:dict=None):
          
         if plant_id and self.plant.plant_id is None:
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             plant_obj = await plant_manager.get_by_id(plant_id)
             self.plant = plant_obj
 
         if code and self.plant.plant_id is None:
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             plant_obj = await plant_manager.get_by_code(code)
             self.plant = plant_obj 
             
         if plant_obj_instance and self.plant.plant_id is None: 
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             plant_obj = await plant_manager.get_by_id(plant_obj_instance.plant_id)
             self.plant = plant_obj
             
         if json_data and self.plant.plant_id is None: 
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             self.plant = plant_manager.from_json(json_data)  
             
         if plant_dict and self.plant.plant_id is None: 
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             self.plant = plant_manager.from_dict(plant_dict)  
 
         return self
             
     @staticmethod
-    async def get(session:AsyncSession, 
+    async def get(session_context:SessionContext, 
                     json_data:str=None, 
                    code:uuid.UUID=None, 
                    plant_id:int=None, 
                    plant_obj_instance:Plant=None, 
                    plant_dict:dict=None):
-        result = PlantBusObj(session=session)
+        result = PlantBusObj(session_context)
 
         await result.load(
             json_data,
@@ -500,7 +493,7 @@ class PlantBusObj(BaseBusObj):
 ##GENTrainingBlock[caseLookupEnums]End 
     
     async def refresh(self):
-        plant_manager = PlantManager(self.session)
+        plant_manager = PlantManager(self._session_context)
         self.plant = await plant_manager.refresh(self.plant)
 
         return self
@@ -509,20 +502,20 @@ class PlantBusObj(BaseBusObj):
         return (self.plant is not None)
     
     def to_dict(self):
-        plant_manager = PlantManager(self.session)
+        plant_manager = PlantManager(self._session_context)
         return plant_manager.to_dict(self.plant)
         
     def to_json(self):
-        plant_manager = PlantManager(self.session)
+        plant_manager = PlantManager(self._session_context)
         return plant_manager.to_json(self.plant)
     
     
     async def save(self):
         if self.plant.plant_id is not None and self.plant.plant_id > 0:
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.update(self.plant)
         if self.plant.plant_id is None or self.plant.plant_id == 0:
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.add(self.plant)
 
         return self
@@ -530,13 +523,13 @@ class PlantBusObj(BaseBusObj):
     
     async def delete(self):
         if self.plant.plant_id > 0:
-            plant_manager = PlantManager(self.session)
+            plant_manager = PlantManager(self._session_context)
             await plant_manager.delete(self.plant.plant_id)
             self.plant = None
 
     
     async def randomize_properties(self):
-        self.plant.flvr_foreign_key_id =  random.choice(await managers_and_enums.FlavorManager(self.session).get_list()).flavor_id
+        self.plant.flvr_foreign_key_id =  random.choice(await managers_and_enums.FlavorManager(self._session_context).get_list()).flavor_id
         self.plant.is_delete_allowed = random.choice([True, False])
         self.plant.is_edit_allowed = random.choice([True, False])
         # self.plant.land_id = random.randint(0, 100)
@@ -555,6 +548,7 @@ class PlantBusObj(BaseBusObj):
         self.plant.some_uniqueidentifier_val = generate_uuid()
         self.plant.some_utc_date_time_val = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
         self.plant.some_var_char_val = "".join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=10))
+#endset
 
         return self
  
@@ -563,7 +557,7 @@ class PlantBusObj(BaseBusObj):
      
     
     def is_equal(self,plant:Plant) -> Plant:
-        plant_manager = PlantManager(self.session)
+        plant_manager = PlantManager(self._session_context)
         my_plant = self.get_plant_obj()
         return plant_manager.is_equal(plant, my_plant)
 #endset
@@ -583,13 +577,13 @@ class PlantBusObj(BaseBusObj):
     #someUTCDateTimeVal
     #LandID
     async def get_land_id_rel_obj(self) -> models.Land:  
-        land_manager = managers_and_enums.LandManager(self.session)
+        land_manager = managers_and_enums.LandManager(self._session_context)
         land_obj = await land_manager.get_by_id(self.land_id) 
         return land_obj 
     
     #FlvrForeignKeyID 
     async def get_flvr_foreign_key_id_rel_obj(self) -> models.Flavor: 
-        flavor_manager = managers_and_enums.FlavorManager(self.session)
+        flavor_manager = managers_and_enums.FlavorManager(self._session_context)
         flavor_obj = await flavor_manager.get_by_id(self.flvr_foreign_key_id) 
         return flavor_obj
     #somePhoneNumber,
@@ -623,9 +617,7 @@ class PlantBusObj(BaseBusObj):
     #someDateVal
     #someUTCDateTimeVal
     #FlvrForeignKeyID
-    #LandID  
-    # async def get_parent_obj(self) -> LandBusObj: 
-    #     return await self.get_land_id_rel_bus_obj()
+    #LandID   
     async def get_parent_name(self) -> str: 
         return 'Land'
     async def get_parent_code(self) -> uuid.UUID: 
@@ -634,6 +626,7 @@ class PlantBusObj(BaseBusObj):
     #someTextVal,
     #someUniqueidentifierVal, 
     #someVarCharVal,
+#endset
           
     ##GENINCLUDEFILE[GENVALPascalName.bottom.include.*]
      

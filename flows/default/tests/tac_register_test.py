@@ -36,11 +36,6 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestTacRegisterPostModelResponse:
-    @pytest.mark.asyncio
-    async def test_flow_tac_register_initialization(self,session):
-        session_context = SessionContext(dict())
-        flow = FlowTacRegister(session_context)
-        assert flow is not None
     def test_flow_tac_register_result_to_json(self):
         # Create an instance and set attributes
         result = FlowTacRegisterResult()
@@ -51,6 +46,7 @@ class TestTacRegisterPostModelResponse:
         result.utc_offset_in_minutes = 123
         result.role_name_csv_list = "test flavor"
         result.api_key = "test flavor"
+
         # Call to_json method
         json_output = result.to_json()
         # Parse JSON output
@@ -63,13 +59,14 @@ class TestTacRegisterPostModelResponse:
         assert data["utc_offset_in_minutes"] == result.utc_offset_in_minutes
         assert data["role_name_csv_list"] == result.role_name_csv_list
         assert data["api_key"] == result.api_key
+
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = FlowTacRegister(session_context)
         tac = await TacFactory.create_async(session)
-        tac_bus_obj = TacBusObj(session)
+        tac_bus_obj = TacBusObj(session_context)
         await tac_bus_obj.load(tac_obj_instance=tac)
         role_required = ""
         email:str = "",
@@ -77,6 +74,7 @@ class TestTacRegisterPostModelResponse:
         confirm_password:str = "",
         first_name:str = "",
         last_name:str = "",
+
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
@@ -86,6 +84,7 @@ class TestTacRegisterPostModelResponse:
                     confirm_password,
                     first_name,
                     last_name,
+
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -104,6 +103,7 @@ class TestTacRegisterPostModelResponse:
                     confirm_password,
                     first_name,
                     last_name,
+
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(

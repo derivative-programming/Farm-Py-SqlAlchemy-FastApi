@@ -54,6 +54,7 @@ class TestReportManagerLandPlantList:
 			some_text_val: str,
 			some_phone_number: str,
 			some_email_address: str,
+#endset
 			page_number:int,
 			item_count_per_page:int,
 			order_by_column_name:str,
@@ -65,8 +66,8 @@ class TestReportManagerLandPlantList:
         with patch.object(ReportProviderLandPlantList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
             
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerLandPlantList(session, session_context) 
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerLandPlantList(session_context) 
             land = await LandFactory.create_async(session=session)
             land_code = land.code  
             
@@ -90,6 +91,7 @@ class TestReportManagerLandPlantList:
             some_phone_number: str = ""
             some_email_address: str = ""
             flavor_code: UUIDType = generate_uuid()
+#endset
 
             page_number = 1
             item_count_per_page = 10
@@ -113,6 +115,7 @@ class TestReportManagerLandPlantList:
                 some_phone_number,
                 some_email_address,
                 flavor_code, 
+#endset
                 page_number,
                 item_count_per_page,
                 order_by_column_name,
@@ -142,6 +145,7 @@ class TestReportManagerLandPlantList:
 			some_text_val: str,
 			some_phone_number: str,
 			some_email_address: str,
+#endset
 			page_number:int,
 			item_count_per_page:int,
 			order_by_column_name:str,
@@ -153,8 +157,8 @@ class TestReportManagerLandPlantList:
         with patch.object(ReportProviderLandPlantList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
             
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerLandPlantList(session, session_context) 
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerLandPlantList(session_context) 
             land = await LandFactory.create_async(session=session)
             land_code = land.code  
             
@@ -178,6 +182,7 @@ class TestReportManagerLandPlantList:
             some_phone_number: str = ""
             some_email_address: str = ""
             flavor_code: UUIDType = generate_uuid()
+#endset
 
             page_number = 1
             item_count_per_page = 10
@@ -203,6 +208,7 @@ class TestReportManagerLandPlantList:
                     some_phone_number,
                     some_email_address,
                     flavor_code, 
+#endset
                     page_number,
                     0,
                     order_by_column_name,
@@ -229,6 +235,7 @@ class TestReportManagerLandPlantList:
 			some_text_val: str,
 			some_phone_number: str,
 			some_email_address: str,
+#endset
 			page_number:int,
 			item_count_per_page:int,
 			order_by_column_name:str,
@@ -240,8 +247,8 @@ class TestReportManagerLandPlantList:
         with patch.object(ReportProviderLandPlantList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
             
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerLandPlantList(session, session_context) 
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerLandPlantList(session_context) 
             land = await LandFactory.create_async(session=session)
             land_code = land.code  
             
@@ -265,6 +272,7 @@ class TestReportManagerLandPlantList:
             some_phone_number: str = ""
             some_email_address: str = ""
             flavor_code: UUIDType = generate_uuid()
+#endset
 
             page_number = 1
             item_count_per_page = 10
@@ -290,6 +298,7 @@ class TestReportManagerLandPlantList:
                     some_phone_number,
                     some_email_address,
                     flavor_code, 
+#endset
                     0,
                     item_count_per_page,
                     order_by_column_name,
@@ -299,8 +308,8 @@ class TestReportManagerLandPlantList:
 
     @pytest.mark.asyncio
     async def test_build_csv(self,session): 
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerLandPlantList(session, session_context) 
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerLandPlantList(session_context) 
         test_data = [ReportItemLandPlantList(), ReportItemLandPlantList()]  # Replace with sample data
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
@@ -314,8 +323,8 @@ class TestReportManagerLandPlantList:
 
     @pytest.mark.asyncio
     async def test_read_csv(self,session): 
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerLandPlantList(session, session_context) 
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerLandPlantList(session_context) 
         
         test_data = [ReportItemLandPlantList(), ReportItemLandPlantList()]   
         file_name = 'test_input.csv'
@@ -331,8 +340,8 @@ class TestReportManagerLandPlantList:
         # Further checks can be added to verify the data in the objects
 
     def test_parse_bool(self,session): 
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerLandPlantList(session, session_context) 
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerLandPlantList(session_context) 
 
         # True values
         assert test_obj._parse_bool('true')

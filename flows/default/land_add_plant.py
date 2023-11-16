@@ -40,6 +40,7 @@ class FlowLandAddPlantResult():
     output_some_text_val:str = "" 
     output_some_phone_number:str = "" 
     output_some_email_address:str = ""  
+#endset
 
     def __init__(self): 
         pass
@@ -68,6 +69,7 @@ class FlowLandAddPlantResult():
             'output_some_text_val': self.output_some_text_val,
             'output_some_phone_number': self.output_some_phone_number,
             'output_some_email_address': self.output_some_email_address
+#endset
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -96,6 +98,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         request_some_phone_number:str = "",    
         request_some_email_address:str = "",    
         request_sample_image_upload_file:str = "",
+#endset
         ) -> FlowLandAddPlantResult:
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
@@ -123,6 +126,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
             request_some_phone_number,    
             request_some_email_address,    
             request_sample_image_upload_file,
+#endset
         )
 
         super()._throw_queued_validation_errors()
@@ -146,6 +150,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         output_some_text_val_output:str = "" 
         output_some_phone_number_output:str = "" 
         output_some_email_address_output:str = ""  
+#endset
 
         # TODO: add flow logic 
 ##GENTrainingBlock[caseFlowLogic]Start
@@ -153,7 +158,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
  
         # plant:PlantBusObj = land_bus_obj.build_plant() 
         ## plant.land_id = land_bus_obj.land_id
-        # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session,code=request_flavor_code).code
+        # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session_context.session,code=request_flavor_code).code
         # plant.other_flavor = request_other_flavor    
         # plant.some_int_val = request_some_int_val   
         # plant.some_big_int_val = request_some_big_int_val   
@@ -171,6 +176,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         # plant.some_phone_number = request_some_phone_number    
         # plant.some_email_address = request_some_email_address    
         # plant.some_int_val = request_sample_image_upload_file
+#endset
         # plant.save()
 
         # land_code_output:uuid = land.code
@@ -191,7 +197,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         # output_some_var_char_val_output = plant.some_var_char_val
         # output_some_text_val_output = plant.some_text_val
         # output_some_phone_number_output = plant.some_phone_number
-        # output_some_email_address_output = plant.some_email_address 
+        # output_some_email_address_output = plant.some_email_address
+#endset
 
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]End
 ##GENTrainingBlock[caseFlowLogic]End
@@ -219,6 +226,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         result.output_some_text_val = output_some_text_val_output 
         result.output_some_phone_number = output_some_phone_number_output
         result.output_some_email_address = output_some_email_address_output 
+#endset
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
 

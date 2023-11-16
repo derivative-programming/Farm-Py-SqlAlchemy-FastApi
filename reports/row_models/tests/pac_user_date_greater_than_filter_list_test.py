@@ -14,6 +14,7 @@ class TestReportItemPacUserDateGreaterThanFilterList:
         assert report_item.date_greater_than_filter_is_active is False
         assert report_item.date_greater_than_filter_lookup_enum_name == ""
         assert report_item.date_greater_than_filter_name == ""
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -24,6 +25,7 @@ class TestReportItemPacUserDateGreaterThanFilterList:
             "date_greater_than_filter_is_active": True,
             "date_greater_than_filter_lookup_enum_name": "test",
             "date_greater_than_filter_name": "test",
+
         }
         # report_item = ReportItemPacUserDateGreaterThanFilterList(**data)
         report_item = ReportItemPacUserDateGreaterThanFilterList()

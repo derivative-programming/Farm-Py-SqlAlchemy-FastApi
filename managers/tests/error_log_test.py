@@ -1,6 +1,7 @@
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import ErrorLog
 import models
 from models.factory import ErrorLogFactory
@@ -13,7 +14,6 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-# DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -25,7 +25,8 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestErrorLogManager:
     @pytest_asyncio.fixture(scope="function")
     async def error_log_manager(self, session:AsyncSession):
-        return ErrorLogManager(session)
+        session_context = SessionContext(dict(),session)
+        return ErrorLogManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, error_log_manager:ErrorLogManager, session:AsyncSession):
         # Define some mock data for our error_log

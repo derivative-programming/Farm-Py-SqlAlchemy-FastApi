@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import CustomerRole
 from models.factory import CustomerRoleFactory
 from managers.customer_role import CustomerRoleManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestCustomerRoleBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_manager(self, session:AsyncSession):
-        return CustomerRoleManager(session)
+        session_context = SessionContext(dict(),session)
+        return CustomerRoleManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_bus_obj(self, session):
-        # Assuming that the CustomerRoleBusObj requires a session object
-        return CustomerRoleBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return CustomerRoleBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_customer_role(self, session):
         # Use the CustomerRoleFactory to create a new customer_role instance

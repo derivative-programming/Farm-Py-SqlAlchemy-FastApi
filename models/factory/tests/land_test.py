@@ -2,7 +2,7 @@ from decimal import Decimal
 import pytest
 import time
 from decimal import Decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Land
@@ -69,9 +69,8 @@ class TestLandFactory:
         land = LandFactory.build(session=session)
         assert land.insert_utc_date_time is not None
         assert isinstance(land.insert_utc_date_time, datetime)
-        initial_time = land.insert_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         land.code = generate_uuid()
-        time.sleep(1)
         session.commit()
         assert land.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -91,9 +90,8 @@ class TestLandFactory:
         land = LandFactory.build(session=session)
         assert land.last_update_utc_date_time is not None
         assert isinstance(land.last_update_utc_date_time, datetime)
-        initial_time = land.last_update_utc_date_time
+        initial_time = datetime.utcnow() + timedelta(days=-1)
         land.code = generate_uuid()
-        time.sleep(1)
         session.commit()
         assert land.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):

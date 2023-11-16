@@ -58,14 +58,11 @@ class TacFarmDashboardGetModelResponse(ListModel):
     request:TacFarmDashboardGetModelRequest = None
     items:List[TacFarmDashboardGetModelResponseItem] = Field(default_factory=list)
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         tac_code:uuid,
                         request:TacFarmDashboardGetModelRequest):
         try:
             logging.info("loading model...TacFarmDashboardGetModelResponse")
-            # tac_bus_obj = TacBusObj(session=session)
-            # await tac_bus_obj.load(code=tac_code)
             generator = ReportManagerTacFarmDashboard(session_context)
             logging.info("processing...TacFarmDashboardGetModelResponse")
             items = await generator.generate(

@@ -2,23 +2,17 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.customer import CustomerBusObj #CustomerID
-from business.role import RoleBusObj #RoleID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import CustomerManager as CustomerIDManager #CustomerID
-# from managers import RoleManager as RoleIDManager #RoleID
 from managers import CustomerRoleManager
 from models import CustomerRole
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-class CustomerRoleSessionNotFoundError(Exception):
-    pass
 class CustomerRoleInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -29,10 +23,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class CustomerRoleBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise CustomerRoleSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.customer_role = CustomerRole()
     @property
     def customer_role_id(self):
@@ -175,32 +169,32 @@ class CustomerRoleBusObj(BaseBusObj):
                    customer_role_obj_instance:CustomerRole=None,
                    customer_role_dict:dict=None):
         if customer_role_id and self.customer_role.customer_role_id is None:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             customer_role_obj = await customer_role_manager.get_by_id(customer_role_id)
             self.customer_role = customer_role_obj
         if code and self.customer_role.customer_role_id is None:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             customer_role_obj = await customer_role_manager.get_by_code(code)
             self.customer_role = customer_role_obj
         if customer_role_obj_instance and self.customer_role.customer_role_id is None:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             customer_role_obj = await customer_role_manager.get_by_id(customer_role_obj_instance.customer_role_id)
             self.customer_role = customer_role_obj
         if json_data and self.customer_role.customer_role_id is None:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = customer_role_manager.from_json(json_data)
         if customer_role_dict and self.customer_role.customer_role_id is None:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = customer_role_manager.from_dict(customer_role_dict)
         return self
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    customer_role_id:int=None,
                    customer_role_obj_instance:CustomerRole=None,
                    customer_role_dict:dict=None):
-        result = CustomerRoleBusObj(session=session)
+        result = CustomerRoleBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -211,53 +205,54 @@ class CustomerRoleBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        customer_role_manager = CustomerRoleManager(self.session)
+        customer_role_manager = CustomerRoleManager(self._session_context)
         self.customer_role = await customer_role_manager.refresh(self.customer_role)
         return self
     def is_valid(self):
         return (self.customer_role is not None)
     def to_dict(self):
-        customer_role_manager = CustomerRoleManager(self.session)
+        customer_role_manager = CustomerRoleManager(self._session_context)
         return customer_role_manager.to_dict(self.customer_role)
     def to_json(self):
-        customer_role_manager = CustomerRoleManager(self.session)
+        customer_role_manager = CustomerRoleManager(self._session_context)
         return customer_role_manager.to_json(self.customer_role)
     async def save(self):
         if self.customer_role.customer_role_id is not None and self.customer_role.customer_role_id > 0:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = await customer_role_manager.update(self.customer_role)
         if self.customer_role.customer_role_id is None or self.customer_role.customer_role_id == 0:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = await customer_role_manager.add(self.customer_role)
         return self
     async def delete(self):
         if self.customer_role.customer_role_id > 0:
-            customer_role_manager = CustomerRoleManager(self.session)
+            customer_role_manager = CustomerRoleManager(self._session_context)
             await customer_role_manager.delete(self.customer_role.customer_role_id)
             self.customer_role = None
     async def randomize_properties(self):
         # self.customer_role.customer_id = random.randint(0, 100)
         self.customer_role.is_placeholder = random.choice([True, False])
         self.customer_role.placeholder = random.choice([True, False])
-        self.customer_role.role_id =  random.choice(await managers_and_enums.RoleManager(self.session).get_list()).role_id
+        self.customer_role.role_id =  random.choice(await managers_and_enums.RoleManager(self._session_context).get_list()).role_id
+
         return self
     def get_customer_role_obj(self) -> CustomerRole:
         return self.customer_role
     def is_equal(self,customer_role:CustomerRole) -> CustomerRole:
-        customer_role_manager = CustomerRoleManager(self.session)
+        customer_role_manager = CustomerRoleManager(self._session_context)
         my_customer_role = self.get_customer_role_obj()
         return customer_role_manager.is_equal(customer_role, my_customer_role)
 
     #CustomerID
     async def get_customer_id_rel_obj(self) -> models.Customer:
-        customer_manager = managers_and_enums.CustomerManager(self.session)
+        customer_manager = managers_and_enums.CustomerManager(self._session_context)
         customer_obj = await customer_manager.get_by_id(self.customer_id)
         return customer_obj
     #isPlaceholder,
     #placeholder,
     #RoleID
     async def get_role_id_rel_obj(self) -> models.Role:
-        role_manager = managers_and_enums.RoleManager(self.session)
+        role_manager = managers_and_enums.RoleManager(self._session_context)
         role_obj = await role_manager.get_by_id(self.role_id)
         return role_obj
 
@@ -268,8 +263,6 @@ class CustomerRoleBusObj(BaseBusObj):
     def get_id(self) -> int:
         return self.customer_role_id
     #CustomerID
-    # async def get_parent_obj(self) -> CustomerBusObj:
-    #     return await self.get_customer_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Customer'
     async def get_parent_code(self) -> uuid.UUID:

@@ -26,9 +26,9 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestReportProviderPlantUserDetails:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
-        await current_runtime.initialize(session=session)
-        session_context = SessionContext(dict())
-        report_provider = ReportProviderPlantUserDetails(session, session_context)
+        session_context = SessionContext(dict(), session)
+        await current_runtime.initialize(session_context)
+        report_provider = ReportProviderPlantUserDetails(session_context)
         plant = await PlantFactory.create_async(session=session)
         plant_code = plant.code
 
@@ -71,6 +71,7 @@ class TestReportProviderPlantUserDetails:
                 "update_button_text_link_plant_code"
                 "random_property_updates_link_plant_code",
                 "back_to_dashboard_link_tac_code"
+
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result"

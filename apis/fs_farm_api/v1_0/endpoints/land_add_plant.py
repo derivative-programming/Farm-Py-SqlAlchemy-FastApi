@@ -42,11 +42,10 @@ class LandAddPlantRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code("LandCode", land_code)
                 init_request = api_init_models.LandAddPlantInitObjWFGetInitModelRequest()
-                response = await init_request.process_request(
-                    session,
+                response = await init_request.process_request( 
                     session_context,
                     land_code,
                     response
@@ -91,13 +90,12 @@ class LandAddPlantRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...") 
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code("LandCode", land_code) 
                  
                 logging.info("Request...") 
                 logging.info(request_model.__dict__)  
-                await response.process_request(
-                    session,
+                await response.process_request( 
                     session_context,
                     land_code,
                     request_model

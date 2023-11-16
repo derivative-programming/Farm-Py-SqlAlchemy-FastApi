@@ -58,7 +58,7 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code #CustomerID
         obj.role_code_peek = role_id_role_instance.code #RoleID
 
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -121,6 +121,6 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code #CustomerID
         obj.role_code_peek = role_id_role_instance.code #RoleID
 
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

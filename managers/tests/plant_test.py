@@ -1,6 +1,7 @@
 import pytest
 import pytest_asyncio  
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import Plant
 import models
 from models.factory import PlantFactory
@@ -14,7 +15,7 @@ from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
 
-# DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+
 
 db_dialect = "sqlite"
 
@@ -31,7 +32,8 @@ class TestPlantManager:
 
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session:AsyncSession):
-        return PlantManager(session)
+        session_context = SessionContext(dict(),session)
+        return PlantManager(session_context)
      
     @pytest.mark.asyncio
     async def test_build(self, plant_manager:PlantManager, session:AsyncSession):

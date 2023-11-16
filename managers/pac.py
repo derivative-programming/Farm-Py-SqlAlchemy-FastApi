@@ -6,11 +6,12 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 
 from models.pac import Pac
 from models.serialization_schema.pac import PacSchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -21,8 +22,18 @@ class PacEnum(Enum):
     Unknown = 'Unknown'
 
 class PacManager:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
+    def convert_uuid_to_model_uuid(self,value:uuid):
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
 
     async def _build_lookup_item(self, pac:Pac):
         item = await self.build()
@@ -30,7 +41,7 @@ class PacManager:
         return item
     async def initialize(self):
         logging.info("PlantManager.Initialize start")
-        pac_result = await self.session.execute(select(Pac))
+        pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 
         if await self.from_enum(PacEnum.Unknown) is None:
@@ -55,8 +66,10 @@ class PacManager:
         return Pac(**kwargs)
     async def add(self, pac: Pac) -> Pac:
         logging.info("PacManager.add")
-        self.session.add(pac)
-        await self.session.flush()
+        pac.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        pac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(pac)
+        await self._session_context.session.flush()
         return pac
     def _build_query(self):
         logging.info("PacManager._build_query")
@@ -82,7 +95,7 @@ class PacManager:
             query = pac_query_all.filter(query_filter)
         else:
             query = pac_query_all
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
         result = list()
         for query_result_row in query_results:
@@ -98,25 +111,21 @@ class PacManager:
         logging.info("PacManager.get_by_id start pac_id:" + str(pac_id))
         if not isinstance(pac_id, int):
             raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
-        # result = await self.session.execute(select(Pac).filter(Pac.pac_id == pac_id))
-        # result = await self.session.execute(select(Pac).filter(Pac.pac_id == pac_id))
-        # return result.scalars().first()
         query_filter = Pac.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Pac]:
         logging.info(f"PacManager.get_by_code {code}")
-        # result = await self.session.execute(select(Pac).filter_by(code=code))
-        # return result.scalars().one_or_none()
         query_filter = Pac.code==code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, pac: Pac, **kwargs) -> Optional[Pac]:
         logging.info("PacManager.update")
         if pac:
+            pac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(pac, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return pac
     async def delete(self, pac_id: int):
         logging.info(f"PacManager.delete {pac_id}")
@@ -125,12 +134,10 @@ class PacManager:
         pac = await self.get_by_id(pac_id)
         if not pac:
             raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
-        await self.session.delete(pac)
-        await self.session.flush()
+        await self._session_context.session.delete(pac)
+        await self._session_context.session.flush()
     async def get_list(self) -> List[Pac]:
         logging.info("PacManager.get_list")
-        # result = await self.session.execute(select(Pac))
-        # return result.scalars().all()
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, pac:Pac) -> str:
@@ -168,8 +175,13 @@ class PacManager:
     async def add_bulk(self, pacs: List[Pac]) -> List[Pac]:
         logging.info("PacManager.add_bulk")
         """Add multiple pacs at once."""
-        self.session.add_all(pacs)
-        await self.session.flush()
+        for pac in pacs:
+            if pac.pac_id is not None and pac.pac_id > 0:
+                raise ValueError("Pac is already added: " + str(pac.code) + " " + str(pac.pac_id))
+            pac.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            pac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(pacs)
+        await self._session_context.session.flush()
         return pacs
     async def update_bulk(self, pac_updates: List[Dict[int, Dict]]) -> List[Pac]:
         logging.info("PacManager.update_bulk start")
@@ -187,8 +199,9 @@ class PacManager:
             for key, value in update.items():
                 if key != "pac_id":
                     setattr(pac, key, value)
+            pac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_pacs.append(pac)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("PacManager.update_bulk end")
         return updated_pacs
     async def delete_bulk(self, pac_ids: List[int]) -> bool:
@@ -201,26 +214,26 @@ class PacManager:
             if not pac:
                 raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
             if pac:
-                await self.session.delete(pac)
-        await self.session.flush()
+                await self._session_context.session.delete(pac)
+        await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         logging.info("PacManager.count")
         """Return the total number of pacs."""
-        result = await self.session.execute(select(Pac))
+        result = await self._session_context.session.execute(select(Pac))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Pac]:
         """Retrieve pacs sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(Pac).order_by(getattr(Pac, sort_by).asc()))
+            result = await self._session_context.session.execute(select(Pac).order_by(getattr(Pac, sort_by).asc()))
         else:
-            result = await self.session.execute(select(Pac).order_by(getattr(Pac, sort_by).desc()))
+            result = await self._session_context.session.execute(select(Pac).order_by(getattr(Pac, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, pac: Pac) -> Pac:
         logging.info("PacManager.refresh")
         """Refresh the state of a given pac instance from the database."""
-        await self.session.refresh(pac)
+        await self._session_context.session.refresh(pac)
         return pac
     async def exists(self, pac_id: int) -> bool:
         logging.info(f"PacManager.exists {pac_id}")

@@ -70,7 +70,7 @@ class CustomerFactory(factory.Factory):
 
         obj.tac_code_peek = tac_id_tac_instance.code #TacID
 
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -118,6 +118,6 @@ class CustomerFactory(factory.Factory):
 
         obj.tac_code_peek = tac_id_tac_instance.code #TacID
 
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

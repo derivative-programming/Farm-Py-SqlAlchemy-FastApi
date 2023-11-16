@@ -14,7 +14,6 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect
 from sqlalchemy import String
 import flows.constants.land_user_plant_multi_select_to_not_editable as FlowConstants
-# DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -26,7 +25,7 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = BaseFlowLandUserPlantMultiSelectToNotEditable(session_context)
         land = await LandFactory.create_async(session)
         flavor = await FlavorFactory.create_async(session)
@@ -36,8 +35,6 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
             land,
             plant_code_list_csv,
             )
-        # Add assertions here to validate the expected behavior
-        #TODO add validation checks - is required,
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
@@ -47,7 +44,7 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
             assert 'plantCodeListCsv' in flow.queued_validation_errors and flow.queued_validation_errors['plantCodeListCsv'] == 'Please enter a plant Code List Csv'
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         land = await LandFactory.create_async(session)
         flow = BaseFlowLandUserPlantMultiSelectToNotEditable(session_context)
         role_required = "User"
@@ -55,4 +52,3 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
             await flow._process_security_rules(land)
             assert '' in flow.queued_validation_errors and flow.queued_validation_errors[''] == "Unautorized access. " + role_required + " role not found."
             session_context.role_name_csv = role_required
-        # Add assertions here to validate the expected behavior

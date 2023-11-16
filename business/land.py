@@ -2,13 +2,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.pac import PacBusObj #PacID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import PacManager as PacIDManager #PacID
 from managers import LandManager
 from models import Land
 import models
@@ -17,8 +15,6 @@ from .base_bus_obj import BaseBusObj
 
 from business.plant import PlantBusObj
 
-class LandSessionNotFoundError(Exception):
-    pass
 class LandInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -29,10 +25,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class LandBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise LandSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.land = Land()
     @property
     def land_id(self):
@@ -194,35 +190,35 @@ class LandBusObj(BaseBusObj):
                    land_dict:dict=None,
                    land_enum:managers_and_enums.LandEnum=None):
         if land_id and self.land.land_id is None:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             land_obj = await land_manager.get_by_id(land_id)
             self.land = land_obj
         if code and self.land.land_id is None:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             land_obj = await land_manager.get_by_code(code)
             self.land = land_obj
         if land_obj_instance and self.land.land_id is None:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             land_obj = await land_manager.get_by_id(land_obj_instance.land_id)
             self.land = land_obj
         if json_data and self.land.land_id is None:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             self.land = land_manager.from_json(json_data)
         if land_dict and self.land.land_id is None:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             self.land = land_manager.from_dict(land_dict)
         if land_enum and self.land.land_id is None:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             self.land = await land_manager.from_enum(land_enum)
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    land_id:int=None,
                    land_obj_instance:Land=None,
                    land_dict:dict=None,
                    land_enum:managers_and_enums.LandEnum=None):
-        result = Land(session=session)
+        result = LandBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -234,28 +230,28 @@ class LandBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        land_manager = LandManager(self.session)
+        land_manager = LandManager(self._session_context)
         self.land = await land_manager.refresh(self.land)
         return self
     def is_valid(self):
         return (self.land is not None)
     def to_dict(self):
-        land_manager = LandManager(self.session)
+        land_manager = LandManager(self._session_context)
         return land_manager.to_dict(self.land)
     def to_json(self):
-        land_manager = LandManager(self.session)
+        land_manager = LandManager(self._session_context)
         return land_manager.to_json(self.land)
     async def save(self):
         if self.land.land_id is not None and self.land.land_id > 0:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             self.land = await land_manager.update(self.land)
         if self.land.land_id is None or self.land.land_id == 0:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             self.land = await land_manager.add(self.land)
         return self
     async def delete(self):
         if self.land.land_id > 0:
-            land_manager = LandManager(self.session)
+            land_manager = LandManager(self._session_context)
             await land_manager.delete(self.land.land_id)
             self.land = None
     async def randomize_properties(self):
@@ -265,11 +261,12 @@ class LandBusObj(BaseBusObj):
         self.land.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.land.pac_id = random.randint(0, 100)
+
         return self
     def get_land_obj(self) -> Land:
         return self.land
     def is_equal(self,land:Land) -> Land:
-        land_manager = LandManager(self.session)
+        land_manager = LandManager(self._session_context)
         my_land = self.get_land_obj()
         return land_manager.is_equal(land, my_land)
 
@@ -280,7 +277,7 @@ class LandBusObj(BaseBusObj):
     #name,
     #PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
-        pac_manager = managers_and_enums.PacManager(self.session)
+        pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
 
@@ -296,16 +293,14 @@ class LandBusObj(BaseBusObj):
     #lookupEnumName,
     #name,
     #PacID
-    # async def get_parent_obj(self) -> PacBusObj:
-    #     return await self.get_pac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
 
     async def build_plant(self) -> PlantBusObj:
-        item = PlantBusObj(self.session)
-        flavor_manager = managers_and_enums.FlavorManager(self.session)
+        item = PlantBusObj(self._session_context)
+        flavor_manager = managers_and_enums.FlavorManager(self._session_context)
         flvr_foreign_key_id_flavor = await flavor_manager.from_enum(
             managers_and_enums.FlavorEnum.Unknown)
         item.flvr_foreign_key_id = flvr_foreign_key_id_flavor.flavor_id
@@ -318,10 +313,10 @@ class LandBusObj(BaseBusObj):
 
     async def get_all_plant(self) -> List[PlantBusObj]:
         results = list()
-        plant_manager = managers_and_enums.PlantManager(self.session)
+        plant_manager = managers_and_enums.PlantManager(self._session_context)
         obj_list = await plant_manager.get_by_land_id(self.land_id)
         for obj_item in obj_list:
-            bus_obj_item = PlantBusObj(self.session)
+            bus_obj_item = PlantBusObj(self._session_context)
             await bus_obj_item.load(plant_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results

@@ -36,11 +36,6 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestPlantUserDeletePostModelResponse:
-    @pytest.mark.asyncio
-    async def test_flow_plant_user_delete_initialization(self,session):
-        session_context = SessionContext(dict())
-        flow = FlowPlantUserDelete(session_context)
-        assert flow is not None
     def test_flow_plant_user_delete_result_to_json(self):
         # Create an instance and set attributes
         result = FlowPlantUserDeleteResult()
@@ -56,10 +51,10 @@ class TestPlantUserDeletePostModelResponse:
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = FlowPlantUserDelete(session_context)
         plant = await PlantFactory.create_async(session)
-        plant_bus_obj = PlantBusObj(session)
+        plant_bus_obj = PlantBusObj(session_context)
         await plant_bus_obj.load(plant_obj_instance=plant)
         role_required = "User"
 

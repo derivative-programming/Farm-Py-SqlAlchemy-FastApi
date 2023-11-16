@@ -98,14 +98,11 @@ class PlantUserDetailsGetModelResponse(ListModel):
     request:PlantUserDetailsGetModelRequest = None
     items:List[PlantUserDetailsGetModelResponseItem] = Field(default_factory=list)
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         plant_code:uuid,
                         request:PlantUserDetailsGetModelRequest):
         try:
             logging.info("loading model...PlantUserDetailsGetModelResponse")
-            # plant_bus_obj = PlantBusObj(session=session)
-            # await plant_bus_obj.load(code=plant_code)
             generator = ReportManagerPlantUserDetails(session_context)
             logging.info("processing...PlantUserDetailsGetModelResponse")
             items = await generator.generate(

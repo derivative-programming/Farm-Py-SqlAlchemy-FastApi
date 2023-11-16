@@ -50,10 +50,9 @@ class TestTacLoginPostModelResponse:
             mock_method.side_effect = mock_process
             request_instance = await TacLoginPostModelRequestFactory.create_async(session=session)
             response_instance = TacLoginPostModelResponse()
-            session_context = SessionContext(dict())
+            session_context = SessionContext(dict(), session)
             tac = await TacFactory.create_async(session)
             await response_instance.process_request(
-                session=session,
                 session_context=session_context,
                 tac_code=tac.code,
                 request=request_instance

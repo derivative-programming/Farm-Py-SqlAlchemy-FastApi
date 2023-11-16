@@ -2,6 +2,7 @@ import pytest
 import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from helpers.session_context import SessionContext
 from models import OrgCustomer
 from models.factory import OrgCustomerFactory
 from managers.org_customer import OrgCustomerManager
@@ -27,11 +28,12 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestOrgCustomerBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_manager(self, session:AsyncSession):
-        return OrgCustomerManager(session)
+        session_context = SessionContext(dict(),session)
+        return OrgCustomerManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_bus_obj(self, session):
-        # Assuming that the OrgCustomerBusObj requires a session object
-        return OrgCustomerBusObj(session)
+        session_context = SessionContext(dict(),session)
+        return OrgCustomerBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_org_customer(self, session):
         # Use the OrgCustomerFactory to create a new org_customer instance

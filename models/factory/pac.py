@@ -43,7 +43,7 @@ class PacFactory(factory.Factory):
 
         obj = model_class(*args, **kwargs)
 
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -67,6 +67,6 @@ class PacFactory(factory.Factory):
 
         obj = PacFactory.build(session=None, *args, **kwargs)
 
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

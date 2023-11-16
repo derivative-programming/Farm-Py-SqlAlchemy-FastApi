@@ -38,13 +38,12 @@ class PlantUserDeletePostModelResponse(PostResponse):
         placeholder = "" #to avoid pass line
 
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         plant_code:uuid,
                         request:PlantUserDeletePostModelRequest):
         try:
             logging.info("loading model...PlantUserDeletePostModelResponse")
-            plant_bus_obj = PlantBusObj(session=session)
+            plant_bus_obj = PlantBusObj(session_context)
             await plant_bus_obj.load(code=plant_code)
             if(plant_bus_obj.get_plant_obj() is None):
                 logging.info("Invalid plant_code")

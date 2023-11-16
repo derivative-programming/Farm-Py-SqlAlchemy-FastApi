@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import json
 import csv
 import uuid
@@ -11,13 +10,12 @@ from helpers import SessionContext
 from datetime import date, datetime
 from decimal import Decimal
 from helpers import SessionContext,TypeConversion
-from sqlalchemy.ext.asyncio import AsyncSession
 class ReportManagerPlantUserDetails():
     _session_context:SessionContext
-    _session:AsyncSession
-    def __init__(self, session:AsyncSession, session_context:SessionContext):
+    def __init__(self, session_context:SessionContext):
         self._session_context = session_context
-        self._session = session
+        if session_context.session is None:
+            raise TypeError("ReportManagerPlantUserDetails.init session_context has no session assigned")
     async def generate(self,
                 plant_code:uuid,
 
@@ -35,7 +33,7 @@ class ReportManagerPlantUserDetails():
             raise ReportRequestValidationError("item_count_per_page","Minimum count per page is 1")
         if page_number <= 0:
             raise ReportRequestValidationError("page_number","Minimum page number is 1")
-        provider = ReportProviderPlantUserDetails(self._session, self._session_context)
+        provider = ReportProviderPlantUserDetails(self._session_context)
         dataList = await provider.generate_list(
             plant_code,
 

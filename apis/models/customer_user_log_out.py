@@ -38,13 +38,12 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
         placeholder = "" #to avoid pass line
 
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         customer_code:uuid,
                         request:CustomerUserLogOutPostModelRequest):
         try:
             logging.info("loading model...CustomerUserLogOutPostModelResponse")
-            customer_bus_obj = CustomerBusObj(session=session)
+            customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load(code=customer_code)
             if(customer_bus_obj.get_customer_obj() is None):
                 logging.info("Invalid customer_code")

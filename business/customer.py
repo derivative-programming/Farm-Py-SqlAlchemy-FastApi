@@ -2,13 +2,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from business.tac import TacBusObj #TacID
+from helpers.session_context import SessionContext
 from services.db_config import db_dialect,generate_uuid
-# from managers import TacManager as TacIDManager #TacID
 from managers import CustomerManager
 from models import Customer
 import models
@@ -17,8 +15,6 @@ from .base_bus_obj import BaseBusObj
 
 from business.customer_role import CustomerRoleBusObj
 
-class CustomerSessionNotFoundError(Exception):
-    pass
 class CustomerInvalidInitError(Exception):
     pass
 #Conditionally set the UUID column type
@@ -29,10 +25,10 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class CustomerBusObj(BaseBusObj):
-    def __init__(self, session:AsyncSession=None):
-        if not session:
-            raise CustomerSessionNotFoundError("session required")
-        self.session = session
+    def __init__(self, session_context:SessionContext):
+        if not session_context.session:
+            raise ValueError("session required")
+        self._session_context = session_context
         self.customer = Customer()
     @property
     def customer_id(self):
@@ -400,32 +396,32 @@ class CustomerBusObj(BaseBusObj):
                    customer_obj_instance:Customer=None,
                    customer_dict:dict=None):
         if customer_id and self.customer.customer_id is None:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             customer_obj = await customer_manager.get_by_id(customer_id)
             self.customer = customer_obj
         if code and self.customer.customer_id is None:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             customer_obj = await customer_manager.get_by_code(code)
             self.customer = customer_obj
         if customer_obj_instance and self.customer.customer_id is None:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             customer_obj = await customer_manager.get_by_id(customer_obj_instance.customer_id)
             self.customer = customer_obj
         if json_data and self.customer.customer_id is None:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             self.customer = customer_manager.from_json(json_data)
         if customer_dict and self.customer.customer_id is None:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             self.customer = customer_manager.from_dict(customer_dict)
         return self
     @staticmethod
-    async def get(session:AsyncSession,
+    async def get(session_context:SessionContext,
                     json_data:str=None,
                    code:uuid.UUID=None,
                    customer_id:int=None,
                    customer_obj_instance:Customer=None,
                    customer_dict:dict=None):
-        result = CustomerBusObj(session=session)
+        result = CustomerBusObj(session_context)
         await result.load(
             json_data,
             code,
@@ -436,28 +432,28 @@ class CustomerBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
-        customer_manager = CustomerManager(self.session)
+        customer_manager = CustomerManager(self._session_context)
         self.customer = await customer_manager.refresh(self.customer)
         return self
     def is_valid(self):
         return (self.customer is not None)
     def to_dict(self):
-        customer_manager = CustomerManager(self.session)
+        customer_manager = CustomerManager(self._session_context)
         return customer_manager.to_dict(self.customer)
     def to_json(self):
-        customer_manager = CustomerManager(self.session)
+        customer_manager = CustomerManager(self._session_context)
         return customer_manager.to_json(self.customer)
     async def save(self):
         if self.customer.customer_id is not None and self.customer.customer_id > 0:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             self.customer = await customer_manager.update(self.customer)
         if self.customer.customer_id is None or self.customer.customer_id == 0:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             self.customer = await customer_manager.add(self.customer)
         return self
     async def delete(self):
         if self.customer.customer_id > 0:
-            customer_manager = CustomerManager(self.session)
+            customer_manager = CustomerManager(self._session_context)
             await customer_manager.delete(self.customer.customer_id)
             self.customer = None
     async def randomize_properties(self):
@@ -484,11 +480,12 @@ class CustomerBusObj(BaseBusObj):
         # self.customer.tac_id = random.randint(0, 100)
         self.customer.utc_offset_in_minutes = random.randint(0, 100)
         self.customer.zip = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+
         return self
     def get_customer_obj(self) -> Customer:
         return self.customer
     def is_equal(self,customer:Customer) -> Customer:
-        customer_manager = CustomerManager(self.session)
+        customer_manager = CustomerManager(self._session_context)
         my_customer = self.get_customer_obj()
         return customer_manager.is_equal(customer, my_customer)
 
@@ -514,7 +511,7 @@ class CustomerBusObj(BaseBusObj):
     #registrationUTCDateTime
     #TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
-        tac_manager = managers_and_enums.TacManager(self.session)
+        tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
         return tac_obj
     #uTCOffsetInMinutes,
@@ -547,8 +544,6 @@ class CustomerBusObj(BaseBusObj):
     #province,
     #registrationUTCDateTime
     #TacID
-    # async def get_parent_obj(self) -> TacBusObj:
-    #     return await self.get_tac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -557,8 +552,8 @@ class CustomerBusObj(BaseBusObj):
     #zip,
 
     async def build_customer_role(self) -> CustomerRoleBusObj:
-        item = CustomerRoleBusObj(self.session)
-        role_manager = managers_and_enums.RoleManager(self.session)
+        item = CustomerRoleBusObj(self._session_context)
+        role_manager = managers_and_enums.RoleManager(self._session_context)
         role_id_role = await role_manager.from_enum(
             managers_and_enums.RoleEnum.Unknown)
         item.role_id = role_id_role.role_id
@@ -571,10 +566,10 @@ class CustomerBusObj(BaseBusObj):
 
     async def get_all_customer_role(self) -> List[CustomerRoleBusObj]:
         results = list()
-        customer_role_manager = managers_and_enums.CustomerRoleManager(self.session)
+        customer_role_manager = managers_and_enums.CustomerRoleManager(self._session_context)
         obj_list = await customer_role_manager.get_by_customer_id(self.customer_id)
         for obj_item in obj_list:
-            bus_obj_item = CustomerRoleBusObj(self.session)
+            bus_obj_item = CustomerRoleBusObj(self._session_context)
             await bus_obj_item.load(customer_role_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results

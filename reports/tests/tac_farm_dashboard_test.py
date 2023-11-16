@@ -44,8 +44,8 @@ class TestReportManagerTacFarmDashboard:
             return result
         with patch.object(ReportProviderTacFarmDashboard, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerTacFarmDashboard(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerTacFarmDashboard(session_context)
             tac = await TacFactory.create_async(session=session)
             tac_code = tac.code
             role_required = ""
@@ -79,8 +79,8 @@ class TestReportManagerTacFarmDashboard:
             return result
         with patch.object(ReportProviderTacFarmDashboard, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerTacFarmDashboard(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerTacFarmDashboard(session_context)
             tac = await TacFactory.create_async(session=session)
             tac_code = tac.code
             role_required = ""
@@ -113,8 +113,8 @@ class TestReportManagerTacFarmDashboard:
             return result
         with patch.object(ReportProviderTacFarmDashboard, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerTacFarmDashboard(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerTacFarmDashboard(session_context)
             tac = await TacFactory.create_async(session=session)
             tac_code = tac.code
             role_required = ""
@@ -135,8 +135,8 @@ class TestReportManagerTacFarmDashboard:
                 )
     @pytest.mark.asyncio
     async def test_build_csv(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerTacFarmDashboard(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerTacFarmDashboard(session_context)
         test_data = [ReportItemTacFarmDashboard(), ReportItemTacFarmDashboard()]  # Replace with sample data
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
@@ -146,8 +146,8 @@ class TestReportManagerTacFarmDashboard:
         # Further checks can be added to verify the content of the file
     @pytest.mark.asyncio
     async def test_read_csv(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerTacFarmDashboard(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerTacFarmDashboard(session_context)
         test_data = [ReportItemTacFarmDashboard(), ReportItemTacFarmDashboard()]
         file_name = 'test_input.csv'
         await test_obj.build_csv(file_name, test_data)
@@ -158,8 +158,8 @@ class TestReportManagerTacFarmDashboard:
         os.remove(file_name)
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerTacFarmDashboard(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerTacFarmDashboard(session_context)
         # True values
         assert test_obj._parse_bool('true')
         assert test_obj._parse_bool('1')

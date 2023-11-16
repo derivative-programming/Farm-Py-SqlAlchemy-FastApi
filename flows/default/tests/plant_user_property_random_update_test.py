@@ -36,11 +36,6 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestPlantUserPropertyRandomUpdatePostModelResponse:
-    @pytest.mark.asyncio
-    async def test_flow_plant_user_property_random_update_initialization(self,session):
-        session_context = SessionContext(dict())
-        flow = FlowPlantUserPropertyRandomUpdate(session_context)
-        assert flow is not None
     def test_flow_plant_user_property_random_update_result_to_json(self):
         # Create an instance and set attributes
         result = FlowPlantUserPropertyRandomUpdateResult()
@@ -56,10 +51,10 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
-        session_context = SessionContext(dict())
+        session_context = SessionContext(dict(), session)
         flow = FlowPlantUserPropertyRandomUpdate(session_context)
         plant = await PlantFactory.create_async(session)
-        plant_bus_obj = PlantBusObj(session)
+        plant_bus_obj = PlantBusObj(session_context)
         await plant_bus_obj.load(plant_obj_instance=plant)
         role_required = "User"
 

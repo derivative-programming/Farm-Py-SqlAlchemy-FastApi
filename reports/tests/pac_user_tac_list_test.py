@@ -44,8 +44,8 @@ class TestReportManagerPacUserTacList:
             return result
         with patch.object(ReportProviderPacUserTacList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerPacUserTacList(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerPacUserTacList(session_context)
             pac = await PacFactory.create_async(session=session)
             pac_code = pac.code
             role_required = ""
@@ -79,8 +79,8 @@ class TestReportManagerPacUserTacList:
             return result
         with patch.object(ReportProviderPacUserTacList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerPacUserTacList(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerPacUserTacList(session_context)
             pac = await PacFactory.create_async(session=session)
             pac_code = pac.code
             role_required = ""
@@ -113,8 +113,8 @@ class TestReportManagerPacUserTacList:
             return result
         with patch.object(ReportProviderPacUserTacList, 'generate_list', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_generate_list
-            session_context = SessionContext(dict())
-            report_generator = ReportManagerPacUserTacList(session, session_context)
+            session_context = SessionContext(dict(), session)
+            report_generator = ReportManagerPacUserTacList(session_context)
             pac = await PacFactory.create_async(session=session)
             pac_code = pac.code
             role_required = ""
@@ -135,8 +135,8 @@ class TestReportManagerPacUserTacList:
                 )
     @pytest.mark.asyncio
     async def test_build_csv(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerPacUserTacList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerPacUserTacList(session_context)
         test_data = [ReportItemPacUserTacList(), ReportItemPacUserTacList()]  # Replace with sample data
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
@@ -146,8 +146,8 @@ class TestReportManagerPacUserTacList:
         # Further checks can be added to verify the content of the file
     @pytest.mark.asyncio
     async def test_read_csv(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerPacUserTacList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerPacUserTacList(session_context)
         test_data = [ReportItemPacUserTacList(), ReportItemPacUserTacList()]
         file_name = 'test_input.csv'
         await test_obj.build_csv(file_name, test_data)
@@ -158,8 +158,8 @@ class TestReportManagerPacUserTacList:
         os.remove(file_name)
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self,session):
-        session_context = SessionContext(dict())
-        test_obj = ReportManagerPacUserTacList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        test_obj = ReportManagerPacUserTacList(session_context)
         # True values
         assert test_obj._parse_bool('true')
         assert test_obj._parse_bool('1')

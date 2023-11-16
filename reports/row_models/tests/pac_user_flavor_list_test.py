@@ -14,6 +14,7 @@ class TestReportItemPacUserFlavorList:
         assert report_item.flavor_lookup_enum_name == ""
         assert report_item.flavor_name == ""
         assert report_item.pac_name == ""
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -24,6 +25,7 @@ class TestReportItemPacUserFlavorList:
             "flavor_lookup_enum_name": "test",
             "flavor_name": "test",
             "pac_name": "test",
+
         }
         # report_item = ReportItemPacUserFlavorList(**data)
         report_item = ReportItemPacUserFlavorList()

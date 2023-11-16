@@ -66,14 +66,11 @@ class PacUserFlavorListGetModelResponse(ListModel):
     request:PacUserFlavorListGetModelRequest = None
     items:List[PacUserFlavorListGetModelResponseItem] = Field(default_factory=list)
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         pac_code:uuid,
                         request:PacUserFlavorListGetModelRequest):
         try:
             logging.info("loading model...PacUserFlavorListGetModelResponse")
-            # pac_bus_obj = PacBusObj(session=session)
-            # await pac_bus_obj.load(code=pac_code)
             generator = ReportManagerPacUserFlavorList(session_context)
             logging.info("processing...PacUserFlavorListGetModelResponse")
             items = await generator.generate(

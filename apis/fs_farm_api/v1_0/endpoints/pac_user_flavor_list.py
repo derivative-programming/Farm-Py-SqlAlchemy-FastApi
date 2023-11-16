@@ -40,11 +40,10 @@ class PacUserFlavorListRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
                 init_request = api_init_models.PacUserFlavorListInitReportGetInitModelRequest()
                 response = await init_request.process_request(
-                    session,
                     session_context,
                     pac_code,
                     response
@@ -80,14 +79,13 @@ class PacUserFlavorListRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
                 logging.info("process request...")
                 await response.process_request(
-                    session,
                     session_context,
                     pac_code,
                     request_model
@@ -123,19 +121,18 @@ class PacUserFlavorListRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                session_context = SessionContext(auth_dict)
+                session_context = SessionContext(auth_dict, session)
                 pac_code = session_context.check_context_code("PacCode", pac_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
                 logging.info("process request...")
                 await response.process_request(
-                    session,
                     session_context,
                     pac_code,
                     request_model
                 )
-                report_manager = reports.ReportManagerPacUserFlavorList(session,session_context)
+                report_manager = reports.ReportManagerPacUserFlavorList(session_context)
                 report_manager.build_csv(tmp_file_path,response.items)
             except Exception as e:
                 response.success = False

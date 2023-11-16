@@ -81,6 +81,7 @@ class LandAddPlantPostModelResponse(PostResponse):
     land_code:UUID4 = Field(default=uuid.UUID(int=0), description="Land Code")
     plant_code:UUID4 = Field(default=uuid.UUID(int=0), description="Plant Code")
 #endset
+#endset
     def load_flow_response(self,data:FlowLandAddPlantResult): 
         placeholder = "" #to avoid pass line 
         self.output_flavor_code = data.land_code
@@ -104,14 +105,13 @@ class LandAddPlantPostModelResponse(PostResponse):
         self.plant_code = data.plant_code
 #endset
 
-    async def process_request(self,
-                        session:AsyncSession,
+    async def process_request(self, 
                         session_context:SessionContext,
                         land_code:uuid,
                         request:LandAddPlantPostModelRequest):
         try:
             logging.info("loading model...LandAddPlantPostModelResponse")
-            land_bus_obj = LandBusObj(session=session)
+            land_bus_obj = LandBusObj(session_context)
             await land_bus_obj.load(code=land_code) 
             if(land_bus_obj.get_land_obj() is None):
                 logging.info("Invalid land_code")

@@ -49,10 +49,9 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
             mock_method.side_effect = mock_process
             request_instance = await PlantUserPropertyRandomUpdatePostModelRequestFactory.create_async(session=session)
             response_instance = PlantUserPropertyRandomUpdatePostModelResponse()
-            session_context = SessionContext(dict())
+            session_context = SessionContext(dict(), session)
             plant = await PlantFactory.create_async(session)
             await response_instance.process_request(
-                session=session,
                 session_context=session_context,
                 plant_code=plant.code,
                 request=request_instance

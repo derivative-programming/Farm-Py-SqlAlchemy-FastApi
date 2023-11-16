@@ -26,9 +26,9 @@ else:  # This will cover SQLite, MySQL, and other databases
 class TestReportProviderPacUserDateGreaterThanFilterList:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
-        await current_runtime.initialize(session=session)
-        session_context = SessionContext(dict())
-        report_provider = ReportProviderPacUserDateGreaterThanFilterList(session, session_context)
+        session_context = SessionContext(dict(), session)
+        await current_runtime.initialize(session_context)
+        report_provider = ReportProviderPacUserDateGreaterThanFilterList(session_context)
         pac = await PacFactory.create_async(session=session)
         pac_code = pac.code
 
@@ -55,6 +55,7 @@ class TestReportProviderPacUserDateGreaterThanFilterList:
                 "date_greater_than_filter_is_active",
                 "date_greater_than_filter_lookup_enum_name",
                 "date_greater_than_filter_name",
+
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result"

@@ -66,14 +66,11 @@ class PacUserDateGreaterThanFilterListGetModelResponse(ListModel):
     request:PacUserDateGreaterThanFilterListGetModelRequest = None
     items:List[PacUserDateGreaterThanFilterListGetModelResponseItem] = Field(default_factory=list)
     async def process_request(self,
-                        session:AsyncSession,
                         session_context:SessionContext,
                         pac_code:uuid,
                         request:PacUserDateGreaterThanFilterListGetModelRequest):
         try:
             logging.info("loading model...PacUserDateGreaterThanFilterListGetModelResponse")
-            # pac_bus_obj = PacBusObj(session=session)
-            # await pac_bus_obj.load(code=pac_code)
             generator = ReportManagerPacUserDateGreaterThanFilterList(session_context)
             logging.info("processing...PacUserDateGreaterThanFilterListGetModelResponse")
             items = await generator.generate(

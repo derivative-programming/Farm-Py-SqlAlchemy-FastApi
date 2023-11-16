@@ -2,8 +2,7 @@
 import pytest
 import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-from database import AsyncSessionLocal
+from sqlalchemy.orm import sessionmaker 
 from models import Base
 import pytest_asyncio 
 from typing import AsyncGenerator

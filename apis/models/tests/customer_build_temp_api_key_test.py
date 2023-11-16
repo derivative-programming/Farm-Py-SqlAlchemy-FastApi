@@ -49,10 +49,9 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
             mock_method.side_effect = mock_process
             request_instance = await CustomerBuildTempApiKeyPostModelRequestFactory.create_async(session=session)
             response_instance = CustomerBuildTempApiKeyPostModelResponse()
-            session_context = SessionContext(dict())
+            session_context = SessionContext(dict(), session)
             customer = await CustomerFactory.create_async(session)
             await response_instance.process_request(
-                session=session,
                 session_context=session_context,
                 customer_code=customer.code,
                 request=request_instance

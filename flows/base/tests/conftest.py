@@ -1,33 +1,11 @@
-import asyncio
-from decimal import Decimal
-import factory
-import uuid
-from factory import Faker
+import asyncio 
 import pytest
-import pytest_asyncio
-import time
-from decimal import Decimal
-from datetime import datetime, date
+import pytest_asyncio 
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from flows.base.land_add_plant import BaseFlowLandAddPlant
-from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models import Base, CustomerRole
-from models.factory import CustomerRoleFactory
-from managers.customer_role import CustomerRoleManager
-from models.factory.flavor import FlavorFactory
-from models.factory.land import LandFactory
-from models.serialization_schema.customer_role import CustomerRoleSchema
-from services.db_config import db_dialect
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-import flows.constants.land_add_plant as FlowConstants
+from sqlalchemy.ext.asyncio import create_async_engine,AsyncSession
+from models import Base 
+from database import AsyncSessionLocal  
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
@@ -43,7 +21,7 @@ def engine():
     yield engine
     engine.sync_engine.dispose()
 @pytest_asyncio.fixture(scope="function")
-async def session(engine) -> AsyncSession:
+async def session(engine) -> AsyncSessionLocal:
     @event.listens_for(engine.sync_engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()

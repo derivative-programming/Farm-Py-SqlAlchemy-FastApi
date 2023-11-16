@@ -14,6 +14,7 @@ class TestReportItemPacUserRoleList:
         assert report_item.role_lookup_enum_name == ""
         assert report_item.role_name == ""
         assert report_item.pac_name == ""
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -24,6 +25,7 @@ class TestReportItemPacUserRoleList:
             "role_lookup_enum_name": "test",
             "role_name": "test",
             "pac_name": "test",
+
         }
         # report_item = ReportItemPacUserRoleList(**data)
         report_item = ReportItemPacUserRoleList()

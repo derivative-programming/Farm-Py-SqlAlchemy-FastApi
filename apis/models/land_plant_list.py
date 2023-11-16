@@ -124,15 +124,12 @@ class LandPlantListGetModelResponseItem(CamelModel):
 class LandPlantListGetModelResponse(ListModel):
     request:LandPlantListGetModelRequest = None
     items:List[LandPlantListGetModelResponseItem] = Field(default_factory=list)
-    async def process_request(self,
-                        session:AsyncSession,
+    async def process_request(self, 
                         session_context:SessionContext,
                         land_code:uuid,
                         request:LandPlantListGetModelRequest):
         try:
-            logging.info("loading model...LandPlantListGetModelResponse")
-            # land_bus_obj = LandBusObj(session=session)
-            # await land_bus_obj.load(code=land_code)  
+            logging.info("loading model...LandPlantListGetModelResponse") 
             generator = ReportManagerLandPlantList(session_context)
             logging.info("processing...LandPlantListGetModelResponse")
             items = await generator.generate(

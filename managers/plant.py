@@ -6,12 +6,13 @@ from enum import Enum
 from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select#, join, outerjoin, and_
+from sqlalchemy.future import select
+from helpers.session_context import SessionContext#, join, outerjoin, and_
 from models.flavor import Flavor # FlvrForeignKeyID
 from models.land import Land # LandID
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
-from services.db_config import generate_uuid
+from services.db_config import generate_uuid,db_dialect
 from services.logging_config import get_logger
 import logging
 logger = get_logger(__name__)
@@ -26,8 +27,21 @@ class PlantNotFoundError(Exception):
 
 class PlantManager:
     
-    def __init__(self, session: AsyncSession):
-        self.session = session 
+    def __init__(self, session_context: SessionContext):
+        if not session_context.session:
+            raise ValueError("session required") 
+        self._session_context = session_context
+
+
+    def convert_uuid_to_model_uuid(self,value:uuid): 
+        # Conditionally set the UUID column type
+        if db_dialect == 'postgresql':
+            return value
+        elif db_dialect == 'mssql':
+            return value
+        else:  # This will cover SQLite, MySQL, and other databases
+            return str(value)
+
 
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=false]Start 
@@ -42,8 +56,10 @@ class PlantManager:
 
     async def add(self, plant: Plant) -> Plant:
         logging.info("PlantManager.add") 
-        self.session.add(plant)
-        await self.session.flush()
+        plant.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        plant.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add(plant)
+        await self._session_context.session.flush()
         return plant
 
     def _build_query(self): 
@@ -83,7 +99,7 @@ class PlantManager:
         else:
             query = plant_query_all
  
-        result_proxy = await self.session.execute(query)
+        result_proxy = await self._session_context.session.execute(query)
         
         query_results = result_proxy.all()
 
@@ -113,13 +129,7 @@ class PlantManager:
         logging.info("PlantManager.get_by_id start plant_id:" + str(plant_id))
         if not isinstance(plant_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(plant_id)} instead.")
-         
-
-        # result = await self.session.execute(select(Plant).filter(Plant.plant_id == plant_id))
-
-        # result = await self.session.execute(select(Plant).filter(Plant.plant_id == plant_id))
-        # return result.scalars().first()
-
+          
         query_filter = Plant.plant_id == plant_id
 
         query_results = await self._run_query(query_filter)
@@ -128,8 +138,7 @@ class PlantManager:
 
     async def get_by_code(self, code: uuid.UUID) -> Optional[Plant]:
         logging.info(f"PlantManager.get_by_code {code}") 
-        # result = await self.session.execute(select(Plant).filter_by(code=code))
-        # return result.scalars().one_or_none()
+        
         query_filter = Plant.code==code
 
         query_results = await self._run_query(query_filter)
@@ -139,10 +148,11 @@ class PlantManager:
     
     async def update(self, plant: Plant, **kwargs) -> Optional[Plant]:
         logging.info("PlantManager.update") 
-        if plant:
+        if plant:  
+            plant.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
                 setattr(plant, key, value)
-            await self.session.flush()
+            await self._session_context.session.flush()
         return plant
 
 
@@ -154,15 +164,14 @@ class PlantManager:
         if not plant:
             raise PlantNotFoundError(f"Plant with ID {plant_id} not found!") 
         
-        await self.session.delete(plant)
-        await self.session.flush() 
+        await self._session_context.session.delete(plant)
+        await self._session_context.session.flush() 
 
         
 
     async def get_list(self) -> List[Plant]:
         logging.info("PlantManager.get_list") 
-        # result = await self.session.execute(select(Plant))
-        # return result.scalars().all() 
+        
         query_results = await self._run_query(None)
 
         return query_results
@@ -214,9 +223,14 @@ class PlantManager:
     
     async def add_bulk(self, plants: List[Plant]) -> List[Plant]:
         logging.info("PlantManager.add_bulk") 
-        """Add multiple plants at once.""" 
-        self.session.add_all(plants) 
-        await self.session.flush()
+        """Add multiple plants at once."""  
+        for plant in plants:
+            if plant.plant_id is not None and plant.plant_id > 0:
+                raise ValueError("Plant is already added: " + str(plant.code) + " " + str(plant.plant_id))
+            plant.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            plant.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        self._session_context.session.add_all(plants) 
+        await self._session_context.session.flush()
         return plants
 
     async def update_bulk(self, plant_updates: List[Dict[int, Dict]]) -> List[Plant]:
@@ -234,9 +248,10 @@ class PlantManager:
                 raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")   
             for key, value in update.items():
                 if key != "plant_id":
-                    setattr(plant, key, value)
+                    setattr(plant, key, value)  
+            plant.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             updated_plants.append(plant)
-        await self.session.flush()
+        await self._session_context.session.flush()
         logging.info("PlantManager.update_bulk end") 
         return updated_plants
 
@@ -250,29 +265,29 @@ class PlantManager:
             if not plant:
                 raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")  
             if plant:
-                await self.session.delete(plant)
-        await self.session.flush()
+                await self._session_context.session.delete(plant)
+        await self._session_context.session.flush()
         return True
 
     async def count(self) -> int:
         logging.info("PlantManager.count") 
         """Return the total number of plants."""
-        result = await self.session.execute(select(Plant))
+        result = await self._session_context.session.execute(select(Plant))
         return len(result.scalars().all())
 
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[Plant]:
         """Retrieve plants sorted by a particular attribute."""
         if order == "asc":
-            result = await self.session.execute(select(Plant).order_by(getattr(Plant, sort_by).asc()))
+            result = await self._session_context.session.execute(select(Plant).order_by(getattr(Plant, sort_by).asc()))
         else:
-            result = await self.session.execute(select(Plant).order_by(getattr(Plant, sort_by).desc()))
+            result = await self._session_context.session.execute(select(Plant).order_by(getattr(Plant, sort_by).desc()))
         return result.scalars().all()
 
     async def refresh(self, plant: Plant) -> Plant:
         logging.info("PlantManager.refresh") 
         """Refresh the state of a given plant instance from the database."""
-        await self.session.refresh(plant)
+        await self._session_context.session.refresh(plant)
         return plant
 
     async def exists(self, plant_id: int) -> bool:
@@ -308,8 +323,7 @@ class PlantManager:
         logging.info("PlantManager.get_by_flvr_foreign_key_id") 
         if not isinstance(flvr_foreign_key_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(flvr_foreign_key_id)} instead.")
-        # result = await self.session.execute(select(Plant).filter(Plant.flvr_foreign_key_id == flvr_foreign_key_id))
-        # return result.scalars().all()
+        
         query_filter = Plant.flvr_foreign_key_id == flvr_foreign_key_id
 
         query_results = await self._run_query(query_filter)
@@ -321,8 +335,7 @@ class PlantManager:
         logging.info("PlantManager.get_by_land_id") 
         if not isinstance(land_id, int):
             raise TypeError(f"The plant_id must be an integer, got {type(land_id)} instead.")
-        # result = await self.session.execute(select(Plant).filter(Plant.land_id == land_id))
-        # return result.scalars().all()
+        
         query_filter = Plant.land_id == land_id
 
         query_results = await self._run_query(query_filter)
