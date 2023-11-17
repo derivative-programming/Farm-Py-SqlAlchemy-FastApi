@@ -280,6 +280,14 @@ class PacBusObj(BaseBusObj):
     #lookupEnumName,
     #name,
 
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Pac]):
+        result = list()
+        for pac in obj_list:
+            pac_bus_obj = PacBusObj.get(session_context,pac_obj_instance=pac)
+            result.append(pac_bus_obj)
+        return result
+
     async def build_tri_state_filter(self) -> TriStateFilterBusObj:
         item = TriStateFilterBusObj(self._session_context)
 

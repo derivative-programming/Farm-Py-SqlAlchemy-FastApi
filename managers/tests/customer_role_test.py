@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestCustomerRoleManager:
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return CustomerRoleManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestCustomerRoleManager:
         # Add the customer_role using the manager's add method
         added_customer_role = await customer_role_manager.add(customer_role=test_customer_role)
         assert isinstance(added_customer_role, CustomerRole)
+        assert str(added_customer_role.insert_user_id) == str(customer_role_manager._session_context.customer_code)
+        assert str(added_customer_role.last_update_user_id) == str(customer_role_manager._session_context.customer_code)
         assert added_customer_role.customer_role_id > 0
         # Fetch the customer_role from the database directly
         result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == added_customer_role.customer_role_id))
@@ -75,6 +79,8 @@ class TestCustomerRoleManager:
         # Add the customer_role using the manager's add method
         added_customer_role = await customer_role_manager.add(customer_role=test_customer_role)
         assert isinstance(added_customer_role, CustomerRole)
+        assert str(added_customer_role.insert_user_id) == str(customer_role_manager._session_context.customer_code)
+        assert str(added_customer_role.last_update_user_id) == str(customer_role_manager._session_context.customer_code)
         assert added_customer_role.customer_role_id > 0
         # Assert that the returned customer_role matches the test customer_role
         assert added_customer_role.customer_role_id == test_customer_role.customer_role_id
@@ -110,6 +116,7 @@ class TestCustomerRoleManager:
         test_customer_role.code = generate_uuid()
         updated_customer_role = await customer_role_manager.update(customer_role=test_customer_role)
         assert isinstance(updated_customer_role, CustomerRole)
+        assert str(updated_customer_role.last_update_user_id) == str(customer_role_manager._session_context.customer_code)
         assert updated_customer_role.customer_role_id == test_customer_role.customer_role_id
         assert updated_customer_role.code == test_customer_role.code
         result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == test_customer_role.customer_role_id))
@@ -124,6 +131,7 @@ class TestCustomerRoleManager:
         new_code = generate_uuid()
         updated_customer_role = await customer_role_manager.update(customer_role=test_customer_role,code=new_code)
         assert isinstance(updated_customer_role, CustomerRole)
+        assert str(updated_customer_role.last_update_user_id) == str(customer_role_manager._session_context.customer_code)
         assert updated_customer_role.customer_role_id == test_customer_role.customer_role_id
         assert updated_customer_role.code == new_code
         result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == test_customer_role.customer_role_id))
@@ -140,15 +148,14 @@ class TestCustomerRoleManager:
         updated_customer_role = await customer_role_manager.update(customer_role, code=new_code)
         # Assertions
         assert updated_customer_role is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
-    #     test_customer_role = await CustomerRoleFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of CustomerRole
-    #     with pytest.raises(Exception):
-    #         updated_customer_role = await customer_role_manager.update(customer_role=test_customer_role,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
+        test_customer_role = await CustomerRoleFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of CustomerRole
+        with pytest.raises(ValueError):
+            updated_customer_role = await customer_role_manager.update(customer_role=test_customer_role,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
         customer_role_data = await CustomerRoleFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestCustomerRoleManager:
             result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == updated_customer_role.customer_role_id))
             fetched_customer_role = result.scalars().first()
             assert isinstance(fetched_customer_role, CustomerRole)
+            assert str(fetched_customer_role.insert_user_id) == str(customer_role_manager._session_context.customer_code)
+            assert str(fetched_customer_role.last_update_user_id) == str(customer_role_manager._session_context.customer_code)
             assert fetched_customer_role.customer_role_id == updated_customer_role.customer_role_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, customer_role_manager:CustomerRoleManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestCustomerRoleManager:
         logging.info(customer_roles[1].__dict__)
         assert updated_customer_roles[0].code == code_updated1
         assert updated_customer_roles[1].code == code_updated2
+        assert str(updated_customer_roles[0].last_update_user_id) == str(customer_role_manager._session_context.customer_code)
+        assert str(updated_customer_roles[1].last_update_user_id) == str(customer_role_manager._session_context.customer_code)
         result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == 1))
         fetched_customer_role = result.scalars().first()
         assert isinstance(fetched_customer_role, CustomerRole)

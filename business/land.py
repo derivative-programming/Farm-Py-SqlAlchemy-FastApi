@@ -297,6 +297,16 @@ class LandBusObj(BaseBusObj):
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
+    async def get_parent_obj(self) -> models.Pac:
+        return self.get_pac_id_rel_obj()
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Land]):
+        result = list()
+        for land in obj_list:
+            land_bus_obj = LandBusObj.get(session_context,land_obj_instance=land)
+            result.append(land_bus_obj)
+        return result
 
     async def build_plant(self) -> PlantBusObj:
         item = PlantBusObj(self._session_context)

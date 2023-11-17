@@ -92,6 +92,21 @@ class ErrorLog(Base):
 
         self.pac_code_peek = kwargs.get('pac_code_peek', generate_uuid())# PacID
 
+    @staticmethod
+    def property_list():
+        result = [
+            "browser_code",
+            "context_code",
+            "created_utc_date_time",
+            "description",
+            "is_client_side_error",
+            "is_resolved",
+            "pac_id",
+            "url",
+
+            "code"
+            ]
+        return result
 # Define the index separately from the column
 # Index('index_code', ErrorLog.code)
 # Index('farm_error_log_index_pac_id', ErrorLog.pac_id) #PacID

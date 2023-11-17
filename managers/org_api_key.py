@@ -110,9 +110,12 @@ class OrgApiKeyManager:
         return self._first_or_none(query_results)
     async def update(self, org_api_key: OrgApiKey, **kwargs) -> Optional[OrgApiKey]:
         logging.info("OrgApiKeyManager.update")
+        property_list = OrgApiKey.property_list()
         if org_api_key:
             org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
+                if key not in property_list:
+                    raise ValueError(f"Invalid property: {key}")
                 setattr(org_api_key, key, value)
             await self._session_context.session.flush()
         return org_api_key

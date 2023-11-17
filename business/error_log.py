@@ -317,5 +317,15 @@ class ErrorLogBusObj(BaseBusObj):
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
+    async def get_parent_obj(self) -> models.Pac:
+        return self.get_pac_id_rel_obj()
     #url,
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[ErrorLog]):
+        result = list()
+        for error_log in obj_list:
+            error_log_bus_obj = ErrorLogBusObj.get(session_context,error_log_obj_instance=error_log)
+            result.append(error_log_bus_obj)
+        return result
 

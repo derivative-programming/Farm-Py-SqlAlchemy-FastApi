@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestDateGreaterThanFilterManager:
     @pytest_asyncio.fixture(scope="function")
     async def date_greater_than_filter_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return DateGreaterThanFilterManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestDateGreaterThanFilterManager:
         # Add the date_greater_than_filter using the manager's add method
         added_date_greater_than_filter = await date_greater_than_filter_manager.add(date_greater_than_filter=test_date_greater_than_filter)
         assert isinstance(added_date_greater_than_filter, DateGreaterThanFilter)
+        assert str(added_date_greater_than_filter.insert_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
+        assert str(added_date_greater_than_filter.last_update_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
         assert added_date_greater_than_filter.date_greater_than_filter_id > 0
         # Fetch the date_greater_than_filter from the database directly
         result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == added_date_greater_than_filter.date_greater_than_filter_id))
@@ -75,6 +79,8 @@ class TestDateGreaterThanFilterManager:
         # Add the date_greater_than_filter using the manager's add method
         added_date_greater_than_filter = await date_greater_than_filter_manager.add(date_greater_than_filter=test_date_greater_than_filter)
         assert isinstance(added_date_greater_than_filter, DateGreaterThanFilter)
+        assert str(added_date_greater_than_filter.insert_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
+        assert str(added_date_greater_than_filter.last_update_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
         assert added_date_greater_than_filter.date_greater_than_filter_id > 0
         # Assert that the returned date_greater_than_filter matches the test date_greater_than_filter
         assert added_date_greater_than_filter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id
@@ -110,6 +116,7 @@ class TestDateGreaterThanFilterManager:
         test_date_greater_than_filter.code = generate_uuid()
         updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter=test_date_greater_than_filter)
         assert isinstance(updated_date_greater_than_filter, DateGreaterThanFilter)
+        assert str(updated_date_greater_than_filter.last_update_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
         assert updated_date_greater_than_filter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id
         assert updated_date_greater_than_filter.code == test_date_greater_than_filter.code
         result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id))
@@ -124,6 +131,7 @@ class TestDateGreaterThanFilterManager:
         new_code = generate_uuid()
         updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter=test_date_greater_than_filter,code=new_code)
         assert isinstance(updated_date_greater_than_filter, DateGreaterThanFilter)
+        assert str(updated_date_greater_than_filter.last_update_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
         assert updated_date_greater_than_filter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id
         assert updated_date_greater_than_filter.code == new_code
         result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id))
@@ -140,15 +148,14 @@ class TestDateGreaterThanFilterManager:
         updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter, code=new_code)
         # Assertions
         assert updated_date_greater_than_filter is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
-    #     test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of DateGreaterThanFilter
-    #     with pytest.raises(Exception):
-    #         updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter=test_date_greater_than_filter,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
+        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of DateGreaterThanFilter
+        with pytest.raises(ValueError):
+            updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter=test_date_greater_than_filter,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
         date_greater_than_filter_data = await DateGreaterThanFilterFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestDateGreaterThanFilterManager:
             result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == updated_date_greater_than_filter.date_greater_than_filter_id))
             fetched_date_greater_than_filter = result.scalars().first()
             assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+            assert str(fetched_date_greater_than_filter.insert_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
+            assert str(fetched_date_greater_than_filter.last_update_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
             assert fetched_date_greater_than_filter.date_greater_than_filter_id == updated_date_greater_than_filter.date_greater_than_filter_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, date_greater_than_filter_manager:DateGreaterThanFilterManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestDateGreaterThanFilterManager:
         logging.info(date_greater_than_filters[1].__dict__)
         assert updated_date_greater_than_filters[0].code == code_updated1
         assert updated_date_greater_than_filters[1].code == code_updated2
+        assert str(updated_date_greater_than_filters[0].last_update_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
+        assert str(updated_date_greater_than_filters[1].last_update_user_id) == str(date_greater_than_filter_manager._session_context.customer_code)
         result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == 1))
         fetched_date_greater_than_filter = result.scalars().first()
         assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)

@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestErrorLogManager:
     @pytest_asyncio.fixture(scope="function")
     async def error_log_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return ErrorLogManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, error_log_manager:ErrorLogManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestErrorLogManager:
         # Add the error_log using the manager's add method
         added_error_log = await error_log_manager.add(error_log=test_error_log)
         assert isinstance(added_error_log, ErrorLog)
+        assert str(added_error_log.insert_user_id) == str(error_log_manager._session_context.customer_code)
+        assert str(added_error_log.last_update_user_id) == str(error_log_manager._session_context.customer_code)
         assert added_error_log.error_log_id > 0
         # Fetch the error_log from the database directly
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == added_error_log.error_log_id))
@@ -75,6 +79,8 @@ class TestErrorLogManager:
         # Add the error_log using the manager's add method
         added_error_log = await error_log_manager.add(error_log=test_error_log)
         assert isinstance(added_error_log, ErrorLog)
+        assert str(added_error_log.insert_user_id) == str(error_log_manager._session_context.customer_code)
+        assert str(added_error_log.last_update_user_id) == str(error_log_manager._session_context.customer_code)
         assert added_error_log.error_log_id > 0
         # Assert that the returned error_log matches the test error_log
         assert added_error_log.error_log_id == test_error_log.error_log_id
@@ -110,6 +116,7 @@ class TestErrorLogManager:
         test_error_log.code = generate_uuid()
         updated_error_log = await error_log_manager.update(error_log=test_error_log)
         assert isinstance(updated_error_log, ErrorLog)
+        assert str(updated_error_log.last_update_user_id) == str(error_log_manager._session_context.customer_code)
         assert updated_error_log.error_log_id == test_error_log.error_log_id
         assert updated_error_log.code == test_error_log.code
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == test_error_log.error_log_id))
@@ -124,6 +131,7 @@ class TestErrorLogManager:
         new_code = generate_uuid()
         updated_error_log = await error_log_manager.update(error_log=test_error_log,code=new_code)
         assert isinstance(updated_error_log, ErrorLog)
+        assert str(updated_error_log.last_update_user_id) == str(error_log_manager._session_context.customer_code)
         assert updated_error_log.error_log_id == test_error_log.error_log_id
         assert updated_error_log.code == new_code
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == test_error_log.error_log_id))
@@ -140,15 +148,14 @@ class TestErrorLogManager:
         updated_error_log = await error_log_manager.update(error_log, code=new_code)
         # Assertions
         assert updated_error_log is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, error_log_manager:ErrorLogManager, session:AsyncSession):
-    #     test_error_log = await ErrorLogFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of ErrorLog
-    #     with pytest.raises(Exception):
-    #         updated_error_log = await error_log_manager.update(error_log=test_error_log,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+        test_error_log = await ErrorLogFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of ErrorLog
+        with pytest.raises(ValueError):
+            updated_error_log = await error_log_manager.update(error_log=test_error_log,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, error_log_manager:ErrorLogManager, session:AsyncSession):
         error_log_data = await ErrorLogFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestErrorLogManager:
             result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == updated_error_log.error_log_id))
             fetched_error_log = result.scalars().first()
             assert isinstance(fetched_error_log, ErrorLog)
+            assert str(fetched_error_log.insert_user_id) == str(error_log_manager._session_context.customer_code)
+            assert str(fetched_error_log.last_update_user_id) == str(error_log_manager._session_context.customer_code)
             assert fetched_error_log.error_log_id == updated_error_log.error_log_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, error_log_manager:ErrorLogManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestErrorLogManager:
         logging.info(error_logs[1].__dict__)
         assert updated_error_logs[0].code == code_updated1
         assert updated_error_logs[1].code == code_updated2
+        assert str(updated_error_logs[0].last_update_user_id) == str(error_log_manager._session_context.customer_code)
+        assert str(updated_error_logs[1].last_update_user_id) == str(error_log_manager._session_context.customer_code)
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == 1))
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)

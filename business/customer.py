@@ -548,8 +548,18 @@ class CustomerBusObj(BaseBusObj):
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.tac_code_peek
+    async def get_parent_obj(self) -> models.Tac:
+        return self.get_tac_id_rel_obj()
     #uTCOffsetInMinutes,
     #zip,
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Customer]):
+        result = list()
+        for customer in obj_list:
+            customer_bus_obj = CustomerBusObj.get(session_context,customer_obj_instance=customer)
+            result.append(customer_bus_obj)
+        return result
 
     async def build_customer_role(self) -> CustomerRoleBusObj:
         item = CustomerRoleBusObj(self._session_context)

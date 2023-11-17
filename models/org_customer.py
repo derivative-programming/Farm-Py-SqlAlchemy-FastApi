@@ -64,6 +64,16 @@ class OrgCustomer(Base):
         self.customer_code_peek = kwargs.get('customer_code_peek', generate_uuid()) # CustomerID
         self.organization_code_peek = kwargs.get('organization_code_peek', generate_uuid())# OrganizationID
 
+    @staticmethod
+    def property_list():
+        result = [
+            "customer_id",
+            "email",
+            "organization_id",
+
+            "code"
+            ]
+        return result
 # Define the index separately from the column
 # Index('index_code', OrgCustomer.code)
 # Index('farm_org_customer_index_customer_id', OrgCustomer.customer_id) #CustomerID

@@ -102,9 +102,12 @@ class OrganizationManager:
         return self._first_or_none(query_results)
     async def update(self, organization: Organization, **kwargs) -> Optional[Organization]:
         logging.info("OrganizationManager.update")
+        property_list = Organization.property_list()
         if organization:
             organization.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
+                if key not in property_list:
+                    raise ValueError(f"Invalid property: {key}")
                 setattr(organization, key, value)
             await self._session_context.session.flush()
         return organization

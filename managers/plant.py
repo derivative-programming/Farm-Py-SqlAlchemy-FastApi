@@ -148,9 +148,12 @@ class PlantManager:
     
     async def update(self, plant: Plant, **kwargs) -> Optional[Plant]:
         logging.info("PlantManager.update") 
+        property_list = Plant.property_list()
         if plant:  
             plant.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
+                if key not in property_list:
+                    raise ValueError(f"Invalid property: {key}")
                 setattr(plant, key, value)
             await self._session_context.session.flush()
         return plant

@@ -295,4 +295,14 @@ class RoleBusObj(BaseBusObj):
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
+    async def get_parent_obj(self) -> models.Pac:
+        return self.get_pac_id_rel_obj()
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Role]):
+        result = list()
+        for role in obj_list:
+            role_bus_obj = RoleBusObj.get(session_context,role_obj_instance=role)
+            result.append(role_bus_obj)
+        return result
 

@@ -138,9 +138,12 @@ class TacManager:
         return self._first_or_none(query_results)
     async def update(self, tac: Tac, **kwargs) -> Optional[Tac]:
         logging.info("TacManager.update")
+        property_list = Tac.property_list()
         if tac:
             tac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
+                if key not in property_list:
+                    raise ValueError(f"Invalid property: {key}")
                 setattr(tac, key, value)
             await self._session_context.session.flush()
         return tac

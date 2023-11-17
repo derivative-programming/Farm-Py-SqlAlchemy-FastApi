@@ -72,6 +72,18 @@ class Pac(Base):
         self.insert_utc_date_time = kwargs.get('insert_utc_date_time', datetime(1753, 1, 1))
         self.last_update_utc_date_time = kwargs.get('last_update_utc_date_time', datetime(1753, 1, 1))
 
+    @staticmethod
+    def property_list():
+        result = [
+            "description",
+            "display_order",
+            "is_active",
+            "lookup_enum_name",
+            "name",
+
+            "code"
+            ]
+        return result
 # Define the index separately from the column
 # Index('index_code', Pac.code)
 

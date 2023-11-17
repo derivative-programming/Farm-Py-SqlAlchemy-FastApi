@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio  
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -33,6 +34,7 @@ class TestPlantManager:
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return PlantManager(session_context)
      
     @pytest.mark.asyncio
@@ -78,6 +80,9 @@ class TestPlantManager:
 
         assert isinstance(added_plant, Plant)
 
+        assert str(added_plant.insert_user_id) == str(plant_manager._session_context.customer_code)
+        assert str(added_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+
         assert added_plant.plant_id > 0
 
         # Fetch the plant from the database directly
@@ -102,6 +107,9 @@ class TestPlantManager:
         added_plant = await plant_manager.add(plant=test_plant)
 
         assert isinstance(added_plant, Plant)
+        
+        assert str(added_plant.insert_user_id) == str(plant_manager._session_context.customer_code)
+        assert str(added_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
 
         assert added_plant.plant_id > 0
 
@@ -160,6 +168,8 @@ class TestPlantManager:
 
         assert isinstance(updated_plant, Plant)
 
+        assert str(updated_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+
         assert updated_plant.plant_id == test_plant.plant_id
         assert updated_plant.code == test_plant.code
          
@@ -177,11 +187,14 @@ class TestPlantManager:
     async def test_update_via_dict(self, plant_manager:PlantManager, session:AsyncSession):
         test_plant = await PlantFactory.create_async(session)
 
-        new_code = generate_uuid() 
-         
+        new_code = generate_uuid()  
+
         updated_plant = await plant_manager.update(plant=test_plant,code=new_code)
 
         assert isinstance(updated_plant, Plant)
+         
+        assert str(updated_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+
 
         assert updated_plant.plant_id == test_plant.plant_id
         assert updated_plant.code == new_code
@@ -207,20 +220,19 @@ class TestPlantManager:
 
         # Assertions
         assert updated_plant is None 
+ 
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, plant_manager:PlantManager, session:AsyncSession):
+        test_plant = await PlantFactory.create_async(session)
 
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, plant_manager:PlantManager, session:AsyncSession):
-    #     test_plant = await PlantFactory.create_async(session)
-
-    #     new_code = generate_uuid() 
+        new_code = generate_uuid() 
          
          
-    #     # This should raise an AttributeError since 'color' is not an attribute of Plant
-    #     with pytest.raises(Exception):
-    #         updated_plant = await plant_manager.update(plant=test_plant,xxx=new_code) 
+        # This should raise an AttributeError since 'color' is not an attribute of Plant
+        with pytest.raises(ValueError):
+            updated_plant = await plant_manager.update(plant=test_plant,xxx=new_code) 
 
-    #     await session.rollback()
+        await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete(self, plant_manager:PlantManager, session:AsyncSession):
@@ -327,6 +339,9 @@ class TestPlantManager:
 
             assert isinstance(fetched_plant, Plant) 
 
+            assert str(fetched_plant.insert_user_id) == str(plant_manager._session_context.customer_code)
+            assert str(fetched_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+
             assert fetched_plant.plant_id == updated_plant.plant_id
  
 
@@ -360,7 +375,11 @@ class TestPlantManager:
 
         assert updated_plants[0].code == code_updated1
         assert updated_plants[1].code == code_updated2
-        
+         
+        assert str(updated_plants[0].last_update_user_id) == str(plant_manager._session_context.customer_code)
+
+        assert str(updated_plants[1].last_update_user_id) == str(plant_manager._session_context.customer_code)
+
 
         result = await session.execute(select(Plant).filter(Plant.plant_id == 1))
         fetched_plant = result.scalars().first()

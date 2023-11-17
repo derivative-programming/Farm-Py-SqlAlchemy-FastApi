@@ -267,7 +267,17 @@ class CustomerRoleBusObj(BaseBusObj):
         return 'Customer'
     async def get_parent_code(self) -> uuid.UUID:
         return self.customer_code_peek
+    async def get_parent_obj(self) -> models.Customer:
+        return self.get_customer_id_rel_obj()
     #isPlaceholder,
     #placeholder,
     #RoleID
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[CustomerRole]):
+        result = list()
+        for customer_role in obj_list:
+            customer_role_bus_obj = CustomerRoleBusObj.get(session_context,customer_role_obj_instance=customer_role)
+            result.append(customer_role_bus_obj)
+        return result
 

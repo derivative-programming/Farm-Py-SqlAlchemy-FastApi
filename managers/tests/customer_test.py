@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestCustomerManager:
     @pytest_asyncio.fixture(scope="function")
     async def customer_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return CustomerManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, customer_manager:CustomerManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestCustomerManager:
         # Add the customer using the manager's add method
         added_customer = await customer_manager.add(customer=test_customer)
         assert isinstance(added_customer, Customer)
+        assert str(added_customer.insert_user_id) == str(customer_manager._session_context.customer_code)
+        assert str(added_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
         assert added_customer.customer_id > 0
         # Fetch the customer from the database directly
         result = await session.execute(select(Customer).filter(Customer.customer_id == added_customer.customer_id))
@@ -75,6 +79,8 @@ class TestCustomerManager:
         # Add the customer using the manager's add method
         added_customer = await customer_manager.add(customer=test_customer)
         assert isinstance(added_customer, Customer)
+        assert str(added_customer.insert_user_id) == str(customer_manager._session_context.customer_code)
+        assert str(added_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
         assert added_customer.customer_id > 0
         # Assert that the returned customer matches the test customer
         assert added_customer.customer_id == test_customer.customer_id
@@ -110,6 +116,7 @@ class TestCustomerManager:
         test_customer.code = generate_uuid()
         updated_customer = await customer_manager.update(customer=test_customer)
         assert isinstance(updated_customer, Customer)
+        assert str(updated_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
         assert updated_customer.customer_id == test_customer.customer_id
         assert updated_customer.code == test_customer.code
         result = await session.execute(select(Customer).filter(Customer.customer_id == test_customer.customer_id))
@@ -124,6 +131,7 @@ class TestCustomerManager:
         new_code = generate_uuid()
         updated_customer = await customer_manager.update(customer=test_customer,code=new_code)
         assert isinstance(updated_customer, Customer)
+        assert str(updated_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
         assert updated_customer.customer_id == test_customer.customer_id
         assert updated_customer.code == new_code
         result = await session.execute(select(Customer).filter(Customer.customer_id == test_customer.customer_id))
@@ -140,15 +148,14 @@ class TestCustomerManager:
         updated_customer = await customer_manager.update(customer, code=new_code)
         # Assertions
         assert updated_customer is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, customer_manager:CustomerManager, session:AsyncSession):
-    #     test_customer = await CustomerFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of Customer
-    #     with pytest.raises(Exception):
-    #         updated_customer = await customer_manager.update(customer=test_customer,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, customer_manager:CustomerManager, session:AsyncSession):
+        test_customer = await CustomerFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of Customer
+        with pytest.raises(ValueError):
+            updated_customer = await customer_manager.update(customer=test_customer,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, customer_manager:CustomerManager, session:AsyncSession):
         customer_data = await CustomerFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestCustomerManager:
             result = await session.execute(select(Customer).filter(Customer.customer_id == updated_customer.customer_id))
             fetched_customer = result.scalars().first()
             assert isinstance(fetched_customer, Customer)
+            assert str(fetched_customer.insert_user_id) == str(customer_manager._session_context.customer_code)
+            assert str(fetched_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
             assert fetched_customer.customer_id == updated_customer.customer_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, customer_manager:CustomerManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestCustomerManager:
         logging.info(customers[1].__dict__)
         assert updated_customers[0].code == code_updated1
         assert updated_customers[1].code == code_updated2
+        assert str(updated_customers[0].last_update_user_id) == str(customer_manager._session_context.customer_code)
+        assert str(updated_customers[1].last_update_user_id) == str(customer_manager._session_context.customer_code)
         result = await session.execute(select(Customer).filter(Customer.customer_id == 1))
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)

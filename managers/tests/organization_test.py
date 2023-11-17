@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestOrganizationManager:
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return OrganizationManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, organization_manager:OrganizationManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestOrganizationManager:
         # Add the organization using the manager's add method
         added_organization = await organization_manager.add(organization=test_organization)
         assert isinstance(added_organization, Organization)
+        assert str(added_organization.insert_user_id) == str(organization_manager._session_context.customer_code)
+        assert str(added_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
         assert added_organization.organization_id > 0
         # Fetch the organization from the database directly
         result = await session.execute(select(Organization).filter(Organization.organization_id == added_organization.organization_id))
@@ -75,6 +79,8 @@ class TestOrganizationManager:
         # Add the organization using the manager's add method
         added_organization = await organization_manager.add(organization=test_organization)
         assert isinstance(added_organization, Organization)
+        assert str(added_organization.insert_user_id) == str(organization_manager._session_context.customer_code)
+        assert str(added_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
         assert added_organization.organization_id > 0
         # Assert that the returned organization matches the test organization
         assert added_organization.organization_id == test_organization.organization_id
@@ -110,6 +116,7 @@ class TestOrganizationManager:
         test_organization.code = generate_uuid()
         updated_organization = await organization_manager.update(organization=test_organization)
         assert isinstance(updated_organization, Organization)
+        assert str(updated_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
         assert updated_organization.organization_id == test_organization.organization_id
         assert updated_organization.code == test_organization.code
         result = await session.execute(select(Organization).filter(Organization.organization_id == test_organization.organization_id))
@@ -124,6 +131,7 @@ class TestOrganizationManager:
         new_code = generate_uuid()
         updated_organization = await organization_manager.update(organization=test_organization,code=new_code)
         assert isinstance(updated_organization, Organization)
+        assert str(updated_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
         assert updated_organization.organization_id == test_organization.organization_id
         assert updated_organization.code == new_code
         result = await session.execute(select(Organization).filter(Organization.organization_id == test_organization.organization_id))
@@ -140,15 +148,14 @@ class TestOrganizationManager:
         updated_organization = await organization_manager.update(organization, code=new_code)
         # Assertions
         assert updated_organization is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, organization_manager:OrganizationManager, session:AsyncSession):
-    #     test_organization = await OrganizationFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of Organization
-    #     with pytest.raises(Exception):
-    #         updated_organization = await organization_manager.update(organization=test_organization,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, organization_manager:OrganizationManager, session:AsyncSession):
+        test_organization = await OrganizationFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of Organization
+        with pytest.raises(ValueError):
+            updated_organization = await organization_manager.update(organization=test_organization,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, organization_manager:OrganizationManager, session:AsyncSession):
         organization_data = await OrganizationFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestOrganizationManager:
             result = await session.execute(select(Organization).filter(Organization.organization_id == updated_organization.organization_id))
             fetched_organization = result.scalars().first()
             assert isinstance(fetched_organization, Organization)
+            assert str(fetched_organization.insert_user_id) == str(organization_manager._session_context.customer_code)
+            assert str(fetched_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
             assert fetched_organization.organization_id == updated_organization.organization_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, organization_manager:OrganizationManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestOrganizationManager:
         logging.info(organizations[1].__dict__)
         assert updated_organizations[0].code == code_updated1
         assert updated_organizations[1].code == code_updated2
+        assert str(updated_organizations[0].last_update_user_id) == str(organization_manager._session_context.customer_code)
+        assert str(updated_organizations[1].last_update_user_id) == str(organization_manager._session_context.customer_code)
         result = await session.execute(select(Organization).filter(Organization.organization_id == 1))
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)

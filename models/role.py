@@ -80,6 +80,19 @@ class Role(Base):
 
         self.pac_code_peek = kwargs.get('pac_code_peek', generate_uuid())# PacID
 
+    @staticmethod
+    def property_list():
+        result = [
+            "description",
+            "display_order",
+            "is_active",
+            "lookup_enum_name",
+            "name",
+            "pac_id",
+
+            "code"
+            ]
+        return result
 # Define the index separately from the column
 # Index('index_code', Role.code)
 # Index('farm_role_index_pac_id', Role.pac_id) #PacID

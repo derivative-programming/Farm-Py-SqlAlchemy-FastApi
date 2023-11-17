@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestPacManager:
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return PacManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, pac_manager:PacManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestPacManager:
         # Add the pac using the manager's add method
         added_pac = await pac_manager.add(pac=test_pac)
         assert isinstance(added_pac, Pac)
+        assert str(added_pac.insert_user_id) == str(pac_manager._session_context.customer_code)
+        assert str(added_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
         assert added_pac.pac_id > 0
         # Fetch the pac from the database directly
         result = await session.execute(select(Pac).filter(Pac.pac_id == added_pac.pac_id))
@@ -75,6 +79,8 @@ class TestPacManager:
         # Add the pac using the manager's add method
         added_pac = await pac_manager.add(pac=test_pac)
         assert isinstance(added_pac, Pac)
+        assert str(added_pac.insert_user_id) == str(pac_manager._session_context.customer_code)
+        assert str(added_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
         assert added_pac.pac_id > 0
         # Assert that the returned pac matches the test pac
         assert added_pac.pac_id == test_pac.pac_id
@@ -110,6 +116,7 @@ class TestPacManager:
         test_pac.code = generate_uuid()
         updated_pac = await pac_manager.update(pac=test_pac)
         assert isinstance(updated_pac, Pac)
+        assert str(updated_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
         assert updated_pac.pac_id == test_pac.pac_id
         assert updated_pac.code == test_pac.code
         result = await session.execute(select(Pac).filter(Pac.pac_id == test_pac.pac_id))
@@ -124,6 +131,7 @@ class TestPacManager:
         new_code = generate_uuid()
         updated_pac = await pac_manager.update(pac=test_pac,code=new_code)
         assert isinstance(updated_pac, Pac)
+        assert str(updated_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
         assert updated_pac.pac_id == test_pac.pac_id
         assert updated_pac.code == new_code
         result = await session.execute(select(Pac).filter(Pac.pac_id == test_pac.pac_id))
@@ -140,15 +148,14 @@ class TestPacManager:
         updated_pac = await pac_manager.update(pac, code=new_code)
         # Assertions
         assert updated_pac is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, pac_manager:PacManager, session:AsyncSession):
-    #     test_pac = await PacFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of Pac
-    #     with pytest.raises(Exception):
-    #         updated_pac = await pac_manager.update(pac=test_pac,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, pac_manager:PacManager, session:AsyncSession):
+        test_pac = await PacFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of Pac
+        with pytest.raises(ValueError):
+            updated_pac = await pac_manager.update(pac=test_pac,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, pac_manager:PacManager, session:AsyncSession):
         pac_data = await PacFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestPacManager:
             result = await session.execute(select(Pac).filter(Pac.pac_id == updated_pac.pac_id))
             fetched_pac = result.scalars().first()
             assert isinstance(fetched_pac, Pac)
+            assert str(fetched_pac.insert_user_id) == str(pac_manager._session_context.customer_code)
+            assert str(fetched_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
             assert fetched_pac.pac_id == updated_pac.pac_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, pac_manager:PacManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestPacManager:
         logging.info(pacs[1].__dict__)
         assert updated_pacs[0].code == code_updated1
         assert updated_pacs[1].code == code_updated2
+        assert str(updated_pacs[0].last_update_user_id) == str(pac_manager._session_context.customer_code)
+        assert str(updated_pacs[1].last_update_user_id) == str(pac_manager._session_context.customer_code)
         result = await session.execute(select(Pac).filter(Pac.pac_id == 1))
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)

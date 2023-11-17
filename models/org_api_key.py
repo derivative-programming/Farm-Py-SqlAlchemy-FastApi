@@ -100,6 +100,22 @@ class OrgApiKey(Base):
         self.organization_code_peek = kwargs.get('organization_code_peek', generate_uuid())# OrganizationID
         self.org_customer_code_peek = kwargs.get('org_customer_code_peek', generate_uuid()) # OrgCustomerID
 
+    @staticmethod
+    def property_list():
+        result = [
+            "api_key_value",
+            "created_by",
+            "created_utc_date_time",
+            "expiration_utc_date_time",
+            "is_active",
+            "is_temp_user_key",
+            "name",
+            "organization_id",
+            "org_customer_id",
+
+            "code"
+            ]
+        return result
 # Define the index separately from the column
 # Index('index_code', OrgApiKey.code)
 # Index('farm_org_api_key_index_organization_id', OrgApiKey.organization_id) #OrganizationID

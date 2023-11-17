@@ -344,5 +344,15 @@ class OrgApiKeyBusObj(BaseBusObj):
         return 'Organization'
     async def get_parent_code(self) -> uuid.UUID:
         return self.organization_code_peek
+    async def get_parent_obj(self) -> models.Organization:
+        return self.get_organization_id_rel_obj()
     #OrgCustomerID
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[OrgApiKey]):
+        result = list()
+        for org_api_key in obj_list:
+            org_api_key_bus_obj = OrgApiKeyBusObj.get(session_context,org_api_key_obj_instance=org_api_key)
+            result.append(org_api_key_bus_obj)
+        return result
 

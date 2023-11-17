@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestTacManager:
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return TacManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, tac_manager:TacManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestTacManager:
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
         assert isinstance(added_tac, Tac)
+        assert str(added_tac.insert_user_id) == str(tac_manager._session_context.customer_code)
+        assert str(added_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
         assert added_tac.tac_id > 0
         # Fetch the tac from the database directly
         result = await session.execute(select(Tac).filter(Tac.tac_id == added_tac.tac_id))
@@ -75,6 +79,8 @@ class TestTacManager:
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
         assert isinstance(added_tac, Tac)
+        assert str(added_tac.insert_user_id) == str(tac_manager._session_context.customer_code)
+        assert str(added_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
         assert added_tac.tac_id > 0
         # Assert that the returned tac matches the test tac
         assert added_tac.tac_id == test_tac.tac_id
@@ -110,6 +116,7 @@ class TestTacManager:
         test_tac.code = generate_uuid()
         updated_tac = await tac_manager.update(tac=test_tac)
         assert isinstance(updated_tac, Tac)
+        assert str(updated_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
         assert updated_tac.tac_id == test_tac.tac_id
         assert updated_tac.code == test_tac.code
         result = await session.execute(select(Tac).filter(Tac.tac_id == test_tac.tac_id))
@@ -124,6 +131,7 @@ class TestTacManager:
         new_code = generate_uuid()
         updated_tac = await tac_manager.update(tac=test_tac,code=new_code)
         assert isinstance(updated_tac, Tac)
+        assert str(updated_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
         assert updated_tac.tac_id == test_tac.tac_id
         assert updated_tac.code == new_code
         result = await session.execute(select(Tac).filter(Tac.tac_id == test_tac.tac_id))
@@ -140,15 +148,14 @@ class TestTacManager:
         updated_tac = await tac_manager.update(tac, code=new_code)
         # Assertions
         assert updated_tac is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, tac_manager:TacManager, session:AsyncSession):
-    #     test_tac = await TacFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of Tac
-    #     with pytest.raises(Exception):
-    #         updated_tac = await tac_manager.update(tac=test_tac,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, tac_manager:TacManager, session:AsyncSession):
+        test_tac = await TacFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of Tac
+        with pytest.raises(ValueError):
+            updated_tac = await tac_manager.update(tac=test_tac,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, tac_manager:TacManager, session:AsyncSession):
         tac_data = await TacFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestTacManager:
             result = await session.execute(select(Tac).filter(Tac.tac_id == updated_tac.tac_id))
             fetched_tac = result.scalars().first()
             assert isinstance(fetched_tac, Tac)
+            assert str(fetched_tac.insert_user_id) == str(tac_manager._session_context.customer_code)
+            assert str(fetched_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
             assert fetched_tac.tac_id == updated_tac.tac_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, tac_manager:TacManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestTacManager:
         logging.info(tacs[1].__dict__)
         assert updated_tacs[0].code == code_updated1
         assert updated_tacs[1].code == code_updated2
+        assert str(updated_tacs[0].last_update_user_id) == str(tac_manager._session_context.customer_code)
+        assert str(updated_tacs[1].last_update_user_id) == str(tac_manager._session_context.customer_code)
         result = await session.execute(select(Tac).filter(Tac.tac_id == 1))
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)

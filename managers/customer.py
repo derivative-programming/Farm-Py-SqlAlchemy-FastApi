@@ -102,9 +102,12 @@ class CustomerManager:
         return self._first_or_none(query_results)
     async def update(self, customer: Customer, **kwargs) -> Optional[Customer]:
         logging.info("CustomerManager.update")
+        property_list = Customer.property_list()
         if customer:
             customer.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
+                if key not in property_list:
+                    raise ValueError(f"Invalid property: {key}")
                 setattr(customer, key, value)
             await self._session_context.session.flush()
         return customer

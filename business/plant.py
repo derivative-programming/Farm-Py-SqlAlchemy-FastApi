@@ -622,11 +622,25 @@ class PlantBusObj(BaseBusObj):
         return 'Land'
     async def get_parent_code(self) -> uuid.UUID: 
         return self.land_code_peek
+    async def get_parent_obj(self) -> models.Land: 
+        return self.get_land_id_rel_obj()
     #somePhoneNumber,
     #someTextVal,
     #someUniqueidentifierVal, 
     #someVarCharVal,
 #endset
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Plant]):
+
+        result = list()
+
+        for plant in obj_list:
+            plant_bus_obj = PlantBusObj.get(session_context,plant_obj_instance=plant)
+            result.append(plant_bus_obj)
+
+        return result
+
           
     ##GENINCLUDEFILE[GENVALPascalName.bottom.include.*]
      

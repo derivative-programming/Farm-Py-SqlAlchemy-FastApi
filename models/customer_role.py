@@ -70,6 +70,17 @@ class CustomerRole(Base):
         self.customer_code_peek = kwargs.get('customer_code_peek', generate_uuid())# CustomerID
         self.role_code_peek = kwargs.get('role_code_peek', generate_uuid()) # RoleID
 
+    @staticmethod
+    def property_list():
+        result = [
+            "customer_id",
+            "is_placeholder",
+            "placeholder",
+            "role_id",
+
+            "code"
+            ]
+        return result
 # Define the index separately from the column
 # Index('index_code', CustomerRole.code)
 # Index('farm_customer_role_index_customer_id', CustomerRole.customer_id) #CustomerID

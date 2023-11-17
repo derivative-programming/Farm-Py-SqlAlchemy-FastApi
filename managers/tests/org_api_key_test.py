@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestOrgApiKeyManager:
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return OrgApiKeyManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestOrgApiKeyManager:
         # Add the org_api_key using the manager's add method
         added_org_api_key = await org_api_key_manager.add(org_api_key=test_org_api_key)
         assert isinstance(added_org_api_key, OrgApiKey)
+        assert str(added_org_api_key.insert_user_id) == str(org_api_key_manager._session_context.customer_code)
+        assert str(added_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
         assert added_org_api_key.org_api_key_id > 0
         # Fetch the org_api_key from the database directly
         result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == added_org_api_key.org_api_key_id))
@@ -75,6 +79,8 @@ class TestOrgApiKeyManager:
         # Add the org_api_key using the manager's add method
         added_org_api_key = await org_api_key_manager.add(org_api_key=test_org_api_key)
         assert isinstance(added_org_api_key, OrgApiKey)
+        assert str(added_org_api_key.insert_user_id) == str(org_api_key_manager._session_context.customer_code)
+        assert str(added_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
         assert added_org_api_key.org_api_key_id > 0
         # Assert that the returned org_api_key matches the test org_api_key
         assert added_org_api_key.org_api_key_id == test_org_api_key.org_api_key_id
@@ -110,6 +116,7 @@ class TestOrgApiKeyManager:
         test_org_api_key.code = generate_uuid()
         updated_org_api_key = await org_api_key_manager.update(org_api_key=test_org_api_key)
         assert isinstance(updated_org_api_key, OrgApiKey)
+        assert str(updated_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
         assert updated_org_api_key.org_api_key_id == test_org_api_key.org_api_key_id
         assert updated_org_api_key.code == test_org_api_key.code
         result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == test_org_api_key.org_api_key_id))
@@ -124,6 +131,7 @@ class TestOrgApiKeyManager:
         new_code = generate_uuid()
         updated_org_api_key = await org_api_key_manager.update(org_api_key=test_org_api_key,code=new_code)
         assert isinstance(updated_org_api_key, OrgApiKey)
+        assert str(updated_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
         assert updated_org_api_key.org_api_key_id == test_org_api_key.org_api_key_id
         assert updated_org_api_key.code == new_code
         result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == test_org_api_key.org_api_key_id))
@@ -140,15 +148,14 @@ class TestOrgApiKeyManager:
         updated_org_api_key = await org_api_key_manager.update(org_api_key, code=new_code)
         # Assertions
         assert updated_org_api_key is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
-    #     test_org_api_key = await OrgApiKeyFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of OrgApiKey
-    #     with pytest.raises(Exception):
-    #         updated_org_api_key = await org_api_key_manager.update(org_api_key=test_org_api_key,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
+        test_org_api_key = await OrgApiKeyFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of OrgApiKey
+        with pytest.raises(ValueError):
+            updated_org_api_key = await org_api_key_manager.update(org_api_key=test_org_api_key,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
         org_api_key_data = await OrgApiKeyFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestOrgApiKeyManager:
             result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == updated_org_api_key.org_api_key_id))
             fetched_org_api_key = result.scalars().first()
             assert isinstance(fetched_org_api_key, OrgApiKey)
+            assert str(fetched_org_api_key.insert_user_id) == str(org_api_key_manager._session_context.customer_code)
+            assert str(fetched_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
             assert fetched_org_api_key.org_api_key_id == updated_org_api_key.org_api_key_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, org_api_key_manager:OrgApiKeyManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestOrgApiKeyManager:
         logging.info(org_api_keys[1].__dict__)
         assert updated_org_api_keys[0].code == code_updated1
         assert updated_org_api_keys[1].code == code_updated2
+        assert str(updated_org_api_keys[0].last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
+        assert str(updated_org_api_keys[1].last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
         result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == 1))
         fetched_org_api_key = result.scalars().first()
         assert isinstance(fetched_org_api_key, OrgApiKey)

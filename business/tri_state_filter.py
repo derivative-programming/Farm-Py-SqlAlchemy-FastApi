@@ -309,5 +309,15 @@ class TriStateFilterBusObj(BaseBusObj):
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
+    async def get_parent_obj(self) -> models.Pac:
+        return self.get_pac_id_rel_obj()
     #stateIntValue,
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[TriStateFilter]):
+        result = list()
+        for tri_state_filter in obj_list:
+            tri_state_filter_bus_obj = TriStateFilterBusObj.get(session_context,tri_state_filter_obj_instance=tri_state_filter)
+            result.append(tri_state_filter_bus_obj)
+        return result
 

@@ -56,6 +56,15 @@ class Organization(Base):
 
         self.tac_code_peek = kwargs.get('tac_code_peek', generate_uuid())# TacID
 
+    @staticmethod
+    def property_list():
+        result = [
+            "name",
+            "tac_id",
+
+            "code"
+            ]
+        return result
 # Define the index separately from the column
 # Index('index_code', Organization.code)
 # Index('farm_organization_index_tac_id', Organization.tac_id) #TacID

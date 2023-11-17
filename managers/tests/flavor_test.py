@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestFlavorManager:
     @pytest_asyncio.fixture(scope="function")
     async def flavor_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return FlavorManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, flavor_manager:FlavorManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestFlavorManager:
         # Add the flavor using the manager's add method
         added_flavor = await flavor_manager.add(flavor=test_flavor)
         assert isinstance(added_flavor, Flavor)
+        assert str(added_flavor.insert_user_id) == str(flavor_manager._session_context.customer_code)
+        assert str(added_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
         assert added_flavor.flavor_id > 0
         # Fetch the flavor from the database directly
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == added_flavor.flavor_id))
@@ -75,6 +79,8 @@ class TestFlavorManager:
         # Add the flavor using the manager's add method
         added_flavor = await flavor_manager.add(flavor=test_flavor)
         assert isinstance(added_flavor, Flavor)
+        assert str(added_flavor.insert_user_id) == str(flavor_manager._session_context.customer_code)
+        assert str(added_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
         assert added_flavor.flavor_id > 0
         # Assert that the returned flavor matches the test flavor
         assert added_flavor.flavor_id == test_flavor.flavor_id
@@ -110,6 +116,7 @@ class TestFlavorManager:
         test_flavor.code = generate_uuid()
         updated_flavor = await flavor_manager.update(flavor=test_flavor)
         assert isinstance(updated_flavor, Flavor)
+        assert str(updated_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
         assert updated_flavor.flavor_id == test_flavor.flavor_id
         assert updated_flavor.code == test_flavor.code
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == test_flavor.flavor_id))
@@ -124,6 +131,7 @@ class TestFlavorManager:
         new_code = generate_uuid()
         updated_flavor = await flavor_manager.update(flavor=test_flavor,code=new_code)
         assert isinstance(updated_flavor, Flavor)
+        assert str(updated_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
         assert updated_flavor.flavor_id == test_flavor.flavor_id
         assert updated_flavor.code == new_code
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == test_flavor.flavor_id))
@@ -140,15 +148,14 @@ class TestFlavorManager:
         updated_flavor = await flavor_manager.update(flavor, code=new_code)
         # Assertions
         assert updated_flavor is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, flavor_manager:FlavorManager, session:AsyncSession):
-    #     test_flavor = await FlavorFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of Flavor
-    #     with pytest.raises(Exception):
-    #         updated_flavor = await flavor_manager.update(flavor=test_flavor,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, flavor_manager:FlavorManager, session:AsyncSession):
+        test_flavor = await FlavorFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of Flavor
+        with pytest.raises(ValueError):
+            updated_flavor = await flavor_manager.update(flavor=test_flavor,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, flavor_manager:FlavorManager, session:AsyncSession):
         flavor_data = await FlavorFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestFlavorManager:
             result = await session.execute(select(Flavor).filter(Flavor.flavor_id == updated_flavor.flavor_id))
             fetched_flavor = result.scalars().first()
             assert isinstance(fetched_flavor, Flavor)
+            assert str(fetched_flavor.insert_user_id) == str(flavor_manager._session_context.customer_code)
+            assert str(fetched_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
             assert fetched_flavor.flavor_id == updated_flavor.flavor_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, flavor_manager:FlavorManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestFlavorManager:
         logging.info(flavors[1].__dict__)
         assert updated_flavors[0].code == code_updated1
         assert updated_flavors[1].code == code_updated2
+        assert str(updated_flavors[0].last_update_user_id) == str(flavor_manager._session_context.customer_code)
+        assert str(updated_flavors[1].last_update_user_id) == str(flavor_manager._session_context.customer_code)
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == 1))
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)

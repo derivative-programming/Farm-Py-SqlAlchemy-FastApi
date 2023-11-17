@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestOrgCustomerManager:
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return OrgCustomerManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestOrgCustomerManager:
         # Add the org_customer using the manager's add method
         added_org_customer = await org_customer_manager.add(org_customer=test_org_customer)
         assert isinstance(added_org_customer, OrgCustomer)
+        assert str(added_org_customer.insert_user_id) == str(org_customer_manager._session_context.customer_code)
+        assert str(added_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
         assert added_org_customer.org_customer_id > 0
         # Fetch the org_customer from the database directly
         result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == added_org_customer.org_customer_id))
@@ -75,6 +79,8 @@ class TestOrgCustomerManager:
         # Add the org_customer using the manager's add method
         added_org_customer = await org_customer_manager.add(org_customer=test_org_customer)
         assert isinstance(added_org_customer, OrgCustomer)
+        assert str(added_org_customer.insert_user_id) == str(org_customer_manager._session_context.customer_code)
+        assert str(added_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
         assert added_org_customer.org_customer_id > 0
         # Assert that the returned org_customer matches the test org_customer
         assert added_org_customer.org_customer_id == test_org_customer.org_customer_id
@@ -110,6 +116,7 @@ class TestOrgCustomerManager:
         test_org_customer.code = generate_uuid()
         updated_org_customer = await org_customer_manager.update(org_customer=test_org_customer)
         assert isinstance(updated_org_customer, OrgCustomer)
+        assert str(updated_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
         assert updated_org_customer.org_customer_id == test_org_customer.org_customer_id
         assert updated_org_customer.code == test_org_customer.code
         result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == test_org_customer.org_customer_id))
@@ -124,6 +131,7 @@ class TestOrgCustomerManager:
         new_code = generate_uuid()
         updated_org_customer = await org_customer_manager.update(org_customer=test_org_customer,code=new_code)
         assert isinstance(updated_org_customer, OrgCustomer)
+        assert str(updated_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
         assert updated_org_customer.org_customer_id == test_org_customer.org_customer_id
         assert updated_org_customer.code == new_code
         result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == test_org_customer.org_customer_id))
@@ -140,15 +148,14 @@ class TestOrgCustomerManager:
         updated_org_customer = await org_customer_manager.update(org_customer, code=new_code)
         # Assertions
         assert updated_org_customer is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
-    #     test_org_customer = await OrgCustomerFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of OrgCustomer
-    #     with pytest.raises(Exception):
-    #         updated_org_customer = await org_customer_manager.update(org_customer=test_org_customer,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
+        test_org_customer = await OrgCustomerFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of OrgCustomer
+        with pytest.raises(ValueError):
+            updated_org_customer = await org_customer_manager.update(org_customer=test_org_customer,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
         org_customer_data = await OrgCustomerFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestOrgCustomerManager:
             result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == updated_org_customer.org_customer_id))
             fetched_org_customer = result.scalars().first()
             assert isinstance(fetched_org_customer, OrgCustomer)
+            assert str(fetched_org_customer.insert_user_id) == str(org_customer_manager._session_context.customer_code)
+            assert str(fetched_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
             assert fetched_org_customer.org_customer_id == updated_org_customer.org_customer_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, org_customer_manager:OrgCustomerManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestOrgCustomerManager:
         logging.info(org_customers[1].__dict__)
         assert updated_org_customers[0].code == code_updated1
         assert updated_org_customers[1].code == code_updated2
+        assert str(updated_org_customers[0].last_update_user_id) == str(org_customer_manager._session_context.customer_code)
+        assert str(updated_org_customers[1].last_update_user_id) == str(org_customer_manager._session_context.customer_code)
         result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == 1))
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)

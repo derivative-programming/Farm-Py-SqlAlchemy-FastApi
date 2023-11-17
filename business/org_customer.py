@@ -253,4 +253,14 @@ class OrgCustomerBusObj(BaseBusObj):
         return 'Organization'
     async def get_parent_code(self) -> uuid.UUID:
         return self.organization_code_peek
+    async def get_parent_obj(self) -> models.Organization:
+        return self.get_organization_id_rel_obj()
+
+    @staticmethod
+    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[OrgCustomer]):
+        result = list()
+        for org_customer in obj_list:
+            org_customer_bus_obj = OrgCustomerBusObj.get(session_context,org_customer_obj_instance=org_customer)
+            result.append(org_customer_bus_obj)
+        return result
 

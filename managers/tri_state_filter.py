@@ -148,9 +148,12 @@ class TriStateFilterManager:
         return self._first_or_none(query_results)
     async def update(self, tri_state_filter: TriStateFilter, **kwargs) -> Optional[TriStateFilter]:
         logging.info("TriStateFilterManager.update")
+        property_list = TriStateFilter.property_list()
         if tri_state_filter:
             tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
+                if key not in property_list:
+                    raise ValueError(f"Invalid property: {key}")
                 setattr(tri_state_filter, key, value)
             await self._session_context.session.flush()
         return tri_state_filter

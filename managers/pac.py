@@ -121,9 +121,12 @@ class PacManager:
         return self._first_or_none(query_results)
     async def update(self, pac: Pac, **kwargs) -> Optional[Pac]:
         logging.info("PacManager.update")
+        property_list = Pac.property_list()
         if pac:
             pac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             for key, value in kwargs.items():
+                if key not in property_list:
+                    raise ValueError(f"Invalid property: {key}")
                 setattr(pac, key, value)
             await self._session_context.session.flush()
         return pac

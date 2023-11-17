@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,6 +27,7 @@ class TestTriStateFilterManager:
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_manager(self, session:AsyncSession):
         session_context = SessionContext(dict(),session)
+        session_context.customer_code = uuid.uuid4()
         return TriStateFilterManager(session_context)
     @pytest.mark.asyncio
     async def test_build(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
@@ -58,6 +60,8 @@ class TestTriStateFilterManager:
         # Add the tri_state_filter using the manager's add method
         added_tri_state_filter = await tri_state_filter_manager.add(tri_state_filter=test_tri_state_filter)
         assert isinstance(added_tri_state_filter, TriStateFilter)
+        assert str(added_tri_state_filter.insert_user_id) == str(tri_state_filter_manager._session_context.customer_code)
+        assert str(added_tri_state_filter.last_update_user_id) == str(tri_state_filter_manager._session_context.customer_code)
         assert added_tri_state_filter.tri_state_filter_id > 0
         # Fetch the tri_state_filter from the database directly
         result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == added_tri_state_filter.tri_state_filter_id))
@@ -75,6 +79,8 @@ class TestTriStateFilterManager:
         # Add the tri_state_filter using the manager's add method
         added_tri_state_filter = await tri_state_filter_manager.add(tri_state_filter=test_tri_state_filter)
         assert isinstance(added_tri_state_filter, TriStateFilter)
+        assert str(added_tri_state_filter.insert_user_id) == str(tri_state_filter_manager._session_context.customer_code)
+        assert str(added_tri_state_filter.last_update_user_id) == str(tri_state_filter_manager._session_context.customer_code)
         assert added_tri_state_filter.tri_state_filter_id > 0
         # Assert that the returned tri_state_filter matches the test tri_state_filter
         assert added_tri_state_filter.tri_state_filter_id == test_tri_state_filter.tri_state_filter_id
@@ -110,6 +116,7 @@ class TestTriStateFilterManager:
         test_tri_state_filter.code = generate_uuid()
         updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter=test_tri_state_filter)
         assert isinstance(updated_tri_state_filter, TriStateFilter)
+        assert str(updated_tri_state_filter.last_update_user_id) == str(tri_state_filter_manager._session_context.customer_code)
         assert updated_tri_state_filter.tri_state_filter_id == test_tri_state_filter.tri_state_filter_id
         assert updated_tri_state_filter.code == test_tri_state_filter.code
         result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == test_tri_state_filter.tri_state_filter_id))
@@ -124,6 +131,7 @@ class TestTriStateFilterManager:
         new_code = generate_uuid()
         updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter=test_tri_state_filter,code=new_code)
         assert isinstance(updated_tri_state_filter, TriStateFilter)
+        assert str(updated_tri_state_filter.last_update_user_id) == str(tri_state_filter_manager._session_context.customer_code)
         assert updated_tri_state_filter.tri_state_filter_id == test_tri_state_filter.tri_state_filter_id
         assert updated_tri_state_filter.code == new_code
         result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == test_tri_state_filter.tri_state_filter_id))
@@ -140,15 +148,14 @@ class TestTriStateFilterManager:
         updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter, code=new_code)
         # Assertions
         assert updated_tri_state_filter is None
-    #todo fix test
-    # @pytest.mark.asyncio
-    # async def test_update_with_nonexistent_attribute(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
-    #     test_tri_state_filter = await TriStateFilterFactory.create_async(session)
-    #     new_code = generate_uuid()
-    #     # This should raise an AttributeError since 'color' is not an attribute of TriStateFilter
-    #     with pytest.raises(Exception):
-    #         updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter=test_tri_state_filter,xxx=new_code)
-    #     await session.rollback()
+    @pytest.mark.asyncio
+    async def test_update_with_nonexistent_attribute(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
+        test_tri_state_filter = await TriStateFilterFactory.create_async(session)
+        new_code = generate_uuid()
+        # This should raise an AttributeError since 'color' is not an attribute of TriStateFilter
+        with pytest.raises(ValueError):
+            updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter=test_tri_state_filter,xxx=new_code)
+        await session.rollback()
     @pytest.mark.asyncio
     async def test_delete(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
         tri_state_filter_data = await TriStateFilterFactory.create_async(session)
@@ -212,6 +219,8 @@ class TestTriStateFilterManager:
             result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == updated_tri_state_filter.tri_state_filter_id))
             fetched_tri_state_filter = result.scalars().first()
             assert isinstance(fetched_tri_state_filter, TriStateFilter)
+            assert str(fetched_tri_state_filter.insert_user_id) == str(tri_state_filter_manager._session_context.customer_code)
+            assert str(fetched_tri_state_filter.last_update_user_id) == str(tri_state_filter_manager._session_context.customer_code)
             assert fetched_tri_state_filter.tri_state_filter_id == updated_tri_state_filter.tri_state_filter_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(self, tri_state_filter_manager:TriStateFilterManager, session:AsyncSession):
@@ -237,6 +246,8 @@ class TestTriStateFilterManager:
         logging.info(tri_state_filters[1].__dict__)
         assert updated_tri_state_filters[0].code == code_updated1
         assert updated_tri_state_filters[1].code == code_updated2
+        assert str(updated_tri_state_filters[0].last_update_user_id) == str(tri_state_filter_manager._session_context.customer_code)
+        assert str(updated_tri_state_filters[1].last_update_user_id) == str(tri_state_filter_manager._session_context.customer_code)
         result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == 1))
         fetched_tri_state_filter = result.scalars().first()
         assert isinstance(fetched_tri_state_filter, TriStateFilter)
