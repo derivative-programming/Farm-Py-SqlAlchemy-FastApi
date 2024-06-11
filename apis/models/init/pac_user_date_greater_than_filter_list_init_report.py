@@ -15,11 +15,11 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel):
-    success:bool = Field(default=False, description="Success")
-    message:str = Field(default="", description="Message")
-    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
+    success: bool = Field(default=False, description="Success")
+    message: str = Field(default="", description="Message")
+    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
 
-    def load_flow_response(self,data:FlowPacUserDateGreaterThanFilterListInitReportResult):
+    def load_flow_response(self, data:FlowPacUserDateGreaterThanFilterListInitReportResult):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -28,9 +28,9 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel)
         return self.model_dump_json()
 class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session_context:SessionContext,
-                        pac_code:uuid,
-                        response:PacUserDateGreaterThanFilterListInitReportGetInitModelResponse) -> PacUserDateGreaterThanFilterListInitReportGetInitModelResponse:
+                        session_context: SessionContext,
+                        pac_code: uuid,
+                        response: PacUserDateGreaterThanFilterListInitReportGetInitModelResponse) -> PacUserDateGreaterThanFilterListInitReportGetInitModelResponse:
         try:
             logging.info("loading model...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session_context)

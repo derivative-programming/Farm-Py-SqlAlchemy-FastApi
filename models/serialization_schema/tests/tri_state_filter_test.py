@@ -30,7 +30,7 @@ class TestTriStateFilterSchema:
         "state_int_value": 42,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# PacID
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
@@ -53,7 +53,7 @@ class TestTriStateFilterSchema:
         assert result['insert_utc_date_time'] == tri_state_filter.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == tri_state_filter.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == tri_state_filter.pac_code_peek # PacID
+        assert result['pac_code_peek'] == tri_state_filter.pac_code_peek  # PacID
 
     def test_tri_state_filter_deserialization(self, tri_state_filter:TriStateFilter, session):
         schema = TriStateFilterSchema()
@@ -75,7 +75,7 @@ class TestTriStateFilterSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == tri_state_filter.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == tri_state_filter.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == tri_state_filter.pac_code_peek # PacID
+        assert deserialized_data['pac_code_peek'] == tri_state_filter.pac_code_peek  # PacID
 
         new_tri_state_filter = TriStateFilter(**deserialized_data)
         assert isinstance(new_tri_state_filter, TriStateFilter)
@@ -96,7 +96,7 @@ class TestTriStateFilterSchema:
         assert new_tri_state_filter.insert_utc_date_time.isoformat() == tri_state_filter.insert_utc_date_time.isoformat()
         assert new_tri_state_filter.last_update_utc_date_time.isoformat() == tri_state_filter.last_update_utc_date_time.isoformat()
 
-        assert new_tri_state_filter.pac_code_peek == tri_state_filter.pac_code_peek #PacID
+        assert new_tri_state_filter.pac_code_peek == tri_state_filter.pac_code_peek  # PacID
 
     def test_from_json(self, tri_state_filter:TriStateFilter, session):
         tri_state_filter_schema = TriStateFilterSchema()
@@ -121,7 +121,7 @@ class TestTriStateFilterSchema:
         assert str(deserialized_data['state_int_value']) == str(self.sample_data['state_int_value'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
+        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek'])  # PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_tri_state_filter = TriStateFilter(**deserialized_data)
@@ -153,5 +153,5 @@ class TestTriStateFilterSchema:
             assert tri_state_filter_dict_from_json['insert_utc_date_time'] == tri_state_filter.insert_utc_date_time.isoformat()
             assert tri_state_filter_dict_from_json['last_update_utc_date_time'] == tri_state_filter.last_update_utc_date_time.isoformat()
 
-            assert tri_state_filter_dict_from_json['pac_code_peek'] == tri_state_filter.pac_code_peek # PacID
+            assert tri_state_filter_dict_from_json['pac_code_peek'] == tri_state_filter.pac_code_peek  # PacID
 

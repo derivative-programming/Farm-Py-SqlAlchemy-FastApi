@@ -36,7 +36,7 @@ class TacManager:
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
 
-    async def _build_lookup_item(self, pac:Pac):
+    async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
         item.pac_id = pac.pac_id
         return item
@@ -49,7 +49,7 @@ class TacManager:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description = ""
+            item.description=""
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -58,14 +58,14 @@ class TacManager:
             item = await self._build_lookup_item(pac)
             item.name = "Primary"
             item.lookup_enum_name = "Primary"
-            item.description = "Primary"
+            item.description="Primary"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
 
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val:TacEnum) -> Tac:
+    async def from_enum(self, enum_val: TacEnum) -> Tac:
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Tac.lookup_enum_name==enum_val.value
         query_results = await self._run_query(query_filter)
@@ -89,12 +89,12 @@ class TacManager:
 #
 #         if join_condition is not None:
 #             query = select(Tac
-#                         ,Pac #pac_id
+#                         , Pac  # pac_id
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(Tac)
         query = select(Tac
-                    ,Pac #pac_id
+                    , Pac  # pac_id
                     )
 
         query = query.outerjoin(Pac, and_(Tac.pac_id == Pac.pac_id, Tac.pac_id != 0))
@@ -115,25 +115,25 @@ class TacManager:
             tac = query_result_row[i]
             i = i + 1
 
-            pac = query_result_row[i] #pac_id
+            pac = query_result_row[i]  # pac_id
             i = i + 1
 
-            tac.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+            tac.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
 
             result.append(tac)
         return result
-    def _first_or_none(self,tac_list:List) -> Tac:
+    def _first_or_none(self, tac_list: List) -> Tac:
         return tac_list[0] if tac_list else None
     async def get_by_id(self, tac_id: int) -> Optional[Tac]:
         logging.info("TacManager.get_by_id start tac_id:" + str(tac_id))
         if not isinstance(tac_id, int):
-            raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
+            raise TypeError("The tac_id must be an integer, got {type(tac_id)} instead.")
         query_filter = Tac.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
-        logging.info(f"TacManager.get_by_code {code}")
-        query_filter = Tac.code==code
+        logging.info("TacManager.get_by_code {code}")
+        query_filter = Tac.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, tac: Tac, **kwargs) -> Optional[Tac]:
@@ -148,9 +148,9 @@ class TacManager:
             await self._session_context.session.flush()
         return tac
     async def delete(self, tac_id: int):
-        logging.info(f"TacManager.delete {tac_id}")
+        logging.info("TacManager.delete {tac_id}")
         if not isinstance(tac_id, int):
-            raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
+            raise TypeError("The tac_id must be an integer, got {type(tac_id)} instead.")
         tac = await self.get_by_id(tac_id)
         if not tac:
             raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
@@ -160,7 +160,7 @@ class TacManager:
         logging.info("TacManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, tac:Tac) -> str:
+    def to_json(self, tac: Tac) -> str:
         logging.info("TacManager.to_json")
         """
         Serialize the Tac object to a JSON string using the TacSchema.
@@ -168,7 +168,7 @@ class TacManager:
         schema = TacSchema()
         tac_data = schema.dump(tac)
         return json.dumps(tac_data)
-    def to_dict(self, tac:Tac) -> dict:
+    def to_dict(self, tac: Tac) -> dict:
         logging.info("TacManager.to_dict")
         """
         Serialize the Tac object to a JSON string using the TacSchema.
@@ -209,10 +209,10 @@ class TacManager:
         for update in tac_updates:
             tac_id = update.get("tac_id")
             if not isinstance(tac_id, int):
-                raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
+                raise TypeError("The tac_id must be an integer, got {type(tac_id)} instead.")
             if not tac_id:
                 continue
-            logging.info(f"TacManager.update_bulk tac_id:{tac_id}")
+            logging.info("TacManager.update_bulk tac_id:{tac_id}")
             tac = await self.get_by_id(tac_id)
             if not tac:
                 raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
@@ -229,7 +229,7 @@ class TacManager:
         """Delete multiple tacs by their IDs."""
         for tac_id in tac_ids:
             if not isinstance(tac_id, int):
-                raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
+                raise TypeError("The tac_id must be an integer, got {type(tac_id)} instead.")
             tac = await self.get_by_id(tac_id)
             if not tac:
                 raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
@@ -256,13 +256,13 @@ class TacManager:
         await self._session_context.session.refresh(tac)
         return tac
     async def exists(self, tac_id: int) -> bool:
-        logging.info(f"TacManager.exists {tac_id}")
+        logging.info("TacManager.exists {tac_id}")
         """Check if a tac with the given ID exists."""
         if not isinstance(tac_id, int):
-            raise TypeError(f"The tac_id must be an integer, got {type(tac_id)} instead.")
+            raise TypeError("The tac_id must be an integer, got {type(tac_id)} instead.")
         tac = await self.get_by_id(tac_id)
         return bool(tac)
-    def is_equal(self, tac1:Tac, tac2:Tac) -> bool:
+    def is_equal(self, tac1: Tac, tac2: Tac) -> bool:
         if not tac1:
             raise TypeError("Tac1 required.")
         if not tac2:
@@ -275,10 +275,10 @@ class TacManager:
         dict2 = self.to_dict(tac2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int) -> List[Tac]: # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[Tac]:  # PacID
         logging.info("TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):
-            raise TypeError(f"The tac_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError("The tac_id must be an integer, got {type(pac_id)} instead.")
         query_filter = Tac.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

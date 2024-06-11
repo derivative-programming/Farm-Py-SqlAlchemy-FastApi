@@ -11,7 +11,7 @@ class ReportItemPacUserFlavorList():
     flavor_name: str = ""
     pac_name: str = ""
 
-    def load_data_provider_dict(self,data:dict):
+    def load_data_provider_dict(self, data: dict):
             self.flavor_code = TypeConversion.get_uuid(data["flavor_code"])
             self.flavor_description = str(data["flavor_description"])
             self.flavor_display_order = int(data["flavor_display_order"])

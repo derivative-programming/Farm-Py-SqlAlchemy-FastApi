@@ -1,3 +1,9 @@
+# business/factory.py
+
+"""
+    #TODO add comment
+"""
+
 import uuid
 
 from helpers.session_context import SessionContext
@@ -18,9 +24,9 @@ from .tri_state_filter import TriStateFilterBusObj
 from sqlalchemy.ext.asyncio import AsyncSession
 #endset
 
-class BusObjFactory: 
+class BusObjFactory:
     @staticmethod
-    async def create(session_context:SessionContext, name, code:uuid.UUID=None, id:int=None):
+    async def create(session_context: SessionContext, name, code: uuid.UUID = None, id: int = None):
         if code is not None:
             if name == 'Customer':
                 return await CustomerBusObj(session_context=session_context).load(code=code)
@@ -49,7 +55,7 @@ class BusObjFactory:
             elif name == 'Tac':
                 return await TacBusObj(session_context).load(code=code)
             elif name == 'TriStateFilter':
-                return await TriStateFilterBusObj(session_context).load(code=code) 
+                return await TriStateFilterBusObj(session_context).load(code=code)
     #endset
             else:
                 raise ValueError(f"Unknown object type: {name}")
@@ -81,7 +87,7 @@ class BusObjFactory:
             elif name == 'Tac':
                 return await TacBusObj(session_context).load(tac_id=id)
             elif name == 'TriStateFilter':
-                return await TriStateFilterBusObj(session_context).load(tri_state_filter_id=id) 
+                return await TriStateFilterBusObj(session_context).load(tri_state_filter_id=id)
     #endset
             else:
                 raise ValueError(f"Unknown object type: {name}")

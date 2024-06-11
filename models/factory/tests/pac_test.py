@@ -50,10 +50,10 @@ class TestPacFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(pac.code, str)
     def test_last_change_code_default_on_build(self, session):
-        pac:Pac = PacFactory.build(session=session)
+        pac: Pac = PacFactory.build(session=session)
         assert pac.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        pac:Pac = PacFactory.create(session=session)
+        pac: Pac = PacFactory.create(session=session)
         assert pac.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         pac = PacFactory.create(session=session)
@@ -140,7 +140,7 @@ class TestPacFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
 
@@ -165,13 +165,13 @@ class TestPacFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
 
         assert pac.description == ""
         assert pac.display_order == 0
-        assert pac.is_active == False
+        assert pac.is_active is False
         assert pac.lookup_enum_name == ""
         assert pac.name == ""
 
@@ -188,7 +188,7 @@ class TestPacFactory:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
 

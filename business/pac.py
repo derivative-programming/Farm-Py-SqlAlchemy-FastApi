@@ -37,7 +37,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class PacBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -115,7 +115,7 @@ class PacBusObj(BaseBusObj):
     def set_prop_display_order(self, value):
         self.display_order = value
         return self
-    #IsActive
+    # isActive
     @property
     def is_active(self):
         return self.pac.is_active
@@ -152,7 +152,7 @@ class PacBusObj(BaseBusObj):
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
 
@@ -176,12 +176,12 @@ class PacBusObj(BaseBusObj):
     @property
     def lookup_enum(self) -> managers_and_enums.PacEnum:
         return managers_and_enums.PacEnum[self.pac.lookup_enum_name]
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   pac_id:int=None,
-                   pac_obj_instance:Pac=None,
-                   pac_dict:dict=None,
-                   pac_enum:managers_and_enums.PacEnum=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   pac_id: int = None,
+                   pac_obj_instance: Pac = None,
+                   pac_dict: dict = None,
+                   pac_enum:managers_and_enums.PacEnum = None):
         if pac_id and self.pac.pac_id is None:
             pac_manager = PacManager(self._session_context)
             pac_obj = await pac_manager.get_by_id(pac_id)
@@ -204,13 +204,13 @@ class PacBusObj(BaseBusObj):
             pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.from_enum(pac_enum)
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   pac_id:int=None,
-                   pac_obj_instance:Pac=None,
-                   pac_dict:dict=None,
-                   pac_enum:managers_and_enums.PacEnum=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   pac_id: int = None,
+                   pac_obj_instance: Pac = None,
+                   pac_dict: dict = None,
+                   pac_enum:managers_and_enums.PacEnum = None):
         result = PacBusObj(session_context)
         await result.load(
             json_data,
@@ -248,7 +248,7 @@ class PacBusObj(BaseBusObj):
             await pac_manager.delete(self.pac.pac_id)
             self.pac = None
     async def randomize_properties(self):
-        self.pac.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.pac.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.pac.display_order = random.randint(0, 100)
         self.pac.is_active = random.choice([True, False])
         self.pac.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -257,14 +257,14 @@ class PacBusObj(BaseBusObj):
         return self
     def get_pac_obj(self) -> Pac:
         return self.pac
-    def is_equal(self,pac:Pac) -> Pac:
+    def is_equal(self, pac: Pac) -> Pac:
         pac_manager = PacManager(self._session_context)
         my_pac = self.get_pac_obj()
         return pac_manager.is_equal(pac, my_pac)
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
 
@@ -276,15 +276,15 @@ class PacBusObj(BaseBusObj):
         return self.pac_id
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Pac]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Pac]):
         result = list()
         for pac in obj_list:
-            pac_bus_obj = PacBusObj.get(session_context,pac_obj_instance=pac)
+            pac_bus_obj = PacBusObj.get(session_context, pac_obj_instance=pac)
             result.append(pac_bus_obj)
         return result
 

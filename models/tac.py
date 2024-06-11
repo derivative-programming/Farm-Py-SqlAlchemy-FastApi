@@ -95,7 +95,7 @@ class Tac(Base):
         return result
 # Define the index separately from the column
 # Index('index_code', Tac.code)
-# Index('farm_tac_index_pac_id', Tac.pac_id) #PacID
+# Index('farm_tac_index_pac_id', Tac.pac_id)  # PacID
 @event.listens_for(Tac, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

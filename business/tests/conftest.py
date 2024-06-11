@@ -1,10 +1,16 @@
-import asyncio 
+# business/tests/conftest.py
+
+"""
+    #TODO add comment
+"""
+
+import asyncio
 import pytest
-import pytest_asyncio  
+import pytest_asyncio
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from models import Base 
+from models import Base
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 
@@ -21,11 +27,11 @@ def event_loop() -> asyncio.AbstractEventLoop:
 def engine():
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
-    engine.sync_engine.dispose() 
+    engine.sync_engine.dispose()
 
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncSession:
-    
+
     @event.listens_for(engine.sync_engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()
@@ -53,6 +59,4 @@ async def session(engine) -> AsyncSession:
                     connection.sync_connection.begin_nested()
             yield session
             await session.flush()
-            await session.rollback()   
-
- 
+            await session.rollback()

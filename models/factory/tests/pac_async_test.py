@@ -81,11 +81,11 @@ class TestPacFactoryAsync:
             assert isinstance(pac.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        pac:Pac = await PacFactory.build_async(session=session)
+        pac: Pac = await PacFactory.build_async(session=session)
         assert pac.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        pac:Pac = await PacFactory.create_async(session=session)
+        pac: Pac = await PacFactory.create_async(session=session)
         assert pac.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -187,7 +187,7 @@ class TestPacFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
 
@@ -214,13 +214,13 @@ class TestPacFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
 
         assert pac.description == ""
         assert pac.display_order == 0
-        assert pac.is_active == False
+        assert pac.is_active is False
         assert pac.lookup_enum_name == ""
         assert pac.name == ""
 
@@ -244,7 +244,7 @@ class TestPacFactoryAsync:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
 

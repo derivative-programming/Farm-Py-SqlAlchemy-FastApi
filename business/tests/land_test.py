@@ -27,12 +27,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestLandBusObj:
     @pytest_asyncio.fixture(scope="function")
-    async def land_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def land_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         return LandManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def land_bus_obj(self, session):
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
         return LandBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_land(self, session):
@@ -40,7 +40,7 @@ class TestLandBusObj:
         # Assuming LandFactory.create() is an async function
         return await LandFactory.create_async(session)
     @pytest.mark.asyncio
-    async def test_create_land(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_create_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         # Test creating a new land
         assert land_bus_obj.land_id is None
         # assert isinstance(land_bus_obj.land_id, int)
@@ -60,36 +60,36 @@ class TestLandBusObj:
         assert land_bus_obj.name == "" or isinstance(land_bus_obj.name, str)
         assert isinstance(land_bus_obj.pac_id, int)
     @pytest.mark.asyncio
-    async def test_load_with_land_obj(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_load_with_land_obj(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         await land_bus_obj.load(land_obj_instance=new_land)
-        assert land_manager.is_equal(land_bus_obj.land,new_land) == True
+        assert land_manager.is_equal(land_bus_obj.land,new_land) is True
     @pytest.mark.asyncio
-    async def test_load_with_land_id(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_load_with_land_id(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         await land_bus_obj.load(land_id=new_land.land_id)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  == True
+        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_load_with_land_code(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_load_with_land_code(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         await land_bus_obj.load(code=new_land.code)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  == True
+        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_load_with_land_json(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_load_with_land_json(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         land_json = land_manager.to_json(new_land)
         await land_bus_obj.load(json_data=land_json)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  == True
+        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_load_with_land_dict(self, session, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_load_with_land_dict(self, session, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         logger.info("test_load_with_land_dict 1")
         land_dict = land_manager.to_dict(new_land)
         logger.info(land_dict)
         await land_bus_obj.load(land_dict=land_dict)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  == True
+        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_get_nonexistent_land(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_get_nonexistent_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         # Test retrieving a nonexistent land raises an exception
         await land_bus_obj.load(land_id=-1)
-        assert land_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
+        assert land_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
-    async def test_update_land(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_update_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         # Test updating a land's data
         new_land = await land_manager.get_by_id(new_land.land_id)
         new_code = generate_uuid()
@@ -97,9 +97,9 @@ class TestLandBusObj:
         land_bus_obj.code = new_code
         await land_bus_obj.save()
         new_land = await land_manager.get_by_id(new_land.land_id)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  == True
+        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_delete_land(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land):
+    async def test_delete_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
         assert new_land.land_id is not None
         assert land_bus_obj.land_id is None
         await land_bus_obj.load(land_id=new_land.land_id)
@@ -109,9 +109,9 @@ class TestLandBusObj:
         assert new_land is None
 
     @pytest.mark.asyncio
-    async def test_build_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land, session:AsyncSession):
+    async def test_build_plant(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 
@@ -127,9 +127,9 @@ class TestLandBusObj:
         assert plant_bus_obj.plant_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_plant(self, land_manager:LandManager, land_bus_obj:LandBusObj, new_land:Land, session:AsyncSession):
+    async def test_get_all_plant(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 

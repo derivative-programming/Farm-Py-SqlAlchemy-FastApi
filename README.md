@@ -32,6 +32,9 @@ Install python
 Update pip...
 >python.exe -m pip install --upgrade pip
 
+start virtual env...
+env\scripts\activate
+
 Install requirements...
 >pip install -r requirements.txt
 

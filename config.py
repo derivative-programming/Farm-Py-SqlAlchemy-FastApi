@@ -1,3 +1,9 @@
+# config.py
+
+"""
+    #TODO add comment
+"""
+
 import configparser
 
 # Initialize the parser

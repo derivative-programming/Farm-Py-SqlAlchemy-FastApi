@@ -27,7 +27,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrganizationBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -94,10 +94,10 @@ class OrganizationBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-    #TacID
+     # TacID
 
     #name,
-    #TacID
+     # TacID
     @property
     def tac_id(self):
         return self.organization.tac_id
@@ -133,11 +133,11 @@ class OrganizationBusObj(BaseBusObj):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.organization.last_update_utc_date_time = value
 
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   organization_id:int=None,
-                   organization_obj_instance:Organization=None,
-                   organization_dict:dict=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   organization_id: int = None,
+                   organization_obj_instance:Organization = None,
+                   organization_dict: dict = None):
         if organization_id and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self._session_context)
             organization_obj = await organization_manager.get_by_id(organization_id)
@@ -158,12 +158,12 @@ class OrganizationBusObj(BaseBusObj):
             self.organization = organization_manager.from_dict(organization_dict)
         return self
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   organization_id:int=None,
-                   organization_obj_instance:Organization=None,
-                   organization_dict:dict=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   organization_id: int = None,
+                   organization_obj_instance:Organization = None,
+                   organization_dict: dict = None):
         result = OrganizationBusObj(session_context)
         await result.load(
             json_data,
@@ -212,7 +212,7 @@ class OrganizationBusObj(BaseBusObj):
         return organization_manager.is_equal(organization, my_organization)
 
     #name,
-    #TacID
+     # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
@@ -225,7 +225,7 @@ class OrganizationBusObj(BaseBusObj):
     def get_id(self) -> int:
         return self.organization_id
     #name,
-    #TacID
+     # TacID
     async def get_parent_name(self) -> str:
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -234,7 +234,7 @@ class OrganizationBusObj(BaseBusObj):
         return self.get_tac_id_rel_obj()
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Organization]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Organization]):
         result = list()
         for organization in obj_list:
             organization_bus_obj = OrganizationBusObj.get(session_context,organization_obj_instance=organization)

@@ -81,11 +81,11 @@ class TestTacFactoryAsync:
             assert isinstance(tac.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        tac:Tac = await TacFactory.build_async(session=session)
+        tac: Tac = await TacFactory.build_async(session=session)
         assert tac.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        tac:Tac = await TacFactory.create_async(session=session)
+        tac: Tac = await TacFactory.create_async(session=session)
         assert tac.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -188,10 +188,10 @@ class TestTacFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(tac.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -222,10 +222,10 @@ class TestTacFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(tac.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -235,7 +235,7 @@ class TestTacFactoryAsync:
 
         assert tac.description == ""
         assert tac.display_order == 0
-        assert tac.is_active == False
+        assert tac.is_active is False
         assert tac.lookup_enum_name == ""
         assert tac.name == ""
         assert tac.pac_id == 0
@@ -260,10 +260,10 @@ class TestTacFactoryAsync:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @pytest.mark.asyncio
     async def test_invalid_pac_id(self, session):
         tac = await TacFactory.create_async(session=session)

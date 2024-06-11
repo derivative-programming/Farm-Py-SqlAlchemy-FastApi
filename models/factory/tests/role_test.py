@@ -50,10 +50,10 @@ class TestRoleFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(role.code, str)
     def test_last_change_code_default_on_build(self, session):
-        role:Role = RoleFactory.build(session=session)
+        role: Role = RoleFactory.build(session=session)
         assert role.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        role:Role = RoleFactory.create(session=session)
+        role: Role = RoleFactory.create(session=session)
         assert role.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         role = RoleFactory.create(session=session)
@@ -141,10 +141,10 @@ class TestRoleFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(role.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -173,10 +173,10 @@ class TestRoleFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(role.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -186,7 +186,7 @@ class TestRoleFactory:
 
         assert role.description == ""
         assert role.display_order == 0
-        assert role.is_active == False
+        assert role.is_active is False
         assert role.lookup_enum_name == ""
         assert role.name == ""
         assert role.pac_id == 0
@@ -204,10 +204,10 @@ class TestRoleFactory:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     def test_invalid_pac_id(self, session):
         role = RoleFactory.create(session=session)
         role.pac_id = 99999

@@ -81,11 +81,11 @@ class TestRoleFactoryAsync:
             assert isinstance(role.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        role:Role = await RoleFactory.build_async(session=session)
+        role: Role = await RoleFactory.build_async(session=session)
         assert role.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        role:Role = await RoleFactory.create_async(session=session)
+        role: Role = await RoleFactory.create_async(session=session)
         assert role.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -188,10 +188,10 @@ class TestRoleFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(role.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -222,10 +222,10 @@ class TestRoleFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(role.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -235,7 +235,7 @@ class TestRoleFactoryAsync:
 
         assert role.description == ""
         assert role.display_order == 0
-        assert role.is_active == False
+        assert role.is_active is False
         assert role.lookup_enum_name == ""
         assert role.name == ""
         assert role.pac_id == 0
@@ -260,10 +260,10 @@ class TestRoleFactoryAsync:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @pytest.mark.asyncio
     async def test_invalid_pac_id(self, session):
         role = await RoleFactory.create_async(session=session)

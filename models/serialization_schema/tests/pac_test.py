@@ -30,7 +30,7 @@ class TestPacSchema:
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_pac_serialization(self, pac:Pac, session):
+    def test_pac_serialization(self, pac: Pac, session):
         schema = PacSchema()
         result = schema.dump(pac)
         assert result['code'] == pac.code
@@ -47,7 +47,7 @@ class TestPacSchema:
         assert result['insert_utc_date_time'] == pac.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == pac.last_update_utc_date_time.isoformat()
 
-    def test_pac_deserialization(self, pac:Pac, session):
+    def test_pac_deserialization(self, pac: Pac, session):
         schema = PacSchema()
         serialized_data = schema.dump(pac)
         deserialized_data = schema.load(serialized_data)
@@ -82,7 +82,7 @@ class TestPacSchema:
         assert new_pac.insert_utc_date_time.isoformat() == pac.insert_utc_date_time.isoformat()
         assert new_pac.last_update_utc_date_time.isoformat() == pac.last_update_utc_date_time.isoformat()
 
-    def test_from_json(self, pac:Pac, session):
+    def test_from_json(self, pac: Pac, session):
         pac_schema = PacSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -107,7 +107,7 @@ class TestPacSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
-    def test_to_json(self, pac:Pac, session):
+    def test_to_json(self, pac: Pac, session):
             # Convert the Pac instance to JSON using the schema
             pac_schema = PacSchema()
             pac_dict = pac_schema.dump(pac)

@@ -1,40 +1,56 @@
+# main.py
+
+"""
+    #TODO add comment
+"""
+
+import logging
 from fastapi import FastAPI, Request
-from sqlalchemy.ext.asyncio import AsyncSession,create_async_engine
-from sqlalchemy.orm import sessionmaker
-from helpers.session_context import SessionContext 
-from managers import LandManager
-from managers import FlavorManager
-from models import Plant, Base
-import configparser
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.exceptions import RequestValidationError
-from database import get_db, engine
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from apis.fs_farm_api.v1_0.routers import fs_farm_api_v1_0_router
 import current_runtime
-import logging
- 
+from database import get_db, engine
+from helpers.session_context import SessionContext
+from models import Base
+from apis.fs_farm_api.v1_0.routers import fs_farm_api_v1_0_router
+
 logging.basicConfig(level=logging.INFO)
+
 logging.info('Start Main')
+
 app = FastAPI()
-    
+
 app.include_router(fs_farm_api_v1_0_router)
 
+
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError): 
-    
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError
+):
+    """
+        #TODO add comment
+    """
     return JSONResponse(
-        status_code=400, 
+        status_code=400,
         content={"detail": exc.errors(), "body": exc.body},
     )
- 
+
+
 @app.exception_handler(StarletteHTTPException)
-async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+async def http_exception_handler(
+    request: Request,
+    exc: StarletteHTTPException
+):
+    """
+        #TODO add comment
+    """
     if exc.status_code == 404:
         return JSONResponse(
             status_code=501,
             content={"message": "This is not implemented."}
-        ) 
+        )
     if exc.status_code == 403:
         return JSONResponse(
             status_code=401,
@@ -54,14 +70,23 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
 
 @app.get("/")
 async def read_root():
-	return RedirectResponse(url="/redoc")
+    """
+        #TODO add comment
+    """
+    return RedirectResponse(url="/redoc")
+
 
 @app.on_event("startup")
 async def startup_event():
+    """
+        #TODO add comment
+    """
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
     async for session in get_db():
         session_context = SessionContext(dict(), session)
-        await current_runtime.initialize(session_context) 
+        await current_runtime.initialize(session_context)
         await session.commit()
         break

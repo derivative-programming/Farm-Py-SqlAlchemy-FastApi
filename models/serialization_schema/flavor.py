@@ -1,3 +1,9 @@
+# flavor.py
+
+"""
+    #TODO add comment
+"""
+
 from datetime import datetime
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
@@ -34,5 +40,4 @@ class FlavorSchema(SQLAlchemyAutoSchema):
     pac_id = fields.Int()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
-    pac_code_peek = schema_UUIDType #PacID
-
+    pac_code_peek = schema_UUIDType  # PacID

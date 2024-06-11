@@ -19,26 +19,26 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowLandPlantListInitReportResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    some_int_val:int = 0
-    some_big_int_val:int = 0
-    some_bit_val:bool = False
-    is_edit_allowed:bool = False
-    is_delete_allowed:bool = False
-    some_float_val:float = 0
-    some_decimal_val:Decimal = Decimal(0)
-    some_min_utc_date_time_val:datetime = TypeConversion.get_default_date_time()
-    some_min_date_val:date = TypeConversion.get_default_date()
-    some_money_val:Decimal = Decimal(0)
-    some_n_var_char_val:str = ""
-    some_var_char_val:str = ""
-    some_text_val:str = ""
-    some_phone_number:str = ""
-    some_email_address:str = ""
-    flavor_code:uuid.UUID =  uuid.UUID(int=0)
-    land_code:uuid.UUID =  uuid.UUID(int=0)
-    tac_code:uuid.UUID =  uuid.UUID(int=0)
-    land_name:str = ""
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    some_int_val: int = 0
+    some_big_int_val: int = 0
+    some_bit_val: bool = False
+    is_edit_allowed: bool = False
+    is_delete_allowed: bool = False
+    some_float_val: float = 0
+    some_decimal_val: Decimal = Decimal(0)
+    some_min_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+    some_min_date_val: date = TypeConversion.get_default_date()
+    some_money_val: Decimal = Decimal(0)
+    some_n_var_char_val: str = ""
+    some_var_char_val: str = ""
+    some_text_val: str = ""
+    some_phone_number: str = ""
+    some_email_address: str = ""
+    flavor_code: uuid.UUID =  uuid.UUID(int=0)
+    land_code: uuid.UUID =  uuid.UUID(int=0)
+    tac_code: uuid.UUID =  uuid.UUID(int=0)
+    land_name: str = ""
     def __init__(self):
         pass
     def to_json(self):
@@ -68,7 +68,7 @@ class FlowLandPlantListInitReportResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowLandPlantListInitReport, self).__init__(session_context)
     async def process(self,
         land_bus_obj: LandBusObj,
@@ -81,22 +81,22 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
 
         )
         super()._throw_queued_validation_errors()
-        some_int_val_output:int = 0
-        some_big_int_val_output:int = 0
-        some_bit_val_output:bool = False
-        is_edit_allowed_output:bool = False
-        is_delete_allowed_output:bool = False
-        some_float_val_output:float = 0
-        some_decimal_val_output:Decimal = Decimal(0)
-        some_min_utc_date_time_val_output:datetime = TypeConversion.get_default_date_time()
-        some_min_date_val_output:date = TypeConversion.get_default_date()
-        some_money_val_output:Decimal = 0
-        some_n_var_char_val_output:str = ""
-        some_var_char_val_output:str = ""
-        some_text_val_output:str = ""
-        some_phone_number_output:str = ""
-        some_email_address_output:str = "" 
-        land_name_output:str = "" 
+        some_int_val_output: int = 0
+        some_big_int_val_output: int = 0
+        some_bit_val_output: bool = False
+        is_edit_allowed_output: bool = False
+        is_delete_allowed_output: bool = False
+        some_float_val_output: float = 0
+        some_decimal_val_output: Decimal = Decimal(0)
+        some_min_utc_date_time_val_output: datetime = TypeConversion.get_default_date_time()
+        some_min_date_val_output: date = TypeConversion.get_default_date()
+        some_money_val_output: Decimal = 0
+        some_n_var_char_val_output: str = ""
+        some_var_char_val_output: str = ""
+        some_text_val_output: str = ""
+        some_phone_number_output: str = ""
+        some_email_address_output: str = ""
+        land_name_output: str = ""
 
         flavor_bus_obj = FlavorBusObj(land_bus_obj.session)
         await flavor_bus_obj.load(flavor_enum=FlavorEnum.Unknown)

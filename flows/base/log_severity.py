@@ -1,5 +1,12 @@
-from enum import Enum 
-    
+# flows/base/log_severity.py
+
+"""
+    #TODO add comment
+"""
+
+from enum import Enum
+
+
 class LogSeverity(Enum):
     error_occurred = 0
     warning = 1

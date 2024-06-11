@@ -26,8 +26,8 @@ class TestOrgCustomerSchema:
         "organization_id": 2,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# CustomerID
-        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# OrganizationID
+        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # CustomerID
+        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrganizationID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }

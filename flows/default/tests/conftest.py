@@ -1,8 +1,14 @@
+# flows/default/tests/conftest.py
+
+"""
+    #TODO add comment
+"""
+
 import asyncio
 from decimal import Decimal
 import uuid
 import pytest
-import pytest_asyncio 
+import pytest_asyncio
 import time
 from typing import AsyncGenerator
 from decimal import Decimal
@@ -15,16 +21,16 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.land_add_plant import FlowLandAddPlant, FlowLandAddPlantResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.land import LandFactory 
-from models import Base 
-from services.db_config import db_dialect 
+from models.factory.land import LandFactory
+from models import Base
+from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4 
+from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -42,11 +48,11 @@ def event_loop() -> asyncio.AbstractEventLoop:
 def engine():
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
-    engine.sync_engine.dispose() 
+    engine.sync_engine.dispose()
 
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
-    
+
     @event.listens_for(engine.sync_engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()
@@ -74,4 +80,4 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
                     connection.sync_connection.begin_nested()
             yield session
             await session.flush()
-            await session.rollback()   
+            await session.rollback()

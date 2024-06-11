@@ -11,7 +11,7 @@ class ReportItemPacUserDateGreaterThanFilterList():
     date_greater_than_filter_lookup_enum_name: str = ""
     date_greater_than_filter_name: str = ""
 
-    def load_data_provider_dict(self,data:dict):
+    def load_data_provider_dict(self, data: dict):
             self.date_greater_than_filter_code = TypeConversion.get_uuid(data["date_greater_than_filter_code"])
             self.date_greater_than_filter_day_count = int(data["date_greater_than_filter_day_count"])
             self.date_greater_than_filter_description = str(data["date_greater_than_filter_description"])

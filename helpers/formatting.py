@@ -1,6 +1,11 @@
+# helpers/formatting.py
+
+"""
+    #TODO add comment
+"""
 
 
-def snake_to_camel(snake_str:str) -> str:
+def snake_to_camel(snake_str: str) -> str:
     components = snake_str.split('_')
     # Capitalize the first letter of each component except the first one,
     # join them together, and prepend the first component.

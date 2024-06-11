@@ -27,12 +27,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestOrgApiKeyBusObj:
     @pytest_asyncio.fixture(scope="function")
-    async def org_api_key_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def org_api_key_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         return OrgApiKeyManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_bus_obj(self, session):
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
         return OrgApiKeyBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_org_api_key(self, session):
@@ -65,32 +65,32 @@ class TestOrgApiKeyBusObj:
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_obj(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         await org_api_key_bus_obj.load(org_api_key_obj_instance=new_org_api_key)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key) == True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key) is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_id(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         await org_api_key_bus_obj.load(org_api_key_id=new_org_api_key.org_api_key_id)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  == True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_code(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         await org_api_key_bus_obj.load(code=new_org_api_key.code)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  == True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_json(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         org_api_key_json = org_api_key_manager.to_json(new_org_api_key)
         await org_api_key_bus_obj.load(json_data=org_api_key_json)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  == True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_dict(self, session, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         logger.info("test_load_with_org_api_key_dict 1")
         org_api_key_dict = org_api_key_manager.to_dict(new_org_api_key)
         logger.info(org_api_key_dict)
         await org_api_key_bus_obj.load(org_api_key_dict=org_api_key_dict)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  == True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
     @pytest.mark.asyncio
     async def test_get_nonexistent_org_api_key(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         # Test retrieving a nonexistent org_api_key raises an exception
         await org_api_key_bus_obj.load(org_api_key_id=-1)
-        assert org_api_key_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
+        assert org_api_key_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_org_api_key(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         # Test updating a org_api_key's data
@@ -100,7 +100,7 @@ class TestOrgApiKeyBusObj:
         org_api_key_bus_obj.code = new_code
         await org_api_key_bus_obj.save()
         new_org_api_key = await org_api_key_manager.get_by_id(new_org_api_key.org_api_key_id)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  == True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
     @pytest.mark.asyncio
     async def test_delete_org_api_key(self, org_api_key_manager:OrgApiKeyManager, org_api_key_bus_obj:OrgApiKeyBusObj, new_org_api_key:OrgApiKey):
         assert new_org_api_key.org_api_key_id is not None

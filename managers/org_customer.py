@@ -55,13 +55,13 @@ class OrgCustomerManager:
 #
 #         if join_condition is not None:
 #             query = select(OrgCustomer
-#                         ,Customer #customer_id
+#                         , Customer #customer_id
 #                         ,Organization #organization_id
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(OrgCustomer)
         query = select(OrgCustomer
-                    ,Customer #customer_id
+                    , Customer #customer_id
                     ,Organization #organization_id
                     )
 
@@ -94,18 +94,18 @@ class OrgCustomerManager:
 
             result.append(org_customer)
         return result
-    def _first_or_none(self,org_customer_list:List) -> OrgCustomer:
+    def _first_or_none(self,org_customer_list: List) -> OrgCustomer:
         return org_customer_list[0] if org_customer_list else None
     async def get_by_id(self, org_customer_id: int) -> Optional[OrgCustomer]:
         logging.info("OrgCustomerManager.get_by_id start org_customer_id:" + str(org_customer_id))
         if not isinstance(org_customer_id, int):
-            raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
+            raise TypeError("The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
         query_filter = OrgCustomer.org_customer_id == org_customer_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgCustomer]:
-        logging.info(f"OrgCustomerManager.get_by_code {code}")
-        query_filter = OrgCustomer.code==code
+        logging.info("OrgCustomerManager.get_by_code {code}")
+        query_filter = OrgCustomer.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, org_customer: OrgCustomer, **kwargs) -> Optional[OrgCustomer]:
@@ -120,9 +120,9 @@ class OrgCustomerManager:
             await self._session_context.session.flush()
         return org_customer
     async def delete(self, org_customer_id: int):
-        logging.info(f"OrgCustomerManager.delete {org_customer_id}")
+        logging.info("OrgCustomerManager.delete {org_customer_id}")
         if not isinstance(org_customer_id, int):
-            raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
+            raise TypeError("The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
         org_customer = await self.get_by_id(org_customer_id)
         if not org_customer:
             raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
@@ -181,10 +181,10 @@ class OrgCustomerManager:
         for update in org_customer_updates:
             org_customer_id = update.get("org_customer_id")
             if not isinstance(org_customer_id, int):
-                raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
+                raise TypeError("The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
             if not org_customer_id:
                 continue
-            logging.info(f"OrgCustomerManager.update_bulk org_customer_id:{org_customer_id}")
+            logging.info("OrgCustomerManager.update_bulk org_customer_id:{org_customer_id}")
             org_customer = await self.get_by_id(org_customer_id)
             if not org_customer:
                 raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
@@ -201,7 +201,7 @@ class OrgCustomerManager:
         """Delete multiple org_customers by their IDs."""
         for org_customer_id in org_customer_ids:
             if not isinstance(org_customer_id, int):
-                raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
+                raise TypeError("The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
             org_customer = await self.get_by_id(org_customer_id)
             if not org_customer:
                 raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
@@ -228,10 +228,10 @@ class OrgCustomerManager:
         await self._session_context.session.refresh(org_customer)
         return org_customer
     async def exists(self, org_customer_id: int) -> bool:
-        logging.info(f"OrgCustomerManager.exists {org_customer_id}")
+        logging.info("OrgCustomerManager.exists {org_customer_id}")
         """Check if a org_customer with the given ID exists."""
         if not isinstance(org_customer_id, int):
-            raise TypeError(f"The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
+            raise TypeError("The org_customer_id must be an integer, got {type(org_customer_id)} instead.")
         org_customer = await self.get_by_id(org_customer_id)
         return bool(org_customer)
     def is_equal(self, org_customer1:OrgCustomer, org_customer2:OrgCustomer) -> bool:
@@ -247,17 +247,17 @@ class OrgCustomerManager:
         dict2 = self.to_dict(org_customer2)
         return dict1 == dict2
 
-    async def get_by_customer_id(self, customer_id: int) -> List[OrgCustomer]: # CustomerID
+    async def get_by_customer_id(self, customer_id: int) -> List[OrgCustomer]:  # CustomerID
         logging.info("OrgCustomerManager.get_by_customer_id")
         if not isinstance(customer_id, int):
-            raise TypeError(f"The org_customer_id must be an integer, got {type(customer_id)} instead.")
+            raise TypeError("The org_customer_id must be an integer, got {type(customer_id)} instead.")
         query_filter = OrgCustomer.customer_id == customer_id
         query_results = await self._run_query(query_filter)
         return query_results
-    async def get_by_organization_id(self, organization_id: int) -> List[OrgCustomer]: # OrganizationID
+    async def get_by_organization_id(self, organization_id: int) -> List[OrgCustomer]:  # OrganizationID
         logging.info("OrgCustomerManager.get_by_organization_id")
         if not isinstance(organization_id, int):
-            raise TypeError(f"The org_customer_id must be an integer, got {type(organization_id)} instead.")
+            raise TypeError("The org_customer_id must be an integer, got {type(organization_id)} instead.")
         query_filter = OrgCustomer.organization_id == organization_id
         query_results = await self._run_query(query_filter)
         return query_results

@@ -20,7 +20,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -33,6 +33,6 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequestFactoryAsync:
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         model_instance = await LandUserPlantMultiSelectToEditablePostModelRequestFactory.create_async(session=session)
-        assert isinstance(model_instance,LandUserPlantMultiSelectToEditablePostModelRequest)
-        assert isinstance(model_instance.plant_code_list_csv,str)
+        assert isinstance(model_instance, LandUserPlantMultiSelectToEditablePostModelRequest)
+        assert isinstance(model_instance.plant_code_list_csv, str)
 

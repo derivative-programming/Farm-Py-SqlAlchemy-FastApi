@@ -15,13 +15,13 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
-    success:bool = Field(default=False, description="Success")
-    message:str = Field(default="", description="Message")
-    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
-    tac_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+    success: bool = Field(default=False, description="Success")
+    message: str = Field(default="", description="Message")
+    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    tac_code: uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
                                       description="Tac Code")
 
-    def load_flow_response(self,data:FlowCustomerUserLogOutInitObjWFResult):
+    def load_flow_response(self, data:FlowCustomerUserLogOutInitObjWFResult):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -30,9 +30,9 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session_context:SessionContext,
-                        customer_code:uuid,
-                        response:CustomerUserLogOutInitObjWFGetInitModelResponse) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
+                        session_context: SessionContext,
+                        customer_code: uuid,
+                        response: CustomerUserLogOutInitObjWFGetInitModelResponse) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
         try:
             logging.info("loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")
             customer_bus_obj = CustomerBusObj(session_context)

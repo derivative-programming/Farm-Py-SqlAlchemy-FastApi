@@ -33,12 +33,12 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         async def mock_generate_list(
-			context_code:uuid,
+			context_code: uuid,
 
-			page_number:int,
-			item_count_per_page:int,
-			order_by_column_name:str,
-			order_by_descending:bool,
+			page_number: int,
+			item_count_per_page: int,
+			order_by_column_name: str,
+			order_by_descending: bool,
             ):
             result = list()
             return result
@@ -68,12 +68,12 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
         async def mock_generate_list(
-			context_code:uuid,
+			context_code: uuid,
 
-			page_number:int,
-			item_count_per_page:int,
-			order_by_column_name:str,
-			order_by_descending:bool,
+			page_number: int,
+			item_count_per_page: int,
+			order_by_column_name: str,
+			order_by_descending: bool,
             ):
             result = list()
             return result
@@ -102,12 +102,12 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
     @pytest.mark.asyncio
     async def test_generate_invalid_page_number(self, session):
         async def mock_generate_list(
-			context_code:uuid,
+			context_code: uuid,
 
-			page_number:int,
-			item_count_per_page:int,
-			order_by_column_name:str,
-			order_by_descending:bool,
+			page_number: int,
+			item_count_per_page: int,
+			order_by_column_name: str,
+			order_by_descending: bool,
             ):
             result = list()
             return result
@@ -134,7 +134,7 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
                     order_by_descending
                 )
     @pytest.mark.asyncio
-    async def test_build_csv(self,session):
+    async def test_build_csv(self, session):
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserDateGreaterThanFilterList(session_context)
         test_data = [ReportItemPacUserDateGreaterThanFilterList(), ReportItemPacUserDateGreaterThanFilterList()]  # Replace with sample data
@@ -145,7 +145,7 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
         os.remove(file_name)
         # Further checks can be added to verify the content of the file
     @pytest.mark.asyncio
-    async def test_read_csv(self,session):
+    async def test_read_csv(self, session):
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserDateGreaterThanFilterList(session_context)
         test_data = [ReportItemPacUserDateGreaterThanFilterList(), ReportItemPacUserDateGreaterThanFilterList()]
@@ -157,7 +157,7 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
         assert all(isinstance(item, ReportItemPacUserDateGreaterThanFilterList) for item in result)
         os.remove(file_name)
         # Further checks can be added to verify the data in the objects
-    def test_parse_bool(self,session):
+    def test_parse_bool(self, session):
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserDateGreaterThanFilterList(session_context)
         # True values

@@ -1,8 +1,14 @@
-from datetime import datetime 
+# plant.py
+
+"""
+    #TODO add comment
+"""
+
+from datetime import datetime
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
-from sqlalchemy.dialects.postgresql import UUID 
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
@@ -19,11 +25,11 @@ elif db_dialect == 'mssql':
     schema_UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     schema_UUIDType = fields.Str()
- 
+
 class PlantSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Plant
-    
+
     plant_id = fields.Int()
     code = schema_UUIDType
     last_change_code = fields.Int()
@@ -50,7 +56,7 @@ class PlantSchema(SQLAlchemyAutoSchema):
     some_var_char_val = fields.Str()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
-  
-    flvr_foreign_key_code_peek = schema_UUIDType  #FlvrForeignKeyID
-    land_code_peek = schema_UUIDType #LandID
+
+    flvr_foreign_key_code_peek = schema_UUIDType   # FlvrForeignKeyID
+    land_code_peek = schema_UUIDType  # LandID
 #endset

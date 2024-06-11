@@ -18,7 +18,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowLandUserPlantMultiSelectToNotEditableResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -31,11 +31,11 @@ class FlowLandUserPlantMultiSelectToNotEditableResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelectToNotEditable):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowLandUserPlantMultiSelectToNotEditable, self).__init__(session_context)
     async def process(self,
         land_bus_obj: LandBusObj,
-        plant_code_list_csv:str = "",
+        plant_code_list_csv: str = "",
 
         ) -> FlowLandUserPlantMultiSelectToNotEditableResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")

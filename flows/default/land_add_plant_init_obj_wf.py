@@ -18,26 +18,26 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowLandAddPlantInitObjWFResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    request_flavor_code:uuid.UUID =  uuid.UUID(int=0)
-    request_other_flavor:str = ""
-    request_some_int_val:int = 0
-    request_some_big_int_val:int = 0
-    request_some_bit_val:bool = False
-    request_is_delete_allowed:bool = False
-    request_is_edit_allowed:bool = False
-    request_some_float_val:float = 0
-    request_some_decimal_val:Decimal = Decimal(0)
-    request_some_utc_date_time_val:datetime = TypeConversion.get_default_date_time()
-    request_some_date_val:date = TypeConversion.get_default_date()
-    request_some_money_val:Decimal = Decimal(0)
-    request_some_n_var_char_val:str = ""
-    request_some_var_char_val:str = ""
-    request_some_text_val:str = ""
-    request_some_phone_number:str = ""
-    request_some_email_address:str = ""
-    land_name:str = ""
-    tac_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    request_flavor_code: uuid.UUID =  uuid.UUID(int=0)
+    request_other_flavor: str = ""
+    request_some_int_val: int = 0
+    request_some_big_int_val: int = 0
+    request_some_bit_val: bool = False
+    request_is_delete_allowed: bool = False
+    request_is_edit_allowed: bool = False
+    request_some_float_val: float = 0
+    request_some_decimal_val: Decimal = Decimal(0)
+    request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+    request_some_date_val: date = TypeConversion.get_default_date()
+    request_some_money_val: Decimal = Decimal(0)
+    request_some_n_var_char_val: str = ""
+    request_some_var_char_val: str = ""
+    request_some_text_val: str = ""
+    request_some_phone_number: str = ""
+    request_some_email_address: str = ""
+    land_name: str = ""
+    tac_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -69,7 +69,7 @@ class FlowLandAddPlantInitObjWFResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowLandAddPlantInitObjWF, self).__init__(session_context)
     async def process(self,
         land_bus_obj: LandBusObj,
@@ -83,23 +83,23 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
         )
         super()._throw_queued_validation_errors()
         request_flavor_code_output:uuid = uuid.UUID(int=0)
-        request_other_flavor_output:str = ""
-        request_some_int_val_output:int = 0
-        request_some_big_int_val_output:int = 0
-        request_some_bit_val_output:bool = False
-        request_is_delete_allowed_output:bool = False
-        request_is_edit_allowed_output:bool = False
-        request_some_float_val_output:float = 0
-        request_some_decimal_val_output:Decimal = Decimal(0)
-        request_some_utc_date_time_val_output:datetime = TypeConversion.get_default_date_time()
-        request_some_date_val_output:date = TypeConversion.get_default_date()
-        request_some_money_val_output:Decimal = 0
-        request_some_n_var_char_val_output:str = ""
-        request_some_var_char_val_output:str = ""
-        request_some_text_val_output:str = ""
-        request_some_phone_number_output:str = ""
-        request_some_email_address_output:str = ""
-        land_name_output:str = ""
+        request_other_flavor_output: str = ""
+        request_some_int_val_output: int = 0
+        request_some_big_int_val_output: int = 0
+        request_some_bit_val_output: bool = False
+        request_is_delete_allowed_output: bool = False
+        request_is_edit_allowed_output: bool = False
+        request_some_float_val_output: float = 0
+        request_some_decimal_val_output: Decimal = Decimal(0)
+        request_some_utc_date_time_val_output: datetime = TypeConversion.get_default_date_time()
+        request_some_date_val_output: date = TypeConversion.get_default_date()
+        request_some_money_val_output: Decimal = 0
+        request_some_n_var_char_val_output: str = ""
+        request_some_var_char_val_output: str = ""
+        request_some_text_val_output: str = ""
+        request_some_phone_number_output: str = ""
+        request_some_email_address_output: str = ""
+        land_name_output: str = ""
         tac_code_output:uuid = uuid.UUID(int=0)
 
         # TODO: add flow logic

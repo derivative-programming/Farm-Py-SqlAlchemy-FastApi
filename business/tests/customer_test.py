@@ -27,12 +27,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestCustomerBusObj:
     @pytest_asyncio.fixture(scope="function")
-    async def customer_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def customer_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         return CustomerManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def customer_bus_obj(self, session):
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
         return CustomerBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_customer(self, session):
@@ -40,7 +40,7 @@ class TestCustomerBusObj:
         # Assuming CustomerFactory.create() is an async function
         return await CustomerFactory.create_async(session)
     @pytest.mark.asyncio
-    async def test_create_customer(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_create_customer(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         # Test creating a new customer
         assert customer_bus_obj.customer_id is None
         # assert isinstance(customer_bus_obj.customer_id, int)
@@ -83,36 +83,36 @@ class TestCustomerBusObj:
         assert isinstance(customer_bus_obj.utc_offset_in_minutes, int)
         assert customer_bus_obj.zip == "" or isinstance(customer_bus_obj.zip, str)
     @pytest.mark.asyncio
-    async def test_load_with_customer_obj(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_load_with_customer_obj(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         await customer_bus_obj.load(customer_obj_instance=new_customer)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer) == True
+        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer) is True
     @pytest.mark.asyncio
-    async def test_load_with_customer_id(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_load_with_customer_id(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         await customer_bus_obj.load(customer_id=new_customer.customer_id)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  == True
+        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
     @pytest.mark.asyncio
-    async def test_load_with_customer_code(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_load_with_customer_code(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         await customer_bus_obj.load(code=new_customer.code)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  == True
+        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
     @pytest.mark.asyncio
-    async def test_load_with_customer_json(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_load_with_customer_json(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         customer_json = customer_manager.to_json(new_customer)
         await customer_bus_obj.load(json_data=customer_json)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  == True
+        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
     @pytest.mark.asyncio
-    async def test_load_with_customer_dict(self, session, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_load_with_customer_dict(self, session, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         logger.info("test_load_with_customer_dict 1")
         customer_dict = customer_manager.to_dict(new_customer)
         logger.info(customer_dict)
         await customer_bus_obj.load(customer_dict=customer_dict)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  == True
+        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
     @pytest.mark.asyncio
-    async def test_get_nonexistent_customer(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_get_nonexistent_customer(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         # Test retrieving a nonexistent customer raises an exception
         await customer_bus_obj.load(customer_id=-1)
-        assert customer_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
+        assert customer_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
-    async def test_update_customer(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_update_customer(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         # Test updating a customer's data
         new_customer = await customer_manager.get_by_id(new_customer.customer_id)
         new_code = generate_uuid()
@@ -120,9 +120,9 @@ class TestCustomerBusObj:
         customer_bus_obj.code = new_code
         await customer_bus_obj.save()
         new_customer = await customer_manager.get_by_id(new_customer.customer_id)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  == True
+        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
     @pytest.mark.asyncio
-    async def test_delete_customer(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer):
+    async def test_delete_customer(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer):
         assert new_customer.customer_id is not None
         assert customer_bus_obj.customer_id is None
         await customer_bus_obj.load(customer_id=new_customer.customer_id)
@@ -132,9 +132,9 @@ class TestCustomerBusObj:
         assert new_customer is None
 
     @pytest.mark.asyncio
-    async def test_build_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer, session:AsyncSession):
+    async def test_build_customer_role(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 
@@ -150,9 +150,9 @@ class TestCustomerBusObj:
         assert customer_role_bus_obj.customer_role_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer, session:AsyncSession):
+    async def test_get_all_customer_role(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 

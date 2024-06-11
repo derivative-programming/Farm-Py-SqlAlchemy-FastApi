@@ -27,7 +27,7 @@ class ReportItemPlantUserDetails():
     random_property_updates_link_plant_code: uuid.UUID =  uuid.UUID(int=0)
     back_to_dashboard_link_tac_code: uuid.UUID =  uuid.UUID(int=0)
 
-    def load_data_provider_dict(self,data:dict):
+    def load_data_provider_dict(self, data: dict):
             self.flavor_name = str(data["flavor_name"])
             self.is_delete_allowed = bool(data["is_delete_allowed"])
             self.is_edit_allowed = bool(data["is_edit_allowed"])

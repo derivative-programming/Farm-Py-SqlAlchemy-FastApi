@@ -6,15 +6,15 @@ from factory import Faker
 from ..customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequest
 from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 class CustomerBuildTempApiKeyPostModelRequestFactory(factory.base.Factory):
     class Meta:
         model = CustomerBuildTempApiKeyPostModelRequest
-    force_error_message:str = ""
+    force_error_message: str = ""
 
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> CustomerBuildTempApiKeyPostModelRequest:
+    def _build(cls, model_class, session = None, *args, **kwargs) -> CustomerBuildTempApiKeyPostModelRequest:
         if session is None:
                 obj2 = model_class(*args, **kwargs)
                 return obj2
@@ -23,15 +23,15 @@ class CustomerBuildTempApiKeyPostModelRequestFactory(factory.base.Factory):
 
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> CustomerBuildTempApiKeyPostModelRequest:
+    def _create(cls, model_class, session = None, *args, **kwargs) -> CustomerBuildTempApiKeyPostModelRequest:
 
         obj = model_class(*args, **kwargs)
 
         return obj
     @classmethod
-    async def create_async(cls, session:AsyncSession, *args, **kwargs) -> CustomerBuildTempApiKeyPostModelRequest:
+    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> CustomerBuildTempApiKeyPostModelRequest:
 
-        obj = CustomerBuildTempApiKeyPostModelRequestFactory.build(session=None, *args, **kwargs)
+        obj = CustomerBuildTempApiKeyPostModelRequestFactory.build(session = None, *args, **kwargs)
 
         return obj
 

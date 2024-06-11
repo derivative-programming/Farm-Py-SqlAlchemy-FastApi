@@ -20,7 +20,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -33,10 +33,10 @@ class TestTacRegisterPostModelRequestFactoryAsync:
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         model_instance = await TacRegisterPostModelRequestFactory.create_async(session=session)
-        assert isinstance(model_instance,TacRegisterPostModelRequest)
-        assert isinstance(model_instance.email,str)
-        assert isinstance(model_instance.password,str)
-        assert isinstance(model_instance.confirm_password,str)
-        assert isinstance(model_instance.first_name,str)
-        assert isinstance(model_instance.last_name,str)
+        assert isinstance(model_instance, TacRegisterPostModelRequest)
+        assert isinstance(model_instance.email, str)
+        assert isinstance(model_instance.password, str)
+        assert isinstance(model_instance.confirm_password, str)
+        assert isinstance(model_instance.first_name, str)
+        assert isinstance(model_instance.last_name, str)
 

@@ -50,10 +50,10 @@ class TestCustomerRoleFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.code, str)
     def test_last_change_code_default_on_build(self, session):
-        customer_role:CustomerRole = CustomerRoleFactory.build(session=session)
+        customer_role: CustomerRole = CustomerRoleFactory.build(session=session)
         assert customer_role.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        customer_role:CustomerRole = CustomerRoleFactory.create(session=session)
+        customer_role: CustomerRole = CustomerRoleFactory.create(session=session)
         assert customer_role.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         customer_role = CustomerRoleFactory.create(session=session)
@@ -144,7 +144,7 @@ class TestCustomerRoleFactory:
             assert isinstance(customer_role.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
-        #isPlaceholder,
+        # isPlaceholder,
         #placeholder,
         #roleID
         if db_dialect == 'postgresql':
@@ -180,7 +180,7 @@ class TestCustomerRoleFactory:
             assert isinstance(customer_role.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
-        #isPlaceholder,
+        # isPlaceholder,
         #placeholder,
         #RoleID
         if db_dialect == 'postgresql':
@@ -191,8 +191,8 @@ class TestCustomerRoleFactory:
             assert isinstance(customer_role.role_code_peek, str)
 
         assert customer_role.customer_id == 0
-        assert customer_role.is_placeholder == False
-        assert customer_role.placeholder == False
+        assert customer_role.is_placeholder is False
+        assert customer_role.placeholder is False
         assert customer_role.role_id == 0
 
     def test_last_change_code_concurrency(self, session):
@@ -213,7 +213,7 @@ class TestCustomerRoleFactory:
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
         session.rollback()
-    #isPlaceholder,
+    # isPlaceholder,
     #placeholder,
     #RoleID
     def test_invalid_role_id(self, session):

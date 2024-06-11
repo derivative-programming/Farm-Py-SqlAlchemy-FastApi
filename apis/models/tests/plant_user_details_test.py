@@ -19,7 +19,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -32,7 +32,7 @@ class PlantUserDetailsGetModelRequestFactoryAsync:
     @pytest.mark.asyncio
     async def test_report_generation(self, session):
         model_instance = await PlantUserDetailsGetModelRequestFactory.create_async(session=session)
-        assert isinstance(model_instance,PlantUserDetailsGetModelRequest)
+        assert isinstance(model_instance, PlantUserDetailsGetModelRequest)
 
-        assert isinstance(model_instance.page_number,int)
-        assert isinstance(model_instance.item_count_per_page,int)
+        assert isinstance(model_instance.page_number, int)
+        assert isinstance(model_instance.item_count_per_page, int)

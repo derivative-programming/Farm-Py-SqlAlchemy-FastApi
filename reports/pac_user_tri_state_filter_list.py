@@ -11,18 +11,18 @@ from datetime import date, datetime
 from decimal import Decimal
 from helpers import SessionContext,TypeConversion
 class ReportManagerPacUserTriStateFilterList():
-    _session_context:SessionContext
-    def __init__(self, session_context:SessionContext):
+    _session_context: SessionContext
+    def __init__(self, session_context: SessionContext):
         self._session_context = session_context
         if session_context.session is None:
             raise TypeError("ReportManagerPacUserTriStateFilterList.init session_context has no session assigned")
     async def generate(self,
-                pac_code:uuid,
+                pac_code: uuid,
 
-                page_number:int = 1,
-                item_count_per_page:int = 1,
-                order_by_column_name:str ="",
-                order_by_descending:bool = False,
+                page_number: int = 1,
+                item_count_per_page: int = 1,
+                order_by_column_name: str ="",
+                order_by_descending: bool = False,
                 ) -> List[ReportItemPacUserTriStateFilterList]:
         logging.info('ReportManagerPacUserTriStateFilterList.generate Start')
         role_required = ""
@@ -50,7 +50,7 @@ class ReportManagerPacUserTriStateFilterList():
         logging.info("ReportManagerPacUserTriStateFilterList.generate Results: " + json.dumps(dataList))
         logging.info('ReportManagerPacUserTriStateFilterList.generate End')
         return result
-    async def build_csv(self, file_name:str, data_list:List[ReportItemPacUserTriStateFilterList]):
+    async def build_csv(self, file_name: str, data_list: List[ReportItemPacUserTriStateFilterList]):
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=vars(ReportItemPacUserTriStateFilterList()).keys(), quoting=csv.QUOTE_ALL)
             writer.writeheader()
@@ -58,7 +58,7 @@ class ReportManagerPacUserTriStateFilterList():
                 writer.writerow(obj.__dict__)
     def _parse_bool(self, value):
         return value.lower() in ['true', '1', 'yes']
-    async def read_csv(self, file_name:str) -> List[ReportItemPacUserTriStateFilterList]:
+    async def read_csv(self, file_name: str) -> List[ReportItemPacUserTriStateFilterList]:
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)

@@ -11,12 +11,12 @@ from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel,SnakeModel
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 import logging
 from apis.models.validation_error import ValidationErrorItem
 from sqlalchemy.ext.asyncio import AsyncSession
 class CustomerUserLogOutPostModelRequest(CamelModel):
-    force_error_message:str = Field(default="", description="Force Error Message")
+    force_error_message: str = Field(default="", description="Force Error Message")
 
     class Config:
         json_encoders = {
@@ -28,19 +28,19 @@ class CustomerUserLogOutPostModelRequest(CamelModel):
         data = json.loads(self.model_dump_json() )
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
 class CustomerUserLogOutPostModelResponse(PostResponse):
 
-    def load_flow_response(self,data:FlowCustomerUserLogOutResult):
+    def load_flow_response(self, data:FlowCustomerUserLogOutResult):
         placeholder = "" #to avoid pass line
 
     async def process_request(self,
-                        session_context:SessionContext,
-                        customer_code:uuid,
-                        request:CustomerUserLogOutPostModelRequest):
+                        session_context: SessionContext,
+                        customer_code: uuid,
+                        request: CustomerUserLogOutPostModelRequest):
         try:
             logging.info("loading model...CustomerUserLogOutPostModelResponse")
             customer_bus_obj = CustomerBusObj(session_context)

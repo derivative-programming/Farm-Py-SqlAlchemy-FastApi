@@ -1,3 +1,9 @@
+# plant_test.py
+
+"""
+    #TODO add comment
+"""
+
 import json
 import pytest
 import pytz
@@ -5,11 +11,11 @@ from models import Plant
 from datetime import datetime
 from decimal import Decimal
 from models.serialization_schema import PlantSchema
-from models.factory import PlantFactory 
+from models.factory import PlantFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
-  
-  
+
+
 @pytest.fixture(scope="function")
 def plant(session):
     # Use the PlantFactory to create and return a plant instance
@@ -17,7 +23,7 @@ def plant(session):
 
 class TestPlantSchema:
 
-        
+
     # Sample data for a Plant instance
     sample_data = {
         "plant_id": 1,
@@ -47,14 +53,14 @@ class TestPlantSchema:
         "some_var_char_val": "World",
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 #endset
-        "flvr_foreign_key_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# FlvrForeignKeyID
-        "land_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# LandID
+        "flvr_foreign_key_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # FlvrForeignKeyID
+        "land_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # LandID
 #endset
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
- 
 
-    def test_plant_serialization(self, plant:Plant, session):
+
+    def test_plant_serialization(self, plant: Plant, session):
         schema = PlantSchema()
         result = schema.dump(plant)
 
@@ -91,11 +97,11 @@ class TestPlantSchema:
         assert result['land_code_peek'] == plant.land_code_peek # LandID
 #endset
 
-    def test_plant_deserialization(self, plant:Plant, session):
+    def test_plant_deserialization(self, plant: Plant, session):
         schema = PlantSchema()
         serialized_data = schema.dump(plant)
         deserialized_data = schema.load(serialized_data)
- 
+
 
         assert deserialized_data['code'] == plant.code
         assert deserialized_data['last_change_code'] == plant.last_change_code
@@ -130,10 +136,10 @@ class TestPlantSchema:
         assert deserialized_data['land_code_peek'] == plant.land_code_peek # LandID
 #endset
 
-        new_plant = Plant(**deserialized_data) 
+        new_plant = Plant(**deserialized_data)
 
         assert isinstance(new_plant, Plant)
-                
+
         # Now compare the new_plant attributes with the plant attributes
         assert new_plant.code == plant.code
         assert new_plant.last_change_code == plant.last_change_code
@@ -166,22 +172,22 @@ class TestPlantSchema:
         assert new_plant.last_update_utc_date_time.isoformat() == plant.last_update_utc_date_time.isoformat()
 #endset
 
-        assert new_plant.flvr_foreign_key_code_peek == plant.flvr_foreign_key_code_peek  #FlvrForeignKeyID
-        assert new_plant.land_code_peek == plant.land_code_peek #LandID
+        assert new_plant.flvr_foreign_key_code_peek == plant.flvr_foreign_key_code_peek   # FlvrForeignKeyID
+        assert new_plant.land_code_peek == plant.land_code_peek  # LandID
 #endset
 
-    def test_from_json(self, plant:Plant, session):
+    def test_from_json(self, plant: Plant, session):
         plant_schema = PlantSchema()
-        
+
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
 
         # Deserialize the JSON string to a dictionary
         json_data = json.loads(json_str)
-        
+
         # Load the dictionary to an object
         deserialized_data = plant_schema.load(json_data)
-        
+
         assert str(deserialized_data['plant_id']) == str(self.sample_data['plant_id'])
         assert str(deserialized_data['code']) == str(self.sample_data['code'])
         assert str(deserialized_data['last_change_code']) == str(self.sample_data['last_change_code'])
@@ -209,23 +215,23 @@ class TestPlantSchema:
         assert str(deserialized_data['some_var_char_val']) == str(self.sample_data['some_var_char_val'])
 #endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['flvr_foreign_key_code_peek']) == str(self.sample_data['flvr_foreign_key_code_peek'])   #FlvrForeignKeyID
-        assert str(deserialized_data['land_code_peek']) == str(self.sample_data['land_code_peek']) #LandID
+        assert str(deserialized_data['flvr_foreign_key_code_peek']) == str(self.sample_data['flvr_foreign_key_code_peek'])    # FlvrForeignKeyID
+        assert str(deserialized_data['land_code_peek']) == str(self.sample_data['land_code_peek'])  # LandID
 #endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
-        
-        new_plant = Plant(**deserialized_data) 
+
+        new_plant = Plant(**deserialized_data)
 
         assert isinstance(new_plant, Plant)
 
-    def test_to_json(self, plant:Plant, session): 
+    def test_to_json(self, plant: Plant, session):
             # Convert the Plant instance to JSON using the schema
             plant_schema = PlantSchema()
             plant_dict = plant_schema.dump(plant)
 
             # Convert the plant_dict to JSON string
             plant_json = json.dumps(plant_dict)
- 
+
             # Convert the JSON strings back to dictionaries
             plant_dict_from_json = json.loads(plant_json)
             # sample_dict_from_json = json.loads(self.sample_data)
@@ -266,5 +272,3 @@ class TestPlantSchema:
             assert plant_dict_from_json['flvr_foreign_key_code_peek'] == plant.flvr_foreign_key_code_peek # FlvrForeignKeyID
             assert plant_dict_from_json['land_code_peek'] == plant.land_code_peek # LandID
     #endset
-
-                

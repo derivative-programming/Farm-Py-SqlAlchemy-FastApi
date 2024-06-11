@@ -1,18 +1,19 @@
 import uuid
 import pytest
+import logging
+import json
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch, AsyncMock
-from  .....models import factory as request_factory
+from .....models import factory as request_factory
 from apis import models as apis_models
 from database import get_db
 from helpers.api_token import ApiToken
 import models.factory as model_factorys
 from ..error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogRouterConfig
 from main import app
-import logging
-import json
 # from main import app
+
 
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
@@ -61,10 +62,12 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             json={},
             headers={'API_KEY': 'xxx'}
         )
-        if ErrorLogConfigResolveErrorLogRouterConfig.is_public == True:
+        if ErrorLogConfigResolveErrorLogRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
+
+
 @pytest.mark.asyncio
 async def test_submit_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
@@ -78,10 +81,12 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             json={},
             headers={'API_KEY': ''}
         )
-        if ErrorLogConfigResolveErrorLogRouterConfig.is_public == True:
+        if ErrorLogConfigResolveErrorLogRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
+
+
 @pytest.mark.asyncio
 async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSession):
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
@@ -94,10 +99,12 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             f'/api/v1_0/error-log-config-resolve-error-log/{error_log_code}',
             json={}
         )
-        if ErrorLogConfigResolveErrorLogRouterConfig.is_public == True:
+        if ErrorLogConfigResolveErrorLogRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
+
+
 @pytest.mark.asyncio
 async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
@@ -112,6 +119,8 @@ async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 501
+
+
 @pytest.mark.asyncio
 async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):
     error_log_code = uuid.UUID(int=0)
@@ -126,6 +135,8 @@ async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSess
         )
         assert response.status_code == 200
         assert response.json()['success'] is False
+
+
 @pytest.mark.asyncio
 async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
@@ -139,6 +150,7 @@ async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 405
+
 
 def teardown_module(module):
     app.dependency_overrides.clear()

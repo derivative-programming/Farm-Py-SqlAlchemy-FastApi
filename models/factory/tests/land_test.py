@@ -50,10 +50,10 @@ class TestLandFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(land.code, str)
     def test_last_change_code_default_on_build(self, session):
-        land:Land = LandFactory.build(session=session)
+        land: Land = LandFactory.build(session=session)
         assert land.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        land:Land = LandFactory.create(session=session)
+        land: Land = LandFactory.create(session=session)
         assert land.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         land = LandFactory.create(session=session)
@@ -141,10 +141,10 @@ class TestLandFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(land.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -173,10 +173,10 @@ class TestLandFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(land.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -186,7 +186,7 @@ class TestLandFactory:
 
         assert land.description == ""
         assert land.display_order == 0
-        assert land.is_active == False
+        assert land.is_active is False
         assert land.lookup_enum_name == ""
         assert land.name == ""
         assert land.pac_id == 0
@@ -204,10 +204,10 @@ class TestLandFactory:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     def test_invalid_pac_id(self, session):
         land = LandFactory.create(session=session)
         land.pac_id = 99999

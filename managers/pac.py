@@ -35,7 +35,7 @@ class PacManager:
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
 
-    async def _build_lookup_item(self, pac:Pac):
+    async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
 
         return item
@@ -48,14 +48,14 @@ class PacManager:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description = ""
+            item.description=""
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
 
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val:PacEnum) -> Pac:
+    async def from_enum(self, enum_val: PacEnum) -> Pac:
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Pac.lookup_enum_name==enum_val.value
         query_results = await self._run_query(query_filter)
@@ -105,18 +105,18 @@ class PacManager:
 
             result.append(pac)
         return result
-    def _first_or_none(self,pac_list:List) -> Pac:
+    def _first_or_none(self, pac_list: List) -> Pac:
         return pac_list[0] if pac_list else None
     async def get_by_id(self, pac_id: int) -> Optional[Pac]:
         logging.info("PacManager.get_by_id start pac_id:" + str(pac_id))
         if not isinstance(pac_id, int):
-            raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError("The pac_id must be an integer, got {type(pac_id)} instead.")
         query_filter = Pac.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Pac]:
-        logging.info(f"PacManager.get_by_code {code}")
-        query_filter = Pac.code==code
+        logging.info("PacManager.get_by_code {code}")
+        query_filter = Pac.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, pac: Pac, **kwargs) -> Optional[Pac]:
@@ -131,9 +131,9 @@ class PacManager:
             await self._session_context.session.flush()
         return pac
     async def delete(self, pac_id: int):
-        logging.info(f"PacManager.delete {pac_id}")
+        logging.info("PacManager.delete {pac_id}")
         if not isinstance(pac_id, int):
-            raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError("The pac_id must be an integer, got {type(pac_id)} instead.")
         pac = await self.get_by_id(pac_id)
         if not pac:
             raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
@@ -143,7 +143,7 @@ class PacManager:
         logging.info("PacManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, pac:Pac) -> str:
+    def to_json(self, pac: Pac) -> str:
         logging.info("PacManager.to_json")
         """
         Serialize the Pac object to a JSON string using the PacSchema.
@@ -151,7 +151,7 @@ class PacManager:
         schema = PacSchema()
         pac_data = schema.dump(pac)
         return json.dumps(pac_data)
-    def to_dict(self, pac:Pac) -> dict:
+    def to_dict(self, pac: Pac) -> dict:
         logging.info("PacManager.to_dict")
         """
         Serialize the Pac object to a JSON string using the PacSchema.
@@ -192,10 +192,10 @@ class PacManager:
         for update in pac_updates:
             pac_id = update.get("pac_id")
             if not isinstance(pac_id, int):
-                raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
+                raise TypeError("The pac_id must be an integer, got {type(pac_id)} instead.")
             if not pac_id:
                 continue
-            logging.info(f"PacManager.update_bulk pac_id:{pac_id}")
+            logging.info("PacManager.update_bulk pac_id:{pac_id}")
             pac = await self.get_by_id(pac_id)
             if not pac:
                 raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
@@ -212,7 +212,7 @@ class PacManager:
         """Delete multiple pacs by their IDs."""
         for pac_id in pac_ids:
             if not isinstance(pac_id, int):
-                raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
+                raise TypeError("The pac_id must be an integer, got {type(pac_id)} instead.")
             pac = await self.get_by_id(pac_id)
             if not pac:
                 raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
@@ -239,13 +239,13 @@ class PacManager:
         await self._session_context.session.refresh(pac)
         return pac
     async def exists(self, pac_id: int) -> bool:
-        logging.info(f"PacManager.exists {pac_id}")
+        logging.info("PacManager.exists {pac_id}")
         """Check if a pac with the given ID exists."""
         if not isinstance(pac_id, int):
-            raise TypeError(f"The pac_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError("The pac_id must be an integer, got {type(pac_id)} instead.")
         pac = await self.get_by_id(pac_id)
         return bool(pac)
-    def is_equal(self, pac1:Pac, pac2:Pac) -> bool:
+    def is_equal(self, pac1: Pac, pac2: Pac) -> bool:
         if not pac1:
             raise TypeError("Pac1 required.")
         if not pac2:

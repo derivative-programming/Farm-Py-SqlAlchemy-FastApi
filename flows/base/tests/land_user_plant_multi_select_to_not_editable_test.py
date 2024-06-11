@@ -29,7 +29,7 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
         flow = BaseFlowLandUserPlantMultiSelectToNotEditable(session_context)
         land = await LandFactory.create_async(session)
         flavor = await FlavorFactory.create_async(session)
-        plant_code_list_csv:str = ""
+        plant_code_list_csv: str = ""
         # Call the method being tested
         await flow._process_validation_rules(
             land,
@@ -40,7 +40,7 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
         #TODO add validation checks - calculatedIsRowLevelOrgCustomerSecurityUsed
         #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
-        if FlowConstants.param_plant_code_list_csv_isRequired == True:
+        if FlowConstants.param_plant_code_list_csv_isRequired is True:
             assert 'plantCodeListCsv' in flow.queued_validation_errors and flow.queued_validation_errors['plantCodeListCsv'] == 'Please enter a plant Code List Csv'
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):

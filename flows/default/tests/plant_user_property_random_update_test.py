@@ -25,7 +25,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 db_dialect = "sqlite"
 # Conditionally set the UUID column type
@@ -66,13 +66,13 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
             customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
             customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
             customerCodeMatchRequired = True
-        if customerCodeMatchRequired == True:
+        if customerCodeMatchRequired is True:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
                     plant_bus_obj,

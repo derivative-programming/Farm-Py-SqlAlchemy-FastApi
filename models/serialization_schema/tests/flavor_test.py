@@ -1,3 +1,9 @@
+# flavor_test.py
+
+"""
+    #TODO add comment
+"""
+
 import json
 import pytest
 import pytz
@@ -8,10 +14,13 @@ from models.serialization_schema import FlavorSchema
 from models.factory import FlavorFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+
 @pytest.fixture(scope="function")
 def flavor(session):
     # Use the FlavorFactory to create and return a flavor instance
     return FlavorFactory.create(session=session)
+
+
 class TestFlavorSchema:
     # Sample data for a Flavor instance
     sample_data = {
@@ -29,11 +38,11 @@ class TestFlavorSchema:
         "pac_id": 2,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# PacID
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_flavor_serialization(self, flavor:Flavor, session):
+    def test_flavor_serialization(self, flavor: Flavor, session):
         schema = FlavorSchema()
         result = schema.dump(flavor)
         assert result['code'] == flavor.code
@@ -51,9 +60,9 @@ class TestFlavorSchema:
         assert result['insert_utc_date_time'] == flavor.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == flavor.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == flavor.pac_code_peek # PacID
+        assert result['pac_code_peek'] == flavor.pac_code_peek  # PacID
 
-    def test_flavor_deserialization(self, flavor:Flavor, session):
+    def test_flavor_deserialization(self, flavor: Flavor, session):
         schema = FlavorSchema()
         serialized_data = schema.dump(flavor)
         deserialized_data = schema.load(serialized_data)
@@ -72,7 +81,7 @@ class TestFlavorSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == flavor.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == flavor.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == flavor.pac_code_peek # PacID
+        assert deserialized_data['pac_code_peek'] == flavor.pac_code_peek  # PacID
 
         new_flavor = Flavor(**deserialized_data)
         assert isinstance(new_flavor, Flavor)
@@ -92,9 +101,9 @@ class TestFlavorSchema:
         assert new_flavor.insert_utc_date_time.isoformat() == flavor.insert_utc_date_time.isoformat()
         assert new_flavor.last_update_utc_date_time.isoformat() == flavor.last_update_utc_date_time.isoformat()
 
-        assert new_flavor.pac_code_peek == flavor.pac_code_peek #PacID
+        assert new_flavor.pac_code_peek == flavor.pac_code_peek  # PacID
 
-    def test_from_json(self, flavor:Flavor, session):
+    def test_from_json(self, flavor: Flavor, session):
         flavor_schema = FlavorSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -116,36 +125,36 @@ class TestFlavorSchema:
         assert str(deserialized_data['pac_id']) == str(self.sample_data['pac_id'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
+        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek'])  # PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_flavor = Flavor(**deserialized_data)
         assert isinstance(new_flavor, Flavor)
-    def test_to_json(self, flavor:Flavor, session):
-            # Convert the Flavor instance to JSON using the schema
-            flavor_schema = FlavorSchema()
-            flavor_dict = flavor_schema.dump(flavor)
-            # Convert the flavor_dict to JSON string
-            flavor_json = json.dumps(flavor_dict)
-            # Convert the JSON strings back to dictionaries
-            flavor_dict_from_json = json.loads(flavor_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(flavor_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(flavor_dict_from_json.keys())}"
-            assert flavor_dict_from_json['code'] == flavor.code
-            assert flavor_dict_from_json['last_change_code'] == flavor.last_change_code
-            assert flavor_dict_from_json['insert_user_id'] == flavor.insert_user_id
-            assert flavor_dict_from_json['last_update_user_id'] == flavor.last_update_user_id
 
-            assert flavor_dict_from_json['description'] == flavor.description
-            assert flavor_dict_from_json['display_order'] == flavor.display_order
-            assert flavor_dict_from_json['is_active'] == flavor.is_active
-            assert flavor_dict_from_json['lookup_enum_name'] == flavor.lookup_enum_name
-            assert flavor_dict_from_json['name'] == flavor.name
-            assert flavor_dict_from_json['pac_id'] == flavor.pac_id
+    def test_to_json(self, flavor: Flavor, session):
+        # Convert the Flavor instance to JSON using the schema
+        flavor_schema = FlavorSchema()
+        flavor_dict = flavor_schema.dump(flavor)
+        # Convert the flavor_dict to JSON string
+        flavor_json = json.dumps(flavor_dict)
+        # Convert the JSON strings back to dictionaries
+        flavor_dict_from_json = json.loads(flavor_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        # Verify the keys in both dictionaries match
+        assert set(flavor_dict_from_json.keys()) == set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(flavor_dict_from_json.keys())}"
+        assert flavor_dict_from_json['code'] == flavor.code
+        assert flavor_dict_from_json['last_change_code'] == flavor.last_change_code
+        assert flavor_dict_from_json['insert_user_id'] == flavor.insert_user_id
+        assert flavor_dict_from_json['last_update_user_id'] == flavor.last_update_user_id
 
-            assert flavor_dict_from_json['insert_utc_date_time'] == flavor.insert_utc_date_time.isoformat()
-            assert flavor_dict_from_json['last_update_utc_date_time'] == flavor.last_update_utc_date_time.isoformat()
+        assert flavor_dict_from_json['description'] == flavor.description
+        assert flavor_dict_from_json['display_order'] == flavor.display_order
+        assert flavor_dict_from_json['is_active'] == flavor.is_active
+        assert flavor_dict_from_json['lookup_enum_name'] == flavor.lookup_enum_name
+        assert flavor_dict_from_json['name'] == flavor.name
+        assert flavor_dict_from_json['pac_id'] == flavor.pac_id
 
-            assert flavor_dict_from_json['pac_code_peek'] == flavor.pac_code_peek # PacID
+        assert flavor_dict_from_json['insert_utc_date_time'] == flavor.insert_utc_date_time.isoformat()
+        assert flavor_dict_from_json['last_update_utc_date_time'] == flavor.last_update_utc_date_time.isoformat()
 
+        assert flavor_dict_from_json['pac_code_peek'] == flavor.pac_code_peek  # PacID

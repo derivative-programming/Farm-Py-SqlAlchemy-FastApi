@@ -15,13 +15,13 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class TacLoginInitObjWFGetInitModelResponse(CamelModel):
-    success:bool = Field(default=False, description="Success")
-    message:str = Field(default="", description="Message")
-    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
-    email:str = Field(default="", description="Email")
-    password:str = Field(default="", description="Password")
+    success: bool = Field(default=False, description="Success")
+    message: str = Field(default="", description="Message")
+    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    email: str = Field(default="", description="Email")
+    password: str = Field(default="", description="Password")
 
-    def load_flow_response(self,data:FlowTacLoginInitObjWFResult):
+    def load_flow_response(self, data:FlowTacLoginInitObjWFResult):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -31,9 +31,9 @@ class TacLoginInitObjWFGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session_context:SessionContext,
-                        tac_code:uuid,
-                        response:TacLoginInitObjWFGetInitModelResponse) -> TacLoginInitObjWFGetInitModelResponse:
+                        session_context: SessionContext,
+                        tac_code: uuid,
+                        response: TacLoginInitObjWFGetInitModelResponse) -> TacLoginInitObjWFGetInitModelResponse:
         try:
             logging.info("loading model...TacLoginInitObjWFGetInitModelRequest")
             tac_bus_obj = TacBusObj(session_context)

@@ -23,7 +23,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class CustomerRoleBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -80,7 +80,7 @@ class CustomerRoleBusObj(BaseBusObj):
         return self
 
     #CustomerID
-    #IsPlaceholder
+    # isPlaceholder
     @property
     def is_placeholder(self):
         return self.customer_role.is_placeholder
@@ -124,7 +124,7 @@ class CustomerRoleBusObj(BaseBusObj):
     # def customer_code_peek(self, value):
     #     assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
     #     self.customer_role.customer_code_peek = value
-    #isPlaceholder,
+    # isPlaceholder,
     #placeholder,
     #RoleID
     @property
@@ -163,11 +163,11 @@ class CustomerRoleBusObj(BaseBusObj):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.customer_role.last_update_utc_date_time = value
 
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   customer_role_id:int=None,
-                   customer_role_obj_instance:CustomerRole=None,
-                   customer_role_dict:dict=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   customer_role_id: int = None,
+                   customer_role_obj_instance: CustomerRole = None,
+                   customer_role_dict: dict = None):
         if customer_role_id and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self._session_context)
             customer_role_obj = await customer_role_manager.get_by_id(customer_role_id)
@@ -188,12 +188,12 @@ class CustomerRoleBusObj(BaseBusObj):
             self.customer_role = customer_role_manager.from_dict(customer_role_dict)
         return self
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   customer_role_id:int=None,
-                   customer_role_obj_instance:CustomerRole=None,
-                   customer_role_dict:dict=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   customer_role_id: int = None,
+                   customer_role_obj_instance: CustomerRole = None,
+                   customer_role_dict: dict = None):
         result = CustomerRoleBusObj(session_context)
         await result.load(
             json_data,
@@ -238,7 +238,7 @@ class CustomerRoleBusObj(BaseBusObj):
         return self
     def get_customer_role_obj(self) -> CustomerRole:
         return self.customer_role
-    def is_equal(self,customer_role:CustomerRole) -> CustomerRole:
+    def is_equal(self, customer_role: CustomerRole) -> CustomerRole:
         customer_role_manager = CustomerRoleManager(self._session_context)
         my_customer_role = self.get_customer_role_obj()
         return customer_role_manager.is_equal(customer_role, my_customer_role)
@@ -248,7 +248,7 @@ class CustomerRoleBusObj(BaseBusObj):
         customer_manager = managers_and_enums.CustomerManager(self._session_context)
         customer_obj = await customer_manager.get_by_id(self.customer_id)
         return customer_obj
-    #isPlaceholder,
+    # isPlaceholder,
     #placeholder,
     #RoleID
     async def get_role_id_rel_obj(self) -> models.Role:
@@ -269,15 +269,15 @@ class CustomerRoleBusObj(BaseBusObj):
         return self.customer_code_peek
     async def get_parent_obj(self) -> models.Customer:
         return self.get_customer_id_rel_obj()
-    #isPlaceholder,
+    # isPlaceholder,
     #placeholder,
     #RoleID
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[CustomerRole]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[CustomerRole]):
         result = list()
         for customer_role in obj_list:
-            customer_role_bus_obj = CustomerRoleBusObj.get(session_context,customer_role_obj_instance=customer_role)
+            customer_role_bus_obj = CustomerRoleBusObj.get(session_context, customer_role_obj_instance=customer_role)
             result.append(customer_role_bus_obj)
         return result
 

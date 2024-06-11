@@ -50,10 +50,10 @@ class TestDateGreaterThanFilterFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(date_greater_than_filter.code, str)
     def test_last_change_code_default_on_build(self, session):
-        date_greater_than_filter:DateGreaterThanFilter = DateGreaterThanFilterFactory.build(session=session)
+        date_greater_than_filter: DateGreaterThanFilter = DateGreaterThanFilterFactory.build(session=session)
         assert date_greater_than_filter.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        date_greater_than_filter:DateGreaterThanFilter = DateGreaterThanFilterFactory.create(session=session)
+        date_greater_than_filter: DateGreaterThanFilter = DateGreaterThanFilterFactory.create(session=session)
         assert date_greater_than_filter.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         date_greater_than_filter = DateGreaterThanFilterFactory.create(session=session)
@@ -143,10 +143,10 @@ class TestDateGreaterThanFilterFactory:
         #dayCount,
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(date_greater_than_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -176,10 +176,10 @@ class TestDateGreaterThanFilterFactory:
         #dayCount,
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(date_greater_than_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -190,7 +190,7 @@ class TestDateGreaterThanFilterFactory:
         assert date_greater_than_filter.day_count == 0
         assert date_greater_than_filter.description == ""
         assert date_greater_than_filter.display_order == 0
-        assert date_greater_than_filter.is_active == False
+        assert date_greater_than_filter.is_active is False
         assert date_greater_than_filter.lookup_enum_name == ""
         assert date_greater_than_filter.name == ""
         assert date_greater_than_filter.pac_id == 0
@@ -209,10 +209,10 @@ class TestDateGreaterThanFilterFactory:
     #dayCount,
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     def test_invalid_pac_id(self, session):
         date_greater_than_filter = DateGreaterThanFilterFactory.create(session=session)
         date_greater_than_filter.pac_id = 99999

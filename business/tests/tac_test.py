@@ -27,12 +27,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestTacBusObj:
     @pytest_asyncio.fixture(scope="function")
-    async def tac_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def tac_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         return TacManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def tac_bus_obj(self, session):
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
         return TacBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_tac(self, session):
@@ -40,7 +40,7 @@ class TestTacBusObj:
         # Assuming TacFactory.create() is an async function
         return await TacFactory.create_async(session)
     @pytest.mark.asyncio
-    async def test_create_tac(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_create_tac(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         # Test creating a new tac
         assert tac_bus_obj.tac_id is None
         # assert isinstance(tac_bus_obj.tac_id, int)
@@ -60,36 +60,36 @@ class TestTacBusObj:
         assert tac_bus_obj.name == "" or isinstance(tac_bus_obj.name, str)
         assert isinstance(tac_bus_obj.pac_id, int)
     @pytest.mark.asyncio
-    async def test_load_with_tac_obj(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_load_with_tac_obj(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         await tac_bus_obj.load(tac_obj_instance=new_tac)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac) == True
+        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac) is True
     @pytest.mark.asyncio
-    async def test_load_with_tac_id(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_load_with_tac_id(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         await tac_bus_obj.load(tac_id=new_tac.tac_id)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  == True
+        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
     @pytest.mark.asyncio
-    async def test_load_with_tac_code(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_load_with_tac_code(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         await tac_bus_obj.load(code=new_tac.code)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  == True
+        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
     @pytest.mark.asyncio
-    async def test_load_with_tac_json(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_load_with_tac_json(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         tac_json = tac_manager.to_json(new_tac)
         await tac_bus_obj.load(json_data=tac_json)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  == True
+        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
     @pytest.mark.asyncio
-    async def test_load_with_tac_dict(self, session, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_load_with_tac_dict(self, session, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         logger.info("test_load_with_tac_dict 1")
         tac_dict = tac_manager.to_dict(new_tac)
         logger.info(tac_dict)
         await tac_bus_obj.load(tac_dict=tac_dict)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  == True
+        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
     @pytest.mark.asyncio
-    async def test_get_nonexistent_tac(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_get_nonexistent_tac(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         # Test retrieving a nonexistent tac raises an exception
         await tac_bus_obj.load(tac_id=-1)
-        assert tac_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
+        assert tac_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
-    async def test_update_tac(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_update_tac(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         # Test updating a tac's data
         new_tac = await tac_manager.get_by_id(new_tac.tac_id)
         new_code = generate_uuid()
@@ -97,9 +97,9 @@ class TestTacBusObj:
         tac_bus_obj.code = new_code
         await tac_bus_obj.save()
         new_tac = await tac_manager.get_by_id(new_tac.tac_id)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  == True
+        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
     @pytest.mark.asyncio
-    async def test_delete_tac(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac):
+    async def test_delete_tac(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac):
         assert new_tac.tac_id is not None
         assert tac_bus_obj.tac_id is None
         await tac_bus_obj.load(tac_id=new_tac.tac_id)
@@ -109,9 +109,9 @@ class TestTacBusObj:
         assert new_tac is None
 
     @pytest.mark.asyncio
-    async def test_build_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
+    async def test_build_organization(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 
@@ -127,9 +127,9 @@ class TestTacBusObj:
         assert organization_bus_obj.organization_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
+    async def test_get_all_organization(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 
@@ -148,9 +148,9 @@ class TestTacBusObj:
         #assert organization_list[0].organization_id == organization_bus_obj.organization_id
 
     @pytest.mark.asyncio
-    async def test_build_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
+    async def test_build_customer(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 
@@ -166,9 +166,9 @@ class TestTacBusObj:
         assert customer_bus_obj.customer_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
+    async def test_get_all_customer(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
 
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 

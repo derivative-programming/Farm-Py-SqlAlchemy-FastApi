@@ -1,3 +1,9 @@
+# business/date_greater_than_filter.py
+
+"""
+    #TODO add comment
+"""
+
 import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -5,9 +11,9 @@ from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-# from business.pac import PacBusObj #PacID
+# from business.pac import PacBusObj  # PacID
 from services.db_config import db_dialect,generate_uuid
-from managers import PacManager as PacIDManager #PacID
+from managers import PacManager as PacIDManager  # PacID
 from managers import DateGreaterThanFilterManager
 import managers as managers_and_enums
 from models import DateGreaterThanFilter
@@ -24,9 +30,9 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class DateGreaterThanFilterBusObj:
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
-            raise DateGreaterThanFilterSessionNotFoundError("session required")
+            raise DateGreaterThanFilterSessionNotFoundError(f"session required")
         self._session_context = session_context
         self.date_greater_than_filter = DateGreaterThanFilter()
     @property
@@ -98,7 +104,7 @@ class DateGreaterThanFilterBusObj:
     def display_order(self, value):
         assert isinstance(value, int), "display_order must be an integer"
         self.date_greater_than_filter.display_order = value
-    #IsActive
+    # isActive
     @property
     def is_active(self):
         return self.date_greater_than_filter.is_active
@@ -123,15 +129,15 @@ class DateGreaterThanFilterBusObj:
     def name(self, value):
         assert isinstance(value, str), "name must be a string"
         self.date_greater_than_filter.name = value
-    #PacID
+     # PacID
 
     #dayCount,
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @property
     def pac_id(self):
         return self.date_greater_than_filter.pac_id
@@ -163,20 +169,20 @@ class DateGreaterThanFilterBusObj:
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.date_greater_than_filter.last_update_utc_date_time = value
-        
+
 ##GENTrainingBlock[caseLookupEnums]Start
-##GENLearn[isLookup=true]Start   
+##GENLearn[isLookup=true]Start
 
     @property
     def lookup_enum(self) -> managers_and_enums.DateGreaterThanFilterEnum:
         return managers_and_enums.DateGreaterThanFilterEnum[self.date_greater_than_filter.lookup_enum_name]
 
-    async def load(self, json_data:str=None, 
-                   code:uuid.UUID=None, 
-                   date_greater_than_filter_id:int=None, 
-                   date_greater_than_filter_obj_instance:DateGreaterThanFilter=None, 
-                   date_greater_than_filter_dict:dict=None,
-                   date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   date_greater_than_filter_id: int = None,
+                   date_greater_than_filter_obj_instance: DateGreaterThanFilter = None,
+                   date_greater_than_filter_dict: dict = None,
+                   date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum = None):
         if date_greater_than_filter_id and self.date_greater_than_filter.date_greater_than_filter_id is None:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_id)
@@ -199,15 +205,14 @@ class DateGreaterThanFilterBusObj:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = await date_greater_than_filter_manager.from_enum(date_greater_than_filter_enum)
 
-
     @staticmethod
-    async def get(session_context:SessionContext, 
-                    json_data:str=None, 
-                   code:uuid.UUID=None, 
-                   date_greater_than_filter_id:int=None, 
-                   date_greater_than_filter_obj_instance:DateGreaterThanFilter=None, 
-                   date_greater_than_filter_dict:dict=None,
-                   date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   date_greater_than_filter_id: int = None,
+                   date_greater_than_filter_obj_instance: DateGreaterThanFilter = None,
+                   date_greater_than_filter_dict: dict = None,
+                   date_greater_than_filter_enum:managers_and_enums.DateGreaterThanFilterEnum = None):
         result = DateGreaterThanFilterBusObj(session_context)
 
         await result.load(
@@ -218,10 +223,10 @@ class DateGreaterThanFilterBusObj:
             date_greater_than_filter_dict,
             date_greater_than_filter_enum
         )
-        
+
         return result
 ##GENLearn[isLookup=true]End
-##GENTrainingBlock[caseLookupEnums]End 
+##GENTrainingBlock[caseLookupEnums]End
     def is_valid(self):
         return (self.date_greater_than_filter is not None)
     async def refresh(self):
@@ -246,7 +251,7 @@ class DateGreaterThanFilterBusObj:
             self.date_greater_than_filter = await date_greater_than_filter_manager.delete(self.date_greater_than_filter.date_greater_than_filter_id)
     def get_date_greater_than_filter_obj(self) -> DateGreaterThanFilter:
         return self.date_greater_than_filter
-    def is_equal(self,date_greater_than_filter:DateGreaterThanFilter) -> DateGreaterThanFilter:
+    def is_equal(self, date_greater_than_filter: DateGreaterThanFilter) -> DateGreaterThanFilter:
         date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         my_date_greater_than_filter = self.get_date_greater_than_filter_obj()
         return date_greater_than_filter_manager.is_equal(date_greater_than_filter, my_date_greater_than_filter)
@@ -254,10 +259,10 @@ class DateGreaterThanFilterBusObj:
     #dayCount,
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -272,14 +277,13 @@ class DateGreaterThanFilterBusObj:
     #dayCount,
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     # async def get_parent_obj(self) -> PacBusObj:
     #     return await self.get_pac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
-

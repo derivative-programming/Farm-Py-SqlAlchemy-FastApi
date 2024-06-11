@@ -1,25 +1,36 @@
 # conftest.py
+
+"""
+    #TODO add comment
+"""
+
 import pytest
 import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker 
+from sqlalchemy.orm import sessionmaker
 from models import Base
-import pytest_asyncio 
+import pytest_asyncio
 from typing import AsyncGenerator
 from sqlalchemy import event
 
 # Define your in-memory SQLite test database URL
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+
+
 @pytest.fixture(scope="session")
 def event_loop() -> asyncio.AbstractEventLoop:
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
+
+
 @pytest.fixture(scope="session")
 def engine():
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()
+
+
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
     @event.listens_for(engine.sync_engine, "connect")
@@ -48,4 +59,3 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
             yield session
             await session.flush()
             await session.rollback()
- 

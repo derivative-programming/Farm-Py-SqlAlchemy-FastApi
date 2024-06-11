@@ -43,7 +43,7 @@ class OrgApiKeyFactory(factory.Factory):
     organization_code_peek = factory.LazyFunction(generate_uuid) # OrganizationID
     org_customer_code_peek = factory.LazyFunction(generate_uuid)  # OrgCustomerID
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> OrgApiKey:
+    def _build(cls, model_class, session = None, *args, **kwargs) -> OrgApiKey:
         if session is None:
                 obj2 = model_class(*args, **kwargs)
                 return obj2
@@ -67,7 +67,7 @@ class OrgApiKeyFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> OrgApiKey:
+    def _create(cls, model_class, session = None, *args, **kwargs) -> OrgApiKey:
         organization_id_organization_instance = OrganizationFactory.create(session=session)  #OrganizationID
         org_customer_id_org_customer_instance = OrgCustomerFactory.create(session=session) #OrgCustomerID
 
@@ -98,7 +98,7 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code #OrganizationID
         kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code #OrgCustomerID
 
-        obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
+        obj = OrgApiKeyFactory.build(session = None, *args, **kwargs)
         obj.organization_id = organization_id_organization_instance.organization_id #OrganizationID
         obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id #OrgCustomerID
 
@@ -119,7 +119,7 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code #OrganizationID
         kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code #OrgCustomerID
 
-        obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
+        obj = OrgApiKeyFactory.build(session = None, *args, **kwargs)
         obj.organization_id = organization_id_organization_instance.organization_id #OrganizationID
         obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id #OrgCustomerID
 

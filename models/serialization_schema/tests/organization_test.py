@@ -25,7 +25,7 @@ class TestOrganizationSchema:
         "tac_id": 2,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# TacID
+        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
@@ -76,7 +76,7 @@ class TestOrganizationSchema:
         assert new_organization.insert_utc_date_time.isoformat() == organization.insert_utc_date_time.isoformat()
         assert new_organization.last_update_utc_date_time.isoformat() == organization.last_update_utc_date_time.isoformat()
 
-        assert new_organization.tac_code_peek == organization.tac_code_peek #TacID
+        assert new_organization.tac_code_peek == organization.tac_code_peek  # TacID
 
     def test_from_json(self, organization:Organization, session):
         organization_schema = OrganizationSchema()
@@ -96,7 +96,7 @@ class TestOrganizationSchema:
         assert str(deserialized_data['tac_id']) == str(self.sample_data['tac_id'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['tac_code_peek']) == str(self.sample_data['tac_code_peek']) #TacID
+        assert str(deserialized_data['tac_code_peek']) == str(self.sample_data['tac_code_peek'])  # TacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_organization = Organization(**deserialized_data)

@@ -1,4 +1,10 @@
 
+# __init__.py
+
+"""
+    #TODO add comment
+"""
+
 from .customer import Customer
 from .customer_role import CustomerRole
 from .date_greater_than_filter import DateGreaterThanFilter

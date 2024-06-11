@@ -1,3 +1,8 @@
+# business/__init__.py
+
+"""
+    #TODO add comment
+"""
 
 from .customer import CustomerBusObj
 from .customer_role import CustomerRoleBusObj

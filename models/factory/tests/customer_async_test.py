@@ -81,11 +81,11 @@ class TestCustomerFactoryAsync:
             assert isinstance(customer.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        customer:Customer = await CustomerFactory.build_async(session=session)
+        customer: Customer = await CustomerFactory.build_async(session=session)
         assert customer.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        customer:Customer = await CustomerFactory.create_async(session=session)
+        customer: Customer = await CustomerFactory.create_async(session=session)
         assert customer.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -216,20 +216,20 @@ class TestCustomerFactoryAsync:
         #forgotPasswordKeyExpirationUTCDateTime
         #forgotPasswordKeyValue,
         #fSUserCodeValue,
-        #isActive,
-        #isEmailAllowed,
-        #isEmailConfirmed,
-        #isEmailMarketingAllowed,
-        #isLocked,
-        #isMultipleOrganizationsAllowed,
-        #isVerboseLoggingForced,
+        # isActive,
+        # isEmailAllowed,
+        # isEmailConfirmed,
+        # isEmailMarketingAllowed,
+        # isLocked,
+        # isMultipleOrganizationsAllowed,
+        # isVerboseLoggingForced,
         #lastLoginUTCDateTime
         #lastName,
         #password,
         #phone,
         #province,
         #registrationUTCDateTime
-        #tacID
+         # tacID
         if db_dialect == 'postgresql':
             assert isinstance(customer.tac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -267,20 +267,20 @@ class TestCustomerFactoryAsync:
         #forgotPasswordKeyExpirationUTCDateTime
         #forgotPasswordKeyValue,
         #fSUserCodeValue,
-        #isActive,
-        #isEmailAllowed,
-        #isEmailConfirmed,
-        #isEmailMarketingAllowed,
-        #isLocked,
-        #isMultipleOrganizationsAllowed,
-        #isVerboseLoggingForced,
+        # isActive,
+        # isEmailAllowed,
+        # isEmailConfirmed,
+        # isEmailMarketingAllowed,
+        # isLocked,
+        # isMultipleOrganizationsAllowed,
+        # isVerboseLoggingForced,
         #lastLoginUTCDateTime
         #lastName,
         #password,
         #phone,
         #province,
         #registrationUTCDateTime
-        #TacID
+         # TacID
         if db_dialect == 'postgresql':
             assert isinstance(customer.tac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -296,20 +296,20 @@ class TestCustomerFactoryAsync:
         assert customer.first_name == ""
         assert customer.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
         assert customer.forgot_password_key_value == ""
-        #SomeUniqueIdentifierVal
+        # someUniqueIdentifierVal
         if db_dialect == 'postgresql':
             assert isinstance(customer.fs_user_code_value, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(customer.fs_user_code_value, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.fs_user_code_value, str)
-        assert customer.is_active == False
-        assert customer.is_email_allowed == False
-        assert customer.is_email_confirmed == False
-        assert customer.is_email_marketing_allowed == False
-        assert customer.is_locked == False
-        assert customer.is_multiple_organizations_allowed == False
-        assert customer.is_verbose_logging_forced == False
+        assert customer.is_active is False
+        assert customer.is_email_allowed is False
+        assert customer.is_email_confirmed is False
+        assert customer.is_email_marketing_allowed is False
+        assert customer.is_locked is False
+        assert customer.is_multiple_organizations_allowed is False
+        assert customer.is_verbose_logging_forced is False
         assert customer.last_login_utc_date_time == datetime(1753, 1, 1)
         assert customer.last_name == ""
         assert customer.password == ""
@@ -345,20 +345,20 @@ class TestCustomerFactoryAsync:
     #forgotPasswordKeyExpirationUTCDateTime
     #forgotPasswordKeyValue,
     #fSUserCodeValue,
-    #isActive,
-    #isEmailAllowed,
-    #isEmailConfirmed,
-    #isEmailMarketingAllowed,
-    #isLocked,
-    #isMultipleOrganizationsAllowed,
-    #isVerboseLoggingForced,
+    # isActive,
+    # isEmailAllowed,
+    # isEmailConfirmed,
+    # isEmailMarketingAllowed,
+    # isLocked,
+    # isMultipleOrganizationsAllowed,
+    # isVerboseLoggingForced,
     #lastLoginUTCDateTime
     #lastName,
     #password,
     #phone,
     #province,
     #registrationUTCDateTime
-    #TacID
+     # TacID
     @pytest.mark.asyncio
     async def test_invalid_tac_id(self, session):
         customer = await CustomerFactory.create_async(session=session)

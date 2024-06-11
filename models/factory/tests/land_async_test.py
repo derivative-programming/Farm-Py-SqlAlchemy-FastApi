@@ -81,11 +81,11 @@ class TestLandFactoryAsync:
             assert isinstance(land.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        land:Land = await LandFactory.build_async(session=session)
+        land: Land = await LandFactory.build_async(session=session)
         assert land.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        land:Land = await LandFactory.create_async(session=session)
+        land: Land = await LandFactory.create_async(session=session)
         assert land.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -188,10 +188,10 @@ class TestLandFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(land.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -222,10 +222,10 @@ class TestLandFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(land.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -235,7 +235,7 @@ class TestLandFactoryAsync:
 
         assert land.description == ""
         assert land.display_order == 0
-        assert land.is_active == False
+        assert land.is_active is False
         assert land.lookup_enum_name == ""
         assert land.name == ""
         assert land.pac_id == 0
@@ -260,10 +260,10 @@ class TestLandFactoryAsync:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @pytest.mark.asyncio
     async def test_invalid_pac_id(self, session):
         land = await LandFactory.create_async(session=session)

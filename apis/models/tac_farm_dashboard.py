@@ -16,17 +16,17 @@ from apis.models.validation_error import ValidationErrorItem
 import apis.models as view_models
 from models import Tac
 from helpers.pydantic_serialization import CamelModel,SnakeModel,BaseModel
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
 ### request. expect camel case. use marshmallow to validate.
 class TacFarmDashboardGetModelRequest(CamelModel):
-    page_number:int = Field(default=0, description="Page Number")
-    item_count_per_page:int = Field(default=0, description="Item Count Per Page")
-    order_by_column_name:str = Field(default="", description="Order By Column Name")
-    order_by_descending:bool = Field(default=False, description="Order By Decending")
-    force_error_message:str = Field(default="", description="Force Error Message")
+    page_number: int = Field(default=0, description="Page Number")
+    item_count_per_page: int = Field(default=0, description="Item Count Per Page")
+    order_by_column_name: str = Field(default="", description="Order By Column Name")
+    order_by_descending: bool = Field(default=False, description="Order By Decending")
+    force_error_message: str = Field(default="", description="Force Error Message")
 
     class Config:
         json_encoders = {
@@ -40,27 +40,27 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
 class TacFarmDashboardGetModelResponseItem(CamelModel):
-    field_one_plant_list_link_land_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Field One Plant List Link Land Code")
-    conditional_btn_example_link_land_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Conditional Btn Example Link Land Code")
-    is_conditional_btn_available:bool = Field(default=False, description="Is Conditional Btn Available")
+    field_one_plant_list_link_land_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Field One Plant List Link Land Code")
+    conditional_btn_example_link_land_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Conditional Btn Example Link Land Code")
+    is_conditional_btn_available: bool = Field(default=False, description="Is Conditional Btn Available")
 
-    def load_report_item(self,data:ReportItemTacFarmDashboard):
+    def load_report_item(self, data:ReportItemTacFarmDashboard):
         self.field_one_plant_list_link_land_code = data.field_one_plant_list_link_land_code
         self.conditional_btn_example_link_land_code = data.conditional_btn_example_link_land_code
         self.is_conditional_btn_available = data.is_conditional_btn_available
 
 class TacFarmDashboardGetModelResponse(ListModel):
-    request:TacFarmDashboardGetModelRequest = None
-    items:List[TacFarmDashboardGetModelResponseItem] = Field(default_factory=list)
+    request: TacFarmDashboardGetModelRequest = None
+    items: List[TacFarmDashboardGetModelResponseItem] = Field(default_factory=list)
     async def process_request(self,
-                        session_context:SessionContext,
-                        tac_code:uuid,
-                        request:TacFarmDashboardGetModelRequest):
+                        session_context: SessionContext,
+                        tac_code: uuid,
+                        request: TacFarmDashboardGetModelRequest):
         try:
             logging.info("loading model...TacFarmDashboardGetModelResponse")
             generator = ReportManagerTacFarmDashboard(session_context)

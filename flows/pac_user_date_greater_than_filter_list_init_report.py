@@ -17,7 +17,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowPacUserDateGreaterThanFilterListInitReportResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -30,7 +30,7 @@ class FlowPacUserDateGreaterThanFilterListInitReportResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowPacUserDateGreaterThanFilterListInitReport(BaseFlowPacUserDateGreaterThanFilterListInitReport):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowPacUserDateGreaterThanFilterListInitReport, self).__init__(session_context)
     async def process(self,
         pac_bus_obj: PacBusObj,
@@ -43,7 +43,7 @@ class FlowPacUserDateGreaterThanFilterListInitReport(BaseFlowPacUserDateGreaterT
 
         )
         super()._throw_queued_validation_errors()
- 
+
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowPacUserDateGreaterThanFilterListInitReportResult()

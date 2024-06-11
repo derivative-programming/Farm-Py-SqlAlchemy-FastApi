@@ -38,7 +38,7 @@ class RoleManager:
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
 
-    async def _build_lookup_item(self, pac:Pac):
+    async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
         item.pac_id = pac.pac_id
         return item
@@ -51,7 +51,7 @@ class RoleManager:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description = ""
+            item.description=""
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -60,7 +60,7 @@ class RoleManager:
             item = await self._build_lookup_item(pac)
             item.name = "Admin"
             item.lookup_enum_name = "Admin"
-            item.description = "Admin"
+            item.description="Admin"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -69,7 +69,7 @@ class RoleManager:
             item = await self._build_lookup_item(pac)
             item.name = "Config"
             item.lookup_enum_name = "Config"
-            item.description = "Config"
+            item.description="Config"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -78,14 +78,14 @@ class RoleManager:
             item = await self._build_lookup_item(pac)
             item.name = "User"
             item.lookup_enum_name = "User"
-            item.description = "User"
+            item.description="User"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
 
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val:RoleEnum) -> Role:
+    async def from_enum(self, enum_val: RoleEnum) -> Role:
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Role.lookup_enum_name==enum_val.value
         query_results = await self._run_query(query_filter)
@@ -109,12 +109,12 @@ class RoleManager:
 #
 #         if join_condition is not None:
 #             query = select(Role
-#                         ,Pac #pac_id
+#                         , Pac  # pac_id
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(Role)
         query = select(Role
-                    ,Pac #pac_id
+                    , Pac  # pac_id
                     )
 
         query = query.outerjoin(Pac, and_(Role.pac_id == Pac.pac_id, Role.pac_id != 0))
@@ -135,25 +135,25 @@ class RoleManager:
             role = query_result_row[i]
             i = i + 1
 
-            pac = query_result_row[i] #pac_id
+            pac = query_result_row[i]  # pac_id
             i = i + 1
 
-            role.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+            role.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
 
             result.append(role)
         return result
-    def _first_or_none(self,role_list:List) -> Role:
+    def _first_or_none(self, role_list: List) -> Role:
         return role_list[0] if role_list else None
     async def get_by_id(self, role_id: int) -> Optional[Role]:
         logging.info("RoleManager.get_by_id start role_id:" + str(role_id))
         if not isinstance(role_id, int):
-            raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
+            raise TypeError("The role_id must be an integer, got {type(role_id)} instead.")
         query_filter = Role.role_id == role_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Role]:
-        logging.info(f"RoleManager.get_by_code {code}")
-        query_filter = Role.code==code
+        logging.info("RoleManager.get_by_code {code}")
+        query_filter = Role.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, role: Role, **kwargs) -> Optional[Role]:
@@ -168,9 +168,9 @@ class RoleManager:
             await self._session_context.session.flush()
         return role
     async def delete(self, role_id: int):
-        logging.info(f"RoleManager.delete {role_id}")
+        logging.info("RoleManager.delete {role_id}")
         if not isinstance(role_id, int):
-            raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
+            raise TypeError("The role_id must be an integer, got {type(role_id)} instead.")
         role = await self.get_by_id(role_id)
         if not role:
             raise RoleNotFoundError(f"Role with ID {role_id} not found!")
@@ -180,7 +180,7 @@ class RoleManager:
         logging.info("RoleManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, role:Role) -> str:
+    def to_json(self, role: Role) -> str:
         logging.info("RoleManager.to_json")
         """
         Serialize the Role object to a JSON string using the RoleSchema.
@@ -188,7 +188,7 @@ class RoleManager:
         schema = RoleSchema()
         role_data = schema.dump(role)
         return json.dumps(role_data)
-    def to_dict(self, role:Role) -> dict:
+    def to_dict(self, role: Role) -> dict:
         logging.info("RoleManager.to_dict")
         """
         Serialize the Role object to a JSON string using the RoleSchema.
@@ -229,10 +229,10 @@ class RoleManager:
         for update in role_updates:
             role_id = update.get("role_id")
             if not isinstance(role_id, int):
-                raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
+                raise TypeError("The role_id must be an integer, got {type(role_id)} instead.")
             if not role_id:
                 continue
-            logging.info(f"RoleManager.update_bulk role_id:{role_id}")
+            logging.info("RoleManager.update_bulk role_id:{role_id}")
             role = await self.get_by_id(role_id)
             if not role:
                 raise RoleNotFoundError(f"Role with ID {role_id} not found!")
@@ -249,7 +249,7 @@ class RoleManager:
         """Delete multiple roles by their IDs."""
         for role_id in role_ids:
             if not isinstance(role_id, int):
-                raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
+                raise TypeError("The role_id must be an integer, got {type(role_id)} instead.")
             role = await self.get_by_id(role_id)
             if not role:
                 raise RoleNotFoundError(f"Role with ID {role_id} not found!")
@@ -276,13 +276,13 @@ class RoleManager:
         await self._session_context.session.refresh(role)
         return role
     async def exists(self, role_id: int) -> bool:
-        logging.info(f"RoleManager.exists {role_id}")
+        logging.info("RoleManager.exists {role_id}")
         """Check if a role with the given ID exists."""
         if not isinstance(role_id, int):
-            raise TypeError(f"The role_id must be an integer, got {type(role_id)} instead.")
+            raise TypeError("The role_id must be an integer, got {type(role_id)} instead.")
         role = await self.get_by_id(role_id)
         return bool(role)
-    def is_equal(self, role1:Role, role2:Role) -> bool:
+    def is_equal(self, role1: Role, role2: Role) -> bool:
         if not role1:
             raise TypeError("Role1 required.")
         if not role2:
@@ -295,10 +295,10 @@ class RoleManager:
         dict2 = self.to_dict(role2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int) -> List[Role]: # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[Role]:  # PacID
         logging.info("RoleManager.get_by_pac_id")
         if not isinstance(pac_id, int):
-            raise TypeError(f"The role_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError("The role_id must be an integer, got {type(pac_id)} instead.")
         query_filter = Role.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

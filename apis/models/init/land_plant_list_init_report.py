@@ -15,31 +15,31 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class LandPlantListInitReportGetInitModelResponse(CamelModel):
-    success:bool = Field(default=False, description="Success")
-    message:str = Field(default="", description="Message")
-    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
-    some_int_val:int = Field(default=0, description="Some Int Val")
-    some_big_int_val:int = Field(default=0, description="Some Big Int Val")
-    some_bit_val:bool = Field(default=False, description="Some Bit Val")
-    is_edit_allowed:bool = Field(default=False, description="Is Edit Allowed")
-    is_delete_allowed:bool = Field(default=False, description="Is Delete Allowed")
-    some_float_val:float = Field(default=0, description="Some Float Val")
-    some_decimal_val:Decimal = Field(default=Decimal(0), description="Some Decimal Val")
-    some_min_utc_date_time_val:datetime = Field(default_factory=TypeConversion.get_default_date_time, description="Some Min UTC Date Time Val")
-    some_min_date_val:date = Field(default_factory=TypeConversion.get_default_date, description="Some Min Date Val")
-    some_money_val:Decimal = Field(default=Decimal(0), description="Some Money Val")
-    some_n_var_char_val:str = Field(default="", description="Some N Var Char Val")
-    some_var_char_val:str = Field(default="", description="Some Var Char Val")
-    some_text_val:str = Field(default="", description="Some Text Val")
-    some_phone_number:str = Field(default="", description="Some Phone Number")
-    some_email_address:str = Field(default="", description="Some Email Address")
-    land_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+    success: bool = Field(default=False, description="Success")
+    message: str = Field(default="", description="Message")
+    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    some_int_val: int = Field(default=0, description="Some Int Val")
+    some_big_int_val: int = Field(default=0, description="Some Big Int Val")
+    some_bit_val: bool = Field(default=False, description="Some Bit Val")
+    is_edit_allowed: bool = Field(default=False, description="Is Edit Allowed")
+    is_delete_allowed: bool = Field(default=False, description="Is Delete Allowed")
+    some_float_val: float = Field(default=0, description="Some Float Val")
+    some_decimal_val: Decimal = Field(default=Decimal(0), description="Some Decimal Val")
+    some_min_utc_date_time_val: datetime = Field(default_factory=TypeConversion.get_default_date_time, description="Some Min UTC Date Time Val")
+    some_min_date_val: date = Field(default_factory=TypeConversion.get_default_date, description="Some Min Date Val")
+    some_money_val: Decimal = Field(default=Decimal(0), description="Some Money Val")
+    some_n_var_char_val: str = Field(default="", description="Some N Var Char Val")
+    some_var_char_val: str = Field(default="", description="Some Var Char Val")
+    some_text_val: str = Field(default="", description="Some Text Val")
+    some_phone_number: str = Field(default="", description="Some Phone Number")
+    some_email_address: str = Field(default="", description="Some Email Address")
+    land_code: uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
                                       description="Land Code")
-    tac_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+    tac_code: uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
                                       description="Tac Code")
-    land_name:str=Field(default="", description="Land Name")
+    land_name: str=Field(default="", description="Land Name")
 
-    def load_flow_response(self,data:FlowLandPlantListInitReportResult):
+    def load_flow_response(self, data:FlowLandPlantListInitReportResult):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -65,9 +65,9 @@ class LandPlantListInitReportGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class LandPlantListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session_context:SessionContext,
-                        land_code:uuid,
-                        response:LandPlantListInitReportGetInitModelResponse) -> LandPlantListInitReportGetInitModelResponse:
+                        session_context: SessionContext,
+                        land_code: uuid,
+                        response: LandPlantListInitReportGetInitModelResponse) -> LandPlantListInitReportGetInitModelResponse:
         try:
             logging.info("loading model...LandPlantListInitReportGetInitModelRequest")
             land_bus_obj = LandBusObj(session_context)

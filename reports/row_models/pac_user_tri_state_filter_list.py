@@ -11,7 +11,7 @@ class ReportItemPacUserTriStateFilterList():
     tri_state_filter_name: str = ""
     tri_state_filter_state_int_value: int = 0
 
-    def load_data_provider_dict(self,data:dict):
+    def load_data_provider_dict(self, data: dict):
             self.tri_state_filter_code = TypeConversion.get_uuid(data["tri_state_filter_code"])
             self.tri_state_filter_description = str(data["tri_state_filter_description"])
             self.tri_state_filter_display_order = int(data["tri_state_filter_display_order"])

@@ -16,7 +16,7 @@ from flows.customer_user_log_out import FlowCustomerUserLogOut, FlowCustomerUser
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
-from ...models.customer_user_log_out import CustomerUserLogOutPostModelRequest,CustomerUserLogOutPostModelResponse
+from ...models.customer_user_log_out import CustomerUserLogOutPostModelRequest, CustomerUserLogOutPostModelResponse
 from models import Base
 from ..factory.customer_user_log_out import CustomerUserLogOutPostModelRequestFactory
 from services.db_config import db_dialect
@@ -26,7 +26,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from unittest.mock import patch, AsyncMock
 db_dialect = "sqlite"
@@ -56,6 +56,6 @@ class TestCustomerUserLogOutPostModelResponse:
                 customer_code=customer.code,
                 request=request_instance
                 )
-            assert response_instance.success == True
+            assert response_instance.success is True
             mock_method.assert_awaited()
 

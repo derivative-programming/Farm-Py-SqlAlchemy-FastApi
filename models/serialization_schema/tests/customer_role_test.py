@@ -27,12 +27,12 @@ class TestCustomerRoleSchema:
         "role_id": 1,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# CustomerID
-        "role_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# RoleID
+        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # CustomerID
+        "role_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # RoleID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_customer_role_serialization(self, customer_role:CustomerRole, session):
+    def test_customer_role_serialization(self, customer_role: CustomerRole, session):
         schema = CustomerRoleSchema()
         result = schema.dump(customer_role)
         assert result['code'] == customer_role.code
@@ -51,7 +51,7 @@ class TestCustomerRoleSchema:
         assert result['customer_code_peek'] == customer_role.customer_code_peek # CustomerID
         assert result['role_code_peek'] == customer_role.role_code_peek # RoleID
 
-    def test_customer_role_deserialization(self, customer_role:CustomerRole, session):
+    def test_customer_role_deserialization(self, customer_role: CustomerRole, session):
         schema = CustomerRoleSchema()
         serialized_data = schema.dump(customer_role)
         deserialized_data = schema.load(serialized_data)
@@ -90,7 +90,7 @@ class TestCustomerRoleSchema:
         assert new_customer_role.customer_code_peek == customer_role.customer_code_peek #CustomerID
         assert new_customer_role.role_code_peek == customer_role.role_code_peek  #RoleID
 
-    def test_from_json(self, customer_role:CustomerRole, session):
+    def test_from_json(self, customer_role: CustomerRole, session):
         customer_role_schema = CustomerRoleSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -116,7 +116,7 @@ class TestCustomerRoleSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_customer_role = CustomerRole(**deserialized_data)
         assert isinstance(new_customer_role, CustomerRole)
-    def test_to_json(self, customer_role:CustomerRole, session):
+    def test_to_json(self, customer_role: CustomerRole, session):
             # Convert the CustomerRole instance to JSON using the schema
             customer_role_schema = CustomerRoleSchema()
             customer_role_dict = customer_role_schema.dump(customer_role)

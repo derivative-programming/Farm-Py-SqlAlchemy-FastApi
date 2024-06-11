@@ -50,10 +50,10 @@ class TestTacFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(tac.code, str)
     def test_last_change_code_default_on_build(self, session):
-        tac:Tac = TacFactory.build(session=session)
+        tac: Tac = TacFactory.build(session=session)
         assert tac.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        tac:Tac = TacFactory.create(session=session)
+        tac: Tac = TacFactory.create(session=session)
         assert tac.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         tac = TacFactory.create(session=session)
@@ -141,10 +141,10 @@ class TestTacFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(tac.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -173,10 +173,10 @@ class TestTacFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(tac.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -186,7 +186,7 @@ class TestTacFactory:
 
         assert tac.description == ""
         assert tac.display_order == 0
-        assert tac.is_active == False
+        assert tac.is_active is False
         assert tac.lookup_enum_name == ""
         assert tac.name == ""
         assert tac.pac_id == 0
@@ -204,10 +204,10 @@ class TestTacFactory:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     def test_invalid_pac_id(self, session):
         tac = TacFactory.create(session=session)
         tac.pac_id = 99999

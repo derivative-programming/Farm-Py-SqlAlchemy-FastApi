@@ -5,7 +5,7 @@ import factory
 from factory import Faker, SubFactory
 import pytz
 from models import Customer
-from .tac import TacFactory #tac_id
+from .tac import TacFactory  # tac_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -47,7 +47,7 @@ class CustomerFactory(factory.Factory):
     phone = Faker('phone_number')
     province = Faker('sentence', nb_words=4)
     registration_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
-    #tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
+     # tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
     utc_offset_in_minutes = Faker('random_int')
     zip = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
@@ -55,68 +55,68 @@ class CustomerFactory(factory.Factory):
 
     tac_code_peek = factory.LazyFunction(generate_uuid) # TacID
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Customer:
+    def _build(cls, model_class, session = None, *args, **kwargs) -> Customer:
         if session is None:
                 obj2 = model_class(*args, **kwargs)
                 return obj2
-        tac_id_tac_instance = TacFactory.create(session=session)  #TacID
+        tac_id_tac_instance = TacFactory.create(session=session)   # TacID
 
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
+        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
 
-        kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
+        kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
         obj = model_class(*args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
 
-        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+        obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 
         # session.add(obj)
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> Customer:
-        tac_id_tac_instance = TacFactory.create(session=session)  #TacID
+    def _create(cls, model_class, session = None, *args, **kwargs) -> Customer:
+        tac_id_tac_instance = TacFactory.create(session=session)   # TacID
 
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
+        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
 
-        kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
+        kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
         obj = model_class(*args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
 
-        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+        obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 
         session.add(obj)
         session.commit()
         return obj
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Customer:
-        tac_id_tac_instance = await TacFactory.create_async(session=session)  #TacID
+        tac_id_tac_instance = await TacFactory.create_async(session=session)   # TacID
 
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
+        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
 
-        kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
+        kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
-        obj = CustomerFactory.build(session=None, *args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+        obj = CustomerFactory.build(session = None, *args, **kwargs)
+        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
 
-        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+        obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 
         session.add(obj)
         await session.flush()
         return obj
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Customer:
-        tac_id_tac_instance = await TacFactory.create_async(session=session)  #TacID
+        tac_id_tac_instance = await TacFactory.create_async(session=session)   # TacID
 
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id #TacID
+        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
 
-        kwargs["tac_code_peek"] = tac_id_tac_instance.code #TacID
+        kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
-        obj = CustomerFactory.build(session=None, *args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id #TacID
+        obj = CustomerFactory.build(session = None, *args, **kwargs)
+        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
 
-        obj.tac_code_peek = tac_id_tac_instance.code #TacID
+        obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 
         # session.add(obj)
         # await session.flush()

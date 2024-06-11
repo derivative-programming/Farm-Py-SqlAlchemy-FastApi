@@ -1,3 +1,9 @@
+# flavor.py
+
+"""
+    #TODO add comment
+"""
+
 from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
@@ -95,7 +101,7 @@ class Flavor(Base):
         return result
 # Define the index separately from the column
 # Index('index_code', Flavor.code)
-# Index('farm_flavor_index_pac_id', Flavor.pac_id) #PacID
+# Index('farm_flavor_index_pac_id', Flavor.pac_id)  # PacID
 @event.listens_for(Flavor, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()
@@ -103,3 +109,4 @@ def set_created_on(mapper, connection, target):
 @event.listens_for(Flavor, 'before_update')
 def set_updated_on(mapper, connection, target):
     target.last_update_utc_date_time = datetime.utcnow()
+

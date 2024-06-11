@@ -17,12 +17,12 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacRegisterInitObjWFResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    email:str = ""
-    password:str = ""
-    confirm_password:str = ""
-    first_name:str = ""
-    last_name:str = ""
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    email: str = ""
+    password: str = ""
+    confirm_password: str = ""
+    first_name: str = ""
+    last_name: str = ""
     def __init__(self):
         pass
     def to_json(self):
@@ -38,7 +38,7 @@ class FlowTacRegisterInitObjWFResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowTacRegisterInitObjWF, self).__init__(session_context)
     async def process(self,
         tac_bus_obj: TacBusObj,
@@ -51,11 +51,11 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
 
         )
         super()._throw_queued_validation_errors()
-        email_output:str = ""
-        password_output:str = ""
-        confirm_password_output:str = ""
-        first_name_output:str = ""
-        last_name_output:str = "" 
+        email_output: str = ""
+        password_output: str = ""
+        confirm_password_output: str = ""
+        first_name_output: str = ""
+        last_name_output: str = ""
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacRegisterInitObjWFResult()

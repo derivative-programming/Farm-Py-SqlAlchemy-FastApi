@@ -23,7 +23,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class FlavorBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -101,7 +101,7 @@ class FlavorBusObj(BaseBusObj):
     def set_prop_display_order(self, value):
         self.display_order = value
         return self
-    #IsActive
+    # isActive
     @property
     def is_active(self):
         return self.flavor.is_active
@@ -135,14 +135,14 @@ class FlavorBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-    #PacID
+     # PacID
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @property
     def pac_id(self):
         return self.flavor.pac_id
@@ -181,12 +181,12 @@ class FlavorBusObj(BaseBusObj):
     @property
     def lookup_enum(self) -> managers_and_enums.FlavorEnum:
         return managers_and_enums.FlavorEnum[self.flavor.lookup_enum_name]
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   flavor_id:int=None,
-                   flavor_obj_instance:Flavor=None,
-                   flavor_dict:dict=None,
-                   flavor_enum:managers_and_enums.FlavorEnum=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   flavor_id: int = None,
+                   flavor_obj_instance: Flavor = None,
+                   flavor_dict: dict = None,
+                   flavor_enum:managers_and_enums.FlavorEnum = None):
         if flavor_id and self.flavor.flavor_id is None:
             flavor_manager = FlavorManager(self._session_context)
             flavor_obj = await flavor_manager.get_by_id(flavor_id)
@@ -209,13 +209,13 @@ class FlavorBusObj(BaseBusObj):
             flavor_manager = FlavorManager(self._session_context)
             self.flavor = await flavor_manager.from_enum(flavor_enum)
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   flavor_id:int=None,
-                   flavor_obj_instance:Flavor=None,
-                   flavor_dict:dict=None,
-                   flavor_enum:managers_and_enums.FlavorEnum=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   flavor_id: int = None,
+                   flavor_obj_instance: Flavor = None,
+                   flavor_dict: dict = None,
+                   flavor_enum:managers_and_enums.FlavorEnum = None):
         result = FlavorBusObj(session_context)
         await result.load(
             json_data,
@@ -253,7 +253,7 @@ class FlavorBusObj(BaseBusObj):
             await flavor_manager.delete(self.flavor.flavor_id)
             self.flavor = None
     async def randomize_properties(self):
-        self.flavor.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.flavor.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.flavor.display_order = random.randint(0, 100)
         self.flavor.is_active = random.choice([True, False])
         self.flavor.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -263,17 +263,17 @@ class FlavorBusObj(BaseBusObj):
         return self
     def get_flavor_obj(self) -> Flavor:
         return self.flavor
-    def is_equal(self,flavor:Flavor) -> Flavor:
+    def is_equal(self, flavor: Flavor) -> Flavor:
         flavor_manager = FlavorManager(self._session_context)
         my_flavor = self.get_flavor_obj()
         return flavor_manager.is_equal(flavor, my_flavor)
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -287,10 +287,10 @@ class FlavorBusObj(BaseBusObj):
         return self.flavor_id
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -299,10 +299,10 @@ class FlavorBusObj(BaseBusObj):
         return self.get_pac_id_rel_obj()
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Flavor]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Flavor]):
         result = list()
         for flavor in obj_list:
-            flavor_bus_obj = FlavorBusObj.get(session_context,flavor_obj_instance=flavor)
+            flavor_bus_obj = FlavorBusObj.get(session_context, flavor_obj_instance=flavor)
             result.append(flavor_bus_obj)
         return result
 

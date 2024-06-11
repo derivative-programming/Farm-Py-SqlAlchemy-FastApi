@@ -17,7 +17,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowPlantUserPropertyRandomUpdateResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -30,7 +30,7 @@ class FlowPlantUserPropertyRandomUpdateResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowPlantUserPropertyRandomUpdate, self).__init__(session_context)
     async def process(self,
         plant_bus_obj: PlantBusObj,
@@ -42,7 +42,7 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
             plant_bus_obj,
 
         )
-        super()._throw_queued_validation_errors() 
+        super()._throw_queued_validation_errors()
 
         await plant_bus_obj.randomize_properties().save()
 

@@ -17,9 +17,9 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowPlantUserDetailsInitReportResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    land_code:uuid.UUID =  uuid.UUID(int=0)
-    tac_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    land_code: uuid.UUID =  uuid.UUID(int=0)
+    tac_code: uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
     def to_json(self):
@@ -32,7 +32,7 @@ class FlowPlantUserDetailsInitReportResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowPlantUserDetailsInitReport, self).__init__(session_context)
     async def process(self,
         plant_bus_obj: PlantBusObj,
@@ -44,9 +44,9 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
             plant_bus_obj,
 
         )
-        super()._throw_queued_validation_errors() 
+        super()._throw_queued_validation_errors()
 
-        land_code_output = plant_bus_obj.land_code_peek 
+        land_code_output = plant_bus_obj.land_code_peek
         tac_code_output = self._session_context.tac_code
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")

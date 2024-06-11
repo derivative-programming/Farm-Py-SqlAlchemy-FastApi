@@ -1,27 +1,31 @@
 import tempfile
 import uuid
+import traceback
+import logging
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-import traceback
-import logging
 from helpers import SessionContext, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
 import reports
-from  .base_router import BaseRouter
+from .base_router import BaseRouter
 from database import get_db
+
+
 class CustomerUserLogOutRouterConfig():
-    #constants
-    is_get_available:bool = False
-    is_get_with_id_available:bool = False
-    is_get_init_available:bool = True
-    is_get_to_csv_available:bool = False
-    is_post_available:bool = False
-    is_post_with_id_available:bool = True
-    is_put_available:bool = False
-    is_delete_available:bool = False
+    # constants
+    is_get_available: bool = False
+    is_get_with_id_available: bool = False
+    is_get_init_available: bool = True
+    is_get_to_csv_available: bool = False
+    is_post_available: bool = False
+    is_post_with_id_available: bool = True
+    is_put_available: bool = False
+    is_delete_available: bool = False
     is_public: bool = False
+
+
 class CustomerUserLogOutRouter(BaseRouter):
     router = APIRouter(tags=["CustomerUserLogOut"])
 
@@ -30,7 +34,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                 response_model=api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse,
                 summary="Customer User Log Out Init Page")
     async def request_get_init(customer_code: str = Path(..., description="Customer Code"),
-                               session:AsyncSession = Depends(get_db),
+                               session: AsyncSession = Depends(get_db),
                                api_key: str = Depends(api_key_header)):
         logging.info('CustomerUserLogOutRouter.request_get_init start. customerCode:' + customer_code)
         auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.is_get_init_available)
@@ -57,20 +61,22 @@ class CustomerUserLogOutRouter(BaseRouter):
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
-                if response.success == True:
+                if response.success is True:
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('CustomerUserLogOutRouter.init get result:' + response.model_dump_json())
+        response_data = response.model_dump_json()
+        logging.info("CustomerUserLogOutRouter.init get result:%s", response_data)
         return response
 
     @staticmethod
-    @router.post("/api/v1_0/customer-user-log-out/{customer_code}",
-                 response_model=api_models.CustomerUserLogOutPostModelResponse,
-                summary="Customer User Log Out Business Flow")
+    @router.post(
+        "/api/v1_0/customer-user-log-out/{customer_code}",
+        response_model=api_models.CustomerUserLogOutPostModelResponse,
+        summary="Customer User Log Out Business Flow")
     async def request_post_with_id(customer_code: str,
-                                   request_model:api_models.CustomerUserLogOutPostModelRequest,
-                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+                                   request_model: api_models.CustomerUserLogOutPostModelRequest,
+                                   session: AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('CustomerUserLogOutRouter.request_post_with_id start. customerCode:' + customer_code)
         auth_dict = BaseRouter.implementation_check(CustomerUserLogOutRouterConfig.is_post_with_id_available)
         response = api_models.CustomerUserLogOutPostModelResponse()
@@ -93,18 +99,18 @@ class CustomerUserLogOutRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:" + response.message)
+                logging.info("response.message:%s", response.message)
             except Exception as e:
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:" + response.message)
+                logging.info("response.message:%s", response.message)
             finally:
-                if response.success == True:
+                if response.success is True:
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('CustomerUserLogOutRouter.submit get result:' + response.model_dump_json())
+        logging.info('CustomerUserLogOutRouter.submit get result:$s', response.model_dump_json())
         return response
 

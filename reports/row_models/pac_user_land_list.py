@@ -11,7 +11,7 @@ class ReportItemPacUserLandList():
     land_name: str = ""
     pac_name: str = ""
 
-    def load_data_provider_dict(self,data:dict):
+    def load_data_provider_dict(self, data: dict):
             self.land_code = TypeConversion.get_uuid(data["land_code"])
             self.land_description = str(data["land_description"])
             self.land_display_order = int(data["land_display_order"])

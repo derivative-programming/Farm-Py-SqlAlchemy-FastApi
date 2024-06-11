@@ -19,8 +19,8 @@ from sqlalchemy import String
 from decimal import Decimal
 from services import encryption
 class FlowCustomerBuildTempApiKeyResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    tmp_org_api_key_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    tmp_org_api_key_code: uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
     def to_json(self):
@@ -32,7 +32,7 @@ class FlowCustomerBuildTempApiKeyResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowCustomerBuildTempApiKey, self).__init__(session_context)
     async def process(self,
         customer_bus_obj: CustomerBusObj,
@@ -52,7 +52,7 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
 
         if customer_bus_obj.active_organization_id == 0:
             raise ValueError("Active organization not set")
-        
+
         org_customer_manager = OrgCustomerManager(customer_bus_obj.session)
         org_customer_list = await org_customer_manager.get_by_customer_id(customer_id=customer_bus_obj.customer_id)
         org_customer_list_active_org = []
@@ -60,7 +60,7 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
             if org_customer.organization_id == customer_bus_obj.active_organization_id:
                 org_customer_list_active_org.append(org_customer)
 
-        
+
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowCustomerBuildTempApiKeyResult()

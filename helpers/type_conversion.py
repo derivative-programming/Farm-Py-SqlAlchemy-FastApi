@@ -1,28 +1,40 @@
+# helpers/type_conversion.py
+
+"""
+    #TODO add comment
+"""
+
 from marshmallow import fields
 from datetime import date, datetime
 import uuid
 
-class TypeConversion:
 
+class TypeConversion:
+    """
+    #TODO add comment
+    """
     @staticmethod
     def get_default_date():
-        return date(1753,1,1)
+        return date(1753, 1, 1)
 
     @staticmethod
-    def get_default_date_time():
-        return datetime(1753,1,1,0,0) 
-    
+    def get_default_date_time() -> datetime:
+        return datetime(1753, 1, 1, 0, 0)
+
+    @staticmethod
+    def get_default_dt() -> datetime:
+        return datetime(1753, 1, 1, 0, 0)
+
     @staticmethod
     def get_default_uuid():
-        return uuid.UUID(int=0) 
+        return uuid.UUID(int=0)
 
-    
     @staticmethod
     def get_uuid(val) -> uuid.UUID:
-            if isinstance(val, uuid.UUID):
-                return val
-            else:
-                return uuid.UUID(val)
+        if isinstance(val, uuid.UUID):
+            return val
+        else:
+            return uuid.UUID(val)
 
 
 class UUIDField(fields.Field):

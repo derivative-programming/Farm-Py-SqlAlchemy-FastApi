@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 import pytest_asyncio
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import (
@@ -25,11 +25,11 @@ elif db_dialect == 'mssql':
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestPacFactoryAsync:
-        
+
     async_engine = create_async_engine(
         DATABASE_URL, echo=False
     )
-    
+
     # Synchronous engine for table creation
     sync_engine = create_engine(DATABASE_URL, echo=False)
 
@@ -39,14 +39,14 @@ class TestPacFactoryAsync:
         autoflush=False,
         autocommit=False,
         class_=AsyncSession,
-    ) 
+    )
 
     @pytest_asyncio.fixture(scope="function", autouse=True)
     async def setup_and_teardown_db(self):
         # Setup: Create tables
         async with self.async_engine.begin() as conn:
             await conn.run(Base.metadata.create_all(self.async_engine))
-            
+
         # Setup: Create tables
         Base.metadata.create_all(bind=self.sync_engine)
 
@@ -54,17 +54,17 @@ class TestPacFactoryAsync:
 
         # Teardown: Drop tables
         Base.metadata.drop_all(bind=self.sync_engine)
-         
+
     @pytest_asyncio.fixture(scope="function")
     async def async_db_session(self):
         """The expectation with async_sessions is that the
         transactions be called on the connection object instead of the
-        session object. 
+        session object.
         Detailed explanation of async transactional tests
         <https://github.com/sqlalchemy/sqlalchemy/issues/5811>
         """
-    
-        connection = await self.async_engine.connect() 
+
+        connection = await self.async_engine.connect()
 
         trans = await connection.begin()
         async_session = self.TestingAsyncSessionLocal(bind=connection)
@@ -84,7 +84,7 @@ class TestPacFactoryAsync:
         await connection.close()
 
     @pytest.mark.asyncio
-    async def test_pac_creation(self,async_db_session:AsyncSession):   
+    async def test_pac_creation(self,async_db_session: AsyncSession):
         await async_db_session.begin()
         async_db_session.add(Pac())
         pac = await PacFactory.create_async(session=async_db_session)
@@ -100,11 +100,11 @@ class TestPacFactoryAsync:
     #         assert isinstance(pac.code, str)
     # @pytest.mark.asyncio
     # async def test_last_change_code_default_on_build(self, session):
-    #     pac:Pac = await PacFactory.build_async(session=session)
+    #     pac: Pac = await PacFactory.build_async(session=session)
     #     assert pac.last_change_code == 0
     # @pytest.mark.asyncio
     # async def test_last_change_code_default_on_creation(self, session):
-    #     pac:Pac = await PacFactory.create_async(session=session)
+    #     pac: Pac = await PacFactory.create_async(session=session)
     #     assert pac.last_change_code == 1
     # @pytest.mark.asyncio
     # async def test_last_change_code_default_on_update(self, session):
@@ -202,7 +202,7 @@ class TestPacFactoryAsync:
 
     #     #description,
     #     #displayOrder,
-    #     #isActive,
+    #     # isActive,
     #     #lookupEnumName,
     #     #name,
 
@@ -228,13 +228,13 @@ class TestPacFactoryAsync:
 
     #     #description,
     #     #displayOrder,
-    #     #isActive,
+    #     # isActive,
     #     #lookupEnumName,
     #     #name,
 
     #     assert pac.description == ""
     #     assert pac.display_order == 0
-    #     assert pac.is_active == False
+    #     assert pac.is_active is False
     #     assert pac.lookup_enum_name == ""
     #     assert pac.name == ""
 
@@ -252,7 +252,7 @@ class TestPacFactoryAsync:
 
     # #description,
     # #displayOrder,
-    # #isActive,
+    # # isActive,
     # #lookupEnumName,
     # #name,
 

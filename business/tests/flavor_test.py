@@ -27,12 +27,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestFlavorBusObj:
     @pytest_asyncio.fixture(scope="function")
-    async def flavor_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def flavor_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         return FlavorManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def flavor_bus_obj(self, session):
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
         return FlavorBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_flavor(self, session):
@@ -40,7 +40,7 @@ class TestFlavorBusObj:
         # Assuming FlavorFactory.create() is an async function
         return await FlavorFactory.create_async(session)
     @pytest.mark.asyncio
-    async def test_create_flavor(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_create_flavor(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         # Test creating a new flavor
         assert flavor_bus_obj.flavor_id is None
         # assert isinstance(flavor_bus_obj.flavor_id, int)
@@ -60,36 +60,36 @@ class TestFlavorBusObj:
         assert flavor_bus_obj.name == "" or isinstance(flavor_bus_obj.name, str)
         assert isinstance(flavor_bus_obj.pac_id, int)
     @pytest.mark.asyncio
-    async def test_load_with_flavor_obj(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_load_with_flavor_obj(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         await flavor_bus_obj.load(flavor_obj_instance=new_flavor)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor) == True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor) is True
     @pytest.mark.asyncio
-    async def test_load_with_flavor_id(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_load_with_flavor_id(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         await flavor_bus_obj.load(flavor_id=new_flavor.flavor_id)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  == True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
     @pytest.mark.asyncio
-    async def test_load_with_flavor_code(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_load_with_flavor_code(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         await flavor_bus_obj.load(code=new_flavor.code)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  == True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
     @pytest.mark.asyncio
-    async def test_load_with_flavor_json(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_load_with_flavor_json(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         flavor_json = flavor_manager.to_json(new_flavor)
         await flavor_bus_obj.load(json_data=flavor_json)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  == True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
     @pytest.mark.asyncio
-    async def test_load_with_flavor_dict(self, session, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_load_with_flavor_dict(self, session, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         logger.info("test_load_with_flavor_dict 1")
         flavor_dict = flavor_manager.to_dict(new_flavor)
         logger.info(flavor_dict)
         await flavor_bus_obj.load(flavor_dict=flavor_dict)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  == True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
     @pytest.mark.asyncio
-    async def test_get_nonexistent_flavor(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_get_nonexistent_flavor(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         # Test retrieving a nonexistent flavor raises an exception
         await flavor_bus_obj.load(flavor_id=-1)
-        assert flavor_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
+        assert flavor_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
-    async def test_update_flavor(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_update_flavor(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         # Test updating a flavor's data
         new_flavor = await flavor_manager.get_by_id(new_flavor.flavor_id)
         new_code = generate_uuid()
@@ -97,9 +97,9 @@ class TestFlavorBusObj:
         flavor_bus_obj.code = new_code
         await flavor_bus_obj.save()
         new_flavor = await flavor_manager.get_by_id(new_flavor.flavor_id)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  == True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
     @pytest.mark.asyncio
-    async def test_delete_flavor(self, flavor_manager:FlavorManager, flavor_bus_obj:FlavorBusObj, new_flavor:Flavor):
+    async def test_delete_flavor(self, flavor_manager: FlavorManager, flavor_bus_obj: FlavorBusObj, new_flavor: Flavor):
         assert new_flavor.flavor_id is not None
         assert flavor_bus_obj.flavor_id is None
         await flavor_bus_obj.load(flavor_id=new_flavor.flavor_id)

@@ -37,7 +37,7 @@ class TriStateFilterManager:
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
 
-    async def _build_lookup_item(self, pac:Pac):
+    async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
         item.pac_id = pac.pac_id
         return item
@@ -50,7 +50,7 @@ class TriStateFilterManager:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description = ""
+            item.description=""
             item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
@@ -59,7 +59,7 @@ class TriStateFilterManager:
             item = await self._build_lookup_item(pac)
             item.name = "Yes"
             item.lookup_enum_name = "Yes"
-            item.description = "Yes"
+            item.description="Yes"
             item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
@@ -68,7 +68,7 @@ class TriStateFilterManager:
             item = await self._build_lookup_item(pac)
             item.name = "No"
             item.lookup_enum_name = "No"
-            item.description = "No"
+            item.description="No"
             item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
@@ -99,12 +99,12 @@ class TriStateFilterManager:
 #
 #         if join_condition is not None:
 #             query = select(TriStateFilter
-#                         ,Pac #pac_id
+#                         , Pac  # pac_id
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(TriStateFilter)
         query = select(TriStateFilter
-                    ,Pac #pac_id
+                    , Pac  # pac_id
                     )
 
         query = query.outerjoin(Pac, and_(TriStateFilter.pac_id == Pac.pac_id, TriStateFilter.pac_id != 0))
@@ -125,25 +125,25 @@ class TriStateFilterManager:
             tri_state_filter = query_result_row[i]
             i = i + 1
 
-            pac = query_result_row[i] #pac_id
+            pac = query_result_row[i]  # pac_id
             i = i + 1
 
-            tri_state_filter.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+            tri_state_filter.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
 
             result.append(tri_state_filter)
         return result
-    def _first_or_none(self,tri_state_filter_list:List) -> TriStateFilter:
+    def _first_or_none(self,tri_state_filter_list: List) -> TriStateFilter:
         return tri_state_filter_list[0] if tri_state_filter_list else None
     async def get_by_id(self, tri_state_filter_id: int) -> Optional[TriStateFilter]:
         logging.info("TriStateFilterManager.get_by_id start tri_state_filter_id:" + str(tri_state_filter_id))
         if not isinstance(tri_state_filter_id, int):
-            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
+            raise TypeError("The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
         query_filter = TriStateFilter.tri_state_filter_id == tri_state_filter_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[TriStateFilter]:
-        logging.info(f"TriStateFilterManager.get_by_code {code}")
-        query_filter = TriStateFilter.code==code
+        logging.info("TriStateFilterManager.get_by_code {code}")
+        query_filter = TriStateFilter.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, tri_state_filter: TriStateFilter, **kwargs) -> Optional[TriStateFilter]:
@@ -158,9 +158,9 @@ class TriStateFilterManager:
             await self._session_context.session.flush()
         return tri_state_filter
     async def delete(self, tri_state_filter_id: int):
-        logging.info(f"TriStateFilterManager.delete {tri_state_filter_id}")
+        logging.info("TriStateFilterManager.delete {tri_state_filter_id}")
         if not isinstance(tri_state_filter_id, int):
-            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
+            raise TypeError("The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
         if not tri_state_filter:
             raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
@@ -219,10 +219,10 @@ class TriStateFilterManager:
         for update in tri_state_filter_updates:
             tri_state_filter_id = update.get("tri_state_filter_id")
             if not isinstance(tri_state_filter_id, int):
-                raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
+                raise TypeError("The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
             if not tri_state_filter_id:
                 continue
-            logging.info(f"TriStateFilterManager.update_bulk tri_state_filter_id:{tri_state_filter_id}")
+            logging.info("TriStateFilterManager.update_bulk tri_state_filter_id:{tri_state_filter_id}")
             tri_state_filter = await self.get_by_id(tri_state_filter_id)
             if not tri_state_filter:
                 raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
@@ -239,7 +239,7 @@ class TriStateFilterManager:
         """Delete multiple tri_state_filters by their IDs."""
         for tri_state_filter_id in tri_state_filter_ids:
             if not isinstance(tri_state_filter_id, int):
-                raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
+                raise TypeError("The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
             tri_state_filter = await self.get_by_id(tri_state_filter_id)
             if not tri_state_filter:
                 raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
@@ -266,10 +266,10 @@ class TriStateFilterManager:
         await self._session_context.session.refresh(tri_state_filter)
         return tri_state_filter
     async def exists(self, tri_state_filter_id: int) -> bool:
-        logging.info(f"TriStateFilterManager.exists {tri_state_filter_id}")
+        logging.info("TriStateFilterManager.exists {tri_state_filter_id}")
         """Check if a tri_state_filter with the given ID exists."""
         if not isinstance(tri_state_filter_id, int):
-            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
+            raise TypeError("The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead.")
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
         return bool(tri_state_filter)
     def is_equal(self, tri_state_filter1:TriStateFilter, tri_state_filter2:TriStateFilter) -> bool:
@@ -285,10 +285,10 @@ class TriStateFilterManager:
         dict2 = self.to_dict(tri_state_filter2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int) -> List[TriStateFilter]: # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[TriStateFilter]:  # PacID
         logging.info("TriStateFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):
-            raise TypeError(f"The tri_state_filter_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError("The tri_state_filter_id must be an integer, got {type(pac_id)} instead.")
         query_filter = TriStateFilter.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

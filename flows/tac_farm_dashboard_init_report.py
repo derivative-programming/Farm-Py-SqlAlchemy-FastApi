@@ -17,8 +17,8 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacFarmDashboardInitReportResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    customer_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    customer_code: uuid.UUID =  uuid.UUID(int=0)
     def __init__(self):
         pass
     def to_json(self):
@@ -30,7 +30,7 @@ class FlowTacFarmDashboardInitReportResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowTacFarmDashboardInitReport, self).__init__(session_context)
     async def process(self,
         tac_bus_obj: TacBusObj,
@@ -42,7 +42,7 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
             tac_bus_obj,
 
         )
-        super()._throw_queued_validation_errors() 
+        super()._throw_queued_validation_errors()
 
         customer_code_output = self._session_context.customer_code
 

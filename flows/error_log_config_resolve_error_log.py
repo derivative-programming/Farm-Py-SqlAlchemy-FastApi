@@ -17,7 +17,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowErrorLogConfigResolveErrorLogResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -30,7 +30,7 @@ class FlowErrorLogConfigResolveErrorLogResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowErrorLogConfigResolveErrorLog, self).__init__(session_context)
     async def process(self,
         error_log_bus_obj: ErrorLogBusObj,
@@ -47,7 +47,7 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
         error_log_bus_obj = (
             error_log_bus_obj
             .set_prop_is_resolved(True)
-            .set_prop_last_update_user_id(self._session_context.customer_code) 
+            .set_prop_last_update_user_id(self._session_context.customer_code)
         )
         await error_log_bus_obj.save()
 

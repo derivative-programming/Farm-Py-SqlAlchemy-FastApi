@@ -193,8 +193,8 @@ class TestOrgApiKeyFactoryAsync:
         #createdBy,
         #createdUTCDateTime
         #expirationUTCDateTime
-        #isActive,
-        #isTempUserKey,
+        # isActive,
+        # isTempUserKey,
         #name,
         #organizationID
         if db_dialect == 'postgresql':
@@ -236,8 +236,8 @@ class TestOrgApiKeyFactoryAsync:
         #createdBy,
         #createdUTCDateTime
         #expirationUTCDateTime
-        #isActive,
-        #isTempUserKey,
+        # isActive,
+        # isTempUserKey,
         #name,
         #OrganizationID
         if db_dialect == 'postgresql':
@@ -258,8 +258,8 @@ class TestOrgApiKeyFactoryAsync:
         assert org_api_key.created_by == ""
         assert org_api_key.created_utc_date_time == datetime(1753, 1, 1)
         assert org_api_key.expiration_utc_date_time == datetime(1753, 1, 1)
-        assert org_api_key.is_active == False
-        assert org_api_key.is_temp_user_key == False
+        assert org_api_key.is_active is False
+        assert org_api_key.is_temp_user_key is False
         assert org_api_key.name == ""
         assert org_api_key.organization_id == 0
         assert org_api_key.org_customer_id == 0
@@ -286,8 +286,8 @@ class TestOrgApiKeyFactoryAsync:
     #createdBy,
     #createdUTCDateTime
     #expirationUTCDateTime
-    #isActive,
-    #isTempUserKey,
+    # isActive,
+    # isTempUserKey,
     #name,
     #OrganizationID
     @pytest.mark.asyncio

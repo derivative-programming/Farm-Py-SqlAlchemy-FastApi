@@ -1,10 +1,15 @@
-from config import ENCRYPTION_KEY_SECRET  
+# encryption.py
+
+"""
+    #TODO add comment
+"""
+
+from config import ENCRYPTION_KEY_SECRET
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.backends import default_backend
 import os
 import hashlib
- 
 
 def encrypt_message(message):
     password = ENCRYPTION_KEY_SECRET

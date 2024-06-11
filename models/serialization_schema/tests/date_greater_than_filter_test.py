@@ -30,11 +30,11 @@ class TestDateGreaterThanFilterSchema:
         "pac_id": 2,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# PacID
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_date_greater_than_filter_serialization(self, date_greater_than_filter:DateGreaterThanFilter, session):
+    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
         schema = DateGreaterThanFilterSchema()
         result = schema.dump(date_greater_than_filter)
         assert result['code'] == date_greater_than_filter.code
@@ -53,9 +53,9 @@ class TestDateGreaterThanFilterSchema:
         assert result['insert_utc_date_time'] == date_greater_than_filter.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == date_greater_than_filter.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == date_greater_than_filter.pac_code_peek # PacID
+        assert result['pac_code_peek'] == date_greater_than_filter.pac_code_peek  # PacID
 
-    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter:DateGreaterThanFilter, session):
+    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
         schema = DateGreaterThanFilterSchema()
         serialized_data = schema.dump(date_greater_than_filter)
         deserialized_data = schema.load(serialized_data)
@@ -75,7 +75,7 @@ class TestDateGreaterThanFilterSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == date_greater_than_filter.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == date_greater_than_filter.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == date_greater_than_filter.pac_code_peek # PacID
+        assert deserialized_data['pac_code_peek'] == date_greater_than_filter.pac_code_peek  # PacID
 
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
@@ -96,9 +96,9 @@ class TestDateGreaterThanFilterSchema:
         assert new_date_greater_than_filter.insert_utc_date_time.isoformat() == date_greater_than_filter.insert_utc_date_time.isoformat()
         assert new_date_greater_than_filter.last_update_utc_date_time.isoformat() == date_greater_than_filter.last_update_utc_date_time.isoformat()
 
-        assert new_date_greater_than_filter.pac_code_peek == date_greater_than_filter.pac_code_peek #PacID
+        assert new_date_greater_than_filter.pac_code_peek == date_greater_than_filter.pac_code_peek  # PacID
 
-    def test_from_json(self, date_greater_than_filter:DateGreaterThanFilter, session):
+    def test_from_json(self, date_greater_than_filter: DateGreaterThanFilter, session):
         date_greater_than_filter_schema = DateGreaterThanFilterSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -121,12 +121,12 @@ class TestDateGreaterThanFilterSchema:
         assert str(deserialized_data['pac_id']) == str(self.sample_data['pac_id'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
+        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek'])  # PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
-    def test_to_json(self, date_greater_than_filter:DateGreaterThanFilter, session):
+    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter, session):
             # Convert the DateGreaterThanFilter instance to JSON using the schema
             date_greater_than_filter_schema = DateGreaterThanFilterSchema()
             date_greater_than_filter_dict = date_greater_than_filter_schema.dump(date_greater_than_filter)
@@ -153,5 +153,5 @@ class TestDateGreaterThanFilterSchema:
             assert date_greater_than_filter_dict_from_json['insert_utc_date_time'] == date_greater_than_filter.insert_utc_date_time.isoformat()
             assert date_greater_than_filter_dict_from_json['last_update_utc_date_time'] == date_greater_than_filter.last_update_utc_date_time.isoformat()
 
-            assert date_greater_than_filter_dict_from_json['pac_code_peek'] == date_greater_than_filter.pac_code_peek # PacID
+            assert date_greater_than_filter_dict_from_json['pac_code_peek'] == date_greater_than_filter.pac_code_peek  # PacID
 

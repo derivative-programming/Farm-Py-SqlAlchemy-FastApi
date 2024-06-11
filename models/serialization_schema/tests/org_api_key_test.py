@@ -32,8 +32,8 @@ class TestOrgApiKeySchema:
         "org_customer_id": 1,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# OrganizationID
-        "org_customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# OrgCustomerID
+        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrganizationID
+        "org_customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrgCustomerID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }

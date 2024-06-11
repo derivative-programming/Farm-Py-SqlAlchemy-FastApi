@@ -15,15 +15,15 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
-    success:bool = Field(default=False, description="Success")
-    message:str = Field(default="", description="Message")
-    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
-    land_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+    success: bool = Field(default=False, description="Success")
+    message: str = Field(default="", description="Message")
+    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    land_code: uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
                                       description="Land Code")
-    tac_code:uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
+    tac_code: uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
                                       description="Tac Code")
 
-    def load_flow_response(self,data:FlowPlantUserDetailsInitReportResult):
+    def load_flow_response(self, data:FlowPlantUserDetailsInitReportResult):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -33,9 +33,9 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session_context:SessionContext,
-                        plant_code:uuid,
-                        response:PlantUserDetailsInitReportGetInitModelResponse) -> PlantUserDetailsInitReportGetInitModelResponse:
+                        session_context: SessionContext,
+                        plant_code: uuid,
+                        response: PlantUserDetailsInitReportGetInitModelResponse) -> PlantUserDetailsInitReportGetInitModelResponse:
         try:
             logging.info("loading model...PlantUserDetailsInitReportGetInitModelRequest")
             plant_bus_obj = PlantBusObj(session_context)

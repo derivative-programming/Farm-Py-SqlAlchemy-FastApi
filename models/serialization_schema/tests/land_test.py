@@ -29,11 +29,11 @@ class TestLandSchema:
         "pac_id": 2,
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# PacID
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_land_serialization(self, land:Land, session):
+    def test_land_serialization(self, land: Land, session):
         schema = LandSchema()
         result = schema.dump(land)
         assert result['code'] == land.code
@@ -51,9 +51,9 @@ class TestLandSchema:
         assert result['insert_utc_date_time'] == land.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == land.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == land.pac_code_peek # PacID
+        assert result['pac_code_peek'] == land.pac_code_peek  # PacID
 
-    def test_land_deserialization(self, land:Land, session):
+    def test_land_deserialization(self, land: Land, session):
         schema = LandSchema()
         serialized_data = schema.dump(land)
         deserialized_data = schema.load(serialized_data)
@@ -72,7 +72,7 @@ class TestLandSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == land.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == land.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == land.pac_code_peek # PacID
+        assert deserialized_data['pac_code_peek'] == land.pac_code_peek  # PacID
 
         new_land = Land(**deserialized_data)
         assert isinstance(new_land, Land)
@@ -92,9 +92,9 @@ class TestLandSchema:
         assert new_land.insert_utc_date_time.isoformat() == land.insert_utc_date_time.isoformat()
         assert new_land.last_update_utc_date_time.isoformat() == land.last_update_utc_date_time.isoformat()
 
-        assert new_land.pac_code_peek == land.pac_code_peek #PacID
+        assert new_land.pac_code_peek == land.pac_code_peek  # PacID
 
-    def test_from_json(self, land:Land, session):
+    def test_from_json(self, land: Land, session):
         land_schema = LandSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -116,12 +116,12 @@ class TestLandSchema:
         assert str(deserialized_data['pac_id']) == str(self.sample_data['pac_id'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
+        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek'])  # PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_land = Land(**deserialized_data)
         assert isinstance(new_land, Land)
-    def test_to_json(self, land:Land, session):
+    def test_to_json(self, land: Land, session):
             # Convert the Land instance to JSON using the schema
             land_schema = LandSchema()
             land_dict = land_schema.dump(land)
@@ -147,5 +147,5 @@ class TestLandSchema:
             assert land_dict_from_json['insert_utc_date_time'] == land.insert_utc_date_time.isoformat()
             assert land_dict_from_json['last_update_utc_date_time'] == land.last_update_utc_date_time.isoformat()
 
-            assert land_dict_from_json['pac_code_peek'] == land.pac_code_peek # PacID
+            assert land_dict_from_json['pac_code_peek'] == land.pac_code_peek  # PacID
 

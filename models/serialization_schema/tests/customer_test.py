@@ -46,11 +46,11 @@ class TestCustomerSchema:
         "zip": "Vanilla",
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# TacID
+        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_customer_serialization(self, customer:Customer, session):
+    def test_customer_serialization(self, customer: Customer, session):
         schema = CustomerSchema()
         result = schema.dump(customer)
         assert result['code'] == customer.code
@@ -87,7 +87,7 @@ class TestCustomerSchema:
 
         assert result['tac_code_peek'] == customer.tac_code_peek # TacID
 
-    def test_customer_deserialization(self, customer:Customer, session):
+    def test_customer_deserialization(self, customer: Customer, session):
         schema = CustomerSchema()
         serialized_data = schema.dump(customer)
         deserialized_data = schema.load(serialized_data)
@@ -160,9 +160,9 @@ class TestCustomerSchema:
         assert new_customer.insert_utc_date_time.isoformat() == customer.insert_utc_date_time.isoformat()
         assert new_customer.last_update_utc_date_time.isoformat() == customer.last_update_utc_date_time.isoformat()
 
-        assert new_customer.tac_code_peek == customer.tac_code_peek #TacID
+        assert new_customer.tac_code_peek == customer.tac_code_peek  # TacID
 
-    def test_from_json(self, customer:Customer, session):
+    def test_from_json(self, customer: Customer, session):
         customer_schema = CustomerSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -201,12 +201,12 @@ class TestCustomerSchema:
         assert str(deserialized_data['zip']) == str(self.sample_data['zip'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['tac_code_peek']) == str(self.sample_data['tac_code_peek']) #TacID
+        assert str(deserialized_data['tac_code_peek']) == str(self.sample_data['tac_code_peek'])  # TacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_customer = Customer(**deserialized_data)
         assert isinstance(new_customer, Customer)
-    def test_to_json(self, customer:Customer, session):
+    def test_to_json(self, customer: Customer, session):
             # Convert the Customer instance to JSON using the schema
             customer_schema = CustomerSchema()
             customer_dict = customer_schema.dump(customer)

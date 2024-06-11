@@ -25,7 +25,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class CustomerBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -158,7 +158,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_fs_user_code_value(self, value):
         self.fs_user_code_value = value
         return self
-    #IsActive
+    # isActive
     @property
     def is_active(self):
         return self.customer.is_active
@@ -170,7 +170,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_is_active(self, value: bool):
         self.is_active = value
         return self
-    #IsEmailAllowed
+    # isEmailAllowed
     @property
     def is_email_allowed(self):
         return self.customer.is_email_allowed
@@ -182,7 +182,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_is_email_allowed(self, value: bool):
         self.is_email_allowed = value
         return self
-    #IsEmailConfirmed
+    # isEmailConfirmed
     @property
     def is_email_confirmed(self):
         return self.customer.is_email_confirmed
@@ -194,7 +194,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_is_email_confirmed(self, value: bool):
         self.is_email_confirmed = value
         return self
-    #IsEmailMarketingAllowed
+    # isEmailMarketingAllowed
     @property
     def is_email_marketing_allowed(self):
         return self.customer.is_email_marketing_allowed
@@ -206,7 +206,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_is_email_marketing_allowed(self, value: bool):
         self.is_email_marketing_allowed = value
         return self
-    #IsLocked
+    # isLocked
     @property
     def is_locked(self):
         return self.customer.is_locked
@@ -218,7 +218,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_is_locked(self, value: bool):
         self.is_locked = value
         return self
-    #IsMultipleOrganizationsAllowed
+    # isMultipleOrganizationsAllowed
     @property
     def is_multiple_organizations_allowed(self):
         return self.customer.is_multiple_organizations_allowed
@@ -230,7 +230,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_is_multiple_organizations_allowed(self, value: bool):
         self.is_multiple_organizations_allowed = value
         return self
-    #IsVerboseLoggingForced
+    # isVerboseLoggingForced
     @property
     def is_verbose_logging_forced(self):
         return self.customer.is_verbose_logging_forced
@@ -308,7 +308,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_registration_utc_date_time(self, value):
         self.registration_utc_date_time = value
         return self
-    #TacID
+     # TacID
     #UTCOffsetInMinutes
     @property
     def utc_offset_in_minutes(self):
@@ -339,20 +339,20 @@ class CustomerBusObj(BaseBusObj):
     #forgotPasswordKeyExpirationUTCDateTime
     #forgotPasswordKeyValue,
     #fSUserCodeValue,
-    #isActive,
-    #isEmailAllowed,
-    #isEmailConfirmed,
-    #isEmailMarketingAllowed,
-    #isLocked,
-    #isMultipleOrganizationsAllowed,
-    #isVerboseLoggingForced,
+    # isActive,
+    # isEmailAllowed,
+    # isEmailConfirmed,
+    # isEmailMarketingAllowed,
+    # isLocked,
+    # isMultipleOrganizationsAllowed,
+    # isVerboseLoggingForced,
     #lastLoginUTCDateTime
     #lastName,
     #password,
     #phone,
     #province,
     #registrationUTCDateTime
-    #TacID
+     # TacID
     @property
     def tac_id(self):
         return self.customer.tac_id
@@ -390,11 +390,11 @@ class CustomerBusObj(BaseBusObj):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.customer.last_update_utc_date_time = value
 
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   customer_id:int=None,
-                   customer_obj_instance:Customer=None,
-                   customer_dict:dict=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   customer_id: int = None,
+                   customer_obj_instance: Customer = None,
+                   customer_dict: dict = None):
         if customer_id and self.customer.customer_id is None:
             customer_manager = CustomerManager(self._session_context)
             customer_obj = await customer_manager.get_by_id(customer_id)
@@ -415,12 +415,12 @@ class CustomerBusObj(BaseBusObj):
             self.customer = customer_manager.from_dict(customer_dict)
         return self
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   customer_id:int=None,
-                   customer_obj_instance:Customer=None,
-                   customer_dict:dict=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   customer_id: int = None,
+                   customer_obj_instance: Customer = None,
+                   customer_dict: dict = None):
         result = CustomerBusObj(session_context)
         await result.load(
             json_data,
@@ -484,7 +484,7 @@ class CustomerBusObj(BaseBusObj):
         return self
     def get_customer_obj(self) -> Customer:
         return self.customer
-    def is_equal(self,customer:Customer) -> Customer:
+    def is_equal(self, customer: Customer) -> Customer:
         customer_manager = CustomerManager(self._session_context)
         my_customer = self.get_customer_obj()
         return customer_manager.is_equal(customer, my_customer)
@@ -496,20 +496,20 @@ class CustomerBusObj(BaseBusObj):
     #forgotPasswordKeyExpirationUTCDateTime
     #forgotPasswordKeyValue,
     #fSUserCodeValue,
-    #isActive,
-    #isEmailAllowed,
-    #isEmailConfirmed,
-    #isEmailMarketingAllowed,
-    #isLocked,
-    #isMultipleOrganizationsAllowed,
-    #isVerboseLoggingForced,
+    # isActive,
+    # isEmailAllowed,
+    # isEmailConfirmed,
+    # isEmailMarketingAllowed,
+    # isLocked,
+    # isMultipleOrganizationsAllowed,
+    # isVerboseLoggingForced,
     #lastLoginUTCDateTime
     #lastName,
     #password,
     #phone,
     #province,
     #registrationUTCDateTime
-    #TacID
+     # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
@@ -530,20 +530,20 @@ class CustomerBusObj(BaseBusObj):
     #forgotPasswordKeyExpirationUTCDateTime
     #forgotPasswordKeyValue,
     #fSUserCodeValue,
-    #isActive,
-    #isEmailAllowed,
-    #isEmailConfirmed,
-    #isEmailMarketingAllowed,
-    #isLocked,
-    #isMultipleOrganizationsAllowed,
-    #isVerboseLoggingForced,
+    # isActive,
+    # isEmailAllowed,
+    # isEmailConfirmed,
+    # isEmailMarketingAllowed,
+    # isLocked,
+    # isMultipleOrganizationsAllowed,
+    # isVerboseLoggingForced,
     #lastLoginUTCDateTime
     #lastName,
     #password,
     #phone,
     #province,
     #registrationUTCDateTime
-    #TacID
+     # TacID
     async def get_parent_name(self) -> str:
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -554,10 +554,10 @@ class CustomerBusObj(BaseBusObj):
     #zip,
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Customer]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Customer]):
         result = list()
         for customer in obj_list:
-            customer_bus_obj = CustomerBusObj.get(session_context,customer_obj_instance=customer)
+            customer_bus_obj = CustomerBusObj.get(session_context, customer_obj_instance=customer)
             result.append(customer_bus_obj)
         return result
 

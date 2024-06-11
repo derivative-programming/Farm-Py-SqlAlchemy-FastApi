@@ -25,7 +25,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class LandBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -103,7 +103,7 @@ class LandBusObj(BaseBusObj):
     def set_prop_display_order(self, value):
         self.display_order = value
         return self
-    #IsActive
+    # isActive
     @property
     def is_active(self):
         return self.land.is_active
@@ -137,14 +137,14 @@ class LandBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-    #PacID
+     # PacID
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @property
     def pac_id(self):
         return self.land.pac_id
@@ -183,12 +183,12 @@ class LandBusObj(BaseBusObj):
     @property
     def lookup_enum(self) -> managers_and_enums.LandEnum:
         return managers_and_enums.LandEnum[self.land.lookup_enum_name]
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   land_id:int=None,
-                   land_obj_instance:Land=None,
-                   land_dict:dict=None,
-                   land_enum:managers_and_enums.LandEnum=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   land_id: int = None,
+                   land_obj_instance: Land = None,
+                   land_dict: dict = None,
+                   land_enum:managers_and_enums.LandEnum = None):
         if land_id and self.land.land_id is None:
             land_manager = LandManager(self._session_context)
             land_obj = await land_manager.get_by_id(land_id)
@@ -211,13 +211,13 @@ class LandBusObj(BaseBusObj):
             land_manager = LandManager(self._session_context)
             self.land = await land_manager.from_enum(land_enum)
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   land_id:int=None,
-                   land_obj_instance:Land=None,
-                   land_dict:dict=None,
-                   land_enum:managers_and_enums.LandEnum=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   land_id: int = None,
+                   land_obj_instance: Land = None,
+                   land_dict: dict = None,
+                   land_enum:managers_and_enums.LandEnum = None):
         result = LandBusObj(session_context)
         await result.load(
             json_data,
@@ -255,7 +255,7 @@ class LandBusObj(BaseBusObj):
             await land_manager.delete(self.land.land_id)
             self.land = None
     async def randomize_properties(self):
-        self.land.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.land.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.display_order = random.randint(0, 100)
         self.land.is_active = random.choice([True, False])
         self.land.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -265,17 +265,17 @@ class LandBusObj(BaseBusObj):
         return self
     def get_land_obj(self) -> Land:
         return self.land
-    def is_equal(self,land:Land) -> Land:
+    def is_equal(self, land: Land) -> Land:
         land_manager = LandManager(self._session_context)
         my_land = self.get_land_obj()
         return land_manager.is_equal(land, my_land)
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -289,10 +289,10 @@ class LandBusObj(BaseBusObj):
         return self.land_id
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -301,10 +301,10 @@ class LandBusObj(BaseBusObj):
         return self.get_pac_id_rel_obj()
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[Land]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Land]):
         result = list()
         for land in obj_list:
-            land_bus_obj = LandBusObj.get(session_context,land_obj_instance=land)
+            land_bus_obj = LandBusObj.get(session_context, land_obj_instance=land)
             result.append(land_bus_obj)
         return result
 

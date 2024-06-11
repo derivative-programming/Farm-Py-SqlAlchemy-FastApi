@@ -23,7 +23,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class ErrorLogBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -123,7 +123,7 @@ class ErrorLogBusObj(BaseBusObj):
     def set_prop_description(self, value):
         self.description = value
         return self
-    #IsClientSideError
+    # isClientSideError
     @property
     def is_client_side_error(self):
         return self.error_log.is_client_side_error
@@ -135,7 +135,7 @@ class ErrorLogBusObj(BaseBusObj):
     def set_prop_is_client_side_error(self, value: bool):
         self.is_client_side_error = value
         return self
-    #IsResolved
+    # isResolved
     @property
     def is_resolved(self):
         return self.error_log.is_resolved
@@ -147,7 +147,7 @@ class ErrorLogBusObj(BaseBusObj):
     def set_prop_is_resolved(self, value: bool):
         self.is_resolved = value
         return self
-    #PacID
+     # PacID
     #Url
     @property
     def url(self):
@@ -164,9 +164,9 @@ class ErrorLogBusObj(BaseBusObj):
     #contextCode,
     #createdUTCDateTime
     #description,
-    #isClientSideError,
-    #isResolved,
-    #PacID
+    # isClientSideError,
+    # isResolved,
+     # PacID
     @property
     def pac_id(self):
         return self.error_log.pac_id
@@ -203,11 +203,11 @@ class ErrorLogBusObj(BaseBusObj):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.error_log.last_update_utc_date_time = value
 
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   error_log_id:int=None,
-                   error_log_obj_instance:ErrorLog=None,
-                   error_log_dict:dict=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   error_log_id: int = None,
+                   error_log_obj_instance:ErrorLog = None,
+                   error_log_dict: dict = None):
         if error_log_id and self.error_log.error_log_id is None:
             error_log_manager = ErrorLogManager(self._session_context)
             error_log_obj = await error_log_manager.get_by_id(error_log_id)
@@ -228,12 +228,12 @@ class ErrorLogBusObj(BaseBusObj):
             self.error_log = error_log_manager.from_dict(error_log_dict)
         return self
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   error_log_id:int=None,
-                   error_log_obj_instance:ErrorLog=None,
-                   error_log_dict:dict=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   error_log_id: int = None,
+                   error_log_obj_instance:ErrorLog = None,
+                   error_log_dict: dict = None):
         result = ErrorLogBusObj(session_context)
         await result.load(
             json_data,
@@ -273,7 +273,7 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.browser_code = generate_uuid()
         self.error_log.context_code = generate_uuid()
         self.error_log.created_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
-        self.error_log.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.error_log.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.error_log.is_client_side_error = random.choice([True, False])
         self.error_log.is_resolved = random.choice([True, False])
         # self.error_log.pac_id = random.randint(0, 100)
@@ -282,7 +282,7 @@ class ErrorLogBusObj(BaseBusObj):
         return self
     def get_error_log_obj(self) -> ErrorLog:
         return self.error_log
-    def is_equal(self,error_log:ErrorLog) -> ErrorLog:
+    def is_equal(self, error_log:ErrorLog) -> ErrorLog:
         error_log_manager = ErrorLogManager(self._session_context)
         my_error_log = self.get_error_log_obj()
         return error_log_manager.is_equal(error_log, my_error_log)
@@ -291,9 +291,9 @@ class ErrorLogBusObj(BaseBusObj):
     #contextCode,
     #createdUTCDateTime
     #description,
-    #isClientSideError,
-    #isResolved,
-    #PacID
+    # isClientSideError,
+    # isResolved,
+     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -310,9 +310,9 @@ class ErrorLogBusObj(BaseBusObj):
     #contextCode,
     #createdUTCDateTime
     #description,
-    #isClientSideError,
-    #isResolved,
-    #PacID
+    # isClientSideError,
+    # isResolved,
+     # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -322,10 +322,10 @@ class ErrorLogBusObj(BaseBusObj):
     #url,
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[ErrorLog]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[ErrorLog]):
         result = list()
         for error_log in obj_list:
-            error_log_bus_obj = ErrorLogBusObj.get(session_context,error_log_obj_instance=error_log)
+            error_log_bus_obj = ErrorLogBusObj.get(session_context, error_log_obj_instance=error_log)
             result.append(error_log_bus_obj)
         return result
 

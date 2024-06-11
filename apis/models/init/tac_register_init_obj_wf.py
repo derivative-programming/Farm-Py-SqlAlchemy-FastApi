@@ -15,16 +15,16 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
-    success:bool = Field(default=False, description="Success")
-    message:str = Field(default="", description="Message")
-    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
-    email:str = Field(default="", description="Email")
-    password:str = Field(default="", description="Password")
-    confirm_password:str = Field(default="", description="Confirm Password")
-    first_name:str = Field(default="", description="First Name")
-    last_name:str = Field(default="", description="Last Name")
+    success: bool = Field(default=False, description="Success")
+    message: str = Field(default="", description="Message")
+    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    email: str = Field(default="", description="Email")
+    password: str = Field(default="", description="Password")
+    confirm_password: str = Field(default="", description="Confirm Password")
+    first_name: str = Field(default="", description="First Name")
+    last_name: str = Field(default="", description="Last Name")
 
-    def load_flow_response(self,data:FlowTacRegisterInitObjWFResult):
+    def load_flow_response(self, data:FlowTacRegisterInitObjWFResult):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -37,9 +37,9 @@ class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class TacRegisterInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session_context:SessionContext,
-                        tac_code:uuid,
-                        response:TacRegisterInitObjWFGetInitModelResponse) -> TacRegisterInitObjWFGetInitModelResponse:
+                        session_context: SessionContext,
+                        tac_code: uuid,
+                        response: TacRegisterInitObjWFGetInitModelResponse) -> TacRegisterInitObjWFGetInitModelResponse:
         try:
             logging.info("loading model...TacRegisterInitObjWFGetInitModelRequest")
             tac_bus_obj = TacBusObj(session_context)

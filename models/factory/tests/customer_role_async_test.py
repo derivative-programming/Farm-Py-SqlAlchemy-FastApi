@@ -81,11 +81,11 @@ class TestCustomerRoleFactoryAsync:
             assert isinstance(customer_role.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        customer_role:CustomerRole = await CustomerRoleFactory.build_async(session=session)
+        customer_role: CustomerRole = await CustomerRoleFactory.build_async(session=session)
         assert customer_role.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        customer_role:CustomerRole = await CustomerRoleFactory.create_async(session=session)
+        customer_role: CustomerRole = await CustomerRoleFactory.create_async(session=session)
         assert customer_role.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -191,7 +191,7 @@ class TestCustomerRoleFactoryAsync:
             assert isinstance(customer_role.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
-        #isPlaceholder,
+        # isPlaceholder,
         #placeholder,
         #roleID
         if db_dialect == 'postgresql':
@@ -229,7 +229,7 @@ class TestCustomerRoleFactoryAsync:
             assert isinstance(customer_role.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
-        #isPlaceholder,
+        # isPlaceholder,
         #placeholder,
         #RoleID
         if db_dialect == 'postgresql':
@@ -240,8 +240,8 @@ class TestCustomerRoleFactoryAsync:
             assert isinstance(customer_role.role_code_peek, str)
 
         assert customer_role.customer_id == 0
-        assert customer_role.is_placeholder == False
-        assert customer_role.placeholder == False
+        assert customer_role.is_placeholder is False
+        assert customer_role.placeholder is False
         assert customer_role.role_id == 0
 
     @pytest.mark.asyncio
@@ -270,7 +270,7 @@ class TestCustomerRoleFactoryAsync:
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             await session.commit()
         await session.rollback()
-    #isPlaceholder,
+    # isPlaceholder,
     #placeholder,
     #RoleID
     @pytest.mark.asyncio

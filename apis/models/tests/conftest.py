@@ -1,13 +1,19 @@
-import asyncio 
+# apis/models/tests/conftest.py
+
+"""
+    #TODO add comment
+"""
+
+import asyncio
 import pytest
-import pytest_asyncio  
-from typing import AsyncGenerator 
+import pytest_asyncio
+from typing import AsyncGenerator
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession 
-from models import Base 
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from models import Base
 
-DATABASE_URL = "sqlite+aiosqlite:///:memory:" 
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 @pytest.fixture(scope="function")
 def event_loop() -> asyncio.AbstractEventLoop:
@@ -20,11 +26,11 @@ def event_loop() -> asyncio.AbstractEventLoop:
 def engine():
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
-    engine.sync_engine.dispose() 
+    engine.sync_engine.dispose()
 
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
-    
+
     @event.listens_for(engine.sync_engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()
@@ -52,4 +58,4 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
                     connection.sync_connection.begin_nested()
             yield session
             await session.flush()
-            await session.rollback()   
+            await session.rollback()

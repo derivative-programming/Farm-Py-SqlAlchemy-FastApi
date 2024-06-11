@@ -25,12 +25,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestErrorLogManager:
     @pytest_asyncio.fixture(scope="function")
-    async def error_log_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def error_log_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return ErrorLogManager(session_context)
     @pytest.mark.asyncio
-    async def test_build(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_build(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Define some mock data for our error_log
         mock_data = {
             "code": generate_uuid()
@@ -44,7 +44,7 @@ class TestErrorLogManager:
         # Optionally, if the build method has some default values or computations:
         # assert error_log.some_attribute == some_expected_value
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_build_with_missing_data(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Define mock data with a missing key
         mock_data = {
             "non_existant_property": "Rose"
@@ -54,7 +54,7 @@ class TestErrorLogManager:
             await error_log_manager.build_async(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_add_correctly_adds_error_log_to_database(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_add_correctly_adds_error_log_to_database(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         test_error_log = await ErrorLogFactory.build_async(session)
         assert test_error_log.error_log_id is None
         # Add the error_log using the manager's add method
@@ -71,7 +71,7 @@ class TestErrorLogManager:
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.error_log_id == added_error_log.error_log_id
     @pytest.mark.asyncio
-    async def test_add_returns_correct_error_log_object(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_add_returns_correct_error_log_object(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Create a test error_log using the ErrorLogFactory without persisting it to the database
         test_error_log = await ErrorLogFactory.build_async(session)
         assert test_error_log.error_log_id is None
@@ -86,7 +86,7 @@ class TestErrorLogManager:
         assert added_error_log.error_log_id == test_error_log.error_log_id
         assert added_error_log.code == test_error_log.code
     @pytest.mark.asyncio
-    async def test_get_by_id(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_by_id(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         test_error_log = await ErrorLogFactory.create_async(session)
         error_log = await error_log_manager.get_by_id(test_error_log.error_log_id)
         assert isinstance(error_log, ErrorLog)
@@ -98,20 +98,20 @@ class TestErrorLogManager:
         retrieved_error_log = await error_log_manager.get_by_id(non_existent_id)
         assert retrieved_error_log is None
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_error_log(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_by_code_returns_error_log(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         test_error_log = await ErrorLogFactory.create_async(session)
         error_log = await error_log_manager.get_by_code(test_error_log.code)
         assert isinstance(error_log, ErrorLog)
         assert test_error_log.error_log_id == error_log.error_log_id
         assert test_error_log.code == error_log.code
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_by_code_returns_none_for_nonexistent_code(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Generate a random UUID that doesn't correspond to any ErrorLog in the database
         random_code = generate_uuid()
         error_log = await error_log_manager.get_by_code(random_code)
         assert error_log is None
     @pytest.mark.asyncio
-    async def test_update(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_update(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         test_error_log = await ErrorLogFactory.create_async(session)
         test_error_log.code = generate_uuid()
         updated_error_log = await error_log_manager.update(error_log=test_error_log)
@@ -126,7 +126,7 @@ class TestErrorLogManager:
         assert test_error_log.error_log_id == fetched_error_log.error_log_id
         assert test_error_log.code == fetched_error_log.code
     @pytest.mark.asyncio
-    async def test_update_via_dict(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_update_via_dict(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         test_error_log = await ErrorLogFactory.create_async(session)
         new_code = generate_uuid()
         updated_error_log = await error_log_manager.update(error_log=test_error_log,code=new_code)
@@ -149,7 +149,7 @@ class TestErrorLogManager:
         # Assertions
         assert updated_error_log is None
     @pytest.mark.asyncio
-    async def test_update_with_nonexistent_attribute(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_update_with_nonexistent_attribute(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         test_error_log = await ErrorLogFactory.create_async(session)
         new_code = generate_uuid()
         # This should raise an AttributeError since 'color' is not an attribute of ErrorLog
@@ -157,7 +157,7 @@ class TestErrorLogManager:
             updated_error_log = await error_log_manager.update(error_log=test_error_log,xxx=new_code)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_delete(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log_data = await ErrorLogFactory.create_async(session)
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log_data.error_log_id))
         fetched_error_log = result.scalars().first()
@@ -168,17 +168,17 @@ class TestErrorLogManager:
         fetched_error_log = result.scalars().first()
         assert fetched_error_log is None
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_delete_nonexistent(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         with pytest.raises(Exception):
             await error_log_manager.delete(999)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_invalid_type(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_delete_invalid_type(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         with pytest.raises(Exception):
             await error_log_manager.delete("999")
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_list(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_list(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_logs = await error_log_manager.get_list()
         assert len(error_logs) == 0
         error_logs_data = [await ErrorLogFactory.create_async(session) for _ in range(5)]
@@ -186,24 +186,24 @@ class TestErrorLogManager:
         assert len(error_logs) == 5
         assert all(isinstance(error_log, ErrorLog) for error_log in error_logs)
     @pytest.mark.asyncio
-    async def test_to_json(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_to_json(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log = await ErrorLogFactory.build_async(session)
         json_data = error_log_manager.to_json(error_log)
         assert json_data is not None
     @pytest.mark.asyncio
-    async def test_to_dict(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_to_dict(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log = await ErrorLogFactory.build_async(session)
         dict_data = error_log_manager.to_dict(error_log)
         assert dict_data is not None
     @pytest.mark.asyncio
-    async def test_from_json(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_from_json(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log = await ErrorLogFactory.create_async(session)
         json_data = error_log_manager.to_json(error_log)
         deserialized_error_log = error_log_manager.from_json(json_data)
         assert isinstance(deserialized_error_log, ErrorLog)
         assert deserialized_error_log.code == error_log.code
     @pytest.mark.asyncio
-    async def test_from_dict(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_from_dict(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log = await ErrorLogFactory.create_async(session)
         schema = ErrorLogSchema()
         error_log_data = schema.dump(error_log)
@@ -211,7 +211,7 @@ class TestErrorLogManager:
         assert isinstance(deserialized_error_log, ErrorLog)
         assert deserialized_error_log.code == error_log.code
     @pytest.mark.asyncio
-    async def test_add_bulk(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_add_bulk(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_logs_data = [await ErrorLogFactory.build_async(session) for _ in range(5)]
         error_logs = await error_log_manager.add_bulk(error_logs_data)
         assert len(error_logs) == 5
@@ -223,7 +223,7 @@ class TestErrorLogManager:
             assert str(fetched_error_log.last_update_user_id) == str(error_log_manager._session_context.customer_code)
             assert fetched_error_log.error_log_id == updated_error_log.error_log_id
     @pytest.mark.asyncio
-    async def test_update_bulk_success(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_update_bulk_success(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Mocking error_log instances
         error_log1 = await ErrorLogFactory.create_async(session=session)
         error_log2 = await ErrorLogFactory.create_async(session=session)
@@ -257,27 +257,27 @@ class TestErrorLogManager:
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.code == code_updated2
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_error_log_id(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_update_bulk_missing_error_log_id(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # No error_logs to update since error_log_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
             updated_error_logs = await error_log_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_error_log_not_found(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_update_bulk_error_log_not_found(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Update error_logs
         updates = [{"error_log_id": 1, "code": generate_uuid()}]
         with pytest.raises(Exception):
             updated_error_logs = await error_log_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_invalid_type(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_update_bulk_invalid_type(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         updates = [{"error_log_id": "2", "code": generate_uuid()}]
         with pytest.raises(Exception):
             updated_error_logs = await error_log_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_success(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_delete_bulk_success(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log1 = await ErrorLogFactory.create_async(session=session)
         error_log2 = await ErrorLogFactory.create_async(session=session)
         # Delete error_logs
@@ -289,7 +289,7 @@ class TestErrorLogManager:
             fetched_error_log = execute_result.scalars().first()
             assert fetched_error_log is None
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_error_logs_not_found(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_delete_bulk_some_error_logs_not_found(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log1 = await ErrorLogFactory.create_async(session=session)
         # Delete error_logs
         error_log_ids = [1, 2]
@@ -297,50 +297,50 @@ class TestErrorLogManager:
            result = await error_log_manager.delete_bulk(error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_delete_bulk_empty_list(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Delete error_logs with an empty list
         error_log_ids = []
         result = await error_log_manager.delete_bulk(error_log_ids)
         # Assertions
         assert result is True
     @pytest.mark.asyncio
-    async def test_delete_bulk_invalid_type(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_delete_bulk_invalid_type(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log_ids = ["1", 2]
         with pytest.raises(Exception):
            result = await error_log_manager.delete_bulk(error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_count_basic_functionality(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_logs_data = [await ErrorLogFactory.create_async(session) for _ in range(5)]
         count = await error_log_manager.count()
         assert count == 5
     @pytest.mark.asyncio
-    async def test_count_empty_database(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_count_empty_database(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         count = await error_log_manager.count()
         assert count == 0
     @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_sorted_list_basic_sorting(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Add error_logs
         error_logs_data = [await ErrorLogFactory.create_async(session) for _ in range(5)]
         sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="error_log_id")
         assert [error_log.error_log_id for error_log in sorted_error_logs] == [(i + 1) for i in range(5)]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_sorted_list_descending_sorting(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Add error_logs
         error_logs_data = [await ErrorLogFactory.create_async(session) for _ in range(5)]
         sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="error_log_id", order="desc")
         assert [error_log.error_log_id for error_log in sorted_error_logs] == [(i + 1) for i in reversed(range(5))]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_sorted_list_invalid_attribute(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         with pytest.raises(AttributeError):
             await error_log_manager.get_sorted_list(sort_by="invalid_attribute")
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_sorted_list_empty_database(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="error_log_id")
         assert len(sorted_error_logs) == 0
     @pytest.mark.asyncio
-    async def test_refresh_basic(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_refresh_basic(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log1.error_log_id))
@@ -353,32 +353,32 @@ class TestErrorLogManager:
         refreshed_error_log2 = await error_log_manager.refresh(error_log2)
         assert refreshed_error_log2.code == updated_code1
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_error_log(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_refresh_nonexistent_error_log(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         error_log = ErrorLog(error_log_id=999)
         with pytest.raises(Exception):
             await error_log_manager.refresh(error_log)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_exists_with_existing_error_log(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_exists_with_existing_error_log(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
         # Check if the error_log exists using the manager function
-        assert await error_log_manager.exists(error_log1.error_log_id) == True
+        assert await error_log_manager.exists(error_log1.error_log_id) is True
     @pytest.mark.asyncio
-    async def test_is_equal_with_existing_error_log(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_is_equal_with_existing_error_log(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
         error_log2 = await error_log_manager.get_by_id(error_log_id=error_log1.error_log_id)
-        assert error_log_manager.is_equal(error_log1,error_log2) == True
+        assert error_log_manager.is_equal(error_log1, error_log2) is True
         error_log1_dict = error_log_manager.to_dict(error_log1)
         error_log3 = error_log_manager.from_dict(error_log1_dict)
-        assert error_log_manager.is_equal(error_log1,error_log3) == True
+        assert error_log_manager.is_equal(error_log1, error_log3) is True
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_error_log(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_exists_with_nonexistent_error_log(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         non_existent_id = 999
-        assert await error_log_manager.exists(non_existent_id) == False
+        assert await error_log_manager.exists(non_existent_id) is False
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_exists_with_invalid_id_type(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await error_log_manager.exists(invalid_id)
@@ -388,29 +388,29 @@ class TestErrorLogManager:
     #contextCode,
     #createdUTCDateTime
     #description,
-    #isClientSideError,
-    #isResolved,
-    #PacID
+    # isClientSideError,
+    # isResolved,
+     # PacID
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_existing(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_by_pac_id_existing(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         # Add a error_log with a specific pac_id
         error_log1 = await ErrorLogFactory.create_async(session=session)
         # Fetch the error_log using the manager function
         fetched_error_logs = await error_log_manager.get_by_pac_id(error_log1.pac_id)
         assert len(fetched_error_logs) == 1
-        assert isinstance(fetched_error_logs[0],ErrorLog)
+        assert isinstance(fetched_error_logs[0], ErrorLog)
         assert fetched_error_logs[0].code == error_log1.code
         stmt = select(models.Pac).where(models.Pac.pac_id==error_log1.pac_id)
         result = await session.execute(stmt)
         pac = result.scalars().first()
         assert fetched_error_logs[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_nonexistent(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_by_pac_id_nonexistent(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         non_existent_id = 999
         fetched_error_logs = await error_log_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_error_logs) == 0
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_invalid_type(self, error_log_manager:ErrorLogManager, session:AsyncSession):
+    async def test_get_by_pac_id_invalid_type(self, error_log_manager:ErrorLogManager, session: AsyncSession):
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await error_log_manager.get_by_pac_id(invalid_id)

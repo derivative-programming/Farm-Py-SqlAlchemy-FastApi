@@ -27,12 +27,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestOrganizationBusObj:
     @pytest_asyncio.fixture(scope="function")
-    async def organization_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def organization_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         return OrganizationManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def organization_bus_obj(self, session):
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
         return OrganizationBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_organization(self, session):
@@ -58,32 +58,32 @@ class TestOrganizationBusObj:
     @pytest.mark.asyncio
     async def test_load_with_organization_obj(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         await organization_bus_obj.load(organization_obj_instance=new_organization)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization) == True
+        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization) is True
     @pytest.mark.asyncio
     async def test_load_with_organization_id(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         await organization_bus_obj.load(organization_id=new_organization.organization_id)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  == True
+        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
     @pytest.mark.asyncio
     async def test_load_with_organization_code(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         await organization_bus_obj.load(code=new_organization.code)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  == True
+        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
     @pytest.mark.asyncio
     async def test_load_with_organization_json(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         organization_json = organization_manager.to_json(new_organization)
         await organization_bus_obj.load(json_data=organization_json)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  == True
+        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
     @pytest.mark.asyncio
     async def test_load_with_organization_dict(self, session, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         logger.info("test_load_with_organization_dict 1")
         organization_dict = organization_manager.to_dict(new_organization)
         logger.info(organization_dict)
         await organization_bus_obj.load(organization_dict=organization_dict)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  == True
+        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
     @pytest.mark.asyncio
     async def test_get_nonexistent_organization(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         # Test retrieving a nonexistent organization raises an exception
         await organization_bus_obj.load(organization_id=-1)
-        assert organization_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
+        assert organization_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_organization(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         # Test updating a organization's data
@@ -93,7 +93,7 @@ class TestOrganizationBusObj:
         organization_bus_obj.code = new_code
         await organization_bus_obj.save()
         new_organization = await organization_manager.get_by_id(new_organization.organization_id)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  == True
+        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
     @pytest.mark.asyncio
     async def test_delete_organization(self, organization_manager:OrganizationManager, organization_bus_obj:OrganizationBusObj, new_organization:Organization):
         assert new_organization.organization_id is not None

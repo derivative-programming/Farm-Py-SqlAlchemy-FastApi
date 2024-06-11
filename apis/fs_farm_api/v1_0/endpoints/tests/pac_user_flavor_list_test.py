@@ -3,7 +3,7 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch, AsyncMock
-from  .....models import factory as request_factory
+from .....models import factory as request_factory
 from apis import models as apis_models
 from database import get_db
 from helpers.api_token import ApiToken
@@ -15,7 +15,7 @@ import json
 # from main import app
 
 @pytest.mark.asyncio
-async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -39,7 +39,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
             f'/api/v1_0/pac-user-flavor-list/{pac_code}/init',
             headers={'API_KEY': 'xxx'}
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -55,7 +55,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
             f'/api/v1_0/pac-user-flavor-list/{pac_code}/init',
             headers={'API_KEY': ''}
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -70,12 +70,12 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
         response = await ac.get(
             f'/api/v1_0/pac-user-flavor-list/{pac_code}/init'
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -87,7 +87,7 @@ async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession, api_ke
         )
         assert response.status_code == 501
 @pytest.mark.asyncio
-async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -99,7 +99,7 @@ async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSessio
         assert response.status_code == 200
         assert response.json()['success'] is False
 @pytest.mark.asyncio
-async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -112,7 +112,7 @@ async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession, api
         assert response.status_code == 405
 
 @pytest.mark.asyncio
-async def test_get_success(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_success(overridden_get_db: AsyncSession, api_key_fixture: str):
     async def mock_process_request(session, session_context, pac_code, request):
         pass
     with patch.object(apis_models.PacUserFlavorListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
@@ -146,7 +146,7 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
             f'/api/v1_0/pac-user-flavor-list/{pac_code}',
             headers={'API_KEY': 'xxx'}
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -162,7 +162,7 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
             f'/api/v1_0/pac-user-flavor-list/{pac_code}',
             headers={'API_KEY': ''}
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -177,12 +177,12 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
         response = await ac.get(
             f'/api/v1_0/pac-user-flavor-list/{pac_code}'
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_get_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -194,7 +194,7 @@ async def test_get_endpoint_url_failure(overridden_get_db: AsyncSession, api_key
         )
         assert response.status_code == 501
 @pytest.mark.asyncio
-async def test_get_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -206,7 +206,7 @@ async def test_get_endpoint_invalid_code_failure(overridden_get_db: AsyncSession
         assert response.status_code == 200
         assert response.json()['success'] is False
 @pytest.mark.asyncio
-async def test_get_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -219,7 +219,7 @@ async def test_get_endpoint_method_failure(overridden_get_db: AsyncSession, api_
         assert response.status_code == 405
 
 @pytest.mark.asyncio
-async def test_get_csv_success(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_csv_success(overridden_get_db: AsyncSession, api_key_fixture: str):
     async def mock_process_request(session, session_context, pac_code, request):
         pass
     with patch.object(apis_models.PacUserFlavorListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
@@ -253,7 +253,7 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
             f'/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv',
             headers={'API_KEY': 'xxx'}
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
             assert response.headers['content-type'].startswith('text/csv')
         else:
@@ -270,7 +270,7 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
             f'/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv',
             headers={'API_KEY': ''}
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
             assert response.headers['content-type'].startswith('text/csv')
         else:
@@ -286,13 +286,13 @@ async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncS
         response = await ac.get(
             f'/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv'
         )
-        if PacUserFlavorListRouterConfig.is_public == True:
+        if PacUserFlavorListRouterConfig.is_public is True:
             assert response.status_code == 200
             assert response.headers['content-type'].startswith('text/csv')
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_get_csv_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_csv_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -304,7 +304,7 @@ async def test_get_csv_endpoint_url_failure(overridden_get_db: AsyncSession, api
         )
         assert response.status_code == 501
 @pytest.mark.asyncio
-async def test_get_csv_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_csv_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -316,7 +316,7 @@ async def test_get_csv_endpoint_invalid_code_failure(overridden_get_db: AsyncSes
         assert response.status_code == 200
         assert response.headers['content-type'].startswith('text/csv')
 @pytest.mark.asyncio
-async def test_get_csv_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture:str):
+async def test_get_csv_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture

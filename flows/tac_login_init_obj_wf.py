@@ -17,9 +17,9 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacLoginInitObjWFResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    email:str = ""
-    password:str = ""
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    email: str = ""
+    password: str = ""
     def __init__(self):
         pass
     def to_json(self):
@@ -32,7 +32,7 @@ class FlowTacLoginInitObjWFResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowTacLoginInitObjWF, self).__init__(session_context)
     async def process(self,
         tac_bus_obj: TacBusObj,
@@ -45,8 +45,8 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
 
         )
         super()._throw_queued_validation_errors()
-        email_output:str = ""
-        password_output:str = "" 
+        email_output: str = ""
+        password_output: str = ""
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacLoginInitObjWFResult()

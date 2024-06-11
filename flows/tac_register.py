@@ -22,13 +22,13 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacRegisterResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    customer_code:uuid.UUID =  uuid.UUID(int=0)
-    email:str = ""
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    customer_code: uuid.UUID =  uuid.UUID(int=0)
+    email: str = ""
     user_code_value:uuid.UUID =  uuid.UUID(int=0)
-    utc_offset_in_minutes:int = 0
-    role_name_csv_list:str = ""
-    api_key:str = ""
+    utc_offset_in_minutes: int = 0
+    role_name_csv_list: str = ""
+    api_key: str = ""
     def __init__(self):
         pass
     def to_json(self):
@@ -45,15 +45,15 @@ class FlowTacRegisterResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowTacRegister(BaseFlowTacRegister):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowTacRegister, self).__init__(session_context)
     async def process(self,
         tac_bus_obj: TacBusObj,
-        email:str = "",
-        password:str = "",
-        confirm_password:str = "",
-        first_name:str = "",
-        last_name:str = "",
+        email: str = "",
+        password: str = "",
+        confirm_password: str = "",
+        first_name: str = "",
+        last_name: str = "",
         ) -> FlowTacRegisterResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(tac_bus_obj.code))
@@ -73,17 +73,17 @@ class FlowTacRegister(BaseFlowTacRegister):
             if len(similar_email_list) > 0:
                 self._add_field_validation_error("email","This email is already registered")
 
-        super()._throw_queued_validation_errors()    
+        super()._throw_queued_validation_errors()
 
         customer_bus_obj = await tac_bus_obj.build_customer()
         customer_bus_obj = (
             customer_bus_obj
             .set_prop_email(email)
-            .set_prop_first_name(first_name) 
+            .set_prop_first_name(first_name)
             .set_prop_last_name(last_name)
             .set_prop_last_login_utc_date_time(datetime.utcnow)
             .set_prop_is_active(True)
-            .set_prop_registration_utc_date_time(datetime.utcnow) 
+            .set_prop_registration_utc_date_time(datetime.utcnow)
         )
         await customer_bus_obj.save()
 
@@ -94,7 +94,7 @@ class FlowTacRegister(BaseFlowTacRegister):
         org_customer_bus_obj = (
             org_customer_bus_obj
             .set_prop_customer_id(customer_bus_obj.customer_id)
-            .set_prop_email(customer_bus_obj.email) 
+            .set_prop_email(customer_bus_obj.email)
             )
         await org_customer_bus_obj.save()
 
@@ -108,8 +108,8 @@ class FlowTacRegister(BaseFlowTacRegister):
              )
         await customer_role_bus_obj.save()
 
-        
-        if email == "vince.roche@gmail.com": 
+
+        if email == "vince.roche@gmail.com":
             customer_role_bus_obj = await customer_bus_obj.build_customer_role()
             customer_role_bus_obj = (
                 customer_role_bus_obj
@@ -119,7 +119,7 @@ class FlowTacRegister(BaseFlowTacRegister):
                     ).role_id)
                 )
             await customer_role_bus_obj.save()
-            
+
             customer_role_bus_obj = await customer_bus_obj.build_customer_role()
             customer_role_bus_obj = (
                 customer_role_bus_obj
@@ -128,17 +128,17 @@ class FlowTacRegister(BaseFlowTacRegister):
                     role_enum=RoleEnum.Admin
                     ).role_id)
                 )
-            await customer_role_bus_obj.save() 
+            await customer_role_bus_obj.save()
 
         customer_bus_obj.active_organization_id = organization_bus_obj.organization_id
         await customer_bus_obj.save()
- 
+
         customer_role_list = await customer_bus_obj.get_all_customer_role()
-         
+
         for customer_role in customer_role_list:
             role = await customer_role.get_role_id_rel_obj()
             role_name_csv_list_output = role_name_csv_list_output + ',' + role.name
-        
+
 
         customer_code_output = customer_bus_obj.code
         email_output = customer_bus_obj.email
@@ -153,7 +153,7 @@ class FlowTacRegister(BaseFlowTacRegister):
         api_key = await business.OrgApiKeyBusObj.get(
             customer_bus_obj.session,
             code=api_key_flow_result.tmp_org_api_key_code)
-        
+
         api_key_output = api_key.api_key_value
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")

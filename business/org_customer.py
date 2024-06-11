@@ -23,7 +23,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrgCustomerBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -149,11 +149,11 @@ class OrgCustomerBusObj(BaseBusObj):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.org_customer.last_update_utc_date_time = value
 
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   org_customer_id:int=None,
-                   org_customer_obj_instance:OrgCustomer=None,
-                   org_customer_dict:dict=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   org_customer_id: int = None,
+                   org_customer_obj_instance:OrgCustomer = None,
+                   org_customer_dict: dict = None):
         if org_customer_id and self.org_customer.org_customer_id is None:
             org_customer_manager = OrgCustomerManager(self._session_context)
             org_customer_obj = await org_customer_manager.get_by_id(org_customer_id)
@@ -174,12 +174,12 @@ class OrgCustomerBusObj(BaseBusObj):
             self.org_customer = org_customer_manager.from_dict(org_customer_dict)
         return self
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   org_customer_id:int=None,
-                   org_customer_obj_instance:OrgCustomer=None,
-                   org_customer_dict:dict=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   org_customer_id: int = None,
+                   org_customer_obj_instance:OrgCustomer = None,
+                   org_customer_dict: dict = None):
         result = OrgCustomerBusObj(session_context)
         await result.load(
             json_data,
@@ -257,7 +257,7 @@ class OrgCustomerBusObj(BaseBusObj):
         return self.get_organization_id_rel_obj()
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[OrgCustomer]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[OrgCustomer]):
         result = list()
         for org_customer in obj_list:
             org_customer_bus_obj = OrgCustomerBusObj.get(session_context,org_customer_obj_instance=org_customer)

@@ -142,10 +142,10 @@ class TestTriStateFilterFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(tri_state_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -175,10 +175,10 @@ class TestTriStateFilterFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(tri_state_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -189,7 +189,7 @@ class TestTriStateFilterFactory:
 
         assert tri_state_filter.description == ""
         assert tri_state_filter.display_order == 0
-        assert tri_state_filter.is_active == False
+        assert tri_state_filter.is_active is False
         assert tri_state_filter.lookup_enum_name == ""
         assert tri_state_filter.name == ""
         assert tri_state_filter.pac_id == 0
@@ -208,10 +208,10 @@ class TestTriStateFilterFactory:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     def test_invalid_pac_id(self, session):
         tri_state_filter = TriStateFilterFactory.create(session=session)
         tri_state_filter.pac_id = 99999

@@ -18,13 +18,13 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacLoginResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    customer_code:uuid.UUID =  uuid.UUID(int=0)
-    email:str = ""
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    customer_code: uuid.UUID =  uuid.UUID(int=0)
+    email: str = ""
     user_code_value:uuid.UUID =  uuid.UUID(int=0)
-    utc_offset_in_minutes:int = 0
-    role_name_csv_list:str = ""
-    api_key:str = ""
+    utc_offset_in_minutes: int = 0
+    role_name_csv_list: str = ""
+    api_key: str = ""
 
     def __init__(self):
         pass
@@ -43,12 +43,12 @@ class FlowTacLoginResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowTacLogin(BaseFlowTacLogin):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowTacLogin, self).__init__(session_context)
     async def process(self,
         tac_bus_obj: TacBusObj,
-        email:str = "",
-        password:str = "",
+        email: str = "",
+        password: str = "",
 
         ) -> FlowTacLoginResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
@@ -61,11 +61,11 @@ class FlowTacLogin(BaseFlowTacLogin):
         )
         super()._throw_queued_validation_errors()
         customer_code_output:uuid = uuid.UUID(int=0)
-        email_output:str = ""
+        email_output: str = ""
         user_code_value_output:uuid = uuid.UUID(int=0)
-        utc_offset_in_minutes_output:int = 0
-        role_name_csv_list_output:str = ""
-        api_key_output:str = ""
+        utc_offset_in_minutes_output: int = 0
+        role_name_csv_list_output: str = ""
+        api_key_output: str = ""
 
         # TODO: add flow logic
 

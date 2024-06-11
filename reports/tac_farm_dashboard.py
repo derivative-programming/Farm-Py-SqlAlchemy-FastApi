@@ -11,18 +11,18 @@ from datetime import date, datetime
 from decimal import Decimal
 from helpers import SessionContext,TypeConversion
 class ReportManagerTacFarmDashboard():
-    _session_context:SessionContext
-    def __init__(self, session_context:SessionContext):
+    _session_context: SessionContext
+    def __init__(self, session_context: SessionContext):
         self._session_context = session_context
         if session_context.session is None:
             raise TypeError("ReportManagerTacFarmDashboard.init session_context has no session assigned")
     async def generate(self,
-                tac_code:uuid,
+                tac_code: uuid,
 
-                page_number:int = 1,
-                item_count_per_page:int = 1,
-                order_by_column_name:str ="",
-                order_by_descending:bool = False,
+                page_number: int = 1,
+                item_count_per_page: int = 1,
+                order_by_column_name: str ="",
+                order_by_descending: bool = False,
                 ) -> List[ReportItemTacFarmDashboard]:
         logging.info('ReportManagerTacFarmDashboard.generate Start')
         role_required = ""
@@ -50,7 +50,7 @@ class ReportManagerTacFarmDashboard():
         logging.info("ReportManagerTacFarmDashboard.generate Results: " + json.dumps(dataList))
         logging.info('ReportManagerTacFarmDashboard.generate End')
         return result
-    async def build_csv(self, file_name:str, data_list:List[ReportItemTacFarmDashboard]):
+    async def build_csv(self, file_name: str, data_list: List[ReportItemTacFarmDashboard]):
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=vars(ReportItemTacFarmDashboard()).keys(), quoting=csv.QUOTE_ALL)
             writer.writeheader()
@@ -58,7 +58,7 @@ class ReportManagerTacFarmDashboard():
                 writer.writerow(obj.__dict__)
     def _parse_bool(self, value):
         return value.lower() in ['true', '1', 'yes']
-    async def read_csv(self, file_name:str) -> List[ReportItemTacFarmDashboard]:
+    async def read_csv(self, file_name: str) -> List[ReportItemTacFarmDashboard]:
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)

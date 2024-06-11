@@ -1,15 +1,21 @@
-from datetime import datetime, date 
+# plant.py
+
+"""
+    #TODO add comment
+"""
+
+from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
-from sqlalchemy.dialects.postgresql import UUID 
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.ext.hybrid import hybrid_property
 from utils.common_functions import snake_case
-from .base import Base,EncryptedType  # Importing the Base from central module 
+from .base import Base,EncryptedType  # Importing the Base from central module
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
-import models.constants.plant as plant_constants 
+import models.constants.plant as plant_constants
 
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
@@ -29,124 +35,124 @@ class Plant(Base):
     last_change_code = Column('last_change_code', Integer, nullable=True)
     insert_user_id = Column('insert_user_id', UUIDType, default=generate_uuid, nullable=True)
     last_update_user_id = Column('last_update_user_id', UUIDType, default=generate_uuid, nullable=True)
-    flvr_foreign_key_id = Column('flvr_foreign_key_id', 
-                                 Integer, 
-                                 ForeignKey('farm_' + snake_case('Flavor') + '.flavor_id'), 
+    flvr_foreign_key_id = Column('flvr_foreign_key_id',
+                                 Integer,
+                                 ForeignKey('farm_' + snake_case('Flavor') + '.flavor_id'),
                                 index=plant_constants.flvr_foreign_key_id_calculatedIsDBColumnIndexed,
                                  nullable=True)
-    is_delete_allowed = Column('is_delete_allowed', 
-                               Boolean, 
-                               default=False,  
+    is_delete_allowed = Column('is_delete_allowed',
+                               Boolean,
+                               default=False,
                                 index=plant_constants.is_delete_allowed_calculatedIsDBColumnIndexed,
                                nullable=True)
-    is_edit_allowed = Column('is_edit_allowed', 
-                             Boolean, 
-                             default=False,  
+    is_edit_allowed = Column('is_edit_allowed',
+                             Boolean,
+                             default=False,
                                 index=plant_constants.is_edit_allowed_calculatedIsDBColumnIndexed,
                              nullable=True)
-    land_id = Column('land_id', 
-                     Integer, 
-                     ForeignKey('farm_' + snake_case('Land') + '.land_id'), 
+    land_id = Column('land_id',
+                     Integer,
+                     ForeignKey('farm_' + snake_case('Land') + '.land_id'),
                      index=plant_constants.land_id_calculatedIsDBColumnIndexed,
                      nullable=True)
-    other_flavor = Column('other_flavor', 
+    other_flavor = Column('other_flavor',
                             ##GENIF[isEncrypted=false]Start
-                            String, 
+                            String,
                             ##GENIF[isEncrypted=false]End
                             ##GENIF[isEncrypted=true]Start
                             ##GENREMOVECOMMENTEncryptedType(),
-                            ##GENIF[isEncrypted=true]End 
-                          default="",  
+                            ##GENIF[isEncrypted=true]End
+                          default="",
                                 index=plant_constants.other_flavor_calculatedIsDBColumnIndexed,
                           nullable=True)
-    some_big_int_val = Column('some_big_int_val', 
-                              BigInteger, 
-                              default=0,  
+    some_big_int_val = Column('some_big_int_val',
+                              BigInteger,
+                              default=0,
                                 index=plant_constants.some_big_int_val_calculatedIsDBColumnIndexed,
                               nullable=True)
-    some_bit_val = Column('some_bit_val', 
-                          Boolean, 
-                          default=False,  
+    some_bit_val = Column('some_bit_val',
+                          Boolean,
+                          default=False,
                                 index=plant_constants.some_bit_val_calculatedIsDBColumnIndexed,
                           nullable=True)
-    some_date_val = Column('some_date_val', 
-                           Date, 
-                           default=date(1753, 1, 1),  
+    some_date_val = Column('some_date_val',
+                           Date,
+                           default=date(1753, 1, 1),
                                 index=plant_constants.some_date_val_calculatedIsDBColumnIndexed,
                            nullable=True)
-    some_decimal_val = Column('some_decimal_val', 
-                              Numeric(precision=18, scale=6), 
-                              default=0,  
+    some_decimal_val = Column('some_decimal_val',
+                              Numeric(precision=18, scale=6),
+                              default=0,
                                 index=plant_constants.some_decimal_val_calculatedIsDBColumnIndexed,
                               nullable=True)
-    some_email_address = Column('some_email_address', 
+    some_email_address = Column('some_email_address',
                                  ##GENIF[isEncrypted=false]Start
-                                 String, 
+                                 String,
                                  ##GENIF[isEncrypted=false]End
                                  ##GENIF[isEncrypted=true]Start
                                  ##GENREMOVECOMMENTEncryptedType(),
-                                 ##GENIF[isEncrypted=true]End 
-                                default="",  
+                                 ##GENIF[isEncrypted=true]End
+                                default="",
                                 index=plant_constants.some_email_address_calculatedIsDBColumnIndexed,
                                 nullable=True)
-    some_float_val = Column('some_float_val', 
-                            Float, 
-                            default=0.0,  
+    some_float_val = Column('some_float_val',
+                            Float,
+                            default=0.0,
                                 index=plant_constants.some_float_val_calculatedIsDBColumnIndexed,
                             nullable=True)
-    some_int_val = Column('some_int_val', 
-                          Integer, 
-                          default=0,  
+    some_int_val = Column('some_int_val',
+                          Integer,
+                          default=0,
                                 index=plant_constants.some_int_val_calculatedIsDBColumnIndexed,
                           nullable=True)
-    some_money_val = Column('some_money_val', 
-                            Numeric(precision=18, scale=2), 
-                            default=0,  
+    some_money_val = Column('some_money_val',
+                            Numeric(precision=18, scale=2),
+                            default=0,
                                 index=plant_constants.some_money_val_calculatedIsDBColumnIndexed,
                             nullable=True)
-    some_n_var_char_val = Column('some_n_var_char_val', 
+    some_n_var_char_val = Column('some_n_var_char_val',
                                  ##GENIF[isEncrypted=false]Start
-                                 String, 
+                                 String,
                                  ##GENIF[isEncrypted=false]End
                                  ##GENIF[isEncrypted=true]Start
                                  ##GENREMOVECOMMENTEncryptedType(),
-                                 ##GENIF[isEncrypted=true]End 
-                                 default="",  
+                                 ##GENIF[isEncrypted=true]End
+                                 default="",
                                 index=plant_constants.some_n_var_char_val_calculatedIsDBColumnIndexed,
                                  nullable=True)
-    some_phone_number = Column('some_phone_number', 
+    some_phone_number = Column('some_phone_number',
                                  ##GENIF[isEncrypted=false]Start
-                                 String, 
+                                 String,
                                  ##GENIF[isEncrypted=false]End
                                  ##GENIF[isEncrypted=true]Start
                                  ##GENREMOVECOMMENTEncryptedType(),
-                                 ##GENIF[isEncrypted=true]End 
-                               default="",  
+                                 ##GENIF[isEncrypted=true]End
+                               default="",
                                 index=plant_constants.some_phone_number_calculatedIsDBColumnIndexed,
                                nullable=True)
-    some_text_val = Column('some_text_val', 
-                           String, 
-                           default="",  
+    some_text_val = Column('some_text_val',
+                           String,
+                           default="",
                                 index=plant_constants.some_text_val_calculatedIsDBColumnIndexed,
                            nullable=True)
-    some_uniqueidentifier_val = Column('some_uniqueidentifier_val', 
-                                       UUIDType, 
-                                       default=generate_uuid,   
+    some_uniqueidentifier_val = Column('some_uniqueidentifier_val',
+                                       UUIDType,
+                                       default=generate_uuid,
                                 index=plant_constants.some_uniqueidentifier_val_calculatedIsDBColumnIndexed,
                                        nullable=True)
-    some_utc_date_time_val = Column('some_utc_date_time_val', 
-                                    DateTime, 
-                                    default=datetime(1753, 1, 1),  
+    some_utc_date_time_val = Column('some_utc_date_time_val',
+                                    DateTime,
+                                    default=datetime(1753, 1, 1),
                                 index=plant_constants.some_utc_date_time_val_calculatedIsDBColumnIndexed,
                                     nullable=True)
-    some_var_char_val = Column('some_var_char_val', 
+    some_var_char_val = Column('some_var_char_val',
                                  ##GENIF[isEncrypted=false]Start
-                                 String, 
+                                 String,
                                  ##GENIF[isEncrypted=false]End
                                  ##GENIF[isEncrypted=true]Start
                                  ##GENREMOVECOMMENTEncryptedType(),
-                                 ##GENIF[isEncrypted=true]End 
-                               default="",  
+                                 ##GENIF[isEncrypted=true]End
+                               default="",
                                 index=plant_constants.some_var_char_val_calculatedIsDBColumnIndexed,
                                nullable=True)
     flvr_foreign_key_code_peek = UUIDType  # FlvrForeignKeyID
@@ -158,14 +164,14 @@ class Plant(Base):
     #no relationsip properties. they are not updated immediately if the id prop is updated directly
     # land = relationship('Land', back_populates=snake_case('Land'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
- 
+
     __mapper_args__ = {
         'version_id_col': last_change_code
     }
 
-    
+
     def __init__(self, **kwargs):
-        super().__init__(**kwargs) 
+        super().__init__(**kwargs)
 
         self.code = kwargs.get('code', generate_uuid())
         self.last_change_code = kwargs.get('last_change_code', 0)
@@ -195,7 +201,7 @@ class Plant(Base):
 #endset
         self.flvr_foreign_key_code_peek = kwargs.get('flvr_foreign_key_code_peek', generate_uuid()) # FlvrForeignKeyID
         self.land_code_peek = kwargs.get('land_code_peek', generate_uuid())# LandID
-#endset 
+#endset
 
     @staticmethod
     def property_list():
@@ -219,17 +225,17 @@ class Plant(Base):
             "some_uniqueidentifier_val",
             "some_utc_date_time_val",
             "some_var_char_val",
-#endset 
+#endset
             "code"
-            ] 
+            ]
         return result
 
 # Define the index separately from the column
 # Index('index_code', Plant.code)
-# Index('farm_plant_index_land_id', Plant.land_id) #LandID
-# Index('farm_plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id) #FlvrForeignKeyID
+# Index('farm_plant_index_land_id', Plant.land_id)  # LandID
+# Index('farm_plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id)  # FlvrForeignKeyID
 
-    
+
 @event.listens_for(Plant, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()
@@ -237,4 +243,4 @@ def set_created_on(mapper, connection, target):
 
 @event.listens_for(Plant, 'before_update')
 def set_updated_on(mapper, connection, target):
-    target.last_update_utc_date_time = datetime.utcnow() 
+    target.last_update_utc_date_time = datetime.utcnow()

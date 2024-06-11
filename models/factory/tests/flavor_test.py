@@ -1,3 +1,9 @@
+# models/factory/tests/flavor_test.py
+
+"""
+    #TODO add comment
+"""
+
 from decimal import Decimal
 import pytest
 import time
@@ -13,8 +19,11 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
+
 DATABASE_URL = "sqlite:///:memory:"
+
 db_dialect = "sqlite"
+
 # Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
@@ -22,6 +31,8 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
+
+
 class TestFlavorFactory:
     @pytest.fixture(scope="module")
     def engine(self):
@@ -31,6 +42,7 @@ class TestFlavorFactory:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
         engine.dispose()
+
     @pytest.fixture
     def session(self, engine):
         Base.metadata.create_all(engine)
@@ -38,9 +50,11 @@ class TestFlavorFactory:
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
+
     def test_flavor_creation(self, session):
         flavor = FlavorFactory.create(session=session)
         assert flavor.flavor_id is not None
+
     def test_code_default(self, session):
         flavor = FlavorFactory.create(session=session)
         if db_dialect == 'postgresql':
@@ -49,22 +63,27 @@ class TestFlavorFactory:
             assert isinstance(flavor.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(flavor.code, str)
+
     def test_last_change_code_default_on_build(self, session):
-        flavor:Flavor = FlavorFactory.build(session=session)
+        flavor: Flavor = FlavorFactory.build(session=session)
         assert flavor.last_change_code == 0
+
     def test_last_change_code_default_on_creation(self, session):
-        flavor:Flavor = FlavorFactory.create(session=session)
+        flavor: Flavor = FlavorFactory.create(session=session)
         assert flavor.last_change_code == 1
+
     def test_last_change_code_default_on_update(self, session):
         flavor = FlavorFactory.create(session=session)
         initial_code = flavor.last_change_code
         flavor.code = generate_uuid()
         session.commit()
         assert flavor.last_change_code != initial_code
+
     def test_date_inserted_on_build(self, session):
         flavor = FlavorFactory.build(session=session)
         assert flavor.insert_utc_date_time is not None
         assert isinstance(flavor.insert_utc_date_time, datetime)
+
     def test_date_inserted_on_initial_save(self, session):
         flavor = FlavorFactory.build(session=session)
         assert flavor.insert_utc_date_time is not None
@@ -141,10 +160,10 @@ class TestFlavorFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(flavor.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -173,10 +192,10 @@ class TestFlavorFactory:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(flavor.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -186,7 +205,7 @@ class TestFlavorFactory:
 
         assert flavor.description == ""
         assert flavor.display_order == 0
-        assert flavor.is_active == False
+        assert flavor.is_active is False
         assert flavor.lookup_enum_name == ""
         assert flavor.name == ""
         assert flavor.pac_id == 0
@@ -204,14 +223,13 @@ class TestFlavorFactory:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     def test_invalid_pac_id(self, session):
         flavor = FlavorFactory.create(session=session)
         flavor.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
         session.rollback()
-

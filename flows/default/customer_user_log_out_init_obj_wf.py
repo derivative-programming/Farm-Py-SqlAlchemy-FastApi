@@ -18,8 +18,8 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowCustomerUserLogOutInitObjWFResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
-    tac_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    tac_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -33,7 +33,7 @@ class FlowCustomerUserLogOutInitObjWFResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowCustomerUserLogOutInitObjWF, self).__init__(session_context)
     async def process(self,
         customer_bus_obj: CustomerBusObj,

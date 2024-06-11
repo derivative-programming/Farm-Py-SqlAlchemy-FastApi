@@ -18,7 +18,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowPacUserTacListInitReportResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -31,7 +31,7 @@ class FlowPacUserTacListInitReportResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowPacUserTacListInitReport(BaseFlowPacUserTacListInitReport):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowPacUserTacListInitReport, self).__init__(session_context)
     async def process(self,
         pac_bus_obj: PacBusObj,

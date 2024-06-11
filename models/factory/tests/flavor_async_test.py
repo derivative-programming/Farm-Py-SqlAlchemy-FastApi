@@ -81,11 +81,11 @@ class TestFlavorFactoryAsync:
             assert isinstance(flavor.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        flavor:Flavor = await FlavorFactory.build_async(session=session)
+        flavor: Flavor = await FlavorFactory.build_async(session=session)
         assert flavor.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        flavor:Flavor = await FlavorFactory.create_async(session=session)
+        flavor: Flavor = await FlavorFactory.create_async(session=session)
         assert flavor.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -188,10 +188,10 @@ class TestFlavorFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #pacID
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(flavor.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -222,10 +222,10 @@ class TestFlavorFactoryAsync:
 
         #description,
         #displayOrder,
-        #isActive,
+        # isActive,
         #lookupEnumName,
         #name,
-        #PacID
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(flavor.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -235,7 +235,7 @@ class TestFlavorFactoryAsync:
 
         assert flavor.description == ""
         assert flavor.display_order == 0
-        assert flavor.is_active == False
+        assert flavor.is_active is False
         assert flavor.lookup_enum_name == ""
         assert flavor.name == ""
         assert flavor.pac_id == 0
@@ -260,10 +260,10 @@ class TestFlavorFactoryAsync:
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @pytest.mark.asyncio
     async def test_invalid_pac_id(self, session):
         flavor = await FlavorFactory.create_async(session=session)

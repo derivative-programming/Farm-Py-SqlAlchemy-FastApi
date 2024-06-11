@@ -23,7 +23,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrgApiKeyBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -123,7 +123,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     def set_prop_expiration_utc_date_time(self, value):
         self.expiration_utc_date_time = value
         return self
-    #IsActive
+    # isActive
     @property
     def is_active(self):
         return self.org_api_key.is_active
@@ -135,7 +135,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     def set_prop_is_active(self, value: bool):
         self.is_active = value
         return self
-    #IsTempUserKey
+    # isTempUserKey
     @property
     def is_temp_user_key(self):
         return self.org_api_key.is_temp_user_key
@@ -165,8 +165,8 @@ class OrgApiKeyBusObj(BaseBusObj):
     #createdBy,
     #createdUTCDateTime
     #expirationUTCDateTime
-    #isActive,
-    #isTempUserKey,
+    # isActive,
+    # isTempUserKey,
     #name,
     #OrganizationID
     @property
@@ -223,11 +223,11 @@ class OrgApiKeyBusObj(BaseBusObj):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
         self.org_api_key.last_update_utc_date_time = value
 
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   org_api_key_id:int=None,
-                   org_api_key_obj_instance:OrgApiKey=None,
-                   org_api_key_dict:dict=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   org_api_key_id: int = None,
+                   org_api_key_obj_instance:OrgApiKey = None,
+                   org_api_key_dict: dict = None):
         if org_api_key_id and self.org_api_key.org_api_key_id is None:
             org_api_key_manager = OrgApiKeyManager(self._session_context)
             org_api_key_obj = await org_api_key_manager.get_by_id(org_api_key_id)
@@ -248,12 +248,12 @@ class OrgApiKeyBusObj(BaseBusObj):
             self.org_api_key = org_api_key_manager.from_dict(org_api_key_dict)
         return self
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   org_api_key_id:int=None,
-                   org_api_key_obj_instance:OrgApiKey=None,
-                   org_api_key_dict:dict=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   org_api_key_id: int = None,
+                   org_api_key_obj_instance:OrgApiKey = None,
+                   org_api_key_dict: dict = None):
         result = OrgApiKeyBusObj(session_context)
         await result.load(
             json_data,
@@ -312,8 +312,8 @@ class OrgApiKeyBusObj(BaseBusObj):
     #createdBy,
     #createdUTCDateTime
     #expirationUTCDateTime
-    #isActive,
-    #isTempUserKey,
+    # isActive,
+    # isTempUserKey,
     #name,
     #OrganizationID
     async def get_organization_id_rel_obj(self) -> models.Organization:
@@ -336,8 +336,8 @@ class OrgApiKeyBusObj(BaseBusObj):
     #createdBy,
     #createdUTCDateTime
     #expirationUTCDateTime
-    #isActive,
-    #isTempUserKey,
+    # isActive,
+    # isTempUserKey,
     #name,
     #OrganizationID
     async def get_parent_name(self) -> str:
@@ -349,7 +349,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     #OrgCustomerID
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[OrgApiKey]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[OrgApiKey]):
         result = list()
         for org_api_key in obj_list:
             org_api_key_bus_obj = OrgApiKeyBusObj.get(session_context,org_api_key_obj_instance=org_api_key)

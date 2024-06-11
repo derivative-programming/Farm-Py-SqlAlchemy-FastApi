@@ -38,7 +38,7 @@ class CustomerRoleFactory(factory.Factory):
     customer_code_peek = factory.LazyFunction(generate_uuid) # CustomerID
     role_code_peek = factory.LazyFunction(generate_uuid)  # RoleID
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
+    def _build(cls, model_class, session = None, *args, **kwargs) -> CustomerRole:
         if session is None:
                 obj2 = model_class(*args, **kwargs)
                 return obj2
@@ -62,7 +62,7 @@ class CustomerRoleFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
+    def _create(cls, model_class, session = None, *args, **kwargs) -> CustomerRole:
         customer_id_customer_instance = CustomerFactory.create(session=session)  #CustomerID
         role_id_role_instance = RoleFactory.create(session=session) #RoleID
 
@@ -93,7 +93,7 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code #CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code #RoleID
 
-        obj = CustomerRoleFactory.build(session=None, *args, **kwargs)
+        obj = CustomerRoleFactory.build(session = None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id #CustomerID
         obj.role_id = role_id_role_instance.role_id #RoleID
 
@@ -114,7 +114,7 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code #CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code #RoleID
 
-        obj = CustomerRoleFactory.build(session=None, *args, **kwargs)
+        obj = CustomerRoleFactory.build(session = None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id #CustomerID
         obj.role_id = role_id_role_instance.role_id #RoleID
 

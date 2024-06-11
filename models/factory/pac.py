@@ -36,7 +36,7 @@ class PacFactory(factory.Factory):
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Pac:
+    def _build(cls, model_class, session = None, *args, **kwargs) -> Pac:
         if session is None:
                 obj2 = model_class(*args, **kwargs)
                 return obj2
@@ -47,7 +47,7 @@ class PacFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> Pac:
+    def _create(cls, model_class, session = None, *args, **kwargs) -> Pac:
 
         obj = model_class(*args, **kwargs)
 
@@ -57,7 +57,7 @@ class PacFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Pac:
 
-        obj = PacFactory.build(session=None, *args, **kwargs)
+        obj = PacFactory.build(session = None, *args, **kwargs)
 
         session.add(obj)
         await session.flush()
@@ -65,7 +65,7 @@ class PacFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Pac:
 
-        obj = PacFactory.build(session=None, *args, **kwargs)
+        obj = PacFactory.build(session = None, *args, **kwargs)
 
         # session.add(obj)
         # await session.flush()

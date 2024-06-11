@@ -1,3 +1,9 @@
+# conftest.py
+
+"""
+    #TODO add comment
+"""
+
 import json
 import pytest
 import pytz
@@ -30,5 +36,3 @@ def session(engine):
     session_instance = SessionLocal()
     yield session_instance
     session_instance.close()
-
- 

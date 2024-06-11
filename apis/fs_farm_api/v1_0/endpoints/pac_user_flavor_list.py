@@ -9,18 +9,21 @@ from helpers import SessionContext, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
 import reports
-from  .base_router import BaseRouter
+from .base_router import BaseRouter
 from database import get_db
 class PacUserFlavorListRouterConfig():
+    """
+        #TODO add comment
+    """
     #constants
-    is_get_available:bool = False
-    is_get_with_id_available:bool = True
-    is_get_init_available:bool = True
-    is_get_to_csv_available:bool = True
-    is_post_available:bool = False
-    is_post_with_id_available:bool = False
-    is_put_available:bool = False
-    is_delete_available:bool = False
+    is_get_available: bool = False
+    is_get_with_id_available: bool = True
+    is_get_init_available: bool = True
+    is_get_to_csv_available: bool = True
+    is_post_available: bool = False
+    is_post_with_id_available: bool = False
+    is_put_available: bool = False
+    is_delete_available: bool = False
     is_public: bool = False
 class PacUserFlavorListRouter(BaseRouter):
     router = APIRouter(tags=["PacUserFlavorList"])
@@ -30,7 +33,7 @@ class PacUserFlavorListRouter(BaseRouter):
                 response_model=api_init_models.PacUserFlavorListInitReportGetInitModelResponse,
                 summary="Pac User Flavor List Init Page")
     async def request_get_init(pac_code: str = Path(..., description="Pac Code"),
-                               session:AsyncSession = Depends(get_db),
+                               session: AsyncSession = Depends(get_db),
                                api_key: str = Depends(api_key_header)):
         logging.info('PacUserFlavorListRouter.request_get_init start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.is_get_init_available)
@@ -57,11 +60,12 @@ class PacUserFlavorListRouter(BaseRouter):
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
-                if response.success == True:
+                if response.success is True:
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('PacUserFlavorListRouter.init get result:' + response.model_dump_json())
+        response_data = response.model_dump_json()
+        logging.info('PacUserFlavorListRouter.init get result:%s',response_data)
         return response
 
     @staticmethod
@@ -69,8 +73,8 @@ class PacUserFlavorListRouter(BaseRouter):
                 response_model=api_models.PacUserFlavorListGetModelResponse,
                 summary="Pac User Flavor List Report")
     async def request_get_with_id(pac_code: str = Path(..., description="Pac Code"),
-                                  request_model:api_models.PacUserFlavorListGetModelRequest = Depends(),
-                                  session:AsyncSession = Depends(get_db),
+                                  request_model: api_models.PacUserFlavorListGetModelRequest = Depends(),
+                                  session: AsyncSession = Depends(get_db),
                                   api_key: str = Depends(api_key_header)):
         logging.info('PacUserFlavorListRouter.request_get_with_id start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.is_get_with_id_available)
@@ -96,11 +100,11 @@ class PacUserFlavorListRouter(BaseRouter):
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
-                if response.success == True:
+                if response.success is True:
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('PacUserFlavorListRouter.submit get result:' + response.model_dump_json())
+        logging.info('PacUserFlavorListRouter.submit get result:$s', response.model_dump_json())
         return response
 
     @staticmethod
@@ -108,8 +112,8 @@ class PacUserFlavorListRouter(BaseRouter):
                 response_class=FileResponse,
                 summary="Pac User Flavor List Report to CSV")
     async def request_get_with_id_to_csv(pac_code: str = Path(..., description="Pac Code"),
-                                         request_model:api_models.PacUserFlavorListGetModelRequest = Depends(),
-                                         session:AsyncSession = Depends(get_db),
+                                         request_model: api_models.PacUserFlavorListGetModelRequest = Depends(),
+                                         session: AsyncSession = Depends(get_db),
                                          api_key: str = Depends(api_key_header)):
         logging.info('PacUserFlavorListRouter.request_get_with_id_to_csv start. pacCode:' + pac_code)
         auth_dict = BaseRouter.implementation_check(PacUserFlavorListRouterConfig.is_get_to_csv_available)
@@ -133,17 +137,17 @@ class PacUserFlavorListRouter(BaseRouter):
                     request_model
                 )
                 report_manager = reports.ReportManagerPacUserFlavorList(session_context)
-                report_manager.build_csv(tmp_file_path,response.items)
+                report_manager.build_csv(tmp_file_path, response.items)
             except Exception as e:
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
-                if response.success == True:
+                if response.success is True:
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('PacUserFlavorListRouter.submit get result:' + response.model_dump_json())
+        logging.info('PacUserFlavorListRouter.submit get result:$s', response.model_dump_json())
         output_file_name = 'pac_user_flavor_list_' + pac_code + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(tmp_file_path, media_type='text/csv', filename=output_file_name)
 

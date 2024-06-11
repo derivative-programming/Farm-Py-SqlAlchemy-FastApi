@@ -1,9 +1,15 @@
+# flows/default/tests/land_add_plant_test.py
+
+"""
+    #TODO add comment
+"""
+
 import asyncio
 from decimal import Decimal
 import json
 import uuid
 import pytest
-import pytest_asyncio 
+import pytest_asyncio
 import time
 from typing import AsyncGenerator
 from decimal import Decimal
@@ -16,18 +22,18 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.land_add_plant import FlowLandAddPlant, FlowLandAddPlantResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.land import LandFactory 
-from models import Base 
-from services.db_config import db_dialect 
+from models.factory.land import LandFactory
+from models import Base
+from services.db_config import db_dialect
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4 
+from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
- 
+
 db_dialect = "sqlite"
 
 # Conditionally set the UUID column type
@@ -37,8 +43,8 @@ elif db_dialect == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
-    
-class TestLandAddPlantPostModelResponse: 
+
+class TestLandAddPlantPostModelResponse:
 
     def test_flow_land_add_plant_result_to_json(self):
         # Create an instance and set attributes
@@ -93,103 +99,103 @@ class TestLandAddPlantPostModelResponse:
         assert data["output_some_phone_number"] == result.output_some_phone_number
         assert data["output_some_email_address"] == result.output_some_email_address
 #endset
-        
+
     #todo finish test
     @pytest.mark.asyncio
-    async def test_flow_process_request(self, session): 
-        session_context = SessionContext(dict(), session) 
+    async def test_flow_process_request(self, session):
+        session_context = SessionContext(dict(), session)
         flow = FlowLandAddPlant(session_context)
- 
+
         land = await LandFactory.create_async(session)
 
         land_bus_obj = LandBusObj(session_context)
         await land_bus_obj.load(land_obj_instance=land)
-        
+
         role_required = "User"
 
 
-        request_flavor_code:uuid = uuid.UUID(int=0),    
-        request_other_flavor:str = "",    
-        request_some_int_val:int = 0,    
-        request_some_big_int_val:int = 0,    
-        request_some_bit_val:bool = False,    
-        request_is_edit_allowed:bool = False,    
-        request_is_delete_allowed:bool = False,    
-        request_some_float_val:float = 0,    
-        request_some_decimal_val:Decimal = 0,    
-        request_some_utc_date_time_val:datetime = TypeConversion.get_default_date_time(),
-        request_some_date_val:date = TypeConversion.get_default_date(),
-        request_some_money_val:Decimal = 0,    
-        request_some_n_var_char_val:str = "",    
-        request_some_var_char_val:str = "",    
-        request_some_text_val:str = "",    
-        request_some_phone_number:str = "",    
-        request_some_email_address:str = "",    
-        request_sample_image_upload_file:str = "",
+        request_flavor_code: uuid = uuid.UUID(int=0),
+        request_other_flavor: str = "",
+        request_some_int_val: int = 0,
+        request_some_big_int_val: int = 0,
+        request_some_bit_val: bool = False,
+        request_is_edit_allowed: bool = False,
+        request_is_delete_allowed: bool = False,
+        request_some_float_val: float = 0,
+        request_some_decimal_val: Decimal = 0,
+        request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),
+        request_some_date_val: date = TypeConversion.get_default_date(),
+        request_some_money_val: Decimal = 0,
+        request_some_n_var_char_val: str = "",
+        request_some_var_char_val: str = "",
+        request_some_text_val: str = "",
+        request_some_phone_number: str = "",
+        request_some_email_address: str = "",
+        request_sample_image_upload_file: str = "",
 #endset
-        
-        if len(role_required) > 0: 
+
+        if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
-                    land_bus_obj, 
-                    request_flavor_code,    
-                    request_other_flavor,    
-                    request_some_int_val,   
-                    request_some_big_int_val,   
-                    request_some_bit_val,    
-                    request_is_edit_allowed,    
-                    request_is_delete_allowed,    
-                    request_some_float_val, 
-                    request_some_decimal_val,  
-                    request_some_utc_date_time_val,    
-                    request_some_date_val,    
-                    request_some_money_val,  
-                    request_some_n_var_char_val,    
-                    request_some_var_char_val,    
-                    request_some_text_val,    
-                    request_some_phone_number,    
-                    request_some_email_address,    
+                    land_bus_obj,
+                    request_flavor_code,
+                    request_other_flavor,
+                    request_some_int_val,
+                    request_some_big_int_val,
+                    request_some_bit_val,
+                    request_is_edit_allowed,
+                    request_is_delete_allowed,
+                    request_some_float_val,
+                    request_some_decimal_val,
+                    request_some_utc_date_time_val,
+                    request_some_date_val,
+                    request_some_money_val,
+                    request_some_n_var_char_val,
+                    request_some_var_char_val,
+                    request_some_text_val,
+                    request_some_phone_number,
+                    request_some_email_address,
                     request_sample_image_upload_file,
 #endset
-                ) 
-        
-        
+                )
+
+
         session_context.role_name_csv = role_required
 
-        customerCodeMatchRequired = False 
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed == True:
+        customerCodeMatchRequired = False
+        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
             customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
             customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
             customerCodeMatchRequired = True
-        
-        if customerCodeMatchRequired == True: 
+
+        if customerCodeMatchRequired is True:
             with pytest.raises(FlowValidationError):
-                
+
                 flow_result = await flow.process(
-                    land_bus_obj, 
-                    request_flavor_code,    
-                    request_other_flavor,    
-                    request_some_int_val,   
-                    request_some_big_int_val,   
-                    request_some_bit_val,    
-                    request_is_edit_allowed,    
-                    request_is_delete_allowed,    
-                    request_some_float_val, 
-                    request_some_decimal_val,  
-                    request_some_utc_date_time_val,    
-                    request_some_date_val,    
-                    request_some_money_val,  
-                    request_some_n_var_char_val,    
-                    request_some_var_char_val,    
-                    request_some_text_val,    
-                    request_some_phone_number,    
-                    request_some_email_address,    
+                    land_bus_obj,
+                    request_flavor_code,
+                    request_other_flavor,
+                    request_some_int_val,
+                    request_some_big_int_val,
+                    request_some_bit_val,
+                    request_is_edit_allowed,
+                    request_is_delete_allowed,
+                    request_some_float_val,
+                    request_some_decimal_val,
+                    request_some_utc_date_time_val,
+                    request_some_date_val,
+                    request_some_money_val,
+                    request_some_n_var_char_val,
+                    request_some_var_char_val,
+                    request_some_text_val,
+                    request_some_phone_number,
+                    request_some_email_address,
                     request_sample_image_upload_file,
 #endset
-                ) 
- 
+                )
+
 
         session_context.role_name_csv = role_required
 
@@ -200,4 +206,3 @@ class TestLandAddPlantPostModelResponse:
         #     request=request_instance
         #     )
         # assert isinstance(result,FlowLandAddPlantResult)
-

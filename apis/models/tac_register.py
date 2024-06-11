@@ -11,17 +11,17 @@ from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel,SnakeModel
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 import logging
 from apis.models.validation_error import ValidationErrorItem
 from sqlalchemy.ext.asyncio import AsyncSession
 class TacRegisterPostModelRequest(CamelModel):
-    force_error_message:str = Field(default="", description="Force Error Message")
-    email:str = Field(default="", description="Email")
-    password:str = Field(default="", description="Password")
-    confirm_password:str = Field(default="", description="Confirm Password")
-    first_name:str = Field(default="", description="First Name")
-    last_name:str = Field(default="", description="Last Name")
+    force_error_message: str = Field(default="", description="Force Error Message")
+    email: str = Field(default="", description="Email")
+    password: str = Field(default="", description="Password")
+    confirm_password: str = Field(default="", description="Confirm Password")
+    first_name: str = Field(default="", description="First Name")
+    last_name: str = Field(default="", description="Last Name")
 
     class Config:
         json_encoders = {
@@ -33,19 +33,19 @@ class TacRegisterPostModelRequest(CamelModel):
         data = json.loads(self.model_dump_json() )
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
 class TacRegisterPostModelResponse(PostResponse):
-    customer_code:UUID4 = Field(default=uuid.UUID(int=0), description="Customer Code")
-    email:str = Field(default="", description="Output Some Email")
-    user_code_value:UUID4 = Field(default=uuid.UUID(int=0), description="User Code Value")
-    utc_offset_in_minutes:int = Field(default=0, description="UTC Offset In Minutes")
-    role_name_csv_list:str = Field(default="", description="Output Some Role Name CSV List")
-    api_key:str = Field(default="", description="Output Some Api Key")
+    customer_code: UUID4 = Field(default=uuid.UUID(int=0), description="Customer Code")
+    email: str = Field(default="", description="Output Some Email")
+    user_code_value: UUID4 = Field(default=uuid.UUID(int=0), description="User Code Value")
+    utc_offset_in_minutes: int = Field(default=0, description="UTC Offset In Minutes")
+    role_name_csv_list: str = Field(default="", description="Output Some Role Name CSV List")
+    api_key: str = Field(default="", description="Output Some Api Key")
 
-    def load_flow_response(self,data:FlowTacRegisterResult):
+    def load_flow_response(self, data:FlowTacRegisterResult):
         placeholder = "" #to avoid pass line
         self.customer_code = data.customer_code
         self.email = data.email
@@ -55,9 +55,9 @@ class TacRegisterPostModelResponse(PostResponse):
         self.api_key = data.api_key
 
     async def process_request(self,
-                        session_context:SessionContext,
-                        tac_code:uuid,
-                        request:TacRegisterPostModelRequest):
+                        session_context: SessionContext,
+                        tac_code: uuid,
+                        request: TacRegisterPostModelRequest):
         try:
             logging.info("loading model...TacRegisterPostModelResponse")
             tac_bus_obj = TacBusObj(session_context)

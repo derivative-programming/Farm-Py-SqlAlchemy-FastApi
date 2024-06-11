@@ -23,7 +23,7 @@ elif db_dialect == 'mssql':
 else:  #This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TriStateFilterBusObj(BaseBusObj):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -101,7 +101,7 @@ class TriStateFilterBusObj(BaseBusObj):
     def set_prop_display_order(self, value):
         self.display_order = value
         return self
-    #IsActive
+    # isActive
     @property
     def is_active(self):
         return self.tri_state_filter.is_active
@@ -135,7 +135,7 @@ class TriStateFilterBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-    #PacID
+     # PacID
     #StateIntValue
     @property
     def state_int_value(self):
@@ -150,10 +150,10 @@ class TriStateFilterBusObj(BaseBusObj):
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @property
     def pac_id(self):
         return self.tri_state_filter.pac_id
@@ -193,12 +193,12 @@ class TriStateFilterBusObj(BaseBusObj):
     @property
     def lookup_enum(self) -> managers_and_enums.TriStateFilterEnum:
         return managers_and_enums.TriStateFilterEnum[self.tri_state_filter.lookup_enum_name]
-    async def load(self, json_data:str=None,
-                   code:uuid.UUID=None,
-                   tri_state_filter_id:int=None,
-                   tri_state_filter_obj_instance:TriStateFilter=None,
-                   tri_state_filter_dict:dict=None,
-                   tri_state_filter_enum:managers_and_enums.TriStateFilterEnum=None):
+    async def load(self, json_data: str = None,
+                   code: uuid.UUID = None,
+                   tri_state_filter_id: int = None,
+                   tri_state_filter_obj_instance:TriStateFilter = None,
+                   tri_state_filter_dict: dict = None,
+                   tri_state_filter_enum:managers_and_enums.TriStateFilterEnum = None):
         if tri_state_filter_id and self.tri_state_filter.tri_state_filter_id is None:
             tri_state_filter_manager = TriStateFilterManager(self._session_context)
             tri_state_filter_obj = await tri_state_filter_manager.get_by_id(tri_state_filter_id)
@@ -221,13 +221,13 @@ class TriStateFilterBusObj(BaseBusObj):
             tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = await tri_state_filter_manager.from_enum(tri_state_filter_enum)
     @staticmethod
-    async def get(session_context:SessionContext,
-                    json_data:str=None,
-                   code:uuid.UUID=None,
-                   tri_state_filter_id:int=None,
-                   tri_state_filter_obj_instance:TriStateFilter=None,
-                   tri_state_filter_dict:dict=None,
-                   tri_state_filter_enum:managers_and_enums.TriStateFilterEnum=None):
+    async def get(session_context: SessionContext,
+                    json_data: str = None,
+                   code: uuid.UUID = None,
+                   tri_state_filter_id: int = None,
+                   tri_state_filter_obj_instance:TriStateFilter = None,
+                   tri_state_filter_dict: dict = None,
+                   tri_state_filter_enum:managers_and_enums.TriStateFilterEnum = None):
         result = TriStateFilterBusObj(session_context)
         await result.load(
             json_data,
@@ -265,7 +265,7 @@ class TriStateFilterBusObj(BaseBusObj):
             await tri_state_filter_manager.delete(self.tri_state_filter.tri_state_filter_id)
             self.tri_state_filter = None
     async def randomize_properties(self):
-        self.tri_state_filter.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.tri_state_filter.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tri_state_filter.display_order = random.randint(0, 100)
         self.tri_state_filter.is_active = random.choice([True, False])
         self.tri_state_filter.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -283,10 +283,10 @@ class TriStateFilterBusObj(BaseBusObj):
 
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -301,10 +301,10 @@ class TriStateFilterBusObj(BaseBusObj):
         return self.tri_state_filter_id
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -314,7 +314,7 @@ class TriStateFilterBusObj(BaseBusObj):
     #stateIntValue,
 
     @staticmethod
-    async def to_bus_obj_list(session_context:SessionContext, obj_list:List[TriStateFilter]):
+    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[TriStateFilter]):
         result = list()
         for tri_state_filter in obj_list:
             tri_state_filter_bus_obj = TriStateFilterBusObj.get(session_context,tri_state_filter_obj_instance=tri_state_filter)

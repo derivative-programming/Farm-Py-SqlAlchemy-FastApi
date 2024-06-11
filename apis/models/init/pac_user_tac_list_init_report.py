@@ -15,11 +15,11 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class PacUserTacListInitReportGetInitModelResponse(CamelModel):
-    success:bool = Field(default=False, description="Success")
-    message:str = Field(default="", description="Message")
-    validation_errors:List[ValidationErrorItem] = Field(default_factory=list)
+    success: bool = Field(default=False, description="Success")
+    message: str = Field(default="", description="Message")
+    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
 
-    def load_flow_response(self,data:FlowPacUserTacListInitReportResult):
+    def load_flow_response(self, data:FlowPacUserTacListInitReportResult):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -28,9 +28,9 @@ class PacUserTacListInitReportGetInitModelResponse(CamelModel):
         return self.model_dump_json()
 class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(self,
-                        session_context:SessionContext,
-                        pac_code:uuid,
-                        response:PacUserTacListInitReportGetInitModelResponse) -> PacUserTacListInitReportGetInitModelResponse:
+                        session_context: SessionContext,
+                        pac_code: uuid,
+                        response: PacUserTacListInitReportGetInitModelResponse) -> PacUserTacListInitReportGetInitModelResponse:
         try:
             logging.info("loading model...PacUserTacListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session_context)

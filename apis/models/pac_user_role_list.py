@@ -16,17 +16,17 @@ from apis.models.validation_error import ValidationErrorItem
 import apis.models as view_models
 from models import Pac
 from helpers.pydantic_serialization import CamelModel,SnakeModel,BaseModel
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
 ### request. expect camel case. use marshmallow to validate.
 class PacUserRoleListGetModelRequest(CamelModel):
-    page_number:int = Field(default=0, description="Page Number")
-    item_count_per_page:int = Field(default=0, description="Item Count Per Page")
-    order_by_column_name:str = Field(default="", description="Order By Column Name")
-    order_by_descending:bool = Field(default=False, description="Order By Decending")
-    force_error_message:str = Field(default="", description="Force Error Message")
+    page_number: int = Field(default=0, description="Page Number")
+    item_count_per_page: int = Field(default=0, description="Item Count Per Page")
+    order_by_column_name: str = Field(default="", description="Order By Column Name")
+    order_by_descending: bool = Field(default=False, description="Order By Decending")
+    force_error_message: str = Field(default="", description="Force Error Message")
 
     class Config:
         json_encoders = {
@@ -40,20 +40,20 @@ class PacUserRoleListGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k): v for k, v in data.items()}
+        return {snake_to_camel(k):v for k, v in data.items()}
 class PacUserRoleListGetModelResponseItem(CamelModel):
-    role_code:UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Role Code")
-    role_description:str = Field(default="", description="Role Description")
-    role_display_order:int = Field(default=0, description="Role Display Order")
-    role_is_active:bool = Field(default=False, description="Role Is Active")
-    role_lookup_enum_name:str = Field(default="", description="Role Lookup Enum Name")
-    role_name:str = Field(default="", description="Role Name")
-    pac_name:str = Field(default="", description="Pac Name")
+    role_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Role Code")
+    role_description: str = Field(default="", description="Role Description")
+    role_display_order: int = Field(default=0, description="Role Display Order")
+    role_is_active: bool = Field(default=False, description="Role Is Active")
+    role_lookup_enum_name: str = Field(default="", description="Role Lookup Enum Name")
+    role_name: str = Field(default="", description="Role Name")
+    pac_name: str = Field(default="", description="Pac Name")
 
-    def load_report_item(self,data:ReportItemPacUserRoleList):
+    def load_report_item(self, data:ReportItemPacUserRoleList):
         self.role_code = data.role_code
         self.role_description = data.role_description
         self.role_display_order = data.role_display_order
@@ -63,12 +63,12 @@ class PacUserRoleListGetModelResponseItem(CamelModel):
         self.pac_name = data.pac_name
 
 class PacUserRoleListGetModelResponse(ListModel):
-    request:PacUserRoleListGetModelRequest = None
-    items:List[PacUserRoleListGetModelResponseItem] = Field(default_factory=list)
+    request: PacUserRoleListGetModelRequest = None
+    items: List[PacUserRoleListGetModelResponseItem] = Field(default_factory=list)
     async def process_request(self,
-                        session_context:SessionContext,
-                        pac_code:uuid,
-                        request:PacUserRoleListGetModelRequest):
+                        session_context: SessionContext,
+                        pac_code: uuid,
+                        request: PacUserRoleListGetModelRequest):
         try:
             logging.info("loading model...PacUserRoleListGetModelResponse")
             generator = ReportManagerPacUserRoleList(session_context)

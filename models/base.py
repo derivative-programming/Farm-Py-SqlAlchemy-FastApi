@@ -1,8 +1,15 @@
+# base.py
+
+"""
+    #TODO add comment
+"""
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import TypeDecorator, LargeBinary
 from services.encryption import encrypt_message,decrypt_message
 
 Base = declarative_base()
+
 
 class EncryptedType(TypeDecorator):
     impl = LargeBinary

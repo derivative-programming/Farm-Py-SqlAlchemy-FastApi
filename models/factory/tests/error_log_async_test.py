@@ -204,9 +204,9 @@ class TestErrorLogFactoryAsync:
         #contextCode,
         #createdUTCDateTime
         #description,
-        #isClientSideError,
-        #isResolved,
-        #pacID
+        # isClientSideError,
+        # isResolved,
+         # pacID
         if db_dialect == 'postgresql':
             assert isinstance(error_log.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -240,9 +240,9 @@ class TestErrorLogFactoryAsync:
         #contextCode,
         #createdUTCDateTime
         #description,
-        #isClientSideError,
-        #isResolved,
-        #PacID
+        # isClientSideError,
+        # isResolved,
+         # PacID
         if db_dialect == 'postgresql':
             assert isinstance(error_log.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -251,14 +251,14 @@ class TestErrorLogFactoryAsync:
             assert isinstance(error_log.pac_code_peek, str)
         #url,
 
-        #SomeUniqueIdentifierVal
+        # someUniqueIdentifierVal
         if db_dialect == 'postgresql':
             assert isinstance(error_log.browser_code, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.browser_code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.browser_code, str)
-        #SomeUniqueIdentifierVal
+        # someUniqueIdentifierVal
         if db_dialect == 'postgresql':
             assert isinstance(error_log.context_code, UUID)
         elif db_dialect == 'mssql':
@@ -267,8 +267,8 @@ class TestErrorLogFactoryAsync:
             assert isinstance(error_log.context_code, str)
         assert error_log.created_utc_date_time == datetime(1753, 1, 1)
         assert error_log.description == ""
-        assert error_log.is_client_side_error == False
-        assert error_log.is_resolved == False
+        assert error_log.is_client_side_error is False
+        assert error_log.is_resolved is False
         assert error_log.pac_id == 0
         assert error_log.url == ""
 
@@ -294,9 +294,9 @@ class TestErrorLogFactoryAsync:
     #contextCode,
     #createdUTCDateTime
     #description,
-    #isClientSideError,
-    #isResolved,
-    #PacID
+    # isClientSideError,
+    # isResolved,
+     # PacID
     @pytest.mark.asyncio
     async def test_invalid_pac_id(self, session):
         error_log = await ErrorLogFactory.create_async(session=session)

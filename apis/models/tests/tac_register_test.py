@@ -16,7 +16,7 @@ from flows.tac_register import FlowTacRegister, FlowTacRegisterResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.tac import TacFactory
-from ...models.tac_register import TacRegisterPostModelRequest,TacRegisterPostModelResponse
+from ...models.tac_register import TacRegisterPostModelRequest, TacRegisterPostModelResponse
 from models import Base
 from ..factory.tac_register import TacRegisterPostModelRequestFactory
 from services.db_config import db_dialect
@@ -26,7 +26,7 @@ from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from pydantic import Field,UUID4
+from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from unittest.mock import patch, AsyncMock
 db_dialect = "sqlite"
@@ -42,11 +42,11 @@ class TestTacRegisterPostModelResponse:
     async def test_flow_process_request(self, session):
         async def mock_process(
             tac_bus_obj: TacBusObj,
-            email:str = "",
-            password:str = "",
-            confirm_password:str = "",
-            first_name:str = "",
-            last_name:str = "",
+            email: str = "",
+            password: str = "",
+            confirm_password: str = "",
+            first_name: str = "",
+            last_name: str = "",
             ):
             return FlowTacRegisterResult()
         with patch.object(FlowTacRegister, 'process', new_callable=AsyncMock) as mock_method:
@@ -60,6 +60,6 @@ class TestTacRegisterPostModelResponse:
                 tac_code=tac.code,
                 request=request_instance
                 )
-            assert response_instance.success == True
+            assert response_instance.success is True
             mock_method.assert_awaited()
 

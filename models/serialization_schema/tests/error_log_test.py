@@ -31,7 +31,7 @@ class TestErrorLogSchema:
         "url": "Vanilla",
         "insert_utc_date_time": datetime(2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat(),
 
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",# PacID
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
@@ -55,7 +55,7 @@ class TestErrorLogSchema:
         assert result['insert_utc_date_time'] == error_log.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == error_log.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == error_log.pac_code_peek # PacID
+        assert result['pac_code_peek'] == error_log.pac_code_peek  # PacID
 
     def test_error_log_deserialization(self, error_log:ErrorLog, session):
         schema = ErrorLogSchema()
@@ -78,7 +78,7 @@ class TestErrorLogSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == error_log.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == error_log.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == error_log.pac_code_peek # PacID
+        assert deserialized_data['pac_code_peek'] == error_log.pac_code_peek  # PacID
 
         new_error_log = ErrorLog(**deserialized_data)
         assert isinstance(new_error_log, ErrorLog)
@@ -100,7 +100,7 @@ class TestErrorLogSchema:
         assert new_error_log.insert_utc_date_time.isoformat() == error_log.insert_utc_date_time.isoformat()
         assert new_error_log.last_update_utc_date_time.isoformat() == error_log.last_update_utc_date_time.isoformat()
 
-        assert new_error_log.pac_code_peek == error_log.pac_code_peek #PacID
+        assert new_error_log.pac_code_peek == error_log.pac_code_peek  # PacID
 
     def test_from_json(self, error_log:ErrorLog, session):
         error_log_schema = ErrorLogSchema()
@@ -126,7 +126,7 @@ class TestErrorLogSchema:
         assert str(deserialized_data['url']) == str(self.sample_data['url'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek']) #PacID
+        assert str(deserialized_data['pac_code_peek']) == str(self.sample_data['pac_code_peek'])  # PacID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_error_log = ErrorLog(**deserialized_data)
@@ -159,5 +159,5 @@ class TestErrorLogSchema:
             assert error_log_dict_from_json['insert_utc_date_time'] == error_log.insert_utc_date_time.isoformat()
             assert error_log_dict_from_json['last_update_utc_date_time'] == error_log.last_update_utc_date_time.isoformat()
 
-            assert error_log_dict_from_json['pac_code_peek'] == error_log.pac_code_peek # PacID
+            assert error_log_dict_from_json['pac_code_peek'] == error_log.pac_code_peek  # PacID
 

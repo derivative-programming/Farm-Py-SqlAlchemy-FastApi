@@ -25,12 +25,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestFlavorManager:
     @pytest_asyncio.fixture(scope="function")
-    async def flavor_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def flavor_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return FlavorManager(session_context)
     @pytest.mark.asyncio
-    async def test_build(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_build(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Define some mock data for our flavor
         mock_data = {
             "code": generate_uuid()
@@ -44,7 +44,7 @@ class TestFlavorManager:
         # Optionally, if the build method has some default values or computations:
         # assert flavor.some_attribute == some_expected_value
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_build_with_missing_data(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Define mock data with a missing key
         mock_data = {
             "non_existant_property": "Rose"
@@ -54,7 +54,7 @@ class TestFlavorManager:
             await flavor_manager.build_async(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_add_correctly_adds_flavor_to_database(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_add_correctly_adds_flavor_to_database(self, flavor_manager: FlavorManager, session: AsyncSession):
         test_flavor = await FlavorFactory.build_async(session)
         assert test_flavor.flavor_id is None
         # Add the flavor using the manager's add method
@@ -71,7 +71,7 @@ class TestFlavorManager:
         assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.flavor_id == added_flavor.flavor_id
     @pytest.mark.asyncio
-    async def test_add_returns_correct_flavor_object(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_add_returns_correct_flavor_object(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Create a test flavor using the FlavorFactory without persisting it to the database
         test_flavor = await FlavorFactory.build_async(session)
         assert test_flavor.flavor_id is None
@@ -86,32 +86,32 @@ class TestFlavorManager:
         assert added_flavor.flavor_id == test_flavor.flavor_id
         assert added_flavor.code == test_flavor.code
     @pytest.mark.asyncio
-    async def test_get_by_id(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_by_id(self, flavor_manager: FlavorManager, session: AsyncSession):
         test_flavor = await FlavorFactory.create_async(session)
         flavor = await flavor_manager.get_by_id(test_flavor.flavor_id)
         assert isinstance(flavor, Flavor)
         assert test_flavor.flavor_id == flavor.flavor_id
         assert test_flavor.code == flavor.code
     @pytest.mark.asyncio
-    async def test_get_by_id_not_found(self, flavor_manager:FlavorManager, session: AsyncSession):
+    async def test_get_by_id_not_found(self, flavor_manager: FlavorManager, session: AsyncSession):
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_flavor = await flavor_manager.get_by_id(non_existent_id)
         assert retrieved_flavor is None
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_by_code_returns_flavor(self, flavor_manager: FlavorManager, session: AsyncSession):
         test_flavor = await FlavorFactory.create_async(session)
         flavor = await flavor_manager.get_by_code(test_flavor.code)
         assert isinstance(flavor, Flavor)
         assert test_flavor.flavor_id == flavor.flavor_id
         assert test_flavor.code == flavor.code
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_by_code_returns_none_for_nonexistent_code(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Generate a random UUID that doesn't correspond to any Flavor in the database
         random_code = generate_uuid()
         flavor = await flavor_manager.get_by_code(random_code)
         assert flavor is None
     @pytest.mark.asyncio
-    async def test_update(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_update(self, flavor_manager: FlavorManager, session: AsyncSession):
         test_flavor = await FlavorFactory.create_async(session)
         test_flavor.code = generate_uuid()
         updated_flavor = await flavor_manager.update(flavor=test_flavor)
@@ -126,7 +126,7 @@ class TestFlavorManager:
         assert test_flavor.flavor_id == fetched_flavor.flavor_id
         assert test_flavor.code == fetched_flavor.code
     @pytest.mark.asyncio
-    async def test_update_via_dict(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_update_via_dict(self, flavor_manager: FlavorManager, session: AsyncSession):
         test_flavor = await FlavorFactory.create_async(session)
         new_code = generate_uuid()
         updated_flavor = await flavor_manager.update(flavor=test_flavor,code=new_code)
@@ -141,7 +141,7 @@ class TestFlavorManager:
         assert test_flavor.flavor_id == fetched_flavor.flavor_id
         assert new_code == fetched_flavor.code
     @pytest.mark.asyncio
-    async def test_update_invalid_flavor(self, flavor_manager:FlavorManager):
+    async def test_update_invalid_flavor(self, flavor_manager: FlavorManager):
         # None flavor
         flavor = None
         new_code = generate_uuid()
@@ -149,7 +149,7 @@ class TestFlavorManager:
         # Assertions
         assert updated_flavor is None
     @pytest.mark.asyncio
-    async def test_update_with_nonexistent_attribute(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_update_with_nonexistent_attribute(self, flavor_manager: FlavorManager, session: AsyncSession):
         test_flavor = await FlavorFactory.create_async(session)
         new_code = generate_uuid()
         # This should raise an AttributeError since 'color' is not an attribute of Flavor
@@ -157,7 +157,7 @@ class TestFlavorManager:
             updated_flavor = await flavor_manager.update(flavor=test_flavor,xxx=new_code)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_delete(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor_data = await FlavorFactory.create_async(session)
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_data.flavor_id))
         fetched_flavor = result.scalars().first()
@@ -168,17 +168,17 @@ class TestFlavorManager:
         fetched_flavor = result.scalars().first()
         assert fetched_flavor is None
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_delete_nonexistent(self, flavor_manager: FlavorManager, session: AsyncSession):
         with pytest.raises(Exception):
             await flavor_manager.delete(999)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_delete_invalid_type(self, flavor_manager: FlavorManager, session: AsyncSession):
         with pytest.raises(Exception):
             await flavor_manager.delete("999")
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_list(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_list(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavors = await flavor_manager.get_list()
         assert len(flavors) == 0
         flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
@@ -186,24 +186,24 @@ class TestFlavorManager:
         assert len(flavors) == 5
         assert all(isinstance(flavor, Flavor) for flavor in flavors)
     @pytest.mark.asyncio
-    async def test_to_json(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_to_json(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor = await FlavorFactory.build_async(session)
         json_data = flavor_manager.to_json(flavor)
         assert json_data is not None
     @pytest.mark.asyncio
-    async def test_to_dict(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_to_dict(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor = await FlavorFactory.build_async(session)
         dict_data = flavor_manager.to_dict(flavor)
         assert dict_data is not None
     @pytest.mark.asyncio
-    async def test_from_json(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_from_json(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor = await FlavorFactory.create_async(session)
         json_data = flavor_manager.to_json(flavor)
         deserialized_flavor = flavor_manager.from_json(json_data)
         assert isinstance(deserialized_flavor, Flavor)
         assert deserialized_flavor.code == flavor.code
     @pytest.mark.asyncio
-    async def test_from_dict(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_from_dict(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor = await FlavorFactory.create_async(session)
         schema = FlavorSchema()
         flavor_data = schema.dump(flavor)
@@ -211,7 +211,7 @@ class TestFlavorManager:
         assert isinstance(deserialized_flavor, Flavor)
         assert deserialized_flavor.code == flavor.code
     @pytest.mark.asyncio
-    async def test_add_bulk(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_add_bulk(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavors_data = [await FlavorFactory.build_async(session) for _ in range(5)]
         flavors = await flavor_manager.add_bulk(flavors_data)
         assert len(flavors) == 5
@@ -223,7 +223,7 @@ class TestFlavorManager:
             assert str(fetched_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
             assert fetched_flavor.flavor_id == updated_flavor.flavor_id
     @pytest.mark.asyncio
-    async def test_update_bulk_success(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_update_bulk_success(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Mocking flavor instances
         flavor1 = await FlavorFactory.create_async(session=session)
         flavor2 = await FlavorFactory.create_async(session=session)
@@ -257,27 +257,27 @@ class TestFlavorManager:
         assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.code == code_updated2
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_flavor_id(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_update_bulk_missing_flavor_id(self, flavor_manager: FlavorManager, session: AsyncSession):
         # No flavors to update since flavor_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
             updated_flavors = await flavor_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_flavor_not_found(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_update_bulk_flavor_not_found(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Update flavors
         updates = [{"flavor_id": 1, "code": generate_uuid()}]
         with pytest.raises(Exception):
             updated_flavors = await flavor_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_update_bulk_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_update_bulk_invalid_type(self, flavor_manager: FlavorManager, session: AsyncSession):
         updates = [{"flavor_id": "2", "code": generate_uuid()}]
         with pytest.raises(Exception):
             updated_flavors = await flavor_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_success(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_delete_bulk_success(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor1 = await FlavorFactory.create_async(session=session)
         flavor2 = await FlavorFactory.create_async(session=session)
         # Delete flavors
@@ -289,7 +289,7 @@ class TestFlavorManager:
             fetched_flavor = execute_result.scalars().first()
             assert fetched_flavor is None
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_flavors_not_found(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_delete_bulk_some_flavors_not_found(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor1 = await FlavorFactory.create_async(session=session)
         # Delete flavors
         flavor_ids = [1, 2]
@@ -297,50 +297,50 @@ class TestFlavorManager:
            result = await flavor_manager.delete_bulk(flavor_ids)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_delete_bulk_empty_list(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Delete flavors with an empty list
         flavor_ids = []
         result = await flavor_manager.delete_bulk(flavor_ids)
         # Assertions
         assert result is True
     @pytest.mark.asyncio
-    async def test_delete_bulk_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_delete_bulk_invalid_type(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor_ids = ["1", 2]
         with pytest.raises(Exception):
            result = await flavor_manager.delete_bulk(flavor_ids)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_count_basic_functionality(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
         count = await flavor_manager.count()
         assert count == 5
     @pytest.mark.asyncio
-    async def test_count_empty_database(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_count_empty_database(self, flavor_manager: FlavorManager, session: AsyncSession):
         count = await flavor_manager.count()
         assert count == 0
     @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_sorted_list_basic_sorting(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Add flavors
         flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
         sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id")
         assert [flavor.flavor_id for flavor in sorted_flavors] == [(i + 1) for i in range(5)]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_sorted_list_descending_sorting(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Add flavors
         flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
         sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id", order="desc")
         assert [flavor.flavor_id for flavor in sorted_flavors] == [(i + 1) for i in reversed(range(5))]
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_sorted_list_invalid_attribute(self, flavor_manager: FlavorManager, session: AsyncSession):
         with pytest.raises(AttributeError):
             await flavor_manager.get_sorted_list(sort_by="invalid_attribute")
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_sorted_list_empty_database(self, flavor_manager: FlavorManager, session: AsyncSession):
         sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id")
         assert len(sorted_flavors) == 0
     @pytest.mark.asyncio
-    async def test_refresh_basic(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_refresh_basic(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Add a flavor
         flavor1 = await FlavorFactory.create_async(session=session)
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor1.flavor_id))
@@ -353,32 +353,32 @@ class TestFlavorManager:
         refreshed_flavor2 = await flavor_manager.refresh(flavor2)
         assert refreshed_flavor2.code == updated_code1
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_refresh_nonexistent_flavor(self, flavor_manager: FlavorManager, session: AsyncSession):
         flavor = Flavor(flavor_id=999)
         with pytest.raises(Exception):
             await flavor_manager.refresh(flavor)
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_exists_with_existing_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_exists_with_existing_flavor(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Add a flavor
         flavor1 = await FlavorFactory.create_async(session=session)
         # Check if the flavor exists using the manager function
-        assert await flavor_manager.exists(flavor1.flavor_id) == True
+        assert await flavor_manager.exists(flavor1.flavor_id) is True
     @pytest.mark.asyncio
-    async def test_is_equal_with_existing_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_is_equal_with_existing_flavor(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Add a flavor
         flavor1 = await FlavorFactory.create_async(session=session)
         flavor2 = await flavor_manager.get_by_id(flavor_id=flavor1.flavor_id)
-        assert flavor_manager.is_equal(flavor1,flavor2) == True
+        assert flavor_manager.is_equal(flavor1, flavor2) is True
         flavor1_dict = flavor_manager.to_dict(flavor1)
         flavor3 = flavor_manager.from_dict(flavor1_dict)
-        assert flavor_manager.is_equal(flavor1,flavor3) == True
+        assert flavor_manager.is_equal(flavor1, flavor3) is True
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_flavor(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_exists_with_nonexistent_flavor(self, flavor_manager: FlavorManager, session: AsyncSession):
         non_existent_id = 999
-        assert await flavor_manager.exists(non_existent_id) == False
+        assert await flavor_manager.exists(non_existent_id) is False
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_exists_with_invalid_id_type(self, flavor_manager: FlavorManager, session: AsyncSession):
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await flavor_manager.exists(invalid_id)
@@ -386,30 +386,30 @@ class TestFlavorManager:
 #endet
     #description,
     #displayOrder,
-    #isActive,
+    # isActive,
     #lookupEnumName,
     #name,
-    #PacID
+     # PacID
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_existing(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_by_pac_id_existing(self, flavor_manager: FlavorManager, session: AsyncSession):
         # Add a flavor with a specific pac_id
         flavor1 = await FlavorFactory.create_async(session=session)
         # Fetch the flavor using the manager function
         fetched_flavors = await flavor_manager.get_by_pac_id(flavor1.pac_id)
         assert len(fetched_flavors) == 1
-        assert isinstance(fetched_flavors[0],Flavor)
+        assert isinstance(fetched_flavors[0], Flavor)
         assert fetched_flavors[0].code == flavor1.code
         stmt = select(models.Pac).where(models.Pac.pac_id==flavor1.pac_id)
         result = await session.execute(stmt)
         pac = result.scalars().first()
         assert fetched_flavors[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_nonexistent(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_by_pac_id_nonexistent(self, flavor_manager: FlavorManager, session: AsyncSession):
         non_existent_id = 999
         fetched_flavors = await flavor_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_flavors) == 0
     @pytest.mark.asyncio
-    async def test_get_by_pac_id_invalid_type(self, flavor_manager:FlavorManager, session:AsyncSession):
+    async def test_get_by_pac_id_invalid_type(self, flavor_manager: FlavorManager, session: AsyncSession):
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await flavor_manager.get_by_pac_id(invalid_id)

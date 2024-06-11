@@ -1,3 +1,9 @@
+# models/managers/flavor.py
+
+"""
+    #TODO add comment
+"""
+
 import json
 import random
 import uuid
@@ -37,7 +43,7 @@ class FlavorManager:
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
 
-    async def _build_lookup_item(self, pac:Pac):
+    async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
         item.pac_id = pac.pac_id
         return item
@@ -50,7 +56,7 @@ class FlavorManager:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
-            item.description = "Unknown"
+            item.description="Unknown"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -59,7 +65,7 @@ class FlavorManager:
             item = await self._build_lookup_item(pac)
             item.name = "Sweet"
             item.lookup_enum_name = "Sweet"
-            item.description = "Sweet"
+            item.description="Sweet"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -68,14 +74,14 @@ class FlavorManager:
             item = await self._build_lookup_item(pac)
             item.name = "Sour"
             item.lookup_enum_name = "Sour"
-            item.description = "Sour"
+            item.description="Sour"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
 
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val:FlavorEnum) -> Flavor:
+    async def from_enum(self, enum_val: FlavorEnum) -> Flavor:
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Flavor.lookup_enum_name==enum_val.value
         query_results = await self._run_query(query_filter)
@@ -99,12 +105,12 @@ class FlavorManager:
 #
 #         if join_condition is not None:
 #             query = select(Flavor
-#                         ,Pac #pac_id
+#                         , Pac  # pac_id
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(Flavor)
         query = select(Flavor
-                    ,Pac #pac_id
+                    , Pac  # pac_id
                     )
 
         query = query.outerjoin(Pac, and_(Flavor.pac_id == Pac.pac_id, Flavor.pac_id != 0))
@@ -125,25 +131,25 @@ class FlavorManager:
             flavor = query_result_row[i]
             i = i + 1
 
-            pac = query_result_row[i] #pac_id
+            pac = query_result_row[i]  # pac_id
             i = i + 1
 
-            flavor.pac_code_peek = pac.code if pac else uuid.UUID(int=0) #pac_id
+            flavor.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
 
             result.append(flavor)
         return result
-    def _first_or_none(self,flavor_list:List) -> Flavor:
+    def _first_or_none(self, flavor_list: List) -> Flavor:
         return flavor_list[0] if flavor_list else None
     async def get_by_id(self, flavor_id: int) -> Optional[Flavor]:
         logging.info("FlavorManager.get_by_id start flavor_id:" + str(flavor_id))
         if not isinstance(flavor_id, int):
-            raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
+            raise TypeError("The flavor_id must be an integer, got {type(flavor_id)} instead.")
         query_filter = Flavor.flavor_id == flavor_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Flavor]:
-        logging.info(f"FlavorManager.get_by_code {code}")
-        query_filter = Flavor.code==code
+        logging.info("FlavorManager.get_by_code {code}")
+        query_filter = Flavor.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, flavor: Flavor, **kwargs) -> Optional[Flavor]:
@@ -158,9 +164,9 @@ class FlavorManager:
             await self._session_context.session.flush()
         return flavor
     async def delete(self, flavor_id: int):
-        logging.info(f"FlavorManager.delete {flavor_id}")
+        logging.info("FlavorManager.delete {flavor_id}")
         if not isinstance(flavor_id, int):
-            raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
+            raise TypeError("The flavor_id must be an integer, got {type(flavor_id)} instead.")
         flavor = await self.get_by_id(flavor_id)
         if not flavor:
             raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
@@ -170,7 +176,7 @@ class FlavorManager:
         logging.info("FlavorManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, flavor:Flavor) -> str:
+    def to_json(self, flavor: Flavor) -> str:
         logging.info("FlavorManager.to_json")
         """
         Serialize the Flavor object to a JSON string using the FlavorSchema.
@@ -178,7 +184,7 @@ class FlavorManager:
         schema = FlavorSchema()
         flavor_data = schema.dump(flavor)
         return json.dumps(flavor_data)
-    def to_dict(self, flavor:Flavor) -> dict:
+    def to_dict(self, flavor: Flavor) -> dict:
         logging.info("FlavorManager.to_dict")
         """
         Serialize the Flavor object to a JSON string using the FlavorSchema.
@@ -219,10 +225,10 @@ class FlavorManager:
         for update in flavor_updates:
             flavor_id = update.get("flavor_id")
             if not isinstance(flavor_id, int):
-                raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
+                raise TypeError("The flavor_id must be an integer, got {type(flavor_id)} instead.")
             if not flavor_id:
                 continue
-            logging.info(f"FlavorManager.update_bulk flavor_id:{flavor_id}")
+            logging.info("FlavorManager.update_bulk flavor_id:{flavor_id}")
             flavor = await self.get_by_id(flavor_id)
             if not flavor:
                 raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
@@ -239,7 +245,7 @@ class FlavorManager:
         """Delete multiple flavors by their IDs."""
         for flavor_id in flavor_ids:
             if not isinstance(flavor_id, int):
-                raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
+                raise TypeError("The flavor_id must be an integer, got {type(flavor_id)} instead.")
             flavor = await self.get_by_id(flavor_id)
             if not flavor:
                 raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
@@ -266,13 +272,13 @@ class FlavorManager:
         await self._session_context.session.refresh(flavor)
         return flavor
     async def exists(self, flavor_id: int) -> bool:
-        logging.info(f"FlavorManager.exists {flavor_id}")
+        logging.info("FlavorManager.exists {flavor_id}")
         """Check if a flavor with the given ID exists."""
         if not isinstance(flavor_id, int):
-            raise TypeError(f"The flavor_id must be an integer, got {type(flavor_id)} instead.")
+            raise TypeError("The flavor_id must be an integer, got {type(flavor_id)} instead.")
         flavor = await self.get_by_id(flavor_id)
         return bool(flavor)
-    def is_equal(self, flavor1:Flavor, flavor2:Flavor) -> bool:
+    def is_equal(self, flavor1: Flavor, flavor2: Flavor) -> bool:
         if not flavor1:
             raise TypeError("Flavor1 required.")
         if not flavor2:
@@ -285,11 +291,10 @@ class FlavorManager:
         dict2 = self.to_dict(flavor2)
         return dict1 == dict2
 
-    async def get_by_pac_id(self, pac_id: int) -> List[Flavor]: # PacID
+    async def get_by_pac_id(self, pac_id: int) -> List[Flavor]:  # PacID
         logging.info("FlavorManager.get_by_pac_id")
         if not isinstance(pac_id, int):
-            raise TypeError(f"The flavor_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError("The flavor_id must be an integer, got {type(pac_id)} instead.")
         query_filter = Flavor.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results
-

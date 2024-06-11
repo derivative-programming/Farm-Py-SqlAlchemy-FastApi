@@ -5,7 +5,7 @@ import factory
 from factory import Faker, SubFactory
 import pytz
 from models import ErrorLog
-from .pac import PacFactory #pac_id
+from .pac import PacFactory  # pac_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import db_dialect,generate_uuid
@@ -33,75 +33,75 @@ class ErrorLogFactory(factory.Factory):
     description = Faker('sentence', nb_words=4)
     is_client_side_error = Faker('boolean')
     is_resolved = Faker('boolean')
-    #pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
+     # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
     url = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
     pac_code_peek = factory.LazyFunction(generate_uuid) # PacID
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> ErrorLog:
+    def _build(cls, model_class, session = None, *args, **kwargs) -> ErrorLog:
         if session is None:
                 obj2 = model_class(*args, **kwargs)
                 return obj2
-        pac_id_pac_instance = PacFactory.create(session=session)  #PacID
+        pac_id_pac_instance = PacFactory.create(session=session)   # PacID
 
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
+        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
 
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
+        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
         obj = model_class(*args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
 
-        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 
         # session.add(obj)
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> ErrorLog:
-        pac_id_pac_instance = PacFactory.create(session=session)  #PacID
+    def _create(cls, model_class, session = None, *args, **kwargs) -> ErrorLog:
+        pac_id_pac_instance = PacFactory.create(session=session)   # PacID
 
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
+        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
 
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
+        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
         obj = model_class(*args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
 
-        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 
         session.add(obj)
         session.commit()
         return obj
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> ErrorLog:
-        pac_id_pac_instance = await PacFactory.create_async(session=session)  #PacID
+        pac_id_pac_instance = await PacFactory.create_async(session=session)   # PacID
 
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
+        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
 
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
+        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = ErrorLogFactory.build(session=None, *args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+        obj = ErrorLogFactory.build(session = None, *args, **kwargs)
+        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
 
-        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 
         session.add(obj)
         await session.flush()
         return obj
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> ErrorLog:
-        pac_id_pac_instance = await PacFactory.create_async(session=session)  #PacID
+        pac_id_pac_instance = await PacFactory.create_async(session=session)   # PacID
 
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id #PacID
+        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
 
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code #PacID
+        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = ErrorLogFactory.build(session=None, *args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id #PacID
+        obj = ErrorLogFactory.build(session = None, *args, **kwargs)
+        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
 
-        obj.pac_code_peek = pac_id_pac_instance.code #PacID
+        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 
         # session.add(obj)
         # await session.flush()

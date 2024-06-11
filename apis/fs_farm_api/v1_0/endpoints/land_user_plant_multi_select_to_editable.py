@@ -9,19 +9,23 @@ from helpers import SessionContext, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
 import reports
-from  .base_router import BaseRouter
+from .base_router import BaseRouter
 from database import get_db
+
+
 class LandUserPlantMultiSelectToEditableRouterConfig():
     #constants
-    is_get_available:bool = False
-    is_get_with_id_available:bool = False
-    is_get_init_available:bool = False
-    is_get_to_csv_available:bool = False
-    is_post_available:bool = False
-    is_post_with_id_available:bool = True
-    is_put_available:bool = False
-    is_delete_available:bool = False
+    is_get_available: bool = False
+    is_get_with_id_available: bool = False
+    is_get_init_available: bool = False
+    is_get_to_csv_available: bool = False
+    is_post_available: bool = False
+    is_post_with_id_available: bool = True
+    is_put_available: bool = False
+    is_delete_available: bool = False
     is_public: bool = False
+
+
 class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
     router = APIRouter(tags=["LandUserPlantMultiSelectToEditable"])
 
@@ -30,8 +34,8 @@ class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
                  response_model=api_models.LandUserPlantMultiSelectToEditablePostModelResponse,
                 summary="Land User Plant Multi Select To Editable Business Flow")
     async def request_post_with_id(land_code: str,
-                                   request_model:api_models.LandUserPlantMultiSelectToEditablePostModelRequest,
-                                   session:AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+                                   request_model: api_models.LandUserPlantMultiSelectToEditablePostModelRequest,
+                                   session: AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
         logging.info('LandUserPlantMultiSelectToEditableRouter.request_post_with_id start. landCode:' + land_code)
         auth_dict = BaseRouter.implementation_check(LandUserPlantMultiSelectToEditableRouterConfig.is_post_with_id_available)
         response = api_models.LandUserPlantMultiSelectToEditablePostModelResponse()
@@ -54,18 +58,18 @@ class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:" + response.message)
+                logging.info("response.message:%s", response.message)
             except Exception as e:
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:" + response.message)
+                logging.info("response.message:%s", response.message)
             finally:
-                if response.success == True:
+                if response.success is True:
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('LandUserPlantMultiSelectToEditableRouter.submit get result:' + response.model_dump_json())
+        logging.info('LandUserPlantMultiSelectToEditableRouter.submit get result:$s', response.model_dump_json())
         return response
 

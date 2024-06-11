@@ -53,12 +53,12 @@ class CustomerManager:
 #
 #         if join_condition is not None:
 #             query = select(Customer
-#                         ,Tac #tac_id
+#                         , Tac  # tac_id
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(Customer)
         query = select(Customer
-                    ,Tac #tac_id
+                    , Tac  # tac_id
                     )
 
         query = query.outerjoin(Tac, and_(Customer.tac_id == Tac.tac_id, Customer.tac_id != 0))
@@ -79,25 +79,25 @@ class CustomerManager:
             customer = query_result_row[i]
             i = i + 1
 
-            tac = query_result_row[i] #tac_id
+            tac = query_result_row[i]  # tac_id
             i = i + 1
 
-            customer.tac_code_peek = tac.code if tac else uuid.UUID(int=0) #tac_id
+            customer.tac_code_peek = tac.code if tac else uuid.UUID(int=0)  # tac_id
 
             result.append(customer)
         return result
-    def _first_or_none(self,customer_list:List) -> Customer:
+    def _first_or_none(self, customer_list: List) -> Customer:
         return customer_list[0] if customer_list else None
     async def get_by_id(self, customer_id: int) -> Optional[Customer]:
         logging.info("CustomerManager.get_by_id start customer_id:" + str(customer_id))
         if not isinstance(customer_id, int):
-            raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
+            raise TypeError("The customer_id must be an integer, got {type(customer_id)} instead.")
         query_filter = Customer.customer_id == customer_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Customer]:
-        logging.info(f"CustomerManager.get_by_code {code}")
-        query_filter = Customer.code==code
+        logging.info("CustomerManager.get_by_code {code}")
+        query_filter = Customer.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, customer: Customer, **kwargs) -> Optional[Customer]:
@@ -112,9 +112,9 @@ class CustomerManager:
             await self._session_context.session.flush()
         return customer
     async def delete(self, customer_id: int):
-        logging.info(f"CustomerManager.delete {customer_id}")
+        logging.info("CustomerManager.delete {customer_id}")
         if not isinstance(customer_id, int):
-            raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
+            raise TypeError("The customer_id must be an integer, got {type(customer_id)} instead.")
         customer = await self.get_by_id(customer_id)
         if not customer:
             raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
@@ -124,7 +124,7 @@ class CustomerManager:
         logging.info("CustomerManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, customer:Customer) -> str:
+    def to_json(self, customer: Customer) -> str:
         logging.info("CustomerManager.to_json")
         """
         Serialize the Customer object to a JSON string using the CustomerSchema.
@@ -132,7 +132,7 @@ class CustomerManager:
         schema = CustomerSchema()
         customer_data = schema.dump(customer)
         return json.dumps(customer_data)
-    def to_dict(self, customer:Customer) -> dict:
+    def to_dict(self, customer: Customer) -> dict:
         logging.info("CustomerManager.to_dict")
         """
         Serialize the Customer object to a JSON string using the CustomerSchema.
@@ -173,10 +173,10 @@ class CustomerManager:
         for update in customer_updates:
             customer_id = update.get("customer_id")
             if not isinstance(customer_id, int):
-                raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
+                raise TypeError("The customer_id must be an integer, got {type(customer_id)} instead.")
             if not customer_id:
                 continue
-            logging.info(f"CustomerManager.update_bulk customer_id:{customer_id}")
+            logging.info("CustomerManager.update_bulk customer_id:{customer_id}")
             customer = await self.get_by_id(customer_id)
             if not customer:
                 raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
@@ -193,7 +193,7 @@ class CustomerManager:
         """Delete multiple customers by their IDs."""
         for customer_id in customer_ids:
             if not isinstance(customer_id, int):
-                raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
+                raise TypeError("The customer_id must be an integer, got {type(customer_id)} instead.")
             customer = await self.get_by_id(customer_id)
             if not customer:
                 raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
@@ -220,13 +220,13 @@ class CustomerManager:
         await self._session_context.session.refresh(customer)
         return customer
     async def exists(self, customer_id: int) -> bool:
-        logging.info(f"CustomerManager.exists {customer_id}")
+        logging.info("CustomerManager.exists {customer_id}")
         """Check if a customer with the given ID exists."""
         if not isinstance(customer_id, int):
-            raise TypeError(f"The customer_id must be an integer, got {type(customer_id)} instead.")
+            raise TypeError("The customer_id must be an integer, got {type(customer_id)} instead.")
         customer = await self.get_by_id(customer_id)
         return bool(customer)
-    def is_equal(self, customer1:Customer, customer2:Customer) -> bool:
+    def is_equal(self, customer1: Customer, customer2: Customer) -> bool:
         if not customer1:
             raise TypeError("Customer1 required.")
         if not customer2:
@@ -239,10 +239,10 @@ class CustomerManager:
         dict2 = self.to_dict(customer2)
         return dict1 == dict2
 
-    async def get_by_tac_id(self, tac_id: int) -> List[Customer]: # TacID
+    async def get_by_tac_id(self, tac_id: int) -> List[Customer]:  # TacID
         logging.info("CustomerManager.get_by_tac_id")
         if not isinstance(tac_id, int):
-            raise TypeError(f"The customer_id must be an integer, got {type(tac_id)} instead.")
+            raise TypeError("The customer_id must be an integer, got {type(tac_id)} instead.")
         query_filter = Customer.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return query_results

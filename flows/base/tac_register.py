@@ -13,29 +13,29 @@ import flows.constants.tac_register as FlowConstants
 import models as farm_models
 from business.factory import BusObjFactory
 class BaseFlowTacRegister(BaseFlow):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(BaseFlowTacRegister, self).__init__(
             "TacRegister",
             session_context,
             )
     async def _process_validation_rules(self,
             tac_bus_obj: TacBusObj,
-            email:str = "",
-            password:str = "",
-            confirm_password:str = "",
-            first_name:str = "",
-            last_name:str = "",
+            email: str = "",
+            password: str = "",
+            confirm_password: str = "",
+            first_name: str = "",
+            last_name: str = "",
         ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
-        if email == "" and FlowConstants.param_email_isRequired == True:
+        if email == "" and FlowConstants.param_email_isRequired is True:
             self._add_field_validation_error("email","Please enter a Email")
-        if password == "" and FlowConstants.param_password_isRequired == True:
+        if password == "" and FlowConstants.param_password_isRequired is True:
             self._add_field_validation_error("password","Please enter a Password")
-        if confirm_password == "" and FlowConstants.param_confirm_password_isRequired == True:
+        if confirm_password == "" and FlowConstants.param_confirm_password_isRequired is True:
             self._add_field_validation_error("confirmPassword","Please enter a ")
-        if first_name == "" and FlowConstants.param_first_name_isRequired == True:
+        if first_name == "" and FlowConstants.param_first_name_isRequired is True:
             self._add_field_validation_error("firstName","Please enter a First Name")
-        if last_name == "" and FlowConstants.param_last_name_isRequired == True:
+        if last_name == "" and FlowConstants.param_last_name_isRequired is True:
             self._add_field_validation_error("lastName","Please enter a Last Name")
         await self._process_security_rules(tac_bus_obj)
     async def _process_security_rules(self,
@@ -47,19 +47,19 @@ class BaseFlowTacRegister(BaseFlow):
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
                 self._add_validation_error("Unautorized access. " + role_required + " role not found.")
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
             customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
             customerCodeMatchRequired = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed == True:
+        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
             customerCodeMatchRequired = True
-        if customerCodeMatchRequired == True and len(self.queued_validation_errors) == 0:
+        if customerCodeMatchRequired is True and len(self.queued_validation_errors) == 0:
             val = True
             item = tac_bus_obj
             while val:
                 if item.get_object_name() == "pac":
                     val = False
 
-                if val == True:
+                if val is True:
                     # item = await item.get_parent_obj()
                     item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())

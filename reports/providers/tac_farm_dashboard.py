@@ -8,22 +8,22 @@ from helpers import SessionContext
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 class ReportProviderTacFarmDashboard():
-		_session_context:SessionContext
-		_session:AsyncSession
+		_session_context: SessionContext
+		_session: AsyncSession
 		_cached_sql_query: str = None  # Static variable for caching the SQL query
-		def __init__(self, session_context:SessionContext):
+		def __init__(self, session_context: SessionContext):
 			if not session_context.session:
 				raise ValueError("session required")
 			self._session_context = session_context
 		async def generate_list(
 			self,
-			context_code:uuid,
+			context_code: uuid,
 
-			page_number:int,
-			item_count_per_page:int,
-			order_by_column_name:str,
-			order_by_descending:bool,
-		) -> list[dict[str,any]]:
+			page_number: int,
+			item_count_per_page: int,
+			order_by_column_name: str,
+			order_by_descending: bool,
+		) -> list[dict[str, any]]:
 			logging.info("ReportProviderTacFarmDashboard.generate_list Start")
 			logging.info("ReportProviderTacFarmDashboard.generate_list context_code:" + str(context_code))
 			offset = (page_number - 1) * item_count_per_page
@@ -44,7 +44,7 @@ class ReportProviderTacFarmDashboard():
 				elif os.path.exists(gen_file_path):
 					file_to_read = gen_file_path
 				else:
-					raise FileNotFoundError("SQL file not found")
+					raise FileNotFoundError(f"SQL file not found")
 				with open(file_to_read, 'r') as file:
 					ReportProviderTacFarmDashboard._cached_sql_query = file.read()
 			# Execute the SQL query with the provided parameters
@@ -56,7 +56,7 @@ class ReportProviderTacFarmDashboard():
 			logging.info("ReportProviderTacFarmDashboard.generate_list Results: " + json.dumps(results))
 			logging.info("ReportProviderTacFarmDashboard.generate_list End")
 			return results
-		def dictfetchall(self, cursor) -> list[dict[str,any]]:
+		def dictfetchall(self, cursor) -> list[dict[str, any]]:
 			"Return all rows from a cursor as a dict"
 			# columns = [col[0] for col in cursor.description]
 			# Get the column names from the CursorResult object

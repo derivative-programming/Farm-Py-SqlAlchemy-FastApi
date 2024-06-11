@@ -27,12 +27,12 @@ else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestTriStateFilterBusObj:
     @pytest_asyncio.fixture(scope="function")
-    async def tri_state_filter_manager(self, session:AsyncSession):
-        session_context = SessionContext(dict(),session)
+    async def tri_state_filter_manager(self, session: AsyncSession):
+        session_context = SessionContext(dict(), session)
         return TriStateFilterManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_bus_obj(self, session):
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
         return TriStateFilterBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_tri_state_filter(self, session):
@@ -63,32 +63,32 @@ class TestTriStateFilterBusObj:
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_obj(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         await tri_state_filter_bus_obj.load(tri_state_filter_obj_instance=new_tri_state_filter)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter) == True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_id(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         await tri_state_filter_bus_obj.load(tri_state_filter_id=new_tri_state_filter.tri_state_filter_id)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  == True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_code(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         await tri_state_filter_bus_obj.load(code=new_tri_state_filter.code)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  == True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_json(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         tri_state_filter_json = tri_state_filter_manager.to_json(new_tri_state_filter)
         await tri_state_filter_bus_obj.load(json_data=tri_state_filter_json)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  == True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_dict(self, session, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         logger.info("test_load_with_tri_state_filter_dict 1")
         tri_state_filter_dict = tri_state_filter_manager.to_dict(new_tri_state_filter)
         logger.info(tri_state_filter_dict)
         await tri_state_filter_bus_obj.load(tri_state_filter_dict=tri_state_filter_dict)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  == True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
     @pytest.mark.asyncio
     async def test_get_nonexistent_tri_state_filter(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         # Test retrieving a nonexistent tri_state_filter raises an exception
         await tri_state_filter_bus_obj.load(tri_state_filter_id=-1)
-        assert tri_state_filter_bus_obj.is_valid() == False # Assuming -1 is an id that wouldn't exist
+        assert tri_state_filter_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_tri_state_filter(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         # Test updating a tri_state_filter's data
@@ -98,7 +98,7 @@ class TestTriStateFilterBusObj:
         tri_state_filter_bus_obj.code = new_code
         await tri_state_filter_bus_obj.save()
         new_tri_state_filter = await tri_state_filter_manager.get_by_id(new_tri_state_filter.tri_state_filter_id)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  == True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
     @pytest.mark.asyncio
     async def test_delete_tri_state_filter(self, tri_state_filter_manager:TriStateFilterManager, tri_state_filter_bus_obj:TriStateFilterBusObj, new_tri_state_filter:TriStateFilter):
         assert new_tri_state_filter.tri_state_filter_id is not None

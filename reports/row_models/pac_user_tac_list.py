@@ -11,7 +11,7 @@ class ReportItemPacUserTacList():
     tac_name: str = ""
     pac_name: str = ""
 
-    def load_data_provider_dict(self,data:dict):
+    def load_data_provider_dict(self, data: dict):
             self.tac_code = TypeConversion.get_uuid(data["tac_code"])
             self.tac_description = str(data["tac_description"])
             self.tac_display_order = int(data["tac_display_order"])

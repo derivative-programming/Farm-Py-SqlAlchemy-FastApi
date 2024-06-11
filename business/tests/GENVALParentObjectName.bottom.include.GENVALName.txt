@@ -11,7 +11,7 @@
     @pytest.mark.asyncio
     async def test_build_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName, session:AsyncSession):
         
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 
@@ -30,7 +30,7 @@
     @pytest.mark.asyncio
     async def test_get_all_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName, session:AsyncSession):
         
-        session_context = SessionContext(dict(),session)
+        session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 

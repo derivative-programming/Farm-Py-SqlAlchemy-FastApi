@@ -214,7 +214,7 @@ class Customer(Base):
         return result
 # Define the index separately from the column
 # Index('index_code', Customer.code)
-# Index('farm_customer_index_tac_id', Customer.tac_id) #TacID
+# Index('farm_customer_index_tac_id', Customer.tac_id)  # TacID
 @event.listens_for(Customer, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

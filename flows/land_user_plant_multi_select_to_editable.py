@@ -18,7 +18,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowLandUserPlantMultiSelectToEditableResult():
-    context_object_code:uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID =  uuid.UUID(int=0)
 
     def __init__(self):
         pass
@@ -31,11 +31,11 @@ class FlowLandUserPlantMultiSelectToEditableResult():
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowLandUserPlantMultiSelectToEditable(BaseFlowLandUserPlantMultiSelectToEditable):
-    def __init__(self, session_context:SessionContext):
+    def __init__(self, session_context: SessionContext):
         super(FlowLandUserPlantMultiSelectToEditable, self).__init__(session_context)
     async def process(self,
         land_bus_obj: LandBusObj,
-        plant_code_list_csv:str = "",
+        plant_code_list_csv: str = "",
         ) -> FlowLandUserPlantMultiSelectToEditableResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land_bus_obj.code))
@@ -44,9 +44,9 @@ class FlowLandUserPlantMultiSelectToEditable(BaseFlowLandUserPlantMultiSelectToE
             plant_code_list_csv,
         )
         super()._throw_queued_validation_errors()
- 
+
         code_list = self._parse_csv_string_to_guids(plant_code_list_csv)
-        
+
         for code in code_list:
             plant_bus_obj = PlantBusObj(land_bus_obj.session)
             await plant_bus_obj.load(code=code)

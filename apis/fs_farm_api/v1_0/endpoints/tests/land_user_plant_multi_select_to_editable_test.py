@@ -3,7 +3,7 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch, AsyncMock
-from  .....models import factory as request_factory
+from .....models import factory as request_factory
 from apis import models as apis_models
 from database import get_db
 from helpers.api_token import ApiToken
@@ -61,7 +61,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             json={},
             headers={'API_KEY': 'xxx'}
         )
-        if LandUserPlantMultiSelectToEditableRouterConfig.is_public == True:
+        if LandUserPlantMultiSelectToEditableRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -78,7 +78,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             json={},
             headers={'API_KEY': ''}
         )
-        if LandUserPlantMultiSelectToEditableRouterConfig.is_public == True:
+        if LandUserPlantMultiSelectToEditableRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
@@ -94,7 +94,7 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',
             json={}
         )
-        if LandUserPlantMultiSelectToEditableRouterConfig.is_public == True:
+        if LandUserPlantMultiSelectToEditableRouterConfig.is_public is True:
             assert response.status_code == 200
         else:
             assert response.status_code == 401
