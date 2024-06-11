@@ -1,3 +1,7 @@
+# models/factory/tests/org_customer_async_test.py
+"""
+    #TODO add comment
+"""
 import asyncio
 from decimal import Decimal
 import pytest
@@ -81,11 +85,11 @@ class TestOrgCustomerFactoryAsync:
             assert isinstance(org_customer.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        org_customer:OrgCustomer = await OrgCustomerFactory.build_async(session=session)
+        org_customer: OrgCustomer = await OrgCustomerFactory.build_async(session=session)
         assert org_customer.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        org_customer:OrgCustomer = await OrgCustomerFactory.create_async(session=session)
+        org_customer: OrgCustomer = await OrgCustomerFactory.create_async(session=session)
         assert org_customer.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -183,15 +187,15 @@ class TestOrgCustomerFactoryAsync:
         assert isinstance(org_customer.organization_id, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #customerID
+        # customerID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_customer.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_customer.customer_code_peek, str)
-        #email,
-        #organizationID
+        # email,
+        # organizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -220,15 +224,15 @@ class TestOrgCustomerFactoryAsync:
         assert org_customer.insert_utc_date_time is not None
         assert org_customer.last_update_utc_date_time is not None
 
-        #CustomerID
+        # CustomerID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_customer.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_customer.customer_code_peek, str)
-        #email,
-        #OrganizationID
+        # email,
+        # OrganizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -258,7 +262,7 @@ class TestOrgCustomerFactoryAsync:
         await session.commit()
         assert org_customer_2.last_change_code != original_last_change_code
 
-    #CustomerID
+    # CustomerID
     @pytest.mark.asyncio
     async def test_invalid_customer_id(self, session):
         org_customer = await OrgCustomerFactory.create_async(session=session)
@@ -266,8 +270,8 @@ class TestOrgCustomerFactoryAsync:
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             await session.commit()
         await session.rollback()
-    #email,
-    #OrganizationID
+    # email,
+    # OrganizationID
     @pytest.mark.asyncio
     async def test_invalid_organization_id(self, session):
         org_customer = await OrgCustomerFactory.create_async(session=session)

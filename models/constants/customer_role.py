@@ -1,4 +1,7 @@
-
+# models/constants/customer_role.py
+"""
+    #TODO add comment
+"""
 customer_id_calculatedIsDBColumnIndexed: bool = True
 is_placeholder_calculatedIsDBColumnIndexed: bool = False
 placeholder_calculatedIsDBColumnIndexed: bool = False

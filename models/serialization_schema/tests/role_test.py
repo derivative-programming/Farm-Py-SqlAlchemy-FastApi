@@ -1,3 +1,7 @@
+# role_test.py
+"""
+    #TODO add comment
+"""
 import json
 import pytest
 import pytz
@@ -51,7 +55,7 @@ class TestRoleSchema:
         assert result['insert_utc_date_time'] == role.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == role.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == role.pac_code_peek  # PacID
+        assert result['pac_code_peek'] == role.pac_code_peek # PacID
 
     def test_role_deserialization(self, role: Role, session):
         schema = RoleSchema()
@@ -72,7 +76,7 @@ class TestRoleSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == role.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == role.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == role.pac_code_peek  # PacID
+        assert deserialized_data['pac_code_peek'] == role.pac_code_peek # PacID
 
         new_role = Role(**deserialized_data)
         assert isinstance(new_role, Role)
@@ -147,5 +151,5 @@ class TestRoleSchema:
             assert role_dict_from_json['insert_utc_date_time'] == role.insert_utc_date_time.isoformat()
             assert role_dict_from_json['last_update_utc_date_time'] == role.last_update_utc_date_time.isoformat()
 
-            assert role_dict_from_json['pac_code_peek'] == role.pac_code_peek  # PacID
+            assert role_dict_from_json['pac_code_peek'] == role.pac_code_peek # PacID
 

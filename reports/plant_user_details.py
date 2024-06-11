@@ -1,40 +1,60 @@
+# plant_user_details.py
+"""
+This module is the manager for report 'Plant User Details'
+"""
 import json
 import csv
 import uuid
-from typing import List
-from reports.providers.plant_user_details import ReportProviderPlantUserDetails
-from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 import logging
-from .report_request_validation_error import ReportRequestValidationError
-from helpers import SessionContext
 from datetime import date, datetime
 from decimal import Decimal
-from helpers import SessionContext,TypeConversion
+from typing import List
+from helpers import SessionContext, TypeConversion
+from reports.providers.plant_user_details import ReportProviderPlantUserDetails
+from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPlantUserDetails():
+    """
+    This class is the manager of report 'Plant User Details'
+    """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
         self._session_context = session_context
         if session_context.session is None:
-            raise TypeError("ReportManagerPlantUserDetails.init session_context has no session assigned")
-    async def generate(self,
-                plant_code: uuid,
+            raise TypeError(
+                "ReportManagerPlantUserDetails.init session_context has "
+                "no session assigned"
+            )
+    async def generate(
+        self,
+        plant_code: uuid,
 
-                page_number: int = 1,
-                item_count_per_page: int = 1,
-                order_by_column_name: str ="",
-                order_by_descending: bool = False,
-                ) -> List[ReportItemPlantUserDetails]:
+        page_number: int = 1,
+        item_count_per_page: int = 1,
+        order_by_column_name: str = "",
+        order_by_descending: bool = False,
+    ) -> List[ReportItemPlantUserDetails]:
+        """
+            #TODO add comment
+        """
         logging.info('ReportManagerPlantUserDetails.generate Start')
         role_required = "User"
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
-                raise ReportRequestValidationError("","Unautorized access. " + role_required + " role not found.")
+                raise ReportRequestValidationError(
+                    "",
+                    "Unautorized access. " + role_required + " role not found."
+                )
         if item_count_per_page <= 0:
-            raise ReportRequestValidationError("item_count_per_page","Minimum count per page is 1")
+            raise ReportRequestValidationError(
+                "item_count_per_page",
+                "Minimum count per page is 1"
+                )
         if page_number <= 0:
-            raise ReportRequestValidationError("page_number","Minimum page number is 1")
+            raise ReportRequestValidationError("page_number",
+                                               "Minimum page number is 1")
         provider = ReportProviderPlantUserDetails(self._session_context)
-        dataList = await provider.generate_list(
+        data_list = await provider.generate_list(
             plant_code,
 
             page_number,
@@ -43,22 +63,38 @@ class ReportManagerPlantUserDetails():
             order_by_descending,
             )
         result = list()
-        for dataItem in dataList:
-            reportItem:ReportItemPlantUserDetails = ReportItemPlantUserDetails()
-            reportItem.load_data_provider_dict(dataItem)
-            result.append(reportItem)
-        logging.info("ReportManagerPlantUserDetails.generate Results: " + json.dumps(dataList))
+        for data_item in data_list:
+            report_item: ReportItemPlantUserDetails = ReportItemPlantUserDetails()
+            report_item.load_data_provider_dict(data_item)
+            result.append(report_item)
+        logging.info(
+                "ReportManagerPlantUserDetails.generate Results: %s",
+                json.dumps(data_list))
         logging.info('ReportManagerPlantUserDetails.generate End')
         return result
-    async def build_csv(self, file_name: str, data_list: List[ReportItemPlantUserDetails]):
+    async def build_csv(self,
+                        file_name: str,
+                        data_list: List[ReportItemPlantUserDetails]):
+        """
+            #TODO add comment
+        """
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames=vars(ReportItemPlantUserDetails()).keys(), quoting=csv.QUOTE_ALL)
+            writer = csv.DictWriter(
+                file,
+                fieldnames=vars(ReportItemPlantUserDetails()).keys(),
+                quoting=csv.QUOTE_ALL)
             writer.writeheader()
             for obj in data_list:
                 writer.writerow(obj.__dict__)
     def _parse_bool(self, value):
+        """
+            #TODO add comment
+        """
         return value.lower() in ['true', '1', 'yes']
     async def read_csv(self, file_name: str) -> List[ReportItemPlantUserDetails]:
+        """
+            #TODO add comment
+        """
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
@@ -67,12 +103,13 @@ class ReportManagerPlantUserDetails():
                 for key, value in row.items():
                     if value is not None and value != '':
                         if hasattr(obj, key):
-                            # Convert the value to the correct type based on the attribute
+                            # Convert the value to the correct type
+                            # based on the attribute
                             attr_type = type(getattr(obj, key))
                             if attr_type == int:
                                 setattr(obj, key, int(value))
                             elif attr_type == bool:
-                                setattr(obj, key, self.parse_bool(value))
+                                setattr(obj, key, self._parse_bool(value))
                             elif attr_type == float:
                                 setattr(obj, key, float(value))
                             elif attr_type == Decimal:

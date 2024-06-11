@@ -1,3 +1,7 @@
+# flows/default/land_plant_list_init_report.py
+"""
+    #TODO add comment
+"""
 import json
 from business.land import LandBusObj
 from datetime import date, datetime
@@ -18,7 +22,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowLandPlantListInitReportResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
     some_int_val: int = 0
     some_big_int_val: int = 0
     some_bit_val: bool = False
@@ -34,9 +38,9 @@ class FlowLandPlantListInitReportResult():
     some_text_val: str = ""
     some_phone_number: str = ""
     some_email_address: str = ""
-    flavor_code: uuid.UUID =  uuid.UUID(int=0)
-    land_code: uuid.UUID =  uuid.UUID(int=0)
-    tac_code: uuid.UUID =  uuid.UUID(int=0)
+    flavor_code: uuid.UUID = uuid.UUID(int=0)
+    land_code: uuid.UUID = uuid.UUID(int=0)
+    tac_code: uuid.UUID = uuid.UUID(int=0)
     land_name: str = ""
 
     def __init__(self):

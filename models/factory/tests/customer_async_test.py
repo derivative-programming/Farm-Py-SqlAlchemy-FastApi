@@ -1,3 +1,7 @@
+# models/factory/tests/customer_async_test.py
+"""
+    #TODO add comment
+"""
 import asyncio
 from decimal import Decimal
 import pytest
@@ -184,7 +188,7 @@ class TestCustomerFactoryAsync:
         assert customer.first_name == "" or isinstance(customer.first_name, str)
         assert isinstance(customer.forgot_password_key_expiration_utc_date_time, datetime)
         assert customer.forgot_password_key_value == "" or isinstance(customer.forgot_password_key_value, str)
-        #FSUserCodeValue
+        # fs_user_code_value
         if db_dialect == 'postgresql':
             assert isinstance(customer.fs_user_code_value, UUID)
         elif db_dialect == 'mssql':
@@ -209,13 +213,13 @@ class TestCustomerFactoryAsync:
         assert customer.zip == "" or isinstance(customer.zip, str)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #activeOrganizationID,
-        #email,
-        #emailConfirmedUTCDateTime
-        #firstName,
-        #forgotPasswordKeyExpirationUTCDateTime
-        #forgotPasswordKeyValue,
-        #fSUserCodeValue,
+        # activeOrganizationID,
+        # email,
+        # emailConfirmedUTCDateTime
+        # firstName,
+        # forgotPasswordKeyExpirationUTCDateTime
+        # forgotPasswordKeyValue,
+        # fSUserCodeValue,
         # isActive,
         # isEmailAllowed,
         # isEmailConfirmed,
@@ -223,21 +227,21 @@ class TestCustomerFactoryAsync:
         # isLocked,
         # isMultipleOrganizationsAllowed,
         # isVerboseLoggingForced,
-        #lastLoginUTCDateTime
-        #lastName,
-        #password,
-        #phone,
-        #province,
-        #registrationUTCDateTime
-         # tacID
+        # lastLoginUTCDateTime
+        # lastName,
+        # password,
+        # phone,
+        # province,
+        # registrationUTCDateTime
+        # tacID
         if db_dialect == 'postgresql':
             assert isinstance(customer.tac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(customer.tac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.tac_code_peek, str)
-        #uTCOffsetInMinutes,
-        #zip,
+        # uTCOffsetInMinutes,
+        # zip,
 
         assert isinstance(customer.insert_utc_date_time, datetime)
         assert isinstance(customer.last_update_utc_date_time, datetime)
@@ -260,13 +264,13 @@ class TestCustomerFactoryAsync:
         assert customer.insert_utc_date_time is not None
         assert customer.last_update_utc_date_time is not None
 
-        #activeOrganizationID,
-        #email,
-        #emailConfirmedUTCDateTime
-        #firstName,
-        #forgotPasswordKeyExpirationUTCDateTime
-        #forgotPasswordKeyValue,
-        #fSUserCodeValue,
+        # activeOrganizationID,
+        # email,
+        # emailConfirmedUTCDateTime
+        # firstName,
+        # forgotPasswordKeyExpirationUTCDateTime
+        # forgotPasswordKeyValue,
+        # fSUserCodeValue,
         # isActive,
         # isEmailAllowed,
         # isEmailConfirmed,
@@ -274,21 +278,21 @@ class TestCustomerFactoryAsync:
         # isLocked,
         # isMultipleOrganizationsAllowed,
         # isVerboseLoggingForced,
-        #lastLoginUTCDateTime
-        #lastName,
-        #password,
-        #phone,
-        #province,
-        #registrationUTCDateTime
-         # TacID
+        # lastLoginUTCDateTime
+        # lastName,
+        # password,
+        # phone,
+        # province,
+        # registrationUTCDateTime
+        # TacID
         if db_dialect == 'postgresql':
             assert isinstance(customer.tac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(customer.tac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.tac_code_peek, str)
-        #uTCOffsetInMinutes,
-        #zip,
+        # uTCOffsetInMinutes,
+        # zip,
 
         assert customer.active_organization_id == 0
         assert customer.email == ""
@@ -296,7 +300,7 @@ class TestCustomerFactoryAsync:
         assert customer.first_name == ""
         assert customer.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
         assert customer.forgot_password_key_value == ""
-        # someUniqueIdentifierVal
+        # fs_user_code_value
         if db_dialect == 'postgresql':
             assert isinstance(customer.fs_user_code_value, UUID)
         elif db_dialect == 'mssql':
@@ -338,13 +342,13 @@ class TestCustomerFactoryAsync:
         await session.commit()
         assert customer_2.last_change_code != original_last_change_code
 
-    #activeOrganizationID,
-    #email,
-    #emailConfirmedUTCDateTime
-    #firstName,
-    #forgotPasswordKeyExpirationUTCDateTime
-    #forgotPasswordKeyValue,
-    #fSUserCodeValue,
+    # activeOrganizationID,
+    # email,
+    # emailConfirmedUTCDateTime
+    # firstName,
+    # forgotPasswordKeyExpirationUTCDateTime
+    # forgotPasswordKeyValue,
+    # fSUserCodeValue,
     # isActive,
     # isEmailAllowed,
     # isEmailConfirmed,
@@ -352,13 +356,13 @@ class TestCustomerFactoryAsync:
     # isLocked,
     # isMultipleOrganizationsAllowed,
     # isVerboseLoggingForced,
-    #lastLoginUTCDateTime
-    #lastName,
-    #password,
-    #phone,
-    #province,
-    #registrationUTCDateTime
-     # TacID
+    # lastLoginUTCDateTime
+    # lastName,
+    # password,
+    # phone,
+    # province,
+    # registrationUTCDateTime
+    # TacID
     @pytest.mark.asyncio
     async def test_invalid_tac_id(self, session):
         customer = await CustomerFactory.create_async(session=session)
@@ -366,6 +370,6 @@ class TestCustomerFactoryAsync:
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             await session.commit()
         await session.rollback()
-    #uTCOffsetInMinutes,
-    #zip,
+    # uTCOffsetInMinutes,
+    # zip,
 

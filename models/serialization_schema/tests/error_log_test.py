@@ -1,3 +1,7 @@
+# error_log_test.py
+"""
+    #TODO add comment
+"""
 import json
 import pytest
 import pytz
@@ -35,7 +39,7 @@ class TestErrorLogSchema:
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_error_log_serialization(self, error_log:ErrorLog, session):
+    def test_error_log_serialization(self, error_log: ErrorLog, session):
         schema = ErrorLogSchema()
         result = schema.dump(error_log)
         assert result['code'] == error_log.code
@@ -55,9 +59,9 @@ class TestErrorLogSchema:
         assert result['insert_utc_date_time'] == error_log.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == error_log.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == error_log.pac_code_peek  # PacID
+        assert result['pac_code_peek'] == error_log.pac_code_peek # PacID
 
-    def test_error_log_deserialization(self, error_log:ErrorLog, session):
+    def test_error_log_deserialization(self, error_log: ErrorLog, session):
         schema = ErrorLogSchema()
         serialized_data = schema.dump(error_log)
         deserialized_data = schema.load(serialized_data)
@@ -78,7 +82,7 @@ class TestErrorLogSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == error_log.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == error_log.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == error_log.pac_code_peek  # PacID
+        assert deserialized_data['pac_code_peek'] == error_log.pac_code_peek # PacID
 
         new_error_log = ErrorLog(**deserialized_data)
         assert isinstance(new_error_log, ErrorLog)
@@ -102,7 +106,7 @@ class TestErrorLogSchema:
 
         assert new_error_log.pac_code_peek == error_log.pac_code_peek  # PacID
 
-    def test_from_json(self, error_log:ErrorLog, session):
+    def test_from_json(self, error_log: ErrorLog, session):
         error_log_schema = ErrorLogSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -131,7 +135,7 @@ class TestErrorLogSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_error_log = ErrorLog(**deserialized_data)
         assert isinstance(new_error_log, ErrorLog)
-    def test_to_json(self, error_log:ErrorLog, session):
+    def test_to_json(self, error_log: ErrorLog, session):
             # Convert the ErrorLog instance to JSON using the schema
             error_log_schema = ErrorLogSchema()
             error_log_dict = error_log_schema.dump(error_log)
@@ -159,5 +163,5 @@ class TestErrorLogSchema:
             assert error_log_dict_from_json['insert_utc_date_time'] == error_log.insert_utc_date_time.isoformat()
             assert error_log_dict_from_json['last_update_utc_date_time'] == error_log.last_update_utc_date_time.isoformat()
 
-            assert error_log_dict_from_json['pac_code_peek'] == error_log.pac_code_peek  # PacID
+            assert error_log_dict_from_json['pac_code_peek'] == error_log.pac_code_peek # PacID
 

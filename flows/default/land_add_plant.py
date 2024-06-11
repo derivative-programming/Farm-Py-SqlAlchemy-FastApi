@@ -26,10 +26,10 @@ from decimal import Decimal
 
 
 class FlowLandAddPlantResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
-    land_code: uuid.UUID =  uuid.UUID(int=0)
-    plant_code: uuid.UUID =  uuid.UUID(int=0)
-    output_flavor_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+    land_code: uuid.UUID = uuid.UUID(int=0)
+    plant_code: uuid.UUID = uuid.UUID(int=0)
+    output_flavor_code: uuid.UUID = uuid.UUID(int=0)
     output_other_flavor: str = ""
     output_some_int_val: int = 0
     output_some_big_int_val: int = 0
@@ -163,7 +163,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]Start
 
         # plant: PlantBusObj = land_bus_obj.build_plant()
-        ## plant.land_id = land_bus_obj.land_id
+        # plant.land_id = land_bus_obj.land_id
         # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session_context.session,code=request_flavor_code).code
         # plant.other_flavor = request_other_flavor
         # plant.some_int_val = request_some_int_val
@@ -181,7 +181,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         # plant.some_text_val = request_some_text_val
         # plant.some_phone_number = request_some_phone_number
         # plant.some_email_address = request_some_email_address
-        # plant.some_int_val = request_sample_image_upload_file
+        # request_sample_image_upload_file
 #endset
         # plant.save()
 

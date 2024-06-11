@@ -1,3 +1,7 @@
+# models/factory/tests/org_customer_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import pytest
 import time
@@ -50,10 +54,10 @@ class TestOrgCustomerFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_customer.code, str)
     def test_last_change_code_default_on_build(self, session):
-        org_customer:OrgCustomer = OrgCustomerFactory.build(session=session)
+        org_customer: OrgCustomer = OrgCustomerFactory.build(session=session)
         assert org_customer.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        org_customer:OrgCustomer = OrgCustomerFactory.create(session=session)
+        org_customer: OrgCustomer = OrgCustomerFactory.create(session=session)
         assert org_customer.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         org_customer = OrgCustomerFactory.create(session=session)
@@ -136,15 +140,15 @@ class TestOrgCustomerFactory:
         assert isinstance(org_customer.organization_id, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #customerID
+        # customerID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_customer.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_customer.customer_code_peek, str)
-        #email,
-        #organizationID
+        # email,
+        # organizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -171,15 +175,15 @@ class TestOrgCustomerFactory:
         assert org_customer.insert_utc_date_time is not None
         assert org_customer.last_update_utc_date_time is not None
 
-        #CustomerID
+        # CustomerID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_customer.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_customer.customer_code_peek, str)
-        #email,
-        #OrganizationID
+        # email,
+        # OrganizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_customer.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -202,15 +206,15 @@ class TestOrgCustomerFactory:
         session.commit()
         assert org_customer_2.last_change_code != original_last_change_code
 
-    #CustomerID
+    # CustomerID
     def test_invalid_customer_id(self, session):
         org_customer = OrgCustomerFactory.create(session=session)
         org_customer.customer_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
         session.rollback()
-    #email,
-    #OrganizationID
+    # email,
+    # OrganizationID
     def test_invalid_organization_id(self, session):
         org_customer = OrgCustomerFactory.create(session=session)
         org_customer.organization_id = 99999

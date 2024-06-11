@@ -1,3 +1,7 @@
+# apis/models/pac_user_land_list.py
+"""
+    #TODO add comment
+"""
 import json
 from typing import List
 from datetime import date, datetime
@@ -40,10 +44,10 @@ class PacUserLandListGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserLandListGetModelResponseItem(CamelModel):
     land_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Land Code")
     land_description: str = Field(default="", description="Land Description")
@@ -53,7 +57,7 @@ class PacUserLandListGetModelResponseItem(CamelModel):
     land_name: str = Field(default="", description="Land Name")
     pac_name: str = Field(default="", description="Pac Name")
 
-    def load_report_item(self, data:ReportItemPacUserLandList):
+    def load_report_item(self, data: ReportItemPacUserLandList):
         self.land_code = data.land_code
         self.land_description = data.land_description
         self.land_display_order = data.land_display_order

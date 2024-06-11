@@ -10,7 +10,6 @@ from services.encryption import encrypt_message,decrypt_message
 
 Base = declarative_base()
 
-
 class EncryptedType(TypeDecorator):
     impl = LargeBinary
 

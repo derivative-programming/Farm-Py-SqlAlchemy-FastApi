@@ -1,5 +1,11 @@
+# apis/fs_farm_api/v1_0/endpoints/tests/customer_user_log_out_test.py
+"""
+    #TODO add comment
+"""
 import uuid
 import pytest
+import logging
+import json
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch, AsyncMock
@@ -10,8 +16,6 @@ from helpers.api_token import ApiToken
 import models.factory as model_factorys
 from ..customer_user_log_out import CustomerUserLogOutRouterConfig
 from main import app
-import logging
-import json
 # from main import app
 
 @pytest.mark.asyncio

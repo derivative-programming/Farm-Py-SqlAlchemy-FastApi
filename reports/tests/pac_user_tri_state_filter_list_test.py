@@ -1,3 +1,7 @@
+# pac_user_tri_state_filter_list_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import os
 import pytest
@@ -33,12 +37,12 @@ class TestReportManagerPacUserTriStateFilterList:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         async def mock_generate_list(
-			context_code: uuid,
+            context_code: uuid,
 
-			page_number: int,
-			item_count_per_page: int,
-			order_by_column_name: str,
-			order_by_descending: bool,
+            page_number: int,
+            item_count_per_page: int,
+            order_by_column_name: str,
+            order_by_descending: bool,
             ):
             result = list()
             return result
@@ -68,12 +72,12 @@ class TestReportManagerPacUserTriStateFilterList:
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
         async def mock_generate_list(
-			context_code: uuid,
+            context_code: uuid,
 
-			page_number: int,
-			item_count_per_page: int,
-			order_by_column_name: str,
-			order_by_descending: bool,
+            page_number: int,
+            item_count_per_page: int,
+            order_by_column_name: str,
+            order_by_descending: bool,
             ):
             result = list()
             return result
@@ -102,12 +106,12 @@ class TestReportManagerPacUserTriStateFilterList:
     @pytest.mark.asyncio
     async def test_generate_invalid_page_number(self, session):
         async def mock_generate_list(
-			context_code: uuid,
+            context_code: uuid,
 
-			page_number: int,
-			item_count_per_page: int,
-			order_by_column_name: str,
-			order_by_descending: bool,
+            page_number: int,
+            item_count_per_page: int,
+            order_by_column_name: str,
+            order_by_descending: bool,
             ):
             result = list()
             return result

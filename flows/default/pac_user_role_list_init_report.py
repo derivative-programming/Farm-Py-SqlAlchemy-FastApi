@@ -1,3 +1,7 @@
+# flows/default/pac_user_role_list_init_report.py
+"""
+    #TODO add comment
+"""
 import json
 from business.pac import PacBusObj
 from datetime import date, datetime
@@ -18,7 +22,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowPacUserRoleListInitReportResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         pass

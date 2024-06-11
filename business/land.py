@@ -1,3 +1,7 @@
+# business/land.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -17,7 +21,7 @@ from business.plant import PlantBusObj
 
 class LandInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -38,7 +42,7 @@ class LandBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("land_id must be a int.")
         self.land.land_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.land.code
@@ -47,7 +51,7 @@ class LandBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.land.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.land.last_change_code
@@ -56,7 +60,7 @@ class LandBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.land.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.land.insert_user_id
@@ -68,7 +72,7 @@ class LandBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.land.last_update_user_id
@@ -81,7 +85,7 @@ class LandBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #Description
+    # description
     @property
     def description(self):
         return self.land.description
@@ -92,7 +96,7 @@ class LandBusObj(BaseBusObj):
     def set_prop_description(self, value):
         self.description = value
         return self
-    #DisplayOrder
+    # displayOrder
     @property
     def display_order(self):
         return self.land.display_order
@@ -115,7 +119,7 @@ class LandBusObj(BaseBusObj):
     def set_prop_is_active(self, value: bool):
         self.is_active = value
         return self
-    #LookupEnumName
+    # lookupEnumName
     @property
     def lookup_enum_name(self):
         return self.land.lookup_enum_name
@@ -126,7 +130,7 @@ class LandBusObj(BaseBusObj):
     def set_prop_lookup_enum_name(self, value):
         self.lookup_enum_name = value
         return self
-    #Name
+    # name
     @property
     def name(self):
         return self.land.name
@@ -137,14 +141,14 @@ class LandBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-     # PacID
+    # PacID
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     @property
     def pac_id(self):
         return self.land.pac_id
@@ -163,7 +167,7 @@ class LandBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
     #     self.land.pac_code_peek = value
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.land.insert_utc_date_time
@@ -171,7 +175,7 @@ class LandBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.land.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.land.last_update_utc_date_time
@@ -255,7 +259,7 @@ class LandBusObj(BaseBusObj):
             await land_manager.delete(self.land.land_id)
             self.land = None
     async def randomize_properties(self):
-        self.land.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.land.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.display_order = random.randint(0, 100)
         self.land.is_active = random.choice([True, False])
         self.land.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -270,12 +274,12 @@ class LandBusObj(BaseBusObj):
         my_land = self.get_land_obj()
         return land_manager.is_equal(land, my_land)
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -287,12 +291,12 @@ class LandBusObj(BaseBusObj):
         return "land"
     def get_id(self) -> int:
         return self.land_id
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:

@@ -1,3 +1,7 @@
+# business/customer.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -17,7 +21,7 @@ from business.customer_role import CustomerRoleBusObj
 
 class CustomerInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -38,7 +42,7 @@ class CustomerBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("customer_id must be a int.")
         self.customer.customer_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.customer.code
@@ -47,7 +51,7 @@ class CustomerBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.customer.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.customer.last_change_code
@@ -56,7 +60,7 @@ class CustomerBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.customer.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.customer.insert_user_id
@@ -68,7 +72,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.customer.last_update_user_id
@@ -81,7 +85,7 @@ class CustomerBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #ActiveOrganizationID
+    # activeOrganizationID
     @property
     def active_organization_id(self):
         return self.customer.active_organization_id
@@ -92,7 +96,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_active_organization_id(self, value):
         self.active_organization_id = value
         return self
-    #Email
+    # email
     @property
     def email(self):
         return self.customer.email
@@ -103,18 +107,19 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_email(self, value):
         self.email = value
         return self
-    #EmailConfirmedUTCDateTime
+    # emailConfirmedUTCDateTime
     @property
     def email_confirmed_utc_date_time(self):
         return self.customer.email_confirmed_utc_date_time
     @email_confirmed_utc_date_time.setter
     def email_confirmed_utc_date_time(self, value):
-        assert isinstance(value, datetime), "email_confirmed_utc_date_time must be a datetime object"
+        assert isinstance(value, datetime), (
+            "email_confirmed_utc_date_time must be a datetime object")
         self.customer.email_confirmed_utc_date_time = value
     def set_prop_email_confirmed_utc_date_time(self, value):
         self.email_confirmed_utc_date_time = value
         return self
-    #FirstName
+    # firstName
     @property
     def first_name(self):
         return self.customer.first_name
@@ -125,18 +130,19 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_first_name(self, value):
         self.first_name = value
         return self
-    #ForgotPasswordKeyExpirationUTCDateTime
+    # forgotPasswordKeyExpirationUTCDateTime
     @property
     def forgot_password_key_expiration_utc_date_time(self):
         return self.customer.forgot_password_key_expiration_utc_date_time
     @forgot_password_key_expiration_utc_date_time.setter
     def forgot_password_key_expiration_utc_date_time(self, value):
-        assert isinstance(value, datetime), "forgot_password_key_expiration_utc_date_time must be a datetime object"
+        assert isinstance(value, datetime), (
+            "forgot_password_key_expiration_utc_date_time must be a datetime object")
         self.customer.forgot_password_key_expiration_utc_date_time = value
     def set_prop_forgot_password_key_expiration_utc_date_time(self, value):
         self.forgot_password_key_expiration_utc_date_time = value
         return self
-    #ForgotPasswordKeyValue
+    # forgotPasswordKeyValue
     @property
     def forgot_password_key_value(self):
         return self.customer.forgot_password_key_value
@@ -147,13 +153,14 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_forgot_password_key_value(self, value):
         self.forgot_password_key_value = value
         return self
-    #FSUserCodeValue
+    # fSUserCodeValue
     @property
     def fs_user_code_value(self):
         return self.customer.fs_user_code_value
     @fs_user_code_value.setter
     def fs_user_code_value(self, value):
-        assert isinstance(value, UUIDType), "fs_user_code_value must be a UUID"
+        assert isinstance(value, UUIDType), (
+            "fs_user_code_value must be a UUID")
         self.customer.fs_user_code_value = value
     def set_prop_fs_user_code_value(self, value):
         self.fs_user_code_value = value
@@ -242,18 +249,19 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_is_verbose_logging_forced(self, value: bool):
         self.is_verbose_logging_forced = value
         return self
-    #LastLoginUTCDateTime
+    # lastLoginUTCDateTime
     @property
     def last_login_utc_date_time(self):
         return self.customer.last_login_utc_date_time
     @last_login_utc_date_time.setter
     def last_login_utc_date_time(self, value):
-        assert isinstance(value, datetime), "last_login_utc_date_time must be a datetime object"
+        assert isinstance(value, datetime), (
+            "last_login_utc_date_time must be a datetime object")
         self.customer.last_login_utc_date_time = value
     def set_prop_last_login_utc_date_time(self, value):
         self.last_login_utc_date_time = value
         return self
-    #LastName
+    # lastName
     @property
     def last_name(self):
         return self.customer.last_name
@@ -264,7 +272,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_last_name(self, value):
         self.last_name = value
         return self
-    #Password
+    # password
     @property
     def password(self):
         return self.customer.password
@@ -275,18 +283,19 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_password(self, value):
         self.password = value
         return self
-    #phone
+    # phone
     @property
     def phone(self):
         return self.customer.phone
     @phone.setter
     def phone(self, value):
-        assert isinstance(value, str), "phone must be a string"
+        assert isinstance(value, str), (
+            "phone must be a string")
         self.customer.phone = value
     def set_prop_phone(self, value):
         self.phone = value
         return self
-    #Province
+    # province
     @property
     def province(self):
         return self.customer.province
@@ -297,19 +306,20 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_province(self, value):
         self.province = value
         return self
-    #RegistrationUTCDateTime
+    # registrationUTCDateTime
     @property
     def registration_utc_date_time(self):
         return self.customer.registration_utc_date_time
     @registration_utc_date_time.setter
     def registration_utc_date_time(self, value):
-        assert isinstance(value, datetime), "registration_utc_date_time must be a datetime object"
+        assert isinstance(value, datetime), (
+            "registration_utc_date_time must be a datetime object")
         self.customer.registration_utc_date_time = value
     def set_prop_registration_utc_date_time(self, value):
         self.registration_utc_date_time = value
         return self
-     # TacID
-    #UTCOffsetInMinutes
+    # TacID
+    # uTCOffsetInMinutes
     @property
     def utc_offset_in_minutes(self):
         return self.customer.utc_offset_in_minutes
@@ -320,7 +330,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_utc_offset_in_minutes(self, value):
         self.utc_offset_in_minutes = value
         return self
-    #Zip
+    # zip
     @property
     def zip(self):
         return self.customer.zip
@@ -332,13 +342,13 @@ class CustomerBusObj(BaseBusObj):
         self.zip = value
         return self
 
-    #activeOrganizationID,
-    #email,
-    #emailConfirmedUTCDateTime
-    #firstName,
-    #forgotPasswordKeyExpirationUTCDateTime
-    #forgotPasswordKeyValue,
-    #fSUserCodeValue,
+    # activeOrganizationID,
+    # email,
+    # emailConfirmedUTCDateTime
+    # firstName,
+    # forgotPasswordKeyExpirationUTCDateTime
+    # forgotPasswordKeyValue,
+    # fSUserCodeValue,
     # isActive,
     # isEmailAllowed,
     # isEmailConfirmed,
@@ -346,13 +356,13 @@ class CustomerBusObj(BaseBusObj):
     # isLocked,
     # isMultipleOrganizationsAllowed,
     # isVerboseLoggingForced,
-    #lastLoginUTCDateTime
-    #lastName,
-    #password,
-    #phone,
-    #province,
-    #registrationUTCDateTime
-     # TacID
+    # lastLoginUTCDateTime
+    # lastName,
+    # password,
+    # phone,
+    # province,
+    # registrationUTCDateTime
+    # TacID
     @property
     def tac_id(self):
         return self.customer.tac_id
@@ -370,10 +380,10 @@ class CustomerBusObj(BaseBusObj):
     # def tac_code_peek(self, value):
     #     assert isinstance(value, UUIDType), "tac_code_peek must be a UUID"
     #     self.customer.tac_code_peek = value
-    #uTCOffsetInMinutes,
-    #zip,
+    # uTCOffsetInMinutes,
+    # zip,
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.customer.insert_utc_date_time
@@ -381,7 +391,7 @@ class CustomerBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.customer.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.customer.last_update_utc_date_time
@@ -489,13 +499,13 @@ class CustomerBusObj(BaseBusObj):
         my_customer = self.get_customer_obj()
         return customer_manager.is_equal(customer, my_customer)
 
-    #activeOrganizationID,
-    #email,
-    #emailConfirmedUTCDateTime
-    #firstName,
-    #forgotPasswordKeyExpirationUTCDateTime
-    #forgotPasswordKeyValue,
-    #fSUserCodeValue,
+    # activeOrganizationID,
+    # email,
+    # emailConfirmedUTCDateTime
+    # firstName,
+    # forgotPasswordKeyExpirationUTCDateTime
+    # forgotPasswordKeyValue,
+    # fSUserCodeValue,
     # isActive,
     # isEmailAllowed,
     # isEmailConfirmed,
@@ -503,19 +513,19 @@ class CustomerBusObj(BaseBusObj):
     # isLocked,
     # isMultipleOrganizationsAllowed,
     # isVerboseLoggingForced,
-    #lastLoginUTCDateTime
-    #lastName,
-    #password,
-    #phone,
-    #province,
-    #registrationUTCDateTime
-     # TacID
+    # lastLoginUTCDateTime
+    # lastName,
+    # password,
+    # phone,
+    # province,
+    # registrationUTCDateTime
+    # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
         return tac_obj
-    #uTCOffsetInMinutes,
-    #zip,
+    # uTCOffsetInMinutes,
+    # zip,
 
     def get_obj(self) -> Customer:
         return self.customer
@@ -523,13 +533,13 @@ class CustomerBusObj(BaseBusObj):
         return "customer"
     def get_id(self) -> int:
         return self.customer_id
-    #activeOrganizationID,
-    #email,
-    #emailConfirmedUTCDateTime
-    #firstName,
-    #forgotPasswordKeyExpirationUTCDateTime
-    #forgotPasswordKeyValue,
-    #fSUserCodeValue,
+    # activeOrganizationID,
+    # email,
+    # emailConfirmedUTCDateTime
+    # firstName,
+    # forgotPasswordKeyExpirationUTCDateTime
+    # forgotPasswordKeyValue,
+    # fSUserCodeValue,
     # isActive,
     # isEmailAllowed,
     # isEmailConfirmed,
@@ -537,21 +547,21 @@ class CustomerBusObj(BaseBusObj):
     # isLocked,
     # isMultipleOrganizationsAllowed,
     # isVerboseLoggingForced,
-    #lastLoginUTCDateTime
-    #lastName,
-    #password,
-    #phone,
-    #province,
-    #registrationUTCDateTime
-     # TacID
+    # lastLoginUTCDateTime
+    # lastName,
+    # password,
+    # phone,
+    # province,
+    # registrationUTCDateTime
+    # TacID
     async def get_parent_name(self) -> str:
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.tac_code_peek
     async def get_parent_obj(self) -> models.Tac:
         return self.get_tac_id_rel_obj()
-    #uTCOffsetInMinutes,
-    #zip,
+    # uTCOffsetInMinutes,
+    # zip,
 
     @staticmethod
     async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Customer]):

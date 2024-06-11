@@ -1,3 +1,7 @@
+# apis/models/pac_user_role_list.py
+"""
+    #TODO add comment
+"""
 import json
 from typing import List
 from datetime import date, datetime
@@ -40,10 +44,10 @@ class PacUserRoleListGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserRoleListGetModelResponseItem(CamelModel):
     role_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Role Code")
     role_description: str = Field(default="", description="Role Description")
@@ -53,7 +57,7 @@ class PacUserRoleListGetModelResponseItem(CamelModel):
     role_name: str = Field(default="", description="Role Name")
     pac_name: str = Field(default="", description="Pac Name")
 
-    def load_report_item(self, data:ReportItemPacUserRoleList):
+    def load_report_item(self, data: ReportItemPacUserRoleList):
         self.role_code = data.role_code
         self.role_description = data.role_description
         self.role_display_order = data.role_display_order

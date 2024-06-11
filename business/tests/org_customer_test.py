@@ -1,3 +1,7 @@
+# business/tests/org_customer_test.py
+"""
+    #TODO add comment
+"""
 import pytest
 import pytest_asyncio
 from datetime import datetime, date
@@ -40,7 +44,7 @@ class TestOrgCustomerBusObj:
         # Assuming OrgCustomerFactory.create() is an async function
         return await OrgCustomerFactory.create_async(session)
     @pytest.mark.asyncio
-    async def test_create_org_customer(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_create_org_customer(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         # Test creating a new org_customer
         assert org_customer_bus_obj.org_customer_id is None
         # assert isinstance(org_customer_bus_obj.org_customer_id, int)
@@ -57,36 +61,36 @@ class TestOrgCustomerBusObj:
         assert org_customer_bus_obj.email == "" or isinstance(org_customer_bus_obj.email, str)
         assert isinstance(org_customer_bus_obj.organization_id, int)
     @pytest.mark.asyncio
-    async def test_load_with_org_customer_obj(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_load_with_org_customer_obj(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         await org_customer_bus_obj.load(org_customer_obj_instance=new_org_customer)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer) is True
     @pytest.mark.asyncio
-    async def test_load_with_org_customer_id(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_load_with_org_customer_id(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         await org_customer_bus_obj.load(org_customer_id=new_org_customer.org_customer_id)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
     @pytest.mark.asyncio
-    async def test_load_with_org_customer_code(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_load_with_org_customer_code(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         await org_customer_bus_obj.load(code=new_org_customer.code)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
     @pytest.mark.asyncio
-    async def test_load_with_org_customer_json(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_load_with_org_customer_json(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         org_customer_json = org_customer_manager.to_json(new_org_customer)
         await org_customer_bus_obj.load(json_data=org_customer_json)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
     @pytest.mark.asyncio
-    async def test_load_with_org_customer_dict(self, session, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_load_with_org_customer_dict(self, session, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         logger.info("test_load_with_org_customer_dict 1")
         org_customer_dict = org_customer_manager.to_dict(new_org_customer)
         logger.info(org_customer_dict)
         await org_customer_bus_obj.load(org_customer_dict=org_customer_dict)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
     @pytest.mark.asyncio
-    async def test_get_nonexistent_org_customer(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_get_nonexistent_org_customer(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         # Test retrieving a nonexistent org_customer raises an exception
         await org_customer_bus_obj.load(org_customer_id=-1)
         assert org_customer_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
-    async def test_update_org_customer(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_update_org_customer(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         # Test updating a org_customer's data
         new_org_customer = await org_customer_manager.get_by_id(new_org_customer.org_customer_id)
         new_code = generate_uuid()
@@ -96,7 +100,7 @@ class TestOrgCustomerBusObj:
         new_org_customer = await org_customer_manager.get_by_id(new_org_customer.org_customer_id)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
     @pytest.mark.asyncio
-    async def test_delete_org_customer(self, org_customer_manager:OrgCustomerManager, org_customer_bus_obj:OrgCustomerBusObj, new_org_customer:OrgCustomer):
+    async def test_delete_org_customer(self, org_customer_manager: OrgCustomerManager, org_customer_bus_obj: OrgCustomerBusObj, new_org_customer: OrgCustomer):
         assert new_org_customer.org_customer_id is not None
         assert org_customer_bus_obj.org_customer_id is None
         await org_customer_bus_obj.load(org_customer_id=new_org_customer.org_customer_id)

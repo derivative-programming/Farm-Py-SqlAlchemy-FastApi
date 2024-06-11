@@ -1,4 +1,7 @@
-
+# models/constants/customer.py
+"""
+    #TODO add comment
+"""
 active_organization_id_calculatedIsDBColumnIndexed: bool = False
 email_calculatedIsDBColumnIndexed: bool = True
 email_confirmed_utc_date_time_calculatedIsDBColumnIndexed: bool = False

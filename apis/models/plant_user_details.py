@@ -1,3 +1,7 @@
+# apis/models/plant_user_details.py
+"""
+    #TODO add comment
+"""
 import json
 from typing import List
 from datetime import date, datetime
@@ -40,10 +44,10 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class PlantUserDetailsGetModelResponseItem(CamelModel):
     flavor_name: str = Field(default="", description="Flavor Name")
     is_delete_allowed: bool = Field(default=False, description="Is Delete Allowed")
@@ -51,7 +55,7 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
     other_flavor: str = Field(default="", description="Other Flavor")
     some_big_int_val: int = Field(default=0, description="Some Big Int Val")
     some_bit_val: bool = Field(default=False, description="Some Bit Val")
-    some_date_val: date = Field(default_factory=TypeConversion.get_default_date, description="Some Date Time Val")
+    some_date_val: date = Field(default_factory=TypeConversion.get_default_date, description="Some Date Val")
     some_decimal_val: Decimal = Field(default=Decimal(0), description="Some Decimal Val")
     some_email_address: str = Field(default="", description="Some Email Address")
     some_float_val: float = Field(default=0, description="Some Float Val")
@@ -69,7 +73,7 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
     random_property_updates_link_plant_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Random Property Updates Link Plant Code")
     back_to_dashboard_link_tac_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Back To Dashboard Link Tac Code")
 
-    def load_report_item(self, data:ReportItemPlantUserDetails):
+    def load_report_item(self, data: ReportItemPlantUserDetails):
         self.flavor_name = data.flavor_name
         self.is_delete_allowed = data.is_delete_allowed
         self.is_edit_allowed = data.is_edit_allowed

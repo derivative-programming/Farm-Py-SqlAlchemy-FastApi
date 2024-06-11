@@ -1,3 +1,7 @@
+# org_customer_test.py
+"""
+    #TODO add comment
+"""
 import json
 import pytest
 import pytz
@@ -31,7 +35,7 @@ class TestOrgCustomerSchema:
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_org_customer_serialization(self, org_customer:OrgCustomer, session):
+    def test_org_customer_serialization(self, org_customer: OrgCustomer, session):
         schema = OrgCustomerSchema()
         result = schema.dump(org_customer)
         assert result['code'] == org_customer.code
@@ -49,7 +53,7 @@ class TestOrgCustomerSchema:
         assert result['customer_code_peek'] == org_customer.customer_code_peek # CustomerID
         assert result['organization_code_peek'] == org_customer.organization_code_peek # OrganizationID
 
-    def test_org_customer_deserialization(self, org_customer:OrgCustomer, session):
+    def test_org_customer_deserialization(self, org_customer: OrgCustomer, session):
         schema = OrgCustomerSchema()
         serialized_data = schema.dump(org_customer)
         deserialized_data = schema.load(serialized_data)
@@ -83,10 +87,10 @@ class TestOrgCustomerSchema:
         assert new_org_customer.insert_utc_date_time.isoformat() == org_customer.insert_utc_date_time.isoformat()
         assert new_org_customer.last_update_utc_date_time.isoformat() == org_customer.last_update_utc_date_time.isoformat()
 
-        assert new_org_customer.customer_code_peek == org_customer.customer_code_peek  #CustomerID
-        assert new_org_customer.organization_code_peek == org_customer.organization_code_peek #OrganizationID
+        assert new_org_customer.customer_code_peek == org_customer.customer_code_peek   # CustomerID
+        assert new_org_customer.organization_code_peek == org_customer.organization_code_peek  # OrganizationID
 
-    def test_from_json(self, org_customer:OrgCustomer, session):
+    def test_from_json(self, org_customer: OrgCustomer, session):
         org_customer_schema = OrgCustomerSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -105,13 +109,13 @@ class TestOrgCustomerSchema:
         assert str(deserialized_data['organization_id']) == str(self.sample_data['organization_id'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['customer_code_peek']) == str(self.sample_data['customer_code_peek'])   #CustomerID
-        assert str(deserialized_data['organization_code_peek']) == str(self.sample_data['organization_code_peek']) #OrganizationID
+        assert str(deserialized_data['customer_code_peek']) == str(self.sample_data['customer_code_peek'])    # CustomerID
+        assert str(deserialized_data['organization_code_peek']) == str(self.sample_data['organization_code_peek'])  # OrganizationID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_org_customer = OrgCustomer(**deserialized_data)
         assert isinstance(new_org_customer, OrgCustomer)
-    def test_to_json(self, org_customer:OrgCustomer, session):
+    def test_to_json(self, org_customer: OrgCustomer, session):
             # Convert the OrgCustomer instance to JSON using the schema
             org_customer_schema = OrgCustomerSchema()
             org_customer_dict = org_customer_schema.dump(org_customer)

@@ -1,3 +1,7 @@
+# models/factory/tests/error_log_async_test.py
+"""
+    #TODO add comment
+"""
 import asyncio
 from decimal import Decimal
 import pytest
@@ -81,11 +85,11 @@ class TestErrorLogFactoryAsync:
             assert isinstance(error_log.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        error_log:ErrorLog = await ErrorLogFactory.build_async(session=session)
+        error_log: ErrorLog = await ErrorLogFactory.build_async(session=session)
         assert error_log.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        error_log:ErrorLog = await ErrorLogFactory.create_async(session=session)
+        error_log: ErrorLog = await ErrorLogFactory.create_async(session=session)
         assert error_log.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -178,14 +182,14 @@ class TestErrorLogFactoryAsync:
             assert isinstance(error_log.last_update_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.last_update_user_id, str)
-        #BrowserCode
+        # browser_code
         if db_dialect == 'postgresql':
             assert isinstance(error_log.browser_code, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.browser_code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.browser_code, str)
-        #ContextCode
+        # context_code
         if db_dialect == 'postgresql':
             assert isinstance(error_log.context_code, UUID)
         elif db_dialect == 'mssql':
@@ -200,20 +204,20 @@ class TestErrorLogFactoryAsync:
         assert error_log.url == "" or isinstance(error_log.url, str)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #browserCode,
-        #contextCode,
-        #createdUTCDateTime
-        #description,
+        # browserCode,
+        # contextCode,
+        # createdUTCDateTime
+        # description,
         # isClientSideError,
         # isResolved,
-         # pacID
+        # pacID
         if db_dialect == 'postgresql':
             assert isinstance(error_log.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.pac_code_peek, str)
-        #url,
+        # url,
 
         assert isinstance(error_log.insert_utc_date_time, datetime)
         assert isinstance(error_log.last_update_utc_date_time, datetime)
@@ -236,29 +240,29 @@ class TestErrorLogFactoryAsync:
         assert error_log.insert_utc_date_time is not None
         assert error_log.last_update_utc_date_time is not None
 
-        #browserCode,
-        #contextCode,
-        #createdUTCDateTime
-        #description,
+        # browserCode,
+        # contextCode,
+        # createdUTCDateTime
+        # description,
         # isClientSideError,
         # isResolved,
-         # PacID
+        # PacID
         if db_dialect == 'postgresql':
             assert isinstance(error_log.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.pac_code_peek, str)
-        #url,
+        # url,
 
-        # someUniqueIdentifierVal
+        # browser_code
         if db_dialect == 'postgresql':
             assert isinstance(error_log.browser_code, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.browser_code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.browser_code, str)
-        # someUniqueIdentifierVal
+        # context_code
         if db_dialect == 'postgresql':
             assert isinstance(error_log.context_code, UUID)
         elif db_dialect == 'mssql':
@@ -290,13 +294,13 @@ class TestErrorLogFactoryAsync:
         await session.commit()
         assert error_log_2.last_change_code != original_last_change_code
 
-    #browserCode,
-    #contextCode,
-    #createdUTCDateTime
-    #description,
+    # browserCode,
+    # contextCode,
+    # createdUTCDateTime
+    # description,
     # isClientSideError,
     # isResolved,
-     # PacID
+    # PacID
     @pytest.mark.asyncio
     async def test_invalid_pac_id(self, session):
         error_log = await ErrorLogFactory.create_async(session=session)
@@ -304,5 +308,5 @@ class TestErrorLogFactoryAsync:
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             await session.commit()
         await session.rollback()
-    #url,
+    # url,
 

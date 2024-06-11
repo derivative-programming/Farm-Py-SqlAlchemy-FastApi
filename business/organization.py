@@ -1,3 +1,7 @@
+# business/organization.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -19,7 +23,7 @@ from business.org_api_key import OrgApiKeyBusObj
 
 class OrganizationInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -40,7 +44,7 @@ class OrganizationBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("organization_id must be a int.")
         self.organization.organization_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.organization.code
@@ -49,7 +53,7 @@ class OrganizationBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.organization.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.organization.last_change_code
@@ -58,7 +62,7 @@ class OrganizationBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.organization.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.organization.insert_user_id
@@ -70,7 +74,7 @@ class OrganizationBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.organization.last_update_user_id
@@ -83,7 +87,7 @@ class OrganizationBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #Name
+    # name
     @property
     def name(self):
         return self.organization.name
@@ -94,10 +98,10 @@ class OrganizationBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-     # TacID
+    # TacID
 
-    #name,
-     # TacID
+    # name,
+    # TacID
     @property
     def tac_id(self):
         return self.organization.tac_id
@@ -116,7 +120,7 @@ class OrganizationBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "tac_code_peek must be a UUID"
     #     self.organization.tac_code_peek = value
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.organization.insert_utc_date_time
@@ -124,7 +128,7 @@ class OrganizationBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.organization.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.organization.last_update_utc_date_time
@@ -136,7 +140,7 @@ class OrganizationBusObj(BaseBusObj):
     async def load(self, json_data: str = None,
                    code: uuid.UUID = None,
                    organization_id: int = None,
-                   organization_obj_instance:Organization = None,
+                   organization_obj_instance: Organization = None,
                    organization_dict: dict = None):
         if organization_id and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self._session_context)
@@ -162,7 +166,7 @@ class OrganizationBusObj(BaseBusObj):
                     json_data: str = None,
                    code: uuid.UUID = None,
                    organization_id: int = None,
-                   organization_obj_instance:Organization = None,
+                   organization_obj_instance: Organization = None,
                    organization_dict: dict = None):
         result = OrganizationBusObj(session_context)
         await result.load(
@@ -206,13 +210,13 @@ class OrganizationBusObj(BaseBusObj):
         return self
     def get_organization_obj(self) -> Organization:
         return self.organization
-    def is_equal(self,organization:Organization) -> Organization:
+    def is_equal(self, organization: Organization) -> Organization:
         organization_manager = OrganizationManager(self._session_context)
         my_organization = self.get_organization_obj()
         return organization_manager.is_equal(organization, my_organization)
 
-    #name,
-     # TacID
+    # name,
+    # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
@@ -224,8 +228,8 @@ class OrganizationBusObj(BaseBusObj):
         return "organization"
     def get_id(self) -> int:
         return self.organization_id
-    #name,
-     # TacID
+    # name,
+    # TacID
     async def get_parent_name(self) -> str:
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
@@ -237,7 +241,7 @@ class OrganizationBusObj(BaseBusObj):
     async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Organization]):
         result = list()
         for organization in obj_list:
-            organization_bus_obj = OrganizationBusObj.get(session_context,organization_obj_instance=organization)
+            organization_bus_obj = OrganizationBusObj.get(session_context, organization_obj_instance=organization)
             result.append(organization_bus_obj)
         return result
 

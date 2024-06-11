@@ -1,3 +1,7 @@
+# business/tri_state_filter.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -15,7 +19,7 @@ from .base_bus_obj import BaseBusObj
 
 class TriStateFilterInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -36,7 +40,7 @@ class TriStateFilterBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("tri_state_filter_id must be a int.")
         self.tri_state_filter.tri_state_filter_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.tri_state_filter.code
@@ -45,7 +49,7 @@ class TriStateFilterBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.tri_state_filter.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.tri_state_filter.last_change_code
@@ -54,7 +58,7 @@ class TriStateFilterBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.tri_state_filter.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.tri_state_filter.insert_user_id
@@ -66,7 +70,7 @@ class TriStateFilterBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.tri_state_filter.last_update_user_id
@@ -79,7 +83,7 @@ class TriStateFilterBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #Description
+    # description
     @property
     def description(self):
         return self.tri_state_filter.description
@@ -90,7 +94,7 @@ class TriStateFilterBusObj(BaseBusObj):
     def set_prop_description(self, value):
         self.description = value
         return self
-    #DisplayOrder
+    # displayOrder
     @property
     def display_order(self):
         return self.tri_state_filter.display_order
@@ -113,7 +117,7 @@ class TriStateFilterBusObj(BaseBusObj):
     def set_prop_is_active(self, value: bool):
         self.is_active = value
         return self
-    #LookupEnumName
+    # lookupEnumName
     @property
     def lookup_enum_name(self):
         return self.tri_state_filter.lookup_enum_name
@@ -124,7 +128,7 @@ class TriStateFilterBusObj(BaseBusObj):
     def set_prop_lookup_enum_name(self, value):
         self.lookup_enum_name = value
         return self
-    #Name
+    # name
     @property
     def name(self):
         return self.tri_state_filter.name
@@ -135,8 +139,8 @@ class TriStateFilterBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-     # PacID
-    #StateIntValue
+    # PacID
+    # stateIntValue
     @property
     def state_int_value(self):
         return self.tri_state_filter.state_int_value
@@ -148,12 +152,12 @@ class TriStateFilterBusObj(BaseBusObj):
         self.state_int_value = value
         return self
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     @property
     def pac_id(self):
         return self.tri_state_filter.pac_id
@@ -171,9 +175,9 @@ class TriStateFilterBusObj(BaseBusObj):
     # def pac_code_peek(self, value):
     #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
     #     self.tri_state_filter.pac_code_peek = value
-    #stateIntValue,
+    # stateIntValue,
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.tri_state_filter.insert_utc_date_time
@@ -181,7 +185,7 @@ class TriStateFilterBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.tri_state_filter.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.tri_state_filter.last_update_utc_date_time
@@ -196,7 +200,7 @@ class TriStateFilterBusObj(BaseBusObj):
     async def load(self, json_data: str = None,
                    code: uuid.UUID = None,
                    tri_state_filter_id: int = None,
-                   tri_state_filter_obj_instance:TriStateFilter = None,
+                   tri_state_filter_obj_instance: TriStateFilter = None,
                    tri_state_filter_dict: dict = None,
                    tri_state_filter_enum:managers_and_enums.TriStateFilterEnum = None):
         if tri_state_filter_id and self.tri_state_filter.tri_state_filter_id is None:
@@ -225,7 +229,7 @@ class TriStateFilterBusObj(BaseBusObj):
                     json_data: str = None,
                    code: uuid.UUID = None,
                    tri_state_filter_id: int = None,
-                   tri_state_filter_obj_instance:TriStateFilter = None,
+                   tri_state_filter_obj_instance: TriStateFilter = None,
                    tri_state_filter_dict: dict = None,
                    tri_state_filter_enum:managers_and_enums.TriStateFilterEnum = None):
         result = TriStateFilterBusObj(session_context)
@@ -265,7 +269,7 @@ class TriStateFilterBusObj(BaseBusObj):
             await tri_state_filter_manager.delete(self.tri_state_filter.tri_state_filter_id)
             self.tri_state_filter = None
     async def randomize_properties(self):
-        self.tri_state_filter.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.tri_state_filter.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tri_state_filter.display_order = random.randint(0, 100)
         self.tri_state_filter.is_active = random.choice([True, False])
         self.tri_state_filter.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -276,22 +280,22 @@ class TriStateFilterBusObj(BaseBusObj):
         return self
     def get_tri_state_filter_obj(self) -> TriStateFilter:
         return self.tri_state_filter
-    def is_equal(self,tri_state_filter:TriStateFilter) -> TriStateFilter:
+    def is_equal(self, tri_state_filter: TriStateFilter) -> TriStateFilter:
         tri_state_filter_manager = TriStateFilterManager(self._session_context)
         my_tri_state_filter = self.get_tri_state_filter_obj()
         return tri_state_filter_manager.is_equal(tri_state_filter, my_tri_state_filter)
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
-    #stateIntValue,
+    # stateIntValue,
 
     def get_obj(self) -> TriStateFilter:
         return self.tri_state_filter
@@ -299,25 +303,25 @@ class TriStateFilterBusObj(BaseBusObj):
         return "tri_state_filter"
     def get_id(self) -> int:
         return self.tri_state_filter_id
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         return self.get_pac_id_rel_obj()
-    #stateIntValue,
+    # stateIntValue,
 
     @staticmethod
     async def to_bus_obj_list(session_context: SessionContext, obj_list: List[TriStateFilter]):
         result = list()
         for tri_state_filter in obj_list:
-            tri_state_filter_bus_obj = TriStateFilterBusObj.get(session_context,tri_state_filter_obj_instance=tri_state_filter)
+            tri_state_filter_bus_obj = TriStateFilterBusObj.get(session_context, tri_state_filter_obj_instance=tri_state_filter)
             result.append(tri_state_filter_bus_obj)
         return result
 

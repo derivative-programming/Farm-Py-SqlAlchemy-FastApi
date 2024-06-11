@@ -1,3 +1,7 @@
+# apis/models/tac_farm_dashboard.py
+"""
+    #TODO add comment
+"""
 import json
 from typing import List
 from datetime import date, datetime
@@ -40,16 +44,16 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class TacFarmDashboardGetModelResponseItem(CamelModel):
     field_one_plant_list_link_land_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Field One Plant List Link Land Code")
     conditional_btn_example_link_land_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Conditional Btn Example Link Land Code")
     is_conditional_btn_available: bool = Field(default=False, description="Is Conditional Btn Available")
 
-    def load_report_item(self, data:ReportItemTacFarmDashboard):
+    def load_report_item(self, data: ReportItemTacFarmDashboard):
         self.field_one_plant_list_link_land_code = data.field_one_plant_list_link_land_code
         self.conditional_btn_example_link_land_code = data.conditional_btn_example_link_land_code
         self.is_conditional_btn_available = data.is_conditional_btn_available

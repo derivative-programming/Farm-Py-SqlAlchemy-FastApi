@@ -1,3 +1,7 @@
+# date_greater_than_filter_test.py
+"""
+    #TODO add comment
+"""
 import json
 import pytest
 import pytz
@@ -53,7 +57,7 @@ class TestDateGreaterThanFilterSchema:
         assert result['insert_utc_date_time'] == date_greater_than_filter.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == date_greater_than_filter.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == date_greater_than_filter.pac_code_peek  # PacID
+        assert result['pac_code_peek'] == date_greater_than_filter.pac_code_peek # PacID
 
     def test_date_greater_than_filter_deserialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
         schema = DateGreaterThanFilterSchema()
@@ -75,7 +79,7 @@ class TestDateGreaterThanFilterSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == date_greater_than_filter.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == date_greater_than_filter.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == date_greater_than_filter.pac_code_peek  # PacID
+        assert deserialized_data['pac_code_peek'] == date_greater_than_filter.pac_code_peek # PacID
 
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
@@ -153,5 +157,5 @@ class TestDateGreaterThanFilterSchema:
             assert date_greater_than_filter_dict_from_json['insert_utc_date_time'] == date_greater_than_filter.insert_utc_date_time.isoformat()
             assert date_greater_than_filter_dict_from_json['last_update_utc_date_time'] == date_greater_than_filter.last_update_utc_date_time.isoformat()
 
-            assert date_greater_than_filter_dict_from_json['pac_code_peek'] == date_greater_than_filter.pac_code_peek  # PacID
+            assert date_greater_than_filter_dict_from_json['pac_code_peek'] == date_greater_than_filter.pac_code_peek # PacID
 

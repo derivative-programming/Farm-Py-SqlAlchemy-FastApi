@@ -1,3 +1,7 @@
+# tac_test.py
+"""
+    #TODO add comment
+"""
 import json
 import pytest
 import pytz
@@ -51,7 +55,7 @@ class TestTacSchema:
         assert result['insert_utc_date_time'] == tac.insert_utc_date_time.isoformat()
         assert result['last_update_utc_date_time'] == tac.last_update_utc_date_time.isoformat()
 
-        assert result['pac_code_peek'] == tac.pac_code_peek  # PacID
+        assert result['pac_code_peek'] == tac.pac_code_peek # PacID
 
     def test_tac_deserialization(self, tac: Tac, session):
         schema = TacSchema()
@@ -72,7 +76,7 @@ class TestTacSchema:
         assert deserialized_data['insert_utc_date_time'].isoformat() == tac.insert_utc_date_time.isoformat()
         assert deserialized_data['last_update_utc_date_time'].isoformat() == tac.last_update_utc_date_time.isoformat()
 
-        assert deserialized_data['pac_code_peek'] == tac.pac_code_peek  # PacID
+        assert deserialized_data['pac_code_peek'] == tac.pac_code_peek # PacID
 
         new_tac = Tac(**deserialized_data)
         assert isinstance(new_tac, Tac)
@@ -147,5 +151,5 @@ class TestTacSchema:
             assert tac_dict_from_json['insert_utc_date_time'] == tac.insert_utc_date_time.isoformat()
             assert tac_dict_from_json['last_update_utc_date_time'] == tac.last_update_utc_date_time.isoformat()
 
-            assert tac_dict_from_json['pac_code_peek'] == tac.pac_code_peek  # PacID
+            assert tac_dict_from_json['pac_code_peek'] == tac.pac_code_peek # PacID
 

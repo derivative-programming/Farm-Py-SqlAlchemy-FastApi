@@ -1,3 +1,7 @@
+# business/tests/tac_test.py
+"""
+    #TODO add comment
+"""
 import pytest
 import pytest_asyncio
 from datetime import datetime, date
@@ -109,7 +113,7 @@ class TestTacBusObj:
         assert new_tac is None
 
     @pytest.mark.asyncio
-    async def test_build_organization(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
+    async def test_build_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -127,7 +131,7 @@ class TestTacBusObj:
         assert organization_bus_obj.organization_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_organization(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
+    async def test_get_all_organization(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -148,7 +152,7 @@ class TestTacBusObj:
         #assert organization_list[0].organization_id == organization_bus_obj.organization_id
 
     @pytest.mark.asyncio
-    async def test_build_customer(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
+    async def test_build_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -166,7 +170,7 @@ class TestTacBusObj:
         assert customer_bus_obj.customer_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_customer(self, tac_manager: TacManager, tac_bus_obj: TacBusObj, new_tac: Tac, session: AsyncSession):
+    async def test_get_all_customer(self, tac_manager:TacManager, tac_bus_obj:TacBusObj, new_tac:Tac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 

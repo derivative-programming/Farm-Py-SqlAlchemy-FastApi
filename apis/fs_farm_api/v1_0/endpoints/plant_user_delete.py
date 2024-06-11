@@ -1,3 +1,7 @@
+# apis/fs_farm_api/v1_0/endpoints/plant_user_delete.py
+"""
+    #TODO add comment
+"""
 import tempfile
 import uuid
 from fastapi import APIRouter, Depends, Path
@@ -12,7 +16,10 @@ import reports
 from .base_router import BaseRouter
 from database import get_db
 class PlantUserDeleteRouterConfig():
-    #constants
+    """
+        #TODO add comment
+    """
+    # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = False
     is_get_init_available: bool = False
@@ -23,25 +30,37 @@ class PlantUserDeleteRouterConfig():
     is_delete_available: bool = False
     is_public: bool = False
 class PlantUserDeleteRouter(BaseRouter):
+    """
+        #TODO add comment
+    """
     router = APIRouter(tags=["PlantUserDelete"])
 
     @staticmethod
-    @router.post("/api/v1_0/plant-user-delete/{plant_code}",
-                 response_model=api_models.PlantUserDeletePostModelResponse,
-                summary="Plant User Delete Business Flow")
-    async def request_post_with_id(plant_code: str,
-                                   request_model: api_models.PlantUserDeletePostModelRequest,
-                                   session: AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post(
+        "/api/v1_0/plant-user-delete/{plant_code}",
+        response_model=api_models.PlantUserDeletePostModelResponse,
+        summary="Plant User Delete Business Flow")
+    async def request_post_with_id(
+        plant_code: str,
+        request_model: api_models.PlantUserDeletePostModelRequest,
+        session: AsyncSession = Depends(get_db),
+        api_key: str = Depends(api_key_header)
+    ):
         logging.info('PlantUserDeleteRouter.request_post_with_id start. plantCode:' + plant_code)
-        auth_dict = BaseRouter.implementation_check(PlantUserDeleteRouterConfig.is_post_with_id_available)
+        auth_dict = BaseRouter.implementation_check(
+            PlantUserDeleteRouterConfig.is_post_with_id_available)
         response = api_models.PlantUserDeletePostModelResponse()
-        auth_dict = BaseRouter.authorization_check(PlantUserDeleteRouterConfig.is_public, api_key)
+        auth_dict = BaseRouter.authorization_check(
+            PlantUserDeleteRouterConfig.is_public,
+            api_key)
         # Start a transaction
         async with session:
             try:
                 logging.info("Start session...")
                 session_context = SessionContext(auth_dict, session)
-                plant_code = session_context.check_context_code("PlantCode", plant_code)
+                plant_code = session_context.check_context_code(
+                    "PlantCode",
+                    plant_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
@@ -52,7 +71,9 @@ class PlantUserDeleteRouter(BaseRouter):
             except TypeError as te:
                 logging.info("TypeError Exception occurred")
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(te.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(te.__traceback__)
+                    )
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
@@ -66,6 +87,9 @@ class PlantUserDeleteRouter(BaseRouter):
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('PlantUserDeleteRouter.submit get result:$s', response.model_dump_json())
+        response_data = response.model_dump_json()
+        logging.info(
+            'PlantUserDeleteRouter.submit get result:%s',
+            response_data)
         return response
 

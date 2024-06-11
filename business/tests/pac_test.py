@@ -1,3 +1,7 @@
+# business/tests/pac_test.py
+"""
+    #TODO add comment
+"""
 import pytest
 import pytest_asyncio
 from datetime import datetime, date
@@ -108,7 +112,7 @@ class TestPacBusObj:
         assert new_pac is None
 
     @pytest.mark.asyncio
-    async def test_build_tri_state_filter(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_build_tri_state_filter(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -126,7 +130,7 @@ class TestPacBusObj:
         assert tri_state_filter_bus_obj.tri_state_filter_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_tri_state_filter(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_get_all_tri_state_filter(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -147,7 +151,7 @@ class TestPacBusObj:
         #assert tri_state_filter_list[0].tri_state_filter_id == tri_state_filter_bus_obj.tri_state_filter_id
 
     @pytest.mark.asyncio
-    async def test_build_tac(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_build_tac(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -165,7 +169,7 @@ class TestPacBusObj:
         assert tac_bus_obj.tac_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_tac(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_get_all_tac(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -186,7 +190,7 @@ class TestPacBusObj:
         #assert tac_list[0].tac_id == tac_bus_obj.tac_id
 
     @pytest.mark.asyncio
-    async def test_build_role(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_build_role(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -204,7 +208,7 @@ class TestPacBusObj:
         assert role_bus_obj.role_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_role(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_get_all_role(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -225,7 +229,7 @@ class TestPacBusObj:
         #assert role_list[0].role_id == role_bus_obj.role_id
 
     @pytest.mark.asyncio
-    async def test_build_land(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_build_land(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -243,7 +247,7 @@ class TestPacBusObj:
         assert land_bus_obj.land_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_land(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_get_all_land(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -264,7 +268,7 @@ class TestPacBusObj:
         #assert land_list[0].land_id == land_bus_obj.land_id
 
     @pytest.mark.asyncio
-    async def test_build_flavor(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_build_flavor(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -282,7 +286,7 @@ class TestPacBusObj:
         assert flavor_bus_obj.flavor_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_flavor(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_get_all_flavor(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -303,7 +307,7 @@ class TestPacBusObj:
         #assert flavor_list[0].flavor_id == flavor_bus_obj.flavor_id
 
     @pytest.mark.asyncio
-    async def test_build_error_log(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_build_error_log(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -321,7 +325,7 @@ class TestPacBusObj:
         assert error_log_bus_obj.error_log_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_error_log(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_get_all_error_log(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -342,7 +346,7 @@ class TestPacBusObj:
         #assert error_log_list[0].error_log_id == error_log_bus_obj.error_log_id
 
     @pytest.mark.asyncio
-    async def test_build_date_greater_than_filter(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_build_date_greater_than_filter(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -360,7 +364,7 @@ class TestPacBusObj:
         assert date_greater_than_filter_bus_obj.date_greater_than_filter_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_date_greater_than_filter(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac, session: AsyncSession):
+    async def test_get_all_date_greater_than_filter(self, pac_manager:PacManager, pac_bus_obj:PacBusObj, new_pac:Pac, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 

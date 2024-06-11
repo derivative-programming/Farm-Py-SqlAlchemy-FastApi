@@ -1,3 +1,7 @@
+# business/flavor.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -15,7 +19,7 @@ from .base_bus_obj import BaseBusObj
 
 class FlavorInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -36,7 +40,7 @@ class FlavorBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("flavor_id must be a int.")
         self.flavor.flavor_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.flavor.code
@@ -45,7 +49,7 @@ class FlavorBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.flavor.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.flavor.last_change_code
@@ -54,7 +58,7 @@ class FlavorBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.flavor.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.flavor.insert_user_id
@@ -66,7 +70,7 @@ class FlavorBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.flavor.last_update_user_id
@@ -79,7 +83,7 @@ class FlavorBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #Description
+    # description
     @property
     def description(self):
         return self.flavor.description
@@ -90,7 +94,7 @@ class FlavorBusObj(BaseBusObj):
     def set_prop_description(self, value):
         self.description = value
         return self
-    #DisplayOrder
+    # displayOrder
     @property
     def display_order(self):
         return self.flavor.display_order
@@ -113,7 +117,7 @@ class FlavorBusObj(BaseBusObj):
     def set_prop_is_active(self, value: bool):
         self.is_active = value
         return self
-    #LookupEnumName
+    # lookupEnumName
     @property
     def lookup_enum_name(self):
         return self.flavor.lookup_enum_name
@@ -124,7 +128,7 @@ class FlavorBusObj(BaseBusObj):
     def set_prop_lookup_enum_name(self, value):
         self.lookup_enum_name = value
         return self
-    #Name
+    # name
     @property
     def name(self):
         return self.flavor.name
@@ -135,14 +139,14 @@ class FlavorBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-     # PacID
+    # PacID
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     @property
     def pac_id(self):
         return self.flavor.pac_id
@@ -161,7 +165,7 @@ class FlavorBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
     #     self.flavor.pac_code_peek = value
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.flavor.insert_utc_date_time
@@ -169,7 +173,7 @@ class FlavorBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.flavor.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.flavor.last_update_utc_date_time
@@ -253,7 +257,7 @@ class FlavorBusObj(BaseBusObj):
             await flavor_manager.delete(self.flavor.flavor_id)
             self.flavor = None
     async def randomize_properties(self):
-        self.flavor.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.flavor.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.flavor.display_order = random.randint(0, 100)
         self.flavor.is_active = random.choice([True, False])
         self.flavor.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -268,12 +272,12 @@ class FlavorBusObj(BaseBusObj):
         my_flavor = self.get_flavor_obj()
         return flavor_manager.is_equal(flavor, my_flavor)
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -285,12 +289,12 @@ class FlavorBusObj(BaseBusObj):
         return "flavor"
     def get_id(self) -> int:
         return self.flavor_id
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:

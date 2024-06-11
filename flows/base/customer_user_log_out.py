@@ -1,3 +1,7 @@
+# flows/base/customer_user_log_out.py
+"""
+    #TODO add comment
+"""
 import uuid
 from business.customer import CustomerBusObj
 from business.customer import CustomerBusObj

@@ -1,3 +1,7 @@
+# org_api_key.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
@@ -37,6 +41,6 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
     org_customer_id = fields.Int()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
-    organization_code_peek = schema_UUIDType #OrganizationID
-    org_customer_code_peek = schema_UUIDType  #OrgCustomerID
+    organization_code_peek = schema_UUIDType  # OrganizationID
+    org_customer_code_peek = schema_UUIDType   # OrgCustomerID
 

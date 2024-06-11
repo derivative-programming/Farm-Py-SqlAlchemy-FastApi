@@ -1,3 +1,7 @@
+# apis/models/customer_build_temp_api_key.py
+"""
+    #TODO add comment
+"""
 from datetime import date, datetime
 from decimal import Decimal
 import json
@@ -25,13 +29,13 @@ class CustomerBuildTempApiKeyPostModelRequest(CamelModel):
     def to_dict_snake(self):
         data = self.model_dump()
     def to_dict_snake_serialized(self):
-        data = json.loads(self.model_dump_json() )
+        data = json.loads(self.model_dump_json())
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
     tmp_org_api_key_code: UUID4 = Field(default=uuid.UUID(int=0), description="Tmp Org Api Key Code")
 

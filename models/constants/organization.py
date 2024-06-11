@@ -1,4 +1,7 @@
-
+# models/constants/organization.py
+"""
+    #TODO add comment
+"""
 name_calculatedIsDBColumnIndexed: bool = False
 tac_id_calculatedIsDBColumnIndexed: bool = True
 name_isEncrypted: bool = False

@@ -210,7 +210,7 @@ class TestPlantFactory:
             assert isinstance(plant.flvr_foreign_key_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(plant.flvr_foreign_key_code_peek, str)
-         # landID
+        # landID
         if db_dialect == 'postgresql':
             assert isinstance(plant.land_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -259,7 +259,7 @@ class TestPlantFactory:
         # someNVarCharVal,
         # someDateVal
         # someUTCDateTimeVal
-         # LandID
+        # LandID
         if db_dialect == 'postgresql':
             assert isinstance(plant.land_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -267,7 +267,7 @@ class TestPlantFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(plant.land_code_peek, str)
 
-         # FlvrForeignKeyID
+        # FlvrForeignKeyID
         if db_dialect == 'postgresql':
             assert isinstance(plant.flvr_foreign_key_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -297,7 +297,7 @@ class TestPlantFactory:
         assert plant.some_n_var_char_val == ""
         assert plant.some_phone_number == ""
         assert plant.some_text_val == ""
-        # someUniqueIdentifierVal
+        # some_uniqueidentifier_val
         if db_dialect == 'postgresql':
             assert isinstance(plant.some_uniqueidentifier_val, UUID)
         elif db_dialect == 'mssql':
@@ -334,14 +334,14 @@ class TestPlantFactory:
     # someNVarCharVal,
     # someDateVal
     # someUTCDateTimeVal
-     # LandID
+    # LandID
     def test_invalid_land_id(self, session):
         plant = PlantFactory.create(session=session)
         plant.land_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
         session.rollback()
-     # FlvrForeignKeyID
+    # FlvrForeignKeyID
     def test_invalid_flvr_foreign_key_id(self, session):
         plant = PlantFactory.create(session=session)
         plant.flvr_foreign_key_id = 99999

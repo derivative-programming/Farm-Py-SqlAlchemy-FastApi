@@ -1,4 +1,7 @@
-# api/models/factories.py
+# apis/models/factory/customer_user_log_out.py
+"""
+    #TODO add comment
+"""
 import uuid
 import factory
 from factory import Faker

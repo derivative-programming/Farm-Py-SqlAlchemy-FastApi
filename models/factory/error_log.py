@@ -1,4 +1,7 @@
-# farm/models/factories.py
+# models/factory/error_log.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime
 import uuid
 import factory
@@ -33,7 +36,7 @@ class ErrorLogFactory(factory.Factory):
     description = Faker('sentence', nb_words=4)
     is_client_side_error = Faker('boolean')
     is_resolved = Faker('boolean')
-     # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
+    # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
     url = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)

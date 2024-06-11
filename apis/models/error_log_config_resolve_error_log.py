@@ -1,3 +1,7 @@
+# apis/models/error_log_config_resolve_error_log.py
+"""
+    #TODO add comment
+"""
 from datetime import date, datetime
 from decimal import Decimal
 import json
@@ -25,13 +29,13 @@ class ErrorLogConfigResolveErrorLogPostModelRequest(CamelModel):
     def to_dict_snake(self):
         data = self.model_dump()
     def to_dict_snake_serialized(self):
-        data = json.loads(self.model_dump_json() )
+        data = json.loads(self.model_dump_json())
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
 
     def load_flow_response(self, data:FlowErrorLogConfigResolveErrorLogResult):
@@ -40,7 +44,7 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
     async def process_request(self,
                         session_context: SessionContext,
                         error_log_code: uuid,
-                        request:ErrorLogConfigResolveErrorLogPostModelRequest):
+                        request: ErrorLogConfigResolveErrorLogPostModelRequest):
         try:
             logging.info("loading model...ErrorLogConfigResolveErrorLogPostModelResponse")
             error_log_bus_obj = ErrorLogBusObj(session_context)

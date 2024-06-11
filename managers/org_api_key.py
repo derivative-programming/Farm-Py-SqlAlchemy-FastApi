@@ -1,4 +1,9 @@
+# models/managers/org_api_key.py
+"""
+    #TODO add comment
+"""
 import json
+import logging
 import random
 import uuid
 from datetime import date, datetime
@@ -7,24 +12,39 @@ from typing import List, Optional, Dict
 from sqlalchemy import and_, outerjoin
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from helpers.session_context import SessionContext#, join, outerjoin, and_
-from models.organization import Organization # OrganizationID
-from models.org_customer import OrgCustomer # OrgCustomerID
+from helpers.session_context import SessionContext
+from models.organization import Organization  # OrganizationID
+from models.org_customer import OrgCustomer  # OrgCustomerID
 from models.org_api_key import OrgApiKey
 from models.serialization_schema.org_api_key import OrgApiKeySchema
-from services.db_config import generate_uuid,db_dialect
+from services.db_config import generate_uuid, db_dialect
 from services.logging_config import get_logger
-import logging
 logger = get_logger(__name__)
 class OrgApiKeyNotFoundError(Exception):
-    pass
+    """
+    Exception raised when a specified org_api_key is not found.
+    Attributes:
+        message (str):Explanation of the error.
+    """
+    def __init__(self, message="OrgApiKey not found"):
+        self.message = message
+        super().__init__(self.message)
 
 class OrgApiKeyManager:
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
+        """
+            #TODO add comment
+        """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-    def convert_uuid_to_model_uuid(self,value:uuid):
+    def convert_uuid_to_model_uuid(self, value: uuid):
+        """
+            #TODO add comment
+        """
         # Conditionally set the UUID column type
         if db_dialect == 'postgresql':
             return value
@@ -34,19 +54,33 @@ class OrgApiKeyManager:
             return str(value)
 
     async def initialize(self):
+        """
+            #TODO add comment
+        """
         logging.info("OrgApiKeyManager.Initialize")
 
     async def build(self, **kwargs) -> OrgApiKey:
+        """
+            #TODO add comment
+        """
         logging.info("OrgApiKeyManager.build")
         return OrgApiKey(**kwargs)
     async def add(self, org_api_key: OrgApiKey) -> OrgApiKey:
+        """
+            #TODO add comment
+        """
         logging.info("OrgApiKeyManager.add")
-        org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-        org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+        org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(
+            self._session_context.customer_code)
+        org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(
+            self._session_context.customer_code)
         self._session_context.session.add(org_api_key)
         await self._session_context.session.flush()
         return org_api_key
     def _build_query(self):
+        """
+            #TODO add comment
+        """
         logging.info("OrgApiKeyManager._build_query")
 #         join_condition = None
 #
@@ -55,21 +89,25 @@ class OrgApiKeyManager:
 #
 #         if join_condition is not None:
 #             query = select(OrgApiKey
-#                         ,Organization #organization_id
-#                         ,OrgCustomer #org_customer_id
+#                         , Organization  # organization_id
+#                         , OrgCustomer  # org_customer_id
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(OrgApiKey)
-        query = select(OrgApiKey
-                    ,Organization #organization_id
-                    ,OrgCustomer #org_customer_id
-                    )
+        query = select(
+            OrgApiKey
+            , Organization  # organization_id
+            , OrgCustomer  # org_customer_id
+            )
 
         query = query.outerjoin(Organization, and_(OrgApiKey.organization_id == Organization.organization_id, OrgApiKey.organization_id != 0))
         query = query.outerjoin(OrgCustomer, and_(OrgApiKey.org_customer_id == OrgCustomer.org_customer_id, OrgApiKey.org_customer_id != 0))
 
         return query
     async def _run_query(self, query_filter) -> List[OrgApiKey]:
+        """
+            #TODO add comment
+        """
         logging.info("OrgApiKeyManager._run_query")
         org_api_key_query_all = self._build_query()
         if query_filter is not None:
@@ -84,31 +122,47 @@ class OrgApiKeyManager:
             org_api_key = query_result_row[i]
             i = i + 1
 
-            organization = query_result_row[i] #organization_id
+            organization = query_result_row[i]  # organization_id
             i = i + 1
-            org_customer = query_result_row[i] #org_customer_id
+            org_customer = query_result_row[i]  # org_customer_id
             i = i + 1
 
-            org_api_key.organization_code_peek = organization.code if organization else uuid.UUID(int=0) #organization_id
-            org_api_key.org_customer_code_peek = org_customer.code if org_customer else uuid.UUID(int=0) #org_customer_id
+            org_api_key.organization_code_peek = organization.code if organization else uuid.UUID(int=0)  # organization_id
+            org_api_key.org_customer_code_peek = org_customer.code if org_customer else uuid.UUID(int=0)  # org_customer_id
 
             result.append(org_api_key)
         return result
-    def _first_or_none(self,org_api_key_list: List) -> OrgApiKey:
+    def _first_or_none(self, org_api_key_list: List) -> OrgApiKey:
+        """
+            #TODO add comment
+        """
         return org_api_key_list[0] if org_api_key_list else None
     async def get_by_id(self, org_api_key_id: int) -> Optional[OrgApiKey]:
-        logging.info("OrgApiKeyManager.get_by_id start org_api_key_id:" + str(org_api_key_id))
+        """
+            #TODO add comment
+        """
+        logging.info(
+            "OrgApiKeyManager.get_by_id start org_api_key_id: %s",
+            str(org_api_key_id))
         if not isinstance(org_api_key_id, int):
-            raise TypeError("The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
+            raise TypeError(
+                "The org_api_key_id must be an integer, got %s instead.",
+                type(org_api_key_id))
         query_filter = OrgApiKey.org_api_key_id == org_api_key_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgApiKey]:
-        logging.info("OrgApiKeyManager.get_by_code {code}")
+        """
+            #TODO add comment
+        """
+        logging.info("OrgApiKeyManager.get_by_code %s", code)
         query_filter = OrgApiKey.code == code
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, org_api_key: OrgApiKey, **kwargs) -> Optional[OrgApiKey]:
+        """
+            #TODO add comment
+        """
         logging.info("OrgApiKeyManager.update")
         property_list = OrgApiKey.property_list()
         if org_api_key:
@@ -120,68 +174,91 @@ class OrgApiKeyManager:
             await self._session_context.session.flush()
         return org_api_key
     async def delete(self, org_api_key_id: int):
-        logging.info("OrgApiKeyManager.delete {org_api_key_id}")
+        """
+            #TODO add comment
+        """
+        logging.info("OrgApiKeyManager.delete %s", org_api_key_id)
         if not isinstance(org_api_key_id, int):
-            raise TypeError("The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
+            raise TypeError(
+                "The org_api_key_id must be an integer, got %s instead.",
+                type(org_api_key_id))
         org_api_key = await self.get_by_id(org_api_key_id)
         if not org_api_key:
             raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
         await self._session_context.session.delete(org_api_key)
         await self._session_context.session.flush()
     async def get_list(self) -> List[OrgApiKey]:
+        """
+            #TODO add comment
+        """
         logging.info("OrgApiKeyManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, org_api_key:OrgApiKey) -> str:
-        logging.info("OrgApiKeyManager.to_json")
+    def to_json(self, org_api_key: OrgApiKey) -> str:
         """
         Serialize the OrgApiKey object to a JSON string using the OrgApiKeySchema.
         """
+        logging.info("OrgApiKeyManager.to_json")
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
         return json.dumps(org_api_key_data)
-    def to_dict(self, org_api_key:OrgApiKey) -> dict:
-        logging.info("OrgApiKeyManager.to_dict")
+    def to_dict(self, org_api_key: OrgApiKey) -> dict:
         """
         Serialize the OrgApiKey object to a JSON string using the OrgApiKeySchema.
         """
+        logging.info("OrgApiKeyManager.to_dict")
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
         return org_api_key_data
     def from_json(self, json_str: str) -> OrgApiKey:
-        logging.info("OrgApiKeyManager.from_json")
         """
         Deserialize a JSON string into a OrgApiKey object using the OrgApiKeySchema.
         """
+        logging.info("OrgApiKeyManager.from_json")
         schema = OrgApiKeySchema()
         data = json.loads(json_str)
         org_api_key_dict = schema.load(data)
         new_org_api_key = OrgApiKey(**org_api_key_dict)
         return new_org_api_key
     def from_dict(self, org_api_key_dict: str) -> OrgApiKey:
+        """
+        #TODO add comment
+        """
         logging.info("OrgApiKeyManager.from_dict")
         schema = OrgApiKeySchema()
         org_api_key_dict_converted = schema.load(org_api_key_dict)
         new_org_api_key = OrgApiKey(**org_api_key_dict_converted)
         return new_org_api_key
     async def add_bulk(self, org_api_keys: List[OrgApiKey]) -> List[OrgApiKey]:
+        """
+        Add multiple org_api_keys at once.
+        """
         logging.info("OrgApiKeyManager.add_bulk")
-        """Add multiple org_api_keys at once."""
         for org_api_key in org_api_keys:
             if org_api_key.org_api_key_id is not None and org_api_key.org_api_key_id > 0:
-                raise ValueError("OrgApiKey is already added: " + str(org_api_key.code) + " " + str(org_api_key.org_api_key_id))
+                raise ValueError("OrgApiKey is already added: " +
+                                 str(org_api_key.code) +
+                                 " " + str(org_api_key.org_api_key_id))
             org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
             org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
         self._session_context.session.add_all(org_api_keys)
         await self._session_context.session.flush()
         return org_api_keys
-    async def update_bulk(self, org_api_key_updates: List[Dict[int, Dict]]) -> List[OrgApiKey]:
+    async def update_bulk(
+            self,
+            org_api_key_updates: List[Dict[int, Dict]]
+            ) -> List[OrgApiKey]:
+        """
+        #TODO add comment
+        """
         logging.info("OrgApiKeyManager.update_bulk start")
         updated_org_api_keys = []
         for update in org_api_key_updates:
             org_api_key_id = update.get("org_api_key_id")
             if not isinstance(org_api_key_id, int):
-                raise TypeError("The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
+                raise TypeError(
+                    "The org_api_key_id must be an integer, got %s instead.",
+                    type(org_api_key_id))
             if not org_api_key_id:
                 continue
             logging.info("OrgApiKeyManager.update_bulk org_api_key_id:{org_api_key_id}")
@@ -191,50 +268,75 @@ class OrgApiKeyManager:
             for key, value in update.items():
                 if key != "org_api_key_id":
                     setattr(org_api_key, key, value)
-            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             updated_org_api_keys.append(org_api_key)
         await self._session_context.session.flush()
         logging.info("OrgApiKeyManager.update_bulk end")
         return updated_org_api_keys
     async def delete_bulk(self, org_api_key_ids: List[int]) -> bool:
+        """
+        Delete multiple org_api_keys by their IDs.
+        """
         logging.info("OrgApiKeyManager.delete_bulk")
-        """Delete multiple org_api_keys by their IDs."""
         for org_api_key_id in org_api_key_ids:
             if not isinstance(org_api_key_id, int):
-                raise TypeError("The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
+                raise TypeError(
+                    "The org_api_key_id must be an integer, got %s instead.",
+                    type(org_api_key_id))
             org_api_key = await self.get_by_id(org_api_key_id)
             if not org_api_key:
-                raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
+                raise OrgApiKeyNotFoundError(
+                    "OrgApiKey with ID %s not found!",
+                    org_api_key_id)
             if org_api_key:
                 await self._session_context.session.delete(org_api_key)
         await self._session_context.session.flush()
         return True
     async def count(self) -> int:
+        """
+        return the total number of org_api_keys.
+        """
         logging.info("OrgApiKeyManager.count")
-        """Return the total number of org_api_keys."""
         result = await self._session_context.session.execute(select(OrgApiKey))
         return len(result.scalars().all())
     #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(self, sort_by: str, order: Optional[str] = "asc") -> List[OrgApiKey]:
-        """Retrieve org_api_keys sorted by a particular attribute."""
+    async def get_sorted_list(
+            self,
+            sort_by: str,
+            order: Optional[str] = "asc") -> List[OrgApiKey]:
+        """
+        Retrieve org_api_keys sorted by a particular attribute.
+        """
         if order == "asc":
-            result = await self._session_context.session.execute(select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).asc()))
+            result = await self._session_context.session.execute(
+                select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).asc()))
         else:
-            result = await self._session_context.session.execute(select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).desc()))
+            result = await self._session_context.session.execute(
+                select(OrgApiKey).order_by(getattr(OrgApiKey, sort_by).desc()))
         return result.scalars().all()
     async def refresh(self, org_api_key: OrgApiKey) -> OrgApiKey:
+        """
+        Refresh the state of a given org_api_key instance from the database.
+        """
         logging.info("OrgApiKeyManager.refresh")
-        """Refresh the state of a given org_api_key instance from the database."""
         await self._session_context.session.refresh(org_api_key)
         return org_api_key
     async def exists(self, org_api_key_id: int) -> bool:
-        logging.info("OrgApiKeyManager.exists {org_api_key_id}")
-        """Check if a org_api_key with the given ID exists."""
+        """
+        Check if a org_api_key with the given ID exists.
+        """
+        logging.info("OrgApiKeyManager.exists %s", org_api_key_id)
         if not isinstance(org_api_key_id, int):
-            raise TypeError("The org_api_key_id must be an integer, got {type(org_api_key_id)} instead.")
+            raise TypeError(
+                "The org_api_key_id must be an integer, got %s instead.",
+                type(org_api_key_id))
         org_api_key = await self.get_by_id(org_api_key_id)
         return bool(org_api_key)
-    def is_equal(self, org_api_key1:OrgApiKey, org_api_key2:OrgApiKey) -> bool:
+    def is_equal(self, org_api_key1: OrgApiKey, org_api_key2: OrgApiKey) -> bool:
+        """
+        #TODO add comment
+        """
         if not org_api_key1:
             raise TypeError("OrgApiKey1 required.")
         if not org_api_key2:
@@ -250,14 +352,26 @@ class OrgApiKeyManager:
     async def get_by_organization_id(self, organization_id: int) -> List[OrgApiKey]:  # OrganizationID
         logging.info("OrgApiKeyManager.get_by_organization_id")
         if not isinstance(organization_id, int):
-            raise TypeError("The org_api_key_id must be an integer, got {type(organization_id)} instead.")
+            raise TypeError(
+                "The org_api_key_id must be an integer, got %s instead.",
+                type(organization_id)
+                )
         query_filter = OrgApiKey.organization_id == organization_id
         query_results = await self._run_query(query_filter)
         return query_results
-    async def get_by_org_customer_id(self, org_customer_id: int) -> List[OrgApiKey]:  # OrgCustomerID
+    async def get_by_org_customer_id(
+        self,
+        org_customer_id: int
+        ) -> List[OrgApiKey]:  # OrgCustomerID
+        """
+        #TODO add comment
+        """
         logging.info("OrgApiKeyManager.get_by_org_customer_id")
         if not isinstance(org_customer_id, int):
-            raise TypeError("The org_api_key_id must be an integer, got {type(org_customer_id)} instead.")
+            raise TypeError(
+                "The org_api_key_id must be an integer, got %s instead.",
+                type(org_customer_id)
+                )
         query_filter = OrgApiKey.org_customer_id == org_customer_id
         query_results = await self._run_query(query_filter)
         return query_results

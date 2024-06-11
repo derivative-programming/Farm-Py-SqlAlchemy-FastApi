@@ -1,9 +1,7 @@
 # __init__.py
-
 """
     #TODO add comment
 """
-
 from .customer import CustomerSchema
 from .customer_role import CustomerRoleSchema
 from .date_greater_than_filter import DateGreaterThanFilterSchema

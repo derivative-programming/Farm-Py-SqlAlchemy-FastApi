@@ -1,3 +1,7 @@
+# business/customer_role.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -15,7 +19,7 @@ from .base_bus_obj import BaseBusObj
 
 class CustomerRoleInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -36,7 +40,7 @@ class CustomerRoleBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("customer_role_id must be a int.")
         self.customer_role.customer_role_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.customer_role.code
@@ -45,7 +49,7 @@ class CustomerRoleBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.customer_role.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.customer_role.last_change_code
@@ -54,7 +58,7 @@ class CustomerRoleBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.customer_role.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.customer_role.insert_user_id
@@ -66,7 +70,7 @@ class CustomerRoleBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.customer_role.last_update_user_id
@@ -79,7 +83,7 @@ class CustomerRoleBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #CustomerID
+    # CustomerID
     # isPlaceholder
     @property
     def is_placeholder(self):
@@ -92,7 +96,7 @@ class CustomerRoleBusObj(BaseBusObj):
     def set_prop_is_placeholder(self, value: bool):
         self.is_placeholder = value
         return self
-    #Placeholder
+    # placeholder
     @property
     def placeholder(self):
         return self.customer_role.placeholder
@@ -104,9 +108,9 @@ class CustomerRoleBusObj(BaseBusObj):
     def set_prop_placeholder(self, value: bool):
         self.placeholder = value
         return self
-    #RoleID
+    # RoleID
 
-    #CustomerID
+    # CustomerID
     @property
     def customer_id(self):
         return self.customer_role.customer_id
@@ -125,8 +129,8 @@ class CustomerRoleBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
     #     self.customer_role.customer_code_peek = value
     # isPlaceholder,
-    #placeholder,
-    #RoleID
+    # placeholder,
+    # RoleID
     @property
     def role_id(self):
         return self.customer_role.role_id
@@ -146,7 +150,7 @@ class CustomerRoleBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "role_code_peek must be a UUID"
     #     self.customer_role.role_code_peek = value
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.customer_role.insert_utc_date_time
@@ -154,7 +158,7 @@ class CustomerRoleBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.customer_role.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.customer_role.last_update_utc_date_time
@@ -243,14 +247,14 @@ class CustomerRoleBusObj(BaseBusObj):
         my_customer_role = self.get_customer_role_obj()
         return customer_role_manager.is_equal(customer_role, my_customer_role)
 
-    #CustomerID
+    # CustomerID
     async def get_customer_id_rel_obj(self) -> models.Customer:
         customer_manager = managers_and_enums.CustomerManager(self._session_context)
         customer_obj = await customer_manager.get_by_id(self.customer_id)
         return customer_obj
     # isPlaceholder,
-    #placeholder,
-    #RoleID
+    # placeholder,
+    # RoleID
     async def get_role_id_rel_obj(self) -> models.Role:
         role_manager = managers_and_enums.RoleManager(self._session_context)
         role_obj = await role_manager.get_by_id(self.role_id)
@@ -262,7 +266,7 @@ class CustomerRoleBusObj(BaseBusObj):
         return "customer_role"
     def get_id(self) -> int:
         return self.customer_role_id
-    #CustomerID
+    # CustomerID
     async def get_parent_name(self) -> str:
         return 'Customer'
     async def get_parent_code(self) -> uuid.UUID:
@@ -270,8 +274,8 @@ class CustomerRoleBusObj(BaseBusObj):
     async def get_parent_obj(self) -> models.Customer:
         return self.get_customer_id_rel_obj()
     # isPlaceholder,
-    #placeholder,
-    #RoleID
+    # placeholder,
+    # RoleID
 
     @staticmethod
     async def to_bus_obj_list(session_context: SessionContext, obj_list: List[CustomerRole]):

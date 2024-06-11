@@ -1,3 +1,7 @@
+# org_customer.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
@@ -76,8 +80,8 @@ class OrgCustomer(Base):
         return result
 # Define the index separately from the column
 # Index('index_code', OrgCustomer.code)
-# Index('farm_org_customer_index_customer_id', OrgCustomer.customer_id) #CustomerID
-# Index('farm_org_customer_index_organization_id', OrgCustomer.organization_id) #OrganizationID
+# Index('farm_org_customer_index_customer_id', OrgCustomer.customer_id)  # CustomerID
+# Index('farm_org_customer_index_organization_id', OrgCustomer.organization_id)  # OrganizationID
 @event.listens_for(OrgCustomer, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

@@ -1,9 +1,7 @@
 # models/managers/__init__.py
-
 """
     #TODO add comment
 """
-
 from .customer import CustomerManager
 from .customer_role import CustomerRoleManager
 from .date_greater_than_filter import DateGreaterThanFilterManager, DateGreaterThanFilterEnum

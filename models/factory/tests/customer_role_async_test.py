@@ -1,3 +1,7 @@
+# models/factory/tests/customer_role_async_test.py
+"""
+    #TODO add comment
+"""
 import asyncio
 from decimal import Decimal
 import pytest
@@ -184,7 +188,7 @@ class TestCustomerRoleFactoryAsync:
         assert isinstance(customer_role.role_id, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #customerID
+        # customerID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -192,8 +196,8 @@ class TestCustomerRoleFactoryAsync:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
         # isPlaceholder,
-        #placeholder,
-        #roleID
+        # placeholder,
+        # roleID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.role_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -222,7 +226,7 @@ class TestCustomerRoleFactoryAsync:
         assert customer_role.insert_utc_date_time is not None
         assert customer_role.last_update_utc_date_time is not None
 
-        #CustomerID
+        # CustomerID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -230,8 +234,8 @@ class TestCustomerRoleFactoryAsync:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
         # isPlaceholder,
-        #placeholder,
-        #RoleID
+        # placeholder,
+        # RoleID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.role_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -262,7 +266,7 @@ class TestCustomerRoleFactoryAsync:
         await session.commit()
         assert customer_role_2.last_change_code != original_last_change_code
 
-    #CustomerID
+    # CustomerID
     @pytest.mark.asyncio
     async def test_invalid_customer_id(self, session):
         customer_role = await CustomerRoleFactory.create_async(session=session)
@@ -271,8 +275,8 @@ class TestCustomerRoleFactoryAsync:
             await session.commit()
         await session.rollback()
     # isPlaceholder,
-    #placeholder,
-    #RoleID
+    # placeholder,
+    # RoleID
     @pytest.mark.asyncio
     async def test_invalid_role_id(self, session):
         customer_role = await CustomerRoleFactory.create_async(session=session)

@@ -1,3 +1,7 @@
+# customer_role.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
@@ -83,8 +87,8 @@ class CustomerRole(Base):
         return result
 # Define the index separately from the column
 # Index('index_code', CustomerRole.code)
-# Index('farm_customer_role_index_customer_id', CustomerRole.customer_id) #CustomerID
-# Index('farm_customer_role_index_role_id', CustomerRole.role_id) #RoleID
+# Index('farm_customer_role_index_customer_id', CustomerRole.customer_id)  # CustomerID
+# Index('farm_customer_role_index_role_id', CustomerRole.role_id)  # RoleID
 @event.listens_for(CustomerRole, 'before_insert')
 def set_created_on(mapper, connection, target):
     target.insert_utc_date_time = datetime.utcnow()

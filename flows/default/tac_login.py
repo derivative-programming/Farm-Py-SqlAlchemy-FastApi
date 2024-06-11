@@ -1,3 +1,7 @@
+# flows/default/tac_login.py
+"""
+    #TODO add comment
+"""
 import json
 from business.tac import TacBusObj
 from datetime import date, datetime
@@ -18,10 +22,10 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacLoginResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
-    customer_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+    customer_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
-    user_code_value:uuid.UUID =  uuid.UUID(int=0)
+    user_code_value: uuid.UUID = uuid.UUID(int=0)
     utc_offset_in_minutes: int = 0
     role_name_csv_list: str = ""
     api_key: str = ""

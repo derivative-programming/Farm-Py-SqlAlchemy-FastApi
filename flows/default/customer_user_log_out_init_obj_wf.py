@@ -1,3 +1,7 @@
+# flows/default/customer_user_log_out_init_obj_wf.py
+"""
+    #TODO add comment
+"""
 import json
 from business.customer import CustomerBusObj
 from datetime import date, datetime
@@ -18,8 +22,8 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowCustomerUserLogOutInitObjWFResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
-    tac_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+    tac_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         pass

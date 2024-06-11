@@ -64,7 +64,7 @@ Before you can contribute, you'll need to set up a local copy of the repository:
 # Making Changes
 * Create a new branch for your changes: git checkout -b my-new-branch
 * Make your changes to the code.
-* Commit your changes: git commit -am "Added some new feature"
+* Commit your changes: git commit -am "Added a new feature"
 * Push your changes to your fork: git push origin my-new-branch
 
 # Creating a Pull Request

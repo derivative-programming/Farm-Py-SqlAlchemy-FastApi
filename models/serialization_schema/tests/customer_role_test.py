@@ -1,3 +1,7 @@
+# customer_role_test.py
+"""
+    #TODO add comment
+"""
 import json
 import pytest
 import pytz
@@ -87,8 +91,8 @@ class TestCustomerRoleSchema:
         assert new_customer_role.insert_utc_date_time.isoformat() == customer_role.insert_utc_date_time.isoformat()
         assert new_customer_role.last_update_utc_date_time.isoformat() == customer_role.last_update_utc_date_time.isoformat()
 
-        assert new_customer_role.customer_code_peek == customer_role.customer_code_peek #CustomerID
-        assert new_customer_role.role_code_peek == customer_role.role_code_peek  #RoleID
+        assert new_customer_role.customer_code_peek == customer_role.customer_code_peek  # CustomerID
+        assert new_customer_role.role_code_peek == customer_role.role_code_peek   # RoleID
 
     def test_from_json(self, customer_role: CustomerRole, session):
         customer_role_schema = CustomerRoleSchema()
@@ -110,8 +114,8 @@ class TestCustomerRoleSchema:
         assert str(deserialized_data['role_id']) == str(self.sample_data['role_id'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['customer_code_peek']) == str(self.sample_data['customer_code_peek']) #CustomerID
-        assert str(deserialized_data['role_code_peek']) == str(self.sample_data['role_code_peek'])   #RoleID
+        assert str(deserialized_data['customer_code_peek']) == str(self.sample_data['customer_code_peek'])  # CustomerID
+        assert str(deserialized_data['role_code_peek']) == str(self.sample_data['role_code_peek'])    # RoleID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_customer_role = CustomerRole(**deserialized_data)

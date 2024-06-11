@@ -1,4 +1,7 @@
-
+# models/constants/org_customer.py
+"""
+    #TODO add comment
+"""
 customer_id_calculatedIsDBColumnIndexed: bool = True
 email_calculatedIsDBColumnIndexed: bool = False
 organization_id_calculatedIsDBColumnIndexed: bool = True

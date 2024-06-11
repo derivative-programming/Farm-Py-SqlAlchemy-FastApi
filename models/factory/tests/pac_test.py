@@ -1,3 +1,7 @@
+# models/factory/tests/pac_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import pytest
 import time
@@ -138,11 +142,11 @@ class TestPacFactory:
         assert pac.name == "" or isinstance(pac.name, str)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #description,
-        #displayOrder,
+        # description,
+        # displayOrder,
         # isActive,
-        #lookupEnumName,
-        #name,
+        # lookupEnumName,
+        # name,
 
         assert isinstance(pac.insert_utc_date_time, datetime)
         assert isinstance(pac.last_update_utc_date_time, datetime)
@@ -163,11 +167,11 @@ class TestPacFactory:
         assert pac.insert_utc_date_time is not None
         assert pac.last_update_utc_date_time is not None
 
-        #description,
-        #displayOrder,
+        # description,
+        # displayOrder,
         # isActive,
-        #lookupEnumName,
-        #name,
+        # lookupEnumName,
+        # name,
 
         assert pac.description == ""
         assert pac.display_order == 0
@@ -186,9 +190,9 @@ class TestPacFactory:
         session.commit()
         assert pac_2.last_change_code != original_last_change_code
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
+    # lookupEnumName,
+    # name,
 

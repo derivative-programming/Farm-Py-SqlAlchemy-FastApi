@@ -1,9 +1,7 @@
 # models/constants/plant.py
-
 """
     #TODO add comment
 """
-
 flvr_foreign_key_id_calculatedIsDBColumnIndexed: bool = True
 is_delete_allowed_calculatedIsDBColumnIndexed: bool = False
 is_edit_allowed_calculatedIsDBColumnIndexed: bool = False

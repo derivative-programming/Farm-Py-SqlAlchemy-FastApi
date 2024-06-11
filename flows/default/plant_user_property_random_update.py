@@ -1,3 +1,7 @@
+# flows/default/plant_user_property_random_update.py
+"""
+    #TODO add comment
+"""
 import json
 from business.plant import PlantBusObj
 from datetime import date, datetime
@@ -18,7 +22,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowPlantUserPropertyRandomUpdateResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         pass

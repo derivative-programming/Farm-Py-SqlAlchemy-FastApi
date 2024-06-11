@@ -1,3 +1,7 @@
+# models/factory/tests/customer_role_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import pytest
 import time
@@ -137,7 +141,7 @@ class TestCustomerRoleFactory:
         assert isinstance(customer_role.role_id, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #customerID
+        # customerID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -145,8 +149,8 @@ class TestCustomerRoleFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
         # isPlaceholder,
-        #placeholder,
-        #roleID
+        # placeholder,
+        # roleID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.role_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -173,7 +177,7 @@ class TestCustomerRoleFactory:
         assert customer_role.insert_utc_date_time is not None
         assert customer_role.last_update_utc_date_time is not None
 
-        #CustomerID
+        # CustomerID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -181,8 +185,8 @@ class TestCustomerRoleFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
         # isPlaceholder,
-        #placeholder,
-        #RoleID
+        # placeholder,
+        # RoleID
         if db_dialect == 'postgresql':
             assert isinstance(customer_role.role_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -206,7 +210,7 @@ class TestCustomerRoleFactory:
         session.commit()
         assert customer_role_2.last_change_code != original_last_change_code
 
-    #CustomerID
+    # CustomerID
     def test_invalid_customer_id(self, session):
         customer_role = CustomerRoleFactory.create(session=session)
         customer_role.customer_id = 99999
@@ -214,8 +218,8 @@ class TestCustomerRoleFactory:
             session.commit()
         session.rollback()
     # isPlaceholder,
-    #placeholder,
-    #RoleID
+    # placeholder,
+    # RoleID
     def test_invalid_role_id(self, session):
         customer_role = CustomerRoleFactory.create(session=session)
         customer_role.role_id = 99999

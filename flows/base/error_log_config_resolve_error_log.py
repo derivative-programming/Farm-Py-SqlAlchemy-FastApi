@@ -1,3 +1,7 @@
+# flows/base/error_log_config_resolve_error_log.py
+"""
+    #TODO add comment
+"""
 import uuid
 from business.customer import CustomerBusObj
 from business.error_log import ErrorLogBusObj

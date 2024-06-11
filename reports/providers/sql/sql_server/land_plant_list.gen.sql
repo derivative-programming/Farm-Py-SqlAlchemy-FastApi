@@ -138,7 +138,7 @@
 			 (land.code = :context_code
 			   )
 
-			and (: flavor_code is null or : flavor_code = '00000000-0000-0000-0000-000000000000' or : flavor_code = plantflavor.code)
+			and (:flavor_code is null or :flavor_code = '00000000-0000-0000-0000-000000000000' or :flavor_code = plantflavor.code)
 
 			and (:some_int_val is null or :some_int_val = 0 or :some_int_val = plant.some_int_val)
 

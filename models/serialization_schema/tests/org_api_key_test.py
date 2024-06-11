@@ -1,3 +1,7 @@
+# org_api_key_test.py
+"""
+    #TODO add comment
+"""
 import json
 import pytest
 import pytz
@@ -37,7 +41,7 @@ class TestOrgApiKeySchema:
 
         "last_update_utc_date_time": datetime(2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc).isoformat()
     }
-    def test_org_api_key_serialization(self, org_api_key:OrgApiKey, session):
+    def test_org_api_key_serialization(self, org_api_key: OrgApiKey, session):
         schema = OrgApiKeySchema()
         result = schema.dump(org_api_key)
         assert result['code'] == org_api_key.code
@@ -61,7 +65,7 @@ class TestOrgApiKeySchema:
         assert result['organization_code_peek'] == org_api_key.organization_code_peek # OrganizationID
         assert result['org_customer_code_peek'] == org_api_key.org_customer_code_peek # OrgCustomerID
 
-    def test_org_api_key_deserialization(self, org_api_key:OrgApiKey, session):
+    def test_org_api_key_deserialization(self, org_api_key: OrgApiKey, session):
         schema = OrgApiKeySchema()
         serialized_data = schema.dump(org_api_key)
         deserialized_data = schema.load(serialized_data)
@@ -107,10 +111,10 @@ class TestOrgApiKeySchema:
         assert new_org_api_key.insert_utc_date_time.isoformat() == org_api_key.insert_utc_date_time.isoformat()
         assert new_org_api_key.last_update_utc_date_time.isoformat() == org_api_key.last_update_utc_date_time.isoformat()
 
-        assert new_org_api_key.organization_code_peek == org_api_key.organization_code_peek #OrganizationID
-        assert new_org_api_key.org_customer_code_peek == org_api_key.org_customer_code_peek  #OrgCustomerID
+        assert new_org_api_key.organization_code_peek == org_api_key.organization_code_peek  # OrganizationID
+        assert new_org_api_key.org_customer_code_peek == org_api_key.org_customer_code_peek   # OrgCustomerID
 
-    def test_from_json(self, org_api_key:OrgApiKey, session):
+    def test_from_json(self, org_api_key: OrgApiKey, session):
         org_api_key_schema = OrgApiKeySchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -135,13 +139,13 @@ class TestOrgApiKeySchema:
         assert str(deserialized_data['org_customer_id']) == str(self.sample_data['org_customer_id'])
 
         assert deserialized_data['insert_utc_date_time'].isoformat() == self.sample_data['insert_utc_date_time']
-        assert str(deserialized_data['organization_code_peek']) == str(self.sample_data['organization_code_peek']) #OrganizationID
-        assert str(deserialized_data['org_customer_code_peek']) == str(self.sample_data['org_customer_code_peek'])   #OrgCustomerID
+        assert str(deserialized_data['organization_code_peek']) == str(self.sample_data['organization_code_peek'])  # OrganizationID
+        assert str(deserialized_data['org_customer_code_peek']) == str(self.sample_data['org_customer_code_peek'])    # OrgCustomerID
 
         assert deserialized_data['last_update_utc_date_time'].isoformat() == self.sample_data['last_update_utc_date_time']
         new_org_api_key = OrgApiKey(**deserialized_data)
         assert isinstance(new_org_api_key, OrgApiKey)
-    def test_to_json(self, org_api_key:OrgApiKey, session):
+    def test_to_json(self, org_api_key: OrgApiKey, session):
             # Convert the OrgApiKey instance to JSON using the schema
             org_api_key_schema = OrgApiKeySchema()
             org_api_key_dict = org_api_key_schema.dump(org_api_key)

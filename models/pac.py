@@ -1,3 +1,7 @@
+# pac.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
@@ -53,7 +57,7 @@ class Pac(Base):
     insert_utc_date_time = Column('insert_utc_date_time', DateTime, nullable=True)
     last_update_utc_date_time = Column('last_update_utc_date_time', DateTime, nullable=True)
     #no relationsip properties. they are not updated immediately if the id prop is updated directly
-    # = relationship('', back_populates=snake_case(''))
+    #  = relationship('', back_populates=snake_case(''))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': last_change_code

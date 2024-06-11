@@ -1,3 +1,7 @@
+# models/factory/tests/org_api_key_async_test.py
+"""
+    #TODO add comment
+"""
 import asyncio
 from decimal import Decimal
 import pytest
@@ -81,11 +85,11 @@ class TestOrgApiKeyFactoryAsync:
             assert isinstance(org_api_key.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        org_api_key:OrgApiKey = await OrgApiKeyFactory.build_async(session=session)
+        org_api_key: OrgApiKey = await OrgApiKeyFactory.build_async(session=session)
         assert org_api_key.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        org_api_key:OrgApiKey = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key: OrgApiKey = await OrgApiKeyFactory.create_async(session=session)
         assert org_api_key.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -189,21 +193,21 @@ class TestOrgApiKeyFactoryAsync:
         assert isinstance(org_api_key.org_customer_id, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #apiKeyValue,
-        #createdBy,
-        #createdUTCDateTime
-        #expirationUTCDateTime
+        # apiKeyValue,
+        # createdBy,
+        # createdUTCDateTime
+        # expirationUTCDateTime
         # isActive,
         # isTempUserKey,
-        #name,
-        #organizationID
+        # name,
+        # organizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_api_key.organization_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_api_key.organization_code_peek, str)
-        #orgCustomerID
+        # orgCustomerID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.org_customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -232,21 +236,21 @@ class TestOrgApiKeyFactoryAsync:
         assert org_api_key.insert_utc_date_time is not None
         assert org_api_key.last_update_utc_date_time is not None
 
-        #apiKeyValue,
-        #createdBy,
-        #createdUTCDateTime
-        #expirationUTCDateTime
+        # apiKeyValue,
+        # createdBy,
+        # createdUTCDateTime
+        # expirationUTCDateTime
         # isActive,
         # isTempUserKey,
-        #name,
-        #OrganizationID
+        # name,
+        # OrganizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_api_key.organization_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_api_key.organization_code_peek, str)
-        #OrgCustomerID
+        # OrgCustomerID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.org_customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -282,14 +286,14 @@ class TestOrgApiKeyFactoryAsync:
         await session.commit()
         assert org_api_key_2.last_change_code != original_last_change_code
 
-    #apiKeyValue,
-    #createdBy,
-    #createdUTCDateTime
-    #expirationUTCDateTime
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
     # isActive,
     # isTempUserKey,
-    #name,
-    #OrganizationID
+    # name,
+    # OrganizationID
     @pytest.mark.asyncio
     async def test_invalid_organization_id(self, session):
         org_api_key = await OrgApiKeyFactory.create_async(session=session)
@@ -297,7 +301,7 @@ class TestOrgApiKeyFactoryAsync:
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             await session.commit()
         await session.rollback()
-    #OrgCustomerID
+    # OrgCustomerID
     @pytest.mark.asyncio
     async def test_invalid_org_customer_id(self, session):
         org_api_key = await OrgApiKeyFactory.create_async(session=session)

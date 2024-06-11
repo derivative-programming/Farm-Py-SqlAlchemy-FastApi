@@ -1,9 +1,7 @@
 # flavor.py
-
 """
     #TODO add comment
 """
-
 from datetime import datetime, date
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
@@ -109,4 +107,3 @@ def set_created_on(mapper, connection, target):
 @event.listens_for(Flavor, 'before_update')
 def set_updated_on(mapper, connection, target):
     target.last_update_utc_date_time = datetime.utcnow()
-

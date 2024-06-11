@@ -1,9 +1,7 @@
 # models/factory/__init__.py
-
 """
     #TODO add comment
 """
-
 from .customer import CustomerFactory
 from .customer_role import CustomerRoleFactory
 from .date_greater_than_filter import DateGreaterThanFilterFactory

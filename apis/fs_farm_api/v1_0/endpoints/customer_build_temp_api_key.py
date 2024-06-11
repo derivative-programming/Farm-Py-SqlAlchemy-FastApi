@@ -1,3 +1,7 @@
+# apis/fs_farm_api/v1_0/endpoints/customer_build_temp_api_key.py
+"""
+    #TODO add comment
+"""
 import tempfile
 import uuid
 from fastapi import APIRouter, Depends, Path
@@ -11,10 +15,11 @@ import apis.models as api_models
 import reports
 from .base_router import BaseRouter
 from database import get_db
-
-
 class CustomerBuildTempApiKeyRouterConfig():
-    #constants
+    """
+        #TODO add comment
+    """
+    # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = False
     is_get_init_available: bool = False
@@ -24,28 +29,38 @@ class CustomerBuildTempApiKeyRouterConfig():
     is_put_available: bool = False
     is_delete_available: bool = False
     is_public: bool = False
-
-
 class CustomerBuildTempApiKeyRouter(BaseRouter):
+    """
+        #TODO add comment
+    """
     router = APIRouter(tags=["CustomerBuildTempApiKey"])
 
     @staticmethod
-    @router.post("/api/v1_0/customer-build-temp-api-key/{customer_code}",
-                 response_model=api_models.CustomerBuildTempApiKeyPostModelResponse,
-                summary="Customer Build Temp Api Key Business Flow")
-    async def request_post_with_id(customer_code: str,
-                                   request_model: api_models.CustomerBuildTempApiKeyPostModelRequest,
-                                   session: AsyncSession = Depends(get_db), api_key: str = Depends(api_key_header)):
+    @router.post(
+        "/api/v1_0/customer-build-temp-api-key/{customer_code}",
+        response_model=api_models.CustomerBuildTempApiKeyPostModelResponse,
+        summary="Customer Build Temp Api Key Business Flow")
+    async def request_post_with_id(
+        customer_code: str,
+        request_model: api_models.CustomerBuildTempApiKeyPostModelRequest,
+        session: AsyncSession = Depends(get_db),
+        api_key: str = Depends(api_key_header)
+    ):
         logging.info('CustomerBuildTempApiKeyRouter.request_post_with_id start. customerCode:' + customer_code)
-        auth_dict = BaseRouter.implementation_check(CustomerBuildTempApiKeyRouterConfig.is_post_with_id_available)
+        auth_dict = BaseRouter.implementation_check(
+            CustomerBuildTempApiKeyRouterConfig.is_post_with_id_available)
         response = api_models.CustomerBuildTempApiKeyPostModelResponse()
-        auth_dict = BaseRouter.authorization_check(CustomerBuildTempApiKeyRouterConfig.is_public, api_key)
+        auth_dict = BaseRouter.authorization_check(
+            CustomerBuildTempApiKeyRouterConfig.is_public,
+            api_key)
         # Start a transaction
         async with session:
             try:
                 logging.info("Start session...")
                 session_context = SessionContext(auth_dict, session)
-                customer_code = session_context.check_context_code("CustomerCode", customer_code)
+                customer_code = session_context.check_context_code(
+                    "CustomerCode",
+                    customer_code)
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
@@ -56,7 +71,9 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
             except TypeError as te:
                 logging.info("TypeError Exception occurred")
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(te.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(te.__traceback__)
+                    )
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
@@ -70,8 +87,9 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
                     await session.commit()
                 else:
                     await session.rollback()
-        responseData = response.model_dump_json()
-        logging.info("CustomerBuildTempApiKeyRouter.submit get result:%s",
-                     responseData)
+        response_data = response.model_dump_json()
+        logging.info(
+            'CustomerBuildTempApiKeyRouter.submit get result:%s',
+            response_data)
         return response
 

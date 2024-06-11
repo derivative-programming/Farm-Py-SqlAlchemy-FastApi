@@ -1,3 +1,7 @@
+# flows/default/land_add_plant_init_obj_wf.py
+"""
+    #TODO add comment
+"""
 import json
 from business.land import LandBusObj
 from datetime import date, datetime
@@ -18,8 +22,8 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowLandAddPlantInitObjWFResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
-    request_flavor_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+    request_flavor_code: uuid.UUID = uuid.UUID(int=0)
     request_other_flavor: str = ""
     request_some_int_val: int = 0
     request_some_big_int_val: int = 0
@@ -37,7 +41,7 @@ class FlowLandAddPlantInitObjWFResult():
     request_some_phone_number: str = ""
     request_some_email_address: str = ""
     land_name: str = ""
-    tac_code: uuid.UUID =  uuid.UUID(int=0)
+    tac_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         pass

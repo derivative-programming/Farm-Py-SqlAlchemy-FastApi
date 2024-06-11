@@ -1,3 +1,7 @@
+# flows/default/tac_register_init_obj_wf.py
+"""
+    #TODO add comment
+"""
 import json
 from business.tac import TacBusObj
 from datetime import date, datetime
@@ -18,7 +22,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacRegisterInitObjWFResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
     password: str = ""
     confirm_password: str = ""

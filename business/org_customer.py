@@ -1,3 +1,7 @@
+# business/org_customer.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -15,7 +19,7 @@ from .base_bus_obj import BaseBusObj
 
 class OrgCustomerInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -36,7 +40,7 @@ class OrgCustomerBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("org_customer_id must be a int.")
         self.org_customer.org_customer_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.org_customer.code
@@ -45,7 +49,7 @@ class OrgCustomerBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.org_customer.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.org_customer.last_change_code
@@ -54,7 +58,7 @@ class OrgCustomerBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.org_customer.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.org_customer.insert_user_id
@@ -66,7 +70,7 @@ class OrgCustomerBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.org_customer.last_update_user_id
@@ -79,8 +83,8 @@ class OrgCustomerBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #CustomerID
-    #Email
+    # CustomerID
+    # email
     @property
     def email(self):
         return self.org_customer.email
@@ -91,9 +95,9 @@ class OrgCustomerBusObj(BaseBusObj):
     def set_prop_email(self, value):
         self.email = value
         return self
-    #OrganizationID
+    # OrganizationID
 
-    #CustomerID
+    # CustomerID
     @property
     def customer_id(self):
         return self.org_customer.customer_id
@@ -112,8 +116,8 @@ class OrgCustomerBusObj(BaseBusObj):
     # def customer_code_peek(self, value):
     #     assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
     #     self.org_customer.customer_code_peek = value
-    #email,
-    #OrganizationID
+    # email,
+    # OrganizationID
     @property
     def organization_id(self):
         return self.org_customer.organization_id
@@ -132,7 +136,7 @@ class OrgCustomerBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
     #     self.org_customer.organization_code_peek = value
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.org_customer.insert_utc_date_time
@@ -140,7 +144,7 @@ class OrgCustomerBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.org_customer.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.org_customer.last_update_utc_date_time
@@ -152,7 +156,7 @@ class OrgCustomerBusObj(BaseBusObj):
     async def load(self, json_data: str = None,
                    code: uuid.UUID = None,
                    org_customer_id: int = None,
-                   org_customer_obj_instance:OrgCustomer = None,
+                   org_customer_obj_instance: OrgCustomer = None,
                    org_customer_dict: dict = None):
         if org_customer_id and self.org_customer.org_customer_id is None:
             org_customer_manager = OrgCustomerManager(self._session_context)
@@ -178,7 +182,7 @@ class OrgCustomerBusObj(BaseBusObj):
                     json_data: str = None,
                    code: uuid.UUID = None,
                    org_customer_id: int = None,
-                   org_customer_obj_instance:OrgCustomer = None,
+                   org_customer_obj_instance: OrgCustomer = None,
                    org_customer_dict: dict = None):
         result = OrgCustomerBusObj(session_context)
         await result.load(
@@ -223,18 +227,18 @@ class OrgCustomerBusObj(BaseBusObj):
         return self
     def get_org_customer_obj(self) -> OrgCustomer:
         return self.org_customer
-    def is_equal(self,org_customer:OrgCustomer) -> OrgCustomer:
+    def is_equal(self, org_customer: OrgCustomer) -> OrgCustomer:
         org_customer_manager = OrgCustomerManager(self._session_context)
         my_org_customer = self.get_org_customer_obj()
         return org_customer_manager.is_equal(org_customer, my_org_customer)
 
-    #CustomerID
+    # CustomerID
     async def get_customer_id_rel_obj(self) -> models.Customer:
         customer_manager = managers_and_enums.CustomerManager(self._session_context)
         customer_obj = await customer_manager.get_by_id(self.customer_id)
         return customer_obj
-    #email,
-    #OrganizationID
+    # email,
+    # OrganizationID
     async def get_organization_id_rel_obj(self) -> models.Organization:
         organization_manager = managers_and_enums.OrganizationManager(self._session_context)
         organization_obj = await organization_manager.get_by_id(self.organization_id)
@@ -246,9 +250,9 @@ class OrgCustomerBusObj(BaseBusObj):
         return "org_customer"
     def get_id(self) -> int:
         return self.org_customer_id
-    #CustomerID
-    #email,
-    #OrganizationID
+    # CustomerID
+    # email,
+    # OrganizationID
     async def get_parent_name(self) -> str:
         return 'Organization'
     async def get_parent_code(self) -> uuid.UUID:
@@ -260,7 +264,7 @@ class OrgCustomerBusObj(BaseBusObj):
     async def to_bus_obj_list(session_context: SessionContext, obj_list: List[OrgCustomer]):
         result = list()
         for org_customer in obj_list:
-            org_customer_bus_obj = OrgCustomerBusObj.get(session_context,org_customer_obj_instance=org_customer)
+            org_customer_bus_obj = OrgCustomerBusObj.get(session_context, org_customer_obj_instance=org_customer)
             result.append(org_customer_bus_obj)
         return result
 

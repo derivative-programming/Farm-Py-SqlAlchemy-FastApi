@@ -22,7 +22,7 @@ class DateGreaterThanFilterSessionNotFoundError(Exception):
     pass
 class DateGreaterThanFilterInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':

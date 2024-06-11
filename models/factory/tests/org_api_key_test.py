@@ -1,3 +1,7 @@
+# models/factory/tests/org_api_key_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import pytest
 import time
@@ -50,10 +54,10 @@ class TestOrgApiKeyFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_api_key.code, str)
     def test_last_change_code_default_on_build(self, session):
-        org_api_key:OrgApiKey = OrgApiKeyFactory.build(session=session)
+        org_api_key: OrgApiKey = OrgApiKeyFactory.build(session=session)
         assert org_api_key.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        org_api_key:OrgApiKey = OrgApiKeyFactory.create(session=session)
+        org_api_key: OrgApiKey = OrgApiKeyFactory.create(session=session)
         assert org_api_key.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         org_api_key = OrgApiKeyFactory.create(session=session)
@@ -142,21 +146,21 @@ class TestOrgApiKeyFactory:
         assert isinstance(org_api_key.org_customer_id, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #apiKeyValue,
-        #createdBy,
-        #createdUTCDateTime
-        #expirationUTCDateTime
+        # apiKeyValue,
+        # createdBy,
+        # createdUTCDateTime
+        # expirationUTCDateTime
         # isActive,
         # isTempUserKey,
-        #name,
-        #organizationID
+        # name,
+        # organizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_api_key.organization_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_api_key.organization_code_peek, str)
-        #orgCustomerID
+        # orgCustomerID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.org_customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -183,21 +187,21 @@ class TestOrgApiKeyFactory:
         assert org_api_key.insert_utc_date_time is not None
         assert org_api_key.last_update_utc_date_time is not None
 
-        #apiKeyValue,
-        #createdBy,
-        #createdUTCDateTime
-        #expirationUTCDateTime
+        # apiKeyValue,
+        # createdBy,
+        # createdUTCDateTime
+        # expirationUTCDateTime
         # isActive,
         # isTempUserKey,
-        #name,
-        #OrganizationID
+        # name,
+        # OrganizationID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.organization_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(org_api_key.organization_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(org_api_key.organization_code_peek, str)
-        #OrgCustomerID
+        # OrgCustomerID
         if db_dialect == 'postgresql':
             assert isinstance(org_api_key.org_customer_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -226,21 +230,21 @@ class TestOrgApiKeyFactory:
         session.commit()
         assert org_api_key_2.last_change_code != original_last_change_code
 
-    #apiKeyValue,
-    #createdBy,
-    #createdUTCDateTime
-    #expirationUTCDateTime
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
     # isActive,
     # isTempUserKey,
-    #name,
-    #OrganizationID
+    # name,
+    # OrganizationID
     def test_invalid_organization_id(self, session):
         org_api_key = OrgApiKeyFactory.create(session=session)
         org_api_key.organization_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
         session.rollback()
-    #OrgCustomerID
+    # OrgCustomerID
     def test_invalid_org_customer_id(self, session):
         org_api_key = OrgApiKeyFactory.create(session=session)
         org_api_key.org_customer_id = 99999

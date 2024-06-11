@@ -1,4 +1,7 @@
-
+# models/constants/error_log.py
+"""
+    #TODO add comment
+"""
 browser_code_calculatedIsDBColumnIndexed: bool = False
 context_code_calculatedIsDBColumnIndexed: bool = False
 created_utc_date_time_calculatedIsDBColumnIndexed: bool = False

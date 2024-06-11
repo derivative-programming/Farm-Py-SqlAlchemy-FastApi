@@ -1,3 +1,7 @@
+# models/factory/tests/organization_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import pytest
 import time
@@ -50,10 +54,10 @@ class TestOrganizationFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(organization.code, str)
     def test_last_change_code_default_on_build(self, session):
-        organization:Organization = OrganizationFactory.build(session=session)
+        organization: Organization = OrganizationFactory.build(session=session)
         assert organization.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        organization:Organization = OrganizationFactory.create(session=session)
+        organization: Organization = OrganizationFactory.create(session=session)
         assert organization.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         organization = OrganizationFactory.create(session=session)
@@ -135,8 +139,8 @@ class TestOrganizationFactory:
         assert isinstance(organization.tac_id, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #name,
-         # tacID
+        # name,
+        # tacID
         if db_dialect == 'postgresql':
             assert isinstance(organization.tac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -163,8 +167,8 @@ class TestOrganizationFactory:
         assert organization.insert_utc_date_time is not None
         assert organization.last_update_utc_date_time is not None
 
-        #name,
-         # TacID
+        # name,
+        # TacID
         if db_dialect == 'postgresql':
             assert isinstance(organization.tac_code_peek, UUID)
         elif db_dialect == 'mssql':
@@ -186,8 +190,8 @@ class TestOrganizationFactory:
         session.commit()
         assert organization_2.last_change_code != original_last_change_code
 
-    #name,
-     # TacID
+    # name,
+    # TacID
     def test_invalid_tac_id(self, session):
         organization = OrganizationFactory.create(session=session)
         organization.tac_id = 99999

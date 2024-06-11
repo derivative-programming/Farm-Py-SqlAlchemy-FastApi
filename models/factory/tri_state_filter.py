@@ -1,4 +1,7 @@
-# farm/models/factories.py
+# models/factory/tri_state_filter.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime
 import uuid
 import factory
@@ -32,7 +35,7 @@ class TriStateFilterFactory(factory.Factory):
     is_active = Faker('boolean')
     lookup_enum_name = Faker('sentence', nb_words=4)
     name = Faker('sentence', nb_words=4)
-     # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
+    # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
     state_int_value = Faker('random_int')
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)

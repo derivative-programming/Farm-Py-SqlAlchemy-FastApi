@@ -1,3 +1,7 @@
+# models/factory/tests/error_log_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import pytest
 import time
@@ -50,10 +54,10 @@ class TestErrorLogFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.code, str)
     def test_last_change_code_default_on_build(self, session):
-        error_log:ErrorLog = ErrorLogFactory.build(session=session)
+        error_log: ErrorLog = ErrorLogFactory.build(session=session)
         assert error_log.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        error_log:ErrorLog = ErrorLogFactory.create(session=session)
+        error_log: ErrorLog = ErrorLogFactory.create(session=session)
         assert error_log.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         error_log = ErrorLogFactory.create(session=session)
@@ -131,14 +135,14 @@ class TestErrorLogFactory:
             assert isinstance(error_log.last_update_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.last_update_user_id, str)
-        #BrowserCode
+        # browserCode
         if db_dialect == 'postgresql':
             assert isinstance(error_log.browser_code, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.browser_code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.browser_code, str)
-        #ContextCode
+        # contextCode
         if db_dialect == 'postgresql':
             assert isinstance(error_log.context_code, UUID)
         elif db_dialect == 'mssql':
@@ -153,20 +157,20 @@ class TestErrorLogFactory:
         assert error_log.url == "" or isinstance(error_log.url, str)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #browserCode,
-        #contextCode,
-        #createdUTCDateTime
-        #description,
+        # browserCode,
+        # contextCode,
+        # createdUTCDateTime
+        # description,
         # isClientSideError,
         # isResolved,
-         # pacID
+        # pacID
         if db_dialect == 'postgresql':
             assert isinstance(error_log.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.pac_code_peek, str)
-        #url,
+        # url,
 
         assert isinstance(error_log.insert_utc_date_time, datetime)
         assert isinstance(error_log.last_update_utc_date_time, datetime)
@@ -187,29 +191,29 @@ class TestErrorLogFactory:
         assert error_log.insert_utc_date_time is not None
         assert error_log.last_update_utc_date_time is not None
 
-        #browserCode,
-        #contextCode,
-        #createdUTCDateTime
-        #description,
+        # browserCode,
+        # contextCode,
+        # createdUTCDateTime
+        # description,
         # isClientSideError,
         # isResolved,
-         # PacID
+        # PacID
         if db_dialect == 'postgresql':
             assert isinstance(error_log.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.pac_code_peek, str)
-        #url,
+        # url,
 
-        # someUniqueIdentifierVal
+        # browser_code
         if db_dialect == 'postgresql':
             assert isinstance(error_log.browser_code, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(error_log.browser_code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(error_log.browser_code, str)
-        # someUniqueIdentifierVal
+        # context_code
         if db_dialect == 'postgresql':
             assert isinstance(error_log.context_code, UUID)
         elif db_dialect == 'mssql':
@@ -234,18 +238,18 @@ class TestErrorLogFactory:
         session.commit()
         assert error_log_2.last_change_code != original_last_change_code
 
-    #browserCode,
-    #contextCode,
-    #createdUTCDateTime
-    #description,
+    # browserCode,
+    # contextCode,
+    # createdUTCDateTime
+    # description,
     # isClientSideError,
     # isResolved,
-     # PacID
+    # PacID
     def test_invalid_pac_id(self, session):
         error_log = ErrorLogFactory.create(session=session)
         error_log.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
         session.rollback()
-    #url,
+    # url,
 

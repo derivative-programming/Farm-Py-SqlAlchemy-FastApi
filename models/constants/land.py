@@ -1,4 +1,7 @@
-
+# models/constants/land.py
+"""
+    #TODO add comment
+"""
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False
 is_active_calculatedIsDBColumnIndexed: bool = False

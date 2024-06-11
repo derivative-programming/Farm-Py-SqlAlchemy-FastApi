@@ -1,4 +1,7 @@
-# farm/models/factories.py
+# models/factory/organization.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime
 import uuid
 import factory
@@ -28,7 +31,7 @@ class OrganizationFactory(factory.Factory):
     insert_user_id = factory.LazyFunction(generate_uuid)
     last_update_user_id = factory.LazyFunction(generate_uuid)
     name = Faker('sentence', nb_words=4)
-     # tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
+    # tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 

@@ -1,3 +1,7 @@
+# business/org_api_key.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -15,7 +19,7 @@ from .base_bus_obj import BaseBusObj
 
 class OrgApiKeyInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -36,7 +40,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("org_api_key_id must be a int.")
         self.org_api_key.org_api_key_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.org_api_key.code
@@ -45,7 +49,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.org_api_key.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.org_api_key.last_change_code
@@ -54,7 +58,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.org_api_key.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.org_api_key.insert_user_id
@@ -66,7 +70,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.org_api_key.last_update_user_id
@@ -79,7 +83,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #ApiKeyValue
+    # apiKeyValue
     @property
     def api_key_value(self):
         return self.org_api_key.api_key_value
@@ -90,7 +94,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     def set_prop_api_key_value(self, value):
         self.api_key_value = value
         return self
-    #CreatedBy
+    # createdBy
     @property
     def created_by(self):
         return self.org_api_key.created_by
@@ -101,24 +105,26 @@ class OrgApiKeyBusObj(BaseBusObj):
     def set_prop_created_by(self, value):
         self.created_by = value
         return self
-    #CreatedUTCDateTime
+    # createdUTCDateTime
     @property
     def created_utc_date_time(self):
         return self.org_api_key.created_utc_date_time
     @created_utc_date_time.setter
     def created_utc_date_time(self, value):
-        assert isinstance(value, datetime), "created_utc_date_time must be a datetime object"
+        assert isinstance(value, datetime), (
+            "created_utc_date_time must be a datetime object")
         self.org_api_key.created_utc_date_time = value
     def set_prop_created_utc_date_time(self, value):
         self.created_utc_date_time = value
         return self
-    #ExpirationUTCDateTime
+    # expirationUTCDateTime
     @property
     def expiration_utc_date_time(self):
         return self.org_api_key.expiration_utc_date_time
     @expiration_utc_date_time.setter
     def expiration_utc_date_time(self, value):
-        assert isinstance(value, datetime), "expiration_utc_date_time must be a datetime object"
+        assert isinstance(value, datetime), (
+            "expiration_utc_date_time must be a datetime object")
         self.org_api_key.expiration_utc_date_time = value
     def set_prop_expiration_utc_date_time(self, value):
         self.expiration_utc_date_time = value
@@ -147,7 +153,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     def set_prop_is_temp_user_key(self, value: bool):
         self.is_temp_user_key = value
         return self
-    #Name
+    # name
     @property
     def name(self):
         return self.org_api_key.name
@@ -158,17 +164,17 @@ class OrgApiKeyBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-    #OrganizationID
-    #OrgCustomerID
+    # OrganizationID
+    # OrgCustomerID
 
-    #apiKeyValue,
-    #createdBy,
-    #createdUTCDateTime
-    #expirationUTCDateTime
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
     # isActive,
     # isTempUserKey,
-    #name,
-    #OrganizationID
+    # name,
+    # OrganizationID
     @property
     def organization_id(self):
         return self.org_api_key.organization_id
@@ -186,7 +192,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     # def organization_code_peek(self, value):
     #     assert isinstance(value, UUIDType), "organization_code_peek must be a UUID"
     #     self.org_api_key.organization_code_peek = value
-    #OrgCustomerID
+    # OrgCustomerID
     @property
     def org_customer_id(self):
         return self.org_api_key.org_customer_id
@@ -206,7 +212,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "org_customer_code_peek must be a UUID"
     #     self.org_api_key.org_customer_code_peek = value
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.org_api_key.insert_utc_date_time
@@ -214,7 +220,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.org_api_key.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.org_api_key.last_update_utc_date_time
@@ -226,7 +232,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     async def load(self, json_data: str = None,
                    code: uuid.UUID = None,
                    org_api_key_id: int = None,
-                   org_api_key_obj_instance:OrgApiKey = None,
+                   org_api_key_obj_instance: OrgApiKey = None,
                    org_api_key_dict: dict = None):
         if org_api_key_id and self.org_api_key.org_api_key_id is None:
             org_api_key_manager = OrgApiKeyManager(self._session_context)
@@ -252,7 +258,7 @@ class OrgApiKeyBusObj(BaseBusObj):
                     json_data: str = None,
                    code: uuid.UUID = None,
                    org_api_key_id: int = None,
-                   org_api_key_obj_instance:OrgApiKey = None,
+                   org_api_key_obj_instance: OrgApiKey = None,
                    org_api_key_dict: dict = None):
         result = OrgApiKeyBusObj(session_context)
         await result.load(
@@ -303,24 +309,24 @@ class OrgApiKeyBusObj(BaseBusObj):
         return self
     def get_org_api_key_obj(self) -> OrgApiKey:
         return self.org_api_key
-    def is_equal(self,org_api_key:OrgApiKey) -> OrgApiKey:
+    def is_equal(self, org_api_key: OrgApiKey) -> OrgApiKey:
         org_api_key_manager = OrgApiKeyManager(self._session_context)
         my_org_api_key = self.get_org_api_key_obj()
         return org_api_key_manager.is_equal(org_api_key, my_org_api_key)
 
-    #apiKeyValue,
-    #createdBy,
-    #createdUTCDateTime
-    #expirationUTCDateTime
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
     # isActive,
     # isTempUserKey,
-    #name,
-    #OrganizationID
+    # name,
+    # OrganizationID
     async def get_organization_id_rel_obj(self) -> models.Organization:
         organization_manager = managers_and_enums.OrganizationManager(self._session_context)
         organization_obj = await organization_manager.get_by_id(self.organization_id)
         return organization_obj
-    #OrgCustomerID
+    # OrgCustomerID
     async def get_org_customer_id_rel_obj(self) -> models.OrgCustomer:
         org_customer_manager = managers_and_enums.OrgCustomerManager(self._session_context)
         org_customer_obj = await org_customer_manager.get_by_id(self.org_customer_id)
@@ -332,27 +338,27 @@ class OrgApiKeyBusObj(BaseBusObj):
         return "org_api_key"
     def get_id(self) -> int:
         return self.org_api_key_id
-    #apiKeyValue,
-    #createdBy,
-    #createdUTCDateTime
-    #expirationUTCDateTime
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
     # isActive,
     # isTempUserKey,
-    #name,
-    #OrganizationID
+    # name,
+    # OrganizationID
     async def get_parent_name(self) -> str:
         return 'Organization'
     async def get_parent_code(self) -> uuid.UUID:
         return self.organization_code_peek
     async def get_parent_obj(self) -> models.Organization:
         return self.get_organization_id_rel_obj()
-    #OrgCustomerID
+    # OrgCustomerID
 
     @staticmethod
     async def to_bus_obj_list(session_context: SessionContext, obj_list: List[OrgApiKey]):
         result = list()
         for org_api_key in obj_list:
-            org_api_key_bus_obj = OrgApiKeyBusObj.get(session_context,org_api_key_obj_instance=org_api_key)
+            org_api_key_bus_obj = OrgApiKeyBusObj.get(session_context, org_api_key_obj_instance=org_api_key)
             result.append(org_api_key_bus_obj)
         return result
 

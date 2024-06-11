@@ -1,3 +1,7 @@
+# flows/default/error_log_config_resolve_error_log.py
+"""
+    #TODO add comment
+"""
 import json
 from business.error_log import ErrorLogBusObj
 from datetime import date, datetime
@@ -18,7 +22,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowErrorLogConfigResolveErrorLogResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         pass

@@ -38,10 +38,10 @@ class PlantFactory(factory.Factory):
     last_change_code = 0
     insert_user_id = factory.LazyFunction(generate_uuid)
     last_update_user_id = factory.LazyFunction(generate_uuid)
-     # flvr_foreign_key_id = 0 #factory.LazyAttribute(lambda obj: obj.flavor.flavor_id)
+    # flvr_foreign_key_id = 0 #factory.LazyAttribute(lambda obj: obj.flavor.flavor_id)
     is_delete_allowed = Faker('boolean')
     is_edit_allowed = Faker('boolean')
-     # land_id = 0 #factory.LazyAttribute(lambda obj: obj.land.land_id)
+    # land_id = 0 #factory.LazyAttribute(lambda obj: obj.land.land_id)
     other_flavor = Faker('sentence', nb_words=4)
     some_big_int_val = Faker('random_int')
     some_bit_val = Faker('boolean')

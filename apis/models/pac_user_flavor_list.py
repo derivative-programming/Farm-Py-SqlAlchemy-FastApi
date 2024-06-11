@@ -1,3 +1,7 @@
+# apis/models/pac_user_flavor_list.py
+"""
+    #TODO add comment
+"""
 import json
 from typing import List
 from datetime import date, datetime
@@ -40,10 +44,10 @@ class PacUserFlavorListGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserFlavorListGetModelResponseItem(CamelModel):
     flavor_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Flavor Code")
     flavor_description: str = Field(default="", description="Flavor Description")
@@ -53,7 +57,7 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
     flavor_name: str = Field(default="", description="Flavor Name")
     pac_name: str = Field(default="", description="Pac Name")
 
-    def load_report_item(self, data:ReportItemPacUserFlavorList):
+    def load_report_item(self, data: ReportItemPacUserFlavorList):
         self.flavor_code = data.flavor_code
         self.flavor_description = data.flavor_description
         self.flavor_display_order = data.flavor_display_order

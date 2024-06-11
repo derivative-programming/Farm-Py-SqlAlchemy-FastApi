@@ -1,3 +1,7 @@
+# business/error_log.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -15,7 +19,7 @@ from .base_bus_obj import BaseBusObj
 
 class ErrorLogInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -36,7 +40,7 @@ class ErrorLogBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("error_log_id must be a int.")
         self.error_log.error_log_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.error_log.code
@@ -45,7 +49,7 @@ class ErrorLogBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.error_log.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.error_log.last_change_code
@@ -54,7 +58,7 @@ class ErrorLogBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.error_log.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.error_log.insert_user_id
@@ -66,7 +70,7 @@ class ErrorLogBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.error_log.last_update_user_id
@@ -79,40 +83,43 @@ class ErrorLogBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #BrowserCode
+    # browserCode
     @property
     def browser_code(self):
         return self.error_log.browser_code
     @browser_code.setter
     def browser_code(self, value):
-        assert isinstance(value, UUIDType), "browser_code must be a UUID"
+        assert isinstance(value, UUIDType), (
+            "browser_code must be a UUID")
         self.error_log.browser_code = value
     def set_prop_browser_code(self, value):
         self.browser_code = value
         return self
-    #ContextCode
+    # contextCode
     @property
     def context_code(self):
         return self.error_log.context_code
     @context_code.setter
     def context_code(self, value):
-        assert isinstance(value, UUIDType), "context_code must be a UUID"
+        assert isinstance(value, UUIDType), (
+            "context_code must be a UUID")
         self.error_log.context_code = value
     def set_prop_context_code(self, value):
         self.context_code = value
         return self
-    #CreatedUTCDateTime
+    # createdUTCDateTime
     @property
     def created_utc_date_time(self):
         return self.error_log.created_utc_date_time
     @created_utc_date_time.setter
     def created_utc_date_time(self, value):
-        assert isinstance(value, datetime), "created_utc_date_time must be a datetime object"
+        assert isinstance(value, datetime), (
+            "created_utc_date_time must be a datetime object")
         self.error_log.created_utc_date_time = value
     def set_prop_created_utc_date_time(self, value):
         self.created_utc_date_time = value
         return self
-    #Description
+    # description
     @property
     def description(self):
         return self.error_log.description
@@ -147,8 +154,8 @@ class ErrorLogBusObj(BaseBusObj):
     def set_prop_is_resolved(self, value: bool):
         self.is_resolved = value
         return self
-     # PacID
-    #Url
+    # PacID
+    # url
     @property
     def url(self):
         return self.error_log.url
@@ -160,13 +167,13 @@ class ErrorLogBusObj(BaseBusObj):
         self.url = value
         return self
 
-    #browserCode,
-    #contextCode,
-    #createdUTCDateTime
-    #description,
+    # browserCode,
+    # contextCode,
+    # createdUTCDateTime
+    # description,
     # isClientSideError,
     # isResolved,
-     # PacID
+    # PacID
     @property
     def pac_id(self):
         return self.error_log.pac_id
@@ -184,9 +191,9 @@ class ErrorLogBusObj(BaseBusObj):
     # def pac_code_peek(self, value):
     #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
     #     self.error_log.pac_code_peek = value
-    #url,
+    # url,
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.error_log.insert_utc_date_time
@@ -194,7 +201,7 @@ class ErrorLogBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.error_log.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.error_log.last_update_utc_date_time
@@ -206,7 +213,7 @@ class ErrorLogBusObj(BaseBusObj):
     async def load(self, json_data: str = None,
                    code: uuid.UUID = None,
                    error_log_id: int = None,
-                   error_log_obj_instance:ErrorLog = None,
+                   error_log_obj_instance: ErrorLog = None,
                    error_log_dict: dict = None):
         if error_log_id and self.error_log.error_log_id is None:
             error_log_manager = ErrorLogManager(self._session_context)
@@ -232,7 +239,7 @@ class ErrorLogBusObj(BaseBusObj):
                     json_data: str = None,
                    code: uuid.UUID = None,
                    error_log_id: int = None,
-                   error_log_obj_instance:ErrorLog = None,
+                   error_log_obj_instance: ErrorLog = None,
                    error_log_dict: dict = None):
         result = ErrorLogBusObj(session_context)
         await result.load(
@@ -273,7 +280,7 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.browser_code = generate_uuid()
         self.error_log.context_code = generate_uuid()
         self.error_log.created_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
-        self.error_log.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.error_log.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.error_log.is_client_side_error = random.choice([True, False])
         self.error_log.is_resolved = random.choice([True, False])
         # self.error_log.pac_id = random.randint(0, 100)
@@ -282,23 +289,23 @@ class ErrorLogBusObj(BaseBusObj):
         return self
     def get_error_log_obj(self) -> ErrorLog:
         return self.error_log
-    def is_equal(self, error_log:ErrorLog) -> ErrorLog:
+    def is_equal(self, error_log: ErrorLog) -> ErrorLog:
         error_log_manager = ErrorLogManager(self._session_context)
         my_error_log = self.get_error_log_obj()
         return error_log_manager.is_equal(error_log, my_error_log)
 
-    #browserCode,
-    #contextCode,
-    #createdUTCDateTime
-    #description,
+    # browserCode,
+    # contextCode,
+    # createdUTCDateTime
+    # description,
     # isClientSideError,
     # isResolved,
-     # PacID
+    # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
-    #url,
+    # url,
 
     def get_obj(self) -> ErrorLog:
         return self.error_log
@@ -306,20 +313,20 @@ class ErrorLogBusObj(BaseBusObj):
         return "error_log"
     def get_id(self) -> int:
         return self.error_log_id
-    #browserCode,
-    #contextCode,
-    #createdUTCDateTime
-    #description,
+    # browserCode,
+    # contextCode,
+    # createdUTCDateTime
+    # description,
     # isClientSideError,
     # isResolved,
-     # PacID
+    # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         return self.get_pac_id_rel_obj()
-    #url,
+    # url,
 
     @staticmethod
     async def to_bus_obj_list(session_context: SessionContext, obj_list: List[ErrorLog]):

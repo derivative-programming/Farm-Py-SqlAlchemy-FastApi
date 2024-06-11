@@ -1,3 +1,7 @@
+# apis/models/pac_user_tri_state_filter_list.py
+"""
+    #TODO add comment
+"""
 import json
 from typing import List
 from datetime import date, datetime
@@ -40,10 +44,10 @@ class PacUserTriStateFilterListGetModelRequest(CamelModel):
         return data
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
     tri_state_filter_code: UUID4 = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'), description="Tri State Filter Code")
     tri_state_filter_description: str = Field(default="", description="Tri State Filter Description")
@@ -53,7 +57,7 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
     tri_state_filter_name: str = Field(default="", description="Tri State Filter Name")
     tri_state_filter_state_int_value: int = Field(default=0, description="Tri State Filter State Int Value")
 
-    def load_report_item(self, data:ReportItemPacUserTriStateFilterList):
+    def load_report_item(self, data: ReportItemPacUserTriStateFilterList):
         self.tri_state_filter_code = data.tri_state_filter_code
         self.tri_state_filter_description = data.tri_state_filter_description
         self.tri_state_filter_display_order = data.tri_state_filter_display_order

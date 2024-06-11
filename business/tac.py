@@ -1,3 +1,7 @@
+# business/tac.py
+"""
+    #TODO add comment
+"""
 import random
 import uuid
 from typing import List
@@ -19,7 +23,7 @@ from business.customer import CustomerBusObj
 
 class TacInvalidInitError(Exception):
     pass
-#Conditionally set the UUID column type
+# Conditionally set the UUID column type
 if db_dialect == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif db_dialect == 'mssql':
@@ -40,7 +44,7 @@ class TacBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("tac_id must be a int.")
         self.tac.tac_id = value
-    #code
+    # code
     @property
     def code(self):
         return self.tac.code
@@ -49,7 +53,7 @@ class TacBusObj(BaseBusObj):
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.tac.code = value
-    #last_change_code
+    # last_change_code
     @property
     def last_change_code(self):
         return self.tac.last_change_code
@@ -58,7 +62,7 @@ class TacBusObj(BaseBusObj):
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.tac.last_change_code = value
-    #insert_user_id
+    # insert_user_id
     @property
     def insert_user_id(self):
         return self.tac.insert_user_id
@@ -70,7 +74,7 @@ class TacBusObj(BaseBusObj):
     def set_prop_insert_user_id(self, value: uuid.UUID):
         self.insert_user_id = value
         return self
-    #last_update_user_id
+    # last_update_user_id
     @property
     def last_update_user_id(self):
         return self.tac.last_update_user_id
@@ -83,7 +87,7 @@ class TacBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-    #Description
+    # description
     @property
     def description(self):
         return self.tac.description
@@ -94,7 +98,7 @@ class TacBusObj(BaseBusObj):
     def set_prop_description(self, value):
         self.description = value
         return self
-    #DisplayOrder
+    # displayOrder
     @property
     def display_order(self):
         return self.tac.display_order
@@ -117,7 +121,7 @@ class TacBusObj(BaseBusObj):
     def set_prop_is_active(self, value: bool):
         self.is_active = value
         return self
-    #LookupEnumName
+    # lookupEnumName
     @property
     def lookup_enum_name(self):
         return self.tac.lookup_enum_name
@@ -128,7 +132,7 @@ class TacBusObj(BaseBusObj):
     def set_prop_lookup_enum_name(self, value):
         self.lookup_enum_name = value
         return self
-    #Name
+    # name
     @property
     def name(self):
         return self.tac.name
@@ -139,14 +143,14 @@ class TacBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-     # PacID
+    # PacID
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     @property
     def pac_id(self):
         return self.tac.pac_id
@@ -165,7 +169,7 @@ class TacBusObj(BaseBusObj):
     #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
     #     self.tac.pac_code_peek = value
 
-    #insert_utc_date_time
+    # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.tac.insert_utc_date_time
@@ -173,7 +177,7 @@ class TacBusObj(BaseBusObj):
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
         self.tac.insert_utc_date_time = value
-    #update_utc_date_time
+    # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
         return self.tac.last_update_utc_date_time
@@ -235,14 +239,11 @@ class TacBusObj(BaseBusObj):
         tac_manager = TacManager(self._session_context)
         self.tac = await tac_manager.refresh(self.tac)
         return self
-
     def is_valid(self):
         return (self.tac is not None)
-
     def to_dict(self):
         tac_manager = TacManager(self._session_context)
         return tac_manager.to_dict(self.tac)
-
     def to_json(self):
         tac_manager = TacManager(self._session_context)
         return tac_manager.to_json(self.tac)
@@ -260,7 +261,7 @@ class TacBusObj(BaseBusObj):
             await tac_manager.delete(self.tac.tac_id)
             self.tac = None
     async def randomize_properties(self):
-        self.tac.description="".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.tac.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tac.display_order = random.randint(0, 100)
         self.tac.is_active = random.choice([True, False])
         self.tac.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -275,12 +276,12 @@ class TacBusObj(BaseBusObj):
         my_tac = self.get_tac_obj()
         return tac_manager.is_equal(tac, my_tac)
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -292,12 +293,12 @@ class TacBusObj(BaseBusObj):
         return "tac"
     def get_id(self) -> int:
         return self.tac_id
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     async def get_parent_name(self) -> str:
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:

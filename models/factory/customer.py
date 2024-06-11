@@ -1,4 +1,7 @@
-# farm/models/factories.py
+# models/factory/customer.py
+"""
+    #TODO add comment
+"""
 from datetime import datetime
 import uuid
 import factory
@@ -47,7 +50,7 @@ class CustomerFactory(factory.Factory):
     phone = Faker('phone_number')
     province = Faker('sentence', nb_words=4)
     registration_utc_date_time = factory.LazyFunction(datetime.utcnow)#Faker('date_time', tzinfo=pytz.utc)
-     # tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
+    # tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
     utc_offset_in_minutes = Faker('random_int')
     zip = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)

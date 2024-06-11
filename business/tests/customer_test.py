@@ -1,3 +1,7 @@
+# business/tests/customer_test.py
+"""
+    #TODO add comment
+"""
 import pytest
 import pytest_asyncio
 from datetime import datetime, date
@@ -59,7 +63,7 @@ class TestCustomerBusObj:
         assert customer_bus_obj.first_name == "" or isinstance(customer_bus_obj.first_name, str)
         assert isinstance(customer_bus_obj.forgot_password_key_expiration_utc_date_time, datetime)
         assert customer_bus_obj.forgot_password_key_value == "" or isinstance(customer_bus_obj.forgot_password_key_value, str)
-        #FSUserCodeValue
+        # fSUserCodeValue
         if db_dialect == 'postgresql':
             assert isinstance(customer_bus_obj.fs_user_code_value, UUID)
         elif db_dialect == 'mssql':
@@ -132,7 +136,7 @@ class TestCustomerBusObj:
         assert new_customer is None
 
     @pytest.mark.asyncio
-    async def test_build_customer_role(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer, session: AsyncSession):
+    async def test_build_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 
@@ -150,7 +154,7 @@ class TestCustomerBusObj:
         assert customer_role_bus_obj.customer_role_id > 0
 
     @pytest.mark.asyncio
-    async def test_get_all_customer_role(self, customer_manager: CustomerManager, customer_bus_obj: CustomerBusObj, new_customer: Customer, session: AsyncSession):
+    async def test_get_all_customer_role(self, customer_manager:CustomerManager, customer_bus_obj:CustomerBusObj, new_customer:Customer, session:AsyncSession):
 
         session_context = SessionContext(dict(), session)
 

@@ -1,3 +1,7 @@
+# flows/default/plant_user_details_init_report.py
+"""
+    #TODO add comment
+"""
 import json
 from business.plant import PlantBusObj
 from datetime import date, datetime
@@ -18,9 +22,9 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowPlantUserDetailsInitReportResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
-    land_code: uuid.UUID =  uuid.UUID(int=0)
-    tac_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+    land_code: uuid.UUID = uuid.UUID(int=0)
+    tac_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         pass

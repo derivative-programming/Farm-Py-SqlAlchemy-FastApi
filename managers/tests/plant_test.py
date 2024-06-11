@@ -44,8 +44,15 @@ class TestPlantManager:
         return PlantManager(session_context)
 
     @pytest.mark.asyncio
-    async def test_build(self, plant_manager: PlantManager, session: AsyncSession):
-        # Define some mock data for our plant
+    async def test_build(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+        # Define mock data for our plant
         mock_data = {
             "code": generate_uuid()
         }
@@ -57,13 +64,17 @@ class TestPlantManager:
         assert isinstance(plant, Plant)
 
         # Assert that the attributes of the plant match our mock data
-        assert plant.code == mock_data["code"]
-
-        # Optionally, if the build method has some default values or computations:
-        # assert plant.some_attribute == some_expected_value
+        assert plant.code == mock_data["code"] 
 
     @pytest.mark.asyncio
-    async def test_build_with_missing_data(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_build_with_missing_data(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Define mock data with a missing key
         mock_data = {
             "non_existant_property": "Rose"
@@ -76,7 +87,14 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_add_correctly_adds_plant_to_database(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_add_correctly_adds_plant_to_database(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         test_plant = await PlantFactory.build_async(session)
 
         assert test_plant.plant_id is None
@@ -101,7 +119,14 @@ class TestPlantManager:
         assert fetched_plant.plant_id == added_plant.plant_id
 
     @pytest.mark.asyncio
-    async def test_add_returns_correct_plant_object(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_add_returns_correct_plant_object(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Create a test plant using the PlantFactory without persisting it to the database
         test_plant = await PlantFactory.build_async(session)
 
@@ -124,7 +149,14 @@ class TestPlantManager:
         assert added_plant.code == test_plant.code
 
     @pytest.mark.asyncio
-    async def test_get_by_id(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_id(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         test_plant = await PlantFactory.create_async(session)
 
         plant = await plant_manager.get_by_id(test_plant.plant_id)
@@ -135,7 +167,14 @@ class TestPlantManager:
         assert test_plant.code == plant.code
 
     @pytest.mark.asyncio
-    async def test_get_by_id_not_found(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_id_not_found(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         non_existent_id = 9999  # An ID that's not in the database
 
@@ -144,7 +183,14 @@ class TestPlantManager:
         assert retrieved_plant is None
 
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_plant(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_code_returns_plant(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         test_plant = await PlantFactory.create_async(session)
 
@@ -156,7 +202,14 @@ class TestPlantManager:
         assert test_plant.code == plant.code
 
     @pytest.mark.asyncio
-    async def test_get_by_code_returns_none_for_nonexistent_code(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_code_returns_none_for_nonexistent_code(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Generate a random UUID that doesn't correspond to any Plant in the database
         random_code = generate_uuid()
 
@@ -165,7 +218,14 @@ class TestPlantManager:
         assert plant is None
 
     @pytest.mark.asyncio
-    async def test_update(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_update(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         test_plant = await PlantFactory.create_async(session)
 
         test_plant.code = generate_uuid()
@@ -174,12 +234,16 @@ class TestPlantManager:
 
         assert isinstance(updated_plant, Plant)
 
-        assert str(updated_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+        assert str(updated_plant.last_update_user_id) == str(
+            plant_manager._session_context.customer_code)
 
         assert updated_plant.plant_id == test_plant.plant_id
         assert updated_plant.code == test_plant.code
 
-        result = await session.execute(select(Plant).filter(Plant.plant_id == test_plant.plant_id))
+        result = await session.execute(
+            select(Plant).filter(
+                Plant.plant_id == test_plant.plant_id)
+        )
 
         fetched_plant = result.scalars().first()
 
@@ -190,22 +254,36 @@ class TestPlantManager:
         assert test_plant.code == fetched_plant.code
 
     @pytest.mark.asyncio
-    async def test_update_via_dict(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_update_via_dict(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         test_plant = await PlantFactory.create_async(session)
 
         new_code = generate_uuid()
 
-        updated_plant = await plant_manager.update(plant=test_plant,code=new_code)
+        updated_plant = await plant_manager.update(
+            plant=test_plant,
+            code=new_code
+        )
 
         assert isinstance(updated_plant, Plant)
 
-        assert str(updated_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
-
+        assert str(updated_plant.last_update_user_id) == str(
+            plant_manager._session_context.customer_code
+        )
 
         assert updated_plant.plant_id == test_plant.plant_id
         assert updated_plant.code == new_code
 
-        result = await session.execute(select(Plant).filter(Plant.plant_id == test_plant.plant_id))
+        result = await session.execute(
+            select(Plant).filter(
+                Plant.plant_id == test_plant.plant_id)
+        )
 
         fetched_plant = result.scalars().first()
 
@@ -228,7 +306,14 @@ class TestPlantManager:
         assert updated_plant is None
 
     @pytest.mark.asyncio
-    async def test_update_with_nonexistent_attribute(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_update_with_nonexistent_attribute(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         test_plant = await PlantFactory.create_async(session)
 
         new_code = generate_uuid()
@@ -236,12 +321,22 @@ class TestPlantManager:
 
         # This should raise an AttributeError since 'color' is not an attribute of Plant
         with pytest.raises(ValueError):
-            updated_plant = await plant_manager.update(plant=test_plant,xxx=new_code)
+            updated_plant = await plant_manager.update(
+                plant=test_plant,
+                xxx=new_code
+            )
 
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_delete(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_delete(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plant_data = await PlantFactory.create_async(session)
 
         result = await session.execute(select(Plant).filter(Plant.plant_id == plant_data.plant_id))
@@ -259,7 +354,14 @@ class TestPlantManager:
         assert fetched_plant is None
 
     @pytest.mark.asyncio
-    async def test_delete_nonexistent(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_delete_nonexistent(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         with pytest.raises(Exception):
             await plant_manager.delete(999)
@@ -267,7 +369,14 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_delete_invalid_type(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_delete_invalid_type(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         with pytest.raises(Exception):
             await plant_manager.delete("999")
@@ -276,7 +385,14 @@ class TestPlantManager:
 
 
     @pytest.mark.asyncio
-    async def test_get_list(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_list(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         plants = await plant_manager.get_list()
 
@@ -290,7 +406,14 @@ class TestPlantManager:
         assert all(isinstance(plant, Plant) for plant in plants)
 
     @pytest.mark.asyncio
-    async def test_to_json(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_to_json(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plant = await PlantFactory.build_async(session)
 
         json_data = plant_manager.to_json(plant)
@@ -299,7 +422,14 @@ class TestPlantManager:
 
 
     @pytest.mark.asyncio
-    async def test_to_dict(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_to_dict(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plant = await PlantFactory.build_async(session)
 
         dict_data = plant_manager.to_dict(plant)
@@ -307,7 +437,14 @@ class TestPlantManager:
         assert dict_data is not None
 
     @pytest.mark.asyncio
-    async def test_from_json(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_from_json(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plant = await PlantFactory.create_async(session)
 
         json_data = plant_manager.to_json(plant)
@@ -318,7 +455,14 @@ class TestPlantManager:
         assert deserialized_plant.code == plant.code
 
     @pytest.mark.asyncio
-    async def test_from_dict(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_from_dict(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plant = await PlantFactory.create_async(session)
 
         schema = PlantSchema()
@@ -332,7 +476,14 @@ class TestPlantManager:
         assert deserialized_plant.code == plant.code
 
     @pytest.mark.asyncio
-    async def test_add_bulk(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_add_bulk(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plants_data = [await PlantFactory.build_async(session) for _ in range(5)]
 
         plants = await plant_manager.add_bulk(plants_data)
@@ -352,8 +503,14 @@ class TestPlantManager:
 
 
     @pytest.mark.asyncio
-    async def test_update_bulk_success(self, plant_manager: PlantManager, session: AsyncSession):
-
+    async def test_update_bulk_success(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Mocking plant instances
         plant1 = await PlantFactory.create_async(session=session)
         plant2 = await PlantFactory.create_async(session=session)
@@ -402,9 +559,14 @@ class TestPlantManager:
         assert fetched_plant.code == code_updated2
 
     @pytest.mark.asyncio
-    async def test_update_bulk_missing_plant_id(self, plant_manager: PlantManager, session: AsyncSession):
-
-
+    async def test_update_bulk_missing_plant_id(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # No plants to update since plant_id is missing
         updates = [{"name": "Red Rose"}]
 
@@ -414,7 +576,14 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_update_bulk_plant_not_found(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_update_bulk_plant_not_found(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
 
         # Update plants
@@ -426,7 +595,14 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_update_bulk_invalid_type(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_update_bulk_invalid_type(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         updates = [{"plant_id": "2", "code": generate_uuid()}]
 
@@ -435,9 +611,15 @@ class TestPlantManager:
 
         await session.rollback()
 
-
     @pytest.mark.asyncio
-    async def test_delete_bulk_success(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_delete_bulk_success(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
 
         plant1 = await PlantFactory.create_async(session=session)
@@ -456,8 +638,14 @@ class TestPlantManager:
             assert fetched_plant is None
 
     @pytest.mark.asyncio
-    async def test_delete_bulk_some_plants_not_found(self, plant_manager: PlantManager, session: AsyncSession):
-
+    async def test_delete_bulk_plants_not_found(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plant1 = await PlantFactory.create_async(session=session)
 
         # Delete plants
@@ -469,7 +657,14 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_delete_bulk_empty_list(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_delete_bulk_empty_list(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         # Delete plants with an empty list
         plant_ids = []
@@ -479,7 +674,14 @@ class TestPlantManager:
         assert result is True
 
     @pytest.mark.asyncio
-    async def test_delete_bulk_invalid_type(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_delete_bulk_invalid_type(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         plant_ids = ["1", 2]
 
@@ -489,7 +691,14 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_count_basic_functionality(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_count_basic_functionality(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         plants_data = [await PlantFactory.create_async(session) for _ in range(5)]
 
@@ -498,14 +707,28 @@ class TestPlantManager:
         assert count == 5
 
     @pytest.mark.asyncio
-    async def test_count_empty_database(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_count_empty_database(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         count = await plant_manager.count()
 
         assert count == 0
 
     @pytest.mark.asyncio
-    async def test_get_sorted_list_basic_sorting(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_sorted_list_basic_sorting(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Add plants
         plants_data = [await PlantFactory.create_async(session) for _ in range(5)]
 
@@ -514,7 +737,14 @@ class TestPlantManager:
         assert [plant.plant_id for plant in sorted_plants] == [(i + 1) for i in range(5)]
 
     @pytest.mark.asyncio
-    async def test_get_sorted_list_descending_sorting(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_sorted_list_descending_sorting(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Add plants
         plants_data = [await PlantFactory.create_async(session) for _ in range(5)]
 
@@ -523,7 +753,14 @@ class TestPlantManager:
         assert [plant.plant_id for plant in sorted_plants] == [(i + 1) for i in reversed(range(5))]
 
     @pytest.mark.asyncio
-    async def test_get_sorted_list_invalid_attribute(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_sorted_list_invalid_attribute(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         with pytest.raises(AttributeError):
             await plant_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -531,14 +768,28 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_get_sorted_list_empty_database(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_sorted_list_empty_database(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
 
         sorted_plants = await plant_manager.get_sorted_list(sort_by="plant_id")
 
         assert len(sorted_plants) == 0
 
     @pytest.mark.asyncio
-    async def test_refresh_basic(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_refresh_basic(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
@@ -557,7 +808,14 @@ class TestPlantManager:
         assert refreshed_plant2.code == updated_code1
 
     @pytest.mark.asyncio
-    async def test_refresh_nonexistent_plant(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_refresh_nonexistent_plant(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         plant = Plant(plant_id=999)
 
         with pytest.raises(Exception):
@@ -566,7 +824,14 @@ class TestPlantManager:
         await session.rollback()
 
     @pytest.mark.asyncio
-    async def test_exists_with_existing_plant(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_exists_with_existing_plant(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
@@ -577,7 +842,14 @@ class TestPlantManager:
 
 
     @pytest.mark.asyncio
-    async def test_is_equal_with_existing_plant(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_is_equal_with_existing_plant(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
@@ -592,13 +864,27 @@ class TestPlantManager:
         assert plant_manager.is_equal(plant1, plant3) is True
 
     @pytest.mark.asyncio
-    async def test_exists_with_nonexistent_plant(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_exists_with_nonexistent_plant(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
 
         assert await plant_manager.exists(non_existent_id) is False
 
     @pytest.mark.asyncio
-    async def test_exists_with_invalid_id_type(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_exists_with_invalid_id_type(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
@@ -620,9 +906,16 @@ class TestPlantManager:
     # someNVarCharVal,
     # someDateVal
     # someUTCDateTimeVal
-     # FlvrForeignKeyID
+    # FlvrForeignKeyID
     @pytest.mark.asyncio
-    async def test_get_by_flvr_foreign_key_id_existing(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_flvr_foreign_key_id_existing(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         # Add a plant with a specific flvr_foreign_key_id
         plant1 = await PlantFactory.create_async(session=session)
 
@@ -640,14 +933,28 @@ class TestPlantManager:
         assert fetched_plants[0].flvr_foreign_key_code_peek == flavor.code
 
     @pytest.mark.asyncio
-    async def test_get_by_flvr_foreign_key_id_nonexistent(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_flvr_foreign_key_id_nonexistent(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
 
         fetched_plants = await plant_manager.get_by_flvr_foreign_key_id(non_existent_id)
         assert len(fetched_plants) == 0
 
     @pytest.mark.asyncio
-    async def test_get_by_flvr_foreign_key_id_invalid_type(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_flvr_foreign_key_id_invalid_type(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
@@ -655,9 +962,13 @@ class TestPlantManager:
 
         await session.rollback()
 
-     # LandID
+    # LandID
     @pytest.mark.asyncio
-    async def test_get_by_land_id_existing(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_land_id_existing(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
         # Add a plant with a specific land_id
         plant1 = await PlantFactory.create_async(session=session)
 
@@ -675,14 +986,22 @@ class TestPlantManager:
         assert fetched_plants[0].land_code_peek == land.code
 
     @pytest.mark.asyncio
-    async def test_get_by_land_id_nonexistent(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_land_id_nonexistent(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
         non_existent_id = 999
 
         fetched_plants = await plant_manager.get_by_land_id(non_existent_id)
         assert len(fetched_plants) == 0
 
     @pytest.mark.asyncio
-    async def test_get_by_land_id_invalid_type(self, plant_manager: PlantManager, session: AsyncSession):
+    async def test_get_by_land_id_invalid_type(
+        self,
+        plant_manager: PlantManager,
+        session: AsyncSession
+    ):
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):

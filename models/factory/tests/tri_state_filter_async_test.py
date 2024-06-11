@@ -1,3 +1,7 @@
+# models/factory/tests/tri_state_filter_async_test.py
+"""
+    #TODO add comment
+"""
 import asyncio
 from decimal import Decimal
 import pytest
@@ -81,11 +85,11 @@ class TestTriStateFilterFactoryAsync:
             assert isinstance(tri_state_filter.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
-        tri_state_filter:TriStateFilter = await TriStateFilterFactory.build_async(session=session)
+        tri_state_filter: TriStateFilter = await TriStateFilterFactory.build_async(session=session)
         assert tri_state_filter.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
-        tri_state_filter:TriStateFilter = await TriStateFilterFactory.create_async(session=session)
+        tri_state_filter: TriStateFilter = await TriStateFilterFactory.create_async(session=session)
         assert tri_state_filter.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -187,19 +191,19 @@ class TestTriStateFilterFactoryAsync:
         assert isinstance(tri_state_filter.state_int_value, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #description,
-        #displayOrder,
+        # description,
+        # displayOrder,
         # isActive,
-        #lookupEnumName,
-        #name,
-         # pacID
+        # lookupEnumName,
+        # name,
+        # pacID
         if db_dialect == 'postgresql':
             assert isinstance(tri_state_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(tri_state_filter.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(tri_state_filter.pac_code_peek, str)
-        #stateIntValue,
+        # stateIntValue,
 
         assert isinstance(tri_state_filter.insert_utc_date_time, datetime)
         assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
@@ -222,19 +226,19 @@ class TestTriStateFilterFactoryAsync:
         assert tri_state_filter.insert_utc_date_time is not None
         assert tri_state_filter.last_update_utc_date_time is not None
 
-        #description,
-        #displayOrder,
+        # description,
+        # displayOrder,
         # isActive,
-        #lookupEnumName,
-        #name,
-         # PacID
+        # lookupEnumName,
+        # name,
+        # PacID
         if db_dialect == 'postgresql':
             assert isinstance(tri_state_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(tri_state_filter.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(tri_state_filter.pac_code_peek, str)
-        #stateIntValue,
+        # stateIntValue,
 
         assert tri_state_filter.description == ""
         assert tri_state_filter.display_order == 0
@@ -262,12 +266,12 @@ class TestTriStateFilterFactoryAsync:
         await session.commit()
         assert tri_state_filter_2.last_change_code != original_last_change_code
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     @pytest.mark.asyncio
     async def test_invalid_pac_id(self, session):
         tri_state_filter = await TriStateFilterFactory.create_async(session=session)
@@ -275,5 +279,5 @@ class TestTriStateFilterFactoryAsync:
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             await session.commit()
         await session.rollback()
-    #stateIntValue,
+    # stateIntValue,
 

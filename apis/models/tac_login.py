@@ -1,3 +1,7 @@
+# apis/models/tac_login.py
+"""
+    #TODO add comment
+"""
 from datetime import date, datetime
 from decimal import Decimal
 import json
@@ -27,13 +31,13 @@ class TacLoginPostModelRequest(CamelModel):
     def to_dict_snake(self):
         data = self.model_dump()
     def to_dict_snake_serialized(self):
-        data = json.loads(self.model_dump_json() )
+        data = json.loads(self.model_dump_json())
     def to_dict_camel(self):
         data = self.model_dump()
-        return {snake_to_camel(k):v for k, v in data.items()}
+        return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
-        data = json.loads(self.model_dump_json() )
-        return {snake_to_camel(k):v for k, v in data.items()}
+        data = json.loads(self.model_dump_json())
+        return {snake_to_camel(k): v for k, v in data.items()}
 class TacLoginPostModelResponse(PostResponse):
     customer_code: UUID4 = Field(default=uuid.UUID(int=0), description="Customer Code")
     email: str = Field(default="", description="Output Some Email")

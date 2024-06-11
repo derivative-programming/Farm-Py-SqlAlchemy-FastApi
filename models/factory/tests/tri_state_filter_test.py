@@ -1,3 +1,7 @@
+# models/factory/tests/tri_state_filter_test.py
+"""
+    #TODO add comment
+"""
 from decimal import Decimal
 import pytest
 import time
@@ -50,10 +54,10 @@ class TestTriStateFilterFactory:
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(tri_state_filter.code, str)
     def test_last_change_code_default_on_build(self, session):
-        tri_state_filter:TriStateFilter = TriStateFilterFactory.build(session=session)
+        tri_state_filter: TriStateFilter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
-        tri_state_filter:TriStateFilter = TriStateFilterFactory.create(session=session)
+        tri_state_filter: TriStateFilter = TriStateFilterFactory.create(session=session)
         assert tri_state_filter.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         tri_state_filter = TriStateFilterFactory.create(session=session)
@@ -140,19 +144,19 @@ class TestTriStateFilterFactory:
         assert isinstance(tri_state_filter.state_int_value, int)
         # Check for the peek values, assuming they are UUIDs based on your model
 
-        #description,
-        #displayOrder,
+        # description,
+        # displayOrder,
         # isActive,
-        #lookupEnumName,
-        #name,
-         # pacID
+        # lookupEnumName,
+        # name,
+        # pacID
         if db_dialect == 'postgresql':
             assert isinstance(tri_state_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(tri_state_filter.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(tri_state_filter.pac_code_peek, str)
-        #stateIntValue,
+        # stateIntValue,
 
         assert isinstance(tri_state_filter.insert_utc_date_time, datetime)
         assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
@@ -173,19 +177,19 @@ class TestTriStateFilterFactory:
         assert tri_state_filter.insert_utc_date_time is not None
         assert tri_state_filter.last_update_utc_date_time is not None
 
-        #description,
-        #displayOrder,
+        # description,
+        # displayOrder,
         # isActive,
-        #lookupEnumName,
-        #name,
-         # PacID
+        # lookupEnumName,
+        # name,
+        # PacID
         if db_dialect == 'postgresql':
             assert isinstance(tri_state_filter.pac_code_peek, UUID)
         elif db_dialect == 'mssql':
             assert isinstance(tri_state_filter.pac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(tri_state_filter.pac_code_peek, str)
-        #stateIntValue,
+        # stateIntValue,
 
         assert tri_state_filter.description == ""
         assert tri_state_filter.display_order == 0
@@ -206,17 +210,17 @@ class TestTriStateFilterFactory:
         session.commit()
         assert tri_state_filter_2.last_change_code != original_last_change_code
 
-    #description,
-    #displayOrder,
+    # description,
+    # displayOrder,
     # isActive,
-    #lookupEnumName,
-    #name,
-     # PacID
+    # lookupEnumName,
+    # name,
+    # PacID
     def test_invalid_pac_id(self, session):
         tri_state_filter = TriStateFilterFactory.create(session=session)
         tri_state_filter.pac_id = 99999
         with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
             session.commit()
         session.rollback()
-    #stateIntValue,
+    # stateIntValue,
 

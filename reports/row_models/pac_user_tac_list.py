@@ -1,3 +1,7 @@
+# pac_user_tac_list.py
+"""
+    #TODO add comment
+"""
 import uuid
 from decimal import Decimal
 from datetime import datetime, date
@@ -12,11 +16,11 @@ class ReportItemPacUserTacList():
     pac_name: str = ""
 
     def load_data_provider_dict(self, data: dict):
-            self.tac_code = TypeConversion.get_uuid(data["tac_code"])
-            self.tac_description = str(data["tac_description"])
-            self.tac_display_order = int(data["tac_display_order"])
-            self.tac_is_active = bool(data["tac_is_active"])
-            self.tac_lookup_enum_name = str(data["tac_lookup_enum_name"])
-            self.tac_name = str(data["tac_name"])
-            self.pac_name = str(data["pac_name"])
+        self.tac_code = TypeConversion.get_uuid(data["tac_code"])
+        self.tac_description = str(data["tac_description"])
+        self.tac_display_order = int(data["tac_display_order"])
+        self.tac_is_active = bool(data["tac_is_active"])
+        self.tac_lookup_enum_name = str(data["tac_lookup_enum_name"])
+        self.tac_name = str(data["tac_name"])
+        self.pac_name = str(data["pac_name"])
 
