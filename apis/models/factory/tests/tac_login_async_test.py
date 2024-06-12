@@ -17,27 +17,35 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from ...tac_login import TacLoginPostModelRequest
 from models import Base
 from ..tac_login import TacLoginPostModelRequestFactory
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestTacLoginPostModelRequestFactoryAsync:
+    """
+    #TODO add comment
+    """
     @pytest.mark.asyncio
     async def test_create_async(self, session):
-        model_instance = await TacLoginPostModelRequestFactory.create_async(session=session)
+        model_instance = (
+            await TacLoginPostModelRequestFactory.create_async(
+                session=session)
+        )
         assert isinstance(model_instance, TacLoginPostModelRequest)
-        assert isinstance(model_instance.email, str)
-        assert isinstance(model_instance.password, str)
+        assert isinstance(model_instance.email,
+                          str)
+        assert isinstance(model_instance.password,
+                          str)
 

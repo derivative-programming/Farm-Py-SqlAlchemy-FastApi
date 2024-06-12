@@ -11,88 +11,169 @@ from models import Pac
 from models.factory import PacFactory
 from managers.pac import PacManager
 from business.pac import PacBusObj
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestPacBusObj:
+    """
+        #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         return PacManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def pac_bus_obj(self, session):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         return PacBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_pac(self, session):
+        """
+            #TODO add comment
+        """
         # Use the PacFactory to create a new pac instance
         # Assuming PacFactory.create() is an async function
         return await PacFactory.create_async(session)
     @pytest.mark.asyncio
-    async def test_create_pac(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_create_pac(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         # Test creating a new pac
         assert pac_bus_obj.pac_id is None
         # assert isinstance(pac_bus_obj.pac_id, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(pac_bus_obj.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(pac_bus_obj.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(pac_bus_obj.code, str)
         assert isinstance(pac_bus_obj.last_change_code, int)
         assert pac_bus_obj.insert_user_id is None
         assert pac_bus_obj.last_update_user_id is None
-        assert pac_bus_obj.description == "" or isinstance(pac_bus_obj.description, str)
+        assert pac_bus_obj.description == "" or isinstance(
+            pac_bus_obj.description, str)
         assert isinstance(pac_bus_obj.display_order, int)
         assert isinstance(pac_bus_obj.is_active, bool)
-        assert pac_bus_obj.lookup_enum_name == "" or isinstance(pac_bus_obj.lookup_enum_name, str)
-        assert pac_bus_obj.name == "" or isinstance(pac_bus_obj.name, str)
+        assert pac_bus_obj.lookup_enum_name == "" or isinstance(
+            pac_bus_obj.lookup_enum_name, str)
+        assert pac_bus_obj.name == "" or isinstance(
+            pac_bus_obj.name, str)
     @pytest.mark.asyncio
-    async def test_load_with_pac_obj(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_load_with_pac_obj(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         await pac_bus_obj.load(pac_obj_instance=new_pac)
         assert pac_manager.is_equal(pac_bus_obj.pac,new_pac) is True
     @pytest.mark.asyncio
-    async def test_load_with_pac_id(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_load_with_pac_id(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         await pac_bus_obj.load(pac_id=new_pac.pac_id)
         assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
     @pytest.mark.asyncio
-    async def test_load_with_pac_code(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_load_with_pac_code(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         await pac_bus_obj.load(code=new_pac.code)
         assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
     @pytest.mark.asyncio
-    async def test_load_with_pac_json(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_load_with_pac_json(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         pac_json = pac_manager.to_json(new_pac)
         await pac_bus_obj.load(json_data=pac_json)
         assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
     @pytest.mark.asyncio
-    async def test_load_with_pac_dict(self, session, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_load_with_pac_dict(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         logger.info("test_load_with_pac_dict 1")
         pac_dict = pac_manager.to_dict(new_pac)
         logger.info(pac_dict)
         await pac_bus_obj.load(pac_dict=pac_dict)
-        assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
+        assert pac_manager.is_equal(
+            pac_bus_obj.pac,
+            new_pac) is True
     @pytest.mark.asyncio
-    async def test_get_nonexistent_pac(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_get_nonexistent_pac(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         # Test retrieving a nonexistent pac raises an exception
         await pac_bus_obj.load(pac_id=-1)
-        assert pac_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
+        assert pac_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
-    async def test_update_pac(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_update_pac(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         # Test updating a pac's data
         new_pac = await pac_manager.get_by_id(new_pac.pac_id)
         new_code = generate_uuid()
@@ -100,9 +181,19 @@ class TestPacBusObj:
         pac_bus_obj.code = new_code
         await pac_bus_obj.save()
         new_pac = await pac_manager.get_by_id(new_pac.pac_id)
-        assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
+        assert pac_manager.is_equal(
+            pac_bus_obj.pac,
+            new_pac) is True
     @pytest.mark.asyncio
-    async def test_delete_pac(self, pac_manager: PacManager, pac_bus_obj: PacBusObj, new_pac: Pac):
+    async def test_delete_pac(
+        self,
+        pac_manager: PacManager,
+        pac_bus_obj: PacBusObj,
+        new_pac: Pac
+    ):
+        """
+            #TODO add comment
+        """
         assert new_pac.pac_id is not None
         assert pac_bus_obj.pac_id is None
         await pac_bus_obj.load(pac_id=new_pac.pac_id)

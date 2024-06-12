@@ -7,7 +7,11 @@
 import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
 class SessionContext:
+    """
+    #TODO add comment
+    """
     user_name: str = ""
     customer_code: uuid = uuid.UUID(int=0)
     tac_code: uuid = uuid.UUID(int=0)

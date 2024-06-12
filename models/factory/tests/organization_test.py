@@ -5,30 +5,37 @@
 from decimal import Decimal
 import pytest
 import time
+import math
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Organization
 from models.factory import OrganizationFactory
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 DATABASE_URL = "sqlite:///:memory:"
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestOrganizationFactory:
+    """
+    #TODO add comment
+    """
     @pytest.fixture(scope="module")
     def engine(self):
+        """
+        #TODO add comment
+        """
         engine = create_engine(DATABASE_URL, echo=False)
         #FKs are not activated by default in sqllite
         with engine.connect() as conn:
@@ -37,39 +44,63 @@ class TestOrganizationFactory:
         engine.dispose()
     @pytest.fixture
     def session(self, engine):
+        """
+        #TODO add comment
+        """
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
     def test_organization_creation(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.create(session=session)
         assert organization.organization_id is not None
     def test_code_default(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.create(session=session)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(organization.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(organization.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(organization.code, str)
     def test_last_change_code_default_on_build(self, session):
+        """
+        #TODO add comment
+        """
         organization: Organization = OrganizationFactory.build(session=session)
         assert organization.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
+        """
+        #TODO add comment
+        """
         organization: Organization = OrganizationFactory.create(session=session)
         assert organization.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.create(session=session)
         initial_code = organization.last_change_code
         organization.code = generate_uuid()
         session.commit()
         assert organization.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.build(session=session)
         assert organization.insert_utc_date_time is not None
         assert isinstance(organization.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.build(session=session)
         assert organization.insert_utc_date_time is not None
         assert isinstance(organization.insert_utc_date_time, datetime)
@@ -78,6 +109,9 @@ class TestOrganizationFactory:
         session.commit()
         assert organization.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory(session=session)
         assert organization.insert_utc_date_time is not None
         assert isinstance(organization.insert_utc_date_time, datetime)
@@ -87,10 +121,16 @@ class TestOrganizationFactory:
         session.commit()
         assert organization.insert_utc_date_time == initial_time
     def test_date_updated_on_build(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.build(session=session)
         assert organization.last_update_utc_date_time is not None
         assert isinstance(organization.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.build(session=session)
         assert organization.last_update_utc_date_time is not None
         assert isinstance(organization.last_update_utc_date_time, datetime)
@@ -99,6 +139,9 @@ class TestOrganizationFactory:
         session.commit()
         assert organization.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory(session=session)
         assert organization.last_update_utc_date_time is not None
         assert isinstance(organization.last_update_utc_date_time, datetime)
@@ -108,57 +151,74 @@ class TestOrganizationFactory:
         session.commit()
         assert organization.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.create(session=session)
         session.delete(organization)
         session.commit()
-        deleted_organization = session.query(Organization).filter_by(organization_id=organization.organization_id).first()
+        deleted_organization = session.query(Organization).filter_by(
+            organization_id=organization.organization_id).first()
         assert deleted_organization is None
     def test_data_types(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.create(session=session)
         assert isinstance(organization.organization_id, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(organization.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(organization.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(organization.code, str)
         assert isinstance(organization.last_change_code, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(organization.insert_user_id, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(organization.insert_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(organization.insert_user_id, str)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(organization.last_update_user_id, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(organization.last_update_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(organization.last_update_user_id, str)
         assert organization.name == "" or isinstance(organization.name, str)
         assert isinstance(organization.tac_id, int)
-        # Check for the peek values, assuming they are UUIDs based on your model
-
+        # Check for the peek values,
+        # assuming they are UUIDs based on your model
+# endset
         # name,
         # tacID
-        if db_dialect == 'postgresql':
-            assert isinstance(organization.tac_code_peek, UUID)
-        elif db_dialect == 'mssql':
-            assert isinstance(organization.tac_code_peek, UNIQUEIDENTIFIER)
+        if DB_DIALECT == 'postgresql':
+            assert isinstance(
+                organization.tac_code_peek, UUID)
+        elif DB_DIALECT == 'mssql':
+            assert isinstance(
+                organization.tac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(organization.tac_code_peek, str)
-
+            assert isinstance(
+                organization.tac_code_peek, str)
+# endset
         assert isinstance(organization.insert_utc_date_time, datetime)
         assert isinstance(organization.last_update_utc_date_time, datetime)
     def test_unique_code_constraint(self, session):
+        """
+        #TODO add comment
+        """
         organization_1 = OrganizationFactory.create(session=session)
         organization_2 = OrganizationFactory.create(session=session)
         organization_2.code = organization_1.code
         session.add_all([organization_1, organization_2])
-        with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
+        with pytest.raises(Exception):
             session.commit()
         session.rollback()
     def test_fields_default(self, session):
+        """
+        #TODO add comment
+        """
         organization = Organization()
         assert organization.code is not None
         assert organization.last_change_code is not None
@@ -166,36 +226,48 @@ class TestOrganizationFactory:
         assert organization.last_update_user_id is None
         assert organization.insert_utc_date_time is not None
         assert organization.last_update_utc_date_time is not None
-
+# endset
         # name,
         # TacID
-        if db_dialect == 'postgresql':
-            assert isinstance(organization.tac_code_peek, UUID)
-        elif db_dialect == 'mssql':
-            assert isinstance(organization.tac_code_peek, UNIQUEIDENTIFIER)
+        if DB_DIALECT == 'postgresql':
+            assert isinstance(
+                organization.tac_code_peek, UUID)
+        elif DB_DIALECT == 'mssql':
+            assert isinstance(
+                organization.tac_code_peek,
+                UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(organization.tac_code_peek, str)
-
+            assert isinstance(
+                organization.tac_code_peek, str)
+# endset
         assert organization.name == ""
         assert organization.tac_id == 0
-
+# endset
     def test_last_change_code_concurrency(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.create(session=session)
         original_last_change_code = organization.last_change_code
-        organization_1 = session.query(Organization).filter_by(organization_id=organization.organization_id).first()
+        organization_1 = session.query(Organization).filter_by(
+            organization_id=organization.organization_id).first()
         organization_1.code = generate_uuid()
         session.commit()
-        organization_2 = session.query(Organization).filter_by(organization_id=organization.organization_id).first()
+        organization_2 = session.query(Organization).filter_by(
+            organization_id=organization.organization_id).first()
         organization_2.code = generate_uuid()
         session.commit()
         assert organization_2.last_change_code != original_last_change_code
-
+# endset
     # name,
     # TacID
     def test_invalid_tac_id(self, session):
+        """
+        #TODO add comment
+        """
         organization = OrganizationFactory.create(session=session)
         organization.tac_id = 99999
-        with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
+        with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-
+# endset

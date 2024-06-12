@@ -6,11 +6,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import LandManager
 from models import Land
 import models
@@ -20,15 +20,21 @@ from .base_bus_obj import BaseBusObj
 from business.plant import PlantBusObj
 
 class LandInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class LandBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
@@ -84,7 +90,7 @@ class LandBusObj(BaseBusObj):
     def set_prop_last_update_user_id(self, value: uuid.UUID):
         self.last_update_user_id = value
         return self
-
+# endset
     # description
     @property
     def description(self):
@@ -102,7 +108,8 @@ class LandBusObj(BaseBusObj):
         return self.land.display_order
     @display_order.setter
     def display_order(self, value):
-        assert isinstance(value, int), "display_order must be an integer"
+        assert isinstance(value, int), (
+            "display_order must be an integer")
         self.land.display_order = value
     def set_prop_display_order(self, value):
         self.display_order = value
@@ -142,7 +149,7 @@ class LandBusObj(BaseBusObj):
         self.name = value
         return self
     # PacID
-
+# endset
     # description,
     # displayOrder,
     # isActive,
@@ -154,7 +161,8 @@ class LandBusObj(BaseBusObj):
         return self.land.pac_id
     @pac_id.setter
     def pac_id(self, value):
-        assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
+        assert isinstance(value, int) or value is None, (
+            "pac_id must be an integer or None")
         self.land.pac_id = value
     def set_prop_pac_id(self, value):
         self.pac_id = value
@@ -164,16 +172,18 @@ class LandBusObj(BaseBusObj):
         return self.land.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
+    #     assert isinstance(value, UUIDType),
+    #           "pac_code_peek must be a UUID"
     #     self.land.pac_code_peek = value
-
+# endset
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.land.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.land.insert_utc_date_time = value
     # update_utc_date_time
     @property
@@ -181,18 +191,24 @@ class LandBusObj(BaseBusObj):
         return self.land.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.land.last_update_utc_date_time = value
 
     @property
     def lookup_enum(self) -> managers_and_enums.LandEnum:
         return managers_and_enums.LandEnum[self.land.lookup_enum_name]
-    async def load(self, json_data: str = None,
-                   code: uuid.UUID = None,
-                   land_id: int = None,
-                   land_obj_instance: Land = None,
-                   land_dict: dict = None,
-                   land_enum:managers_and_enums.LandEnum = None):
+    async def load(
+        self,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        land_id: int = None,
+        land_obj_instance:
+            Land = None,
+        land_dict: dict = None,
+        land_enum:
+            managers_and_enums.LandEnum = None
+    ):
         if land_id and self.land.land_id is None:
             land_manager = LandManager(self._session_context)
             land_obj = await land_manager.get_by_id(land_id)
@@ -215,13 +231,17 @@ class LandBusObj(BaseBusObj):
             land_manager = LandManager(self._session_context)
             self.land = await land_manager.from_enum(land_enum)
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   land_id: int = None,
-                   land_obj_instance: Land = None,
-                   land_dict: dict = None,
-                   land_enum:managers_and_enums.LandEnum = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        land_id: int = None,
+        land_obj_instance:
+            Land = None,
+        land_dict: dict = None,
+        land_enum:
+            managers_and_enums.LandEnum = None
+    ):
         result = LandBusObj(session_context)
         await result.load(
             json_data,
@@ -259,13 +279,16 @@ class LandBusObj(BaseBusObj):
             await land_manager.delete(self.land.land_id)
             self.land = None
     async def randomize_properties(self):
-        self.land.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.land.description = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.display_order = random.randint(0, 100)
         self.land.is_active = random.choice([True, False])
-        self.land.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.land.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.land.lookup_enum_name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.land.name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.land.pac_id = random.randint(0, 100)
-
+# endset
         return self
     def get_land_obj(self) -> Land:
         return self.land
@@ -273,7 +296,7 @@ class LandBusObj(BaseBusObj):
         land_manager = LandManager(self._session_context)
         my_land = self.get_land_obj()
         return land_manager.is_equal(land, my_land)
-
+# endset
     # description,
     # displayOrder,
     # isActive,
@@ -284,7 +307,7 @@ class LandBusObj(BaseBusObj):
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
-
+# endset
     def get_obj(self) -> Land:
         return self.land
     def get_object_name(self) -> str:
@@ -303,12 +326,18 @@ class LandBusObj(BaseBusObj):
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         return self.get_pac_id_rel_obj()
-
+# endset
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Land]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[Land]
+    ):
         result = list()
         for land in obj_list:
-            land_bus_obj = LandBusObj.get(session_context, land_obj_instance=land)
+            land_bus_obj = LandBusObj.get(
+                session_context,
+                land_obj_instance=land
+            )
             result.append(land_bus_obj)
         return result
 

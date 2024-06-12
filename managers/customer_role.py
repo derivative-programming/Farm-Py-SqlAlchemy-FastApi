@@ -17,7 +17,7 @@ from models.customer import Customer  # CustomerID
 from models.role import Role  # RoleID
 from models.customer_role import CustomerRole
 from models.serialization_schema.customer_role import CustomerRoleSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class CustomerRoleNotFoundError(Exception):
@@ -46,9 +46,9 @@ class CustomerRoleManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -83,10 +83,10 @@ class CustomerRoleManager:
         """
         logging.info("CustomerRoleManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
 #         join_condition = outerjoin(CustomerRole, Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(CustomerRole
 #                         , Customer  # customer_id
@@ -99,10 +99,10 @@ class CustomerRoleManager:
             , Customer  # customer_id
             , Role  # role_id
             )
-
+# endset
         query = query.outerjoin(Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
         query = query.outerjoin(Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[CustomerRole]:
         """
@@ -121,15 +121,15 @@ class CustomerRoleManager:
             i = 0
             customer_role = query_result_row[i]
             i = i + 1
-
+# endset
             customer = query_result_row[i]  # customer_id
             i = i + 1
             role = query_result_row[i]  # role_id
             i = i + 1
-
+# endset
             customer_role.customer_code_peek = customer.code if customer else uuid.UUID(int=0)  # customer_id
             customer_role.role_code_peek = role.code if role else uuid.UUID(int=0)  # role_id
-
+# endset
             result.append(customer_role)
         return result
     def _first_or_none(self, customer_role_list: List) -> CustomerRole:
@@ -166,7 +166,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.update")
         property_list = CustomerRole.property_list()
         if customer_role:
-            customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -239,8 +240,10 @@ class CustomerRoleManager:
                 raise ValueError("CustomerRole is already added: " +
                                  str(customer_role.code) +
                                  " " + str(customer_role.customer_role_id))
-            customer_role.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            customer_role.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            customer_role.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(customer_roles)
         await self._session_context.session.flush()
         return customer_roles
@@ -261,10 +264,11 @@ class CustomerRoleManager:
                     type(customer_role_id))
             if not customer_role_id:
                 continue
-            logging.info("CustomerRoleManager.update_bulk customer_role_id:{customer_role_id}")
+            logging.info("CustomerRoleManager.update_bulk customer_role_id:%s", customer_role_id)
             customer_role = await self.get_by_id(customer_role_id)
             if not customer_role:
-                raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
+                raise CustomerRoleNotFoundError(
+                    f"CustomerRole with ID {customer_role_id} not found!")
             for key, value in update.items():
                 if key != "customer_role_id":
                     setattr(customer_role, key, value)
@@ -348,7 +352,7 @@ class CustomerRoleManager:
         dict1 = self.to_dict(customer_role1)
         dict2 = self.to_dict(customer_role2)
         return dict1 == dict2
-
+# endset
     async def get_by_customer_id(self, customer_id: int) -> List[CustomerRole]:  # CustomerID
         logging.info("CustomerRoleManager.get_by_customer_id")
         if not isinstance(customer_id, int):
@@ -362,7 +366,7 @@ class CustomerRoleManager:
     async def get_by_role_id(
         self,
         role_id: int
-        ) -> List[CustomerRole]:  # RoleID
+    ) -> List[CustomerRole]:  # RoleID
         """
         #TODO add comment
         """
@@ -375,4 +379,5 @@ class CustomerRoleManager:
         query_filter = CustomerRole.role_id == role_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

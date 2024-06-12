@@ -22,29 +22,33 @@ from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
 from models import Base
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestLandUserPlantMultiSelectToEditablePostModelResponse:
+    """
+    #TODO add comment
+    """
     def test_flow_land_user_plant_multi_select_to_editable_result_to_json(self):
         # Create an instance and set attributes
         result = FlowLandUserPlantMultiSelectToEditableResult()
         result.context_object_code = uuid.uuid4()
 
+# endset
         # Call to_json method
         json_output = result.to_json()
         # Parse JSON output
@@ -52,6 +56,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
         # Assert individual fields
         assert data["context_object_code"] == str(result.context_object_code)
 
+# endset
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
@@ -62,13 +67,13 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
         await land_bus_obj.load(land_obj_instance=land)
         role_required = "User"
         plant_code_list_csv: str = "",
-
+# endset
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
-
+# endset
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -83,7 +88,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
                 flow_result = await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
-
+# endset
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(

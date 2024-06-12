@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 from models.tac import Tac  # TacID
 from models.organization import Organization
 from models.serialization_schema.organization import OrganizationSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class OrganizationNotFoundError(Exception):
@@ -45,9 +45,9 @@ class OrganizationManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -82,9 +82,9 @@ class OrganizationManager:
         """
         logging.info("OrganizationManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Tac, and_(Organization.tac_id == Tac.tac_id, Organization.tac_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(Organization
 #                         , Tac  # tac_id
@@ -95,9 +95,9 @@ class OrganizationManager:
             Organization
             , Tac  # tac_id
             )
-
+# endset
         query = query.outerjoin(Tac, and_(Organization.tac_id == Tac.tac_id, Organization.tac_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[Organization]:
         """
@@ -116,12 +116,12 @@ class OrganizationManager:
             i = 0
             organization = query_result_row[i]
             i = i + 1
-
+# endset
             tac = query_result_row[i]  # tac_id
             i = i + 1
-
+# endset
             organization.tac_code_peek = tac.code if tac else uuid.UUID(int=0)  # tac_id
-
+# endset
             result.append(organization)
         return result
     def _first_or_none(self, organization_list: List) -> Organization:
@@ -158,7 +158,8 @@ class OrganizationManager:
         logging.info("OrganizationManager.update")
         property_list = Organization.property_list()
         if organization:
-            organization.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            organization.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -231,8 +232,10 @@ class OrganizationManager:
                 raise ValueError("Organization is already added: " +
                                  str(organization.code) +
                                  " " + str(organization.organization_id))
-            organization.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            organization.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            organization.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            organization.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(organizations)
         await self._session_context.session.flush()
         return organizations
@@ -253,10 +256,11 @@ class OrganizationManager:
                     type(organization_id))
             if not organization_id:
                 continue
-            logging.info("OrganizationManager.update_bulk organization_id:{organization_id}")
+            logging.info("OrganizationManager.update_bulk organization_id:%s", organization_id)
             organization = await self.get_by_id(organization_id)
             if not organization:
-                raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
+                raise OrganizationNotFoundError(
+                    f"Organization with ID {organization_id} not found!")
             for key, value in update.items():
                 if key != "organization_id":
                     setattr(organization, key, value)
@@ -340,7 +344,7 @@ class OrganizationManager:
         dict1 = self.to_dict(organization1)
         dict2 = self.to_dict(organization2)
         return dict1 == dict2
-
+# endset
     async def get_by_tac_id(self, tac_id: int) -> List[Organization]:  # TacID
         logging.info("OrganizationManager.get_by_tac_id")
         if not isinstance(tac_id, int):
@@ -351,4 +355,5 @@ class OrganizationManager:
         query_filter = Organization.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

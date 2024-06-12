@@ -7,6 +7,7 @@
 from pydantic import BaseModel
 import re
 
+
 def to_camel(string: str) -> str:
     # Split the string into words and combine them capitalizing the first letter of each word
     # except for the first word.
@@ -18,15 +19,29 @@ def to_snake(string: str) -> str:
     string = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', string)
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', string).lower()
 
+
 class CamelModel(BaseModel):
+    """
+    #TODO add comment
+    """
     class Config:
+        """
+        #TODO add comment
+        """
         alias_generator = to_camel
         # This will tell Pydantic to use the aliases in the generated schema
         # and when parsing and serializing data.
         populate_by_name = True
 
+
 # Base model with alias_generator
 class SnakeModel(BaseModel):
+    """
+    #TODO add comment
+    """
     class Config:
+        """
+        #TODO add comment
+        """
         alias_generator = to_snake
         populate_by_name = True

@@ -9,7 +9,11 @@ from .log_severity import LogSeverity
 import logging
 from helpers import SessionContext
 
+
 class BaseFlow():
+    """
+    #TODO add comment
+    """
     __flow_name = ""
     queued_validation_errors: dict
     _session_context: SessionContext

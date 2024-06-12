@@ -12,7 +12,7 @@ from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import PlantManager
 from models import Plant
 import models
@@ -22,19 +22,25 @@ from .base_bus_obj import BaseBusObj
 
 
 class PlantInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 
 
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 
 
 class PlantBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
 
         if not session_context.session:
@@ -42,7 +48,7 @@ class PlantBusObj(BaseBusObj):
 
         self._session_context = session_context
         self.plant = Plant()
- 
+
     @property
     def plant_id(self):
         return self.plant.plant_id
@@ -105,7 +111,7 @@ class PlantBusObj(BaseBusObj):
         self.last_update_user_id = value
         return self
 
-#endset
+# endset
 
     # FlvrForeignKeyID
 
@@ -187,7 +193,9 @@ class PlantBusObj(BaseBusObj):
 
     @some_date_val.setter
     def some_date_val(self, value):
-        assert isinstance(value, date), "some_date_val must be a date object"
+        assert isinstance(value, date), (
+            "some_date_val must be a date object"
+        )
         self.plant.some_date_val = value
 
     def set_prop_some_date_val(self, value):
@@ -201,7 +209,9 @@ class PlantBusObj(BaseBusObj):
 
     @some_decimal_val.setter
     def some_decimal_val(self, value):
-        assert isinstance(value, (int, float)), "some_decimal_val must be a number"
+        assert isinstance(value, (int, float)), (
+            "some_decimal_val must be a number"
+            )
         self.plant.some_decimal_val = value
 
     def set_prop_some_decimal_val(self, value):
@@ -215,7 +225,8 @@ class PlantBusObj(BaseBusObj):
 
     @some_email_address.setter
     def some_email_address(self, value):
-        assert isinstance(value, str), "some_email_address must be a string"
+        assert isinstance(value, str), (
+            "some_email_address must be a string")
         self.plant.some_email_address = value
 
     def set_prop_some_email_address(self, value):
@@ -229,7 +240,8 @@ class PlantBusObj(BaseBusObj):
 
     @some_float_val.setter
     def some_float_val(self, value):
-        assert isinstance(value, float), "some_float_val must be a float"
+        assert isinstance(value, float), (
+            "some_float_val must be a float")
         self.plant.some_float_val = value
 
     def set_prop_some_float_val(self, value):
@@ -243,7 +255,8 @@ class PlantBusObj(BaseBusObj):
 
     @some_int_val.setter
     def some_int_val(self, value):
-        assert isinstance(value, int), "some_int_val must be an integer"
+        assert isinstance(value, int), (
+            "some_int_val must be an integer")
         self.plant.some_int_val = value
 
     def set_prop_some_int_val(self, value):
@@ -347,7 +360,8 @@ class PlantBusObj(BaseBusObj):
 
     @some_var_char_val.setter
     def some_var_char_val(self, value):
-        assert isinstance(value, str), "some_var_char_val must be a string"
+        assert isinstance(value, str), (
+            "some_var_char_val must be a string")
         self.plant.some_var_char_val = value
 
     def set_prop_some_var_char_val(self, value):
@@ -356,7 +370,7 @@ class PlantBusObj(BaseBusObj):
 
     # LandID
 
-#endset
+# endset
 
     # isDeleteAllowed,
     # isEditAllowed,
@@ -392,7 +406,9 @@ class PlantBusObj(BaseBusObj):
 
     # @flvr_foreign_key_code_peek.setter
     # def flvr_foreign_key_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "flvr_foreign_key_code_peek must be a UUID"
+    #     assert isinstance(
+    #       value, UUIDType),
+    #       "flvr_foreign_key_code_peek must be a UUID"
     #     self.plant.flvr_foreign_key_code_peek = value
 
     # LandID
@@ -402,7 +418,8 @@ class PlantBusObj(BaseBusObj):
 
     @land_id.setter
     def land_id(self, value):
-        assert isinstance(value, int) or value is None, "land_id must be an integer or None"
+        assert isinstance(value, int) or value is None, (
+            "land_id must be an integer or None")
         self.plant.land_id = value
 
     def set_prop_land_id(self, value):
@@ -415,7 +432,8 @@ class PlantBusObj(BaseBusObj):
 
     # @land_code_peek.setter
     # def land_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "land_code_peek must be a UUID"
+    #     assert isinstance(value, UUIDType), 
+    #           "land_code_peek must be a UUID"
     #     self.plant.land_code_peek = value
 
 
@@ -424,7 +442,7 @@ class PlantBusObj(BaseBusObj):
     # someUniqueidentifierVal,
     # someVarCharVal,
 
-#endset
+# endset
 
     # insert_utc_date_time
     @property
@@ -433,7 +451,8 @@ class PlantBusObj(BaseBusObj):
 
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.plant.insert_utc_date_time = value
 
     # update_utc_date_time
@@ -443,7 +462,8 @@ class PlantBusObj(BaseBusObj):
 
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.plant.last_update_utc_date_time = value
 
 ##GENTrainingBlock[caseLookupEnums]Start
@@ -467,7 +487,9 @@ class PlantBusObj(BaseBusObj):
 
         if plant_obj_instance and self.plant.plant_id is None:
             plant_manager = PlantManager(self._session_context)
-            plant_obj = await plant_manager.get_by_id(plant_obj_instance.plant_id)
+            plant_obj = await plant_manager.get_by_id(
+                plant_obj_instance.plant_id
+                )
             self.plant = plant_obj
 
         if json_data and self.plant.plant_id is None:
@@ -481,12 +503,14 @@ class PlantBusObj(BaseBusObj):
         return self
 
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   plant_id: int = None,
-                   plant_obj_instance: Plant = None,
-                   plant_dict: dict = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        plant_id: int = None,
+        plant_obj_instance: Plant = None,
+        plant_dict: dict = None
+    ):
         result = PlantBusObj(session_context)
 
         await result.load(
@@ -518,7 +542,6 @@ class PlantBusObj(BaseBusObj):
         plant_manager = PlantManager(self._session_context)
         return plant_manager.to_json(self.plant)
 
-
     async def save(self):
         if self.plant.plant_id is not None and self.plant.plant_id > 0:
             plant_manager = PlantManager(self._session_context)
@@ -536,26 +559,38 @@ class PlantBusObj(BaseBusObj):
             self.plant = None
 
     async def randomize_properties(self):
-        self.plant.flvr_foreign_key_id =  random.choice(await managers_and_enums.FlavorManager(self._session_context).get_list()).flavor_id
+        self.plant.flvr_foreign_key_id = random.choice(
+            await managers_and_enums.FlavorManager(
+                self._session_context).get_list()).flavor_id
         self.plant.is_delete_allowed = random.choice([True, False])
         self.plant.is_edit_allowed = random.choice([True, False])
         # self.plant.land_id = random.randint(0, 100)
-        self.plant.other_flavor = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.plant.other_flavor = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.plant.some_big_int_val = random.randint(0, 1000000)
         self.plant.some_bit_val = random.choice([True, False])
-        self.plant.some_date_val = date(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.plant.some_date_val = date(
+            random.randint(2000, 2023),
+            random.randint(1, 12),
+            random.randint(1, 28))
         self.plant.some_decimal_val = round(random.uniform(0, 100), 2)
-        self.plant.some_email_address = f"user{random.randint(1, 1000)}@example.com"
+        self.plant.some_email_address = f"user{random.randint(1, 100)}@abc.com"
         self.plant.some_float_val = random.uniform(0, 100)
         self.plant.some_int_val = random.randint(0, 100)
         self.plant.some_money_val = round(random.uniform(0, 10000), 2)
-        self.plant.some_n_var_char_val = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.plant.some_phone_number = f"+1{random.randint(1000000000, 9999999999)}"
+        self.plant.some_n_var_char_val = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.plant.some_phone_number = (
+            f"+1{random.randint(1000000000, 9999999999)}")
         self.plant.some_text_val = "Random text"
         self.plant.some_uniqueidentifier_val = generate_uuid()
-        self.plant.some_utc_date_time_val = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
-        self.plant.some_var_char_val = "".join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=10))
-#endset
+        self.plant.some_utc_date_time_val = datetime(
+            random.randint(2000, 2023),
+            random.randint(1, 12),
+            random.randint(1, 28))
+        self.plant.some_var_char_val = "".join(
+            random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=10))
+# endset
 
         return self
 
@@ -566,7 +601,7 @@ class PlantBusObj(BaseBusObj):
         plant_manager = PlantManager(self._session_context)
         my_plant = self.get_plant_obj()
         return plant_manager.is_equal(plant, my_plant)
-#endset
+# endset
 
     # isDeleteAllowed,
     # isEditAllowed,
@@ -589,15 +624,17 @@ class PlantBusObj(BaseBusObj):
 
     # FlvrForeignKeyID
     async def get_flvr_foreign_key_id_rel_obj(self) -> models.Flavor:
-        flavor_manager = managers_and_enums.FlavorManager(self._session_context)
-        flavor_obj = await flavor_manager.get_by_id(self.flvr_foreign_key_id)
+        flavor_manager = managers_and_enums.FlavorManager(
+            self._session_context)
+        flavor_obj = await flavor_manager.get_by_id(
+            self.flvr_foreign_key_id)
         return flavor_obj
     # somePhoneNumber,
     # someTextVal,
     # someUniqueidentifierVal,
     # someVarCharVal,
 
-#endset
+# endset
 
     def get_obj(self) -> Plant:
         return self.plant
@@ -636,15 +673,21 @@ class PlantBusObj(BaseBusObj):
     # someTextVal,
     # someUniqueidentifierVal,
     # someVarCharVal,
-#endset
+# endset
 
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Plant]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[Plant]
+    ):
 
         result = list()
 
         for plant in obj_list:
-            plant_bus_obj = PlantBusObj.get(session_context, plant_obj_instance=plant)
+            plant_bus_obj = PlantBusObj.get(
+                session_context,
+                plant_obj_instance=plant
+            )
             result.append(plant_bus_obj)
 
         return result

@@ -7,43 +7,54 @@ from decimal import Decimal
 import pytest
 import pytest_asyncio
 import time
+import math
 from typing import AsyncGenerator
-from decimal import Decimal
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.future import select
 from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base, CustomerRole
 from models.factory import CustomerRoleFactory
-from services.db_config import db_dialect
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
+from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestCustomerRoleFactoryAsync:
+    """
+    #TODO add comment
+    """
     @pytest.fixture(scope="function")
     def event_loop(self) -> asyncio.AbstractEventLoop:
+        """
+        #TODO add comment
+        """
         loop = asyncio.get_event_loop_policy().new_event_loop()
         yield loop
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
+        """
+        #TODO add comment
+        """
         engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
-    async def session(self,engine) -> AsyncGenerator[AsyncSession, None]:
+    async def session(self, engine) -> AsyncGenerator[AsyncSession, None]:
+        """
+        #TODO add comment
+        """
         @event.listens_for(engine.sync_engine, "connect")
         def set_sqlite_pragma(dbapi_connection, connection_record):
             cursor = dbapi_connection.cursor()
@@ -72,27 +83,42 @@ class TestCustomerRoleFactoryAsync:
                 await session.rollback()
     @pytest.mark.asyncio
     async def test_customer_role_creation(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         assert customer_role.customer_role_id is not None
     @pytest.mark.asyncio
     async def test_code_default(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer_role.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
+        """
+        #TODO add comment
+        """
         customer_role: CustomerRole = await CustomerRoleFactory.build_async(session=session)
         assert customer_role.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
+        """
+        #TODO add comment
+        """
         customer_role: CustomerRole = await CustomerRoleFactory.create_async(session=session)
         assert customer_role.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         initial_code = customer_role.last_change_code
         customer_role.code = generate_uuid()
@@ -100,11 +126,17 @@ class TestCustomerRoleFactoryAsync:
         assert customer_role.last_change_code != initial_code
     @pytest.mark.asyncio
     async def test_date_inserted_on_build(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.build_async(session=session)
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(customer_role.insert_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_inserted_on_initial_save(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.build_async(session=session)
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(customer_role.insert_utc_date_time, datetime)
@@ -114,6 +146,9 @@ class TestCustomerRoleFactoryAsync:
         assert customer_role.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(customer_role.insert_utc_date_time, datetime)
@@ -124,11 +159,17 @@ class TestCustomerRoleFactoryAsync:
         assert customer_role.insert_utc_date_time == initial_time
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.build_async(session=session)
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_updated_on_initial_save(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.build_async(session=session)
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
@@ -138,6 +179,9 @@ class TestCustomerRoleFactoryAsync:
         assert customer_role.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
@@ -148,37 +192,44 @@ class TestCustomerRoleFactoryAsync:
         assert customer_role.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         await session.delete(customer_role)
         await session.commit()
         # Construct the select statement
-        stmt = select(CustomerRole).where(CustomerRole.customer_role_id==customer_role.customer_role_id)
+        stmt = select(CustomerRole).where(CustomerRole.customer_role_id == customer_role.customer_role_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
         deleted_customer_role = result.scalars().first()
-        # deleted_customer_role = await session.query(CustomerRole).filter_by(customer_role_id=customer_role.customer_role_id).first()
+        # deleted_customer_role = await session.query(CustomerRole).filter_by(
+        # customer_role_id=customer_role.customer_role_id).first()
         assert deleted_customer_role is None
     @pytest.mark.asyncio
     async def test_data_types(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         assert isinstance(customer_role.customer_role_id, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer_role.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.code, str)
         assert isinstance(customer_role.last_change_code, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.insert_user_id, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer_role.insert_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.insert_user_id, str)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.last_update_user_id, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer_role.last_update_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.last_update_user_id, str)
@@ -186,38 +237,46 @@ class TestCustomerRoleFactoryAsync:
         assert isinstance(customer_role.is_placeholder, bool)
         assert isinstance(customer_role.placeholder, bool)
         assert isinstance(customer_role.role_id, int)
-        # Check for the peek values, assuming they are UUIDs based on your model
-
+        # Check for the peek values
+# endset
         # customerID
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.customer_code_peek, UUID)
-        elif db_dialect == 'mssql':
-            assert isinstance(customer_role.customer_code_peek, UNIQUEIDENTIFIER)
+        elif DB_DIALECT == 'mssql':
+            assert isinstance(customer_role.customer_code_peek,
+                              UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
         # isPlaceholder,
         # placeholder,
         # roleID
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.role_code_peek, UUID)
-        elif db_dialect == 'mssql':
-            assert isinstance(customer_role.role_code_peek, UNIQUEIDENTIFIER)
+        elif DB_DIALECT == 'mssql':
+            assert isinstance(customer_role.role_code_peek,
+                              UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.role_code_peek, str)
-
+# endset
         assert isinstance(customer_role.insert_utc_date_time, datetime)
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
+        """
+        #TODO add comment
+        """
         customer_role_1 = await CustomerRoleFactory.create_async(session=session)
         customer_role_2 = await CustomerRoleFactory.create_async(session=session)
         customer_role_2.code = customer_role_1.code
         session.add_all([customer_role_1, customer_role_2])
-        with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
+        with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
     @pytest.mark.asyncio
     async def test_fields_default(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = CustomerRole()
         assert customer_role.code is not None
         assert customer_role.last_change_code is not None
@@ -225,53 +284,61 @@ class TestCustomerRoleFactoryAsync:
         assert customer_role.last_update_user_id is None
         assert customer_role.insert_utc_date_time is not None
         assert customer_role.last_update_utc_date_time is not None
-
+# endset
         # CustomerID
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.customer_code_peek, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer_role.customer_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.customer_code_peek, str)
         # isPlaceholder,
         # placeholder,
         # RoleID
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer_role.role_code_peek, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer_role.role_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer_role.role_code_peek, str)
-
+# endset
         assert customer_role.customer_id == 0
         assert customer_role.is_placeholder is False
         assert customer_role.placeholder is False
         assert customer_role.role_id == 0
-
+# endset
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         original_last_change_code = customer_role.last_change_code
-        stmt = select(CustomerRole).where(CustomerRole.customer_role_id==customer_role.customer_role_id)
+        stmt = select(CustomerRole).where(CustomerRole.customer_role_id == customer_role.customer_role_id)
         result = await session.execute(stmt)
         customer_role_1 = result.scalars().first()
-        # customer_role_1 = await session.query(CustomerRole).filter_by(customer_role_id=customer_role.customer_role_id).first()
+        # customer_role_1 = await session.query(CustomerRole).filter_by(
+        # customer_role_id=customer_role.customer_role_id).first()
         customer_role_1.code = generate_uuid()
         await session.commit()
-        stmt = select(CustomerRole).where(CustomerRole.customer_role_id==customer_role.customer_role_id)
+        stmt = select(CustomerRole).where(CustomerRole.customer_role_id == customer_role.customer_role_id)
         result = await session.execute(stmt)
         customer_role_2 = result.scalars().first()
-        # customer_role_2 = await session.query(CustomerRole).filter_by(customer_role_id=customer_role.customer_role_id).first()
+        # customer_role_2 = await session.query(CustomerRole).filter_by(
+        # customer_role_id=customer_role.customer_role_id).first()
         customer_role_2.code = generate_uuid()
         await session.commit()
         assert customer_role_2.last_change_code != original_last_change_code
-
+# endset
     # CustomerID
     @pytest.mark.asyncio
     async def test_invalid_customer_id(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         customer_role.customer_id = 99999
-        with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
+        with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
     # isPlaceholder,
@@ -279,9 +346,12 @@ class TestCustomerRoleFactoryAsync:
     # RoleID
     @pytest.mark.asyncio
     async def test_invalid_role_id(self, session):
+        """
+        #TODO add comment
+        """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         customer_role.role_id = 99999
-        with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
+        with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-
+# endset

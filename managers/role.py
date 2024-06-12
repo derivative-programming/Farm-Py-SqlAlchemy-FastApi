@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.role import Role
 from models.serialization_schema.role import RoleSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class RoleNotFoundError(Exception):
@@ -30,6 +30,9 @@ class RoleNotFoundError(Exception):
         super().__init__(self.message)
 
 class RoleEnum(Enum):
+    """
+    #TODO add comment
+    """
     Unknown = 'Unknown'
     Admin = 'Admin'
     Config = 'Config'
@@ -51,9 +54,9 @@ class RoleManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -66,12 +69,12 @@ class RoleManager:
         logging.info("PlantManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
-
+# endset
         if await self.from_enum(RoleEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description=""
+            item.description = ""
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -80,7 +83,7 @@ class RoleManager:
             item = await self._build_lookup_item(pac)
             item.name = "Admin"
             item.lookup_enum_name = "Admin"
-            item.description="Admin"
+            item.description = "Admin"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -89,7 +92,7 @@ class RoleManager:
             item = await self._build_lookup_item(pac)
             item.name = "Config"
             item.lookup_enum_name = "Config"
-            item.description="Config"
+            item.description = "Config"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -98,16 +101,19 @@ class RoleManager:
             item = await self._build_lookup_item(pac)
             item.name = "User"
             item.lookup_enum_name = "User"
-            item.description="User"
+            item.description = "User"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-
+# endset
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val: RoleEnum) -> Role:
+    async def from_enum(
+        self,
+        enum_val: RoleEnum
+    ) -> Role:
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Role.lookup_enum_name==enum_val.value
+        query_filter = Role.lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -135,9 +141,9 @@ class RoleManager:
         """
         logging.info("RoleManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Pac, and_(Role.pac_id == Pac.pac_id, Role.pac_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(Role
 #                         , Pac  # pac_id
@@ -148,9 +154,9 @@ class RoleManager:
             Role
             , Pac  # pac_id
             )
-
+# endset
         query = query.outerjoin(Pac, and_(Role.pac_id == Pac.pac_id, Role.pac_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[Role]:
         """
@@ -169,12 +175,12 @@ class RoleManager:
             i = 0
             role = query_result_row[i]
             i = i + 1
-
+# endset
             pac = query_result_row[i]  # pac_id
             i = i + 1
-
+# endset
             role.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
-
+# endset
             result.append(role)
         return result
     def _first_or_none(self, role_list: List) -> Role:
@@ -211,7 +217,8 @@ class RoleManager:
         logging.info("RoleManager.update")
         property_list = Role.property_list()
         if role:
-            role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            role.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -284,8 +291,10 @@ class RoleManager:
                 raise ValueError("Role is already added: " +
                                  str(role.code) +
                                  " " + str(role.role_id))
-            role.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            role.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            role.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            role.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(roles)
         await self._session_context.session.flush()
         return roles
@@ -306,10 +315,11 @@ class RoleManager:
                     type(role_id))
             if not role_id:
                 continue
-            logging.info("RoleManager.update_bulk role_id:{role_id}")
+            logging.info("RoleManager.update_bulk role_id:%s", role_id)
             role = await self.get_by_id(role_id)
             if not role:
-                raise RoleNotFoundError(f"Role with ID {role_id} not found!")
+                raise RoleNotFoundError(
+                    f"Role with ID {role_id} not found!")
             for key, value in update.items():
                 if key != "role_id":
                     setattr(role, key, value)
@@ -393,7 +403,7 @@ class RoleManager:
         dict1 = self.to_dict(role1)
         dict2 = self.to_dict(role2)
         return dict1 == dict2
-
+# endset
     async def get_by_pac_id(self, pac_id: int) -> List[Role]:  # PacID
         logging.info("RoleManager.get_by_pac_id")
         if not isinstance(pac_id, int):
@@ -404,4 +414,5 @@ class RoleManager:
         query_filter = Role.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

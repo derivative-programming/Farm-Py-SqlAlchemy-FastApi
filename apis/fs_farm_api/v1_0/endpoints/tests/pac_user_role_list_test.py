@@ -3,20 +3,19 @@
     #TODO add comment
 """
 import uuid
+import json
 import pytest
 import logging
-import json
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import patch, AsyncMock
-from .....models import factory as request_factory
 from apis import models as apis_models
 from database import get_db
 from helpers.api_token import ApiToken
 import models.factory as model_factorys
-from ..pac_user_role_list import PacUserRoleListRouterConfig
 from main import app
-# from main import app
+from ..pac_user_role_list import PacUserRoleListRouterConfig
+from .....models import factory as request_factory
 
 @pytest.mark.asyncio
 async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: str):

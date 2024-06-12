@@ -1233,6 +1233,7 @@
                 "isAutoRefreshFrequencyVisible": "false",
                 "isAutoRefreshDegraded": "true",
                 "autoRefreshFrequencyInMinutes": "1",
+                "isAuthorizationRequired": "true",
                 "isRefreshButtonHidden": "false",
                 "isPagingAvailable": "true",
                 "isExportButtonsHidden": "false",
@@ -2396,7 +2397,8 @@
                 "layoutName": "",
                 "formFooterText": "Add plant form footer text",
                 "isHeaderVisible": "true",
-                "targetChildObject": "Plant"
+                "targetChildObject": "Plant",
+                "isAuthorizationRequired": "true"
               },
               {
                 "name": "LandAddPlantInitObjWF",
@@ -2978,20 +2980,6 @@
             "parentObjectName": "Organization",
             "prop": [
               {
-                "name": "OrganizationID",
-                "codeDescription": "Org Customer Organization ID",
-                "sqlServerDBDataType": "int",
-                "isFK": "true",
-                "isEncrypted": "false",
-                "forceDBColumnIndex": "false",
-                "isFKLookup": "false",
-                "isNotPublishedToSubscriptions": "true",
-                "fKObjectName": "Organization",
-                "fKObjectPropertyName": "OrganizationID",
-                "isQueryByAvailable": "false",
-                "labelText": "Organization"
-              },
-              {
                 "name": "CustomerID",
                 "codeDescription": "Org Customer Customer ID",
                 "sqlServerDBDataType": "int",
@@ -3019,6 +3007,20 @@
                 "fKObjectPropertyName": "",
                 "isQueryByAvailable": "false",
                 "labelText": "Email"
+              },
+              {
+                "name": "OrganizationID",
+                "codeDescription": "Org Customer Organization ID",
+                "sqlServerDBDataType": "int",
+                "isFK": "true",
+                "isEncrypted": "false",
+                "forceDBColumnIndex": "false",
+                "isFKLookup": "false",
+                "isNotPublishedToSubscriptions": "true",
+                "fKObjectName": "Organization",
+                "fKObjectPropertyName": "OrganizationID",
+                "isQueryByAvailable": "false",
+                "labelText": "Organization"
               }
             ],
             "propSubscription": [],
@@ -3244,6 +3246,7 @@
                     "sqlServerDBDataType": "nvarchar",
                     "sqlServerDBDataTypeSize": "100",
                     "isVisible": "true",
+                    "minWidth": "200px",
                     "dateTimeDisplayFormat": "MM/dd/yyyy hh:mm:ss tt",
                     "isButtonCallToAction": "false",
                     "isUnixEpochDateTime": "false",
@@ -3390,6 +3393,7 @@
                     "sqlServerDBDataType": "nvarchar",
                     "sqlServerDBDataTypeSize": "100",
                     "isVisible": "true",
+                    "minWidth": "200px",
                     "dateTimeDisplayFormat": "MM/dd/yyyy hh:mm:ss tt",
                     "isButtonCallToAction": "false",
                     "isUnixEpochDateTime": "false",
@@ -3555,6 +3559,7 @@
                     "sqlServerDBDataType": "nvarchar",
                     "sqlServerDBDataTypeSize": "100",
                     "isVisible": "true",
+                    "minWidth": "200px",
                     "dateTimeDisplayFormat": "MM/dd/yyyy hh:mm:ss tt",
                     "isButtonCallToAction": "false",
                     "isUnixEpochDateTime": "false",
@@ -3720,6 +3725,7 @@
                     "sqlServerDBDataType": "nvarchar",
                     "sqlServerDBDataTypeSize": "100",
                     "isVisible": "true",
+                    "minWidth": "200px",
                     "dateTimeDisplayFormat": "MM/dd/yyyy hh:mm:ss tt",
                     "isButtonCallToAction": "false",
                     "isUnixEpochDateTime": "false",
@@ -3885,6 +3891,7 @@
                     "sqlServerDBDataType": "nvarchar",
                     "sqlServerDBDataTypeSize": "100",
                     "isVisible": "true",
+                    "minWidth": "200px",
                     "dateTimeDisplayFormat": "MM/dd/yyyy hh:mm:ss tt",
                     "isButtonCallToAction": "false",
                     "isUnixEpochDateTime": "false",
@@ -4050,6 +4057,7 @@
                     "sqlServerDBDataType": "nvarchar",
                     "sqlServerDBDataTypeSize": "100",
                     "isVisible": "true",
+                    "minWidth": "200px",
                     "dateTimeDisplayFormat": "MM/dd/yyyy hh:mm:ss tt",
                     "isButtonCallToAction": "false",
                     "isUnixEpochDateTime": "false",
@@ -4524,6 +4532,7 @@
                 "isAutoRefreshFrequencyVisible": "false",
                 "isAutoRefreshDegraded": "false",
                 "autoRefreshFrequencyInMinutes": "1",
+                "isAuthorizationRequired": "true",
                 "isRefreshButtonHidden": "true",
                 "isPagingAvailable": "false",
                 "isExportButtonsHidden": "true",
@@ -5083,7 +5092,8 @@
                 "roleRequired": "User",
                 "objectWorkflowParam": [],
                 "objectWorkflowOutputVar": [],
-                "objectWorkflowButton": []
+                "objectWorkflowButton": [],
+                "layoutName": "UserLayout"
               },
               {
                 "name": "PlantUserDetailsInitReport",
@@ -5435,6 +5445,7 @@
                 "isAutoRefreshFrequencyVisible": "false",
                 "isAutoRefreshDegraded": "false",
                 "autoRefreshFrequencyInMinutes": "1",
+                "isAuthorizationRequired": "true",
                 "isRefreshButtonHidden": "true",
                 "isPagingAvailable": "false",
                 "isExportButtonsHidden": "true",

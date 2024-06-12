@@ -19,38 +19,57 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class TacLoginInitObjWFGetInitModelResponse(CamelModel):
+    """
+    #TODO add comment
+    """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
-    email: str = Field(default="", description="Email")
-    password: str = Field(default="", description="Password")
-
-    def load_flow_response(self, data:FlowTacLoginInitObjWFResult):
+    email: str = Field(
+        default="",
+        description="Email")
+    password: str = Field(
+        default="",
+        description="Password")
+# endset
+    def load_flow_response(
+        self,
+        data: FlowTacLoginInitObjWFResult
+    ):
         self.validation_errors = list()
         self.success = False
         self.message = ""
-        self.email = data.email
-        self.password = data.password
+        self.email = (
+            data.email)
+        self.password = (
+            data.password)
     def to_json(self):
         return self.model_dump_json()
 class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
-    async def process_request(self,
-                        session_context: SessionContext,
-                        tac_code: uuid,
-                        response: TacLoginInitObjWFGetInitModelResponse) -> TacLoginInitObjWFGetInitModelResponse:
+    """
+    #TODO add comment
+    """
+    async def process_request(
+            self,
+            session_context: SessionContext,
+            tac_code: uuid,
+            response: TacLoginInitObjWFGetInitModelResponse
+    ) -> TacLoginInitObjWFGetInitModelResponse:
         try:
-            logging.info("loading model...TacLoginInitObjWFGetInitModelRequest")
+            logging.info(
+                "loading model...TacLoginInitObjWFGetInitModelRequest")
             tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load(code=tac_code)
             if(tac_bus_obj.get_tac_obj() is None):
                 logging.info("Invalid tac_code")
                 raise ValueError("Invalid tac_code")
             flow = FlowTacLoginInitObjWF(session_context)
-            logging.info("process request...TacLoginInitObjWFGetInitModelRequest")
+            logging.info(
+                "process request...TacLoginInitObjWFGetInitModelRequest")
             flowResponse = await flow.process(
                 tac_bus_obj
             )
-            response.load_flow_response(flowResponse);
+            response.load_flow_response(flowResponse)
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
@@ -58,6 +77,6 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(validation_error(key,ve.error_dict[key]))
+                response.validation_errors.append(validation_error(key, ve.error_dict[key]))
         return response
 

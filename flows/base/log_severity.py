@@ -8,6 +8,9 @@ from enum import Enum
 
 
 class LogSeverity(Enum):
+    """
+    #TODO add comment
+    """
     error_occurred = 0
     warning = 1
     information_low_detail = 2

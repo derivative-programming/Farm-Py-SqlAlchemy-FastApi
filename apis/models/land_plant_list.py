@@ -98,7 +98,7 @@ class LandPlantListGetModelRequest(CamelModel):
     some_email_address: str = Field(
         default="",
         description="Some Email Address")
-#endset
+# endset
 
     class Config:
         """
@@ -220,36 +220,59 @@ class LandPlantListGetModelResponseItem(CamelModel):
             '00000000-0000-0000-0000-000000000000'
         ),
         description="Details Link Plant Code")
-#endset
+# endset
 
     def load_report_item(self, data: ReportItemLandPlantList):
         """
             #TODO add comment
         """
-        self.plant_code = data.plant_code
-        self.some_int_val = data.some_int_val
-        self.some_big_int_val = data.some_big_int_val
-        self.some_bit_val = data.some_bit_val
-        self.is_edit_allowed = data.is_edit_allowed
-        self.is_delete_allowed = data.is_delete_allowed
-        self.some_float_val = data.some_float_val
-        self.some_decimal_val = data.some_decimal_val
-        self.some_utc_date_time_val = data.some_utc_date_time_val
-        self.some_date_val = data.some_date_val
-        self.some_money_val = data.some_money_val
-        self.some_n_var_char_val = data.some_n_var_char_val
-        self.some_var_char_val = data.some_var_char_val
-        self.some_text_val = data.some_text_val
-        self.some_phone_number = data.some_phone_number
-        self.some_email_address = data.some_email_address
-        self.flavor_name = data.flavor_name
-        self.flavor_code = data.flavor_code
-        self.some_int_conditional_on_deletable = data.some_int_conditional_on_deletable
-        self.n_var_char_as_url = data.n_var_char_as_url
-        self.update_link_plant_code = data.update_link_plant_code
-        self.delete_async_button_link_plant_code = data.delete_async_button_link_plant_code
-        self.details_link_plant_code = data.details_link_plant_code
-#endset
+        self.plant_code = (
+            data.plant_code)
+        self.some_int_val = (
+            data.some_int_val)
+        self.some_big_int_val = (
+            data.some_big_int_val)
+        self.some_bit_val = (
+            data.some_bit_val)
+        self.is_edit_allowed = (
+            data.is_edit_allowed)
+        self.is_delete_allowed = (
+            data.is_delete_allowed)
+        self.some_float_val = (
+            data.some_float_val)
+        self.some_decimal_val = (
+            data.some_decimal_val)
+        self.some_utc_date_time_val = (
+            data.some_utc_date_time_val)
+        self.some_date_val = (
+            data.some_date_val)
+        self.some_money_val = (
+            data.some_money_val)
+        self.some_n_var_char_val = (
+            data.some_n_var_char_val)
+        self.some_var_char_val = (
+            data.some_var_char_val)
+        self.some_text_val = (
+            data.some_text_val)
+        self.some_phone_number = (
+            data.some_phone_number)
+        self.some_email_address = (
+            data.some_email_address)
+        self.flavor_name = (
+            data.flavor_name)
+        self.flavor_code = (
+            data.flavor_code)
+        self.some_int_conditional_on_deletable = (
+            data.some_int_conditional_on_deletable)
+        self.n_var_char_as_url = (
+            data.n_var_char_as_url)
+        self.update_link_plant_code = (
+            data.update_link_plant_code)
+        self.delete_async_button_link_plant_code = (
+            data.delete_async_button_link_plant_code)
+        self.details_link_plant_code = (
+            data.details_link_plant_code)
+# endset
 
 
 class LandPlantListGetModelResponse(ListModel):
@@ -291,7 +314,7 @@ class LandPlantListGetModelResponse(ListModel):
                     request.some_text_val,
                     request.some_phone_number,
                     request.some_email_address,
-#endset
+# endset
                     request.page_number,
                     request.item_count_per_page,
                     request.order_by_column_name,

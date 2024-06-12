@@ -19,37 +19,54 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
+    """
+    #TODO add comment
+    """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
-    tac_code: uuid.UUID = Field(default_factory=lambda: uuid.UUID('00000000-0000-0000-0000-000000000000'),
-                                      description="Tac Code")
-
-    def load_flow_response(self, data:FlowCustomerUserLogOutInitObjWFResult):
+    tac_code: uuid.UUID = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        description="Tac Code")
+# endset
+    def load_flow_response(
+        self,
+        data: FlowCustomerUserLogOutInitObjWFResult
+    ):
         self.validation_errors = list()
         self.success = False
         self.message = ""
-        self.tac_code = data.tac_code
+        self.tac_code = (
+            data.tac_code)
     def to_json(self):
         return self.model_dump_json()
 class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
-    async def process_request(self,
-                        session_context: SessionContext,
-                        customer_code: uuid,
-                        response: CustomerUserLogOutInitObjWFGetInitModelResponse) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
+    """
+    #TODO add comment
+    """
+    async def process_request(
+            self,
+            session_context: SessionContext,
+            customer_code: uuid,
+            response: CustomerUserLogOutInitObjWFGetInitModelResponse
+    ) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
         try:
-            logging.info("loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")
+            logging.info(
+                "loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")
             customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load(code=customer_code)
             if(customer_bus_obj.get_customer_obj() is None):
                 logging.info("Invalid customer_code")
                 raise ValueError("Invalid customer_code")
             flow = FlowCustomerUserLogOutInitObjWF(session_context)
-            logging.info("process request...CustomerUserLogOutInitObjWFGetInitModelRequest")
+            logging.info(
+                "process request...CustomerUserLogOutInitObjWFGetInitModelRequest")
             flowResponse = await flow.process(
                 customer_bus_obj
             )
-            response.load_flow_response(flowResponse);
+            response.load_flow_response(flowResponse)
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
@@ -57,6 +74,6 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(validation_error(key,ve.error_dict[key]))
+                response.validation_errors.append(validation_error(key, ve.error_dict[key]))
         return response
 

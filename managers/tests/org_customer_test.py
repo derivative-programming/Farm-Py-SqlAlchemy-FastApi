@@ -12,22 +12,25 @@ import models
 from models.factory import OrgCustomerFactory
 from managers.org_customer import OrgCustomerManager
 from models.serialization_schema.org_customer import OrgCustomerSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestOrgCustomerManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestOrgCustomerManager:
         # Add the org_customer using the manager's add method
         added_org_customer = await org_customer_manager.add(org_customer=test_org_customer)
         assert isinstance(added_org_customer, OrgCustomer)
-        assert str(added_org_customer.insert_user_id) == str(org_customer_manager._session_context.customer_code)
-        assert str(added_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
+        assert str(added_org_customer.insert_user_id) == (
+            str(org_customer_manager._session_context.customer_code))
+        assert str(added_org_customer.last_update_user_id) == (
+            str(org_customer_manager._session_context.customer_code))
         assert added_org_customer.org_customer_id > 0
         # Fetch the org_customer from the database directly
-        result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == added_org_customer.org_customer_id))
+        result = await session.execute(
+            select(OrgCustomer).filter(OrgCustomer.org_customer_id == added_org_customer.org_customer_id))
         fetched_org_customer = result.scalars().first()
         # Assert that the fetched org_customer is not None and matches the added org_customer
         assert fetched_org_customer is not None
@@ -109,8 +115,10 @@ class TestOrgCustomerManager:
         # Add the org_customer using the manager's add method
         added_org_customer = await org_customer_manager.add(org_customer=test_org_customer)
         assert isinstance(added_org_customer, OrgCustomer)
-        assert str(added_org_customer.insert_user_id) == str(org_customer_manager._session_context.customer_code)
-        assert str(added_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
+        assert str(added_org_customer.insert_user_id) == (
+            str(org_customer_manager._session_context.customer_code))
+        assert str(added_org_customer.last_update_user_id) == (
+            str(org_customer_manager._session_context.customer_code))
         assert added_org_customer.org_customer_id > 0
         # Assert that the returned org_customer matches the test org_customer
         assert added_org_customer.org_customer_id == test_org_customer.org_customer_id
@@ -164,7 +172,8 @@ class TestOrgCustomerManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any OrgCustomer in the database
+        # Generate a random UUID that doesn't correspond to
+        # any OrgCustomer in the database
         random_code = generate_uuid()
         org_customer = await org_customer_manager.get_by_code(random_code)
         assert org_customer is None
@@ -243,7 +252,6 @@ class TestOrgCustomerManager:
         """
         test_org_customer = await OrgCustomerFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of OrgCustomer
         with pytest.raises(ValueError):
             updated_org_customer = await org_customer_manager.update(
                 org_customer=test_org_customer,
@@ -260,12 +268,15 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         org_customer_data = await OrgCustomerFactory.create_async(session)
-        result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_data.org_customer_id))
+        result = await session.execute(
+            select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_data.org_customer_id))
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)
         assert fetched_org_customer.org_customer_id == org_customer_data.org_customer_id
-        deleted_org_customer = await org_customer_manager.delete(org_customer_id=org_customer_data.org_customer_id)
-        result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_data.org_customer_id))
+        deleted_org_customer = await org_customer_manager.delete(
+            org_customer_id=org_customer_data.org_customer_id)
+        result = await session.execute(
+            select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_data.org_customer_id))
         fetched_org_customer = result.scalars().first()
         assert fetched_org_customer is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestOrgCustomerManager:
         """
         org_customers = await org_customer_manager.get_list()
         assert len(org_customers) == 0
-        org_customers_data = [await OrgCustomerFactory.create_async(session) for _ in range(5)]
+        org_customers_data = (
+            [await OrgCustomerFactory.create_async(session) for _ in range(5)])
         org_customers = await org_customer_manager.get_list()
         assert len(org_customers) == 5
         assert all(isinstance(org_customer, OrgCustomer) for org_customer in org_customers)
@@ -376,8 +388,10 @@ class TestOrgCustomerManager:
             result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == updated_org_customer.org_customer_id))
             fetched_org_customer = result.scalars().first()
             assert isinstance(fetched_org_customer, OrgCustomer)
-            assert str(fetched_org_customer.insert_user_id) == str(org_customer_manager._session_context.customer_code)
-            assert str(fetched_org_customer.last_update_user_id) == str(org_customer_manager._session_context.customer_code)
+            assert str(fetched_org_customer.insert_user_id) == (
+                str(org_customer_manager._session_context.customer_code))
+            assert str(fetched_org_customer.last_update_user_id) == (
+                str(org_customer_manager._session_context.customer_code))
             assert fetched_org_customer.org_customer_id == updated_org_customer.org_customer_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestOrgCustomerManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update org_customers
-        updates = [{"org_customer_id": 1, "code": code_updated1}, {"org_customer_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "org_customer_id": 1,
+                "code": code_updated1
+            },
+            {
+                "org_customer_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_org_customers = await org_customer_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestOrgCustomerManager:
         logging.info(org_customers[1].__dict__)
         assert updated_org_customers[0].code == code_updated1
         assert updated_org_customers[1].code == code_updated2
-        assert str(updated_org_customers[0].last_update_user_id) == str(org_customer_manager._session_context.customer_code)
-        assert str(updated_org_customers[1].last_update_user_id) == str(org_customer_manager._session_context.customer_code)
+        assert str(updated_org_customers[0].last_update_user_id) == (
+            str(org_customer_manager._session_context.customer_code))
+        assert str(updated_org_customers[1].last_update_user_id) == (
+            str(org_customer_manager._session_context.customer_code))
         result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == 1))
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)
@@ -477,7 +502,8 @@ class TestOrgCustomerManager:
         result = await org_customer_manager.delete_bulk(org_customer_ids)
         assert result is True
         for org_customer_id in org_customer_ids:
-            execute_result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_id))
+            execute_result = await session.execute(
+                select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_id))
             fetched_org_customer = execute_result.scalars().first()
             assert fetched_org_customer is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestOrgCustomerManager:
         """
             #TODO add comment
         """
-        org_customers_data = [await OrgCustomerFactory.create_async(session) for _ in range(5)]
+        org_customers_data = (
+            [await OrgCustomerFactory.create_async(session) for _ in range(5)])
         count = await org_customer_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         # Add org_customers
-        org_customers_data = [await OrgCustomerFactory.create_async(session) for _ in range(5)]
+        org_customers_data = (
+            [await OrgCustomerFactory.create_async(session) for _ in range(5)])
         sorted_org_customers = await org_customer_manager.get_sorted_list(sort_by="org_customer_id")
-        assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == [(i + 1) for i in range(5)]
+        assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         # Add org_customers
-        org_customers_data = [await OrgCustomerFactory.create_async(session) for _ in range(5)]
-        sorted_org_customers = await org_customer_manager.get_sorted_list(sort_by="org_customer_id", order="desc")
-        assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == [(i + 1) for i in reversed(range(5))]
+        org_customers_data = (
+            [await OrgCustomerFactory.create_async(session) for _ in range(5)])
+        sorted_org_customers = await org_customer_manager.get_sorted_list(
+            sort_by="org_customer_id", order="desc")
+        assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,
@@ -694,11 +726,13 @@ class TestOrgCustomerManager:
         # Add a org_customer with a specific customer_id
         org_customer1 = await OrgCustomerFactory.create_async(session=session)
         # Fetch the org_customer using the manager function
-        fetched_org_customers = await org_customer_manager.get_by_customer_id(org_customer1.customer_id)
+        fetched_org_customers = await org_customer_manager.get_by_customer_id(
+            org_customer1.customer_id)
         assert len(fetched_org_customers) == 1
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
-        stmt = select(models.Customer).where(models.Customer.customer_id==org_customer1.customer_id)
+        stmt = select(models.Customer).where(
+            models.Customer.customer_id == org_customer1.customer_id)
         result = await session.execute(stmt)
         customer = result.scalars().first()
         assert fetched_org_customers[0].customer_code_peek == customer.code
@@ -712,7 +746,8 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         non_existent_id = 999
-        fetched_org_customers = await org_customer_manager.get_by_customer_id(non_existent_id)
+        fetched_org_customers = (
+            await org_customer_manager.get_by_customer_id(non_existent_id))
         assert len(fetched_org_customers) == 0
     @pytest.mark.asyncio
     async def test_get_by_customer_id_invalid_type(
@@ -742,7 +777,8 @@ class TestOrgCustomerManager:
         assert len(fetched_org_customers) == 1
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
-        stmt = select(models.Organization).where(models.Organization.organization_id==org_customer1.organization_id)
+        stmt = select(models.Organization).where(
+            models.Organization.organization_id == org_customer1.organization_id)
         result = await session.execute(stmt)
         organization = result.scalars().first()
         assert fetched_org_customers[0].organization_code_peek == organization.code

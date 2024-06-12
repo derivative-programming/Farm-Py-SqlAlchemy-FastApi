@@ -1,13 +1,17 @@
-# pac_user_flavor_list_test.py
+# reports/row_models/tests/pac_user_flavor_list_test.py
 """
     #TODO add comment
 """
+import math
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
 class TestReportItemPacUserFlavorList:
+    """
+    #TODO add comment
+    """
     def test_default_values(self):
         """Test the default values of all fields."""
         report_item = ReportItemPacUserFlavorList()
@@ -18,7 +22,7 @@ class TestReportItemPacUserFlavorList:
         assert report_item.flavor_lookup_enum_name == ""
         assert report_item.flavor_name == ""
         assert report_item.pac_name == ""
-
+# endset
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -29,7 +33,7 @@ class TestReportItemPacUserFlavorList:
             "flavor_lookup_enum_name": "test",
             "flavor_name": "test",
             "pac_name": "test",
-
+# endset
         }
         # report_item = ReportItemPacUserFlavorList(**data)
         report_item = ReportItemPacUserFlavorList()
@@ -41,4 +45,5 @@ class TestReportItemPacUserFlavorList:
         assert report_item.flavor_lookup_enum_name == "test"
         assert report_item.flavor_name == "test"
         assert report_item.pac_name == "test"
+# endset
 

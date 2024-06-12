@@ -6,11 +6,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import RoleManager
 from models import Role
 import models
@@ -18,15 +18,21 @@ import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
 class RoleInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class RoleBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
@@ -82,7 +88,7 @@ class RoleBusObj(BaseBusObj):
     def set_prop_last_update_user_id(self, value: uuid.UUID):
         self.last_update_user_id = value
         return self
-
+# endset
     # description
     @property
     def description(self):
@@ -100,7 +106,8 @@ class RoleBusObj(BaseBusObj):
         return self.role.display_order
     @display_order.setter
     def display_order(self, value):
-        assert isinstance(value, int), "display_order must be an integer"
+        assert isinstance(value, int), (
+            "display_order must be an integer")
         self.role.display_order = value
     def set_prop_display_order(self, value):
         self.display_order = value
@@ -140,7 +147,7 @@ class RoleBusObj(BaseBusObj):
         self.name = value
         return self
     # PacID
-
+# endset
     # description,
     # displayOrder,
     # isActive,
@@ -152,7 +159,8 @@ class RoleBusObj(BaseBusObj):
         return self.role.pac_id
     @pac_id.setter
     def pac_id(self, value):
-        assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
+        assert isinstance(value, int) or value is None, (
+            "pac_id must be an integer or None")
         self.role.pac_id = value
     def set_prop_pac_id(self, value):
         self.pac_id = value
@@ -162,16 +170,18 @@ class RoleBusObj(BaseBusObj):
         return self.role.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
+    #     assert isinstance(value, UUIDType),
+    #           "pac_code_peek must be a UUID"
     #     self.role.pac_code_peek = value
-
+# endset
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.role.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.role.insert_utc_date_time = value
     # update_utc_date_time
     @property
@@ -179,18 +189,24 @@ class RoleBusObj(BaseBusObj):
         return self.role.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.role.last_update_utc_date_time = value
 
     @property
     def lookup_enum(self) -> managers_and_enums.RoleEnum:
         return managers_and_enums.RoleEnum[self.role.lookup_enum_name]
-    async def load(self, json_data: str = None,
-                   code: uuid.UUID = None,
-                   role_id: int = None,
-                   role_obj_instance: Role = None,
-                   role_dict: dict = None,
-                   role_enum:managers_and_enums.RoleEnum = None):
+    async def load(
+        self,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        role_id: int = None,
+        role_obj_instance:
+            Role = None,
+        role_dict: dict = None,
+        role_enum:
+            managers_and_enums.RoleEnum = None
+    ):
         if role_id and self.role.role_id is None:
             role_manager = RoleManager(self._session_context)
             role_obj = await role_manager.get_by_id(role_id)
@@ -213,13 +229,17 @@ class RoleBusObj(BaseBusObj):
             role_manager = RoleManager(self._session_context)
             self.role = await role_manager.from_enum(role_enum)
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   role_id: int = None,
-                   role_obj_instance: Role = None,
-                   role_dict: dict = None,
-                   role_enum:managers_and_enums.RoleEnum = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        role_id: int = None,
+        role_obj_instance:
+            Role = None,
+        role_dict: dict = None,
+        role_enum:
+            managers_and_enums.RoleEnum = None
+    ):
         result = RoleBusObj(session_context)
         await result.load(
             json_data,
@@ -257,13 +277,16 @@ class RoleBusObj(BaseBusObj):
             await role_manager.delete(self.role.role_id)
             self.role = None
     async def randomize_properties(self):
-        self.role.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.role.description = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.role.display_order = random.randint(0, 100)
         self.role.is_active = random.choice([True, False])
-        self.role.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.role.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.role.lookup_enum_name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.role.name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.role.pac_id = random.randint(0, 100)
-
+# endset
         return self
     def get_role_obj(self) -> Role:
         return self.role
@@ -271,7 +294,7 @@ class RoleBusObj(BaseBusObj):
         role_manager = RoleManager(self._session_context)
         my_role = self.get_role_obj()
         return role_manager.is_equal(role, my_role)
-
+# endset
     # description,
     # displayOrder,
     # isActive,
@@ -282,7 +305,7 @@ class RoleBusObj(BaseBusObj):
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
-
+# endset
     def get_obj(self) -> Role:
         return self.role
     def get_object_name(self) -> str:
@@ -301,12 +324,18 @@ class RoleBusObj(BaseBusObj):
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         return self.get_pac_id_rel_obj()
-
+# endset
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Role]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[Role]
+    ):
         result = list()
         for role in obj_list:
-            role_bus_obj = RoleBusObj.get(session_context, role_obj_instance=role)
+            role_bus_obj = RoleBusObj.get(
+                session_context,
+                role_obj_instance=role
+            )
             result.append(role_bus_obj)
         return result
 

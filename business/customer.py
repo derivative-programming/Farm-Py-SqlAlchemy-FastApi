@@ -6,11 +6,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import CustomerManager
 from models import Customer
 import models
@@ -20,15 +20,21 @@ from .base_bus_obj import BaseBusObj
 from business.customer_role import CustomerRoleBusObj
 
 class CustomerInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class CustomerBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
@@ -84,14 +90,15 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_last_update_user_id(self, value: uuid.UUID):
         self.last_update_user_id = value
         return self
-
+# endset
     # activeOrganizationID
     @property
     def active_organization_id(self):
         return self.customer.active_organization_id
     @active_organization_id.setter
     def active_organization_id(self, value):
-        assert isinstance(value, int), "active_organization_id must be an integer"
+        assert isinstance(value, int), (
+            "active_organization_id must be an integer")
         self.customer.active_organization_id = value
     def set_prop_active_organization_id(self, value):
         self.active_organization_id = value
@@ -102,7 +109,8 @@ class CustomerBusObj(BaseBusObj):
         return self.customer.email
     @email.setter
     def email(self, value):
-        assert isinstance(value, str), "email must be a string"
+        assert isinstance(value, str), (
+            "email must be a string")
         self.customer.email = value
     def set_prop_email(self, value):
         self.email = value
@@ -325,7 +333,8 @@ class CustomerBusObj(BaseBusObj):
         return self.customer.utc_offset_in_minutes
     @utc_offset_in_minutes.setter
     def utc_offset_in_minutes(self, value):
-        assert isinstance(value, int), "utc_offset_in_minutes must be an integer"
+        assert isinstance(value, int), (
+            "utc_offset_in_minutes must be an integer")
         self.customer.utc_offset_in_minutes = value
     def set_prop_utc_offset_in_minutes(self, value):
         self.utc_offset_in_minutes = value
@@ -341,7 +350,7 @@ class CustomerBusObj(BaseBusObj):
     def set_prop_zip(self, value):
         self.zip = value
         return self
-
+# endset
     # activeOrganizationID,
     # email,
     # emailConfirmedUTCDateTime
@@ -368,7 +377,8 @@ class CustomerBusObj(BaseBusObj):
         return self.customer.tac_id
     @tac_id.setter
     def tac_id(self, value):
-        assert isinstance(value, int) or value is None, "tac_id must be an integer or None"
+        assert isinstance(value, int) or value is None, (
+            "tac_id must be an integer or None")
         self.customer.tac_id = value
     def set_prop_tac_id(self, value):
         self.tac_id = value
@@ -378,18 +388,20 @@ class CustomerBusObj(BaseBusObj):
         return self.customer.tac_code_peek
     # @tac_code_peek.setter
     # def tac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "tac_code_peek must be a UUID"
+    #     assert isinstance(value, UUIDType),
+    #           "tac_code_peek must be a UUID"
     #     self.customer.tac_code_peek = value
     # uTCOffsetInMinutes,
     # zip,
-
+# endset
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.customer.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.customer.insert_utc_date_time = value
     # update_utc_date_time
     @property
@@ -397,7 +409,8 @@ class CustomerBusObj(BaseBusObj):
         return self.customer.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.customer.last_update_utc_date_time = value
 
     async def load(self, json_data: str = None,
@@ -415,7 +428,9 @@ class CustomerBusObj(BaseBusObj):
             self.customer = customer_obj
         if customer_obj_instance and self.customer.customer_id is None:
             customer_manager = CustomerManager(self._session_context)
-            customer_obj = await customer_manager.get_by_id(customer_obj_instance.customer_id)
+            customer_obj = await customer_manager.get_by_id(
+                customer_obj_instance.customer_id
+                )
             self.customer = customer_obj
         if json_data and self.customer.customer_id is None:
             customer_manager = CustomerManager(self._session_context)
@@ -425,12 +440,14 @@ class CustomerBusObj(BaseBusObj):
             self.customer = customer_manager.from_dict(customer_dict)
         return self
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   customer_id: int = None,
-                   customer_obj_instance: Customer = None,
-                   customer_dict: dict = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        customer_id: int = None,
+        customer_obj_instance: Customer = None,
+        customer_dict: dict = None
+    ):
         result = CustomerBusObj(session_context)
         await result.load(
             json_data,
@@ -468,11 +485,19 @@ class CustomerBusObj(BaseBusObj):
             self.customer = None
     async def randomize_properties(self):
         self.customer.active_organization_id = random.randint(0, 100)
-        self.customer.email = f"user{random.randint(1, 1000)}@example.com"
-        self.customer.email_confirmed_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
-        self.customer.first_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.customer.forgot_password_key_expiration_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
-        self.customer.forgot_password_key_value = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.email = f"user{random.randint(1, 100)}@abc.com"
+        self.customer.email_confirmed_utc_date_time = datetime(
+            random.randint(2000, 2023),
+            random.randint(1, 12),
+            random.randint(1, 28))
+        self.customer.first_name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.forgot_password_key_expiration_utc_date_time = datetime(
+            random.randint(2000, 2023),
+            random.randint(1, 12),
+            random.randint(1, 28))
+        self.customer.forgot_password_key_value = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.customer.fs_user_code_value = generate_uuid()
         self.customer.is_active = random.choice([True, False])
         self.customer.is_email_allowed = random.choice([True, False])
@@ -481,16 +506,27 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_locked = random.choice([True, False])
         self.customer.is_multiple_organizations_allowed = random.choice([True, False])
         self.customer.is_verbose_logging_forced = random.choice([True, False])
-        self.customer.last_login_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
-        self.customer.last_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.customer.password = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.customer.phone = f"+1{random.randint(1000000000, 9999999999)}"
-        self.customer.province = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.customer.registration_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
+        self.customer.last_login_utc_date_time = datetime(
+            random.randint(2000, 2023),
+            random.randint(1, 12),
+            random.randint(1, 28))
+        self.customer.last_name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.password = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.phone = (
+            f"+1{random.randint(1000000000, 9999999999)}")
+        self.customer.province = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.customer.registration_utc_date_time = datetime(
+            random.randint(2000, 2023),
+            random.randint(1, 12),
+            random.randint(1, 28))
         # self.customer.tac_id = random.randint(0, 100)
         self.customer.utc_offset_in_minutes = random.randint(0, 100)
-        self.customer.zip = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-
+        self.customer.zip = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+# endset
         return self
     def get_customer_obj(self) -> Customer:
         return self.customer
@@ -498,7 +534,7 @@ class CustomerBusObj(BaseBusObj):
         customer_manager = CustomerManager(self._session_context)
         my_customer = self.get_customer_obj()
         return customer_manager.is_equal(customer, my_customer)
-
+# endset
     # activeOrganizationID,
     # email,
     # emailConfirmedUTCDateTime
@@ -526,7 +562,7 @@ class CustomerBusObj(BaseBusObj):
         return tac_obj
     # uTCOffsetInMinutes,
     # zip,
-
+# endset
     def get_obj(self) -> Customer:
         return self.customer
     def get_object_name(self) -> str:
@@ -562,12 +598,18 @@ class CustomerBusObj(BaseBusObj):
         return self.get_tac_id_rel_obj()
     # uTCOffsetInMinutes,
     # zip,
-
+# endset
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Customer]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[Customer]
+    ):
         result = list()
         for customer in obj_list:
-            customer_bus_obj = CustomerBusObj.get(session_context, customer_obj_instance=customer)
+            customer_bus_obj = CustomerBusObj.get(
+                session_context,
+                customer_obj_instance=customer
+            )
             result.append(customer_bus_obj)
         return result
 

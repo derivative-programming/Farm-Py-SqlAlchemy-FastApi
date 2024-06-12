@@ -22,9 +22,13 @@ from .role import RoleBusObj
 from .tac import TacBusObj
 from .tri_state_filter import TriStateFilterBusObj
 from sqlalchemy.ext.asyncio import AsyncSession
-#endset
+# endset
+
 
 class BusObjFactory:
+    """
+    #TODO add comment
+    """
     @staticmethod
     async def create(session_context: SessionContext, name, code: uuid.UUID = None, id: int = None):
         if code is not None:
@@ -56,7 +60,7 @@ class BusObjFactory:
                 return await TacBusObj(session_context).load(code=code)
             elif name == 'TriStateFilter':
                 return await TriStateFilterBusObj(session_context).load(code=code)
-    #endset
+    # endset
             else:
                 raise ValueError(f"Unknown object type: {name}")
         else:
@@ -88,6 +92,6 @@ class BusObjFactory:
                 return await TacBusObj(session_context).load(tac_id=id)
             elif name == 'TriStateFilter':
                 return await TriStateFilterBusObj(session_context).load(tri_state_filter_id=id)
-    #endset
+    # endset
             else:
                 raise ValueError(f"Unknown object type: {name}")

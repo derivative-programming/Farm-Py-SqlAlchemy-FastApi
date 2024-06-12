@@ -4,11 +4,15 @@
 """
 from decimal import Decimal
 import os
-import pytest
 import uuid
+import pytest
+import sqlite3
+from sqlalchemy import String
 from typing import List
 from decimal import Decimal
 from datetime import datetime, date
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.pac import PacFactory
@@ -16,29 +20,32 @@ from reports.pac_user_flavor_list import ReportManagerPacUserFlavorList
 from reports.report_request_validation_error import ReportRequestValidationError
 from reports.providers.pac_user_flavor_list import ReportProviderPacUserFlavorList
 from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
-from services.db_config import db_dialect
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
-from sqlalchemy import String
-import sqlite3
+from services.db_config import DB_DIALECT
+from services.db_config import DB_DIALECT,generate_uuid
 from unittest.mock import patch, AsyncMock
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestReportManagerPacUserFlavorList:
+    """
+    #TODO add comment
+    """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
+        """
+        #TODO add comment
+        """
         async def mock_generate_list(
             context_code: uuid,
 
+# endset
             page_number: int,
             item_count_per_page: int,
             order_by_column_name: str,
@@ -46,7 +53,11 @@ class TestReportManagerPacUserFlavorList:
             ):
             result = list()
             return result
-        with patch.object(ReportProviderPacUserFlavorList, 'generate_list', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            ReportProviderPacUserFlavorList,
+            'generate_list',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
             report_generator = ReportManagerPacUserFlavorList(session_context)
@@ -55,6 +66,7 @@ class TestReportManagerPacUserFlavorList:
             role_required = ""
             session_context.role_name_csv = role_required
 
+# endset
             page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
@@ -62,6 +74,7 @@ class TestReportManagerPacUserFlavorList:
             results = await report_generator.generate(
                 pac_code,
 
+# endset
                 page_number,
                 item_count_per_page,
                 order_by_column_name,
@@ -71,9 +84,13 @@ class TestReportManagerPacUserFlavorList:
             mock_method.assert_awaited()
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
+        """
+        #TODO add comment
+        """
         async def mock_generate_list(
             context_code: uuid,
 
+# endset
             page_number: int,
             item_count_per_page: int,
             order_by_column_name: str,
@@ -81,7 +98,11 @@ class TestReportManagerPacUserFlavorList:
             ):
             result = list()
             return result
-        with patch.object(ReportProviderPacUserFlavorList, 'generate_list', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            ReportProviderPacUserFlavorList,
+            'generate_list',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
             report_generator = ReportManagerPacUserFlavorList(session_context)
@@ -90,6 +111,7 @@ class TestReportManagerPacUserFlavorList:
             role_required = ""
             session_context.role_name_csv = role_required
 
+# endset
             page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
@@ -98,6 +120,7 @@ class TestReportManagerPacUserFlavorList:
                 await report_generator.generate(
                     pac_code,
 
+# endset
                     page_number,
                     0,
                     order_by_column_name,
@@ -105,9 +128,13 @@ class TestReportManagerPacUserFlavorList:
                 )
     @pytest.mark.asyncio
     async def test_generate_invalid_page_number(self, session):
+        """
+        #TODO add comment
+        """
         async def mock_generate_list(
             context_code: uuid,
 
+# endset
             page_number: int,
             item_count_per_page: int,
             order_by_column_name: str,
@@ -115,7 +142,11 @@ class TestReportManagerPacUserFlavorList:
             ):
             result = list()
             return result
-        with patch.object(ReportProviderPacUserFlavorList, 'generate_list', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            ReportProviderPacUserFlavorList,
+            'generate_list',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
             report_generator = ReportManagerPacUserFlavorList(session_context)
@@ -124,6 +155,7 @@ class TestReportManagerPacUserFlavorList:
             role_required = ""
             session_context.role_name_csv = role_required
 
+# endset
             page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
@@ -132,6 +164,7 @@ class TestReportManagerPacUserFlavorList:
                 await report_generator.generate(
                     pac_code,
 
+# endset
                     0,
                     item_count_per_page,
                     order_by_column_name,
@@ -139,9 +172,12 @@ class TestReportManagerPacUserFlavorList:
                 )
     @pytest.mark.asyncio
     async def test_build_csv(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserFlavorList(session_context)
-        test_data = [ReportItemPacUserFlavorList(), ReportItemPacUserFlavorList()]  # Replace with sample data
+        test_data = [ReportItemPacUserFlavorList(), ReportItemPacUserFlavorList()]
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
         # Verify the file is created
@@ -150,6 +186,9 @@ class TestReportManagerPacUserFlavorList:
         # Further checks can be added to verify the content of the file
     @pytest.mark.asyncio
     async def test_read_csv(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserFlavorList(session_context)
         test_data = [ReportItemPacUserFlavorList(), ReportItemPacUserFlavorList()]
@@ -158,10 +197,15 @@ class TestReportManagerPacUserFlavorList:
         # Ensure 'test_input.csv' exists and contains valid data for testing
         result = await test_obj.read_csv(file_name)
         assert isinstance(result, list)
-        assert all(isinstance(item, ReportItemPacUserFlavorList) for item in result)
+        assert all(
+            isinstance(item, ReportItemPacUserFlavorList) for item in result
+        )
         os.remove(file_name)
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserFlavorList(session_context)
         # True values

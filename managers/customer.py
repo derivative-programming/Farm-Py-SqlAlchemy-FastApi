@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 from models.tac import Tac  # TacID
 from models.customer import Customer
 from models.serialization_schema.customer import CustomerSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class CustomerNotFoundError(Exception):
@@ -45,9 +45,9 @@ class CustomerManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -82,9 +82,9 @@ class CustomerManager:
         """
         logging.info("CustomerManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Tac, and_(Customer.tac_id == Tac.tac_id, Customer.tac_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(Customer
 #                         , Tac  # tac_id
@@ -95,9 +95,9 @@ class CustomerManager:
             Customer
             , Tac  # tac_id
             )
-
+# endset
         query = query.outerjoin(Tac, and_(Customer.tac_id == Tac.tac_id, Customer.tac_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[Customer]:
         """
@@ -116,12 +116,12 @@ class CustomerManager:
             i = 0
             customer = query_result_row[i]
             i = i + 1
-
+# endset
             tac = query_result_row[i]  # tac_id
             i = i + 1
-
+# endset
             customer.tac_code_peek = tac.code if tac else uuid.UUID(int=0)  # tac_id
-
+# endset
             result.append(customer)
         return result
     def _first_or_none(self, customer_list: List) -> Customer:
@@ -158,7 +158,8 @@ class CustomerManager:
         logging.info("CustomerManager.update")
         property_list = Customer.property_list()
         if customer:
-            customer.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            customer.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -231,8 +232,10 @@ class CustomerManager:
                 raise ValueError("Customer is already added: " +
                                  str(customer.code) +
                                  " " + str(customer.customer_id))
-            customer.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            customer.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            customer.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            customer.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(customers)
         await self._session_context.session.flush()
         return customers
@@ -253,10 +256,11 @@ class CustomerManager:
                     type(customer_id))
             if not customer_id:
                 continue
-            logging.info("CustomerManager.update_bulk customer_id:{customer_id}")
+            logging.info("CustomerManager.update_bulk customer_id:%s", customer_id)
             customer = await self.get_by_id(customer_id)
             if not customer:
-                raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
+                raise CustomerNotFoundError(
+                    f"Customer with ID {customer_id} not found!")
             for key, value in update.items():
                 if key != "customer_id":
                     setattr(customer, key, value)
@@ -340,7 +344,7 @@ class CustomerManager:
         dict1 = self.to_dict(customer1)
         dict2 = self.to_dict(customer2)
         return dict1 == dict2
-
+# endset
     async def get_by_tac_id(self, tac_id: int) -> List[Customer]:  # TacID
         logging.info("CustomerManager.get_by_tac_id")
         if not isinstance(tac_id, int):
@@ -351,7 +355,7 @@ class CustomerManager:
         query_filter = Customer.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return query_results
-
+# endset
     async def get_by_email_prop(self, email) -> List[Customer]:
         logging.info("CustomerManager.get_by_email_prop")
         query_filter = Customer.email == email

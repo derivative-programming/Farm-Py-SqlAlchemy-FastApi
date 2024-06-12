@@ -1,4 +1,4 @@
-# logging_config.py
+# services/logging_config.py
 
 """
     #TODO add comment

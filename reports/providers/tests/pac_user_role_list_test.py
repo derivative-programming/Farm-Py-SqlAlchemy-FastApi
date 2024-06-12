@@ -2,32 +2,34 @@
 """
     #TODO add comment
 """
-from decimal import Decimal
 import pytest
+import sqlite3
 from decimal import Decimal
 from datetime import datetime, date
+from sqlalchemy import String
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.pac import PacFactory
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
-from sqlalchemy import String
+from services.db_config import DB_DIALECT, generate_uuid
 from reports.providers.pac_user_role_list import ReportProviderPacUserRoleList
 import current_runtime
-import sqlite3
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestReportProviderPacUserRoleList:
+    """
+    #TODO add comment
+    """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         session_context = SessionContext(dict(), session)
@@ -36,6 +38,7 @@ class TestReportProviderPacUserRoleList:
         pac = await PacFactory.create_async(session=session)
         pac_code = pac.code
 
+# endset
         page_number = 1
         item_count_per_page = 10
         order_by_column_name = ""
@@ -43,6 +46,7 @@ class TestReportProviderPacUserRoleList:
         results = await report_provider.generate_list(
             pac_code,
 
+# endset
             page_number,
             item_count_per_page,
             order_by_column_name,
@@ -50,7 +54,8 @@ class TestReportProviderPacUserRoleList:
         )
         assert isinstance(results, list), "Results should be a list"
         for result in results:
-            assert isinstance(result, dict), "Each result should be a dictionary"
+            assert isinstance(result, dict), (
+                "Each result should be a dictionary")
             expected_keys = [
                 "role_code",
                 "role_description",
@@ -59,7 +64,7 @@ class TestReportProviderPacUserRoleList:
                 "role_lookup_enum_name",
                 "role_name",
                 "pac_name",
-
+# endset
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result"

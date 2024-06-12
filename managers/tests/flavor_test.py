@@ -12,22 +12,25 @@ import models
 from models.factory import FlavorFactory
 from managers.flavor import FlavorManager
 from models.serialization_schema.flavor import FlavorSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestFlavorManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def flavor_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestFlavorManager:
         # Add the flavor using the manager's add method
         added_flavor = await flavor_manager.add(flavor=test_flavor)
         assert isinstance(added_flavor, Flavor)
-        assert str(added_flavor.insert_user_id) == str(flavor_manager._session_context.customer_code)
-        assert str(added_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
+        assert str(added_flavor.insert_user_id) == (
+            str(flavor_manager._session_context.customer_code))
+        assert str(added_flavor.last_update_user_id) == (
+            str(flavor_manager._session_context.customer_code))
         assert added_flavor.flavor_id > 0
         # Fetch the flavor from the database directly
-        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == added_flavor.flavor_id))
+        result = await session.execute(
+            select(Flavor).filter(Flavor.flavor_id == added_flavor.flavor_id))
         fetched_flavor = result.scalars().first()
         # Assert that the fetched flavor is not None and matches the added flavor
         assert fetched_flavor is not None
@@ -109,8 +115,10 @@ class TestFlavorManager:
         # Add the flavor using the manager's add method
         added_flavor = await flavor_manager.add(flavor=test_flavor)
         assert isinstance(added_flavor, Flavor)
-        assert str(added_flavor.insert_user_id) == str(flavor_manager._session_context.customer_code)
-        assert str(added_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
+        assert str(added_flavor.insert_user_id) == (
+            str(flavor_manager._session_context.customer_code))
+        assert str(added_flavor.last_update_user_id) == (
+            str(flavor_manager._session_context.customer_code))
         assert added_flavor.flavor_id > 0
         # Assert that the returned flavor matches the test flavor
         assert added_flavor.flavor_id == test_flavor.flavor_id
@@ -164,7 +172,8 @@ class TestFlavorManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any Flavor in the database
+        # Generate a random UUID that doesn't correspond to
+        # any Flavor in the database
         random_code = generate_uuid()
         flavor = await flavor_manager.get_by_code(random_code)
         assert flavor is None
@@ -243,7 +252,6 @@ class TestFlavorManager:
         """
         test_flavor = await FlavorFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of Flavor
         with pytest.raises(ValueError):
             updated_flavor = await flavor_manager.update(
                 flavor=test_flavor,
@@ -260,12 +268,15 @@ class TestFlavorManager:
             #TODO add comment
         """
         flavor_data = await FlavorFactory.create_async(session)
-        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_data.flavor_id))
+        result = await session.execute(
+            select(Flavor).filter(Flavor.flavor_id == flavor_data.flavor_id))
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.flavor_id == flavor_data.flavor_id
-        deleted_flavor = await flavor_manager.delete(flavor_id=flavor_data.flavor_id)
-        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_data.flavor_id))
+        deleted_flavor = await flavor_manager.delete(
+            flavor_id=flavor_data.flavor_id)
+        result = await session.execute(
+            select(Flavor).filter(Flavor.flavor_id == flavor_data.flavor_id))
         fetched_flavor = result.scalars().first()
         assert fetched_flavor is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestFlavorManager:
         """
         flavors = await flavor_manager.get_list()
         assert len(flavors) == 0
-        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
+        flavors_data = (
+            [await FlavorFactory.create_async(session) for _ in range(5)])
         flavors = await flavor_manager.get_list()
         assert len(flavors) == 5
         assert all(isinstance(flavor, Flavor) for flavor in flavors)
@@ -376,8 +388,10 @@ class TestFlavorManager:
             result = await session.execute(select(Flavor).filter(Flavor.flavor_id == updated_flavor.flavor_id))
             fetched_flavor = result.scalars().first()
             assert isinstance(fetched_flavor, Flavor)
-            assert str(fetched_flavor.insert_user_id) == str(flavor_manager._session_context.customer_code)
-            assert str(fetched_flavor.last_update_user_id) == str(flavor_manager._session_context.customer_code)
+            assert str(fetched_flavor.insert_user_id) == (
+                str(flavor_manager._session_context.customer_code))
+            assert str(fetched_flavor.last_update_user_id) == (
+                str(flavor_manager._session_context.customer_code))
             assert fetched_flavor.flavor_id == updated_flavor.flavor_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestFlavorManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update flavors
-        updates = [{"flavor_id": 1, "code": code_updated1}, {"flavor_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "flavor_id": 1,
+                "code": code_updated1
+            },
+            {
+                "flavor_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_flavors = await flavor_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestFlavorManager:
         logging.info(flavors[1].__dict__)
         assert updated_flavors[0].code == code_updated1
         assert updated_flavors[1].code == code_updated2
-        assert str(updated_flavors[0].last_update_user_id) == str(flavor_manager._session_context.customer_code)
-        assert str(updated_flavors[1].last_update_user_id) == str(flavor_manager._session_context.customer_code)
+        assert str(updated_flavors[0].last_update_user_id) == (
+            str(flavor_manager._session_context.customer_code))
+        assert str(updated_flavors[1].last_update_user_id) == (
+            str(flavor_manager._session_context.customer_code))
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == 1))
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)
@@ -477,7 +502,8 @@ class TestFlavorManager:
         result = await flavor_manager.delete_bulk(flavor_ids)
         assert result is True
         for flavor_id in flavor_ids:
-            execute_result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor_id))
+            execute_result = await session.execute(
+                select(Flavor).filter(Flavor.flavor_id == flavor_id))
             fetched_flavor = execute_result.scalars().first()
             assert fetched_flavor is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestFlavorManager:
         """
             #TODO add comment
         """
-        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
+        flavors_data = (
+            [await FlavorFactory.create_async(session) for _ in range(5)])
         count = await flavor_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestFlavorManager:
             #TODO add comment
         """
         # Add flavors
-        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
+        flavors_data = (
+            [await FlavorFactory.create_async(session) for _ in range(5)])
         sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id")
-        assert [flavor.flavor_id for flavor in sorted_flavors] == [(i + 1) for i in range(5)]
+        assert [flavor.flavor_id for flavor in sorted_flavors] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestFlavorManager:
             #TODO add comment
         """
         # Add flavors
-        flavors_data = [await FlavorFactory.create_async(session) for _ in range(5)]
-        sorted_flavors = await flavor_manager.get_sorted_list(sort_by="flavor_id", order="desc")
-        assert [flavor.flavor_id for flavor in sorted_flavors] == [(i + 1) for i in reversed(range(5))]
+        flavors_data = (
+            [await FlavorFactory.create_async(session) for _ in range(5)])
+        sorted_flavors = await flavor_manager.get_sorted_list(
+            sort_by="flavor_id", order="desc")
+        assert [flavor.flavor_id for flavor in sorted_flavors] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,
@@ -700,7 +732,8 @@ class TestFlavorManager:
         assert len(fetched_flavors) == 1
         assert isinstance(fetched_flavors[0], Flavor)
         assert fetched_flavors[0].code == flavor1.code
-        stmt = select(models.Pac).where(models.Pac.pac_id==flavor1.pac_id)
+        stmt = select(models.Pac).where(
+            models.Pac.pac_id == flavor1.pac_id)
         result = await session.execute(stmt)
         pac = result.scalars().first()
         assert fetched_flavors[0].pac_code_peek == pac.code

@@ -12,22 +12,25 @@ import models
 from models.factory import LandFactory
 from managers.land import LandManager
 from models.serialization_schema.land import LandSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestLandManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def land_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestLandManager:
         # Add the land using the manager's add method
         added_land = await land_manager.add(land=test_land)
         assert isinstance(added_land, Land)
-        assert str(added_land.insert_user_id) == str(land_manager._session_context.customer_code)
-        assert str(added_land.last_update_user_id) == str(land_manager._session_context.customer_code)
+        assert str(added_land.insert_user_id) == (
+            str(land_manager._session_context.customer_code))
+        assert str(added_land.last_update_user_id) == (
+            str(land_manager._session_context.customer_code))
         assert added_land.land_id > 0
         # Fetch the land from the database directly
-        result = await session.execute(select(Land).filter(Land.land_id == added_land.land_id))
+        result = await session.execute(
+            select(Land).filter(Land.land_id == added_land.land_id))
         fetched_land = result.scalars().first()
         # Assert that the fetched land is not None and matches the added land
         assert fetched_land is not None
@@ -109,8 +115,10 @@ class TestLandManager:
         # Add the land using the manager's add method
         added_land = await land_manager.add(land=test_land)
         assert isinstance(added_land, Land)
-        assert str(added_land.insert_user_id) == str(land_manager._session_context.customer_code)
-        assert str(added_land.last_update_user_id) == str(land_manager._session_context.customer_code)
+        assert str(added_land.insert_user_id) == (
+            str(land_manager._session_context.customer_code))
+        assert str(added_land.last_update_user_id) == (
+            str(land_manager._session_context.customer_code))
         assert added_land.land_id > 0
         # Assert that the returned land matches the test land
         assert added_land.land_id == test_land.land_id
@@ -164,7 +172,8 @@ class TestLandManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any Land in the database
+        # Generate a random UUID that doesn't correspond to
+        # any Land in the database
         random_code = generate_uuid()
         land = await land_manager.get_by_code(random_code)
         assert land is None
@@ -243,7 +252,6 @@ class TestLandManager:
         """
         test_land = await LandFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of Land
         with pytest.raises(ValueError):
             updated_land = await land_manager.update(
                 land=test_land,
@@ -260,12 +268,15 @@ class TestLandManager:
             #TODO add comment
         """
         land_data = await LandFactory.create_async(session)
-        result = await session.execute(select(Land).filter(Land.land_id == land_data.land_id))
+        result = await session.execute(
+            select(Land).filter(Land.land_id == land_data.land_id))
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.land_id == land_data.land_id
-        deleted_land = await land_manager.delete(land_id=land_data.land_id)
-        result = await session.execute(select(Land).filter(Land.land_id == land_data.land_id))
+        deleted_land = await land_manager.delete(
+            land_id=land_data.land_id)
+        result = await session.execute(
+            select(Land).filter(Land.land_id == land_data.land_id))
         fetched_land = result.scalars().first()
         assert fetched_land is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestLandManager:
         """
         lands = await land_manager.get_list()
         assert len(lands) == 0
-        lands_data = [await LandFactory.create_async(session) for _ in range(5)]
+        lands_data = (
+            [await LandFactory.create_async(session) for _ in range(5)])
         lands = await land_manager.get_list()
         assert len(lands) == 5
         assert all(isinstance(land, Land) for land in lands)
@@ -376,8 +388,10 @@ class TestLandManager:
             result = await session.execute(select(Land).filter(Land.land_id == updated_land.land_id))
             fetched_land = result.scalars().first()
             assert isinstance(fetched_land, Land)
-            assert str(fetched_land.insert_user_id) == str(land_manager._session_context.customer_code)
-            assert str(fetched_land.last_update_user_id) == str(land_manager._session_context.customer_code)
+            assert str(fetched_land.insert_user_id) == (
+                str(land_manager._session_context.customer_code))
+            assert str(fetched_land.last_update_user_id) == (
+                str(land_manager._session_context.customer_code))
             assert fetched_land.land_id == updated_land.land_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestLandManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update lands
-        updates = [{"land_id": 1, "code": code_updated1}, {"land_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "land_id": 1,
+                "code": code_updated1
+            },
+            {
+                "land_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_lands = await land_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestLandManager:
         logging.info(lands[1].__dict__)
         assert updated_lands[0].code == code_updated1
         assert updated_lands[1].code == code_updated2
-        assert str(updated_lands[0].last_update_user_id) == str(land_manager._session_context.customer_code)
-        assert str(updated_lands[1].last_update_user_id) == str(land_manager._session_context.customer_code)
+        assert str(updated_lands[0].last_update_user_id) == (
+            str(land_manager._session_context.customer_code))
+        assert str(updated_lands[1].last_update_user_id) == (
+            str(land_manager._session_context.customer_code))
         result = await session.execute(select(Land).filter(Land.land_id == 1))
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
@@ -477,7 +502,8 @@ class TestLandManager:
         result = await land_manager.delete_bulk(land_ids)
         assert result is True
         for land_id in land_ids:
-            execute_result = await session.execute(select(Land).filter(Land.land_id == land_id))
+            execute_result = await session.execute(
+                select(Land).filter(Land.land_id == land_id))
             fetched_land = execute_result.scalars().first()
             assert fetched_land is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestLandManager:
         """
             #TODO add comment
         """
-        lands_data = [await LandFactory.create_async(session) for _ in range(5)]
+        lands_data = (
+            [await LandFactory.create_async(session) for _ in range(5)])
         count = await land_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestLandManager:
             #TODO add comment
         """
         # Add lands
-        lands_data = [await LandFactory.create_async(session) for _ in range(5)]
+        lands_data = (
+            [await LandFactory.create_async(session) for _ in range(5)])
         sorted_lands = await land_manager.get_sorted_list(sort_by="land_id")
-        assert [land.land_id for land in sorted_lands] == [(i + 1) for i in range(5)]
+        assert [land.land_id for land in sorted_lands] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestLandManager:
             #TODO add comment
         """
         # Add lands
-        lands_data = [await LandFactory.create_async(session) for _ in range(5)]
-        sorted_lands = await land_manager.get_sorted_list(sort_by="land_id", order="desc")
-        assert [land.land_id for land in sorted_lands] == [(i + 1) for i in reversed(range(5))]
+        lands_data = (
+            [await LandFactory.create_async(session) for _ in range(5)])
+        sorted_lands = await land_manager.get_sorted_list(
+            sort_by="land_id", order="desc")
+        assert [land.land_id for land in sorted_lands] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,
@@ -700,7 +732,8 @@ class TestLandManager:
         assert len(fetched_lands) == 1
         assert isinstance(fetched_lands[0], Land)
         assert fetched_lands[0].code == land1.code
-        stmt = select(models.Pac).where(models.Pac.pac_id==land1.pac_id)
+        stmt = select(models.Pac).where(
+            models.Pac.pac_id == land1.pac_id)
         result = await session.execute(stmt)
         pac = result.scalars().first()
         assert fetched_lands[0].pac_code_peek == pac.code

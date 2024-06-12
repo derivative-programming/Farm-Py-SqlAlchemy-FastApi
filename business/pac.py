@@ -6,11 +6,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import PacManager
 from models import Pac
 import models
@@ -32,15 +32,21 @@ from business.error_log import ErrorLogBusObj
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 
 class PacInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class PacBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
@@ -96,7 +102,7 @@ class PacBusObj(BaseBusObj):
     def set_prop_last_update_user_id(self, value: uuid.UUID):
         self.last_update_user_id = value
         return self
-
+# endset
     # description
     @property
     def description(self):
@@ -114,7 +120,8 @@ class PacBusObj(BaseBusObj):
         return self.pac.display_order
     @display_order.setter
     def display_order(self, value):
-        assert isinstance(value, int), "display_order must be an integer"
+        assert isinstance(value, int), (
+            "display_order must be an integer")
         self.pac.display_order = value
     def set_prop_display_order(self, value):
         self.display_order = value
@@ -153,20 +160,21 @@ class PacBusObj(BaseBusObj):
     def set_prop_name(self, value):
         self.name = value
         return self
-
+# endset
     # description,
     # displayOrder,
     # isActive,
     # lookupEnumName,
     # name,
-
+# endset
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.pac.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.pac.insert_utc_date_time = value
     # update_utc_date_time
     @property
@@ -174,18 +182,24 @@ class PacBusObj(BaseBusObj):
         return self.pac.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.pac.last_update_utc_date_time = value
 
     @property
     def lookup_enum(self) -> managers_and_enums.PacEnum:
         return managers_and_enums.PacEnum[self.pac.lookup_enum_name]
-    async def load(self, json_data: str = None,
-                   code: uuid.UUID = None,
-                   pac_id: int = None,
-                   pac_obj_instance: Pac = None,
-                   pac_dict: dict = None,
-                   pac_enum:managers_and_enums.PacEnum = None):
+    async def load(
+        self,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        pac_id: int = None,
+        pac_obj_instance:
+            Pac = None,
+        pac_dict: dict = None,
+        pac_enum:
+            managers_and_enums.PacEnum = None
+    ):
         if pac_id and self.pac.pac_id is None:
             pac_manager = PacManager(self._session_context)
             pac_obj = await pac_manager.get_by_id(pac_id)
@@ -208,13 +222,17 @@ class PacBusObj(BaseBusObj):
             pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.from_enum(pac_enum)
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   pac_id: int = None,
-                   pac_obj_instance: Pac = None,
-                   pac_dict: dict = None,
-                   pac_enum:managers_and_enums.PacEnum = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        pac_id: int = None,
+        pac_obj_instance:
+            Pac = None,
+        pac_dict: dict = None,
+        pac_enum:
+            managers_and_enums.PacEnum = None
+    ):
         result = PacBusObj(session_context)
         await result.load(
             json_data,
@@ -252,12 +270,15 @@ class PacBusObj(BaseBusObj):
             await pac_manager.delete(self.pac.pac_id)
             self.pac = None
     async def randomize_properties(self):
-        self.pac.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.pac.description = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.pac.display_order = random.randint(0, 100)
         self.pac.is_active = random.choice([True, False])
-        self.pac.lookup_enum_name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.pac.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-
+        self.pac.lookup_enum_name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.pac.name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+# endset
         return self
     def get_pac_obj(self) -> Pac:
         return self.pac
@@ -265,13 +286,13 @@ class PacBusObj(BaseBusObj):
         pac_manager = PacManager(self._session_context)
         my_pac = self.get_pac_obj()
         return pac_manager.is_equal(pac, my_pac)
-
+# endset
     # description,
     # displayOrder,
     # isActive,
     # lookupEnumName,
     # name,
-
+# endset
     def get_obj(self) -> Pac:
         return self.pac
     def get_object_name(self) -> str:
@@ -283,12 +304,18 @@ class PacBusObj(BaseBusObj):
     # isActive,
     # lookupEnumName,
     # name,
-
+# endset
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Pac]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[Pac]
+    ):
         result = list()
         for pac in obj_list:
-            pac_bus_obj = PacBusObj.get(session_context, pac_obj_instance=pac)
+            pac_bus_obj = PacBusObj.get(
+                session_context,
+                pac_obj_instance=pac
+            )
             result.append(pac_bus_obj)
         return result
 

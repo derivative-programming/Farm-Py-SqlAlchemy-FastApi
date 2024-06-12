@@ -1,9 +1,9 @@
-# land_plant_list_test.py
+# reports/row_models/tests/land_plant_list_test.py
 
 """
     #TODO add comment
 """
-
+import math
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
@@ -12,6 +12,9 @@ from reports.row_models.land_plant_list import ReportItemLandPlantList
 
 
 class TestReportItemLandPlantList:
+    """
+    #TODO add comment
+    """
     def test_default_values(self):
         """Test the default values of all fields."""
         report_item = ReportItemLandPlantList()
@@ -21,10 +24,12 @@ class TestReportItemLandPlantList:
         assert report_item.some_big_int_val == 0
         assert report_item.some_bit_val is False
         assert report_item.is_edit_allowed is False
-        assert report_item.is_delete_allowed is False
-        assert report_item.some_float_val == 0.0
+        assert report_item.is_delete_allowed is False 
+        assert math.isclose(report_item.some_float_val, 0.0, rel_tol=1e-9), (
+            "Values must be approximately equal")
         assert report_item.some_decimal_val == Decimal(0)
-        assert report_item.some_utc_date_time_val == TypeConversion.get_default_date_time()
+        assert report_item.some_utc_date_time_val == (
+            TypeConversion.get_default_date_time())
         assert report_item.some_date_val == TypeConversion.get_default_date()
         assert report_item.some_money_val == Decimal(0)
         assert report_item.some_n_var_char_val == ""
@@ -39,7 +44,7 @@ class TestReportItemLandPlantList:
         assert report_item.update_link_plant_code.int == 0
         assert report_item.delete_async_button_link_plant_code.int == 0
         assert report_item.details_link_plant_code.int == 0
-#endset
+# endset
 
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
@@ -52,7 +57,8 @@ class TestReportItemLandPlantList:
             "is_delete_allowed": True,
             "some_float_val": 1.23,
             "some_decimal_val": "10.99",
-            "some_utc_date_time_val": datetime(2023, 1, 1, 0, 0, 0),  # "2023-01-01T00:00:00",
+            "some_utc_date_time_val": 
+                datetime(2023, 1, 1, 0, 0, 0),  # "2023-01-01T00:00:00",
             "some_date_val": date(2023, 1, 1),  # "2023-01-01",
             "some_money_val": "99.99",
             "some_n_var_char_val": "test",
@@ -67,7 +73,7 @@ class TestReportItemLandPlantList:
             "update_link_plant_code": str(UUID(int=3)),
             "delete_async_button_link_plant_code": str(UUID(int=4)),
             "details_link_plant_code": str(UUID(int=5)),
-#endset
+# endset
         }
 
         # report_item = ReportItemLandPlantList(**data)
@@ -82,7 +88,8 @@ class TestReportItemLandPlantList:
         assert report_item.is_delete_allowed is True
         assert report_item.some_float_val == 1.23
         assert report_item.some_decimal_val == Decimal("10.99")
-        assert report_item.some_utc_date_time_val == datetime.fromisoformat("2023-01-01T00:00:00")
+        assert report_item.some_utc_date_time_val == (
+            datetime.fromisoformat("2023-01-01T00:00:00"))
         assert report_item.some_date_val == date.fromisoformat("2023-01-01")
         assert report_item.some_money_val == Decimal("99.99")
         assert report_item.some_n_var_char_val == "test"
@@ -97,4 +104,4 @@ class TestReportItemLandPlantList:
         assert report_item.update_link_plant_code == UUID(int=3)
         assert report_item.delete_async_button_link_plant_code == UUID(int=4)
         assert report_item.details_link_plant_code == UUID(int=5)
-#endset
+# endset

@@ -23,25 +23,28 @@ from models.factory.plant import PlantFactory
 from ...models.plant_user_delete import PlantUserDeletePostModelRequest, PlantUserDeletePostModelResponse
 from models import Base
 from ..factory.plant_user_delete import PlantUserDeletePostModelRequestFactory
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from unittest.mock import patch, AsyncMock
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestPlantUserDeletePostModelResponse:
+    """
+    #TODO add comment
+    """
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         async def mock_process(

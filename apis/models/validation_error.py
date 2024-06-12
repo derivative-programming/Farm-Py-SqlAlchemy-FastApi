@@ -9,5 +9,12 @@ from pydantic import Field
 
 
 class ValidationErrorItem(CamelModel):
-    property: str = Field(default="",description="Property")
-    message: str = Field(default="",description="Message")
+    """
+    #TODO add comment
+    """
+    property: str = Field(
+        default="",
+        description="Property")
+    message: str = Field(
+        default="",
+        description="Message")

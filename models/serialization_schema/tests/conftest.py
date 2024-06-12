@@ -29,6 +29,7 @@ def engine():
     yield engine
     engine.dispose()
 
+
 @pytest.fixture(scope="function")
 def session(engine):
     Base.metadata.create_all(engine)

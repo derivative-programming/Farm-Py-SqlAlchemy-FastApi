@@ -19,11 +19,18 @@ from apis.models.validation_error import ValidationErrorItem
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 class PacUserTacListInitReportGetInitModelResponse(CamelModel):
+    """
+    #TODO add comment
+    """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
 
-    def load_flow_response(self, data:FlowPacUserTacListInitReportResult):
+# endset
+    def load_flow_response(
+        self,
+        data: FlowPacUserTacListInitReportResult
+    ):
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -31,23 +38,30 @@ class PacUserTacListInitReportGetInitModelResponse(CamelModel):
     def to_json(self):
         return self.model_dump_json()
 class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
-    async def process_request(self,
-                        session_context: SessionContext,
-                        pac_code: uuid,
-                        response: PacUserTacListInitReportGetInitModelResponse) -> PacUserTacListInitReportGetInitModelResponse:
+    """
+    #TODO add comment
+    """
+    async def process_request(
+            self,
+            session_context: SessionContext,
+            pac_code: uuid,
+            response: PacUserTacListInitReportGetInitModelResponse
+    ) -> PacUserTacListInitReportGetInitModelResponse:
         try:
-            logging.info("loading model...PacUserTacListInitReportGetInitModelRequest")
+            logging.info(
+                "loading model...PacUserTacListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session_context)
             await pac_bus_obj.load(code=pac_code)
             if(pac_bus_obj.get_pac_obj() is None):
                 logging.info("Invalid pac_code")
                 raise ValueError("Invalid pac_code")
             flow = FlowPacUserTacListInitReport(session_context)
-            logging.info("process request...PacUserTacListInitReportGetInitModelRequest")
+            logging.info(
+                "process request...PacUserTacListInitReportGetInitModelRequest")
             flowResponse = await flow.process(
                 pac_bus_obj
             )
-            response.load_flow_response(flowResponse);
+            response.load_flow_response(flowResponse)
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
@@ -55,6 +69,6 @@ class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(validation_error(key,ve.error_dict[key]))
+                response.validation_errors.append(validation_error(key, ve.error_dict[key]))
         return response
 

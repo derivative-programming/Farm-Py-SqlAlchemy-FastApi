@@ -12,22 +12,25 @@ import models
 from models.factory import OrgApiKeyFactory
 from managers.org_api_key import OrgApiKeyManager
 from models.serialization_schema.org_api_key import OrgApiKeySchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestOrgApiKeyManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestOrgApiKeyManager:
         # Add the org_api_key using the manager's add method
         added_org_api_key = await org_api_key_manager.add(org_api_key=test_org_api_key)
         assert isinstance(added_org_api_key, OrgApiKey)
-        assert str(added_org_api_key.insert_user_id) == str(org_api_key_manager._session_context.customer_code)
-        assert str(added_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
+        assert str(added_org_api_key.insert_user_id) == (
+            str(org_api_key_manager._session_context.customer_code))
+        assert str(added_org_api_key.last_update_user_id) == (
+            str(org_api_key_manager._session_context.customer_code))
         assert added_org_api_key.org_api_key_id > 0
         # Fetch the org_api_key from the database directly
-        result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == added_org_api_key.org_api_key_id))
+        result = await session.execute(
+            select(OrgApiKey).filter(OrgApiKey.org_api_key_id == added_org_api_key.org_api_key_id))
         fetched_org_api_key = result.scalars().first()
         # Assert that the fetched org_api_key is not None and matches the added org_api_key
         assert fetched_org_api_key is not None
@@ -109,8 +115,10 @@ class TestOrgApiKeyManager:
         # Add the org_api_key using the manager's add method
         added_org_api_key = await org_api_key_manager.add(org_api_key=test_org_api_key)
         assert isinstance(added_org_api_key, OrgApiKey)
-        assert str(added_org_api_key.insert_user_id) == str(org_api_key_manager._session_context.customer_code)
-        assert str(added_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
+        assert str(added_org_api_key.insert_user_id) == (
+            str(org_api_key_manager._session_context.customer_code))
+        assert str(added_org_api_key.last_update_user_id) == (
+            str(org_api_key_manager._session_context.customer_code))
         assert added_org_api_key.org_api_key_id > 0
         # Assert that the returned org_api_key matches the test org_api_key
         assert added_org_api_key.org_api_key_id == test_org_api_key.org_api_key_id
@@ -164,7 +172,8 @@ class TestOrgApiKeyManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any OrgApiKey in the database
+        # Generate a random UUID that doesn't correspond to
+        # any OrgApiKey in the database
         random_code = generate_uuid()
         org_api_key = await org_api_key_manager.get_by_code(random_code)
         assert org_api_key is None
@@ -243,7 +252,6 @@ class TestOrgApiKeyManager:
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of OrgApiKey
         with pytest.raises(ValueError):
             updated_org_api_key = await org_api_key_manager.update(
                 org_api_key=test_org_api_key,
@@ -260,12 +268,15 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         org_api_key_data = await OrgApiKeyFactory.create_async(session)
-        result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_data.org_api_key_id))
+        result = await session.execute(
+            select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_data.org_api_key_id))
         fetched_org_api_key = result.scalars().first()
         assert isinstance(fetched_org_api_key, OrgApiKey)
         assert fetched_org_api_key.org_api_key_id == org_api_key_data.org_api_key_id
-        deleted_org_api_key = await org_api_key_manager.delete(org_api_key_id=org_api_key_data.org_api_key_id)
-        result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_data.org_api_key_id))
+        deleted_org_api_key = await org_api_key_manager.delete(
+            org_api_key_id=org_api_key_data.org_api_key_id)
+        result = await session.execute(
+            select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_data.org_api_key_id))
         fetched_org_api_key = result.scalars().first()
         assert fetched_org_api_key is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestOrgApiKeyManager:
         """
         org_api_keys = await org_api_key_manager.get_list()
         assert len(org_api_keys) == 0
-        org_api_keys_data = [await OrgApiKeyFactory.create_async(session) for _ in range(5)]
+        org_api_keys_data = (
+            [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
         org_api_keys = await org_api_key_manager.get_list()
         assert len(org_api_keys) == 5
         assert all(isinstance(org_api_key, OrgApiKey) for org_api_key in org_api_keys)
@@ -376,8 +388,10 @@ class TestOrgApiKeyManager:
             result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == updated_org_api_key.org_api_key_id))
             fetched_org_api_key = result.scalars().first()
             assert isinstance(fetched_org_api_key, OrgApiKey)
-            assert str(fetched_org_api_key.insert_user_id) == str(org_api_key_manager._session_context.customer_code)
-            assert str(fetched_org_api_key.last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
+            assert str(fetched_org_api_key.insert_user_id) == (
+                str(org_api_key_manager._session_context.customer_code))
+            assert str(fetched_org_api_key.last_update_user_id) == (
+                str(org_api_key_manager._session_context.customer_code))
             assert fetched_org_api_key.org_api_key_id == updated_org_api_key.org_api_key_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestOrgApiKeyManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update org_api_keys
-        updates = [{"org_api_key_id": 1, "code": code_updated1}, {"org_api_key_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "org_api_key_id": 1,
+                "code": code_updated1
+            },
+            {
+                "org_api_key_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_org_api_keys = await org_api_key_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestOrgApiKeyManager:
         logging.info(org_api_keys[1].__dict__)
         assert updated_org_api_keys[0].code == code_updated1
         assert updated_org_api_keys[1].code == code_updated2
-        assert str(updated_org_api_keys[0].last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
-        assert str(updated_org_api_keys[1].last_update_user_id) == str(org_api_key_manager._session_context.customer_code)
+        assert str(updated_org_api_keys[0].last_update_user_id) == (
+            str(org_api_key_manager._session_context.customer_code))
+        assert str(updated_org_api_keys[1].last_update_user_id) == (
+            str(org_api_key_manager._session_context.customer_code))
         result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == 1))
         fetched_org_api_key = result.scalars().first()
         assert isinstance(fetched_org_api_key, OrgApiKey)
@@ -477,7 +502,8 @@ class TestOrgApiKeyManager:
         result = await org_api_key_manager.delete_bulk(org_api_key_ids)
         assert result is True
         for org_api_key_id in org_api_key_ids:
-            execute_result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_id))
+            execute_result = await session.execute(
+                select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key_id))
             fetched_org_api_key = execute_result.scalars().first()
             assert fetched_org_api_key is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestOrgApiKeyManager:
         """
             #TODO add comment
         """
-        org_api_keys_data = [await OrgApiKeyFactory.create_async(session) for _ in range(5)]
+        org_api_keys_data = (
+            [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
         count = await org_api_key_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         # Add org_api_keys
-        org_api_keys_data = [await OrgApiKeyFactory.create_async(session) for _ in range(5)]
+        org_api_keys_data = (
+            [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
         sorted_org_api_keys = await org_api_key_manager.get_sorted_list(sort_by="org_api_key_id")
-        assert [org_api_key.org_api_key_id for org_api_key in sorted_org_api_keys] == [(i + 1) for i in range(5)]
+        assert [org_api_key.org_api_key_id for org_api_key in sorted_org_api_keys] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         # Add org_api_keys
-        org_api_keys_data = [await OrgApiKeyFactory.create_async(session) for _ in range(5)]
-        sorted_org_api_keys = await org_api_key_manager.get_sorted_list(sort_by="org_api_key_id", order="desc")
-        assert [org_api_key.org_api_key_id for org_api_key in sorted_org_api_keys] == [(i + 1) for i in reversed(range(5))]
+        org_api_keys_data = (
+            [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
+        sorted_org_api_keys = await org_api_key_manager.get_sorted_list(
+            sort_by="org_api_key_id", order="desc")
+        assert [org_api_key.org_api_key_id for org_api_key in sorted_org_api_keys] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,
@@ -702,7 +734,8 @@ class TestOrgApiKeyManager:
         assert len(fetched_org_api_keys) == 1
         assert isinstance(fetched_org_api_keys[0], OrgApiKey)
         assert fetched_org_api_keys[0].code == org_api_key1.code
-        stmt = select(models.Organization).where(models.Organization.organization_id==org_api_key1.organization_id)
+        stmt = select(models.Organization).where(
+            models.Organization.organization_id == org_api_key1.organization_id)
         result = await session.execute(stmt)
         organization = result.scalars().first()
         assert fetched_org_api_keys[0].organization_code_peek == organization.code
@@ -738,11 +771,13 @@ class TestOrgApiKeyManager:
         # Add a org_api_key with a specific org_customer_id
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
         # Fetch the org_api_key using the manager function
-        fetched_org_api_keys = await org_api_key_manager.get_by_org_customer_id(org_api_key1.org_customer_id)
+        fetched_org_api_keys = await org_api_key_manager.get_by_org_customer_id(
+            org_api_key1.org_customer_id)
         assert len(fetched_org_api_keys) == 1
         assert isinstance(fetched_org_api_keys[0], OrgApiKey)
         assert fetched_org_api_keys[0].code == org_api_key1.code
-        stmt = select(models.OrgCustomer).where(models.OrgCustomer.org_customer_id==org_api_key1.org_customer_id)
+        stmt = select(models.OrgCustomer).where(
+            models.OrgCustomer.org_customer_id == org_api_key1.org_customer_id)
         result = await session.execute(stmt)
         org_customer = result.scalars().first()
         assert fetched_org_api_keys[0].org_customer_code_peek == org_customer.code
@@ -756,7 +791,8 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         non_existent_id = 999
-        fetched_org_api_keys = await org_api_key_manager.get_by_org_customer_id(non_existent_id)
+        fetched_org_api_keys = (
+            await org_api_key_manager.get_by_org_customer_id(non_existent_id))
         assert len(fetched_org_api_keys) == 0
     @pytest.mark.asyncio
     async def test_get_by_org_customer_id_invalid_type(

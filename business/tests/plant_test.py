@@ -13,10 +13,10 @@ from models import Plant
 from models.factory import PlantFactory
 from managers.plant import PlantManager
 from business.plant import PlantBusObj
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -25,12 +25,12 @@ import current_runtime
 
 logger = get_logger(__name__)
 
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
@@ -81,9 +81,9 @@ class TestPlantBusObj:
         assert plant_bus_obj.plant_id is None
 
         # assert isinstance(plant_bus_obj.plant_id, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(plant_bus_obj.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(plant_bus_obj.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(plant_bus_obj.code, str)
@@ -103,12 +103,12 @@ class TestPlantBusObj:
         assert isinstance(plant_bus_obj.some_big_int_val, int)
         assert isinstance(plant_bus_obj.some_bit_val, bool)
         assert isinstance(plant_bus_obj.some_date_val, date)
-        assert isinstance(plant_bus_obj.some_decimal_val, int or float)  # Numeric type can be float or int based on the value
+        assert isinstance(plant_bus_obj.some_decimal_val, int or float)
         assert plant_bus_obj.some_email_address == "" or isinstance(
             plant_bus_obj.some_email_address, str)
         assert isinstance(plant_bus_obj.some_float_val, float)
         assert isinstance(plant_bus_obj.some_int_val, int)
-        assert isinstance(plant_bus_obj.some_money_val, int or float)  # Numeric type can be float or int based on the value
+        assert isinstance(plant_bus_obj.some_money_val, int or float)
         assert plant_bus_obj.some_n_var_char_val == "" or isinstance(
             plant_bus_obj.some_n_var_char_val, str)
         assert plant_bus_obj.some_phone_number == "" or isinstance(
@@ -116,9 +116,9 @@ class TestPlantBusObj:
         assert plant_bus_obj.some_text_val == "" or isinstance(
             plant_bus_obj.some_text_val, str)
         # some_uniqueidentifier_val
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(plant_bus_obj.some_uniqueidentifier_val, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(
                 plant_bus_obj.some_uniqueidentifier_val,
                 UNIQUEIDENTIFIER)

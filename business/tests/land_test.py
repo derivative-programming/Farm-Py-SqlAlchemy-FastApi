@@ -11,89 +11,170 @@ from models import Land
 from models.factory import LandFactory
 from managers.land import LandManager
 from business.land import LandBusObj
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestLandBusObj:
+    """
+        #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def land_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         return LandManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def land_bus_obj(self, session):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         return LandBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_land(self, session):
+        """
+            #TODO add comment
+        """
         # Use the LandFactory to create a new land instance
         # Assuming LandFactory.create() is an async function
         return await LandFactory.create_async(session)
     @pytest.mark.asyncio
-    async def test_create_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_create_land(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         # Test creating a new land
         assert land_bus_obj.land_id is None
         # assert isinstance(land_bus_obj.land_id, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(land_bus_obj.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(land_bus_obj.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(land_bus_obj.code, str)
         assert isinstance(land_bus_obj.last_change_code, int)
         assert land_bus_obj.insert_user_id is None
         assert land_bus_obj.last_update_user_id is None
-        assert land_bus_obj.description == "" or isinstance(land_bus_obj.description, str)
+        assert land_bus_obj.description == "" or isinstance(
+            land_bus_obj.description, str)
         assert isinstance(land_bus_obj.display_order, int)
         assert isinstance(land_bus_obj.is_active, bool)
-        assert land_bus_obj.lookup_enum_name == "" or isinstance(land_bus_obj.lookup_enum_name, str)
-        assert land_bus_obj.name == "" or isinstance(land_bus_obj.name, str)
+        assert land_bus_obj.lookup_enum_name == "" or isinstance(
+            land_bus_obj.lookup_enum_name, str)
+        assert land_bus_obj.name == "" or isinstance(
+            land_bus_obj.name, str)
         assert isinstance(land_bus_obj.pac_id, int)
     @pytest.mark.asyncio
-    async def test_load_with_land_obj(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_load_with_land_obj(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         await land_bus_obj.load(land_obj_instance=new_land)
         assert land_manager.is_equal(land_bus_obj.land,new_land) is True
     @pytest.mark.asyncio
-    async def test_load_with_land_id(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_load_with_land_id(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         await land_bus_obj.load(land_id=new_land.land_id)
         assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_load_with_land_code(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_load_with_land_code(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         await land_bus_obj.load(code=new_land.code)
         assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_load_with_land_json(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_load_with_land_json(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         land_json = land_manager.to_json(new_land)
         await land_bus_obj.load(json_data=land_json)
         assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
     @pytest.mark.asyncio
-    async def test_load_with_land_dict(self, session, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_load_with_land_dict(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         logger.info("test_load_with_land_dict 1")
         land_dict = land_manager.to_dict(new_land)
         logger.info(land_dict)
         await land_bus_obj.load(land_dict=land_dict)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
+        assert land_manager.is_equal(
+            land_bus_obj.land,
+            new_land) is True
     @pytest.mark.asyncio
-    async def test_get_nonexistent_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_get_nonexistent_land(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         # Test retrieving a nonexistent land raises an exception
         await land_bus_obj.load(land_id=-1)
-        assert land_bus_obj.is_valid() is False # Assuming -1 is an id that wouldn't exist
+        assert land_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
-    async def test_update_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_update_land(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         # Test updating a land's data
         new_land = await land_manager.get_by_id(new_land.land_id)
         new_code = generate_uuid()
@@ -101,9 +182,19 @@ class TestLandBusObj:
         land_bus_obj.code = new_code
         await land_bus_obj.save()
         new_land = await land_manager.get_by_id(new_land.land_id)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
+        assert land_manager.is_equal(
+            land_bus_obj.land,
+            new_land) is True
     @pytest.mark.asyncio
-    async def test_delete_land(self, land_manager: LandManager, land_bus_obj: LandBusObj, new_land: Land):
+    async def test_delete_land(
+        self,
+        land_manager: LandManager,
+        land_bus_obj: LandBusObj,
+        new_land: Land
+    ):
+        """
+            #TODO add comment
+        """
         assert new_land.land_id is not None
         assert land_bus_obj.land_id is None
         await land_bus_obj.load(land_id=new_land.land_id)

@@ -16,19 +16,22 @@ import models as farm_models
 import managers as farm_managers
 import business
 from sqlalchemy.ext.asyncio import AsyncSession
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 # from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
 class FlowTacRegisterInitObjWFResult():
+    """
+    #TODO add comment
+    """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
     password: str = ""
     confirm_password: str = ""
     first_name: str = ""
     last_name: str = ""
-
+# endset
     def __init__(self):
         pass
     def to_json(self):
@@ -40,22 +43,27 @@ class FlowTacRegisterInitObjWFResult():
             'confirm_password': self.confirm_password,
             'first_name': self.first_name,
             'last_name': self.last_name,
-
+# endset
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         super(FlowTacRegisterInitObjWF, self).__init__(session_context)
     async def process(self,
         tac_bus_obj: TacBusObj,
 
+# endset
         ) -> FlowTacRegisterInitObjWFResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(tac_bus_obj.code))
         await super()._process_validation_rules(
             tac_bus_obj,
 
+# endset
         )
         super()._throw_queued_validation_errors()
         email_output: str = ""
@@ -63,7 +71,7 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         confirm_password_output: str = ""
         first_name_output: str = ""
         last_name_output: str = ""
-
+# endset
         # TODO: add flow logic
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
@@ -74,7 +82,7 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         result.confirm_password = confirm_password_output
         result.first_name = first_name_output
         result.last_name = last_name_output
-
+# endset
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

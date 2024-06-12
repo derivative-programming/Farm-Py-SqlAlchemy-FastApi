@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 
 from models.pac import Pac
 from models.serialization_schema.pac import PacSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class PacNotFoundError(Exception):
@@ -30,6 +30,9 @@ class PacNotFoundError(Exception):
         super().__init__(self.message)
 
 class PacEnum(Enum):
+    """
+    #TODO add comment
+    """
     Unknown = 'Unknown'
 
 class PacManager:
@@ -48,9 +51,9 @@ class PacManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -63,21 +66,24 @@ class PacManager:
         logging.info("PlantManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
-
+# endset
         if await self.from_enum(PacEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description=""
+            item.description = ""
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-
+# endset
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val: PacEnum) -> Pac:
+    async def from_enum(
+        self,
+        enum_val: PacEnum
+    ) -> Pac:
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Pac.lookup_enum_name==enum_val.value
+        query_filter = Pac.lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -105,9 +111,9 @@ class PacManager:
         """
         logging.info("PacManager._build_query")
 #         join_condition = None
-#
+# # endset
 
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(Pac
 
@@ -118,7 +124,9 @@ class PacManager:
             Pac
 
             )
+# endset
 
+# endset
         return query
     async def _run_query(self, query_filter) -> List[Pac]:
         """
@@ -137,7 +145,11 @@ class PacManager:
             i = 0
             pac = query_result_row[i]
             i = i + 1
+# endset
 
+# endset
+
+# endset
             result.append(pac)
         return result
     def _first_or_none(self, pac_list: List) -> Pac:
@@ -174,7 +186,8 @@ class PacManager:
         logging.info("PacManager.update")
         property_list = Pac.property_list()
         if pac:
-            pac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            pac.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -247,8 +260,10 @@ class PacManager:
                 raise ValueError("Pac is already added: " +
                                  str(pac.code) +
                                  " " + str(pac.pac_id))
-            pac.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            pac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            pac.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            pac.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(pacs)
         await self._session_context.session.flush()
         return pacs
@@ -269,10 +284,11 @@ class PacManager:
                     type(pac_id))
             if not pac_id:
                 continue
-            logging.info("PacManager.update_bulk pac_id:{pac_id}")
+            logging.info("PacManager.update_bulk pac_id:%s", pac_id)
             pac = await self.get_by_id(pac_id)
             if not pac:
-                raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
+                raise PacNotFoundError(
+                    f"Pac with ID {pac_id} not found!")
             for key, value in update.items():
                 if key != "pac_id":
                     setattr(pac, key, value)
@@ -356,4 +372,7 @@ class PacManager:
         dict1 = self.to_dict(pac1)
         dict2 = self.to_dict(pac2)
         return dict1 == dict2
+# endset
+
+# endset
 

@@ -6,11 +6,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import CustomerRoleManager
 from models import CustomerRole
 import models
@@ -18,15 +18,21 @@ import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
 class CustomerRoleInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class CustomerRoleBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
@@ -82,7 +88,7 @@ class CustomerRoleBusObj(BaseBusObj):
     def set_prop_last_update_user_id(self, value: uuid.UUID):
         self.last_update_user_id = value
         return self
-
+# endset
     # CustomerID
     # isPlaceholder
     @property
@@ -109,14 +115,15 @@ class CustomerRoleBusObj(BaseBusObj):
         self.placeholder = value
         return self
     # RoleID
-
+# endset
     # CustomerID
     @property
     def customer_id(self):
         return self.customer_role.customer_id
     @customer_id.setter
     def customer_id(self, value):
-        assert isinstance(value, int) or value is None, "customer_id must be an integer or None"
+        assert isinstance(value, int) or value is None, (
+            "customer_id must be an integer or None")
         self.customer_role.customer_id = value
     def set_prop_customer_id(self, value):
         self.customer_id = value
@@ -126,7 +133,8 @@ class CustomerRoleBusObj(BaseBusObj):
         return self.customer_role.customer_code_peek
     # @customer_code_peek.setter
     # def customer_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "customer_code_peek must be a UUID"
+    #     assert isinstance(value, UUIDType),
+    #           "customer_code_peek must be a UUID"
     #     self.customer_role.customer_code_peek = value
     # isPlaceholder,
     # placeholder,
@@ -147,16 +155,19 @@ class CustomerRoleBusObj(BaseBusObj):
         return self.customer_role.role_code_peek
     # @role_code_peek.setter
     # def role_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "role_code_peek must be a UUID"
+    #     assert isinstance(
+    #       value, UUIDType),
+    #       "role_code_peek must be a UUID"
     #     self.customer_role.role_code_peek = value
-
+# endset
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.customer_role.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.customer_role.insert_utc_date_time = value
     # update_utc_date_time
     @property
@@ -164,7 +175,8 @@ class CustomerRoleBusObj(BaseBusObj):
         return self.customer_role.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.customer_role.last_update_utc_date_time = value
 
     async def load(self, json_data: str = None,
@@ -182,7 +194,9 @@ class CustomerRoleBusObj(BaseBusObj):
             self.customer_role = customer_role_obj
         if customer_role_obj_instance and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self._session_context)
-            customer_role_obj = await customer_role_manager.get_by_id(customer_role_obj_instance.customer_role_id)
+            customer_role_obj = await customer_role_manager.get_by_id(
+                customer_role_obj_instance.customer_role_id
+                )
             self.customer_role = customer_role_obj
         if json_data and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self._session_context)
@@ -192,12 +206,14 @@ class CustomerRoleBusObj(BaseBusObj):
             self.customer_role = customer_role_manager.from_dict(customer_role_dict)
         return self
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   customer_role_id: int = None,
-                   customer_role_obj_instance: CustomerRole = None,
-                   customer_role_dict: dict = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        customer_role_id: int = None,
+        customer_role_obj_instance: CustomerRole = None,
+        customer_role_dict: dict = None
+    ):
         result = CustomerRoleBusObj(session_context)
         await result.load(
             json_data,
@@ -237,8 +253,10 @@ class CustomerRoleBusObj(BaseBusObj):
         # self.customer_role.customer_id = random.randint(0, 100)
         self.customer_role.is_placeholder = random.choice([True, False])
         self.customer_role.placeholder = random.choice([True, False])
-        self.customer_role.role_id =  random.choice(await managers_and_enums.RoleManager(self._session_context).get_list()).role_id
-
+        self.customer_role.role_id = random.choice(
+            await managers_and_enums.RoleManager(
+                self._session_context).get_list()).role_id
+# endset
         return self
     def get_customer_role_obj(self) -> CustomerRole:
         return self.customer_role
@@ -246,7 +264,7 @@ class CustomerRoleBusObj(BaseBusObj):
         customer_role_manager = CustomerRoleManager(self._session_context)
         my_customer_role = self.get_customer_role_obj()
         return customer_role_manager.is_equal(customer_role, my_customer_role)
-
+# endset
     # CustomerID
     async def get_customer_id_rel_obj(self) -> models.Customer:
         customer_manager = managers_and_enums.CustomerManager(self._session_context)
@@ -256,10 +274,12 @@ class CustomerRoleBusObj(BaseBusObj):
     # placeholder,
     # RoleID
     async def get_role_id_rel_obj(self) -> models.Role:
-        role_manager = managers_and_enums.RoleManager(self._session_context)
-        role_obj = await role_manager.get_by_id(self.role_id)
+        role_manager = managers_and_enums.RoleManager(
+            self._session_context)
+        role_obj = await role_manager.get_by_id(
+            self.role_id)
         return role_obj
-
+# endset
     def get_obj(self) -> CustomerRole:
         return self.customer_role
     def get_object_name(self) -> str:
@@ -276,12 +296,18 @@ class CustomerRoleBusObj(BaseBusObj):
     # isPlaceholder,
     # placeholder,
     # RoleID
-
+# endset
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[CustomerRole]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[CustomerRole]
+    ):
         result = list()
         for customer_role in obj_list:
-            customer_role_bus_obj = CustomerRoleBusObj.get(session_context, customer_role_obj_instance=customer_role)
+            customer_role_bus_obj = CustomerRoleBusObj.get(
+                session_context,
+                customer_role_obj_instance=customer_role
+            )
             result.append(customer_role_bus_obj)
         return result
 

@@ -10,17 +10,17 @@ from sqlalchemy.ext.asyncio import (
 from models import Base
 from models.factory import PacFactory
 from models.pac import Pac
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy import String, event, create_engine
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
@@ -92,9 +92,9 @@ class TestPacFactoryAsync:
     # @pytest.mark.asyncio
     # async def test_code_default(self, session):
     #     pac = await PacFactory.create_async(session=session)
-    #     if db_dialect == 'postgresql':
+    #     if DB_DIALECT == 'postgresql':
     #         assert isinstance(pac.code, UUID)
-    #     elif db_dialect == 'mssql':
+    #     elif DB_DIALECT == 'mssql':
     #         assert isinstance(pac.code, UNIQUEIDENTIFIER)
     #     else:  # This will cover SQLite, MySQL, and other databases
     #         assert isinstance(pac.code, str)
@@ -174,22 +174,22 @@ class TestPacFactoryAsync:
     # async def test_data_types(self, session):
     #     pac = await PacFactory.create_async(session=session)
     #     assert isinstance(pac.pac_id, int)
-    #     if db_dialect == 'postgresql':
+    #     if DB_DIALECT == 'postgresql':
     #         assert isinstance(pac.code, UUID)
-    #     elif db_dialect == 'mssql':
+    #     elif DB_DIALECT == 'mssql':
     #         assert isinstance(pac.code, UNIQUEIDENTIFIER)
     #     else:  # This will cover SQLite, MySQL, and other databases
     #         assert isinstance(pac.code, str)
     #     assert isinstance(pac.last_change_code, int)
-    #     if db_dialect == 'postgresql':
+    #     if DB_DIALECT == 'postgresql':
     #         assert isinstance(pac.insert_user_id, UUID)
-    #     elif db_dialect == 'mssql':
+    #     elif DB_DIALECT == 'mssql':
     #         assert isinstance(pac.insert_user_id, UNIQUEIDENTIFIER)
     #     else:  # This will cover SQLite, MySQL, and other databases
     #         assert isinstance(pac.insert_user_id, str)
-    #     if db_dialect == 'postgresql':
+    #     if DB_DIALECT == 'postgresql':
     #         assert isinstance(pac.last_update_user_id, UUID)
-    #     elif db_dialect == 'mssql':
+    #     elif DB_DIALECT == 'mssql':
     #         assert isinstance(pac.last_update_user_id, UNIQUEIDENTIFIER)
     #     else:  # This will cover SQLite, MySQL, and other databases
     #         assert isinstance(pac.last_update_user_id, str)
@@ -214,7 +214,7 @@ class TestPacFactoryAsync:
     #     pac_2 = await PacFactory.create_async(session=session)
     #     pac_2.code = pac_1.code
     #     await session.add_all([pac_1, pac_2])
-    #     with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
+    #     with pytest.raises(Exception):  
     #         await session.commit()
     # @pytest.mark.asyncio
     # async def test_fields_default(self, session):

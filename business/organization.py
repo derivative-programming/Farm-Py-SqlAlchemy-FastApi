@@ -6,11 +6,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import OrganizationManager
 from models import Organization
 import models
@@ -22,15 +22,21 @@ from business.org_customer import OrgCustomerBusObj
 from business.org_api_key import OrgApiKeyBusObj
 
 class OrganizationInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class OrganizationBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
@@ -86,7 +92,7 @@ class OrganizationBusObj(BaseBusObj):
     def set_prop_last_update_user_id(self, value: uuid.UUID):
         self.last_update_user_id = value
         return self
-
+# endset
     # name
     @property
     def name(self):
@@ -99,7 +105,7 @@ class OrganizationBusObj(BaseBusObj):
         self.name = value
         return self
     # TacID
-
+# endset
     # name,
     # TacID
     @property
@@ -107,7 +113,8 @@ class OrganizationBusObj(BaseBusObj):
         return self.organization.tac_id
     @tac_id.setter
     def tac_id(self, value):
-        assert isinstance(value, int) or value is None, "tac_id must be an integer or None"
+        assert isinstance(value, int) or value is None, (
+            "tac_id must be an integer or None")
         self.organization.tac_id = value
     def set_prop_tac_id(self, value):
         self.tac_id = value
@@ -117,16 +124,18 @@ class OrganizationBusObj(BaseBusObj):
         return self.organization.tac_code_peek
     # @tac_code_peek.setter
     # def tac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "tac_code_peek must be a UUID"
+    #     assert isinstance(value, UUIDType),
+    #           "tac_code_peek must be a UUID"
     #     self.organization.tac_code_peek = value
-
+# endset
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.organization.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.organization.insert_utc_date_time = value
     # update_utc_date_time
     @property
@@ -134,7 +143,8 @@ class OrganizationBusObj(BaseBusObj):
         return self.organization.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.organization.last_update_utc_date_time = value
 
     async def load(self, json_data: str = None,
@@ -152,7 +162,9 @@ class OrganizationBusObj(BaseBusObj):
             self.organization = organization_obj
         if organization_obj_instance and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self._session_context)
-            organization_obj = await organization_manager.get_by_id(organization_obj_instance.organization_id)
+            organization_obj = await organization_manager.get_by_id(
+                organization_obj_instance.organization_id
+                )
             self.organization = organization_obj
         if json_data and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self._session_context)
@@ -162,12 +174,14 @@ class OrganizationBusObj(BaseBusObj):
             self.organization = organization_manager.from_dict(organization_dict)
         return self
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   organization_id: int = None,
-                   organization_obj_instance: Organization = None,
-                   organization_dict: dict = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        organization_id: int = None,
+        organization_obj_instance: Organization = None,
+        organization_dict: dict = None
+    ):
         result = OrganizationBusObj(session_context)
         await result.load(
             json_data,
@@ -204,9 +218,10 @@ class OrganizationBusObj(BaseBusObj):
             await organization_manager.delete(self.organization.organization_id)
             self.organization = None
     async def randomize_properties(self):
-        self.organization.name = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.organization.name = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.organization.tac_id = random.randint(0, 100)
-
+# endset
         return self
     def get_organization_obj(self) -> Organization:
         return self.organization
@@ -214,14 +229,14 @@ class OrganizationBusObj(BaseBusObj):
         organization_manager = OrganizationManager(self._session_context)
         my_organization = self.get_organization_obj()
         return organization_manager.is_equal(organization, my_organization)
-
+# endset
     # name,
     # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
         return tac_obj
-
+# endset
     def get_obj(self) -> Organization:
         return self.organization
     def get_object_name(self) -> str:
@@ -236,12 +251,18 @@ class OrganizationBusObj(BaseBusObj):
         return self.tac_code_peek
     async def get_parent_obj(self) -> models.Tac:
         return self.get_tac_id_rel_obj()
-
+# endset
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[Organization]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[Organization]
+    ):
         result = list()
         for organization in obj_list:
-            organization_bus_obj = OrganizationBusObj.get(session_context, organization_obj_instance=organization)
+            organization_bus_obj = OrganizationBusObj.get(
+                session_context,
+                organization_obj_instance=organization
+            )
             result.append(organization_bus_obj)
         return result
 

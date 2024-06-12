@@ -1,13 +1,13 @@
-# encryption_test.py
+# services/tests/encryption_test.py
 
 """
     #TODO add comment
 """
-
-import pytest
-from services.encryption import encrypt_message, decrypt_message  # Replace with your actual module name
+ 
+from services.encryption import encrypt_message, decrypt_message
 
 ENCRYPTION_KEY_SECRET = "your_test_key_here"  # Use a test key
+
 
 def test_encrypt_decrypt():
     original_message = "Hello, World!"
@@ -18,6 +18,7 @@ def test_encrypt_decrypt():
 
     # Check if the decrypted message matches the original
     assert decrypted_message == original_message
+
 
 def test_empty_string():
     original_message = ""

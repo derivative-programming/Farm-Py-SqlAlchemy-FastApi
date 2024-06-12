@@ -13,7 +13,7 @@ async def initialize(session_context: SessionContext):
         #TODO add commment
     """
     await managers.PacManager(session_context).initialize()
-#endset
+# endset
 
     await managers.CustomerManager(session_context).initialize()
     await managers.CustomerRoleManager(session_context).initialize()
@@ -29,4 +29,4 @@ async def initialize(session_context: SessionContext):
     await managers.RoleManager(session_context).initialize()
     await managers.TacManager(session_context).initialize()
     await managers.TriStateFilterManager(session_context).initialize()
-#endset
+# endset

@@ -22,30 +22,33 @@ from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
 from models import Base
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestCustomerBuildTempApiKeyPostModelResponse:
+    """
+    #TODO add comment
+    """
     def test_flow_customer_build_temp_api_key_result_to_json(self):
         # Create an instance and set attributes
         result = FlowCustomerBuildTempApiKeyResult()
         result.context_object_code = uuid.uuid4()
         result.tmp_org_api_key_code = uuid.uuid4()
-
+# endset
         # Call to_json method
         json_output = result.to_json()
         # Parse JSON output
@@ -53,7 +56,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         # Assert individual fields
         assert data["context_object_code"] == str(result.context_object_code)
         assert data["tmp_org_api_key_code"] == str(result.tmp_org_api_key_code)
-
+# endset
     #todo finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
@@ -64,11 +67,13 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         await customer_bus_obj.load(customer_obj_instance=customer)
         role_required = ""
 
+# endset
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
                     customer_bus_obj,
 
+# endset
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -83,6 +88,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
                 flow_result = await flow.process(
                     customer_bus_obj,
 
+# endset
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(

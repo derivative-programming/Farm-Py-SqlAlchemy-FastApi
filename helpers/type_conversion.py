@@ -38,6 +38,9 @@ class TypeConversion:
 
 
 class UUIDField(fields.Field):
+    """
+    #TODO add comment
+    """
     def _serialize(self, value, attr, obj, **kwargs):
         if value is None:
             return ''

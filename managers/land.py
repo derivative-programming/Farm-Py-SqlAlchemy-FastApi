@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.land import Land
 from models.serialization_schema.land import LandSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class LandNotFoundError(Exception):
@@ -30,6 +30,9 @@ class LandNotFoundError(Exception):
         super().__init__(self.message)
 
 class LandEnum(Enum):
+    """
+    #TODO add comment
+    """
     Unknown = 'Unknown'
     Field_One = 'Field_One'
 
@@ -49,9 +52,9 @@ class LandManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -64,12 +67,12 @@ class LandManager:
         logging.info("PlantManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
-
+# endset
         if await self.from_enum(LandEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
-            item.description="Unknown"
+            item.description = "Unknown"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -78,16 +81,19 @@ class LandManager:
             item = await self._build_lookup_item(pac)
             item.name = "Field One"
             item.lookup_enum_name = "Field_One"
-            item.description="Field One"
+            item.description = "Field One"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-
+# endset
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val: LandEnum) -> Land:
+    async def from_enum(
+        self,
+        enum_val: LandEnum
+    ) -> Land:
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Land.lookup_enum_name==enum_val.value
+        query_filter = Land.lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -115,9 +121,9 @@ class LandManager:
         """
         logging.info("LandManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Pac, and_(Land.pac_id == Pac.pac_id, Land.pac_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(Land
 #                         , Pac  # pac_id
@@ -128,9 +134,9 @@ class LandManager:
             Land
             , Pac  # pac_id
             )
-
+# endset
         query = query.outerjoin(Pac, and_(Land.pac_id == Pac.pac_id, Land.pac_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[Land]:
         """
@@ -149,12 +155,12 @@ class LandManager:
             i = 0
             land = query_result_row[i]
             i = i + 1
-
+# endset
             pac = query_result_row[i]  # pac_id
             i = i + 1
-
+# endset
             land.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
-
+# endset
             result.append(land)
         return result
     def _first_or_none(self, land_list: List) -> Land:
@@ -191,7 +197,8 @@ class LandManager:
         logging.info("LandManager.update")
         property_list = Land.property_list()
         if land:
-            land.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            land.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -264,8 +271,10 @@ class LandManager:
                 raise ValueError("Land is already added: " +
                                  str(land.code) +
                                  " " + str(land.land_id))
-            land.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            land.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            land.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            land.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(lands)
         await self._session_context.session.flush()
         return lands
@@ -286,10 +295,11 @@ class LandManager:
                     type(land_id))
             if not land_id:
                 continue
-            logging.info("LandManager.update_bulk land_id:{land_id}")
+            logging.info("LandManager.update_bulk land_id:%s", land_id)
             land = await self.get_by_id(land_id)
             if not land:
-                raise LandNotFoundError(f"Land with ID {land_id} not found!")
+                raise LandNotFoundError(
+                    f"Land with ID {land_id} not found!")
             for key, value in update.items():
                 if key != "land_id":
                     setattr(land, key, value)
@@ -373,7 +383,7 @@ class LandManager:
         dict1 = self.to_dict(land1)
         dict2 = self.to_dict(land2)
         return dict1 == dict2
-
+# endset
     async def get_by_pac_id(self, pac_id: int) -> List[Land]:  # PacID
         logging.info("LandManager.get_by_pac_id")
         if not isinstance(pac_id, int):
@@ -384,4 +394,5 @@ class LandManager:
         query_filter = Land.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

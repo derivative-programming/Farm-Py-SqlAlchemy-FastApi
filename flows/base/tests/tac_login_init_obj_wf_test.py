@@ -12,21 +12,24 @@ from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.flavor import FlavorFactory
 from models.factory.tac import TacFactory
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy import String
 import flows.constants.tac_login_init_obj_wf as FlowConstants
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestBaseFlowTacLoginInitObjWF():
+    """
+    #TODO add comment
+    """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
         session_context = SessionContext(dict(), session)

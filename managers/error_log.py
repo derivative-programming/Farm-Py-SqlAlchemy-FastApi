@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.error_log import ErrorLog
 from models.serialization_schema.error_log import ErrorLogSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class ErrorLogNotFoundError(Exception):
@@ -45,9 +45,9 @@ class ErrorLogManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -82,9 +82,9 @@ class ErrorLogManager:
         """
         logging.info("ErrorLogManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(ErrorLog
 #                         , Pac  # pac_id
@@ -95,9 +95,9 @@ class ErrorLogManager:
             ErrorLog
             , Pac  # pac_id
             )
-
+# endset
         query = query.outerjoin(Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[ErrorLog]:
         """
@@ -116,12 +116,12 @@ class ErrorLogManager:
             i = 0
             error_log = query_result_row[i]
             i = i + 1
-
+# endset
             pac = query_result_row[i]  # pac_id
             i = i + 1
-
+# endset
             error_log.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
-
+# endset
             result.append(error_log)
         return result
     def _first_or_none(self, error_log_list: List) -> ErrorLog:
@@ -158,7 +158,8 @@ class ErrorLogManager:
         logging.info("ErrorLogManager.update")
         property_list = ErrorLog.property_list()
         if error_log:
-            error_log.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            error_log.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -231,8 +232,10 @@ class ErrorLogManager:
                 raise ValueError("ErrorLog is already added: " +
                                  str(error_log.code) +
                                  " " + str(error_log.error_log_id))
-            error_log.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            error_log.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            error_log.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            error_log.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(error_logs)
         await self._session_context.session.flush()
         return error_logs
@@ -253,10 +256,11 @@ class ErrorLogManager:
                     type(error_log_id))
             if not error_log_id:
                 continue
-            logging.info("ErrorLogManager.update_bulk error_log_id:{error_log_id}")
+            logging.info("ErrorLogManager.update_bulk error_log_id:%s", error_log_id)
             error_log = await self.get_by_id(error_log_id)
             if not error_log:
-                raise ErrorLogNotFoundError(f"ErrorLog with ID {error_log_id} not found!")
+                raise ErrorLogNotFoundError(
+                    f"ErrorLog with ID {error_log_id} not found!")
             for key, value in update.items():
                 if key != "error_log_id":
                     setattr(error_log, key, value)
@@ -340,7 +344,7 @@ class ErrorLogManager:
         dict1 = self.to_dict(error_log1)
         dict2 = self.to_dict(error_log2)
         return dict1 == dict2
-
+# endset
     async def get_by_pac_id(self, pac_id: int) -> List[ErrorLog]:  # PacID
         logging.info("ErrorLogManager.get_by_pac_id")
         if not isinstance(pac_id, int):
@@ -351,4 +355,5 @@ class ErrorLogManager:
         query_filter = ErrorLog.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

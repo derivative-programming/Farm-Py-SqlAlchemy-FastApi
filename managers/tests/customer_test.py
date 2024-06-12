@@ -12,22 +12,25 @@ import models
 from models.factory import CustomerFactory
 from managers.customer import CustomerManager
 from models.serialization_schema.customer import CustomerSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestCustomerManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def customer_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestCustomerManager:
         # Add the customer using the manager's add method
         added_customer = await customer_manager.add(customer=test_customer)
         assert isinstance(added_customer, Customer)
-        assert str(added_customer.insert_user_id) == str(customer_manager._session_context.customer_code)
-        assert str(added_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
+        assert str(added_customer.insert_user_id) == (
+            str(customer_manager._session_context.customer_code))
+        assert str(added_customer.last_update_user_id) == (
+            str(customer_manager._session_context.customer_code))
         assert added_customer.customer_id > 0
         # Fetch the customer from the database directly
-        result = await session.execute(select(Customer).filter(Customer.customer_id == added_customer.customer_id))
+        result = await session.execute(
+            select(Customer).filter(Customer.customer_id == added_customer.customer_id))
         fetched_customer = result.scalars().first()
         # Assert that the fetched customer is not None and matches the added customer
         assert fetched_customer is not None
@@ -109,8 +115,10 @@ class TestCustomerManager:
         # Add the customer using the manager's add method
         added_customer = await customer_manager.add(customer=test_customer)
         assert isinstance(added_customer, Customer)
-        assert str(added_customer.insert_user_id) == str(customer_manager._session_context.customer_code)
-        assert str(added_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
+        assert str(added_customer.insert_user_id) == (
+            str(customer_manager._session_context.customer_code))
+        assert str(added_customer.last_update_user_id) == (
+            str(customer_manager._session_context.customer_code))
         assert added_customer.customer_id > 0
         # Assert that the returned customer matches the test customer
         assert added_customer.customer_id == test_customer.customer_id
@@ -164,7 +172,8 @@ class TestCustomerManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any Customer in the database
+        # Generate a random UUID that doesn't correspond to
+        # any Customer in the database
         random_code = generate_uuid()
         customer = await customer_manager.get_by_code(random_code)
         assert customer is None
@@ -243,7 +252,6 @@ class TestCustomerManager:
         """
         test_customer = await CustomerFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of Customer
         with pytest.raises(ValueError):
             updated_customer = await customer_manager.update(
                 customer=test_customer,
@@ -260,12 +268,15 @@ class TestCustomerManager:
             #TODO add comment
         """
         customer_data = await CustomerFactory.create_async(session)
-        result = await session.execute(select(Customer).filter(Customer.customer_id == customer_data.customer_id))
+        result = await session.execute(
+            select(Customer).filter(Customer.customer_id == customer_data.customer_id))
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)
         assert fetched_customer.customer_id == customer_data.customer_id
-        deleted_customer = await customer_manager.delete(customer_id=customer_data.customer_id)
-        result = await session.execute(select(Customer).filter(Customer.customer_id == customer_data.customer_id))
+        deleted_customer = await customer_manager.delete(
+            customer_id=customer_data.customer_id)
+        result = await session.execute(
+            select(Customer).filter(Customer.customer_id == customer_data.customer_id))
         fetched_customer = result.scalars().first()
         assert fetched_customer is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestCustomerManager:
         """
         customers = await customer_manager.get_list()
         assert len(customers) == 0
-        customers_data = [await CustomerFactory.create_async(session) for _ in range(5)]
+        customers_data = (
+            [await CustomerFactory.create_async(session) for _ in range(5)])
         customers = await customer_manager.get_list()
         assert len(customers) == 5
         assert all(isinstance(customer, Customer) for customer in customers)
@@ -376,8 +388,10 @@ class TestCustomerManager:
             result = await session.execute(select(Customer).filter(Customer.customer_id == updated_customer.customer_id))
             fetched_customer = result.scalars().first()
             assert isinstance(fetched_customer, Customer)
-            assert str(fetched_customer.insert_user_id) == str(customer_manager._session_context.customer_code)
-            assert str(fetched_customer.last_update_user_id) == str(customer_manager._session_context.customer_code)
+            assert str(fetched_customer.insert_user_id) == (
+                str(customer_manager._session_context.customer_code))
+            assert str(fetched_customer.last_update_user_id) == (
+                str(customer_manager._session_context.customer_code))
             assert fetched_customer.customer_id == updated_customer.customer_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestCustomerManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update customers
-        updates = [{"customer_id": 1, "code": code_updated1}, {"customer_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "customer_id": 1,
+                "code": code_updated1
+            },
+            {
+                "customer_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_customers = await customer_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestCustomerManager:
         logging.info(customers[1].__dict__)
         assert updated_customers[0].code == code_updated1
         assert updated_customers[1].code == code_updated2
-        assert str(updated_customers[0].last_update_user_id) == str(customer_manager._session_context.customer_code)
-        assert str(updated_customers[1].last_update_user_id) == str(customer_manager._session_context.customer_code)
+        assert str(updated_customers[0].last_update_user_id) == (
+            str(customer_manager._session_context.customer_code))
+        assert str(updated_customers[1].last_update_user_id) == (
+            str(customer_manager._session_context.customer_code))
         result = await session.execute(select(Customer).filter(Customer.customer_id == 1))
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)
@@ -477,7 +502,8 @@ class TestCustomerManager:
         result = await customer_manager.delete_bulk(customer_ids)
         assert result is True
         for customer_id in customer_ids:
-            execute_result = await session.execute(select(Customer).filter(Customer.customer_id == customer_id))
+            execute_result = await session.execute(
+                select(Customer).filter(Customer.customer_id == customer_id))
             fetched_customer = execute_result.scalars().first()
             assert fetched_customer is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestCustomerManager:
         """
             #TODO add comment
         """
-        customers_data = [await CustomerFactory.create_async(session) for _ in range(5)]
+        customers_data = (
+            [await CustomerFactory.create_async(session) for _ in range(5)])
         count = await customer_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestCustomerManager:
             #TODO add comment
         """
         # Add customers
-        customers_data = [await CustomerFactory.create_async(session) for _ in range(5)]
+        customers_data = (
+            [await CustomerFactory.create_async(session) for _ in range(5)])
         sorted_customers = await customer_manager.get_sorted_list(sort_by="customer_id")
-        assert [customer.customer_id for customer in sorted_customers] == [(i + 1) for i in range(5)]
+        assert [customer.customer_id for customer in sorted_customers] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestCustomerManager:
             #TODO add comment
         """
         # Add customers
-        customers_data = [await CustomerFactory.create_async(session) for _ in range(5)]
-        sorted_customers = await customer_manager.get_sorted_list(sort_by="customer_id", order="desc")
-        assert [customer.customer_id for customer in sorted_customers] == [(i + 1) for i in reversed(range(5))]
+        customers_data = (
+            [await CustomerFactory.create_async(session) for _ in range(5)])
+        sorted_customers = await customer_manager.get_sorted_list(
+            sort_by="customer_id", order="desc")
+        assert [customer.customer_id for customer in sorted_customers] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,
@@ -715,7 +747,8 @@ class TestCustomerManager:
         assert len(fetched_customers) == 1
         assert isinstance(fetched_customers[0], Customer)
         assert fetched_customers[0].code == customer1.code
-        stmt = select(models.Tac).where(models.Tac.tac_id==customer1.tac_id)
+        stmt = select(models.Tac).where(
+            models.Tac.tac_id == customer1.tac_id)
         result = await session.execute(stmt)
         tac = result.scalars().first()
         assert fetched_customers[0].tac_code_peek == tac.code

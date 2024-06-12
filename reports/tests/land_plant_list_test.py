@@ -6,11 +6,15 @@
 
 from decimal import Decimal
 import os
-import pytest
 import uuid
+import pytest
+import sqlite3
+from sqlalchemy import String
 from typing import List
 from decimal import Decimal
 from datetime import datetime, date
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
@@ -18,32 +22,36 @@ from reports.land_plant_list import ReportManagerLandPlantList
 from reports.report_request_validation_error import ReportRequestValidationError
 from reports.providers.land_plant_list import ReportProviderLandPlantList
 from reports.row_models.land_plant_list import ReportItemLandPlantList
-from services.db_config import db_dialect
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
-from sqlalchemy import String
-import sqlite3
+from services.db_config import DB_DIALECT
+from services.db_config import DB_DIALECT,generate_uuid
 from unittest.mock import patch, AsyncMock
 
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
 
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
+
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 
 
 class TestReportManagerLandPlantList:
+    """
+    #TODO add comment
+    """
 
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
+        """
+        #TODO add comment
+        """
+
         async def mock_generate_list(
             context_code: uuid,
             flavor_code: uuid,
@@ -62,7 +70,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str,
             some_phone_number: str,
             some_email_address: str,
-#endset
+# endset
             page_number: int,
             item_count_per_page: int,
             order_by_column_name: str,
@@ -71,7 +79,11 @@ class TestReportManagerLandPlantList:
             result = list()
             return result
 
-        with patch.object(ReportProviderLandPlantList, 'generate_list', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            ReportProviderLandPlantList,
+            'generate_list',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
             session_context = SessionContext(dict(), session)
@@ -90,7 +102,8 @@ class TestReportManagerLandPlantList:
             is_delete_allowed: bool = False
             some_float_val: float = 0
             some_decimal_val: Decimal = Decimal(0)
-            some_min_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+            some_min_utc_date_time_val: datetime = (
+                TypeConversion.get_default_date_time())
             some_min_date_val: date = TypeConversion.get_default_date()
             some_money_val: Decimal = Decimal(0)
             some_n_var_char_val: str = ""
@@ -99,7 +112,7 @@ class TestReportManagerLandPlantList:
             some_phone_number: str = ""
             some_email_address: str = ""
             flavor_code: UUIDType = generate_uuid()
-#endset
+# endset
 
             page_number = 1
             item_count_per_page = 10
@@ -123,7 +136,7 @@ class TestReportManagerLandPlantList:
                 some_phone_number,
                 some_email_address,
                 flavor_code,
-#endset
+# endset
                 page_number,
                 item_count_per_page,
                 order_by_column_name,
@@ -135,6 +148,10 @@ class TestReportManagerLandPlantList:
 
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
+        """
+        #TODO add comment
+        """
+
         async def mock_generate_list(
             context_code: uuid,
             flavor_code: uuid,
@@ -153,7 +170,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str,
             some_phone_number: str,
             some_email_address: str,
-#endset
+# endset
             page_number: int,
             item_count_per_page: int,
             order_by_column_name: str,
@@ -162,7 +179,11 @@ class TestReportManagerLandPlantList:
             result = list()
             return result
 
-        with patch.object(ReportProviderLandPlantList, 'generate_list', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            ReportProviderLandPlantList,
+            'generate_list',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
             session_context = SessionContext(dict(), session)
@@ -181,7 +202,8 @@ class TestReportManagerLandPlantList:
             is_delete_allowed: bool = False
             some_float_val: float = 0
             some_decimal_val: Decimal = Decimal(0)
-            some_min_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+            some_min_utc_date_time_val: datetime = (
+                TypeConversion.get_default_date_time())
             some_min_date_val: date = TypeConversion.get_default_date()
             some_money_val: Decimal = Decimal(0)
             some_n_var_char_val: str = ""
@@ -190,7 +212,7 @@ class TestReportManagerLandPlantList:
             some_phone_number: str = ""
             some_email_address: str = ""
             flavor_code: UUIDType = generate_uuid()
-#endset
+# endset
 
             page_number = 1
             item_count_per_page = 10
@@ -216,7 +238,7 @@ class TestReportManagerLandPlantList:
                     some_phone_number,
                     some_email_address,
                     flavor_code,
-#endset
+# endset
                     page_number,
                     0,
                     order_by_column_name,
@@ -225,6 +247,10 @@ class TestReportManagerLandPlantList:
 
     @pytest.mark.asyncio
     async def test_generate_invalid_page_number(self, session):
+        """
+        #TODO add comment
+        """
+
         async def mock_generate_list(
             context_code: uuid,
             flavor_code: uuid,
@@ -243,7 +269,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str,
             some_phone_number: str,
             some_email_address: str,
-#endset
+# endset
             page_number: int,
             item_count_per_page: int,
             order_by_column_name: str,
@@ -252,7 +278,11 @@ class TestReportManagerLandPlantList:
             result = list()
             return result
 
-        with patch.object(ReportProviderLandPlantList, 'generate_list', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            ReportProviderLandPlantList,
+            'generate_list',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
             session_context = SessionContext(dict(), session)
@@ -271,7 +301,8 @@ class TestReportManagerLandPlantList:
             is_delete_allowed: bool = False
             some_float_val: float = 0
             some_decimal_val: Decimal = Decimal(0)
-            some_min_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+            some_min_utc_date_time_val: datetime = (
+                TypeConversion.get_default_date_time())
             some_min_date_val: date = TypeConversion.get_default_date()
             some_money_val: Decimal = Decimal(0)
             some_n_var_char_val: str = ""
@@ -280,7 +311,7 @@ class TestReportManagerLandPlantList:
             some_phone_number: str = ""
             some_email_address: str = ""
             flavor_code: UUIDType = generate_uuid()
-#endset
+# endset
             page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
@@ -305,19 +336,22 @@ class TestReportManagerLandPlantList:
                     some_phone_number,
                     some_email_address,
                     flavor_code,
-#endset
+# endset
                     0,
                     item_count_per_page,
                     order_by_column_name,
                     order_by_descending
                 )
 
-
     @pytest.mark.asyncio
     async def test_build_csv(self, session):
+        """
+        #TODO add comment
+        """
+
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerLandPlantList(session_context)
-        test_data = [ReportItemLandPlantList(), ReportItemLandPlantList()]  # Replace with sample data
+        test_data = [ReportItemLandPlantList(), ReportItemLandPlantList()]
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
 
@@ -330,6 +364,10 @@ class TestReportManagerLandPlantList:
 
     @pytest.mark.asyncio
     async def test_read_csv(self, session):
+        """
+        #TODO add comment
+        """
+
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerLandPlantList(session_context)
 
@@ -341,12 +379,18 @@ class TestReportManagerLandPlantList:
 
         result = await test_obj.read_csv(file_name)
         assert isinstance(result, list)
-        assert all(isinstance(item, ReportItemLandPlantList) for item in result)
+        assert all(
+            isinstance(item, ReportItemLandPlantList) for item in result
+        )
 
         os.remove(file_name)
         # Further checks can be added to verify the data in the objects
 
     def test_parse_bool(self, session):
+        """
+        #TODO add comment
+        """
+
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerLandPlantList(session_context)
 

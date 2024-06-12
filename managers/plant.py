@@ -19,7 +19,7 @@ from models.flavor import Flavor  # FlvrForeignKeyID
 from models.land import Land  # LandID
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -59,9 +59,9 @@ class PlantManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -102,10 +102,10 @@ class PlantManager:
         """
         logging.info("PlantManager._build_query")
 #         join_condition = None
-# #endset
+# # endset
 #         join_condition = outerjoin(Plant, Flavor, and_(Plant.flvr_foreign_key_id == Flavor.flavor_id, Plant.flvr_foreign_key_id != 0))
 #         join_condition = outerjoin(join_condition, Land, and_(Plant.land_id == Land.land_id, Plant.land_id != 0))
-# #endset
+# # endset
 #         if join_condition is not None:
 #             query = select(Plant
 #                         , Flavor  # flvr_foreign_key_id
@@ -118,10 +118,10 @@ class PlantManager:
             , Flavor  # flvr_foreign_key_id
             , Land  # land_id
             )
-#endset
+# endset
         query = query.outerjoin(Flavor, and_(Plant.flvr_foreign_key_id == Flavor.flavor_id, Plant.flvr_foreign_key_id != 0))
         query = query.outerjoin(Land, and_(Plant.land_id == Land.land_id, Plant.land_id != 0))
-#endset
+# endset
 
         return query
 
@@ -129,6 +129,7 @@ class PlantManager:
         """
             #TODO add comment
         """
+
         logging.info("PlantManager._run_query")
         plant_query_all = self._build_query()
 
@@ -147,15 +148,15 @@ class PlantManager:
             i = 0
             plant = query_result_row[i]
             i = i + 1
-#endset
+# endset
             flavor = query_result_row[i]  # flvr_foreign_key_id
             i = i + 1
             land = query_result_row[i]  # land_id
             i = i + 1
-#endset
+# endset
             plant.flvr_foreign_key_code_peek = flavor.code if flavor else uuid.UUID(int=0)  # flvr_foreign_key_id
             plant.land_code_peek = land.code if land else uuid.UUID(int=0)  # land_id
-#endset
+# endset
             result.append(plant)
 
         return result
@@ -203,7 +204,8 @@ class PlantManager:
         logging.info("PlantManager.update")
         property_list = Plant.property_list()
         if plant:
-            plant.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            plant.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -289,8 +291,10 @@ class PlantManager:
                 raise ValueError("Plant is already added: " +
                                  str(plant.code) +
                                  " " + str(plant.plant_id))
-            plant.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            plant.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            plant.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            plant.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(plants)
         await self._session_context.session.flush()
         return plants
@@ -302,6 +306,7 @@ class PlantManager:
         """
         #TODO add comment
         """
+
         logging.info("PlantManager.update_bulk start")
         updated_plants = []
         for update in plant_updates:
@@ -312,18 +317,28 @@ class PlantManager:
                     type(plant_id))
             if not plant_id:
                 continue
-            logging.info("PlantManager.update_bulk plant_id:{plant_id}")
+
+            logging.info("PlantManager.update_bulk plant_id:%s", plant_id)
+
             plant = await self.get_by_id(plant_id)
+
             if not plant:
-                raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")
+                raise PlantNotFoundError(
+                    f"Plant with ID {plant_id} not found!")
+
             for key, value in update.items():
                 if key != "plant_id":
                     setattr(plant, key, value)
+
             plant.last_update_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
+
             updated_plants.append(plant)
+
         await self._session_context.session.flush()
+
         logging.info("PlantManager.update_bulk end")
+
         return updated_plants
 
     async def delete_bulk(self, plant_ids: List[int]) -> bool:
@@ -331,19 +346,24 @@ class PlantManager:
         Delete multiple plants by their IDs.
         """
         logging.info("PlantManager.delete_bulk")
+
         for plant_id in plant_ids:
             if not isinstance(plant_id, int):
                 raise TypeError(
                     "The plant_id must be an integer, got %s instead.",
                     type(plant_id))
+            
             plant = await self.get_by_id(plant_id)
             if not plant:
                 raise PlantNotFoundError(
                     "Plant with ID %s not found!",
                     plant_id)
+
             if plant:
                 await self._session_context.session.delete(plant)
+
         await self._session_context.session.flush()
+
         return True
 
     async def count(self) -> int:
@@ -374,8 +394,11 @@ class PlantManager:
         """
         Refresh the state of a given plant instance from the database.
         """
+
         logging.info("PlantManager.refresh")
+
         await self._session_context.session.refresh(plant)
+
         return plant
 
     async def exists(self, plant_id: int) -> bool:
@@ -394,6 +417,7 @@ class PlantManager:
         """
         #TODO add comment
         """
+
         if not plant1:
             raise TypeError("Plant1 required.")
 
@@ -411,15 +435,16 @@ class PlantManager:
         dict2 = self.to_dict(plant2)
 
         return dict1 == dict2
-#endset
+# endset
 
     async def get_by_flvr_foreign_key_id(
         self,
         flvr_foreign_key_id: int
-        ) -> List[Plant]:  # FlvrForeignKeyID
+    ) -> List[Plant]:  # FlvrForeignKeyID
         """
         #TODO add comment
         """
+        
         logging.info("PlantManager.get_by_flvr_foreign_key_id")
         if not isinstance(flvr_foreign_key_id, int):
             raise TypeError(
@@ -446,7 +471,7 @@ class PlantManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-#endset
+# endset
 
     ##GENLOOPPropStart
     ##GENIF[isFK=false,forceDBColumnIndex=true]Start

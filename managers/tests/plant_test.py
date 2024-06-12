@@ -14,28 +14,29 @@ import models
 from models.factory import PlantFactory
 from managers.plant import PlantManager
 from models.serialization_schema.plant import PlantSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
 
-
-
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 
-class TestPlantManager:
 
+class TestPlantManager:
+    """
+    #TODO add comment
+    """
 
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session: AsyncSession):
@@ -104,13 +105,16 @@ class TestPlantManager:
 
         assert isinstance(added_plant, Plant)
 
-        assert str(added_plant.insert_user_id) == str(plant_manager._session_context.customer_code)
-        assert str(added_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+        assert str(added_plant.insert_user_id) == (
+            str(plant_manager._session_context.customer_code))
+        assert str(added_plant.last_update_user_id) == (
+            str(plant_manager._session_context.customer_code))
 
         assert added_plant.plant_id > 0
 
         # Fetch the plant from the database directly
-        result = await session.execute(select(Plant).filter(Plant.plant_id == added_plant.plant_id))
+        result = await session.execute(
+            select(Plant).filter(Plant.plant_id == added_plant.plant_id))
         fetched_plant = result.scalars().first()
 
         # Assert that the fetched plant is not None and matches the added plant
@@ -139,8 +143,10 @@ class TestPlantManager:
 
         assert isinstance(added_plant, Plant)
 
-        assert str(added_plant.insert_user_id) == str(plant_manager._session_context.customer_code)
-        assert str(added_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+        assert str(added_plant.insert_user_id) == (
+            str(plant_manager._session_context.customer_code))
+        assert str(added_plant.last_update_user_id) == (
+            str(plant_manager._session_context.customer_code))
 
         assert added_plant.plant_id > 0
 
@@ -210,7 +216,8 @@ class TestPlantManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any Plant in the database
+        # Generate a random UUID that doesn't correspond to
+        # any Plant in the database
         random_code = generate_uuid()
 
         plant = await plant_manager.get_by_code(random_code)
@@ -318,8 +325,6 @@ class TestPlantManager:
 
         new_code = generate_uuid()
 
-
-        # This should raise an AttributeError since 'color' is not an attribute of Plant
         with pytest.raises(ValueError):
             updated_plant = await plant_manager.update(
                 plant=test_plant,
@@ -339,16 +344,19 @@ class TestPlantManager:
         """
         plant_data = await PlantFactory.create_async(session)
 
-        result = await session.execute(select(Plant).filter(Plant.plant_id == plant_data.plant_id))
+        result = await session.execute(
+            select(Plant).filter(Plant.plant_id == plant_data.plant_id))
         fetched_plant = result.scalars().first()
 
         assert isinstance(fetched_plant, Plant)
 
         assert fetched_plant.plant_id == plant_data.plant_id
 
-        deleted_plant = await plant_manager.delete(plant_id=plant_data.plant_id)
+        deleted_plant = await plant_manager.delete(
+            plant_id=plant_data.plant_id)
 
-        result = await session.execute(select(Plant).filter(Plant.plant_id == plant_data.plant_id))
+        result = await session.execute(
+            select(Plant).filter(Plant.plant_id == plant_data.plant_id))
         fetched_plant = result.scalars().first()
 
         assert fetched_plant is None
@@ -398,7 +406,8 @@ class TestPlantManager:
 
         assert len(plants) == 0
 
-        plants_data = [await PlantFactory.create_async(session) for _ in range(5)]
+        plants_data = (
+            [await PlantFactory.create_async(session) for _ in range(5)])
 
         plants = await plant_manager.get_list()
 
@@ -496,8 +505,10 @@ class TestPlantManager:
 
             assert isinstance(fetched_plant, Plant)
 
-            assert str(fetched_plant.insert_user_id) == str(plant_manager._session_context.customer_code)
-            assert str(fetched_plant.last_update_user_id) == str(plant_manager._session_context.customer_code)
+            assert str(fetched_plant.insert_user_id) == (
+                str(plant_manager._session_context.customer_code))
+            assert str(fetched_plant.last_update_user_id) == (
+                str(plant_manager._session_context.customer_code))
 
             assert fetched_plant.plant_id == updated_plant.plant_id
 
@@ -522,7 +533,16 @@ class TestPlantManager:
         logging.info(code_updated2)
 
         # Update plants
-        updates = [{"plant_id": 1, "code": code_updated1}, {"plant_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "plant_id": 1,
+                "code": code_updated1
+            },
+            {
+                "plant_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_plants = await plant_manager.update_bulk(updates)
 
         logging.info('bulk update results')
@@ -539,10 +559,11 @@ class TestPlantManager:
         assert updated_plants[0].code == code_updated1
         assert updated_plants[1].code == code_updated2
 
-        assert str(updated_plants[0].last_update_user_id) == str(plant_manager._session_context.customer_code)
+        assert str(updated_plants[0].last_update_user_id) == (
+            str(plant_manager._session_context.customer_code))
 
-        assert str(updated_plants[1].last_update_user_id) == str(plant_manager._session_context.customer_code)
-
+        assert str(updated_plants[1].last_update_user_id) == (
+            str(plant_manager._session_context.customer_code))
 
         result = await session.execute(select(Plant).filter(Plant.plant_id == 1))
         fetched_plant = result.scalars().first()
@@ -585,7 +606,6 @@ class TestPlantManager:
             #TODO add comment
         """
 
-
         # Update plants
         updates = [{"plant_id": 1, "code": generate_uuid()}]
 
@@ -621,8 +641,8 @@ class TestPlantManager:
             #TODO add comment
         """
 
-
         plant1 = await PlantFactory.create_async(session=session)
+
         plant2 = await PlantFactory.create_async(session=session)
 
         # Delete plants
@@ -632,7 +652,8 @@ class TestPlantManager:
         assert result is True
 
         for plant_id in plant_ids:
-            execute_result = await session.execute(select(Plant).filter(Plant.plant_id == plant_id))
+            execute_result = await session.execute(
+                select(Plant).filter(Plant.plant_id == plant_id))
             fetched_plant = execute_result.scalars().first()
 
             assert fetched_plant is None
@@ -646,6 +667,7 @@ class TestPlantManager:
         """
             #TODO add comment
         """
+
         plant1 = await PlantFactory.create_async(session=session)
 
         # Delete plants
@@ -700,7 +722,8 @@ class TestPlantManager:
             #TODO add comment
         """
 
-        plants_data = [await PlantFactory.create_async(session) for _ in range(5)]
+        plants_data = (
+            [await PlantFactory.create_async(session) for _ in range(5)])
 
         count = await plant_manager.count()
 
@@ -730,11 +753,13 @@ class TestPlantManager:
             #TODO add comment
         """
         # Add plants
-        plants_data = [await PlantFactory.create_async(session) for _ in range(5)]
+        plants_data = (
+            [await PlantFactory.create_async(session) for _ in range(5)])
 
         sorted_plants = await plant_manager.get_sorted_list(sort_by="plant_id")
 
-        assert [plant.plant_id for plant in sorted_plants] == [(i + 1) for i in range(5)]
+        assert [plant.plant_id for plant in sorted_plants] == (
+            [(i + 1) for i in range(5)])
 
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
@@ -746,11 +771,14 @@ class TestPlantManager:
             #TODO add comment
         """
         # Add plants
-        plants_data = [await PlantFactory.create_async(session) for _ in range(5)]
+        plants_data = (
+            [await PlantFactory.create_async(session) for _ in range(5)])
 
-        sorted_plants = await plant_manager.get_sorted_list(sort_by="plant_id", order="desc")
+        sorted_plants = await plant_manager.get_sorted_list(
+            sort_by="plant_id", order="desc")
 
-        assert [plant.plant_id for plant in sorted_plants] == [(i + 1) for i in reversed(range(5))]
+        assert [plant.plant_id for plant in sorted_plants] == (
+            [(i + 1) for i in reversed(range(5))])
 
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
@@ -835,11 +863,9 @@ class TestPlantManager:
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
-
         # Check if the plant exists using the manager function
 
         assert await plant_manager.exists(plant1.plant_id) is True
-
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_plant(
@@ -921,12 +947,14 @@ class TestPlantManager:
 
         # Fetch the plant using the manager function
 
-        fetched_plants = await plant_manager.get_by_flvr_foreign_key_id(plant1.flvr_foreign_key_id)
+        fetched_plants = await plant_manager.get_by_flvr_foreign_key_id(
+            plant1.flvr_foreign_key_id)
         assert len(fetched_plants) == 1
         assert isinstance(fetched_plants[0], Plant)
         assert fetched_plants[0].code == plant1.code
 
-        stmt = select(models.Flavor).where(models.Flavor.flavor_id==plant1.flvr_foreign_key_id)
+        stmt = select(models.Flavor).where(
+            models.Flavor.flavor_id == plant1.flvr_foreign_key_id)
         result = await session.execute(stmt)
         flavor = result.scalars().first()
 
@@ -943,7 +971,8 @@ class TestPlantManager:
         """
         non_existent_id = 999
 
-        fetched_plants = await plant_manager.get_by_flvr_foreign_key_id(non_existent_id)
+        fetched_plants = (
+            await plant_manager.get_by_flvr_foreign_key_id(non_existent_id))
         assert len(fetched_plants) == 0
 
     @pytest.mark.asyncio
@@ -979,7 +1008,8 @@ class TestPlantManager:
         assert isinstance(fetched_plants[0], Plant)
         assert fetched_plants[0].code == plant1.code
 
-        stmt = select(models.Land).where(models.Land.land_id==plant1.land_id)
+        stmt = select(models.Land).where(
+            models.Land.land_id == plant1.land_id)
         result = await session.execute(stmt)
         land = result.scalars().first()
 

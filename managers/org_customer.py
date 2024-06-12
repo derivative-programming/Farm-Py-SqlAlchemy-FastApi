@@ -17,7 +17,7 @@ from models.customer import Customer  # CustomerID
 from models.organization import Organization  # OrganizationID
 from models.org_customer import OrgCustomer
 from models.serialization_schema.org_customer import OrgCustomerSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class OrgCustomerNotFoundError(Exception):
@@ -46,9 +46,9 @@ class OrgCustomerManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -83,10 +83,10 @@ class OrgCustomerManager:
         """
         logging.info("OrgCustomerManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(OrgCustomer, Customer, and_(OrgCustomer.customer_id == Customer.customer_id, OrgCustomer.customer_id != 0))
 #         join_condition = outerjoin(join_condition, Organization, and_(OrgCustomer.organization_id == Organization.organization_id, OrgCustomer.organization_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(OrgCustomer
 #                         , Customer  # customer_id
@@ -99,10 +99,10 @@ class OrgCustomerManager:
             , Customer  # customer_id
             , Organization  # organization_id
             )
-
+# endset
         query = query.outerjoin(Customer, and_(OrgCustomer.customer_id == Customer.customer_id, OrgCustomer.customer_id != 0))
         query = query.outerjoin(Organization, and_(OrgCustomer.organization_id == Organization.organization_id, OrgCustomer.organization_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[OrgCustomer]:
         """
@@ -121,15 +121,15 @@ class OrgCustomerManager:
             i = 0
             org_customer = query_result_row[i]
             i = i + 1
-
+# endset
             customer = query_result_row[i]  # customer_id
             i = i + 1
             organization = query_result_row[i]  # organization_id
             i = i + 1
-
+# endset
             org_customer.customer_code_peek = customer.code if customer else uuid.UUID(int=0)  # customer_id
             org_customer.organization_code_peek = organization.code if organization else uuid.UUID(int=0)  # organization_id
-
+# endset
             result.append(org_customer)
         return result
     def _first_or_none(self, org_customer_list: List) -> OrgCustomer:
@@ -166,7 +166,8 @@ class OrgCustomerManager:
         logging.info("OrgCustomerManager.update")
         property_list = OrgCustomer.property_list()
         if org_customer:
-            org_customer.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            org_customer.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -239,8 +240,10 @@ class OrgCustomerManager:
                 raise ValueError("OrgCustomer is already added: " +
                                  str(org_customer.code) +
                                  " " + str(org_customer.org_customer_id))
-            org_customer.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            org_customer.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            org_customer.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            org_customer.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(org_customers)
         await self._session_context.session.flush()
         return org_customers
@@ -261,10 +264,11 @@ class OrgCustomerManager:
                     type(org_customer_id))
             if not org_customer_id:
                 continue
-            logging.info("OrgCustomerManager.update_bulk org_customer_id:{org_customer_id}")
+            logging.info("OrgCustomerManager.update_bulk org_customer_id:%s", org_customer_id)
             org_customer = await self.get_by_id(org_customer_id)
             if not org_customer:
-                raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
+                raise OrgCustomerNotFoundError(
+                    f"OrgCustomer with ID {org_customer_id} not found!")
             for key, value in update.items():
                 if key != "org_customer_id":
                     setattr(org_customer, key, value)
@@ -348,11 +352,11 @@ class OrgCustomerManager:
         dict1 = self.to_dict(org_customer1)
         dict2 = self.to_dict(org_customer2)
         return dict1 == dict2
-
+# endset
     async def get_by_customer_id(
         self,
         customer_id: int
-        ) -> List[OrgCustomer]:  # CustomerID
+    ) -> List[OrgCustomer]:  # CustomerID
         """
         #TODO add comment
         """
@@ -375,4 +379,5 @@ class OrgCustomerManager:
         query_filter = OrgCustomer.organization_id == organization_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

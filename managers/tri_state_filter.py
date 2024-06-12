@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.tri_state_filter import TriStateFilter
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class TriStateFilterNotFoundError(Exception):
@@ -30,6 +30,9 @@ class TriStateFilterNotFoundError(Exception):
         super().__init__(self.message)
 
 class TriStateFilterEnum(Enum):
+    """
+    #TODO add comment
+    """
     Unknown = 'Unknown'
     Yes = 'Yes'
     No = 'No'
@@ -50,9 +53,9 @@ class TriStateFilterManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -65,12 +68,12 @@ class TriStateFilterManager:
         logging.info("PlantManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
-
+# endset
         if await self.from_enum(TriStateFilterEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description=""
+            item.description = ""
             item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
@@ -79,7 +82,7 @@ class TriStateFilterManager:
             item = await self._build_lookup_item(pac)
             item.name = "Yes"
             item.lookup_enum_name = "Yes"
-            item.description="Yes"
+            item.description = "Yes"
             item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
@@ -88,16 +91,19 @@ class TriStateFilterManager:
             item = await self._build_lookup_item(pac)
             item.name = "No"
             item.lookup_enum_name = "No"
-            item.description="No"
+            item.description = "No"
             item.display_order = await self.count()
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)
-
+# endset
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val: TriStateFilterEnum) -> TriStateFilter:
+    async def from_enum(
+        self,
+        enum_val: TriStateFilterEnum
+    ) -> TriStateFilter:
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = TriStateFilter.lookup_enum_name==enum_val.value
+        query_filter = TriStateFilter.lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -125,9 +131,9 @@ class TriStateFilterManager:
         """
         logging.info("TriStateFilterManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Pac, and_(TriStateFilter.pac_id == Pac.pac_id, TriStateFilter.pac_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(TriStateFilter
 #                         , Pac  # pac_id
@@ -138,9 +144,9 @@ class TriStateFilterManager:
             TriStateFilter
             , Pac  # pac_id
             )
-
+# endset
         query = query.outerjoin(Pac, and_(TriStateFilter.pac_id == Pac.pac_id, TriStateFilter.pac_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[TriStateFilter]:
         """
@@ -159,12 +165,12 @@ class TriStateFilterManager:
             i = 0
             tri_state_filter = query_result_row[i]
             i = i + 1
-
+# endset
             pac = query_result_row[i]  # pac_id
             i = i + 1
-
+# endset
             tri_state_filter.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
-
+# endset
             result.append(tri_state_filter)
         return result
     def _first_or_none(self, tri_state_filter_list: List) -> TriStateFilter:
@@ -201,7 +207,8 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.update")
         property_list = TriStateFilter.property_list()
         if tri_state_filter:
-            tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -274,8 +281,10 @@ class TriStateFilterManager:
                 raise ValueError("TriStateFilter is already added: " +
                                  str(tri_state_filter.code) +
                                  " " + str(tri_state_filter.tri_state_filter_id))
-            tri_state_filter.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            tri_state_filter.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(tri_state_filters)
         await self._session_context.session.flush()
         return tri_state_filters
@@ -296,10 +305,11 @@ class TriStateFilterManager:
                     type(tri_state_filter_id))
             if not tri_state_filter_id:
                 continue
-            logging.info("TriStateFilterManager.update_bulk tri_state_filter_id:{tri_state_filter_id}")
+            logging.info("TriStateFilterManager.update_bulk tri_state_filter_id:%s", tri_state_filter_id)
             tri_state_filter = await self.get_by_id(tri_state_filter_id)
             if not tri_state_filter:
-                raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
+                raise TriStateFilterNotFoundError(
+                    f"TriStateFilter with ID {tri_state_filter_id} not found!")
             for key, value in update.items():
                 if key != "tri_state_filter_id":
                     setattr(tri_state_filter, key, value)
@@ -383,7 +393,7 @@ class TriStateFilterManager:
         dict1 = self.to_dict(tri_state_filter1)
         dict2 = self.to_dict(tri_state_filter2)
         return dict1 == dict2
-
+# endset
     async def get_by_pac_id(self, pac_id: int) -> List[TriStateFilter]:  # PacID
         logging.info("TriStateFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):
@@ -394,4 +404,5 @@ class TriStateFilterManager:
         query_filter = TriStateFilter.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

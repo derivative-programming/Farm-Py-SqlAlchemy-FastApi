@@ -24,27 +24,31 @@ from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
 from models import Base
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT,generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 
+
 class TestLandAddPlantPostModelResponse:
+    """
+    #TODO add comment
+    """
 
     def test_flow_land_add_plant_result_to_json(self):
         # Create an instance and set attributes
@@ -69,7 +73,7 @@ class TestLandAddPlantPostModelResponse:
         result.output_some_text_val = "text value"
         result.output_some_phone_number = "123-456-7890"
         result.output_some_email_address = "test@example.com"
-#endset
+# endset
 
         # Call to_json method
         json_output = result.to_json()
@@ -98,7 +102,7 @@ class TestLandAddPlantPostModelResponse:
         assert data["output_some_text_val"] == result.output_some_text_val
         assert data["output_some_phone_number"] == result.output_some_phone_number
         assert data["output_some_email_address"] == result.output_some_email_address
-#endset
+# endset
 
     #todo finish test
     @pytest.mark.asyncio
@@ -132,7 +136,7 @@ class TestLandAddPlantPostModelResponse:
         request_some_phone_number: str = "",
         request_some_email_address: str = "",
         request_sample_image_upload_file: str = "",
-#endset
+# endset
 
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
@@ -156,7 +160,7 @@ class TestLandAddPlantPostModelResponse:
                     request_some_phone_number,
                     request_some_email_address,
                     request_sample_image_upload_file,
-#endset
+# endset
                 )
 
 
@@ -193,7 +197,7 @@ class TestLandAddPlantPostModelResponse:
                     request_some_phone_number,
                     request_some_email_address,
                     request_sample_image_upload_file,
-#endset
+# endset
                 )
 
 

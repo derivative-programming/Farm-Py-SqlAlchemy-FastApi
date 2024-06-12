@@ -1,13 +1,17 @@
-# pac_user_tri_state_filter_list_test.py
+# reports/row_models/tests/pac_user_tri_state_filter_list_test.py
 """
     #TODO add comment
 """
+import math
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
 class TestReportItemPacUserTriStateFilterList:
+    """
+    #TODO add comment
+    """
     def test_default_values(self):
         """Test the default values of all fields."""
         report_item = ReportItemPacUserTriStateFilterList()
@@ -18,7 +22,7 @@ class TestReportItemPacUserTriStateFilterList:
         assert report_item.tri_state_filter_lookup_enum_name == ""
         assert report_item.tri_state_filter_name == ""
         assert report_item.tri_state_filter_state_int_value == 0
-
+# endset
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -29,7 +33,7 @@ class TestReportItemPacUserTriStateFilterList:
             "tri_state_filter_lookup_enum_name": "test",
             "tri_state_filter_name": "test",
             "tri_state_filter_state_int_value": 1,
-
+# endset
         }
         # report_item = ReportItemPacUserTriStateFilterList(**data)
         report_item = ReportItemPacUserTriStateFilterList()
@@ -41,4 +45,5 @@ class TestReportItemPacUserTriStateFilterList:
         assert report_item.tri_state_filter_lookup_enum_name == "test"
         assert report_item.tri_state_filter_name == "test"
         assert report_item.tri_state_filter_state_int_value == 1
+# endset
 

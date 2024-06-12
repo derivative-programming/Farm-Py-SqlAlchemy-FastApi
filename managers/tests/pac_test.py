@@ -12,22 +12,25 @@ import models
 from models.factory import PacFactory
 from managers.pac import PacManager
 from models.serialization_schema.pac import PacSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestPacManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestPacManager:
         # Add the pac using the manager's add method
         added_pac = await pac_manager.add(pac=test_pac)
         assert isinstance(added_pac, Pac)
-        assert str(added_pac.insert_user_id) == str(pac_manager._session_context.customer_code)
-        assert str(added_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
+        assert str(added_pac.insert_user_id) == (
+            str(pac_manager._session_context.customer_code))
+        assert str(added_pac.last_update_user_id) == (
+            str(pac_manager._session_context.customer_code))
         assert added_pac.pac_id > 0
         # Fetch the pac from the database directly
-        result = await session.execute(select(Pac).filter(Pac.pac_id == added_pac.pac_id))
+        result = await session.execute(
+            select(Pac).filter(Pac.pac_id == added_pac.pac_id))
         fetched_pac = result.scalars().first()
         # Assert that the fetched pac is not None and matches the added pac
         assert fetched_pac is not None
@@ -109,8 +115,10 @@ class TestPacManager:
         # Add the pac using the manager's add method
         added_pac = await pac_manager.add(pac=test_pac)
         assert isinstance(added_pac, Pac)
-        assert str(added_pac.insert_user_id) == str(pac_manager._session_context.customer_code)
-        assert str(added_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
+        assert str(added_pac.insert_user_id) == (
+            str(pac_manager._session_context.customer_code))
+        assert str(added_pac.last_update_user_id) == (
+            str(pac_manager._session_context.customer_code))
         assert added_pac.pac_id > 0
         # Assert that the returned pac matches the test pac
         assert added_pac.pac_id == test_pac.pac_id
@@ -164,7 +172,8 @@ class TestPacManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any Pac in the database
+        # Generate a random UUID that doesn't correspond to
+        # any Pac in the database
         random_code = generate_uuid()
         pac = await pac_manager.get_by_code(random_code)
         assert pac is None
@@ -243,7 +252,6 @@ class TestPacManager:
         """
         test_pac = await PacFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of Pac
         with pytest.raises(ValueError):
             updated_pac = await pac_manager.update(
                 pac=test_pac,
@@ -260,12 +268,15 @@ class TestPacManager:
             #TODO add comment
         """
         pac_data = await PacFactory.create_async(session)
-        result = await session.execute(select(Pac).filter(Pac.pac_id == pac_data.pac_id))
+        result = await session.execute(
+            select(Pac).filter(Pac.pac_id == pac_data.pac_id))
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
         assert fetched_pac.pac_id == pac_data.pac_id
-        deleted_pac = await pac_manager.delete(pac_id=pac_data.pac_id)
-        result = await session.execute(select(Pac).filter(Pac.pac_id == pac_data.pac_id))
+        deleted_pac = await pac_manager.delete(
+            pac_id=pac_data.pac_id)
+        result = await session.execute(
+            select(Pac).filter(Pac.pac_id == pac_data.pac_id))
         fetched_pac = result.scalars().first()
         assert fetched_pac is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestPacManager:
         """
         pacs = await pac_manager.get_list()
         assert len(pacs) == 0
-        pacs_data = [await PacFactory.create_async(session) for _ in range(5)]
+        pacs_data = (
+            [await PacFactory.create_async(session) for _ in range(5)])
         pacs = await pac_manager.get_list()
         assert len(pacs) == 5
         assert all(isinstance(pac, Pac) for pac in pacs)
@@ -376,8 +388,10 @@ class TestPacManager:
             result = await session.execute(select(Pac).filter(Pac.pac_id == updated_pac.pac_id))
             fetched_pac = result.scalars().first()
             assert isinstance(fetched_pac, Pac)
-            assert str(fetched_pac.insert_user_id) == str(pac_manager._session_context.customer_code)
-            assert str(fetched_pac.last_update_user_id) == str(pac_manager._session_context.customer_code)
+            assert str(fetched_pac.insert_user_id) == (
+                str(pac_manager._session_context.customer_code))
+            assert str(fetched_pac.last_update_user_id) == (
+                str(pac_manager._session_context.customer_code))
             assert fetched_pac.pac_id == updated_pac.pac_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestPacManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update pacs
-        updates = [{"pac_id": 1, "code": code_updated1}, {"pac_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "pac_id": 1,
+                "code": code_updated1
+            },
+            {
+                "pac_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_pacs = await pac_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestPacManager:
         logging.info(pacs[1].__dict__)
         assert updated_pacs[0].code == code_updated1
         assert updated_pacs[1].code == code_updated2
-        assert str(updated_pacs[0].last_update_user_id) == str(pac_manager._session_context.customer_code)
-        assert str(updated_pacs[1].last_update_user_id) == str(pac_manager._session_context.customer_code)
+        assert str(updated_pacs[0].last_update_user_id) == (
+            str(pac_manager._session_context.customer_code))
+        assert str(updated_pacs[1].last_update_user_id) == (
+            str(pac_manager._session_context.customer_code))
         result = await session.execute(select(Pac).filter(Pac.pac_id == 1))
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
@@ -477,7 +502,8 @@ class TestPacManager:
         result = await pac_manager.delete_bulk(pac_ids)
         assert result is True
         for pac_id in pac_ids:
-            execute_result = await session.execute(select(Pac).filter(Pac.pac_id == pac_id))
+            execute_result = await session.execute(
+                select(Pac).filter(Pac.pac_id == pac_id))
             fetched_pac = execute_result.scalars().first()
             assert fetched_pac is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestPacManager:
         """
             #TODO add comment
         """
-        pacs_data = [await PacFactory.create_async(session) for _ in range(5)]
+        pacs_data = (
+            [await PacFactory.create_async(session) for _ in range(5)])
         count = await pac_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestPacManager:
             #TODO add comment
         """
         # Add pacs
-        pacs_data = [await PacFactory.create_async(session) for _ in range(5)]
+        pacs_data = (
+            [await PacFactory.create_async(session) for _ in range(5)])
         sorted_pacs = await pac_manager.get_sorted_list(sort_by="pac_id")
-        assert [pac.pac_id for pac in sorted_pacs] == [(i + 1) for i in range(5)]
+        assert [pac.pac_id for pac in sorted_pacs] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestPacManager:
             #TODO add comment
         """
         # Add pacs
-        pacs_data = [await PacFactory.create_async(session) for _ in range(5)]
-        sorted_pacs = await pac_manager.get_sorted_list(sort_by="pac_id", order="desc")
-        assert [pac.pac_id for pac in sorted_pacs] == [(i + 1) for i in reversed(range(5))]
+        pacs_data = (
+            [await PacFactory.create_async(session) for _ in range(5)])
+        sorted_pacs = await pac_manager.get_sorted_list(
+            sort_by="pac_id", order="desc")
+        assert [pac.pac_id for pac in sorted_pacs] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,

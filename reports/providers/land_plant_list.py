@@ -16,6 +16,10 @@ from helpers import SessionContext
 
 
 class ReportProviderLandPlantList():
+	"""
+	#TODO add comment
+	"""
+
 	_session_context: SessionContext
 	_session: AsyncSession
 	_cached_sql_query: str = None  # Static variable for caching the SQL query
@@ -24,6 +28,7 @@ class ReportProviderLandPlantList():
 		if not session_context.session:
 			raise ValueError("session required")
 		self._session_context = session_context
+		
 	async def generate_list(
 		self,
 		context_code: uuid,
@@ -82,10 +87,10 @@ class ReportProviderLandPlantList():
 		query_dict["like_some_min_date_val"] = some_min_date_val
 		query_dict["like_some_money_val"] = some_money_val
 		query_dict["like_some_n_var_char_val"] = '%' + some_n_var_char_val + '%'
-		query_dict["like_some_var_char_val"] = '%' + some_var_char_val  + '%'
-		query_dict["like_some_text_val"] = '%' + some_text_val  + '%'
-		query_dict["like_some_phone_number"] = '%' + some_phone_number  + '%'
-		query_dict["like_some_email_address"] = '%' + some_email_address  + '%'
+		query_dict["like_some_var_char_val"] = '%' + some_var_char_val + '%'
+		query_dict["like_some_text_val"] = '%' + some_text_val + '%'
+		query_dict["like_some_phone_number"] = '%' + some_phone_number + '%'
+		query_dict["like_some_email_address"] = '%' + some_email_address + '%'
 
 		query_dict["page_number"] = page_number
 		query_dict["item_count_per_page"] = item_count_per_page

@@ -4,35 +4,40 @@
     #TODO add comment
 """
 
-from decimal import Decimal
 import pytest
+import sqlite3
 from decimal import Decimal
 from datetime import datetime, date
+from sqlalchemy import String
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
-from sqlalchemy import String
+from services.db_config import DB_DIALECT, generate_uuid
 from reports.providers.land_plant_list import ReportProviderLandPlantList
 import current_runtime
-import sqlite3
 
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
 
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
+
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
+
+
 class TestReportProviderLandPlantList:
+    """
+    #TODO add comment
+    """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         session_context = SessionContext(dict(), session)
@@ -48,7 +53,8 @@ class TestReportProviderLandPlantList:
         is_delete_allowed: bool = False
         some_float_val: float = 0
         some_decimal_val: Decimal = Decimal(0)
-        some_min_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+        some_min_utc_date_time_val: datetime = (
+            TypeConversion.get_default_date_time())
         some_min_date_val: date = TypeConversion.get_default_date()
         some_money_val: Decimal = Decimal(0)
         some_n_var_char_val: str = ""
@@ -57,7 +63,7 @@ class TestReportProviderLandPlantList:
         some_phone_number: str = ""
         some_email_address: str = ""
         flavor_code: UUIDType = generate_uuid()
-#endset
+# endset
 
         page_number = 1
         item_count_per_page = 10
@@ -81,7 +87,7 @@ class TestReportProviderLandPlantList:
             some_phone_number,
             some_email_address,
             flavor_code,
-#endset
+# endset
             page_number,
             item_count_per_page,
             order_by_column_name,
@@ -91,7 +97,8 @@ class TestReportProviderLandPlantList:
         assert isinstance(results, list), "Results should be a list"
 
         for result in results:
-            assert isinstance(result, dict), "Each result should be a dictionary"
+            assert isinstance(result, dict), (
+                "Each result should be a dictionary")
             expected_keys = [
                 "plant_code",
                 "some_int_val",
@@ -116,7 +123,7 @@ class TestReportProviderLandPlantList:
                 "update_link_plant_code",
                 "delete_async_button_link_plant_code",
                 "details_link_plant_code"
-#endset
+# endset
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result"

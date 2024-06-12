@@ -16,7 +16,7 @@ from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.tac import Tac
 from models.serialization_schema.tac import TacSchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class TacNotFoundError(Exception):
@@ -30,6 +30,9 @@ class TacNotFoundError(Exception):
         super().__init__(self.message)
 
 class TacEnum(Enum):
+    """
+    #TODO add comment
+    """
     Unknown = 'Unknown'
     Primary = 'Primary'
 
@@ -49,9 +52,9 @@ class TacManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -64,12 +67,12 @@ class TacManager:
         logging.info("PlantManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
-
+# endset
         if await self.from_enum(TacEnum.Unknown) is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
-            item.description=""
+            item.description = ""
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
@@ -78,16 +81,19 @@ class TacManager:
             item = await self._build_lookup_item(pac)
             item.name = "Primary"
             item.lookup_enum_name = "Primary"
-            item.description="Primary"
+            item.description = "Primary"
             item.display_order = await self.count()
             item.is_active = True
             # item. = 1
             await self.add(item)
-
+# endset
         logging.info("PlantMaanger.Initialize end")
-    async def from_enum(self, enum_val: TacEnum) -> Tac:
+    async def from_enum(
+        self,
+        enum_val: TacEnum
+    ) -> Tac:
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Tac.lookup_enum_name==enum_val.value
+        query_filter = Tac.lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -115,9 +121,9 @@ class TacManager:
         """
         logging.info("TacManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Pac, and_(Tac.pac_id == Pac.pac_id, Tac.pac_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(Tac
 #                         , Pac  # pac_id
@@ -128,9 +134,9 @@ class TacManager:
             Tac
             , Pac  # pac_id
             )
-
+# endset
         query = query.outerjoin(Pac, and_(Tac.pac_id == Pac.pac_id, Tac.pac_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[Tac]:
         """
@@ -149,12 +155,12 @@ class TacManager:
             i = 0
             tac = query_result_row[i]
             i = i + 1
-
+# endset
             pac = query_result_row[i]  # pac_id
             i = i + 1
-
+# endset
             tac.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
-
+# endset
             result.append(tac)
         return result
     def _first_or_none(self, tac_list: List) -> Tac:
@@ -191,7 +197,8 @@ class TacManager:
         logging.info("TacManager.update")
         property_list = Tac.property_list()
         if tac:
-            tac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            tac.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -264,8 +271,10 @@ class TacManager:
                 raise ValueError("Tac is already added: " +
                                  str(tac.code) +
                                  " " + str(tac.tac_id))
-            tac.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            tac.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            tac.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            tac.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(tacs)
         await self._session_context.session.flush()
         return tacs
@@ -286,10 +295,11 @@ class TacManager:
                     type(tac_id))
             if not tac_id:
                 continue
-            logging.info("TacManager.update_bulk tac_id:{tac_id}")
+            logging.info("TacManager.update_bulk tac_id:%s", tac_id)
             tac = await self.get_by_id(tac_id)
             if not tac:
-                raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
+                raise TacNotFoundError(
+                    f"Tac with ID {tac_id} not found!")
             for key, value in update.items():
                 if key != "tac_id":
                     setattr(tac, key, value)
@@ -373,7 +383,7 @@ class TacManager:
         dict1 = self.to_dict(tac1)
         dict2 = self.to_dict(tac2)
         return dict1 == dict2
-
+# endset
     async def get_by_pac_id(self, pac_id: int) -> List[Tac]:  # PacID
         logging.info("TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):
@@ -384,4 +394,5 @@ class TacManager:
         query_filter = Tac.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

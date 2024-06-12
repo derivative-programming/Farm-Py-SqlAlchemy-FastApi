@@ -7,43 +7,54 @@ from decimal import Decimal
 import pytest
 import pytest_asyncio
 import time
+import math
 from typing import AsyncGenerator
-from decimal import Decimal
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import String
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.future import select
 from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base, Customer
 from models.factory import CustomerFactory
-from services.db_config import db_dialect
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
+from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestCustomerFactoryAsync:
+    """
+    #TODO add comment
+    """
     @pytest.fixture(scope="function")
     def event_loop(self) -> asyncio.AbstractEventLoop:
+        """
+        #TODO add comment
+        """
         loop = asyncio.get_event_loop_policy().new_event_loop()
         yield loop
         loop.close()
     @pytest.fixture(scope="function")
     def engine(self):
+        """
+        #TODO add comment
+        """
         engine = create_async_engine(DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
     @pytest_asyncio.fixture(scope="function")
-    async def session(self,engine) -> AsyncGenerator[AsyncSession, None]:
+    async def session(self, engine) -> AsyncGenerator[AsyncSession, None]:
+        """
+        #TODO add comment
+        """
         @event.listens_for(engine.sync_engine, "connect")
         def set_sqlite_pragma(dbapi_connection, connection_record):
             cursor = dbapi_connection.cursor()
@@ -72,27 +83,42 @@ class TestCustomerFactoryAsync:
                 await session.rollback()
     @pytest.mark.asyncio
     async def test_customer_creation(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         assert customer.customer_id is not None
     @pytest.mark.asyncio
     async def test_code_default(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.code, str)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
+        """
+        #TODO add comment
+        """
         customer: Customer = await CustomerFactory.build_async(session=session)
         assert customer.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
+        """
+        #TODO add comment
+        """
         customer: Customer = await CustomerFactory.create_async(session=session)
         assert customer.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         initial_code = customer.last_change_code
         customer.code = generate_uuid()
@@ -100,11 +126,17 @@ class TestCustomerFactoryAsync:
         assert customer.last_change_code != initial_code
     @pytest.mark.asyncio
     async def test_date_inserted_on_build(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.build_async(session=session)
         assert customer.insert_utc_date_time is not None
         assert isinstance(customer.insert_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_inserted_on_initial_save(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.build_async(session=session)
         assert customer.insert_utc_date_time is not None
         assert isinstance(customer.insert_utc_date_time, datetime)
@@ -114,6 +146,9 @@ class TestCustomerFactoryAsync:
         assert customer.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         assert customer.insert_utc_date_time is not None
         assert isinstance(customer.insert_utc_date_time, datetime)
@@ -124,11 +159,17 @@ class TestCustomerFactoryAsync:
         assert customer.insert_utc_date_time == initial_time
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.build_async(session=session)
         assert customer.last_update_utc_date_time is not None
         assert isinstance(customer.last_update_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_updated_on_initial_save(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.build_async(session=session)
         assert customer.last_update_utc_date_time is not None
         assert isinstance(customer.last_update_utc_date_time, datetime)
@@ -138,6 +179,9 @@ class TestCustomerFactoryAsync:
         assert customer.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         assert customer.last_update_utc_date_time is not None
         assert isinstance(customer.last_update_utc_date_time, datetime)
@@ -148,53 +192,63 @@ class TestCustomerFactoryAsync:
         assert customer.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         await session.delete(customer)
         await session.commit()
         # Construct the select statement
-        stmt = select(Customer).where(Customer.customer_id==customer.customer_id)
+        stmt = select(Customer).where(Customer.customer_id == customer.customer_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
         deleted_customer = result.scalars().first()
-        # deleted_customer = await session.query(Customer).filter_by(customer_id=customer.customer_id).first()
+        # deleted_customer = await session.query(Customer).filter_by(
+        # customer_id=customer.customer_id).first()
         assert deleted_customer is None
     @pytest.mark.asyncio
     async def test_data_types(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         assert isinstance(customer.customer_id, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.code, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer.code, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.code, str)
         assert isinstance(customer.last_change_code, int)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.insert_user_id, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer.insert_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.insert_user_id, str)
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.last_update_user_id, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer.last_update_user_id, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.last_update_user_id, str)
         assert isinstance(customer.active_organization_id, int)
-        assert customer.email == "" or isinstance(customer.email, str)
+        assert customer.email == "" or isinstance(
+            customer.email, str)
         assert isinstance(customer.email_confirmed_utc_date_time, datetime)
         assert customer.first_name == "" or isinstance(customer.first_name, str)
         assert isinstance(customer.forgot_password_key_expiration_utc_date_time, datetime)
         assert customer.forgot_password_key_value == "" or isinstance(customer.forgot_password_key_value, str)
         # fs_user_code_value
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.fs_user_code_value, UUID)
-        elif db_dialect == 'mssql':
-            assert isinstance(customer.fs_user_code_value, UNIQUEIDENTIFIER)
+        elif DB_DIALECT == 'mssql':
+            assert isinstance(
+                customer.fs_user_code_value, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer.fs_user_code_value, str)
+            assert isinstance(
+                customer.fs_user_code_value, str)
         assert isinstance(customer.is_active, bool)
         assert isinstance(customer.is_email_allowed, bool)
         assert isinstance(customer.is_email_confirmed, bool)
@@ -205,14 +259,15 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.last_login_utc_date_time, datetime)
         assert customer.last_name == "" or isinstance(customer.last_name, str)
         assert customer.password == "" or isinstance(customer.password, str)
-        assert customer.phone == "" or isinstance(customer.phone, str)
+        assert customer.phone == "" or isinstance(
+            customer.phone, str)
         assert customer.province == "" or isinstance(customer.province, str)
         assert isinstance(customer.registration_utc_date_time, datetime)
         assert isinstance(customer.tac_id, int)
         assert isinstance(customer.utc_offset_in_minutes, int)
         assert customer.zip == "" or isinstance(customer.zip, str)
-        # Check for the peek values, assuming they are UUIDs based on your model
-
+        # Check for the peek values
+# endset
         # activeOrganizationID,
         # email,
         # emailConfirmedUTCDateTime
@@ -234,28 +289,35 @@ class TestCustomerFactoryAsync:
         # province,
         # registrationUTCDateTime
         # tacID
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.tac_code_peek, UUID)
-        elif db_dialect == 'mssql':
-            assert isinstance(customer.tac_code_peek, UNIQUEIDENTIFIER)
+        elif DB_DIALECT == 'mssql':
+            assert isinstance(customer.tac_code_peek,
+                              UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.tac_code_peek, str)
         # uTCOffsetInMinutes,
         # zip,
-
+# endset
         assert isinstance(customer.insert_utc_date_time, datetime)
         assert isinstance(customer.last_update_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
+        """
+        #TODO add comment
+        """
         customer_1 = await CustomerFactory.create_async(session=session)
         customer_2 = await CustomerFactory.create_async(session=session)
         customer_2.code = customer_1.code
         session.add_all([customer_1, customer_2])
-        with pytest.raises(Exception):  # adjust for the specific DB exception you'd expect
+        with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
     @pytest.mark.asyncio
     async def test_fields_default(self, session):
+        """
+        #TODO add comment
+        """
         customer = Customer()
         assert customer.code is not None
         assert customer.last_change_code is not None
@@ -263,7 +325,7 @@ class TestCustomerFactoryAsync:
         assert customer.last_update_user_id is None
         assert customer.insert_utc_date_time is not None
         assert customer.last_update_utc_date_time is not None
-
+# endset
         # activeOrganizationID,
         # email,
         # emailConfirmedUTCDateTime
@@ -285,15 +347,15 @@ class TestCustomerFactoryAsync:
         # province,
         # registrationUTCDateTime
         # TacID
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.tac_code_peek, UUID)
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             assert isinstance(customer.tac_code_peek, UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.tac_code_peek, str)
         # uTCOffsetInMinutes,
         # zip,
-
+# endset
         assert customer.active_organization_id == 0
         assert customer.email == ""
         assert customer.email_confirmed_utc_date_time == datetime(1753, 1, 1)
@@ -301,10 +363,11 @@ class TestCustomerFactoryAsync:
         assert customer.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
         assert customer.forgot_password_key_value == ""
         # fs_user_code_value
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             assert isinstance(customer.fs_user_code_value, UUID)
-        elif db_dialect == 'mssql':
-            assert isinstance(customer.fs_user_code_value, UNIQUEIDENTIFIER)
+        elif DB_DIALECT == 'mssql':
+            assert isinstance(customer.fs_user_code_value,
+                              UNIQUEIDENTIFIER)
         else:  # This will cover SQLite, MySQL, and other databases
             assert isinstance(customer.fs_user_code_value, str)
         assert customer.is_active is False
@@ -323,25 +386,30 @@ class TestCustomerFactoryAsync:
         assert customer.tac_id == 0
         assert customer.utc_offset_in_minutes == 0
         assert customer.zip == ""
-
+# endset
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         original_last_change_code = customer.last_change_code
-        stmt = select(Customer).where(Customer.customer_id==customer.customer_id)
+        stmt = select(Customer).where(Customer.customer_id == customer.customer_id)
         result = await session.execute(stmt)
         customer_1 = result.scalars().first()
-        # customer_1 = await session.query(Customer).filter_by(customer_id=customer.customer_id).first()
+        # customer_1 = await session.query(Customer).filter_by(
+        # customer_id=customer.customer_id).first()
         customer_1.code = generate_uuid()
         await session.commit()
-        stmt = select(Customer).where(Customer.customer_id==customer.customer_id)
+        stmt = select(Customer).where(Customer.customer_id == customer.customer_id)
         result = await session.execute(stmt)
         customer_2 = result.scalars().first()
-        # customer_2 = await session.query(Customer).filter_by(customer_id=customer.customer_id).first()
+        # customer_2 = await session.query(Customer).filter_by(
+        # customer_id=customer.customer_id).first()
         customer_2.code = generate_uuid()
         await session.commit()
         assert customer_2.last_change_code != original_last_change_code
-
+# endset
     # activeOrganizationID,
     # email,
     # emailConfirmedUTCDateTime
@@ -365,11 +433,14 @@ class TestCustomerFactoryAsync:
     # TacID
     @pytest.mark.asyncio
     async def test_invalid_tac_id(self, session):
+        """
+        #TODO add comment
+        """
         customer = await CustomerFactory.create_async(session=session)
         customer.tac_id = 99999
-        with pytest.raises(IntegrityError):  # adjust for the specific DB exception you'd expect
+        with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
     # uTCOffsetInMinutes,
     # zip,
-
+# endset

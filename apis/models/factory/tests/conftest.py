@@ -30,6 +30,7 @@ def engine():
     yield engine
     engine.sync_engine.dispose()
 
+
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
 

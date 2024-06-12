@@ -17,7 +17,7 @@ from models.organization import Organization  # OrganizationID
 from models.org_customer import OrgCustomer  # OrgCustomerID
 from models.org_api_key import OrgApiKey
 from models.serialization_schema.org_api_key import OrgApiKeySchema
-from services.db_config import generate_uuid, db_dialect
+from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class OrgApiKeyNotFoundError(Exception):
@@ -46,9 +46,9 @@ class OrgApiKeyManager:
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if db_dialect == 'postgresql':
+        if DB_DIALECT == 'postgresql':
             return value
-        elif db_dialect == 'mssql':
+        elif DB_DIALECT == 'mssql':
             return value
         else:  # This will cover SQLite, MySQL, and other databases
             return str(value)
@@ -83,10 +83,10 @@ class OrgApiKeyManager:
         """
         logging.info("OrgApiKeyManager._build_query")
 #         join_condition = None
-#
+# # endset
 #         join_condition = outerjoin(join_condition, Organization, and_(OrgApiKey.organization_id == Organization.organization_id, OrgApiKey.organization_id != 0))
 #         join_condition = outerjoin(OrgApiKey, OrgCustomer, and_(OrgApiKey.org_customer_id == OrgCustomer.org_customer_id, OrgApiKey.org_customer_id != 0))
-#
+# # endset
 #         if join_condition is not None:
 #             query = select(OrgApiKey
 #                         , Organization  # organization_id
@@ -99,10 +99,10 @@ class OrgApiKeyManager:
             , Organization  # organization_id
             , OrgCustomer  # org_customer_id
             )
-
+# endset
         query = query.outerjoin(Organization, and_(OrgApiKey.organization_id == Organization.organization_id, OrgApiKey.organization_id != 0))
         query = query.outerjoin(OrgCustomer, and_(OrgApiKey.org_customer_id == OrgCustomer.org_customer_id, OrgApiKey.org_customer_id != 0))
-
+# endset
         return query
     async def _run_query(self, query_filter) -> List[OrgApiKey]:
         """
@@ -121,15 +121,15 @@ class OrgApiKeyManager:
             i = 0
             org_api_key = query_result_row[i]
             i = i + 1
-
+# endset
             organization = query_result_row[i]  # organization_id
             i = i + 1
             org_customer = query_result_row[i]  # org_customer_id
             i = i + 1
-
+# endset
             org_api_key.organization_code_peek = organization.code if organization else uuid.UUID(int=0)  # organization_id
             org_api_key.org_customer_code_peek = org_customer.code if org_customer else uuid.UUID(int=0)  # org_customer_id
-
+# endset
             result.append(org_api_key)
         return result
     def _first_or_none(self, org_api_key_list: List) -> OrgApiKey:
@@ -166,7 +166,8 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.update")
         property_list = OrgApiKey.property_list()
         if org_api_key:
-            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -239,8 +240,10 @@ class OrgApiKeyManager:
                 raise ValueError("OrgApiKey is already added: " +
                                  str(org_api_key.code) +
                                  " " + str(org_api_key.org_api_key_id))
-            org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
-            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(self._session_context.customer_code)
+            org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
+            org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(
+                self._session_context.customer_code)
         self._session_context.session.add_all(org_api_keys)
         await self._session_context.session.flush()
         return org_api_keys
@@ -261,10 +264,11 @@ class OrgApiKeyManager:
                     type(org_api_key_id))
             if not org_api_key_id:
                 continue
-            logging.info("OrgApiKeyManager.update_bulk org_api_key_id:{org_api_key_id}")
+            logging.info("OrgApiKeyManager.update_bulk org_api_key_id:%s", org_api_key_id)
             org_api_key = await self.get_by_id(org_api_key_id)
             if not org_api_key:
-                raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
+                raise OrgApiKeyNotFoundError(
+                    f"OrgApiKey with ID {org_api_key_id} not found!")
             for key, value in update.items():
                 if key != "org_api_key_id":
                     setattr(org_api_key, key, value)
@@ -348,7 +352,7 @@ class OrgApiKeyManager:
         dict1 = self.to_dict(org_api_key1)
         dict2 = self.to_dict(org_api_key2)
         return dict1 == dict2
-
+# endset
     async def get_by_organization_id(self, organization_id: int) -> List[OrgApiKey]:  # OrganizationID
         logging.info("OrgApiKeyManager.get_by_organization_id")
         if not isinstance(organization_id, int):
@@ -362,7 +366,7 @@ class OrgApiKeyManager:
     async def get_by_org_customer_id(
         self,
         org_customer_id: int
-        ) -> List[OrgApiKey]:  # OrgCustomerID
+    ) -> List[OrgApiKey]:  # OrgCustomerID
         """
         #TODO add comment
         """
@@ -375,4 +379,5 @@ class OrgApiKeyManager:
         query_filter = OrgApiKey.org_customer_id == org_customer_id
         query_results = await self._run_query(query_filter)
         return query_results
+# endset
 

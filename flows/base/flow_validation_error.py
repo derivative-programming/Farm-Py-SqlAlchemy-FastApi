@@ -9,6 +9,9 @@ from models import Tac
 
 
 class FlowValidationError(Exception):
+    """
+    #TODO add comment
+    """
     error_dict: dict
 
     def __init__(self, field_name: str = None, message: str = None, error_dict: dict = None, **kwargs):

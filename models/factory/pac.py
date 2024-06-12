@@ -11,14 +11,14 @@ from models import Pac
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
@@ -38,13 +38,16 @@ class PacFactory(factory.Factory):
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
 
+
     @classmethod
     def _build(cls, model_class, session = None, *args, **kwargs) -> Pac:
         if session is None:
                 obj2 = model_class(*args, **kwargs)
                 return obj2
 
+
         obj = model_class(*args, **kwargs)
+
 
         # session.add(obj)
         # session.commit()
@@ -52,7 +55,9 @@ class PacFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session = None, *args, **kwargs) -> Pac:
 
+
         obj = model_class(*args, **kwargs)
+
 
         session.add(obj)
         session.commit()
@@ -60,7 +65,9 @@ class PacFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Pac:
 
+
         obj = PacFactory.build(session = None, *args, **kwargs)
+
 
         session.add(obj)
         await session.flush()
@@ -68,7 +75,9 @@ class PacFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Pac:
 
+
         obj = PacFactory.build(session = None, *args, **kwargs)
+
 
         # session.add(obj)
         # await session.flush()

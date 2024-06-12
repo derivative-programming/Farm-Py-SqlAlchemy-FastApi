@@ -12,22 +12,25 @@ import models
 from models.factory import TacFactory
 from managers.tac import TacManager
 from models.serialization_schema.tac import TacSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestTacManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestTacManager:
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
         assert isinstance(added_tac, Tac)
-        assert str(added_tac.insert_user_id) == str(tac_manager._session_context.customer_code)
-        assert str(added_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
+        assert str(added_tac.insert_user_id) == (
+            str(tac_manager._session_context.customer_code))
+        assert str(added_tac.last_update_user_id) == (
+            str(tac_manager._session_context.customer_code))
         assert added_tac.tac_id > 0
         # Fetch the tac from the database directly
-        result = await session.execute(select(Tac).filter(Tac.tac_id == added_tac.tac_id))
+        result = await session.execute(
+            select(Tac).filter(Tac.tac_id == added_tac.tac_id))
         fetched_tac = result.scalars().first()
         # Assert that the fetched tac is not None and matches the added tac
         assert fetched_tac is not None
@@ -109,8 +115,10 @@ class TestTacManager:
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
         assert isinstance(added_tac, Tac)
-        assert str(added_tac.insert_user_id) == str(tac_manager._session_context.customer_code)
-        assert str(added_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
+        assert str(added_tac.insert_user_id) == (
+            str(tac_manager._session_context.customer_code))
+        assert str(added_tac.last_update_user_id) == (
+            str(tac_manager._session_context.customer_code))
         assert added_tac.tac_id > 0
         # Assert that the returned tac matches the test tac
         assert added_tac.tac_id == test_tac.tac_id
@@ -164,7 +172,8 @@ class TestTacManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any Tac in the database
+        # Generate a random UUID that doesn't correspond to
+        # any Tac in the database
         random_code = generate_uuid()
         tac = await tac_manager.get_by_code(random_code)
         assert tac is None
@@ -243,7 +252,6 @@ class TestTacManager:
         """
         test_tac = await TacFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of Tac
         with pytest.raises(ValueError):
             updated_tac = await tac_manager.update(
                 tac=test_tac,
@@ -260,12 +268,15 @@ class TestTacManager:
             #TODO add comment
         """
         tac_data = await TacFactory.create_async(session)
-        result = await session.execute(select(Tac).filter(Tac.tac_id == tac_data.tac_id))
+        result = await session.execute(
+            select(Tac).filter(Tac.tac_id == tac_data.tac_id))
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
         assert fetched_tac.tac_id == tac_data.tac_id
-        deleted_tac = await tac_manager.delete(tac_id=tac_data.tac_id)
-        result = await session.execute(select(Tac).filter(Tac.tac_id == tac_data.tac_id))
+        deleted_tac = await tac_manager.delete(
+            tac_id=tac_data.tac_id)
+        result = await session.execute(
+            select(Tac).filter(Tac.tac_id == tac_data.tac_id))
         fetched_tac = result.scalars().first()
         assert fetched_tac is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestTacManager:
         """
         tacs = await tac_manager.get_list()
         assert len(tacs) == 0
-        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
+        tacs_data = (
+            [await TacFactory.create_async(session) for _ in range(5)])
         tacs = await tac_manager.get_list()
         assert len(tacs) == 5
         assert all(isinstance(tac, Tac) for tac in tacs)
@@ -376,8 +388,10 @@ class TestTacManager:
             result = await session.execute(select(Tac).filter(Tac.tac_id == updated_tac.tac_id))
             fetched_tac = result.scalars().first()
             assert isinstance(fetched_tac, Tac)
-            assert str(fetched_tac.insert_user_id) == str(tac_manager._session_context.customer_code)
-            assert str(fetched_tac.last_update_user_id) == str(tac_manager._session_context.customer_code)
+            assert str(fetched_tac.insert_user_id) == (
+                str(tac_manager._session_context.customer_code))
+            assert str(fetched_tac.last_update_user_id) == (
+                str(tac_manager._session_context.customer_code))
             assert fetched_tac.tac_id == updated_tac.tac_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestTacManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update tacs
-        updates = [{"tac_id": 1, "code": code_updated1}, {"tac_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "tac_id": 1,
+                "code": code_updated1
+            },
+            {
+                "tac_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_tacs = await tac_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestTacManager:
         logging.info(tacs[1].__dict__)
         assert updated_tacs[0].code == code_updated1
         assert updated_tacs[1].code == code_updated2
-        assert str(updated_tacs[0].last_update_user_id) == str(tac_manager._session_context.customer_code)
-        assert str(updated_tacs[1].last_update_user_id) == str(tac_manager._session_context.customer_code)
+        assert str(updated_tacs[0].last_update_user_id) == (
+            str(tac_manager._session_context.customer_code))
+        assert str(updated_tacs[1].last_update_user_id) == (
+            str(tac_manager._session_context.customer_code))
         result = await session.execute(select(Tac).filter(Tac.tac_id == 1))
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
@@ -477,7 +502,8 @@ class TestTacManager:
         result = await tac_manager.delete_bulk(tac_ids)
         assert result is True
         for tac_id in tac_ids:
-            execute_result = await session.execute(select(Tac).filter(Tac.tac_id == tac_id))
+            execute_result = await session.execute(
+                select(Tac).filter(Tac.tac_id == tac_id))
             fetched_tac = execute_result.scalars().first()
             assert fetched_tac is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestTacManager:
         """
             #TODO add comment
         """
-        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
+        tacs_data = (
+            [await TacFactory.create_async(session) for _ in range(5)])
         count = await tac_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestTacManager:
             #TODO add comment
         """
         # Add tacs
-        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
+        tacs_data = (
+            [await TacFactory.create_async(session) for _ in range(5)])
         sorted_tacs = await tac_manager.get_sorted_list(sort_by="tac_id")
-        assert [tac.tac_id for tac in sorted_tacs] == [(i + 1) for i in range(5)]
+        assert [tac.tac_id for tac in sorted_tacs] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestTacManager:
             #TODO add comment
         """
         # Add tacs
-        tacs_data = [await TacFactory.create_async(session) for _ in range(5)]
-        sorted_tacs = await tac_manager.get_sorted_list(sort_by="tac_id", order="desc")
-        assert [tac.tac_id for tac in sorted_tacs] == [(i + 1) for i in reversed(range(5))]
+        tacs_data = (
+            [await TacFactory.create_async(session) for _ in range(5)])
+        sorted_tacs = await tac_manager.get_sorted_list(
+            sort_by="tac_id", order="desc")
+        assert [tac.tac_id for tac in sorted_tacs] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,
@@ -700,7 +732,8 @@ class TestTacManager:
         assert len(fetched_tacs) == 1
         assert isinstance(fetched_tacs[0], Tac)
         assert fetched_tacs[0].code == tac1.code
-        stmt = select(models.Pac).where(models.Pac.pac_id==tac1.pac_id)
+        stmt = select(models.Pac).where(
+            models.Pac.pac_id == tac1.pac_id)
         result = await session.execute(stmt)
         pac = result.scalars().first()
         assert fetched_tacs[0].pac_code_peek == pac.code

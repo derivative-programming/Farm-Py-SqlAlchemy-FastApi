@@ -9,22 +9,22 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import Plant
-from .flavor import FlavorFactory  # flvr_foreign_key_id
-from .land import LandFactory  # land_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
 from sqlalchemy import String
+from models import Plant
+from services.db_config import DB_DIALECT, generate_uuid
 from services.logging_config import get_logger
+from .flavor import FlavorFactory  # flvr_foreign_key_id
+from .land import LandFactory  # land_id
 
 logger = get_logger(__name__)
 
 
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)

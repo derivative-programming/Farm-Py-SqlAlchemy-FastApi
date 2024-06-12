@@ -1,13 +1,17 @@
-# plant_user_details_test.py
+# reports/row_models/tests/plant_user_details_test.py
 """
     #TODO add comment
 """
+import math
 from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 class TestReportItemPlantUserDetails:
+    """
+    #TODO add comment
+    """
     def test_default_values(self):
         """Test the default values of all fields."""
         report_item = ReportItemPlantUserDetails()
@@ -20,21 +24,23 @@ class TestReportItemPlantUserDetails:
         assert report_item.some_date_val == TypeConversion.get_default_date()
         assert report_item.some_decimal_val == Decimal(0)
         assert report_item.some_email_address == ""
-        assert report_item.some_float_val == 0.0
+        assert math.isclose(report_item.some_float_val, 0.0, rel_tol=1e-9), (
+            "Values must be approximately equal")
         assert report_item.some_int_val == 0
         assert report_item.some_money_val == Decimal(0)
         assert report_item.some_n_var_char_val == ""
         assert report_item.some_phone_number == ""
         assert report_item.some_text_val == ""
         assert report_item.some_uniqueidentifier_val.int == 0
-        assert report_item.some_utc_date_time_val == TypeConversion.get_default_date_time()
+        assert report_item.some_utc_date_time_val == (
+            TypeConversion.get_default_date_time())
         assert report_item.some_var_char_val == ""
         assert report_item.phone_num_conditional_on_is_editable == ""
         assert report_item.n_var_char_as_url == ""
         assert report_item.update_button_text_link_plant_code.int == 0
         assert report_item.random_property_updates_link_plant_code.int == 0
         assert report_item.back_to_dashboard_link_tac_code.int == 0
-
+# endset
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -54,14 +60,15 @@ class TestReportItemPlantUserDetails:
             "some_phone_number": "1234567890",
             "some_text_val": "test",
             "some_uniqueidentifier_val": str(UUID(int=2)),
-            "some_utc_date_time_val": datetime(2023, 1, 1, 0, 0, 0),  # "2023-01-01T00:00:00",
+            "some_utc_date_time_val":
+                datetime(2023, 1, 1, 0, 0, 0),  # "2023-01-01T00:00:00",
             "some_var_char_val": "test",
             "phone_num_conditional_on_is_editable": "test",
             "n_var_char_as_url": "http://example.com",
             "update_button_text_link_plant_code": str(UUID(int=5)),
             "random_property_updates_link_plant_code": str(UUID(int=4)),
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
-
+# endset
         }
         # report_item = ReportItemPlantUserDetails(**data)
         report_item = ReportItemPlantUserDetails()
@@ -82,11 +89,13 @@ class TestReportItemPlantUserDetails:
         assert report_item.some_phone_number == "1234567890"
         assert report_item.some_text_val == "test"
         assert report_item.some_uniqueidentifier_val == UUID(int=2)
-        assert report_item.some_utc_date_time_val == datetime.fromisoformat("2023-01-01T00:00:00")
+        assert report_item.some_utc_date_time_val == (
+            datetime.fromisoformat("2023-01-01T00:00:00"))
         assert report_item.some_var_char_val == "test"
         assert report_item.phone_num_conditional_on_is_editable == "test"
         assert report_item.n_var_char_as_url == "http://example.com"
         assert report_item.update_button_text_link_plant_code == UUID(int=5)
         assert report_item.random_property_updates_link_plant_code == UUID(int=4)
         assert report_item.back_to_dashboard_link_tac_code == UUID(int=5)
+# endset
 

@@ -6,11 +6,11 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import Index, event, BigInteger, Boolean, Column, Date, DateTime, Float, Integer, Numeric, String, ForeignKey, Uuid, func
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import ErrorLogManager
 from models import ErrorLog
 import models
@@ -18,15 +18,21 @@ import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
 class ErrorLogInvalidInitError(Exception):
+    """
+    #TODO add comment
+    """
     pass
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class ErrorLogBusObj(BaseBusObj):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
             raise ValueError("session required")
@@ -82,7 +88,7 @@ class ErrorLogBusObj(BaseBusObj):
     def set_prop_last_update_user_id(self, value: uuid.UUID):
         self.last_update_user_id = value
         return self
-
+# endset
     # browserCode
     @property
     def browser_code(self):
@@ -166,7 +172,7 @@ class ErrorLogBusObj(BaseBusObj):
     def set_prop_url(self, value):
         self.url = value
         return self
-
+# endset
     # browserCode,
     # contextCode,
     # createdUTCDateTime
@@ -179,7 +185,8 @@ class ErrorLogBusObj(BaseBusObj):
         return self.error_log.pac_id
     @pac_id.setter
     def pac_id(self, value):
-        assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
+        assert isinstance(value, int) or value is None, (
+            "pac_id must be an integer or None")
         self.error_log.pac_id = value
     def set_prop_pac_id(self, value):
         self.pac_id = value
@@ -189,17 +196,19 @@ class ErrorLogBusObj(BaseBusObj):
         return self.error_log.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
+    #     assert isinstance(value, UUIDType),
+    #           "pac_code_peek must be a UUID"
     #     self.error_log.pac_code_peek = value
     # url,
-
+# endset
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
         return self.error_log.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "insert_utc_date_time must be a datetime object or None")
         self.error_log.insert_utc_date_time = value
     # update_utc_date_time
     @property
@@ -207,7 +216,8 @@ class ErrorLogBusObj(BaseBusObj):
         return self.error_log.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
-        assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
+        assert isinstance(value, datetime) or value is None, (
+            "last_update_utc_date_time must be a datetime object or None")
         self.error_log.last_update_utc_date_time = value
 
     async def load(self, json_data: str = None,
@@ -225,7 +235,9 @@ class ErrorLogBusObj(BaseBusObj):
             self.error_log = error_log_obj
         if error_log_obj_instance and self.error_log.error_log_id is None:
             error_log_manager = ErrorLogManager(self._session_context)
-            error_log_obj = await error_log_manager.get_by_id(error_log_obj_instance.error_log_id)
+            error_log_obj = await error_log_manager.get_by_id(
+                error_log_obj_instance.error_log_id
+                )
             self.error_log = error_log_obj
         if json_data and self.error_log.error_log_id is None:
             error_log_manager = ErrorLogManager(self._session_context)
@@ -235,12 +247,14 @@ class ErrorLogBusObj(BaseBusObj):
             self.error_log = error_log_manager.from_dict(error_log_dict)
         return self
     @staticmethod
-    async def get(session_context: SessionContext,
-                    json_data: str = None,
-                   code: uuid.UUID = None,
-                   error_log_id: int = None,
-                   error_log_obj_instance: ErrorLog = None,
-                   error_log_dict: dict = None):
+    async def get(
+        session_context: SessionContext,
+        json_data: str = None,
+        code: uuid.UUID = None,
+        error_log_id: int = None,
+        error_log_obj_instance: ErrorLog = None,
+        error_log_dict: dict = None
+    ):
         result = ErrorLogBusObj(session_context)
         await result.load(
             json_data,
@@ -279,13 +293,18 @@ class ErrorLogBusObj(BaseBusObj):
     async def randomize_properties(self):
         self.error_log.browser_code = generate_uuid()
         self.error_log.context_code = generate_uuid()
-        self.error_log.created_utc_date_time = datetime(random.randint(2000, 2023), random.randint(1, 12), random.randint(1, 28))
-        self.error_log.description = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        self.error_log.created_utc_date_time = datetime(
+            random.randint(2000, 2023),
+            random.randint(1, 12),
+            random.randint(1, 28))
+        self.error_log.description = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.error_log.is_client_side_error = random.choice([True, False])
         self.error_log.is_resolved = random.choice([True, False])
         # self.error_log.pac_id = random.randint(0, 100)
-        self.error_log.url = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-
+        self.error_log.url = "".join(
+            random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+# endset
         return self
     def get_error_log_obj(self) -> ErrorLog:
         return self.error_log
@@ -293,7 +312,7 @@ class ErrorLogBusObj(BaseBusObj):
         error_log_manager = ErrorLogManager(self._session_context)
         my_error_log = self.get_error_log_obj()
         return error_log_manager.is_equal(error_log, my_error_log)
-
+# endset
     # browserCode,
     # contextCode,
     # createdUTCDateTime
@@ -306,7 +325,7 @@ class ErrorLogBusObj(BaseBusObj):
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
     # url,
-
+# endset
     def get_obj(self) -> ErrorLog:
         return self.error_log
     def get_object_name(self) -> str:
@@ -327,12 +346,18 @@ class ErrorLogBusObj(BaseBusObj):
     async def get_parent_obj(self) -> models.Pac:
         return self.get_pac_id_rel_obj()
     # url,
-
+# endset
     @staticmethod
-    async def to_bus_obj_list(session_context: SessionContext, obj_list: List[ErrorLog]):
+    async def to_bus_obj_list(
+        session_context: SessionContext,
+        obj_list: List[ErrorLog]
+    ):
         result = list()
         for error_log in obj_list:
-            error_log_bus_obj = ErrorLogBusObj.get(session_context, error_log_obj_instance=error_log)
+            error_log_bus_obj = ErrorLogBusObj.get(
+                session_context,
+                error_log_obj_instance=error_log
+            )
             result.append(error_log_bus_obj)
         return result
 

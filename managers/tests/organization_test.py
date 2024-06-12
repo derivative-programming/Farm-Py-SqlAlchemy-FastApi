@@ -12,22 +12,25 @@ import models
 from models.factory import OrganizationFactory
 from managers.organization import OrganizationManager
 from models.serialization_schema.organization import OrganizationSchema
-from services.db_config import db_dialect
+from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import db_dialect,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.future import select
 import logging
-db_dialect = "sqlite"
+DB_DIALECT = "sqlite"
 # Conditionally set the UUID column type
-if db_dialect == 'postgresql':
+if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
-elif db_dialect == 'mssql':
+elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
 else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 class TestOrganizationManager:
+    """
+    #TODO add comment
+    """
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
@@ -83,11 +86,14 @@ class TestOrganizationManager:
         # Add the organization using the manager's add method
         added_organization = await organization_manager.add(organization=test_organization)
         assert isinstance(added_organization, Organization)
-        assert str(added_organization.insert_user_id) == str(organization_manager._session_context.customer_code)
-        assert str(added_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
+        assert str(added_organization.insert_user_id) == (
+            str(organization_manager._session_context.customer_code))
+        assert str(added_organization.last_update_user_id) == (
+            str(organization_manager._session_context.customer_code))
         assert added_organization.organization_id > 0
         # Fetch the organization from the database directly
-        result = await session.execute(select(Organization).filter(Organization.organization_id == added_organization.organization_id))
+        result = await session.execute(
+            select(Organization).filter(Organization.organization_id == added_organization.organization_id))
         fetched_organization = result.scalars().first()
         # Assert that the fetched organization is not None and matches the added organization
         assert fetched_organization is not None
@@ -109,8 +115,10 @@ class TestOrganizationManager:
         # Add the organization using the manager's add method
         added_organization = await organization_manager.add(organization=test_organization)
         assert isinstance(added_organization, Organization)
-        assert str(added_organization.insert_user_id) == str(organization_manager._session_context.customer_code)
-        assert str(added_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
+        assert str(added_organization.insert_user_id) == (
+            str(organization_manager._session_context.customer_code))
+        assert str(added_organization.last_update_user_id) == (
+            str(organization_manager._session_context.customer_code))
         assert added_organization.organization_id > 0
         # Assert that the returned organization matches the test organization
         assert added_organization.organization_id == test_organization.organization_id
@@ -164,7 +172,8 @@ class TestOrganizationManager:
         """
             #TODO add comment
         """
-        # Generate a random UUID that doesn't correspond to any Organization in the database
+        # Generate a random UUID that doesn't correspond to
+        # any Organization in the database
         random_code = generate_uuid()
         organization = await organization_manager.get_by_code(random_code)
         assert organization is None
@@ -243,7 +252,6 @@ class TestOrganizationManager:
         """
         test_organization = await OrganizationFactory.create_async(session)
         new_code = generate_uuid()
-        # This should raise an AttributeError since 'color' is not an attribute of Organization
         with pytest.raises(ValueError):
             updated_organization = await organization_manager.update(
                 organization=test_organization,
@@ -260,12 +268,15 @@ class TestOrganizationManager:
             #TODO add comment
         """
         organization_data = await OrganizationFactory.create_async(session)
-        result = await session.execute(select(Organization).filter(Organization.organization_id == organization_data.organization_id))
+        result = await session.execute(
+            select(Organization).filter(Organization.organization_id == organization_data.organization_id))
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)
         assert fetched_organization.organization_id == organization_data.organization_id
-        deleted_organization = await organization_manager.delete(organization_id=organization_data.organization_id)
-        result = await session.execute(select(Organization).filter(Organization.organization_id == organization_data.organization_id))
+        deleted_organization = await organization_manager.delete(
+            organization_id=organization_data.organization_id)
+        result = await session.execute(
+            select(Organization).filter(Organization.organization_id == organization_data.organization_id))
         fetched_organization = result.scalars().first()
         assert fetched_organization is None
     @pytest.mark.asyncio
@@ -303,7 +314,8 @@ class TestOrganizationManager:
         """
         organizations = await organization_manager.get_list()
         assert len(organizations) == 0
-        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
+        organizations_data = (
+            [await OrganizationFactory.create_async(session) for _ in range(5)])
         organizations = await organization_manager.get_list()
         assert len(organizations) == 5
         assert all(isinstance(organization, Organization) for organization in organizations)
@@ -376,8 +388,10 @@ class TestOrganizationManager:
             result = await session.execute(select(Organization).filter(Organization.organization_id == updated_organization.organization_id))
             fetched_organization = result.scalars().first()
             assert isinstance(fetched_organization, Organization)
-            assert str(fetched_organization.insert_user_id) == str(organization_manager._session_context.customer_code)
-            assert str(fetched_organization.last_update_user_id) == str(organization_manager._session_context.customer_code)
+            assert str(fetched_organization.insert_user_id) == (
+                str(organization_manager._session_context.customer_code))
+            assert str(fetched_organization.last_update_user_id) == (
+                str(organization_manager._session_context.customer_code))
             assert fetched_organization.organization_id == updated_organization.organization_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -397,7 +411,16 @@ class TestOrganizationManager:
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update organizations
-        updates = [{"organization_id": 1, "code": code_updated1}, {"organization_id": 2, "code": code_updated2}]
+        updates = [
+            {
+                "organization_id": 1,
+                "code": code_updated1
+            },
+            {
+                "organization_id": 2,
+                "code": code_updated2
+            }
+        ]
         updated_organizations = await organization_manager.update_bulk(updates)
         logging.info('bulk update results')
         # Assertions
@@ -410,8 +433,10 @@ class TestOrganizationManager:
         logging.info(organizations[1].__dict__)
         assert updated_organizations[0].code == code_updated1
         assert updated_organizations[1].code == code_updated2
-        assert str(updated_organizations[0].last_update_user_id) == str(organization_manager._session_context.customer_code)
-        assert str(updated_organizations[1].last_update_user_id) == str(organization_manager._session_context.customer_code)
+        assert str(updated_organizations[0].last_update_user_id) == (
+            str(organization_manager._session_context.customer_code))
+        assert str(updated_organizations[1].last_update_user_id) == (
+            str(organization_manager._session_context.customer_code))
         result = await session.execute(select(Organization).filter(Organization.organization_id == 1))
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)
@@ -477,7 +502,8 @@ class TestOrganizationManager:
         result = await organization_manager.delete_bulk(organization_ids)
         assert result is True
         for organization_id in organization_ids:
-            execute_result = await session.execute(select(Organization).filter(Organization.organization_id == organization_id))
+            execute_result = await session.execute(
+                select(Organization).filter(Organization.organization_id == organization_id))
             fetched_organization = execute_result.scalars().first()
             assert fetched_organization is None
     @pytest.mark.asyncio
@@ -531,7 +557,8 @@ class TestOrganizationManager:
         """
             #TODO add comment
         """
-        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
+        organizations_data = (
+            [await OrganizationFactory.create_async(session) for _ in range(5)])
         count = await organization_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -555,9 +582,11 @@ class TestOrganizationManager:
             #TODO add comment
         """
         # Add organizations
-        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
+        organizations_data = (
+            [await OrganizationFactory.create_async(session) for _ in range(5)])
         sorted_organizations = await organization_manager.get_sorted_list(sort_by="organization_id")
-        assert [organization.organization_id for organization in sorted_organizations] == [(i + 1) for i in range(5)]
+        assert [organization.organization_id for organization in sorted_organizations] == (
+            [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
     async def test_get_sorted_list_descending_sorting(
         self,
@@ -568,9 +597,12 @@ class TestOrganizationManager:
             #TODO add comment
         """
         # Add organizations
-        organizations_data = [await OrganizationFactory.create_async(session) for _ in range(5)]
-        sorted_organizations = await organization_manager.get_sorted_list(sort_by="organization_id", order="desc")
-        assert [organization.organization_id for organization in sorted_organizations] == [(i + 1) for i in reversed(range(5))]
+        organizations_data = (
+            [await OrganizationFactory.create_async(session) for _ in range(5)])
+        sorted_organizations = await organization_manager.get_sorted_list(
+            sort_by="organization_id", order="desc")
+        assert [organization.organization_id for organization in sorted_organizations] == (
+            [(i + 1) for i in reversed(range(5))])
     @pytest.mark.asyncio
     async def test_get_sorted_list_invalid_attribute(
         self,
@@ -696,7 +728,8 @@ class TestOrganizationManager:
         assert len(fetched_organizations) == 1
         assert isinstance(fetched_organizations[0], Organization)
         assert fetched_organizations[0].code == organization1.code
-        stmt = select(models.Tac).where(models.Tac.tac_id==organization1.tac_id)
+        stmt = select(models.Tac).where(
+            models.Tac.tac_id == organization1.tac_id)
         result = await session.execute(stmt)
         tac = result.scalars().first()
         assert fetched_organizations[0].tac_code_peek == tac.code
