@@ -519,7 +519,7 @@ class TestFlavorManager:
         # Delete flavors
         flavor_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await flavor_manager.delete_bulk(flavor_ids)
+            result = await flavor_manager.delete_bulk(flavor_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestFlavorManager:
         """
         flavor_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await flavor_manager.delete_bulk(flavor_ids)
+            result = await flavor_manager.delete_bulk(flavor_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestFlavorManager:
         with pytest.raises(Exception):
             await flavor_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # description,
     # displayOrder,
     # isActive,
@@ -756,4 +756,4 @@ class TestFlavorManager:
         with pytest.raises(Exception):
             await flavor_manager.get_by_pac_id(invalid_id)
         await session.rollback()
-#endet
+# endset

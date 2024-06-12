@@ -11,9 +11,10 @@ from apis.models import validation_error
 from helpers import TypeConversion
 from flows.plant_user_details_init_report import FlowPlantUserDetailsInitReportResult, FlowPlantUserDetailsInitReport
 from helpers import SessionContext
+from helpers.formatting import snake_to_camel
 from business.plant import PlantBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
 import logging
@@ -64,7 +65,7 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
                 "loading model...PlantUserDetailsInitReportGetInitModelRequest")
             plant_bus_obj = PlantBusObj(session_context)
             await plant_bus_obj.load(code=plant_code)
-            if(plant_bus_obj.get_plant_obj() is None):
+            if plant_bus_obj.get_plant_obj() is None:
                 logging.info("Invalid plant_code")
                 raise ValueError("Invalid plant_code")
             flow = FlowPlantUserDetailsInitReport(session_context)
@@ -81,6 +82,9 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(validation_error(key, ve.error_dict[key]))
+                val_error = ValidationErrorItem()
+                val_error.property = snake_to_camel(key)
+                val_error.message = ve.error_dict[key]
+                response.validation_errors.append(val_error)
         return response
 

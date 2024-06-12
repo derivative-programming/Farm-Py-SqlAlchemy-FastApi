@@ -9,7 +9,6 @@ import pytest
 import sqlite3
 from sqlalchemy import String
 from typing import List
-from decimal import Decimal
 from datetime import datetime, date
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
@@ -21,7 +20,7 @@ from reports.report_request_validation_error import ReportRequestValidationError
 from reports.providers.pac_user_date_greater_than_filter_list import ReportProviderPacUserDateGreaterThanFilterList
 from reports.row_models.pac_user_date_greater_than_filter_list import ReportItemPacUserDateGreaterThanFilterList
 from services.db_config import DB_DIALECT
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from unittest.mock import patch, AsyncMock
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
@@ -95,7 +94,7 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
             item_count_per_page: int,
             order_by_column_name: str,
             order_by_descending: bool,
-            ):
+        ):
             result = list()
             return result
         with patch.object(
@@ -139,7 +138,7 @@ class TestReportManagerPacUserDateGreaterThanFilterList:
             item_count_per_page: int,
             order_by_column_name: str,
             order_by_descending: bool,
-            ):
+        ):
             result = list()
             return result
         with patch.object(

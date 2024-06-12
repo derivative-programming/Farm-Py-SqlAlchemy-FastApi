@@ -14,7 +14,7 @@ from business.org_api_key import OrgApiKeyBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -100,7 +100,7 @@ class TestOrgApiKeyBusObj:
             #TODO add comment
         """
         await org_api_key_bus_obj.load(org_api_key_obj_instance=new_org_api_key)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key) is True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key, new_org_api_key) is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_id(
         self,
@@ -112,7 +112,7 @@ class TestOrgApiKeyBusObj:
             #TODO add comment
         """
         await org_api_key_bus_obj.load(org_api_key_id=new_org_api_key.org_api_key_id)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key, new_org_api_key) is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_code(
         self,
@@ -124,7 +124,7 @@ class TestOrgApiKeyBusObj:
             #TODO add comment
         """
         await org_api_key_bus_obj.load(code=new_org_api_key.code)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key, new_org_api_key) is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_json(
         self,
@@ -137,7 +137,7 @@ class TestOrgApiKeyBusObj:
         """
         org_api_key_json = org_api_key_manager.to_json(new_org_api_key)
         await org_api_key_bus_obj.load(json_data=org_api_key_json)
-        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key,new_org_api_key)  is True
+        assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key, new_org_api_key) is True
     @pytest.mark.asyncio
     async def test_load_with_org_api_key_dict(
         self,

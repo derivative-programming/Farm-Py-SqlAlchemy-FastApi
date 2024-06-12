@@ -14,7 +14,7 @@ from business.pac import PacBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -96,7 +96,7 @@ class TestPacBusObj:
             #TODO add comment
         """
         await pac_bus_obj.load(pac_obj_instance=new_pac)
-        assert pac_manager.is_equal(pac_bus_obj.pac,new_pac) is True
+        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_id(
         self,
@@ -108,7 +108,7 @@ class TestPacBusObj:
             #TODO add comment
         """
         await pac_bus_obj.load(pac_id=new_pac.pac_id)
-        assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
+        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_code(
         self,
@@ -120,7 +120,7 @@ class TestPacBusObj:
             #TODO add comment
         """
         await pac_bus_obj.load(code=new_pac.code)
-        assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
+        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_json(
         self,
@@ -133,7 +133,7 @@ class TestPacBusObj:
         """
         pac_json = pac_manager.to_json(new_pac)
         await pac_bus_obj.load(json_data=pac_json)
-        assert pac_manager.is_equal(pac_bus_obj.pac,new_pac)  is True
+        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_dict(
         self,

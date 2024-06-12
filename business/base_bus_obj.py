@@ -9,4 +9,3 @@ class BaseBusObj:
     """
     #TODO add comment
     """
-    pass

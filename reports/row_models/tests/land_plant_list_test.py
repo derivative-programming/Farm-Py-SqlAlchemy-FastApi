@@ -24,7 +24,7 @@ class TestReportItemLandPlantList:
         assert report_item.some_big_int_val == 0
         assert report_item.some_bit_val is False
         assert report_item.is_edit_allowed is False
-        assert report_item.is_delete_allowed is False 
+        assert report_item.is_delete_allowed is False
         assert math.isclose(report_item.some_float_val, 0.0, rel_tol=1e-9), (
             "Values must be approximately equal")
         assert report_item.some_decimal_val == Decimal(0)
@@ -57,7 +57,7 @@ class TestReportItemLandPlantList:
             "is_delete_allowed": True,
             "some_float_val": 1.23,
             "some_decimal_val": "10.99",
-            "some_utc_date_time_val": 
+            "some_utc_date_time_val":
                 datetime(2023, 1, 1, 0, 0, 0),  # "2023-01-01T00:00:00",
             "some_date_val": date(2023, 1, 1),  # "2023-01-01",
             "some_money_val": "99.99",

@@ -45,6 +45,9 @@ class CustomerUserLogOutRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
         logging.info(
             'CustomerUserLogOutRouter.request_get_init start. customerCode:%s',
             customer_code)
@@ -98,7 +101,13 @@ class CustomerUserLogOutRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
-        logging.info('CustomerUserLogOutRouter.request_post_with_id start. customerCode:' + customer_code)
+        """
+            #TODO add comment
+        """
+        logging.info(
+            "CustomerUserLogOutRouter.request_post_with_id start. customerCode: %s",
+            customer_code
+        )
         auth_dict = BaseRouter.implementation_check(
             CustomerUserLogOutRouterConfig.is_post_with_id_available)
         response = api_models.CustomerUserLogOutPostModelResponse()
@@ -125,13 +134,15 @@ class CustomerUserLogOutRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
-                    )
+                )
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
                 logging.info("Exception occurred")
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
                 response.message = str(e) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             finally:

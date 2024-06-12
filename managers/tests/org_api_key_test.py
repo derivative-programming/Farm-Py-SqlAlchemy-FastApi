@@ -519,7 +519,7 @@ class TestOrgApiKeyManager:
         # Delete org_api_keys
         org_api_key_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await org_api_key_manager.delete_bulk(org_api_key_ids)
+            result = await org_api_key_manager.delete_bulk(org_api_key_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestOrgApiKeyManager:
         """
         org_api_key_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await org_api_key_manager.delete_bulk(org_api_key_ids)
+            result = await org_api_key_manager.delete_bulk(org_api_key_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestOrgApiKeyManager:
         with pytest.raises(Exception):
             await org_api_key_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # apiKeyValue,
     # createdBy,
     # createdUTCDateTime
@@ -807,4 +807,4 @@ class TestOrgApiKeyManager:
         with pytest.raises(Exception):
             await org_api_key_manager.get_by_org_customer_id(invalid_id)
         await session.rollback()
-#endet
+# endset

@@ -519,7 +519,7 @@ class TestErrorLogManager:
         # Delete error_logs
         error_log_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await error_log_manager.delete_bulk(error_log_ids)
+            result = await error_log_manager.delete_bulk(error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestErrorLogManager:
         """
         error_log_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await error_log_manager.delete_bulk(error_log_ids)
+            result = await error_log_manager.delete_bulk(error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestErrorLogManager:
         with pytest.raises(Exception):
             await error_log_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # browserCode,
     # contextCode,
     # createdUTCDateTime
@@ -758,4 +758,4 @@ class TestErrorLogManager:
             await error_log_manager.get_by_pac_id(invalid_id)
         await session.rollback()
     # url,
-#endet
+# endset

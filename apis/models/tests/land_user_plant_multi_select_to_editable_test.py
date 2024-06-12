@@ -9,7 +9,6 @@ import pytest
 import pytest_asyncio
 import time
 from typing import AsyncGenerator
-from decimal import Decimal
 from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
@@ -26,7 +25,7 @@ from ..factory.land_user_plant_multi_select_to_editable import LandUserPlantMult
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
@@ -50,7 +49,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
         async def mock_process(
             land_bus_obj: LandBusObj,
             plant_code_list_csv: str = "",
-            ):
+        ):
             return FlowLandUserPlantMultiSelectToEditableResult()
         with patch.object(FlowLandUserPlantMultiSelectToEditable, 'process', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_process
@@ -62,7 +61,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
                 session_context=session_context,
                 land_code=land.code,
                 request=request_instance
-                )
+            )
             assert response_instance.success is True
             mock_method.assert_awaited()
 

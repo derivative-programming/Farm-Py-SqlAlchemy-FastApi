@@ -519,7 +519,7 @@ class TestCustomerRoleManager:
         # Delete customer_roles
         customer_role_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await customer_role_manager.delete_bulk(customer_role_ids)
+            result = await customer_role_manager.delete_bulk(customer_role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestCustomerRoleManager:
         """
         customer_role_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await customer_role_manager.delete_bulk(customer_role_ids)
+            result = await customer_role_manager.delete_bulk(customer_role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestCustomerRoleManager:
         with pytest.raises(Exception):
             await customer_role_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # CustomerID
     @pytest.mark.asyncio
     async def test_get_by_customer_id_existing(
@@ -802,4 +802,4 @@ class TestCustomerRoleManager:
         with pytest.raises(Exception):
             await customer_role_manager.get_by_role_id(invalid_id)
         await session.rollback()
-#endet
+# endset

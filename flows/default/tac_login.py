@@ -2,25 +2,24 @@
 """
     #TODO add comment
 """
-import json
-from business.tac import TacBusObj
-from datetime import date, datetime
 import uuid
+import json
+from datetime import date, datetime
+from sqlalchemy import String
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from decimal import Decimal
 from flows.base.tac_login import BaseFlowTacLogin
 from models import Tac
 from flows.base import LogSeverity
+from business.tac import TacBusObj
 from helpers import SessionContext
 from helpers import ApiToken
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
 import business
-from sqlalchemy.ext.asyncio import AsyncSession
-from services.db_config import DB_DIALECT,generate_uuid
-# from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from decimal import Decimal
+from services.db_config import DB_DIALECT, generate_uuid
 class FlowTacLoginResult():
     """
     #TODO add comment
@@ -54,8 +53,12 @@ class FlowTacLogin(BaseFlowTacLogin):
     #TODO add comment
     """
     def __init__(self, session_context: SessionContext):
+        """
+        #TODO add comment
+        """
         super(FlowTacLogin, self).__init__(session_context)
-    async def process(self,
+    async def process(
+        self,
         tac_bus_obj: TacBusObj,
         email: str = "",
         password: str = "",
@@ -70,9 +73,9 @@ class FlowTacLogin(BaseFlowTacLogin):
 # endset
         )
         super()._throw_queued_validation_errors()
-        customer_code_output:uuid = uuid.UUID(int=0)
+        customer_code_output: uuid = uuid.UUID(int=0)
         email_output: str = ""
-        user_code_value_output:uuid = uuid.UUID(int=0)
+        user_code_value_output: uuid = uuid.UUID(int=0)
         utc_offset_in_minutes_output: int = 0
         role_name_csv_list_output: str = ""
         api_key_output: str = ""

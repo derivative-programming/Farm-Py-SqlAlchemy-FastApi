@@ -519,7 +519,7 @@ class TestLandManager:
         # Delete lands
         land_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await land_manager.delete_bulk(land_ids)
+            result = await land_manager.delete_bulk(land_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestLandManager:
         """
         land_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await land_manager.delete_bulk(land_ids)
+            result = await land_manager.delete_bulk(land_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestLandManager:
         with pytest.raises(Exception):
             await land_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # description,
     # displayOrder,
     # isActive,
@@ -756,4 +756,4 @@ class TestLandManager:
         with pytest.raises(Exception):
             await land_manager.get_by_pac_id(invalid_id)
         await session.rollback()
-#endet
+# endset

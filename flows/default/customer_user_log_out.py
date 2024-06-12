@@ -2,25 +2,24 @@
 """
     #TODO add comment
 """
-import json
-from business.customer import CustomerBusObj
-from datetime import date, datetime
 import uuid
+import json
+from datetime import date, datetime
+from sqlalchemy import String
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from decimal import Decimal
 from flows.base.customer_user_log_out import BaseFlowCustomerUserLogOut
 from models import Customer
 from flows.base import LogSeverity
+from business.customer import CustomerBusObj
 from helpers import SessionContext
 from helpers import ApiToken
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
 import business
-from sqlalchemy.ext.asyncio import AsyncSession
-from services.db_config import DB_DIALECT,generate_uuid
-# from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from decimal import Decimal
+from services.db_config import DB_DIALECT, generate_uuid
 class FlowCustomerUserLogOutResult():
     """
     #TODO add comment
@@ -44,8 +43,12 @@ class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
     #TODO add comment
     """
     def __init__(self, session_context: SessionContext):
+        """
+        #TODO add comment
+        """
         super(FlowCustomerUserLogOut, self).__init__(session_context)
-    async def process(self,
+    async def process(
+        self,
         customer_bus_obj: CustomerBusObj,
 
 # endset

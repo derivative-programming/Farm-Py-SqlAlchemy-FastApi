@@ -19,6 +19,9 @@ from .....models import factory as request_factory
 
 @pytest.mark.asyncio
 async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: str):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -32,10 +35,11 @@ async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: st
         assert response.json()['success'] is True
 @pytest.mark.asyncio
 async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -48,10 +52,11 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_init_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -64,10 +69,11 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -78,7 +84,13 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_init_endpoint_url_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -90,7 +102,13 @@ async def test_init_endpoint_url_failure(overridden_get_db: AsyncSession, api_ke
         )
         assert response.status_code == 501
 @pytest.mark.asyncio
-async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_init_endpoint_invalid_code_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -102,7 +120,13 @@ async def test_init_endpoint_invalid_code_failure(overridden_get_db: AsyncSessio
         assert response.status_code == 200
         assert response.json()['success'] is False
 @pytest.mark.asyncio
-async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_init_endpoint_method_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -115,7 +139,13 @@ async def test_init_endpoint_method_failure(overridden_get_db: AsyncSession, api
         assert response.status_code == 405
 
 @pytest.mark.asyncio
-async def test_get_success(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_success(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     async def mock_process_request(session, session_context, pac_code, request):
         pass
     with patch.object(apis_models.PacUserRoleListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
@@ -139,10 +169,11 @@ async def test_get_success(overridden_get_db: AsyncSession, api_key_fixture: str
             mock_method.assert_awaited()
 @pytest.mark.asyncio
 async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -155,10 +186,11 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_get_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -171,10 +203,11 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -185,7 +218,13 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_get_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_endpoint_url_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -197,7 +236,13 @@ async def test_get_endpoint_url_failure(overridden_get_db: AsyncSession, api_key
         )
         assert response.status_code == 501
 @pytest.mark.asyncio
-async def test_get_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_endpoint_invalid_code_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -209,7 +254,13 @@ async def test_get_endpoint_invalid_code_failure(overridden_get_db: AsyncSession
         assert response.status_code == 200
         assert response.json()['success'] is False
 @pytest.mark.asyncio
-async def test_get_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_endpoint_method_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -222,7 +273,13 @@ async def test_get_endpoint_method_failure(overridden_get_db: AsyncSession, api_
         assert response.status_code == 405
 
 @pytest.mark.asyncio
-async def test_get_csv_success(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_csv_success(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     async def mock_process_request(session, session_context, pac_code, request):
         pass
     with patch.object(apis_models.PacUserRoleListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
@@ -248,8 +305,6 @@ async def test_get_csv_success(overridden_get_db: AsyncSession, api_key_fixture:
 async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -265,8 +320,6 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
 async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -282,8 +335,6 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
 async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncSession):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -295,7 +346,13 @@ async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncS
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_get_csv_endpoint_url_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_csv_endpoint_url_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture
@@ -307,7 +364,13 @@ async def test_get_csv_endpoint_url_failure(overridden_get_db: AsyncSession, api
         )
         assert response.status_code == 501
 @pytest.mark.asyncio
-async def test_get_csv_endpoint_invalid_code_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_csv_endpoint_invalid_code_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -319,7 +382,13 @@ async def test_get_csv_endpoint_invalid_code_failure(overridden_get_db: AsyncSes
         assert response.status_code == 200
         assert response.headers['content-type'].startswith('text/csv')
 @pytest.mark.asyncio
-async def test_get_csv_endpoint_method_failure(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_get_csv_endpoint_method_failure(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
+    """
+    #TODO add comment
+    """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
     test_api_key = api_key_fixture

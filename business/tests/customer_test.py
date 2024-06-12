@@ -14,7 +14,7 @@ from business.customer import CustomerBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -127,7 +127,7 @@ class TestCustomerBusObj:
             #TODO add comment
         """
         await customer_bus_obj.load(customer_obj_instance=new_customer)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer) is True
+        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_id(
         self,
@@ -139,7 +139,7 @@ class TestCustomerBusObj:
             #TODO add comment
         """
         await customer_bus_obj.load(customer_id=new_customer.customer_id)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
+        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_code(
         self,
@@ -151,7 +151,7 @@ class TestCustomerBusObj:
             #TODO add comment
         """
         await customer_bus_obj.load(code=new_customer.code)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
+        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_json(
         self,
@@ -164,7 +164,7 @@ class TestCustomerBusObj:
         """
         customer_json = customer_manager.to_json(new_customer)
         await customer_bus_obj.load(json_data=customer_json)
-        assert customer_manager.is_equal(customer_bus_obj.customer,new_customer)  is True
+        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_dict(
         self,

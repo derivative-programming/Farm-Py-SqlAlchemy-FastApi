@@ -24,9 +24,7 @@ from reports.land_plant_list import ReportManagerLandPlantList
 from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
 import apis.models as view_models
-from models import Land
 from helpers.pydantic_serialization import CamelModel, SnakeModel, BaseModel
-# request. expect camel case. use marshmallow to validate.
 
 
 class LandPlantListGetModelRequest(CamelModel):
@@ -297,28 +295,29 @@ class LandPlantListGetModelResponse(ListModel):
             generator = ReportManagerLandPlantList(session_context)
             logging.info("processing...LandPlantListGetModelResponse")
             items = await generator.generate(
-                    land_code,
-                    request.flavor_code,
-                    request.some_int_val,
-                    request.some_big_int_val,
-                    request.some_float_val,
-                    request.some_bit_val,
-                    request.is_edit_allowed,
-                    request.is_delete_allowed,
-                    request.some_decimal_val,
-                    request.some_min_utc_date_time_val,
-                    request.some_min_date_val,
-                    request.some_money_val,
-                    request.some_n_var_char_val,
-                    request.some_var_char_val,
-                    request.some_text_val,
-                    request.some_phone_number,
-                    request.some_email_address,
+                land_code,
+                request.flavor_code,
+                request.some_int_val,
+                request.some_big_int_val,
+                request.some_float_val,
+                request.some_bit_val,
+                request.is_edit_allowed,
+                request.is_delete_allowed,
+                request.some_decimal_val,
+                request.some_min_utc_date_time_val,
+                request.some_min_date_val,
+                request.some_money_val,
+                request.some_n_var_char_val,
+                request.some_var_char_val,
+                request.some_text_val,
+                request.some_phone_number,
+                request.some_email_address,
 # endset
-                    request.page_number,
-                    request.item_count_per_page,
-                    request.order_by_column_name,
-                    request.order_by_descending)
+                request.page_number,
+                request.item_count_per_page,
+                request.order_by_column_name,
+                request.order_by_descending
+            )
             self.items = list()
             for item in items:
                 report_item = LandPlantListGetModelResponseItem()

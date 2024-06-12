@@ -14,7 +14,7 @@ from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.formatting import snake_to_camel
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field, UUID4
 import logging
 from apis.models.validation_error import ValidationErrorItem
@@ -41,13 +41,27 @@ class TacLoginPostModelRequest(CamelModel):
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
+        """
+            #TODO add comment
+        """
         data = self.model_dump()
+        return data
     def to_dict_snake_serialized(self):
+        """
+            #TODO add comment
+        """
         data = json.loads(self.model_dump_json())
+        return data
     def to_dict_camel(self):
+        """
+            #TODO add comment
+        """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
+        """
+            #TODO add comment
+        """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class TacLoginPostModelResponse(PostResponse):
@@ -74,11 +88,10 @@ class TacLoginPostModelResponse(PostResponse):
         description="Output Some Api Key")
 # endset
 # endset
-    def load_flow_response(self, data:FlowTacLoginResult):
+    def load_flow_response(self, data: FlowTacLoginResult):
         """
             #TODO add comment
         """
-        placeholder = ""  # to avoid pass line
         self.customer_code = data.customer_code
         self.email = data.email
         self.user_code_value = data.user_code_value
@@ -99,7 +112,7 @@ class TacLoginPostModelResponse(PostResponse):
             logging.info("loading model...TacLoginPostModelResponse")
             tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load(code=tac_code)
-            if(tac_bus_obj.get_tac_obj() is None):
+            if tac_bus_obj.get_tac_obj() is None:
                 logging.info("Invalid tac_code")
                 raise ValueError("Invalid tac_code")
             flow = FlowTacLogin(session_context)
@@ -110,7 +123,7 @@ class TacLoginPostModelResponse(PostResponse):
                 request.password,
 # endset
             )
-            self.load_flow_response(flowResponse);
+            self.load_flow_response(flowResponse)
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
@@ -123,5 +136,8 @@ class TacLoginPostModelResponse(PostResponse):
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
     def to_json(self):
+        """
+        #TODO add comment
+        """
         return self.model_dump_json()
 

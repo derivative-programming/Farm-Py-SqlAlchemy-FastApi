@@ -14,7 +14,7 @@ from business.org_customer import OrgCustomerBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -92,7 +92,7 @@ class TestOrgCustomerBusObj:
             #TODO add comment
         """
         await org_customer_bus_obj.load(org_customer_obj_instance=new_org_customer)
-        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer) is True
+        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer, new_org_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_org_customer_id(
         self,
@@ -104,7 +104,7 @@ class TestOrgCustomerBusObj:
             #TODO add comment
         """
         await org_customer_bus_obj.load(org_customer_id=new_org_customer.org_customer_id)
-        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
+        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer, new_org_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_org_customer_code(
         self,
@@ -116,7 +116,7 @@ class TestOrgCustomerBusObj:
             #TODO add comment
         """
         await org_customer_bus_obj.load(code=new_org_customer.code)
-        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
+        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer, new_org_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_org_customer_json(
         self,
@@ -129,7 +129,7 @@ class TestOrgCustomerBusObj:
         """
         org_customer_json = org_customer_manager.to_json(new_org_customer)
         await org_customer_bus_obj.load(json_data=org_customer_json)
-        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer,new_org_customer)  is True
+        assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer, new_org_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_org_customer_dict(
         self,

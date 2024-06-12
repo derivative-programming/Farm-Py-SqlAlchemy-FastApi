@@ -53,6 +53,10 @@ class LandPlantListRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
+
         logging.info(
             'LandPlantListRouter.request_get_init start. landCode:%s',
             land_code)
@@ -105,6 +109,7 @@ class LandPlantListRouter(BaseRouter):
 ##GENTrainingBlock[caseisGetAvailable]End
 ##GENTrainingBlock[caseisGetWithIdAvailable]Start
 ##GENLearn[isGetWithIdAvailable=true]Start
+
     @staticmethod
     @router.get(
         "/api/v1_0/land-plant-list/{land_code}",
@@ -116,6 +121,10 @@ class LandPlantListRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
+
         logging.info(
             'LandPlantListRouter.request_get_with_id start. landCode:%s',
             land_code)
@@ -153,12 +162,17 @@ class LandPlantListRouter(BaseRouter):
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('LandPlantListRouter.submit get result:$s', response.model_dump_json())
+        response_data = response.model_dump_json()
+        logging.info(
+            "LandPlantListRouter.submit get result:%s",
+            response_data
+        )
         return response
 ##GENLearn[isGetWithIdAvailable=true]End
 ##GENTrainingBlock[caseisGetWithIdAvailable]End
 ##GENTrainingBlock[caseisGetToCsvAvailable]Start
 ##GENLearn[isGetToCsvAvailable=true]Start
+
     @staticmethod
     @router.get(
         "/api/v1_0/land-plant-list/{land_code}/to-csv",
@@ -171,8 +185,9 @@ class LandPlantListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         logging.info(
-            'LandPlantListRouter.request_get_with_id_to_csv start. landCode:%s',
-             land_code)
+            "LandPlantListRouter.request_get_with_id_to_csv start. landCode:%s",
+                land_code
+        )
         auth_dict = BaseRouter.implementation_check(
             LandPlantListRouterConfig.is_get_to_csv_available)
 
@@ -196,8 +211,9 @@ class LandPlantListRouter(BaseRouter):
             try:
                 session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code(
-                    "LandCode", 
-                    land_code)
+                    "LandCode",
+                    land_code
+                )
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model

@@ -3,7 +3,7 @@
 """
     #TODO add comment
 """
- 
+
 from services.encryption import encrypt_message, decrypt_message
 
 ENCRYPTION_KEY_SECRET = "your_test_key_here"  # Use a test key

@@ -45,6 +45,9 @@ class TacLoginRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
         logging.info(
             'TacLoginRouter.request_get_init start. tacCode:%s',
             tac_code)
@@ -98,7 +101,13 @@ class TacLoginRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
-        logging.info('TacLoginRouter.request_post_with_id start. tacCode:' + tac_code)
+        """
+            #TODO add comment
+        """
+        logging.info(
+            "TacLoginRouter.request_post_with_id start. tacCode: %s",
+            tac_code
+        )
         auth_dict = BaseRouter.implementation_check(
             TacLoginRouterConfig.is_post_with_id_available)
         response = api_models.TacLoginPostModelResponse()
@@ -125,13 +134,15 @@ class TacLoginRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
-                    )
+                )
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
                 logging.info("Exception occurred")
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
                 response.message = str(e) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             finally:

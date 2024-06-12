@@ -14,7 +14,7 @@ from business.tri_state_filter import TriStateFilterBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -98,7 +98,7 @@ class TestTriStateFilterBusObj:
             #TODO add comment
         """
         await tri_state_filter_bus_obj.load(tri_state_filter_obj_instance=new_tri_state_filter)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter) is True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter, new_tri_state_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_id(
         self,
@@ -110,7 +110,7 @@ class TestTriStateFilterBusObj:
             #TODO add comment
         """
         await tri_state_filter_bus_obj.load(tri_state_filter_id=new_tri_state_filter.tri_state_filter_id)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter, new_tri_state_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_code(
         self,
@@ -122,7 +122,7 @@ class TestTriStateFilterBusObj:
             #TODO add comment
         """
         await tri_state_filter_bus_obj.load(code=new_tri_state_filter.code)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter, new_tri_state_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_json(
         self,
@@ -135,7 +135,7 @@ class TestTriStateFilterBusObj:
         """
         tri_state_filter_json = tri_state_filter_manager.to_json(new_tri_state_filter)
         await tri_state_filter_bus_obj.load(json_data=tri_state_filter_json)
-        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter,new_tri_state_filter)  is True
+        assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter, new_tri_state_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_tri_state_filter_dict(
         self,

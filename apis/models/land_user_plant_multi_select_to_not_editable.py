@@ -14,7 +14,7 @@ from business.land import LandBusObj
 from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.formatting import snake_to_camel
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field, UUID4
 import logging
 from apis.models.validation_error import ValidationErrorItem
@@ -38,13 +38,27 @@ class LandUserPlantMultiSelectToNotEditablePostModelRequest(CamelModel):
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
+        """
+            #TODO add comment
+        """
         data = self.model_dump()
+        return data
     def to_dict_snake_serialized(self):
+        """
+            #TODO add comment
+        """
         data = json.loads(self.model_dump_json())
+        return data
     def to_dict_camel(self):
+        """
+            #TODO add comment
+        """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
+        """
+            #TODO add comment
+        """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
@@ -54,11 +68,10 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
 
 # endset
 # endset
-    def load_flow_response(self, data:FlowLandUserPlantMultiSelectToNotEditableResult):
+    def load_flow_response(self, data: FlowLandUserPlantMultiSelectToNotEditableResult):
         """
             #TODO add comment
         """
-        placeholder = ""  # to avoid pass line
 
 # endset
     async def process_request(
@@ -74,7 +87,7 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
             logging.info("loading model...LandUserPlantMultiSelectToNotEditablePostModelResponse")
             land_bus_obj = LandBusObj(session_context)
             await land_bus_obj.load(code=land_code)
-            if(land_bus_obj.get_land_obj() is None):
+            if land_bus_obj.get_land_obj() is None:
                 logging.info("Invalid land_code")
                 raise ValueError("Invalid land_code")
             flow = FlowLandUserPlantMultiSelectToNotEditable(session_context)
@@ -84,7 +97,7 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
                 request.plant_code_list_csv,
 # endset
             )
-            self.load_flow_response(flowResponse);
+            self.load_flow_response(flowResponse)
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
@@ -97,5 +110,8 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
     def to_json(self):
+        """
+        #TODO add comment
+        """
         return self.model_dump_json()
 

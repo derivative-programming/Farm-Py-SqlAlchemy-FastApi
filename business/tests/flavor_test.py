@@ -14,7 +14,7 @@ from business.flavor import FlavorBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -97,7 +97,7 @@ class TestFlavorBusObj:
             #TODO add comment
         """
         await flavor_bus_obj.load(flavor_obj_instance=new_flavor)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor) is True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_id(
         self,
@@ -109,7 +109,7 @@ class TestFlavorBusObj:
             #TODO add comment
         """
         await flavor_bus_obj.load(flavor_id=new_flavor.flavor_id)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_code(
         self,
@@ -121,7 +121,7 @@ class TestFlavorBusObj:
             #TODO add comment
         """
         await flavor_bus_obj.load(code=new_flavor.code)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_json(
         self,
@@ -134,7 +134,7 @@ class TestFlavorBusObj:
         """
         flavor_json = flavor_manager.to_json(new_flavor)
         await flavor_bus_obj.load(json_data=flavor_json)
-        assert flavor_manager.is_equal(flavor_bus_obj.flavor,new_flavor)  is True
+        assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_dict(
         self,

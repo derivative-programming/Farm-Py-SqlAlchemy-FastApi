@@ -19,8 +19,11 @@ from .....models import factory as request_factory
 
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
+    """
+    #TODO add comment
+    """
     async def mock_process_request(session, session_context, error_log_code, request):
-            pass
+        pass
     with patch.object(apis_models.ErrorLogConfigResolveErrorLogPostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
         mock_method.side_effect = mock_process_request
         error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
@@ -39,6 +42,9 @@ async def test_submit_success(overridden_get_db):
             mock_method.assert_awaited()
 @pytest.mark.asyncio
 async def test_submit_request_validation_error(overridden_get_db):
+    """
+    #TODO add comment
+    """
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
     error_log_code = error_log.code
     api_dict = {'ErrorLogCode': str(error_log_code)}
@@ -47,16 +53,21 @@ async def test_submit_request_validation_error(overridden_get_db):
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/error-log-config-resolve-error-log/{error_log_code}',
-            json=json.dumps({"xxxx":"yyyy"}),
+            json=json.dumps(
+                {
+                    "xxxx": "yyyy"
+                }
+            ),
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 400  # Expecting validation error for incorrect data
 @pytest.mark.asyncio
 async def test_submit_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
     error_log_code = error_log.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -70,10 +81,11 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_submit_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
     error_log_code = error_log.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -87,10 +99,11 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
     error_log_code = error_log.code
-    api_dict = {}
-    # test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -103,6 +116,9 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
     error_log_code = error_log.code
     api_dict = {'ErrorLogCode': str(error_log_code)}
@@ -117,6 +133,9 @@ async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
         assert response.status_code == 501
 @pytest.mark.asyncio
 async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     error_log_code = uuid.UUID(int=0)
     api_dict = {'ErrorLogCode': str(error_log_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
@@ -131,6 +150,9 @@ async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSess
         assert response.json()['success'] is False
 @pytest.mark.asyncio
 async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
+    """
+    #TODO add comment
+    """
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
     error_log_code = error_log.code
     api_dict = {'ErrorLogCode': str(error_log_code)}

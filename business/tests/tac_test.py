@@ -14,7 +14,7 @@ from business.tac import TacBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -97,7 +97,7 @@ class TestTacBusObj:
             #TODO add comment
         """
         await tac_bus_obj.load(tac_obj_instance=new_tac)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac) is True
+        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_id(
         self,
@@ -109,7 +109,7 @@ class TestTacBusObj:
             #TODO add comment
         """
         await tac_bus_obj.load(tac_id=new_tac.tac_id)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
+        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_code(
         self,
@@ -121,7 +121,7 @@ class TestTacBusObj:
             #TODO add comment
         """
         await tac_bus_obj.load(code=new_tac.code)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
+        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_json(
         self,
@@ -134,7 +134,7 @@ class TestTacBusObj:
         """
         tac_json = tac_manager.to_json(new_tac)
         await tac_bus_obj.load(json_data=tac_json)
-        assert tac_manager.is_equal(tac_bus_obj.tac,new_tac)  is True
+        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_dict(
         self,

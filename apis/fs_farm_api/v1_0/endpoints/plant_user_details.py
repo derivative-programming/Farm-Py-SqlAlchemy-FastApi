@@ -45,6 +45,9 @@ class PlantUserDetailsRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
         logging.info(
             'PlantUserDetailsRouter.request_get_init start. plantCode:%s',
             plant_code)
@@ -98,6 +101,9 @@ class PlantUserDetailsRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
         logging.info(
             'PlantUserDetailsRouter.request_get_with_id start. plantCode:%s',
             plant_code)
@@ -132,7 +138,11 @@ class PlantUserDetailsRouter(BaseRouter):
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('PlantUserDetailsRouter.submit get result:$s', response.model_dump_json())
+        response_data = response.model_dump_json()
+        logging.info(
+            "PlantUserDetailsRouter.submit get result:%s",
+            response_data
+        )
         return response
 
     @staticmethod
@@ -147,8 +157,9 @@ class PlantUserDetailsRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         logging.info(
-            'PlantUserDetailsRouter.request_get_with_id_to_csv start. plantCode:%s',
-             plant_code)
+            "PlantUserDetailsRouter.request_get_with_id_to_csv start. plantCode:%s",
+                plant_code
+        )
         auth_dict = BaseRouter.implementation_check(
             PlantUserDetailsRouterConfig.is_get_to_csv_available)
         response = api_models.PlantUserDetailsGetModelResponse()
@@ -168,7 +179,8 @@ class PlantUserDetailsRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 plant_code = session_context.check_context_code(
                     "PlantCode",
-                    plant_code)
+                    plant_code
+                )
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model

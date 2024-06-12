@@ -22,9 +22,7 @@ from reports.tac_farm_dashboard import ReportManagerTacFarmDashboard
 from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
 import apis.models as view_models
-from models import Tac
 from helpers.pydantic_serialization import CamelModel, SnakeModel, BaseModel
-# request. expect camel case. use marshmallow to validate.
 class TacFarmDashboardGetModelRequest(CamelModel):
     """
         #TODO add comment
@@ -127,13 +125,14 @@ class TacFarmDashboardGetModelResponse(ListModel):
             generator = ReportManagerTacFarmDashboard(session_context)
             logging.info("processing...TacFarmDashboardGetModelResponse")
             items = await generator.generate(
-                    tac_code,
+                tac_code,
 
 # endset
-                    request.page_number,
-                    request.item_count_per_page,
-                    request.order_by_column_name,
-                    request.order_by_descending)
+                request.page_number,
+                request.item_count_per_page,
+                request.order_by_column_name,
+                request.order_by_descending
+            )
             self.items = list()
             for item in items:
                 report_item = TacFarmDashboardGetModelResponseItem()

@@ -18,6 +18,10 @@ DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 @pytest.fixture(scope="function")
 def event_loop() -> asyncio.AbstractEventLoop:
+    """
+    #TODO add comment
+    """
+
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
@@ -25,6 +29,10 @@ def event_loop() -> asyncio.AbstractEventLoop:
 
 @pytest.fixture(scope="function")
 def engine():
+    """
+    #TODO add comment
+    """
+
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()
@@ -32,6 +40,9 @@ def engine():
 
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
+    """
+    #TODO add comment
+    """
 
     @event.listens_for(engine.sync_engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):

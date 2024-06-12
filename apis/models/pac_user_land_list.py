@@ -22,9 +22,7 @@ from reports.pac_user_land_list import ReportManagerPacUserLandList
 from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
 import apis.models as view_models
-from models import Pac
 from helpers.pydantic_serialization import CamelModel, SnakeModel, BaseModel
-# request. expect camel case. use marshmallow to validate.
 class PacUserLandListGetModelRequest(CamelModel):
     """
         #TODO add comment
@@ -145,13 +143,14 @@ class PacUserLandListGetModelResponse(ListModel):
             generator = ReportManagerPacUserLandList(session_context)
             logging.info("processing...PacUserLandListGetModelResponse")
             items = await generator.generate(
-                    pac_code,
+                pac_code,
 
 # endset
-                    request.page_number,
-                    request.item_count_per_page,
-                    request.order_by_column_name,
-                    request.order_by_descending)
+                request.page_number,
+                request.item_count_per_page,
+                request.order_by_column_name,
+                request.order_by_descending
+            )
             self.items = list()
             for item in items:
                 report_item = PacUserLandListGetModelResponseItem()

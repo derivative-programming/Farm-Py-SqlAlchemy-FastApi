@@ -46,7 +46,13 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
-        logging.info('LandUserPlantMultiSelectToNotEditableRouter.request_post_with_id start. landCode:' + land_code)
+        """
+            #TODO add comment
+        """
+        logging.info(
+            "LandUserPlantMultiSelectToNotEditableRouter.request_post_with_id start. landCode: %s",
+            land_code
+        )
         auth_dict = BaseRouter.implementation_check(
             LandUserPlantMultiSelectToNotEditableRouterConfig.is_post_with_id_available)
         response = api_models.LandUserPlantMultiSelectToNotEditablePostModelResponse()
@@ -73,13 +79,15 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
-                    )
+                )
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
                 logging.info("Exception occurred")
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
                 response.message = str(e) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             finally:

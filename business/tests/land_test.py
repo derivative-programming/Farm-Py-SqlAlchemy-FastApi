@@ -14,7 +14,7 @@ from business.land import LandBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -97,7 +97,7 @@ class TestLandBusObj:
             #TODO add comment
         """
         await land_bus_obj.load(land_obj_instance=new_land)
-        assert land_manager.is_equal(land_bus_obj.land,new_land) is True
+        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_id(
         self,
@@ -109,7 +109,7 @@ class TestLandBusObj:
             #TODO add comment
         """
         await land_bus_obj.load(land_id=new_land.land_id)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
+        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_code(
         self,
@@ -121,7 +121,7 @@ class TestLandBusObj:
             #TODO add comment
         """
         await land_bus_obj.load(code=new_land.code)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
+        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_json(
         self,
@@ -134,7 +134,7 @@ class TestLandBusObj:
         """
         land_json = land_manager.to_json(new_land)
         await land_bus_obj.load(json_data=land_json)
-        assert land_manager.is_equal(land_bus_obj.land,new_land)  is True
+        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_dict(
         self,

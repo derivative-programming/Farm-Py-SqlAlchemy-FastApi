@@ -519,7 +519,7 @@ class TestOrgCustomerManager:
         # Delete org_customers
         org_customer_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await org_customer_manager.delete_bulk(org_customer_ids)
+            result = await org_customer_manager.delete_bulk(org_customer_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestOrgCustomerManager:
         """
         org_customer_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await org_customer_manager.delete_bulk(org_customer_ids)
+            result = await org_customer_manager.delete_bulk(org_customer_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestOrgCustomerManager:
         with pytest.raises(Exception):
             await org_customer_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # CustomerID
     @pytest.mark.asyncio
     async def test_get_by_customer_id_existing(
@@ -801,4 +801,4 @@ class TestOrgCustomerManager:
         with pytest.raises(Exception):
             await org_customer_manager.get_by_organization_id(invalid_id)
         await session.rollback()
-#endet
+# endset

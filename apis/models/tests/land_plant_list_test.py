@@ -10,7 +10,6 @@ import pytest
 import pytest_asyncio
 import time
 from typing import AsyncGenerator
-from decimal import Decimal
 from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
@@ -21,7 +20,7 @@ from ..factory.land_plant_list import LandPlantListGetModelRequestFactory
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select

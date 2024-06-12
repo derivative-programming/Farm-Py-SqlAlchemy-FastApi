@@ -1,4 +1,3 @@
-# models/factory/customer_role.py
 """
     #TODO add comment
 """
@@ -7,14 +6,14 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import CustomerRole
-from .customer import CustomerFactory  # customer_id
-from .role import RoleFactory  # role_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
+from models import CustomerRole
+from services.db_config import DB_DIALECT, generate_uuid
 from services.logging_config import get_logger
+from .customer import CustomerFactory  # customer_id
+from .role import RoleFactory  # role_id
 logger = get_logger(__name__)
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
@@ -37,93 +36,93 @@ class CustomerRoleFactory(factory.Factory):
     # role_id = 0 #factory.LazyAttribute(lambda obj: obj.role.role_id)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
-
-    customer_code_peek = factory.LazyFunction(generate_uuid) # CustomerID
+    # endset
+    customer_code_peek = factory.LazyFunction(generate_uuid)  # CustomerID
     role_code_peek = factory.LazyFunction(generate_uuid)  # RoleID
     @classmethod
-    def _build(cls, model_class, session = None, *args, **kwargs) -> CustomerRole:
+    def _build(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
-        customer_id_customer_instance = CustomerFactory.create(session=session)   # CustomerID
+            obj2 = model_class(*args, **kwargs)
+            return obj2
+        customer_id_customer_instance = CustomerFactory.create(session=session)  # CustomerID
         role_id_role_instance = RoleFactory.create(session=session)  # RoleID
-
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["role_id"] = role_id_role_instance.role_id  # RoleID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code  # RoleID
-
+# endset
         obj = model_class(*args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.role_id = role_id_role_instance.role_id  # RoleID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = role_id_role_instance.code  # RoleID
-
+# endset
         # session.add(obj)
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session = None, *args, **kwargs) -> CustomerRole:
-        customer_id_customer_instance = CustomerFactory.create(session=session)   # CustomerID
+    def _create(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
+        customer_id_customer_instance = CustomerFactory.create(session=session)  # CustomerID
         role_id_role_instance = RoleFactory.create(session=session)  # RoleID
-
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["role_id"] = role_id_role_instance.role_id  # RoleID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code  # RoleID
-
+# endset
         obj = model_class(*args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.role_id = role_id_role_instance.role_id  # RoleID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = role_id_role_instance.code  # RoleID
-
+# endset
         session.add(obj)
         session.commit()
         return obj
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> CustomerRole:
-        customer_id_customer_instance = await CustomerFactory.create_async(session=session)   # CustomerID
+        customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
         role_id_role_instance = await RoleFactory.create_async(session=session)  # RoleID
-
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["role_id"] = role_id_role_instance.role_id  # RoleID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code  # RoleID
-
-        obj = CustomerRoleFactory.build(session = None, *args, **kwargs)
+# endset
+        obj = CustomerRoleFactory.build(session=None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.role_id = role_id_role_instance.role_id  # RoleID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = role_id_role_instance.code  # RoleID
-
+# endset
         session.add(obj)
         await session.flush()
         return obj
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> CustomerRole:
-        customer_id_customer_instance = await CustomerFactory.create_async(session=session)   # CustomerID
+        customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
         role_id_role_instance = await RoleFactory.create_async(session=session)  # RoleID
-
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["role_id"] = role_id_role_instance.role_id  # RoleID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = role_id_role_instance.code  # RoleID
-
-        obj = CustomerRoleFactory.build(session = None, *args, **kwargs)
+# endset
+        obj = CustomerRoleFactory.build(session=None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.role_id = role_id_role_instance.role_id  # RoleID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = role_id_role_instance.code  # RoleID
-
+# endset
         # session.add(obj)
         # await session.flush()
         return obj

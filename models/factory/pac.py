@@ -1,4 +1,3 @@
-# models/factory/pac.py
 """
     #TODO add comment
 """
@@ -7,13 +6,13 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import Pac
-
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
+from models import Pac
+from services.db_config import DB_DIALECT, generate_uuid
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
@@ -37,48 +36,72 @@ class PacFactory(factory.Factory):
     name = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
-
+    # endset
 
     @classmethod
-    def _build(cls, model_class, session = None, *args, **kwargs) -> Pac:
+    def _build(cls, model_class, session=None, *args, **kwargs) -> Pac:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
+# endset
 
+# endset
+
+# endset
         obj = model_class(*args, **kwargs)
 
+# endset
 
+# endset
         # session.add(obj)
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session = None, *args, **kwargs) -> Pac:
+    def _create(cls, model_class, session=None, *args, **kwargs) -> Pac:
 
+# endset
 
+# endset
+
+# endset
         obj = model_class(*args, **kwargs)
 
+# endset
 
+# endset
         session.add(obj)
         session.commit()
         return obj
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Pac:
 
+# endset
 
-        obj = PacFactory.build(session = None, *args, **kwargs)
+# endset
 
+# endset
+        obj = PacFactory.build(session=None, *args, **kwargs)
 
+# endset
+
+# endset
         session.add(obj)
         await session.flush()
         return obj
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Pac:
 
+# endset
 
-        obj = PacFactory.build(session = None, *args, **kwargs)
+# endset
 
+# endset
+        obj = PacFactory.build(session=None, *args, **kwargs)
 
+# endset
+
+# endset
         # session.add(obj)
         # await session.flush()
         return obj

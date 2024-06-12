@@ -1,4 +1,3 @@
-# models/factory/org_customer.py
 """
     #TODO add comment
 """
@@ -7,14 +6,14 @@ import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from models import OrgCustomer
-from .customer import CustomerFactory  # customer_id
-from .organization import OrganizationFactory  # organization_id
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
+from models import OrgCustomer
+from services.db_config import DB_DIALECT, generate_uuid
 from services.logging_config import get_logger
+from .customer import CustomerFactory  # customer_id
+from .organization import OrganizationFactory  # organization_id
 logger = get_logger(__name__)
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
@@ -36,93 +35,93 @@ class OrgCustomerFactory(factory.Factory):
     # organization_id = 0 #factory.LazyAttribute(lambda obj: obj.organization.organization_id)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
-
+    # endset
     customer_code_peek = factory.LazyFunction(generate_uuid)  # CustomerID
-    organization_code_peek = factory.LazyFunction(generate_uuid) # OrganizationID
+    organization_code_peek = factory.LazyFunction(generate_uuid)  # OrganizationID
     @classmethod
-    def _build(cls, model_class, session = None, *args, **kwargs) -> OrgCustomer:
+    def _build(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
         customer_id_customer_instance = CustomerFactory.create(session=session)  # CustomerID
-        organization_id_organization_instance = OrganizationFactory.create(session=session)   # OrganizationID
-
+        organization_id_organization_instance = OrganizationFactory.create(session=session)  # OrganizationID
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
+# endset
         obj = model_class(*args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
+# endset
         # session.add(obj)
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session = None, *args, **kwargs) -> OrgCustomer:
+    def _create(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
         customer_id_customer_instance = CustomerFactory.create(session=session)  # CustomerID
-        organization_id_organization_instance = OrganizationFactory.create(session=session)   # OrganizationID
-
+        organization_id_organization_instance = OrganizationFactory.create(session=session)  # OrganizationID
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
+# endset
         obj = model_class(*args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
+# endset
         session.add(obj)
         session.commit()
         return obj
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> OrgCustomer:
         customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
-        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)   # OrganizationID
-
+        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  # OrganizationID
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
-        obj = OrgCustomerFactory.build(session = None, *args, **kwargs)
+# endset
+        obj = OrgCustomerFactory.build(session=None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
+# endset
         session.add(obj)
         await session.flush()
         return obj
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> OrgCustomer:
         customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
-        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)   # OrganizationID
-
+        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  # OrganizationID
+# endset
         kwargs["customer_id"] = customer_id_customer_instance.customer_id  # CustomerID
         kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
-        obj = OrgCustomerFactory.build(session = None, *args, **kwargs)
+# endset
+        obj = OrgCustomerFactory.build(session=None, *args, **kwargs)
         obj.customer_id = customer_id_customer_instance.customer_id  # CustomerID
         obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-
+# endset
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
+# endset
         # session.add(obj)
         # await session.flush()
         return obj

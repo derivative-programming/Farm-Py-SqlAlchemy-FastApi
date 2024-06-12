@@ -519,7 +519,7 @@ class TestOrganizationManager:
         # Delete organizations
         organization_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await organization_manager.delete_bulk(organization_ids)
+            result = await organization_manager.delete_bulk(organization_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestOrganizationManager:
         """
         organization_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await organization_manager.delete_bulk(organization_ids)
+            result = await organization_manager.delete_bulk(organization_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestOrganizationManager:
         with pytest.raises(Exception):
             await organization_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # name,
     # TacID
     @pytest.mark.asyncio
@@ -752,4 +752,4 @@ class TestOrganizationManager:
         with pytest.raises(Exception):
             await organization_manager.get_by_tac_id(invalid_id)
         await session.rollback()
-#endet
+# endset

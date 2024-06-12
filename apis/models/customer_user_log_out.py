@@ -14,7 +14,7 @@ from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.formatting import snake_to_camel
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field, UUID4
 import logging
 from apis.models.validation_error import ValidationErrorItem
@@ -36,13 +36,27 @@ class CustomerUserLogOutPostModelRequest(CamelModel):
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
+        """
+            #TODO add comment
+        """
         data = self.model_dump()
+        return data
     def to_dict_snake_serialized(self):
+        """
+            #TODO add comment
+        """
         data = json.loads(self.model_dump_json())
+        return data
     def to_dict_camel(self):
+        """
+            #TODO add comment
+        """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
+        """
+            #TODO add comment
+        """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class CustomerUserLogOutPostModelResponse(PostResponse):
@@ -52,11 +66,10 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
 
 # endset
 # endset
-    def load_flow_response(self, data:FlowCustomerUserLogOutResult):
+    def load_flow_response(self, data: FlowCustomerUserLogOutResult):
         """
             #TODO add comment
         """
-        placeholder = ""  # to avoid pass line
 
 # endset
     async def process_request(
@@ -72,7 +85,7 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
             logging.info("loading model...CustomerUserLogOutPostModelResponse")
             customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load(code=customer_code)
-            if(customer_bus_obj.get_customer_obj() is None):
+            if customer_bus_obj.get_customer_obj() is None:
                 logging.info("Invalid customer_code")
                 raise ValueError("Invalid customer_code")
             flow = FlowCustomerUserLogOut(session_context)
@@ -82,7 +95,7 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
 
 # endset
             )
-            self.load_flow_response(flowResponse);
+            self.load_flow_response(flowResponse)
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
@@ -95,5 +108,8 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
     def to_json(self):
+        """
+        #TODO add comment
+        """
         return self.model_dump_json()
 

@@ -14,7 +14,7 @@ from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -98,7 +98,7 @@ class TestDateGreaterThanFilterBusObj:
             #TODO add comment
         """
         await date_greater_than_filter_bus_obj.load(date_greater_than_filter_obj_instance=new_date_greater_than_filter)
-        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter,new_date_greater_than_filter) is True
+        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_id(
         self,
@@ -110,7 +110,7 @@ class TestDateGreaterThanFilterBusObj:
             #TODO add comment
         """
         await date_greater_than_filter_bus_obj.load(date_greater_than_filter_id=new_date_greater_than_filter.date_greater_than_filter_id)
-        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter,new_date_greater_than_filter)  is True
+        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_code(
         self,
@@ -122,7 +122,7 @@ class TestDateGreaterThanFilterBusObj:
             #TODO add comment
         """
         await date_greater_than_filter_bus_obj.load(code=new_date_greater_than_filter.code)
-        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter,new_date_greater_than_filter)  is True
+        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_json(
         self,
@@ -135,7 +135,7 @@ class TestDateGreaterThanFilterBusObj:
         """
         date_greater_than_filter_json = date_greater_than_filter_manager.to_json(new_date_greater_than_filter)
         await date_greater_than_filter_bus_obj.load(json_data=date_greater_than_filter_json)
-        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter,new_date_greater_than_filter)  is True
+        assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_dict(
         self,

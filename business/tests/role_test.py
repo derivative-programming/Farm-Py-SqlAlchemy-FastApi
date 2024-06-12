@@ -14,7 +14,7 @@ from business.role import RoleBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -97,7 +97,7 @@ class TestRoleBusObj:
             #TODO add comment
         """
         await role_bus_obj.load(role_obj_instance=new_role)
-        assert role_manager.is_equal(role_bus_obj.role,new_role) is True
+        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_id(
         self,
@@ -109,7 +109,7 @@ class TestRoleBusObj:
             #TODO add comment
         """
         await role_bus_obj.load(role_id=new_role.role_id)
-        assert role_manager.is_equal(role_bus_obj.role,new_role)  is True
+        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_code(
         self,
@@ -121,7 +121,7 @@ class TestRoleBusObj:
             #TODO add comment
         """
         await role_bus_obj.load(code=new_role.code)
-        assert role_manager.is_equal(role_bus_obj.role,new_role)  is True
+        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_json(
         self,
@@ -134,7 +134,7 @@ class TestRoleBusObj:
         """
         role_json = role_manager.to_json(new_role)
         await role_bus_obj.load(json_data=role_json)
-        assert role_manager.is_equal(role_bus_obj.role,new_role)  is True
+        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_dict(
         self,

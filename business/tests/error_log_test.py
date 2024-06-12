@@ -14,7 +14,7 @@ from business.error_log import ErrorLogBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -114,7 +114,7 @@ class TestErrorLogBusObj:
             #TODO add comment
         """
         await error_log_bus_obj.load(error_log_obj_instance=new_error_log)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log,new_error_log) is True
+        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_id(
         self,
@@ -126,7 +126,7 @@ class TestErrorLogBusObj:
             #TODO add comment
         """
         await error_log_bus_obj.load(error_log_id=new_error_log.error_log_id)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log,new_error_log)  is True
+        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_code(
         self,
@@ -138,7 +138,7 @@ class TestErrorLogBusObj:
             #TODO add comment
         """
         await error_log_bus_obj.load(code=new_error_log.code)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log,new_error_log)  is True
+        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_json(
         self,
@@ -151,7 +151,7 @@ class TestErrorLogBusObj:
         """
         error_log_json = error_log_manager.to_json(new_error_log)
         await error_log_bus_obj.load(json_data=error_log_json)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log,new_error_log)  is True
+        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_dict(
         self,

@@ -2,25 +2,24 @@
 """
     #TODO add comment
 """
-import json
-from business.plant import PlantBusObj
-from datetime import date, datetime
 import uuid
+import json
+from datetime import date, datetime
+from sqlalchemy import String
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from decimal import Decimal
 from flows.base.plant_user_details_init_report import BaseFlowPlantUserDetailsInitReport
 from models import Plant
 from flows.base import LogSeverity
+from business.plant import PlantBusObj
 from helpers import SessionContext
 from helpers import ApiToken
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
 import business
-from sqlalchemy.ext.asyncio import AsyncSession
-from services.db_config import DB_DIALECT,generate_uuid
-# from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from decimal import Decimal
+from services.db_config import DB_DIALECT, generate_uuid
 class FlowPlantUserDetailsInitReportResult():
     """
     #TODO add comment
@@ -46,8 +45,12 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
     #TODO add comment
     """
     def __init__(self, session_context: SessionContext):
+        """
+        #TODO add comment
+        """
         super(FlowPlantUserDetailsInitReport, self).__init__(session_context)
-    async def process(self,
+    async def process(
+        self,
         plant_bus_obj: PlantBusObj,
 
 # endset
@@ -60,8 +63,8 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
 # endset
         )
         super()._throw_queued_validation_errors()
-        land_code_output:uuid = uuid.UUID(int=0)
-        tac_code_output:uuid = uuid.UUID(int=0)
+        land_code_output: uuid = uuid.UUID(int=0)
+        tac_code_output: uuid = uuid.UUID(int=0)
 # endset
         # TODO: add flow logic
 

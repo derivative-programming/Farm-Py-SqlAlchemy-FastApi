@@ -14,7 +14,7 @@ from business.customer_role import CustomerRoleBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -92,7 +92,7 @@ class TestCustomerRoleBusObj:
             #TODO add comment
         """
         await customer_role_bus_obj.load(customer_role_obj_instance=new_customer_role)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role,new_customer_role) is True
+        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_id(
         self,
@@ -104,7 +104,7 @@ class TestCustomerRoleBusObj:
             #TODO add comment
         """
         await customer_role_bus_obj.load(customer_role_id=new_customer_role.customer_role_id)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role,new_customer_role)  is True
+        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_code(
         self,
@@ -116,7 +116,7 @@ class TestCustomerRoleBusObj:
             #TODO add comment
         """
         await customer_role_bus_obj.load(code=new_customer_role.code)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role,new_customer_role)  is True
+        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_json(
         self,
@@ -129,7 +129,7 @@ class TestCustomerRoleBusObj:
         """
         customer_role_json = customer_role_manager.to_json(new_customer_role)
         await customer_role_bus_obj.load(json_data=customer_role_json)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role,new_customer_role)  is True
+        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_dict(
         self,

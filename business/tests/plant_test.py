@@ -16,7 +16,7 @@ from business.plant import PlantBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -141,8 +141,7 @@ class TestPlantBusObj:
 
         await plant_bus_obj.load(plant_obj_instance=new_plant)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant,new_plant) is True
-
+        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_id(
@@ -157,7 +156,7 @@ class TestPlantBusObj:
 
         await plant_bus_obj.load(plant_id=new_plant.plant_id)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant,new_plant)  is True
+        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_code(
@@ -172,7 +171,7 @@ class TestPlantBusObj:
 
         await plant_bus_obj.load(code=new_plant.code)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant,new_plant)  is True
+        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_json(
@@ -189,7 +188,7 @@ class TestPlantBusObj:
 
         await plant_bus_obj.load(json_data=plant_json)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant,new_plant)  is True
+        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_dict(

@@ -9,6 +9,10 @@ import re
 
 
 def to_camel(string: str) -> str:
+    """
+        #TODO add comment
+    """
+
     # Split the string into words and combine them capitalizing the first letter of each word
     # except for the first word.
     return ''.join(word.capitalize() if i else word for i, word in enumerate(string.split('_')))
@@ -16,6 +20,10 @@ def to_camel(string: str) -> str:
 
 # CamelCase to snake_case converter
 def to_snake(string: str) -> str:
+    """
+        #TODO add comment
+    """
+
     string = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', string)
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', string).lower()
 
@@ -24,6 +32,7 @@ class CamelModel(BaseModel):
     """
     #TODO add comment
     """
+
     class Config:
         """
         #TODO add comment
@@ -39,6 +48,7 @@ class SnakeModel(BaseModel):
     """
     #TODO add comment
     """
+
     class Config:
         """
         #TODO add comment

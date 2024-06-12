@@ -11,9 +11,10 @@ from apis.models import validation_error
 from helpers import TypeConversion
 from flows.customer_user_log_out_init_obj_wf import FlowCustomerUserLogOutInitObjWFResult, FlowCustomerUserLogOutInitObjWF
 from helpers import SessionContext
+from helpers.formatting import snake_to_camel
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
 import logging
@@ -57,7 +58,7 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
                 "loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")
             customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load(code=customer_code)
-            if(customer_bus_obj.get_customer_obj() is None):
+            if customer_bus_obj.get_customer_obj() is None:
                 logging.info("Invalid customer_code")
                 raise ValueError("Invalid customer_code")
             flow = FlowCustomerUserLogOutInitObjWF(session_context)
@@ -74,6 +75,9 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(validation_error(key, ve.error_dict[key]))
+                val_error = ValidationErrorItem()
+                val_error.property = snake_to_camel(key)
+                val_error.message = ve.error_dict[key]
+                response.validation_errors.append(val_error)
         return response
 

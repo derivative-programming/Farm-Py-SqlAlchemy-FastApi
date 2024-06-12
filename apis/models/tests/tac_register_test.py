@@ -9,7 +9,6 @@ import pytest
 import pytest_asyncio
 import time
 from typing import AsyncGenerator
-from decimal import Decimal
 from datetime import datetime, date
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
@@ -26,7 +25,7 @@ from ..factory.tac_register import TacRegisterPostModelRequestFactory
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
@@ -54,7 +53,7 @@ class TestTacRegisterPostModelResponse:
             confirm_password: str = "",
             first_name: str = "",
             last_name: str = "",
-            ):
+        ):
             return FlowTacRegisterResult()
         with patch.object(FlowTacRegister, 'process', new_callable=AsyncMock) as mock_method:
             mock_method.side_effect = mock_process
@@ -66,7 +65,7 @@ class TestTacRegisterPostModelResponse:
                 session_context=session_context,
                 tac_code=tac.code,
                 request=request_instance
-                )
+            )
             assert response_instance.success is True
             mock_method.assert_awaited()
 

@@ -45,6 +45,9 @@ class PacUserLandListRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
         logging.info(
             'PacUserLandListRouter.request_get_init start. pacCode:%s',
             pac_code)
@@ -98,6 +101,9 @@ class PacUserLandListRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
         logging.info(
             'PacUserLandListRouter.request_get_with_id start. pacCode:%s',
             pac_code)
@@ -132,7 +138,11 @@ class PacUserLandListRouter(BaseRouter):
                     await session.commit()
                 else:
                     await session.rollback()
-        logging.info('PacUserLandListRouter.submit get result:$s', response.model_dump_json())
+        response_data = response.model_dump_json()
+        logging.info(
+            "PacUserLandListRouter.submit get result:%s",
+            response_data
+        )
         return response
 
     @staticmethod
@@ -147,8 +157,9 @@ class PacUserLandListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         logging.info(
-            'PacUserLandListRouter.request_get_with_id_to_csv start. pacCode:%s',
-             pac_code)
+            "PacUserLandListRouter.request_get_with_id_to_csv start. pacCode:%s",
+                pac_code
+        )
         auth_dict = BaseRouter.implementation_check(
             PacUserLandListRouterConfig.is_get_to_csv_available)
         response = api_models.PacUserLandListGetModelResponse()
@@ -168,7 +179,8 @@ class PacUserLandListRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 pac_code = session_context.check_context_code(
                     "PacCode",
-                    pac_code)
+                    pac_code
+                )
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model

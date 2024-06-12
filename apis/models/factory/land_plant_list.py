@@ -19,6 +19,7 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
     """
     #TODO add comment
     """
+
     class Meta:
         """
         #TODO add comment

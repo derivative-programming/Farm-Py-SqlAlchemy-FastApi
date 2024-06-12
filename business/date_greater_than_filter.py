@@ -12,7 +12,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 # from business.pac import PacBusObj  # PacID
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from managers import PacManager as PacIDManager  # PacID
 from managers import DateGreaterThanFilterManager
 import managers as managers_and_enums
@@ -24,14 +24,12 @@ class DateGreaterThanFilterSessionNotFoundError(Exception):
     """
     #TODO add comment
     """
-    pass
 
 
 class DateGreaterThanFilterInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 
 
 # Conditionally set the UUID column type
@@ -39,7 +37,7 @@ if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)
 elif DB_DIALECT == 'mssql':
     UUIDType = UNIQUEIDENTIFIER
-else:  #This will cover SQLite, MySQL, and other databases
+else:  # This will cover SQLite, MySQL, and other databases
     UUIDType = String(36)
 
 
@@ -49,33 +47,38 @@ class DateGreaterThanFilterBusObj:
     """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
-            raise DateGreaterThanFilterSessionNotFoundError(f"session required")
+            raise DateGreaterThanFilterSessionNotFoundError(
+                "session required"
+            )
         self._session_context = session_context
         self.date_greater_than_filter = DateGreaterThanFilter()
 
     @property
     def date_greater_than_filter_id(self):
         return self.date_greater_than_filter.date_greater_than_filter_id
+
     @date_greater_than_filter_id.setter
     def code(self, value: int):
         if not isinstance(value, int):
             raise ValueError("date_greater_than_filter_id must be a int.")
         self.date_greater_than_filter.date_greater_than_filter_id = value
-    
+
     # code
     @property
     def code(self):
         return self.date_greater_than_filter.code
+
     @code.setter
     def code(self, value: UUIDType):
-        #if not isinstance(value, UUIDType):
-        #raise ValueError("code must be a UUID.")
+        # if not isinstance(value, UUIDType):
+        # raise ValueError("code must be a UUID.")
         self.date_greater_than_filter.code = value
 
     # last_change_code
     @property
     def last_change_code(self):
         return self.date_greater_than_filter.last_change_code
+
     @last_change_code.setter
     def last_change_code(self, value: int):
         if not isinstance(value, int):
@@ -86,6 +89,7 @@ class DateGreaterThanFilterBusObj:
     @property
     def insert_user_id(self):
         return self.date_greater_than_filter.insert_user_id
+
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         if not isinstance(value, uuid.UUID):
@@ -96,6 +100,7 @@ class DateGreaterThanFilterBusObj:
     @property
     def last_update_user_id(self):
         return self.date_greater_than_filter.last_update_user_id
+
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         if not isinstance(value, uuid.UUID):
@@ -106,6 +111,7 @@ class DateGreaterThanFilterBusObj:
     @property
     def day_count(self):
         return self.date_greater_than_filter.day_count
+
     @day_count.setter
     def day_count(self, value):
         assert isinstance(value, int), "day_count must be an integer"
@@ -175,7 +181,7 @@ class DateGreaterThanFilterBusObj:
     @property
     def pac_id(self):
         return self.date_greater_than_filter.pac_id
-    
+
     @pac_id.setter
     def pac_id(self, value):
         assert isinstance(value, int) or value is None, "pac_id must be an integer or None"
@@ -184,7 +190,7 @@ class DateGreaterThanFilterBusObj:
     @property
     def pac_code_peek(self):
         return self.date_greater_than_filter.pac_code_peek
-    
+
     @pac_code_peek.setter
     def pac_code_peek(self, value):
         assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
@@ -194,7 +200,7 @@ class DateGreaterThanFilterBusObj:
     @property
     def insert_utc_date_time(self):
         return self.date_greater_than_filter.insert_utc_date_time
-    
+
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "insert_utc_date_time must be a datetime object or None"
@@ -204,7 +210,7 @@ class DateGreaterThanFilterBusObj:
     @property
     def last_update_utc_date_time(self):
         return self.date_greater_than_filter.last_update_utc_date_time
-    
+
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         assert isinstance(value, datetime) or value is None, "last_update_utc_date_time must be a datetime object or None"
@@ -278,8 +284,8 @@ class DateGreaterThanFilterBusObj:
 ##GENTrainingBlock[caseLookupEnums]End
 
     def is_valid(self):
-        return (self.date_greater_than_filter is not None)
-    
+        return self.date_greater_than_filter is not None
+
     async def refresh(self):
         date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         self.date_greater_than_filter = await date_greater_than_filter_manager.refresh(self.date_greater_than_filter)
@@ -287,11 +293,11 @@ class DateGreaterThanFilterBusObj:
     def to_dict(self):
         date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         return date_greater_than_filter_manager.to_dict(self.date_greater_than_filter)
-    
+
     def to_json(self):
         date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
         return date_greater_than_filter_manager.to_json(self.date_greater_than_filter)
-    
+
     async def save(self):
         if self.date_greater_than_filter.date_greater_than_filter_id is not None and self.date_greater_than_filter.date_greater_than_filter_id > 0:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
@@ -304,10 +310,10 @@ class DateGreaterThanFilterBusObj:
         if self.date_greater_than_filter.date_greater_than_filter_id > 0:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = await date_greater_than_filter_manager.delete(self.date_greater_than_filter.date_greater_than_filter_id)
-            
+
     def get_date_greater_than_filter_obj(self) -> DateGreaterThanFilter:
         return self.date_greater_than_filter
-    
+
     def is_equal(
         self,
         date_greater_than_filter: DateGreaterThanFilter
@@ -330,13 +336,13 @@ class DateGreaterThanFilterBusObj:
 
     def get_obj(self) -> DateGreaterThanFilter:
         return self.date_greater_than_filter
-    
+
     def get_object_name(self) -> str:
         return "date_greater_than_filter"
-    
+
     def get_id(self) -> int:
         return self.date_greater_than_filter_id
-    
+
     # dayCount,
     # description,
     # displayOrder,
@@ -348,6 +354,6 @@ class DateGreaterThanFilterBusObj:
     #     return await self.get_pac_id_rel_bus_obj()
     async def get_parent_name(self) -> str:
         return 'Pac'
-    
+
     async def get_parent_code(self) -> uuid.UUID:
         return self.pac_code_peek

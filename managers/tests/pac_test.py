@@ -519,7 +519,7 @@ class TestPacManager:
         # Delete pacs
         pac_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await pac_manager.delete_bulk(pac_ids)
+            result = await pac_manager.delete_bulk(pac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestPacManager:
         """
         pac_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await pac_manager.delete_bulk(pac_ids)
+            result = await pac_manager.delete_bulk(pac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,10 +712,10 @@ class TestPacManager:
         with pytest.raises(Exception):
             await pac_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # description,
     # displayOrder,
     # isActive,
     # lookupEnumName,
     # name,
-#endet
+# endset

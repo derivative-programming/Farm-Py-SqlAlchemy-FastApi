@@ -10,9 +10,15 @@ from helpers import ApiToken
 
 
 class BaseRouter():
+    """
+        #TODO add comment
+    """
 
     @staticmethod
     def implementation_check(is_implemented: bool):
+        """
+            #TODO add comment
+        """
         if is_implemented is True:
             return
         raise HTTPException(
@@ -21,6 +27,9 @@ class BaseRouter():
 
     @staticmethod
     def authorization_check(is_public: bool, api_key: str) -> dict:
+        """
+            #TODO add comment
+        """
         if is_public is True:
             return dict()
         logging.info("Authorization Required...")

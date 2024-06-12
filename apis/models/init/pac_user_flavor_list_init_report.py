@@ -11,9 +11,10 @@ from apis.models import validation_error
 from helpers import TypeConversion
 from flows.pac_user_flavor_list_init_report import FlowPacUserFlavorListInitReportResult, FlowPacUserFlavorListInitReport
 from helpers import SessionContext
+from helpers.formatting import snake_to_camel
 from business.pac import PacBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from helpers.pydantic_serialization import CamelModel,SnakeModel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
 import logging
@@ -52,7 +53,7 @@ class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
                 "loading model...PacUserFlavorListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session_context)
             await pac_bus_obj.load(code=pac_code)
-            if(pac_bus_obj.get_pac_obj() is None):
+            if pac_bus_obj.get_pac_obj() is None:
                 logging.info("Invalid pac_code")
                 raise ValueError("Invalid pac_code")
             flow = FlowPacUserFlavorListInitReport(session_context)
@@ -69,6 +70,9 @@ class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
-                response.validation_errors.append(validation_error(key, ve.error_dict[key]))
+                val_error = ValidationErrorItem()
+                val_error.property = snake_to_camel(key)
+                val_error.message = ve.error_dict[key]
+                response.validation_errors.append(val_error)
         return response
 

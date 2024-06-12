@@ -519,7 +519,7 @@ class TestRoleManager:
         # Delete roles
         role_ids = [1, 2]
         with pytest.raises(Exception):
-           result = await role_manager.delete_bulk(role_ids)
+            result = await role_manager.delete_bulk(role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -546,7 +546,7 @@ class TestRoleManager:
         """
         role_ids = ["1", 2]
         with pytest.raises(Exception):
-           result = await role_manager.delete_bulk(role_ids)
+            result = await role_manager.delete_bulk(role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -712,7 +712,7 @@ class TestRoleManager:
         with pytest.raises(Exception):
             await role_manager.exists(invalid_id)
         await session.rollback()
-#endet
+# endset
     # description,
     # displayOrder,
     # isActive,
@@ -756,4 +756,4 @@ class TestRoleManager:
         with pytest.raises(Exception):
             await role_manager.get_by_pac_id(invalid_id)
         await session.rollback()
-#endet
+# endset

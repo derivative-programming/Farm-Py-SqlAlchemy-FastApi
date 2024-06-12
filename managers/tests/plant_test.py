@@ -65,7 +65,7 @@ class TestPlantManager:
         assert isinstance(plant, Plant)
 
         # Assert that the attributes of the plant match our mock data
-        assert plant.code == mock_data["code"] 
+        assert plant.code == mock_data["code"]
 
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
@@ -391,7 +391,6 @@ class TestPlantManager:
 
         await session.rollback()
 
-
     @pytest.mark.asyncio
     async def test_get_list(
         self,
@@ -428,7 +427,6 @@ class TestPlantManager:
         json_data = plant_manager.to_json(plant)
 
         assert json_data is not None
-
 
     @pytest.mark.asyncio
     async def test_to_dict(
@@ -511,7 +509,6 @@ class TestPlantManager:
                 str(plant_manager._session_context.customer_code))
 
             assert fetched_plant.plant_id == updated_plant.plant_id
-
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -674,7 +671,7 @@ class TestPlantManager:
         plant_ids = [1, 2]
 
         with pytest.raises(Exception):
-           result = await plant_manager.delete_bulk(plant_ids)
+            result = await plant_manager.delete_bulk(plant_ids)
 
         await session.rollback()
 
@@ -708,7 +705,7 @@ class TestPlantManager:
         plant_ids = ["1", 2]
 
         with pytest.raises(Exception):
-           result = await plant_manager.delete_bulk(plant_ids)
+            result = await plant_manager.delete_bulk(plant_ids)
 
         await session.rollback()
 
@@ -917,7 +914,7 @@ class TestPlantManager:
             await plant_manager.exists(invalid_id)
 
         await session.rollback()
-#endet
+# endset
 
     # isDeleteAllowed,
     # isEditAllowed,
@@ -1042,4 +1039,4 @@ class TestPlantManager:
     # someTextVal,
     # someUniqueidentifierVal,
     # someVarCharVal,
-#endet
+# endset

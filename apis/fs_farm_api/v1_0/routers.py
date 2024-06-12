@@ -6,66 +6,51 @@
 
 from fastapi import APIRouter
 from .endpoints.land_plant_list import (
-    LandPlantListRouter
-    )
+    LandPlantListRouter)
 from .endpoints.land_add_plant import (  # LandAddPlant
-    LandAddPlantRouter
-    )
+    LandAddPlantRouter)
 from .endpoints.customer_user_log_out import (  # CustomerUserLogOut
-    CustomerUserLogOutRouter
-    )
+    CustomerUserLogOutRouter)
 from .endpoints.pac_user_date_greater_than_filter_list import (  # PacUserDateGreaterThanFilterList
-    PacUserDateGreaterThanFilterListRouter
-    )
+    PacUserDateGreaterThanFilterListRouter)
 from .endpoints.pac_user_flavor_list import (  # PacUserFlavorList
-    PacUserFlavorListRouter
-    )
+    PacUserFlavorListRouter)
 from .endpoints.pac_user_land_list import (  # PacUserLandList
-    PacUserLandListRouter
-    )
+    PacUserLandListRouter)
 from .endpoints.pac_user_role_list import (  # PacUserRoleList
-    PacUserRoleListRouter
-    )
+    PacUserRoleListRouter)
 from .endpoints.pac_user_tac_list import (  # PacUserTacList
-    PacUserTacListRouter
-    )
+    PacUserTacListRouter)
 from .endpoints.pac_user_tri_state_filter_list import (  # PacUserTriStateFilterList
-    PacUserTriStateFilterListRouter
-    )
+    PacUserTriStateFilterListRouter)
 from .endpoints.plant_user_details import (  # PlantUserDetails
-    PlantUserDetailsRouter
-    )
+    PlantUserDetailsRouter)
 from .endpoints.tac_login import (  # TacLogin
-    TacLoginRouter
-    )
+    TacLoginRouter)
 from .endpoints.tac_register import (  # TacRegister
-    TacRegisterRouter
-    )
+    TacRegisterRouter)
 from .endpoints.tac_farm_dashboard import (  # TacFarmDashboard
-    TacFarmDashboardRouter
-    )
+    TacFarmDashboardRouter)
 from .endpoints.plant_user_delete import (  # PlantUserDelete
-    PlantUserDeleteRouter
-    )
+    PlantUserDeleteRouter)
 from .endpoints.plant_user_property_random_update import (  # PlantUserPropertyRandomUpdate
-    PlantUserPropertyRandomUpdateRouter
-    )
+    PlantUserPropertyRandomUpdateRouter)
 from .endpoints.customer_build_temp_api_key import (  # CustomerBuildTempApiKey
-    CustomerBuildTempApiKeyRouter
-    )
+    CustomerBuildTempApiKeyRouter)
 from .endpoints.error_log_config_resolve_error_log import (  # ErrorLogConfigResolveErrorLog
-    ErrorLogConfigResolveErrorLogRouter
-    )
+    ErrorLogConfigResolveErrorLogRouter)
 from .endpoints.land_user_plant_multi_select_to_editable import (  # LandUserPlantMultiSelectToEditable
-    LandUserPlantMultiSelectToEditableRouter
-    )
+    LandUserPlantMultiSelectToEditableRouter)
 from .endpoints.land_user_plant_multi_select_to_not_editable import (  # LandUserPlantMultiSelectToNotEditable
-    LandUserPlantMultiSelectToNotEditableRouter
-    )
+    LandUserPlantMultiSelectToNotEditableRouter)
 
 fs_farm_api_v1_0_router = APIRouter()
 
+
 def include_all_routers():
+    """
+    #TODO add comment
+    """
 
     fs_farm_api_v1_0_router.include_router(LandPlantListRouter.router)  # LandPlantList
     fs_farm_api_v1_0_router.include_router(LandAddPlantRouter.router)  # LandAddPlant
@@ -86,5 +71,6 @@ def include_all_routers():
     fs_farm_api_v1_0_router.include_router(ErrorLogConfigResolveErrorLogRouter.router)  # ErrorLogConfigResolveErrorLog
     fs_farm_api_v1_0_router.include_router(LandUserPlantMultiSelectToEditableRouter.router)  # LandUserPlantMultiSelectToEditable
     fs_farm_api_v1_0_router.include_router(LandUserPlantMultiSelectToNotEditableRouter.router)  # LandUserPlantMultiSelectToNotEditable
+
 
 include_all_routers()

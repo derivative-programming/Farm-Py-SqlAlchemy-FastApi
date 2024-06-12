@@ -14,7 +14,7 @@ from business.organization import OrganizationBusObj
 from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT,generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from services.logging_config import get_logger
 import managers as managers_and_enums
@@ -91,7 +91,7 @@ class TestOrganizationBusObj:
             #TODO add comment
         """
         await organization_bus_obj.load(organization_obj_instance=new_organization)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization) is True
+        assert organization_manager.is_equal(organization_bus_obj.organization, new_organization) is True
     @pytest.mark.asyncio
     async def test_load_with_organization_id(
         self,
@@ -103,7 +103,7 @@ class TestOrganizationBusObj:
             #TODO add comment
         """
         await organization_bus_obj.load(organization_id=new_organization.organization_id)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
+        assert organization_manager.is_equal(organization_bus_obj.organization, new_organization) is True
     @pytest.mark.asyncio
     async def test_load_with_organization_code(
         self,
@@ -115,7 +115,7 @@ class TestOrganizationBusObj:
             #TODO add comment
         """
         await organization_bus_obj.load(code=new_organization.code)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
+        assert organization_manager.is_equal(organization_bus_obj.organization, new_organization) is True
     @pytest.mark.asyncio
     async def test_load_with_organization_json(
         self,
@@ -128,7 +128,7 @@ class TestOrganizationBusObj:
         """
         organization_json = organization_manager.to_json(new_organization)
         await organization_bus_obj.load(json_data=organization_json)
-        assert organization_manager.is_equal(organization_bus_obj.organization,new_organization)  is True
+        assert organization_manager.is_equal(organization_bus_obj.organization, new_organization) is True
     @pytest.mark.asyncio
     async def test_load_with_organization_dict(
         self,
