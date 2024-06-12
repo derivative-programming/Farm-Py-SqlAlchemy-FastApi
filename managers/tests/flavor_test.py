@@ -3,30 +3,22 @@
     #TODO add comment
 """
 import uuid
+import logging
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import String
+from sqlalchemy.future import select
 import pytest
 import pytest_asyncio
-from sqlalchemy.ext.asyncio import AsyncSession
 from helpers.session_context import SessionContext
 from models import Flavor
 import models
 from models.factory import FlavorFactory
 from managers.flavor import FlavorManager
 from models.serialization_schema.flavor import FlavorSchema
-from services.db_config import DB_DIALECT
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import DB_DIALECT, generate_uuid
-from sqlalchemy import String
-from sqlalchemy.future import select
-import logging
-DB_DIALECT = "sqlite"
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+DB_DIALECT = "sqlite"  # noqa: F811
 class TestFlavorManager:
     """
     #TODO add comment
@@ -34,13 +26,12 @@ class TestFlavorManager:
     @pytest_asyncio.fixture(scope="function")
     async def flavor_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = uuid.uuid4()
+        session_context.customer_code = generate_uuid()
         return FlavorManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         """
             #TODO add comment
@@ -140,8 +131,7 @@ class TestFlavorManager:
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         """
             #TODO add comment
@@ -166,8 +156,7 @@ class TestFlavorManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         """
             #TODO add comment
@@ -524,8 +513,7 @@ class TestFlavorManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         """
             #TODO add comment
@@ -564,8 +552,7 @@ class TestFlavorManager:
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         """
             #TODO add comment
@@ -618,8 +605,7 @@ class TestFlavorManager:
     @pytest.mark.asyncio
     async def test_get_sorted_list_empty_database(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         """
             #TODO add comment
@@ -691,8 +677,7 @@ class TestFlavorManager:
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_flavor(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         """
             #TODO add comment
@@ -740,8 +725,7 @@ class TestFlavorManager:
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
-        flavor_manager: FlavorManager,
-        session: AsyncSession
+        flavor_manager: FlavorManager
     ):
         non_existent_id = 999
         fetched_flavors = await flavor_manager.get_by_pac_id(non_existent_id)

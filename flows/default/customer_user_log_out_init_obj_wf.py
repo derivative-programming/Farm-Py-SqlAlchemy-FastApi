@@ -61,7 +61,7 @@ class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
 # endset
         )
         super()._throw_queued_validation_errors()
-        tac_code_output: uuid = uuid.UUID(int=0)
+        tac_code_output: uuid.UUID = uuid.UUID(int=0)
 # endset
         # TODO: add flow logic
 

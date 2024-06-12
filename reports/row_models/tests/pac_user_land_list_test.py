@@ -33,7 +33,7 @@ class TestReportItemPacUserLandList:
             "land_lookup_enum_name": "test",
             "land_name": "test",
             "pac_name": "test",
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemPacUserLandList(**data)
         report_item = ReportItemPacUserLandList()

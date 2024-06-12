@@ -27,9 +27,9 @@ class ReportManagerTacFarmDashboard():
             )
     async def generate(
         self,
-        tac_code: uuid,
+        tac_code: uuid.UUID,
 
-# endset
+# endset  # noqa: E122
         page_number: int = 1,
         item_count_per_page: int = 1,
         order_by_column_name: str = "",
@@ -50,7 +50,7 @@ class ReportManagerTacFarmDashboard():
             raise ReportRequestValidationError(
                 "item_count_per_page",
                 "Minimum count per page is 1"
-                )
+            )
         if page_number <= 0:
             raise ReportRequestValidationError("page_number",
                                                "Minimum page number is 1")
@@ -58,20 +58,21 @@ class ReportManagerTacFarmDashboard():
         data_list = await provider.generate_list(
             tac_code,
 
-# endset
+# endset  # noqa: E122
             page_number,
             item_count_per_page,
             order_by_column_name,
             order_by_descending,
-            )
+        )
         result = list()
         for data_item in data_list:
             report_item: ReportItemTacFarmDashboard = ReportItemTacFarmDashboard()
             report_item.load_data_provider_dict(data_item)
             result.append(report_item)
         logging.info(
-                "ReportManagerTacFarmDashboard.generate Results: %s",
-                json.dumps(data_list))
+            "ReportManagerTacFarmDashboard.generate Results: %s",
+            json.dumps(data_list)
+        )
         logging.info('ReportManagerTacFarmDashboard.generate End')
         return result
     async def build_csv(self,
@@ -93,6 +94,26 @@ class ReportManagerTacFarmDashboard():
             #TODO add comment
         """
         return value.lower() in ['true', '1', 'yes']
+    def _convert_value(self, value, attr_type):
+        """
+            #TODO add comment
+        """
+        if attr_type == int:
+            return int(value)
+        elif attr_type == bool:
+            return self._parse_bool(value)
+        elif attr_type == float:
+            return float(value)
+        elif attr_type == Decimal:
+            return Decimal(value)
+        elif attr_type == datetime:
+            return datetime.fromisoformat(value)
+        elif attr_type == date:
+            return date.fromisoformat(value)
+        elif attr_type == uuid.UUID:
+            return uuid.UUID(value)
+        else:
+            return value
     async def read_csv(self, file_name: str) -> List[ReportItemTacFarmDashboard]:
         """
             #TODO add comment
@@ -108,22 +129,24 @@ class ReportManagerTacFarmDashboard():
                             # Convert the value to the correct type
                             # based on the attribute
                             attr_type = type(getattr(obj, key))
-                            if attr_type == int:
-                                setattr(obj, key, int(value))
-                            elif attr_type == bool:
-                                setattr(obj, key, self._parse_bool(value))
-                            elif attr_type == float:
-                                setattr(obj, key, float(value))
-                            elif attr_type == Decimal:
-                                setattr(obj, key, Decimal(value))
-                            elif attr_type == datetime:
-                                setattr(obj, key, datetime.fromisoformat(value))
-                            elif attr_type == date:
-                                setattr(obj, key, date.fromisoformat(value))
-                            elif attr_type == uuid.UUID:
-                                setattr(obj, key, uuid.UUID(value))
-                            else:
-                                setattr(obj, key, value)
+                            converted_value = self._convert_value(value, attr_type)
+                            setattr(obj, key, converted_value)
+                            # if attr_type == int:
+                            #     setattr(obj, key, int(value))
+                            # elif attr_type == bool:
+                            #     setattr(obj, key, self._parse_bool(value))
+                            # elif attr_type == float:
+                            #     setattr(obj, key, float(value))
+                            # elif attr_type == Decimal:
+                            #     setattr(obj, key, Decimal(value))
+                            # elif attr_type == datetime:
+                            #     setattr(obj, key, datetime.fromisoformat(value))
+                            # elif attr_type == date:
+                            #     setattr(obj, key, date.fromisoformat(value))
+                            # elif attr_type == uuid.UUID:
+                            #     setattr(obj, key, uuid.UUID(value))
+                            # else:
+                            #     setattr(obj, key, value)
                 objects.append(obj)
         return objects
 

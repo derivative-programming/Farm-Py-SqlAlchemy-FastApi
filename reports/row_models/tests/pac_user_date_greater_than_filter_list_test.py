@@ -33,7 +33,7 @@ class TestReportItemPacUserDateGreaterThanFilterList:
             "date_greater_than_filter_is_active": True,
             "date_greater_than_filter_lookup_enum_name": "test",
             "date_greater_than_filter_name": "test",
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemPacUserDateGreaterThanFilterList(**data)
         report_item = ReportItemPacUserDateGreaterThanFilterList()

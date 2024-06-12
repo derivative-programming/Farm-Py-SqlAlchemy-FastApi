@@ -33,7 +33,7 @@ class TestReportItemPacUserRoleList:
             "role_lookup_enum_name": "test",
             "role_name": "test",
             "pac_name": "test",
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemPacUserRoleList(**data)
         report_item = ReportItemPacUserRoleList()

@@ -6,6 +6,7 @@
 
 import traceback
 import logging
+import uuid
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 from fastapi.security import APIKeyHeader
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -47,12 +48,20 @@ class LandAddPlantRouter(BaseRouter):
         summary="Land Add Plant Init Page"
     )
     async def request_get_init(
-        land_code: str = Path(..., description="Land Code"),
+        land_code: uuid.UUID = Path(..., description="Land Code"),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+            Initialize the Land Add Plant process.
+
+            Parameters:
+            - land_code: The code of the land to add a plant.
+            - session: Database session dependency.
+            - api_key: API key for authorization.
+
+            Returns:
+            - response: JSON response with initialization details.
         """
         logging.info(
             'LandAddPlantRouter.request_get_init start. landCode:%s',
@@ -68,9 +77,12 @@ class LandAddPlantRouter(BaseRouter):
         async with session:
             try:
                 logging.info("Start session...")
+
                 session_context = SessionContext(auth_dict, session)
+
                 land_code = session_context.check_context_code(
                     "LandCode", land_code)
+                
                 init_request = (
                     api_init_models.LandAddPlantInitObjWFGetInitModelRequest()
                 )
@@ -80,14 +92,14 @@ class LandAddPlantRouter(BaseRouter):
                     response
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.exception("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.info("Exception occurred")
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
@@ -113,7 +125,7 @@ class LandAddPlantRouter(BaseRouter):
         response_model=api_models.LandAddPlantPostModelResponse,
         summary="Land Add Plant Business Flow")
     async def request_post_with_id(
-        land_code: str,
+        land_code: uuid.UUID,
         request_model: api_models.LandAddPlantPostModelRequest,
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -152,7 +164,7 @@ class LandAddPlantRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.exception("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -160,7 +172,7 @@ class LandAddPlantRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.info("Exception occurred")
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

@@ -151,11 +151,15 @@ class RoleManager:
 #         else:
 #             query = select(Role)
         query = select(
-            Role
-            , Pac  # pac_id
-            )
+            Role,
+            Pac,  # pac_id
+        )
 # endset
-        query = query.outerjoin(Pac, and_(Role.pac_id == Pac.pac_id, Role.pac_id != 0))
+        query = query.outerjoin(  # pac_id
+            Pac,
+            and_(Role.pac_id == Pac.pac_id,
+                 Role.pac_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[Role]:
@@ -232,8 +236,8 @@ class RoleManager:
         logging.info("RoleManager.delete %s", role_id)
         if not isinstance(role_id, int):
             raise TypeError(
-                "The role_id must be an integer, got %s instead.",
-                type(role_id))
+                f"The role_id must be an integer, got {type(role_id)} instead."
+            )
         role = await self.get_by_id(role_id)
         if not role:
             raise RoleNotFoundError(f"Role with ID {role_id} not found!")
@@ -299,9 +303,9 @@ class RoleManager:
         await self._session_context.session.flush()
         return roles
     async def update_bulk(
-            self,
-            role_updates: List[Dict[int, Dict]]
-            ) -> List[Role]:
+        self,
+        role_updates: List[Dict[int, Dict]]
+    ) -> List[Role]:
         """
         #TODO add comment
         """
@@ -311,8 +315,8 @@ class RoleManager:
             role_id = update.get("role_id")
             if not isinstance(role_id, int):
                 raise TypeError(
-                    "The role_id must be an integer, got %s instead.",
-                    type(role_id))
+                    f"The role_id must be an integer, got {type(role_id)} instead."
+                )
             if not role_id:
                 continue
             logging.info("RoleManager.update_bulk role_id:%s", role_id)
@@ -337,13 +341,13 @@ class RoleManager:
         for role_id in role_ids:
             if not isinstance(role_id, int):
                 raise TypeError(
-                    "The role_id must be an integer, got %s instead.",
-                    type(role_id))
+                    f"The role_id must be an integer, got {type(role_id)} instead."
+                )
             role = await self.get_by_id(role_id)
             if not role:
                 raise RoleNotFoundError(
-                    "Role with ID %s not found!",
-                    role_id)
+                    f"Role with ID {role_id} not found!"
+                )
             if role:
                 await self._session_context.session.delete(role)
         await self._session_context.session.flush()
@@ -384,8 +388,8 @@ class RoleManager:
         logging.info("RoleManager.exists %s", role_id)
         if not isinstance(role_id, int):
             raise TypeError(
-                "The role_id must be an integer, got %s instead.",
-                type(role_id))
+                f"The role_id must be an integer, got {type(role_id)} instead."
+            )
         role = await self.get_by_id(role_id)
         return bool(role)
     def is_equal(self, role1: Role, role2: Role) -> bool:
@@ -405,12 +409,14 @@ class RoleManager:
         return dict1 == dict2
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Role]:  # PacID
+        """
+        #TODO add comment
+        """
         logging.info("RoleManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The role_id must be an integer, got %s instead.",
-                type(pac_id)
-                )
+                f"The role_id must be an integer, got {type(pac_id)} instead."
+            )
         query_filter = Role.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

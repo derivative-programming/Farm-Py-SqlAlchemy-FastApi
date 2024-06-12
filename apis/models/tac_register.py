@@ -111,7 +111,7 @@ class TacRegisterPostModelResponse(PostResponse):
     async def process_request(
         self,
         session_context: SessionContext,
-        tac_code: uuid,
+        tac_code: uuid.UUID,
         request: TacRegisterPostModelRequest
     ):
         """

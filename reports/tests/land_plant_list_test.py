@@ -4,16 +4,17 @@
     #TODO add comment
 """
 
-from decimal import Decimal
 import os
 import uuid
-import pytest
-import sqlite3
-from sqlalchemy import String
-from typing import List
+from decimal import Decimal
 from datetime import datetime, date
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+import sqlite3
+from unittest.mock import patch, AsyncMock
+import pytest
+# from sqlalchemy import String
+# from typing import List
+# from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
@@ -21,23 +22,16 @@ from reports.land_plant_list import ReportManagerLandPlantList
 from reports.report_request_validation_error import ReportRequestValidationError
 from reports.providers.land_plant_list import ReportProviderLandPlantList
 from reports.row_models.land_plant_list import ReportItemLandPlantList
-from services.db_config import DB_DIALECT
-from services.db_config import DB_DIALECT, generate_uuid
-from unittest.mock import patch, AsyncMock
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
 
-DB_DIALECT = "sqlite"
+DB_DIALECT = "sqlite"  # noqa: F811
 
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+
+UUIDType = get_uuid_type(DB_DIALECT)
 
 
 class TestReportManagerLandPlantList:
@@ -52,29 +46,29 @@ class TestReportManagerLandPlantList:
         """
 
         async def mock_generate_list(
-            context_code: uuid,
-            flavor_code: uuid,
-            some_int_val: int,
-            some_big_int_val: int,
-            some_float_val: float,
-            some_bit_val: bool,
-            is_edit_allowed: bool,
-            is_delete_allowed: bool,
-            some_decimal_val: Decimal,
-            some_min_utc_date_time_val: datetime,
-            some_min_date_val: date,
-            some_money_val: Decimal,
-            some_n_var_char_val: str,
-            some_var_char_val: str,
-            some_text_val: str,
-            some_phone_number: str,
-            some_email_address: str,
-# endset
-            page_number: int,
-            item_count_per_page: int,
-            order_by_column_name: str,
-            order_by_descending: bool,
-            ):
+            context_code: uuid.UUID,  # pylint: disable=unused-argument
+            flavor_code: uuid.UUID,  # pylint: disable=unused-argument
+            some_int_val: int,  # pylint: disable=unused-argument
+            some_big_int_val: int,  # pylint: disable=unused-argument
+            some_float_val: float,  # pylint: disable=unused-argument
+            some_bit_val: bool,  # pylint: disable=unused-argument
+            is_edit_allowed: bool,  # pylint: disable=unused-argument
+            is_delete_allowed: bool,  # pylint: disable=unused-argument
+            some_decimal_val: Decimal,  # pylint: disable=unused-argument
+            some_min_utc_date_time_val: datetime,  # pylint: disable=unused-argument
+            some_min_date_val: date,  # pylint: disable=unused-argument
+            some_money_val: Decimal,  # pylint: disable=unused-argument
+            some_n_var_char_val: str,  # pylint: disable=unused-argument
+            some_var_char_val: str,  # pylint: disable=unused-argument
+            some_text_val: str,  # pylint: disable=unused-argument
+            some_phone_number: str,  # pylint: disable=unused-argument
+            some_email_address: str,  # pylint: disable=unused-argument
+# endset  # noqa: E122
+            page_number: int,  # pylint: disable=unused-argument
+            item_count_per_page: int,  # pylint: disable=unused-argument
+            order_by_column_name: str,  # pylint: disable=unused-argument
+            order_by_descending: bool,  # pylint: disable=unused-argument
+        ):
             result = list()
             return result
 
@@ -110,7 +104,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = generate_uuid()
+            flavor_code: UUIDType = generate_uuid()  # type: ignore
 # endset
 
             page_number = 1
@@ -135,7 +129,7 @@ class TestReportManagerLandPlantList:
                 some_phone_number,
                 some_email_address,
                 flavor_code,
-# endset
+# endset  # noqa: E122
                 page_number,
                 item_count_per_page,
                 order_by_column_name,
@@ -152,28 +146,28 @@ class TestReportManagerLandPlantList:
         """
 
         async def mock_generate_list(
-            context_code: uuid,
-            flavor_code: uuid,
-            some_int_val: int,
-            some_big_int_val: int,
-            some_float_val: float,
-            some_bit_val: bool,
-            is_edit_allowed: bool,
-            is_delete_allowed: bool,
-            some_decimal_val: Decimal,
-            some_min_utc_date_time_val: datetime,
-            some_min_date_val: date,
-            some_money_val: Decimal,
-            some_n_var_char_val: str,
-            some_var_char_val: str,
-            some_text_val: str,
-            some_phone_number: str,
-            some_email_address: str,
-# endset
-            page_number: int,
-            item_count_per_page: int,
-            order_by_column_name: str,
-            order_by_descending: bool,
+            context_code: uuid.UUID,  # pylint: disable=unused-argument
+            flavor_code: uuid.UUID,  # pylint: disable=unused-argument
+            some_int_val: int,  # pylint: disable=unused-argument
+            some_big_int_val: int,  # pylint: disable=unused-argument
+            some_float_val: float,  # pylint: disable=unused-argument
+            some_bit_val: bool,  # pylint: disable=unused-argument
+            is_edit_allowed: bool,  # pylint: disable=unused-argument
+            is_delete_allowed: bool,  # pylint: disable=unused-argument
+            some_decimal_val: Decimal,  # pylint: disable=unused-argument
+            some_min_utc_date_time_val: datetime,  # pylint: disable=unused-argument
+            some_min_date_val: date,  # pylint: disable=unused-argument
+            some_money_val: Decimal,  # pylint: disable=unused-argument
+            some_n_var_char_val: str,  # pylint: disable=unused-argument
+            some_var_char_val: str,  # pylint: disable=unused-argument
+            some_text_val: str,  # pylint: disable=unused-argument
+            some_phone_number: str,  # pylint: disable=unused-argument
+            some_email_address: str,  # pylint: disable=unused-argument
+# endset  # noqa: E122
+            page_number: int,  # pylint: disable=unused-argument
+            item_count_per_page: int,  # pylint: disable=unused-argument
+            order_by_column_name: str,  # pylint: disable=unused-argument
+            order_by_descending: bool,  # pylint: disable=unused-argument
         ):
             result = list()
             return result
@@ -210,11 +204,11 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = generate_uuid()
+            flavor_code: UUIDType = generate_uuid()  # type: ignore
 # endset
 
             page_number = 1
-            item_count_per_page = 10
+            # item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
 
@@ -237,7 +231,7 @@ class TestReportManagerLandPlantList:
                     some_phone_number,
                     some_email_address,
                     flavor_code,
-# endset
+# endset  # noqa: E122
                     page_number,
                     0,
                     order_by_column_name,
@@ -251,28 +245,28 @@ class TestReportManagerLandPlantList:
         """
 
         async def mock_generate_list(
-            context_code: uuid,
-            flavor_code: uuid,
-            some_int_val: int,
-            some_big_int_val: int,
-            some_float_val: float,
-            some_bit_val: bool,
-            is_edit_allowed: bool,
-            is_delete_allowed: bool,
-            some_decimal_val: Decimal,
-            some_min_utc_date_time_val: datetime,
-            some_min_date_val: date,
-            some_money_val: Decimal,
-            some_n_var_char_val: str,
-            some_var_char_val: str,
-            some_text_val: str,
-            some_phone_number: str,
-            some_email_address: str,
-# endset
-            page_number: int,
-            item_count_per_page: int,
-            order_by_column_name: str,
-            order_by_descending: bool,
+            context_code: uuid.UUID,  # pylint: disable=unused-argument
+            flavor_code: uuid.UUID,  # pylint: disable=unused-argument
+            some_int_val: int,  # pylint: disable=unused-argument
+            some_big_int_val: int,  # pylint: disable=unused-argument
+            some_float_val: float,  # pylint: disable=unused-argument
+            some_bit_val: bool,  # pylint: disable=unused-argument
+            is_edit_allowed: bool,  # pylint: disable=unused-argument
+            is_delete_allowed: bool,  # pylint: disable=unused-argument
+            some_decimal_val: Decimal,  # pylint: disable=unused-argument
+            some_min_utc_date_time_val: datetime,  # pylint: disable=unused-argument
+            some_min_date_val: date,  # pylint: disable=unused-argument
+            some_money_val: Decimal,  # pylint: disable=unused-argument
+            some_n_var_char_val: str,  # pylint: disable=unused-argument
+            some_var_char_val: str,  # pylint: disable=unused-argument
+            some_text_val: str,  # pylint: disable=unused-argument
+            some_phone_number: str,  # pylint: disable=unused-argument
+            some_email_address: str,  # pylint: disable=unused-argument
+# endset  # noqa: E122
+            page_number: int,  # pylint: disable=unused-argument
+            item_count_per_page: int,  # pylint: disable=unused-argument
+            order_by_column_name: str,  # pylint: disable=unused-argument
+            order_by_descending: bool,  # pylint: disable=unused-argument
         ):
             result = list()
             return result
@@ -309,9 +303,9 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = generate_uuid()
+            flavor_code: UUIDType = generate_uuid()  # type: ignore
 # endset
-            page_number = 1
+            # page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
@@ -335,7 +329,7 @@ class TestReportManagerLandPlantList:
                     some_phone_number,
                     some_email_address,
                     flavor_code,
-# endset
+# endset  # noqa: E122
                     0,
                     item_count_per_page,
                     order_by_column_name,
@@ -394,15 +388,15 @@ class TestReportManagerLandPlantList:
         test_obj = ReportManagerLandPlantList(session_context)
 
         # True values
-        assert test_obj._parse_bool('true')
-        assert test_obj._parse_bool('1')
-        assert test_obj._parse_bool('yes')
+        assert test_obj._parse_bool('true')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('1')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('yes')  # pylint: disable=protected-access
 
         # False values
-        assert not test_obj._parse_bool('false')
-        assert not test_obj._parse_bool('0')
-        assert not test_obj._parse_bool('no')
+        assert not test_obj._parse_bool('false')  # pylint: disable=protected-access
+        assert not test_obj._parse_bool('0')  # pylint: disable=protected-access
+        assert not test_obj._parse_bool('no')  # pylint: disable=protected-access
 
         # Case insensitivity
-        assert test_obj._parse_bool('True')
-        assert test_obj._parse_bool('YeS')
+        assert test_obj._parse_bool('True')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('YeS')  # pylint: disable=protected-access

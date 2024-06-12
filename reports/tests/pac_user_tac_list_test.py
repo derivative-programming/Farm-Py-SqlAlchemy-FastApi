@@ -2,16 +2,17 @@
 """
     #TODO add comment
 """
-from decimal import Decimal
 import os
 import uuid
-import pytest
-import sqlite3
-from sqlalchemy import String
-from typing import List
+from decimal import Decimal
 from datetime import datetime, date
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+import sqlite3
+from unittest.mock import patch, AsyncMock
+import pytest
+# from sqlalchemy import String
+# from typing import List
+# from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.pac import PacFactory
@@ -19,19 +20,11 @@ from reports.pac_user_tac_list import ReportManagerPacUserTacList
 from reports.report_request_validation_error import ReportRequestValidationError
 from reports.providers.pac_user_tac_list import ReportProviderPacUserTacList
 from reports.row_models.pac_user_tac_list import ReportItemPacUserTacList
-from services.db_config import DB_DIALECT
-from services.db_config import DB_DIALECT, generate_uuid
-from unittest.mock import patch, AsyncMock
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
-DB_DIALECT = "sqlite"
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+DB_DIALECT = "sqlite"  # noqa: F811
+UUIDType = get_uuid_type(DB_DIALECT)
 class TestReportManagerPacUserTacList:
     """
     #TODO add comment
@@ -42,14 +35,14 @@ class TestReportManagerPacUserTacList:
         #TODO add comment
         """
         async def mock_generate_list(
-            context_code: uuid,
+            context_code: uuid.UUID,  # pylint: disable=unused-argument
 
-# endset
-            page_number: int,
-            item_count_per_page: int,
-            order_by_column_name: str,
-            order_by_descending: bool,
-            ):
+# endset  # noqa: E122
+            page_number: int,  # pylint: disable=unused-argument
+            item_count_per_page: int,  # pylint: disable=unused-argument
+            order_by_column_name: str,  # pylint: disable=unused-argument
+            order_by_descending: bool,  # pylint: disable=unused-argument
+        ):
             result = list()
             return result
         with patch.object(
@@ -73,7 +66,7 @@ class TestReportManagerPacUserTacList:
             results = await report_generator.generate(
                 pac_code,
 
-# endset
+# endset  # noqa: E122
                 page_number,
                 item_count_per_page,
                 order_by_column_name,
@@ -87,13 +80,13 @@ class TestReportManagerPacUserTacList:
         #TODO add comment
         """
         async def mock_generate_list(
-            context_code: uuid,
+            context_code: uuid.UUID,  # pylint: disable=unused-argument
 
-# endset
-            page_number: int,
-            item_count_per_page: int,
-            order_by_column_name: str,
-            order_by_descending: bool,
+# endset  # noqa: E122
+            page_number: int,  # pylint: disable=unused-argument
+            item_count_per_page: int,  # pylint: disable=unused-argument
+            order_by_column_name: str,  # pylint: disable=unused-argument
+            order_by_descending: bool,  # pylint: disable=unused-argument
         ):
             result = list()
             return result
@@ -112,14 +105,14 @@ class TestReportManagerPacUserTacList:
 
 # endset
             page_number = 1
-            item_count_per_page = 10
+            # item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
             with pytest.raises(ReportRequestValidationError):
                 await report_generator.generate(
                     pac_code,
 
-# endset
+# endset  # noqa: E122
                     page_number,
                     0,
                     order_by_column_name,
@@ -131,13 +124,13 @@ class TestReportManagerPacUserTacList:
         #TODO add comment
         """
         async def mock_generate_list(
-            context_code: uuid,
+            context_code: uuid.UUID,  # pylint: disable=unused-argument
 
-# endset
-            page_number: int,
-            item_count_per_page: int,
-            order_by_column_name: str,
-            order_by_descending: bool,
+# endset  # noqa: E122
+            page_number: int,  # pylint: disable=unused-argument
+            item_count_per_page: int,  # pylint: disable=unused-argument
+            order_by_column_name: str,  # pylint: disable=unused-argument
+            order_by_descending: bool,  # pylint: disable=unused-argument
         ):
             result = list()
             return result
@@ -155,7 +148,7 @@ class TestReportManagerPacUserTacList:
             session_context.role_name_csv = role_required
 
 # endset
-            page_number = 1
+            # page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
@@ -163,7 +156,7 @@ class TestReportManagerPacUserTacList:
                 await report_generator.generate(
                     pac_code,
 
-# endset
+# endset  # noqa: E122
                     0,
                     item_count_per_page,
                     order_by_column_name,
@@ -208,14 +201,14 @@ class TestReportManagerPacUserTacList:
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserTacList(session_context)
         # True values
-        assert test_obj._parse_bool('true')
-        assert test_obj._parse_bool('1')
-        assert test_obj._parse_bool('yes')
+        assert test_obj._parse_bool('true')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('1')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('yes')  # pylint: disable=protected-access
         # False values
-        assert not test_obj._parse_bool('false')
-        assert not test_obj._parse_bool('0')
-        assert not test_obj._parse_bool('no')
+        assert not test_obj._parse_bool('false')  # pylint: disable=protected-access
+        assert not test_obj._parse_bool('0')  # pylint: disable=protected-access
+        assert not test_obj._parse_bool('no')  # pylint: disable=protected-access
         # Case insensitivity
-        assert test_obj._parse_bool('True')
-        assert test_obj._parse_bool('YeS')
+        assert test_obj._parse_bool('True')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('YeS')  # pylint: disable=protected-access
 

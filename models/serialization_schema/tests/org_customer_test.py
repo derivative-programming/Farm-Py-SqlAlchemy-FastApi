@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import OrgCustomer
 from datetime import datetime
 from decimal import Decimal
@@ -30,20 +31,20 @@ class TestOrgCustomerSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "customer_id": 1,
         "email": "test@email.com",
         "organization_id": 2,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+        "last_update_utc_date_time": datetime(
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
         "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # CustomerID
         "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrganizationID
-# endset
-        "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+# endset  # noqa: E122
     }
     def test_org_customer_serialization(self, org_customer: OrgCustomer, session):
         schema = OrgCustomerSchema()
@@ -165,40 +166,65 @@ class TestOrgCustomerSchema:
         new_org_customer = OrgCustomer(**deserialized_data)
         assert isinstance(new_org_customer, OrgCustomer)
     def test_to_json(self, org_customer: OrgCustomer, session):
-            # Convert the OrgCustomer instance to JSON using the schema
-            org_customer_schema = OrgCustomerSchema()
-            org_customer_dict = org_customer_schema.dump(org_customer)
-            # Convert the org_customer_dict to JSON string
-            org_customer_json = json.dumps(org_customer_dict)
-            # Convert the JSON strings back to dictionaries
-            org_customer_dict_from_json = json.loads(org_customer_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(org_customer_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(org_customer_dict_from_json.keys())}"
-            )
-            assert org_customer_dict_from_json['code'] == org_customer.code
-            assert org_customer_dict_from_json['last_change_code'] == (
-                 org_customer.last_change_code)
-            assert org_customer_dict_from_json['insert_user_id'] == (
-                 org_customer.insert_user_id)
-            assert org_customer_dict_from_json['last_update_user_id'] == (
-                 org_customer.last_update_user_id)
-    # endset
-            assert org_customer_dict_from_json['customer_id'] == (
-                 org_customer.customer_id)
-            assert org_customer_dict_from_json['email'] == (
-                 org_customer.email)
-            assert org_customer_dict_from_json['organization_id'] == (
-                 org_customer.organization_id)
-    # endset
-            assert org_customer_dict_from_json['insert_utc_date_time'] == (
-                 org_customer.insert_utc_date_time.isoformat())
-            assert org_customer_dict_from_json['last_update_utc_date_time'] == (
-                 org_customer.last_update_utc_date_time.isoformat())
-    # endset
-            assert org_customer_dict_from_json['customer_code_peek'] == (  # CustomerID
-                 org_customer.customer_code_peek)
-            assert org_customer_dict_from_json['organization_code_peek'] == (  # OrganizationID
-                 org_customer.organization_code_peek)
-    # endset
+        # Convert the OrgCustomer instance to JSON using the schema
+        org_customer_schema = OrgCustomerSchema()
+        org_customer_dict = org_customer_schema.dump(org_customer)
+        # Convert the org_customer_dict to JSON string
+        org_customer_json = json.dumps(org_customer_dict)
+        # Convert the JSON strings back to dictionaries
+        org_customer_dict_from_json = json.loads(org_customer_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("org_customer_dict_from_json.keys() %s", org_customer_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(org_customer_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(org_customer_dict_from_json.keys())}"
+        )
+        assert org_customer_dict_from_json['code'] == org_customer.code, (
+            "failed on code"
+        )
+        assert org_customer_dict_from_json['last_change_code'] == (
+            org_customer.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert org_customer_dict_from_json['insert_user_id'] == (
+            org_customer.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert org_customer_dict_from_json['last_update_user_id'] == (
+            org_customer.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert org_customer_dict_from_json['customer_id'] == (
+            org_customer.customer_id), (
+            "failed on customer_id"
+        )
+        assert org_customer_dict_from_json['email'] == (
+            org_customer.email), (
+            "failed on email"
+        )
+        assert org_customer_dict_from_json['organization_id'] == (
+            org_customer.organization_id), (
+            "failed on organization_id"
+        )
+# endset
+        assert org_customer_dict_from_json['insert_utc_date_time'] == (
+            org_customer.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert org_customer_dict_from_json['last_update_utc_date_time'] == (
+            org_customer.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert org_customer_dict_from_json['customer_code_peek'] == (  # CustomerID
+            org_customer.customer_code_peek), (
+            "failed on customer_code_peek"
+        )
+        assert org_customer_dict_from_json['organization_code_peek'] == (  # OrganizationID
+            org_customer.organization_code_peek), (
+            "failed on organization_code_peek"
+        )
+# endset

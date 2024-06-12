@@ -33,15 +33,7 @@ from sqlalchemy.future import select
 from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 
-DB_DIALECT = "sqlite"
-
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+DB_DIALECT = "sqlite"  # noqa: F811 
 
 
 class TestLandAddPlantPostModelResponse:
@@ -116,7 +108,7 @@ class TestLandAddPlantPostModelResponse:
 
         role_required = "User"
 
-        request_flavor_code: uuid = uuid.UUID(int=0),
+        request_flavor_code: uuid.UUID = uuid.UUID(int=0),
         request_other_flavor: str = "",
         request_some_int_val: int = 0,
         request_some_big_int_val: int = 0,

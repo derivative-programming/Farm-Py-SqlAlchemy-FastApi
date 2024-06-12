@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import Role
 from datetime import datetime
 from decimal import Decimal
@@ -30,7 +31,7 @@ class TestRoleSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "description": "Vanilla",
         "display_order": 42,
         "is_active": False,
@@ -38,14 +39,14 @@ class TestRoleSchema:
         "name": "Vanilla",
         "pac_id": 2,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
+# endset  # noqa: E122
     }
     def test_role_serialization(self, role: Role, session):
         schema = RoleSchema()
@@ -183,44 +184,73 @@ class TestRoleSchema:
         new_role = Role(**deserialized_data)
         assert isinstance(new_role, Role)
     def test_to_json(self, role: Role, session):
-            # Convert the Role instance to JSON using the schema
-            role_schema = RoleSchema()
-            role_dict = role_schema.dump(role)
-            # Convert the role_dict to JSON string
-            role_json = json.dumps(role_dict)
-            # Convert the JSON strings back to dictionaries
-            role_dict_from_json = json.loads(role_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(role_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(role_dict_from_json.keys())}"
-            )
-            assert role_dict_from_json['code'] == role.code
-            assert role_dict_from_json['last_change_code'] == (
-                 role.last_change_code)
-            assert role_dict_from_json['insert_user_id'] == (
-                 role.insert_user_id)
-            assert role_dict_from_json['last_update_user_id'] == (
-                 role.last_update_user_id)
-    # endset
-            assert role_dict_from_json['description'] == (
-                 role.description)
-            assert role_dict_from_json['display_order'] == (
-                 role.display_order)
-            assert role_dict_from_json['is_active'] == (
-                 role.is_active)
-            assert role_dict_from_json['lookup_enum_name'] == (
-                 role.lookup_enum_name)
-            assert role_dict_from_json['name'] == (
-                 role.name)
-            assert role_dict_from_json['pac_id'] == (
-                 role.pac_id)
-    # endset
-            assert role_dict_from_json['insert_utc_date_time'] == (
-                 role.insert_utc_date_time.isoformat())
-            assert role_dict_from_json['last_update_utc_date_time'] == (
-                 role.last_update_utc_date_time.isoformat())
-    # endset
-            assert role_dict_from_json['pac_code_peek'] == (  # PacID
-                 role.pac_code_peek)
-    # endset
+        # Convert the Role instance to JSON using the schema
+        role_schema = RoleSchema()
+        role_dict = role_schema.dump(role)
+        # Convert the role_dict to JSON string
+        role_json = json.dumps(role_dict)
+        # Convert the JSON strings back to dictionaries
+        role_dict_from_json = json.loads(role_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("role_dict_from_json.keys() %s", role_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(role_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(role_dict_from_json.keys())}"
+        )
+        assert role_dict_from_json['code'] == role.code, (
+            "failed on code"
+        )
+        assert role_dict_from_json['last_change_code'] == (
+            role.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert role_dict_from_json['insert_user_id'] == (
+            role.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert role_dict_from_json['last_update_user_id'] == (
+            role.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert role_dict_from_json['description'] == (
+            role.description), (
+            "failed on description"
+        )
+        assert role_dict_from_json['display_order'] == (
+            role.display_order), (
+            "failed on display_order"
+        )
+        assert role_dict_from_json['is_active'] == (
+            role.is_active), (
+            "failed on is_active"
+        )
+        assert role_dict_from_json['lookup_enum_name'] == (
+            role.lookup_enum_name), (
+            "failed on lookup_enum_name"
+        )
+        assert role_dict_from_json['name'] == (
+            role.name), (
+            "failed on name"
+        )
+        assert role_dict_from_json['pac_id'] == (
+            role.pac_id), (
+            "failed on pac_id"
+        )
+# endset
+        assert role_dict_from_json['insert_utc_date_time'] == (
+            role.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert role_dict_from_json['last_update_utc_date_time'] == (
+            role.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert role_dict_from_json['pac_code_peek'] == (  # PacID
+            role.pac_code_peek), (
+            "failed on pac_code_peek"
+        )
+# endset

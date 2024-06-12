@@ -97,7 +97,7 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
 # endset
         )
         super()._throw_queued_validation_errors()
-        request_flavor_code_output: uuid = uuid.UUID(int=0)
+        request_flavor_code_output: uuid.UUID = uuid.UUID(int=0)
         request_other_flavor_output: str = ""
         request_some_int_val_output: int = 0
         request_some_big_int_val_output: int = 0
@@ -115,7 +115,7 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
         request_some_phone_number_output: str = ""
         request_some_email_address_output: str = ""
         land_name_output: str = ""
-        tac_code_output: uuid = uuid.UUID(int=0)
+        tac_code_output: uuid.UUID = uuid.UUID(int=0)
 # endset
         # TODO: add flow logic
 

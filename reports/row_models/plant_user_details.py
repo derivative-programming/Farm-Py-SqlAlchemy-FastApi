@@ -35,6 +35,9 @@ class ReportItemPlantUserDetails():
     back_to_dashboard_link_tac_code: uuid.UUID = uuid.UUID(int=0)
 # endset
     def load_data_provider_dict(self, data: dict):
+        """
+        #TODO add comment
+        """
         self.flavor_name = (
             str(data["flavor_name"]))
         self.is_delete_allowed = (
@@ -80,7 +83,7 @@ class ReportItemPlantUserDetails():
         self.random_property_updates_link_plant_code = (
             TypeConversion.get_uuid(
                 data["random_property_updates_link_plant_code"])
-            )
+        )
         self.back_to_dashboard_link_tac_code = (
             TypeConversion.get_uuid(data["back_to_dashboard_link_tac_code"]))
 # endset

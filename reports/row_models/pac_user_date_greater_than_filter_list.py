@@ -19,6 +19,9 @@ class ReportItemPacUserDateGreaterThanFilterList():
     date_greater_than_filter_name: str = ""
 # endset
     def load_data_provider_dict(self, data: dict):
+        """
+        #TODO add comment
+        """
         self.date_greater_than_filter_code = (
             TypeConversion.get_uuid(data["date_greater_than_filter_code"]))
         self.date_greater_than_filter_day_count = (

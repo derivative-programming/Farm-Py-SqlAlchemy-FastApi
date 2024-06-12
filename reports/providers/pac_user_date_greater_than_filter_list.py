@@ -24,7 +24,7 @@ class ReportProviderPacUserDateGreaterThanFilterList():
 		self._session_context = session_context
 	async def generate_list(
 		self,
-		context_code: uuid,
+		context_code: uuid.UUID,
 
 		page_number: int,
 		item_count_per_page: int,

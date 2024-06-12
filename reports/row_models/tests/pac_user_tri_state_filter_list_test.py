@@ -33,7 +33,7 @@ class TestReportItemPacUserTriStateFilterList:
             "tri_state_filter_lookup_enum_name": "test",
             "tri_state_filter_name": "test",
             "tri_state_filter_state_int_value": 1,
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemPacUserTriStateFilterList(**data)
         report_item = ReportItemPacUserTriStateFilterList()

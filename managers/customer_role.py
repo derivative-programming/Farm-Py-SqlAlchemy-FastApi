@@ -95,13 +95,21 @@ class CustomerRoleManager:
 #         else:
 #             query = select(CustomerRole)
         query = select(
-            CustomerRole
-            , Customer  # customer_id
-            , Role  # role_id
-            )
+            CustomerRole,
+            Customer,  # customer_id
+            Role,  # role_id
+        )
 # endset
-        query = query.outerjoin(Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
-        query = query.outerjoin(Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
+        query = query.outerjoin(  # customer_id
+            Customer,
+            and_(CustomerRole.customer_id == Customer.customer_id,
+                 CustomerRole.customer_id != 0)
+        )
+        query = query.outerjoin(  # role_id
+            Role,
+            and_(CustomerRole.role_id == Role.role_id,
+                 CustomerRole.role_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[CustomerRole]:
@@ -181,8 +189,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.delete %s", customer_role_id)
         if not isinstance(customer_role_id, int):
             raise TypeError(
-                "The customer_role_id must be an integer, got %s instead.",
-                type(customer_role_id))
+                f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+            )
         customer_role = await self.get_by_id(customer_role_id)
         if not customer_role:
             raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
@@ -248,9 +256,9 @@ class CustomerRoleManager:
         await self._session_context.session.flush()
         return customer_roles
     async def update_bulk(
-            self,
-            customer_role_updates: List[Dict[int, Dict]]
-            ) -> List[CustomerRole]:
+        self,
+        customer_role_updates: List[Dict[int, Dict]]
+    ) -> List[CustomerRole]:
         """
         #TODO add comment
         """
@@ -260,8 +268,8 @@ class CustomerRoleManager:
             customer_role_id = update.get("customer_role_id")
             if not isinstance(customer_role_id, int):
                 raise TypeError(
-                    "The customer_role_id must be an integer, got %s instead.",
-                    type(customer_role_id))
+                    f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+                )
             if not customer_role_id:
                 continue
             logging.info("CustomerRoleManager.update_bulk customer_role_id:%s", customer_role_id)
@@ -286,13 +294,13 @@ class CustomerRoleManager:
         for customer_role_id in customer_role_ids:
             if not isinstance(customer_role_id, int):
                 raise TypeError(
-                    "The customer_role_id must be an integer, got %s instead.",
-                    type(customer_role_id))
+                    f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+                )
             customer_role = await self.get_by_id(customer_role_id)
             if not customer_role:
                 raise CustomerRoleNotFoundError(
-                    "CustomerRole with ID %s not found!",
-                    customer_role_id)
+                    f"CustomerRole with ID {customer_role_id} not found!"
+                )
             if customer_role:
                 await self._session_context.session.delete(customer_role)
         await self._session_context.session.flush()
@@ -333,8 +341,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.exists %s", customer_role_id)
         if not isinstance(customer_role_id, int):
             raise TypeError(
-                "The customer_role_id must be an integer, got %s instead.",
-                type(customer_role_id))
+                f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+            )
         customer_role = await self.get_by_id(customer_role_id)
         return bool(customer_role)
     def is_equal(self, customer_role1: CustomerRole, customer_role2: CustomerRole) -> bool:
@@ -354,12 +362,14 @@ class CustomerRoleManager:
         return dict1 == dict2
 # endset
     async def get_by_customer_id(self, customer_id: int) -> List[CustomerRole]:  # CustomerID
+        """
+        #TODO add comment
+        """
         logging.info("CustomerRoleManager.get_by_customer_id")
         if not isinstance(customer_id, int):
             raise TypeError(
-                "The customer_role_id must be an integer, got %s instead.",
-                type(customer_id)
-                )
+                f"The customer_role_id must be an integer, got {type(customer_id)} instead."
+            )
         query_filter = CustomerRole.customer_id == customer_id
         query_results = await self._run_query(query_filter)
         return query_results
@@ -373,9 +383,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.get_by_role_id")
         if not isinstance(role_id, int):
             raise TypeError(
-                "The customer_role_id must be an integer, got %s instead.",
-                type(role_id)
-                )
+                f"The customer_role_id must be an integer, got {type(role_id)} instead."
+            )
         query_filter = CustomerRole.role_id == role_id
         query_results = await self._run_query(query_filter)
         return query_results

@@ -19,6 +19,9 @@ class ReportItemPacUserLandList():
     pac_name: str = ""
 # endset
     def load_data_provider_dict(self, data: dict):
+        """
+        #TODO add comment
+        """
         self.land_code = (
             TypeConversion.get_uuid(data["land_code"]))
         self.land_description = (

@@ -92,11 +92,15 @@ class ErrorLogManager:
 #         else:
 #             query = select(ErrorLog)
         query = select(
-            ErrorLog
-            , Pac  # pac_id
-            )
+            ErrorLog,
+            Pac,  # pac_id
+        )
 # endset
-        query = query.outerjoin(Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
+        query = query.outerjoin(  # pac_id
+            Pac,
+            and_(ErrorLog.pac_id == Pac.pac_id,
+                 ErrorLog.pac_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[ErrorLog]:
@@ -173,8 +177,8 @@ class ErrorLogManager:
         logging.info("ErrorLogManager.delete %s", error_log_id)
         if not isinstance(error_log_id, int):
             raise TypeError(
-                "The error_log_id must be an integer, got %s instead.",
-                type(error_log_id))
+                f"The error_log_id must be an integer, got {type(error_log_id)} instead."
+            )
         error_log = await self.get_by_id(error_log_id)
         if not error_log:
             raise ErrorLogNotFoundError(f"ErrorLog with ID {error_log_id} not found!")
@@ -240,9 +244,9 @@ class ErrorLogManager:
         await self._session_context.session.flush()
         return error_logs
     async def update_bulk(
-            self,
-            error_log_updates: List[Dict[int, Dict]]
-            ) -> List[ErrorLog]:
+        self,
+        error_log_updates: List[Dict[int, Dict]]
+    ) -> List[ErrorLog]:
         """
         #TODO add comment
         """
@@ -252,8 +256,8 @@ class ErrorLogManager:
             error_log_id = update.get("error_log_id")
             if not isinstance(error_log_id, int):
                 raise TypeError(
-                    "The error_log_id must be an integer, got %s instead.",
-                    type(error_log_id))
+                    f"The error_log_id must be an integer, got {type(error_log_id)} instead."
+                )
             if not error_log_id:
                 continue
             logging.info("ErrorLogManager.update_bulk error_log_id:%s", error_log_id)
@@ -278,13 +282,13 @@ class ErrorLogManager:
         for error_log_id in error_log_ids:
             if not isinstance(error_log_id, int):
                 raise TypeError(
-                    "The error_log_id must be an integer, got %s instead.",
-                    type(error_log_id))
+                    f"The error_log_id must be an integer, got {type(error_log_id)} instead."
+                )
             error_log = await self.get_by_id(error_log_id)
             if not error_log:
                 raise ErrorLogNotFoundError(
-                    "ErrorLog with ID %s not found!",
-                    error_log_id)
+                    f"ErrorLog with ID {error_log_id} not found!"
+                )
             if error_log:
                 await self._session_context.session.delete(error_log)
         await self._session_context.session.flush()
@@ -325,8 +329,8 @@ class ErrorLogManager:
         logging.info("ErrorLogManager.exists %s", error_log_id)
         if not isinstance(error_log_id, int):
             raise TypeError(
-                "The error_log_id must be an integer, got %s instead.",
-                type(error_log_id))
+                f"The error_log_id must be an integer, got {type(error_log_id)} instead."
+            )
         error_log = await self.get_by_id(error_log_id)
         return bool(error_log)
     def is_equal(self, error_log1: ErrorLog, error_log2: ErrorLog) -> bool:
@@ -346,12 +350,14 @@ class ErrorLogManager:
         return dict1 == dict2
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[ErrorLog]:  # PacID
+        """
+        #TODO add comment
+        """
         logging.info("ErrorLogManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The error_log_id must be an integer, got %s instead.",
-                type(pac_id)
-                )
+                f"The error_log_id must be an integer, got {type(pac_id)} instead."
+            )
         query_filter = ErrorLog.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

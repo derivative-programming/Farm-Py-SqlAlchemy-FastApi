@@ -218,7 +218,7 @@ class PlantUserDetailsGetModelResponse(ListModel):
     async def process_request(
         self,
         session_context: SessionContext,
-        plant_code: uuid,
+        plant_code: uuid.UUID,
         request: PlantUserDetailsGetModelRequest
     ):
         """

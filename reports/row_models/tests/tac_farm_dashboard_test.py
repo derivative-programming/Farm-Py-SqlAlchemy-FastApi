@@ -25,7 +25,7 @@ class TestReportItemTacFarmDashboard:
             "field_one_plant_list_link_land_code": str(UUID(int=5)),
             "conditional_btn_example_link_land_code": str(UUID(int=5)),
             "is_conditional_btn_available": True,
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemTacFarmDashboard(**data)
         report_item = ReportItemTacFarmDashboard()

@@ -7,6 +7,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import Plant
 from datetime import datetime
 from decimal import Decimal
@@ -30,7 +31,6 @@ class TestPlantSchema:
     #TODO add comment
     """
 
-
     # Sample data for a Plant instance
     sample_data = {
         "plant_id": 1,
@@ -38,7 +38,7 @@ class TestPlantSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "flvr_foreign_key_id": 1,
         "is_delete_allowed": False,
         "is_edit_allowed": True,
@@ -56,21 +56,20 @@ class TestPlantSchema:
         "some_phone_number": "123-456-7890",
         "some_text_val": "Lorem ipsum",
         "some_uniqueidentifier_val": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "some_utc_date_time_val":
-                datetime(
-                        2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
+        "some_utc_date_time_val": datetime(
+            2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "some_var_char_val": "World",
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+        "last_update_utc_date_time": datetime(
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
         "flvr_foreign_key_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # FlvrForeignKeyID
         "land_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # LandID
-# endset
-        "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+# endset  # noqa: E122
     }
 
     def test_plant_serialization(self, plant: Plant, session):
@@ -197,7 +196,7 @@ class TestPlantSchema:
         assert deserialized_data['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
             plant.flvr_foreign_key_code_peek)
         assert deserialized_data['land_code_peek'] == (  # LandID
-            plant.land_code_peek) 
+            plant.land_code_peek)
 # endset
 
         new_plant = Plant(**deserialized_data)
@@ -340,77 +339,136 @@ class TestPlantSchema:
         assert isinstance(new_plant, Plant)
 
     def test_to_json(self, plant: Plant, session):
-            # Convert the Plant instance to JSON using the schema
-            plant_schema = PlantSchema()
-            plant_dict = plant_schema.dump(plant)
+        # Convert the Plant instance to JSON using the schema
+        plant_schema = PlantSchema()
+        plant_dict = plant_schema.dump(plant)
 
-            # Convert the plant_dict to JSON string
-            plant_json = json.dumps(plant_dict)
+        # Convert the plant_dict to JSON string
+        plant_json = json.dumps(plant_dict)
 
-            # Convert the JSON strings back to dictionaries
-            plant_dict_from_json = json.loads(plant_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
+        # Convert the JSON strings back to dictionaries
+        plant_dict_from_json = json.loads(plant_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
 
-            # Verify the keys in both dictionaries match
-            assert set(plant_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(plant_dict_from_json.keys())}"
-            )
+        logging.info("plant_dict_from_json.keys() %s", plant_dict_from_json.keys())
 
-            assert plant_dict_from_json['code'] == plant.code
-            assert plant_dict_from_json['last_change_code'] == (
-                 plant.last_change_code)
-            assert plant_dict_from_json['insert_user_id'] == (
-                 plant.insert_user_id)
-            assert plant_dict_from_json['last_update_user_id'] == (
-                 plant.last_update_user_id)
-    # endset
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
-            assert plant_dict_from_json['is_delete_allowed'] == (
-                 plant.is_delete_allowed)
-            assert plant_dict_from_json['is_edit_allowed'] == (
-                 plant.is_edit_allowed)
-            assert plant_dict_from_json['land_id'] == (
-                 plant.land_id)
-            assert plant_dict_from_json['other_flavor'] == (
-                 plant.other_flavor)
-            assert plant_dict_from_json['some_big_int_val'] == (
-                 plant.some_big_int_val)
-            assert plant_dict_from_json['some_bit_val'] == (
-                 plant.some_bit_val)
-            assert plant_dict_from_json['some_date_val'] == (
-                 plant.some_date_val.strftime('%Y-%m-%d'))
-            assert plant_dict_from_json['some_decimal_val'] == str(
-                 plant.some_decimal_val)
-            assert plant_dict_from_json['some_email_address'] == (
-                 plant.some_email_address)
-            assert plant_dict_from_json['some_float_val'] == (
-                 plant.some_float_val)
-            assert plant_dict_from_json['some_int_val'] == (
-                 plant.some_int_val)
-            assert plant_dict_from_json['some_money_val'] == str(
-                 plant.some_money_val)
-            assert plant_dict_from_json['some_n_var_char_val'] == (
-                 plant.some_n_var_char_val)
-            assert plant_dict_from_json['some_phone_number'] == (
-                 plant.some_phone_number)
-            assert plant_dict_from_json['some_text_val'] == (
-                 plant.some_text_val)
-            assert plant_dict_from_json['some_uniqueidentifier_val'] == (
-                 plant.some_uniqueidentifier_val)
-            assert plant_dict_from_json['some_utc_date_time_val'] == (
-                 plant.some_utc_date_time_val.isoformat())
-            assert plant_dict_from_json['some_var_char_val'] == (
-                 plant.some_var_char_val)
-            assert plant_dict_from_json['flvr_foreign_key_id'] == (
-                 plant.flvr_foreign_key_id)
-    # endset
-            assert plant_dict_from_json['insert_utc_date_time'] == (
-                 plant.insert_utc_date_time.isoformat())
-            assert plant_dict_from_json['last_update_utc_date_time'] == (
-                 plant.last_update_utc_date_time.isoformat())
-    # endset
-            assert plant_dict_from_json['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
-                 plant.flvr_foreign_key_code_peek)
-            assert plant_dict_from_json['land_code_peek'] == (  # LandID
-                 plant.land_code_peek)
-    # endset
+        # Verify the keys in both dictionaries match
+        assert set(plant_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(plant_dict_from_json.keys())}"
+        )
+
+        assert plant_dict_from_json['code'] == plant.code, (
+            "failed on code"
+        )
+        assert plant_dict_from_json['last_change_code'] == (
+            plant.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert plant_dict_from_json['insert_user_id'] == (
+            plant.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert plant_dict_from_json['last_update_user_id'] == (
+            plant.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+
+        assert plant_dict_from_json['is_delete_allowed'] == (
+            plant.is_delete_allowed), (
+            "failed on is_delete_allowed"
+        )
+        assert plant_dict_from_json['is_edit_allowed'] == (
+            plant.is_edit_allowed), (
+            "failed on is_edit_allowed"
+        )
+        assert plant_dict_from_json['land_id'] == (
+            plant.land_id), (
+            "failed on land_id"
+        )
+        assert plant_dict_from_json['other_flavor'] == (
+            plant.other_flavor), (
+            "failed on other_flavor"
+        )
+        assert plant_dict_from_json['some_big_int_val'] == (
+            plant.some_big_int_val), (
+            "failed on some_big_int_val"
+        )
+        assert plant_dict_from_json['some_bit_val'] == (
+            plant.some_bit_val), (
+            "failed on some_bit_val"
+        )
+        assert plant_dict_from_json['some_date_val'] == (
+            plant.some_date_val.strftime('%Y-%m-%d')), (
+            "failed on some_date_val"
+        )
+        assert plant_dict_from_json['some_decimal_val'] == str(
+            plant.some_decimal_val), (
+            "failed on some_decimal_val"
+        )
+        assert plant_dict_from_json['some_email_address'] == (
+            plant.some_email_address), (
+            "failed on some_email_address"
+        )
+        assert plant_dict_from_json['some_float_val'] == (
+            plant.some_float_val), (
+            "failed on some_float_val"
+        )
+        assert plant_dict_from_json['some_int_val'] == (
+            plant.some_int_val), (
+            "failed on some_int_val"
+        )
+        assert plant_dict_from_json['some_money_val'] == str(
+            plant.some_money_val), (
+            "failed on some_money_val"
+        )
+        assert plant_dict_from_json['some_n_var_char_val'] == (
+            plant.some_n_var_char_val), (
+            "failed on some_n_var_char_val"
+        )
+        assert plant_dict_from_json['some_phone_number'] == (
+            plant.some_phone_number), (
+            "failed on some_phone_number"
+        )
+        assert plant_dict_from_json['some_text_val'] == (
+            plant.some_text_val), (
+            "failed on some_text_val"
+        )
+        assert plant_dict_from_json['some_uniqueidentifier_val'] == (
+            plant.some_uniqueidentifier_val), (
+            "failed on some_uniqueidentifier_val"
+        )
+        assert plant_dict_from_json['some_utc_date_time_val'] == (
+            plant.some_utc_date_time_val.isoformat()), (
+            "failed on some_utc_date_time_val"
+        )
+        assert plant_dict_from_json['some_var_char_val'] == (
+            plant.some_var_char_val), (
+            "failed on some_var_char_val"
+        )
+        assert plant_dict_from_json['flvr_foreign_key_id'] == (
+            plant.flvr_foreign_key_id), (
+            "failed on flvr_foreign_key_id"
+        )
+# endset
+        assert plant_dict_from_json['insert_utc_date_time'] == (
+            plant.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert plant_dict_from_json['last_update_utc_date_time'] == (
+            plant.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert plant_dict_from_json['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
+            plant.flvr_foreign_key_code_peek), (
+            "failed on flvr_foreign_key_code_peek"
+        )
+        assert plant_dict_from_json['land_code_peek'] == (  # LandID
+            plant.land_code_peek), (
+            "failed on land_code_peek"
+        )
+# endset

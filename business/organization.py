@@ -10,7 +10,7 @@ from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import OrganizationManager
 from models import Organization
 import models
@@ -21,18 +21,12 @@ from business.org_customer import OrgCustomerBusObj
 
 from business.org_api_key import OrgApiKeyBusObj
 
+UUIDType = get_uuid_type(DB_DIALECT)
 class OrganizationInvalidInitError(Exception):
     """
     #TODO add comment
     """
     pass
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class OrganizationBusObj(BaseBusObj):
     """
     #TODO add comment
@@ -44,64 +38,109 @@ class OrganizationBusObj(BaseBusObj):
         self.organization = Organization()
     @property
     def organization_id(self):
+        """
+        #TODO add comment
+        """
         return self.organization.organization_id
     @organization_id.setter
     def code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("organization_id must be a int.")
         self.organization.organization_id = value
     # code
     @property
     def code(self):
+        """
+        #TODO add comment
+        """
         return self.organization.code
     @code.setter
-    def code(self, value: UUIDType):
+    def code(self, value: UUIDType):  # type: ignore
+        """
+        #TODO add comment
+        """
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.organization.code = value
     # last_change_code
     @property
     def last_change_code(self):
+        """
+        #TODO add comment
+        """
         return self.organization.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.organization.last_change_code = value
     # insert_user_id
     @property
     def insert_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.organization.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.organization.insert_user_id = value
     def set_prop_insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.insert_user_id = value
         return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.organization.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.organization.last_update_user_id = value
     def set_prop_last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.last_update_user_id = value
         return self
 # endset
     # name
     @property
     def name(self):
+        """
+        #TODO add comment
+        """
         return self.organization.name
     @name.setter
     def name(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, str), "name must be a string"
         self.organization.name = value
     def set_prop_name(self, value):
+        """
+        #TODO add comment
+        """
         self.name = value
         return self
     # TacID
@@ -110,17 +149,29 @@ class OrganizationBusObj(BaseBusObj):
     # TacID
     @property
     def tac_id(self):
+        """
+        #TODO add comment
+        """
         return self.organization.tac_id
     @tac_id.setter
     def tac_id(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, int) or value is None, (
             "tac_id must be an integer or None")
         self.organization.tac_id = value
     def set_prop_tac_id(self, value):
+        """
+        #TODO add comment
+        """
         self.tac_id = value
         return self
     @property
     def tac_code_peek(self):
+        """
+        #TODO add comment
+        """
         return self.organization.tac_code_peek
     # @tac_code_peek.setter
     # def tac_code_peek(self, value):
@@ -131,18 +182,30 @@ class OrganizationBusObj(BaseBusObj):
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.organization.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.organization.insert_utc_date_time = value
     # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.organization.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.organization.last_update_utc_date_time = value
@@ -152,6 +215,9 @@ class OrganizationBusObj(BaseBusObj):
                    organization_id: int = None,
                    organization_obj_instance: Organization = None,
                    organization_dict: dict = None):
+        """
+        #TODO add comment
+        """
         if organization_id and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self._session_context)
             organization_obj = await organization_manager.get_by_id(organization_id)
@@ -164,7 +230,7 @@ class OrganizationBusObj(BaseBusObj):
             organization_manager = OrganizationManager(self._session_context)
             organization_obj = await organization_manager.get_by_id(
                 organization_obj_instance.organization_id
-                )
+            )
             self.organization = organization_obj
         if json_data and self.organization.organization_id is None:
             organization_manager = OrganizationManager(self._session_context)
@@ -182,6 +248,9 @@ class OrganizationBusObj(BaseBusObj):
         organization_obj_instance: Organization = None,
         organization_dict: dict = None
     ):
+        """
+        #TODO add comment
+        """
         result = OrganizationBusObj(session_context)
         await result.load(
             json_data,
@@ -193,18 +262,33 @@ class OrganizationBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
+        """
+        #TODO add comment
+        """
         organization_manager = OrganizationManager(self._session_context)
         self.organization = await organization_manager.refresh(self.organization)
         return self
     def is_valid(self):
+        """
+        #TODO add comment
+        """
         return (self.organization is not None)
     def to_dict(self):
+        """
+        #TODO add comment
+        """
         organization_manager = OrganizationManager(self._session_context)
         return organization_manager.to_dict(self.organization)
     def to_json(self):
+        """
+        #TODO add comment
+        """
         organization_manager = OrganizationManager(self._session_context)
         return organization_manager.to_json(self.organization)
     async def save(self):
+        """
+        #TODO add comment
+        """
         if self.organization.organization_id is not None and self.organization.organization_id > 0:
             organization_manager = OrganizationManager(self._session_context)
             self.organization = await organization_manager.update(self.organization)
@@ -213,19 +297,31 @@ class OrganizationBusObj(BaseBusObj):
             self.organization = await organization_manager.add(self.organization)
         return self
     async def delete(self):
+        """
+        #TODO add comment
+        """
         if self.organization.organization_id > 0:
             organization_manager = OrganizationManager(self._session_context)
             await organization_manager.delete(self.organization.organization_id)
             self.organization = None
     async def randomize_properties(self):
+        """
+        #TODO add comment
+        """
         self.organization.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.organization.tac_id = random.randint(0, 100)
 # endset
         return self
     def get_organization_obj(self) -> Organization:
+        """
+        #TODO add comment
+        """
         return self.organization
     def is_equal(self, organization: Organization) -> Organization:
+        """
+        #TODO add comment
+        """
         organization_manager = OrganizationManager(self._session_context)
         my_organization = self.get_organization_obj()
         return organization_manager.is_equal(organization, my_organization)
@@ -233,23 +329,44 @@ class OrganizationBusObj(BaseBusObj):
     # name,
     # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
+        """
+        #TODO add comment
+        """
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
         return tac_obj
 # endset
     def get_obj(self) -> Organization:
+        """
+        #TODO add comment
+        """
         return self.organization
     def get_object_name(self) -> str:
+        """
+        #TODO add comment
+        """
         return "organization"
     def get_id(self) -> int:
+        """
+        #TODO add comment
+        """
         return self.organization_id
     # name,
     # TacID
     async def get_parent_name(self) -> str:
+        """
+        #TODO add comment
+        """
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
+        """
+        #TODO add comment
+        """
         return self.tac_code_peek
     async def get_parent_obj(self) -> models.Tac:
+        """
+        #TODO add comment
+        """
         return self.get_tac_id_rel_obj()
 # endset
     @staticmethod
@@ -257,6 +374,9 @@ class OrganizationBusObj(BaseBusObj):
         session_context: SessionContext,
         obj_list: List[Organization]
     ):
+        """
+        #TODO add comment
+        """
         result = list()
         for organization in obj_list:
             organization_bus_obj = OrganizationBusObj.get(

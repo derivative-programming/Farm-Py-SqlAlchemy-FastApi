@@ -21,17 +21,19 @@ class BaseFlowTacRegisterInitObjWF(BaseFlow):
         super(BaseFlowTacRegisterInitObjWF, self).__init__(
             "TacRegisterInitObjWF",
             session_context,
-            )
-    async def _process_validation_rules(self,
-            tac_bus_obj: TacBusObj,
+        )
+    async def _process_validation_rules(
+        self,
+        tac_bus_obj: TacBusObj,
 
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
         await self._process_security_rules(tac_bus_obj)
-    async def _process_security_rules(self,
+    async def _process_security_rules(
+        self,
         tac_bus_obj: TacBusObj,
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
         role_required = ""

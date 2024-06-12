@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import Tac
 from datetime import datetime
 from decimal import Decimal
@@ -30,7 +31,7 @@ class TestTacSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "description": "Vanilla",
         "display_order": 42,
         "is_active": False,
@@ -38,14 +39,14 @@ class TestTacSchema:
         "name": "Vanilla",
         "pac_id": 2,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
+# endset  # noqa: E122
     }
     def test_tac_serialization(self, tac: Tac, session):
         schema = TacSchema()
@@ -183,44 +184,73 @@ class TestTacSchema:
         new_tac = Tac(**deserialized_data)
         assert isinstance(new_tac, Tac)
     def test_to_json(self, tac: Tac, session):
-            # Convert the Tac instance to JSON using the schema
-            tac_schema = TacSchema()
-            tac_dict = tac_schema.dump(tac)
-            # Convert the tac_dict to JSON string
-            tac_json = json.dumps(tac_dict)
-            # Convert the JSON strings back to dictionaries
-            tac_dict_from_json = json.loads(tac_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(tac_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tac_dict_from_json.keys())}"
-            )
-            assert tac_dict_from_json['code'] == tac.code
-            assert tac_dict_from_json['last_change_code'] == (
-                 tac.last_change_code)
-            assert tac_dict_from_json['insert_user_id'] == (
-                 tac.insert_user_id)
-            assert tac_dict_from_json['last_update_user_id'] == (
-                 tac.last_update_user_id)
-    # endset
-            assert tac_dict_from_json['description'] == (
-                 tac.description)
-            assert tac_dict_from_json['display_order'] == (
-                 tac.display_order)
-            assert tac_dict_from_json['is_active'] == (
-                 tac.is_active)
-            assert tac_dict_from_json['lookup_enum_name'] == (
-                 tac.lookup_enum_name)
-            assert tac_dict_from_json['name'] == (
-                 tac.name)
-            assert tac_dict_from_json['pac_id'] == (
-                 tac.pac_id)
-    # endset
-            assert tac_dict_from_json['insert_utc_date_time'] == (
-                 tac.insert_utc_date_time.isoformat())
-            assert tac_dict_from_json['last_update_utc_date_time'] == (
-                 tac.last_update_utc_date_time.isoformat())
-    # endset
-            assert tac_dict_from_json['pac_code_peek'] == (  # PacID
-                 tac.pac_code_peek)
-    # endset
+        # Convert the Tac instance to JSON using the schema
+        tac_schema = TacSchema()
+        tac_dict = tac_schema.dump(tac)
+        # Convert the tac_dict to JSON string
+        tac_json = json.dumps(tac_dict)
+        # Convert the JSON strings back to dictionaries
+        tac_dict_from_json = json.loads(tac_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("tac_dict_from_json.keys() %s", tac_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(tac_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tac_dict_from_json.keys())}"
+        )
+        assert tac_dict_from_json['code'] == tac.code, (
+            "failed on code"
+        )
+        assert tac_dict_from_json['last_change_code'] == (
+            tac.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert tac_dict_from_json['insert_user_id'] == (
+            tac.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert tac_dict_from_json['last_update_user_id'] == (
+            tac.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert tac_dict_from_json['description'] == (
+            tac.description), (
+            "failed on description"
+        )
+        assert tac_dict_from_json['display_order'] == (
+            tac.display_order), (
+            "failed on display_order"
+        )
+        assert tac_dict_from_json['is_active'] == (
+            tac.is_active), (
+            "failed on is_active"
+        )
+        assert tac_dict_from_json['lookup_enum_name'] == (
+            tac.lookup_enum_name), (
+            "failed on lookup_enum_name"
+        )
+        assert tac_dict_from_json['name'] == (
+            tac.name), (
+            "failed on name"
+        )
+        assert tac_dict_from_json['pac_id'] == (
+            tac.pac_id), (
+            "failed on pac_id"
+        )
+# endset
+        assert tac_dict_from_json['insert_utc_date_time'] == (
+            tac.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert tac_dict_from_json['last_update_utc_date_time'] == (
+            tac.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert tac_dict_from_json['pac_code_peek'] == (  # PacID
+            tac.pac_code_peek), (
+            "failed on pac_code_peek"
+        )
+# endset

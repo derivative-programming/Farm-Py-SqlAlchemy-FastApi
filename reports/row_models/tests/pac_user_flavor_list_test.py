@@ -33,7 +33,7 @@ class TestReportItemPacUserFlavorList:
             "flavor_lookup_enum_name": "test",
             "flavor_name": "test",
             "pac_name": "test",
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemPacUserFlavorList(**data)
         report_item = ReportItemPacUserFlavorList()

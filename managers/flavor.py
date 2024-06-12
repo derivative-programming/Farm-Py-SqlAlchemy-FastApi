@@ -141,11 +141,15 @@ class FlavorManager:
 #         else:
 #             query = select(Flavor)
         query = select(
-            Flavor
-            , Pac  # pac_id
-            )
+            Flavor,
+            Pac,  # pac_id
+        )
 # endset
-        query = query.outerjoin(Pac, and_(Flavor.pac_id == Pac.pac_id, Flavor.pac_id != 0))
+        query = query.outerjoin(  # pac_id
+            Pac,
+            and_(Flavor.pac_id == Pac.pac_id,
+                 Flavor.pac_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[Flavor]:
@@ -222,8 +226,8 @@ class FlavorManager:
         logging.info("FlavorManager.delete %s", flavor_id)
         if not isinstance(flavor_id, int):
             raise TypeError(
-                "The flavor_id must be an integer, got %s instead.",
-                type(flavor_id))
+                f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+            )
         flavor = await self.get_by_id(flavor_id)
         if not flavor:
             raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
@@ -289,9 +293,9 @@ class FlavorManager:
         await self._session_context.session.flush()
         return flavors
     async def update_bulk(
-            self,
-            flavor_updates: List[Dict[int, Dict]]
-            ) -> List[Flavor]:
+        self,
+        flavor_updates: List[Dict[int, Dict]]
+    ) -> List[Flavor]:
         """
         #TODO add comment
         """
@@ -301,8 +305,8 @@ class FlavorManager:
             flavor_id = update.get("flavor_id")
             if not isinstance(flavor_id, int):
                 raise TypeError(
-                    "The flavor_id must be an integer, got %s instead.",
-                    type(flavor_id))
+                    f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+                )
             if not flavor_id:
                 continue
             logging.info("FlavorManager.update_bulk flavor_id:%s", flavor_id)
@@ -327,13 +331,13 @@ class FlavorManager:
         for flavor_id in flavor_ids:
             if not isinstance(flavor_id, int):
                 raise TypeError(
-                    "The flavor_id must be an integer, got %s instead.",
-                    type(flavor_id))
+                    f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+                )
             flavor = await self.get_by_id(flavor_id)
             if not flavor:
                 raise FlavorNotFoundError(
-                    "Flavor with ID %s not found!",
-                    flavor_id)
+                    f"Flavor with ID {flavor_id} not found!"
+                )
             if flavor:
                 await self._session_context.session.delete(flavor)
         await self._session_context.session.flush()
@@ -374,8 +378,8 @@ class FlavorManager:
         logging.info("FlavorManager.exists %s", flavor_id)
         if not isinstance(flavor_id, int):
             raise TypeError(
-                "The flavor_id must be an integer, got %s instead.",
-                type(flavor_id))
+                f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+            )
         flavor = await self.get_by_id(flavor_id)
         return bool(flavor)
     def is_equal(self, flavor1: Flavor, flavor2: Flavor) -> bool:
@@ -395,12 +399,14 @@ class FlavorManager:
         return dict1 == dict2
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Flavor]:  # PacID
+        """
+        #TODO add comment
+        """
         logging.info("FlavorManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The flavor_id must be an integer, got %s instead.",
-                type(pac_id)
-                )
+                f"The flavor_id must be an integer, got {type(pac_id)} instead."
+            )
         query_filter = Flavor.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

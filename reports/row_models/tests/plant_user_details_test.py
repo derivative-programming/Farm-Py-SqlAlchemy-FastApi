@@ -68,7 +68,7 @@ class TestReportItemPlantUserDetails:
             "update_button_text_link_plant_code": str(UUID(int=5)),
             "random_property_updates_link_plant_code": str(UUID(int=4)),
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemPlantUserDetails(**data)
         report_item = ReportItemPlantUserDetails()
@@ -82,7 +82,8 @@ class TestReportItemPlantUserDetails:
         assert report_item.some_date_val == date.fromisoformat("2023-01-01")
         assert report_item.some_decimal_val == Decimal("10.99")
         assert report_item.some_email_address == "test@example.com"
-        assert report_item.some_float_val == 1.23
+        assert math.isclose(report_item.some_float_val, 1.23, rel_tol=1e-9), (
+            "Values must be approximately equal")
         assert report_item.some_int_val == 1
         assert report_item.some_money_val == Decimal("99.99")
         assert report_item.some_n_var_char_val == "test"

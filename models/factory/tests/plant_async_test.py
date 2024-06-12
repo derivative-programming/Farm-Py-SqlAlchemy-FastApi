@@ -5,28 +5,28 @@
 """
 
 import asyncio
-from decimal import Decimal
-import pytest
-import pytest_asyncio
 import time
 import math
+from decimal import Decimal
+from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+import pytest
+import pytest_asyncio
 from models import Base, Plant
 from models.factory import PlantFactory
 from services.db_config import DB_DIALECT, generate_uuid
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
-DB_DIALECT = "sqlite"
+DB_DIALECT = "sqlite"  # noqa: F811
 
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
@@ -125,7 +125,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant: Plant = await PlantFactory.build_async(session=session)
         assert plant.last_change_code == 0
 
@@ -134,7 +134,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant: Plant = await PlantFactory.create_async(session=session)
         assert plant.last_change_code == 1
 
@@ -143,7 +143,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.create_async(session=session)
         initial_code = plant.last_change_code
         plant.code = generate_uuid()
@@ -155,7 +155,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.build_async(session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
@@ -165,7 +165,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.build_async(session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
@@ -179,7 +179,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.create_async(session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
@@ -189,13 +189,12 @@ class TestPlantFactoryAsync:
         await session.commit()
         assert plant.insert_utc_date_time == initial_time
 
-
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.build_async(session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
@@ -205,7 +204,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.build_async(session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
@@ -219,7 +218,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.create_async(session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
@@ -234,7 +233,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.create_async(session=session)
         await session.delete(plant)
         await session.commit()
@@ -258,7 +257,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = await PlantFactory.create_async(session=session)
         assert isinstance(plant.plant_id, int)
         if DB_DIALECT == 'postgresql':
@@ -364,12 +363,12 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant_1 = await PlantFactory.create_async(session=session)
         plant_2 = await PlantFactory.create_async(session=session)
         plant_2.code = plant_1.code
         session.add_all([plant_1, plant_2])
-        with pytest.raises(Exception):  
+        with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
 
@@ -378,7 +377,7 @@ class TestPlantFactoryAsync:
         """
         #TODO add comment
         """
-        
+
         plant = Plant()
         assert plant.code is not None
         assert plant.last_change_code is not None

@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import OrgApiKey
 from datetime import datetime
 from decimal import Decimal
@@ -30,32 +31,30 @@ class TestOrgApiKeySchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "api_key_value": "Vanilla",
         "created_by": "Vanilla",
-        "created_utc_date_time":
-                datetime(
-                        2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-        "expiration_utc_date_time":
-                datetime(
-                        2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
+        "created_utc_date_time": datetime(
+            2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+        "expiration_utc_date_time": datetime(
+            2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "is_active": False,
         "is_temp_user_key": False,
         "name": "Vanilla",
         "organization_id": 2,
         "org_customer_id": 1,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+        "last_update_utc_date_time": datetime(
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
         "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrganizationID
         "org_customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrgCustomerID
-# endset
-        "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+# endset  # noqa: E122
     }
     def test_org_api_key_serialization(self, org_api_key: OrgApiKey, session):
         schema = OrgApiKeySchema()
@@ -225,52 +224,89 @@ class TestOrgApiKeySchema:
         new_org_api_key = OrgApiKey(**deserialized_data)
         assert isinstance(new_org_api_key, OrgApiKey)
     def test_to_json(self, org_api_key: OrgApiKey, session):
-            # Convert the OrgApiKey instance to JSON using the schema
-            org_api_key_schema = OrgApiKeySchema()
-            org_api_key_dict = org_api_key_schema.dump(org_api_key)
-            # Convert the org_api_key_dict to JSON string
-            org_api_key_json = json.dumps(org_api_key_dict)
-            # Convert the JSON strings back to dictionaries
-            org_api_key_dict_from_json = json.loads(org_api_key_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(org_api_key_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(org_api_key_dict_from_json.keys())}"
-            )
-            assert org_api_key_dict_from_json['code'] == org_api_key.code
-            assert org_api_key_dict_from_json['last_change_code'] == (
-                 org_api_key.last_change_code)
-            assert org_api_key_dict_from_json['insert_user_id'] == (
-                 org_api_key.insert_user_id)
-            assert org_api_key_dict_from_json['last_update_user_id'] == (
-                 org_api_key.last_update_user_id)
-    # endset
-            assert org_api_key_dict_from_json['api_key_value'] == (
-                 org_api_key.api_key_value)
-            assert org_api_key_dict_from_json['created_by'] == (
-                 org_api_key.created_by)
-            assert org_api_key_dict_from_json['created_utc_date_time'] == (
-                 org_api_key.created_utc_date_time.isoformat())
-            assert org_api_key_dict_from_json['expiration_utc_date_time'] == (
-                 org_api_key.expiration_utc_date_time.isoformat())
-            assert org_api_key_dict_from_json['is_active'] == (
-                 org_api_key.is_active)
-            assert org_api_key_dict_from_json['is_temp_user_key'] == (
-                 org_api_key.is_temp_user_key)
-            assert org_api_key_dict_from_json['name'] == (
-                 org_api_key.name)
-            assert org_api_key_dict_from_json['organization_id'] == (
-                 org_api_key.organization_id)
-            assert org_api_key_dict_from_json['org_customer_id'] == (
-                 org_api_key.org_customer_id)
-    # endset
-            assert org_api_key_dict_from_json['insert_utc_date_time'] == (
-                 org_api_key.insert_utc_date_time.isoformat())
-            assert org_api_key_dict_from_json['last_update_utc_date_time'] == (
-                 org_api_key.last_update_utc_date_time.isoformat())
-    # endset
-            assert org_api_key_dict_from_json['organization_code_peek'] == (  # OrganizationID
-                 org_api_key.organization_code_peek)
-            assert org_api_key_dict_from_json['org_customer_code_peek'] == (  # OrgCustomerID
-                 org_api_key.org_customer_code_peek)
-    # endset
+        # Convert the OrgApiKey instance to JSON using the schema
+        org_api_key_schema = OrgApiKeySchema()
+        org_api_key_dict = org_api_key_schema.dump(org_api_key)
+        # Convert the org_api_key_dict to JSON string
+        org_api_key_json = json.dumps(org_api_key_dict)
+        # Convert the JSON strings back to dictionaries
+        org_api_key_dict_from_json = json.loads(org_api_key_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("org_api_key_dict_from_json.keys() %s", org_api_key_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(org_api_key_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(org_api_key_dict_from_json.keys())}"
+        )
+        assert org_api_key_dict_from_json['code'] == org_api_key.code, (
+            "failed on code"
+        )
+        assert org_api_key_dict_from_json['last_change_code'] == (
+            org_api_key.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert org_api_key_dict_from_json['insert_user_id'] == (
+            org_api_key.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert org_api_key_dict_from_json['last_update_user_id'] == (
+            org_api_key.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert org_api_key_dict_from_json['api_key_value'] == (
+            org_api_key.api_key_value), (
+            "failed on api_key_value"
+        )
+        assert org_api_key_dict_from_json['created_by'] == (
+            org_api_key.created_by), (
+            "failed on created_by"
+        )
+        assert org_api_key_dict_from_json['created_utc_date_time'] == (
+            org_api_key.created_utc_date_time.isoformat()), (
+            "failed on created_utc_date_time"
+        )
+        assert org_api_key_dict_from_json['expiration_utc_date_time'] == (
+            org_api_key.expiration_utc_date_time.isoformat()), (
+            "failed on expiration_utc_date_time"
+        )
+        assert org_api_key_dict_from_json['is_active'] == (
+            org_api_key.is_active), (
+            "failed on is_active"
+        )
+        assert org_api_key_dict_from_json['is_temp_user_key'] == (
+            org_api_key.is_temp_user_key), (
+            "failed on is_temp_user_key"
+        )
+        assert org_api_key_dict_from_json['name'] == (
+            org_api_key.name), (
+            "failed on name"
+        )
+        assert org_api_key_dict_from_json['organization_id'] == (
+            org_api_key.organization_id), (
+            "failed on organization_id"
+        )
+        assert org_api_key_dict_from_json['org_customer_id'] == (
+            org_api_key.org_customer_id), (
+            "failed on org_customer_id"
+        )
+# endset
+        assert org_api_key_dict_from_json['insert_utc_date_time'] == (
+            org_api_key.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert org_api_key_dict_from_json['last_update_utc_date_time'] == (
+            org_api_key.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert org_api_key_dict_from_json['organization_code_peek'] == (  # OrganizationID
+            org_api_key.organization_code_peek), (
+            "failed on organization_code_peek"
+        )
+        assert org_api_key_dict_from_json['org_customer_code_peek'] == (  # OrgCustomerID
+            org_api_key.org_customer_code_peek), (
+            "failed on org_customer_code_peek"
+        )
+# endset

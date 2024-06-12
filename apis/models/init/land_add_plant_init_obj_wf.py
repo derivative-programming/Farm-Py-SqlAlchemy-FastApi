@@ -150,7 +150,7 @@ class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(
             self,
             session_context: SessionContext,
-            land_code: uuid,
+            land_code: uuid.UUID,
             response: LandAddPlantInitObjWFGetInitModelResponse
     ) -> LandAddPlantInitObjWFGetInitModelResponse:
         try:

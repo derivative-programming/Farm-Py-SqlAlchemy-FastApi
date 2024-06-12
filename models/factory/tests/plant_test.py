@@ -5,25 +5,23 @@
 """
 
 from decimal import Decimal
-import pytest
 import time
 import math
-from decimal import Decimal
 from datetime import datetime, date, timedelta
+import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Plant
-from models.factory import PlantFactory
-from services.db_config import DB_DIALECT
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from models import Base, Plant
+from models.factory import PlantFactory
+from services.db_config import DB_DIALECT, generate_uuid
 
 DATABASE_URL = "sqlite:///:memory:"
 
-DB_DIALECT = "sqlite"
+DB_DIALECT = "sqlite"  # noqa: F811
 
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
@@ -258,7 +256,7 @@ class TestPlantFactory:
         assert isinstance(plant.some_utc_date_time_val, datetime)
         assert plant.some_var_char_val == "" or isinstance(
             plant.some_var_char_val, str)
-        # Check for the peek values, 
+        # Check for the peek values,
         # assuming they are UUIDs based on your model
 
 # endset
@@ -426,7 +424,6 @@ class TestPlantFactory:
         session.commit()
         assert plant_2.last_change_code != original_last_change_code
 # endset
-
 
     # isDeleteAllowed,
     # isEditAllowed,

@@ -57,7 +57,7 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
     async def process_request(
             self,
             session_context: SessionContext,
-            plant_code: uuid,
+            plant_code: uuid.UUID,
             response: PlantUserDetailsInitReportGetInitModelResponse
     ) -> PlantUserDetailsInitReportGetInitModelResponse:
         try:

@@ -3,26 +3,26 @@
     #TODO add comment
 """
 import asyncio
-from decimal import Decimal
-import pytest
-import pytest_asyncio
 import time
 import math
+from decimal import Decimal
+from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
-from datetime import datetime, date, timedelta
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+import pytest
+import pytest_asyncio
 from models import Base, OrgApiKey
 from models.factory import OrgApiKeyFactory
 from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-DB_DIALECT = "sqlite"
+DB_DIALECT = "sqlite"  # noqa: F811
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)

@@ -95,13 +95,21 @@ class OrgApiKeyManager:
 #         else:
 #             query = select(OrgApiKey)
         query = select(
-            OrgApiKey
-            , Organization  # organization_id
-            , OrgCustomer  # org_customer_id
-            )
+            OrgApiKey,
+            Organization,  # organization_id
+            OrgCustomer,  # org_customer_id
+        )
 # endset
-        query = query.outerjoin(Organization, and_(OrgApiKey.organization_id == Organization.organization_id, OrgApiKey.organization_id != 0))
-        query = query.outerjoin(OrgCustomer, and_(OrgApiKey.org_customer_id == OrgCustomer.org_customer_id, OrgApiKey.org_customer_id != 0))
+        query = query.outerjoin(  # organization_id
+            Organization,
+            and_(OrgApiKey.organization_id == Organization.organization_id,
+                 OrgApiKey.organization_id != 0)
+        )
+        query = query.outerjoin(  # org_customer_id
+            OrgCustomer,
+            and_(OrgApiKey.org_customer_id == OrgCustomer.org_customer_id,
+                 OrgApiKey.org_customer_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[OrgApiKey]:
@@ -181,8 +189,8 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.delete %s", org_api_key_id)
         if not isinstance(org_api_key_id, int):
             raise TypeError(
-                "The org_api_key_id must be an integer, got %s instead.",
-                type(org_api_key_id))
+                f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead."
+            )
         org_api_key = await self.get_by_id(org_api_key_id)
         if not org_api_key:
             raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
@@ -248,9 +256,9 @@ class OrgApiKeyManager:
         await self._session_context.session.flush()
         return org_api_keys
     async def update_bulk(
-            self,
-            org_api_key_updates: List[Dict[int, Dict]]
-            ) -> List[OrgApiKey]:
+        self,
+        org_api_key_updates: List[Dict[int, Dict]]
+    ) -> List[OrgApiKey]:
         """
         #TODO add comment
         """
@@ -260,8 +268,8 @@ class OrgApiKeyManager:
             org_api_key_id = update.get("org_api_key_id")
             if not isinstance(org_api_key_id, int):
                 raise TypeError(
-                    "The org_api_key_id must be an integer, got %s instead.",
-                    type(org_api_key_id))
+                    f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead."
+                )
             if not org_api_key_id:
                 continue
             logging.info("OrgApiKeyManager.update_bulk org_api_key_id:%s", org_api_key_id)
@@ -286,13 +294,13 @@ class OrgApiKeyManager:
         for org_api_key_id in org_api_key_ids:
             if not isinstance(org_api_key_id, int):
                 raise TypeError(
-                    "The org_api_key_id must be an integer, got %s instead.",
-                    type(org_api_key_id))
+                    f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead."
+                )
             org_api_key = await self.get_by_id(org_api_key_id)
             if not org_api_key:
                 raise OrgApiKeyNotFoundError(
-                    "OrgApiKey with ID %s not found!",
-                    org_api_key_id)
+                    f"OrgApiKey with ID {org_api_key_id} not found!"
+                )
             if org_api_key:
                 await self._session_context.session.delete(org_api_key)
         await self._session_context.session.flush()
@@ -333,8 +341,8 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.exists %s", org_api_key_id)
         if not isinstance(org_api_key_id, int):
             raise TypeError(
-                "The org_api_key_id must be an integer, got %s instead.",
-                type(org_api_key_id))
+                f"The org_api_key_id must be an integer, got {type(org_api_key_id)} instead."
+            )
         org_api_key = await self.get_by_id(org_api_key_id)
         return bool(org_api_key)
     def is_equal(self, org_api_key1: OrgApiKey, org_api_key2: OrgApiKey) -> bool:
@@ -354,12 +362,14 @@ class OrgApiKeyManager:
         return dict1 == dict2
 # endset
     async def get_by_organization_id(self, organization_id: int) -> List[OrgApiKey]:  # OrganizationID
+        """
+        #TODO add comment
+        """
         logging.info("OrgApiKeyManager.get_by_organization_id")
         if not isinstance(organization_id, int):
             raise TypeError(
-                "The org_api_key_id must be an integer, got %s instead.",
-                type(organization_id)
-                )
+                f"The org_api_key_id must be an integer, got {type(organization_id)} instead."
+            )
         query_filter = OrgApiKey.organization_id == organization_id
         query_results = await self._run_query(query_filter)
         return query_results
@@ -373,9 +383,8 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.get_by_org_customer_id")
         if not isinstance(org_customer_id, int):
             raise TypeError(
-                "The org_api_key_id must be an integer, got %s instead.",
-                type(org_customer_id)
-                )
+                f"The org_api_key_id must be an integer, got {type(org_customer_id)} instead."
+            )
         query_filter = OrgApiKey.org_customer_id == org_customer_id
         query_results = await self._run_query(query_filter)
         return query_results

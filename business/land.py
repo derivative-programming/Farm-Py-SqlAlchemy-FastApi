@@ -10,7 +10,7 @@ from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import LandManager
 from models import Land
 import models
@@ -19,18 +19,12 @@ from .base_bus_obj import BaseBusObj
 
 from business.plant import PlantBusObj
 
+UUIDType = get_uuid_type(DB_DIALECT)
 class LandInvalidInitError(Exception):
     """
     #TODO add comment
     """
     pass
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class LandBusObj(BaseBusObj):
     """
     #TODO add comment
@@ -42,110 +36,191 @@ class LandBusObj(BaseBusObj):
         self.land = Land()
     @property
     def land_id(self):
+        """
+        #TODO add comment
+        """
         return self.land.land_id
     @land_id.setter
     def code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("land_id must be a int.")
         self.land.land_id = value
     # code
     @property
     def code(self):
+        """
+        #TODO add comment
+        """
         return self.land.code
     @code.setter
-    def code(self, value: UUIDType):
+    def code(self, value: UUIDType):  # type: ignore
+        """
+        #TODO add comment
+        """
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.land.code = value
     # last_change_code
     @property
     def last_change_code(self):
+        """
+        #TODO add comment
+        """
         return self.land.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.land.last_change_code = value
     # insert_user_id
     @property
     def insert_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.land.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.land.insert_user_id = value
     def set_prop_insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.insert_user_id = value
         return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.land.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.land.last_update_user_id = value
     def set_prop_last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.last_update_user_id = value
         return self
 # endset
     # description
     @property
     def description(self):
+        """
+        #TODO add comment
+        """
         return self.land.description
     @description.setter
     def description(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, str), "description must be a string"
         self.land.description = value
     def set_prop_description(self, value):
+        """
+        #TODO add comment
+        """
         self.description = value
         return self
     # displayOrder
     @property
     def display_order(self):
+        """
+        #TODO add comment
+        """
         return self.land.display_order
     @display_order.setter
     def display_order(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.land.display_order = value
     def set_prop_display_order(self, value):
+        """
+        #TODO add comment
+        """
         self.display_order = value
         return self
     # isActive
     @property
     def is_active(self):
+        """
+        #TODO add comment
+        """
         return self.land.is_active
     @is_active.setter
     def is_active(self, value: bool):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.land.is_active = value
     def set_prop_is_active(self, value: bool):
+        """
+        #TODO add comment
+        """
         self.is_active = value
         return self
     # lookupEnumName
     @property
     def lookup_enum_name(self):
+        """
+        #TODO add comment
+        """
         return self.land.lookup_enum_name
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.land.lookup_enum_name = value
     def set_prop_lookup_enum_name(self, value):
+        """
+        #TODO add comment
+        """
         self.lookup_enum_name = value
         return self
     # name
     @property
     def name(self):
+        """
+        #TODO add comment
+        """
         return self.land.name
     @name.setter
     def name(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, str), "name must be a string"
         self.land.name = value
     def set_prop_name(self, value):
+        """
+        #TODO add comment
+        """
         self.name = value
         return self
     # PacID
@@ -158,17 +233,29 @@ class LandBusObj(BaseBusObj):
     # PacID
     @property
     def pac_id(self):
+        """
+        #TODO add comment
+        """
         return self.land.pac_id
     @pac_id.setter
     def pac_id(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.land.pac_id = value
     def set_prop_pac_id(self, value):
+        """
+        #TODO add comment
+        """
         self.pac_id = value
         return self
     @property
     def pac_code_peek(self):
+        """
+        #TODO add comment
+        """
         return self.land.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
@@ -179,18 +266,30 @@ class LandBusObj(BaseBusObj):
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.land.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.land.insert_utc_date_time = value
     # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.land.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.land.last_update_utc_date_time = value
@@ -254,18 +353,33 @@ class LandBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
+        """
+        #TODO add comment
+        """
         land_manager = LandManager(self._session_context)
         self.land = await land_manager.refresh(self.land)
         return self
     def is_valid(self):
+        """
+        #TODO add comment
+        """
         return (self.land is not None)
     def to_dict(self):
+        """
+        #TODO add comment
+        """
         land_manager = LandManager(self._session_context)
         return land_manager.to_dict(self.land)
     def to_json(self):
+        """
+        #TODO add comment
+        """
         land_manager = LandManager(self._session_context)
         return land_manager.to_json(self.land)
     async def save(self):
+        """
+        #TODO add comment
+        """
         if self.land.land_id is not None and self.land.land_id > 0:
             land_manager = LandManager(self._session_context)
             self.land = await land_manager.update(self.land)
@@ -274,11 +388,17 @@ class LandBusObj(BaseBusObj):
             self.land = await land_manager.add(self.land)
         return self
     async def delete(self):
+        """
+        #TODO add comment
+        """
         if self.land.land_id > 0:
             land_manager = LandManager(self._session_context)
             await land_manager.delete(self.land.land_id)
             self.land = None
     async def randomize_properties(self):
+        """
+        #TODO add comment
+        """
         self.land.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.display_order = random.randint(0, 100)
@@ -291,8 +411,14 @@ class LandBusObj(BaseBusObj):
 # endset
         return self
     def get_land_obj(self) -> Land:
+        """
+        #TODO add comment
+        """
         return self.land
     def is_equal(self, land: Land) -> Land:
+        """
+        #TODO add comment
+        """
         land_manager = LandManager(self._session_context)
         my_land = self.get_land_obj()
         return land_manager.is_equal(land, my_land)
@@ -304,15 +430,27 @@ class LandBusObj(BaseBusObj):
     # name,
     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
+        """
+        #TODO add comment
+        """
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
         return pac_obj
 # endset
     def get_obj(self) -> Land:
+        """
+        #TODO add comment
+        """
         return self.land
     def get_object_name(self) -> str:
+        """
+        #TODO add comment
+        """
         return "land"
     def get_id(self) -> int:
+        """
+        #TODO add comment
+        """
         return self.land_id
     # description,
     # displayOrder,
@@ -321,10 +459,19 @@ class LandBusObj(BaseBusObj):
     # name,
     # PacID
     async def get_parent_name(self) -> str:
+        """
+        #TODO add comment
+        """
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
+        """
+        #TODO add comment
+        """
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
+        """
+        #TODO add comment
+        """
         return self.get_pac_id_rel_obj()
 # endset
     @staticmethod
@@ -332,6 +479,9 @@ class LandBusObj(BaseBusObj):
         session_context: SessionContext,
         obj_list: List[Land]
     ):
+        """
+        #TODO add comment
+        """
         result = list()
         for land in obj_list:
             land_bus_obj = LandBusObj.get(

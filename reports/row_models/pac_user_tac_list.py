@@ -19,6 +19,9 @@ class ReportItemPacUserTacList():
     pac_name: str = ""
 # endset
     def load_data_provider_dict(self, data: dict):
+        """
+        #TODO add comment
+        """
         self.tac_code = (
             TypeConversion.get_uuid(data["tac_code"]))
         self.tac_description = (

@@ -77,7 +77,7 @@ class LandUserPlantMultiSelectToEditablePostModelResponse(PostResponse):
     async def process_request(
         self,
         session_context: SessionContext,
-        land_code: uuid,
+        land_code: uuid.UUID,
         request: LandUserPlantMultiSelectToEditablePostModelRequest
     ):
         """

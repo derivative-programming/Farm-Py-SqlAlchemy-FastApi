@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import Pac
 from datetime import datetime
 from decimal import Decimal
@@ -30,21 +31,21 @@ class TestPacSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "description": "Vanilla",
         "display_order": 42,
         "is_active": False,
         "lookup_enum_name": "Vanilla",
         "name": "Vanilla",
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
-
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
+
+# endset  # noqa: E122
     }
     def test_pac_serialization(self, pac: Pac, session):
         schema = PacSchema()
@@ -170,41 +171,66 @@ class TestPacSchema:
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
     def test_to_json(self, pac: Pac, session):
-            # Convert the Pac instance to JSON using the schema
-            pac_schema = PacSchema()
-            pac_dict = pac_schema.dump(pac)
-            # Convert the pac_dict to JSON string
-            pac_json = json.dumps(pac_dict)
-            # Convert the JSON strings back to dictionaries
-            pac_dict_from_json = json.loads(pac_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(pac_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(pac_dict_from_json.keys())}"
-            )
-            assert pac_dict_from_json['code'] == pac.code
-            assert pac_dict_from_json['last_change_code'] == (
-                 pac.last_change_code)
-            assert pac_dict_from_json['insert_user_id'] == (
-                 pac.insert_user_id)
-            assert pac_dict_from_json['last_update_user_id'] == (
-                 pac.last_update_user_id)
-    # endset
-            assert pac_dict_from_json['description'] == (
-                 pac.description)
-            assert pac_dict_from_json['display_order'] == (
-                 pac.display_order)
-            assert pac_dict_from_json['is_active'] == (
-                 pac.is_active)
-            assert pac_dict_from_json['lookup_enum_name'] == (
-                 pac.lookup_enum_name)
-            assert pac_dict_from_json['name'] == (
-                 pac.name)
-    # endset
-            assert pac_dict_from_json['insert_utc_date_time'] == (
-                 pac.insert_utc_date_time.isoformat())
-            assert pac_dict_from_json['last_update_utc_date_time'] == (
-                 pac.last_update_utc_date_time.isoformat())
-    # endset
+        # Convert the Pac instance to JSON using the schema
+        pac_schema = PacSchema()
+        pac_dict = pac_schema.dump(pac)
+        # Convert the pac_dict to JSON string
+        pac_json = json.dumps(pac_dict)
+        # Convert the JSON strings back to dictionaries
+        pac_dict_from_json = json.loads(pac_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("pac_dict_from_json.keys() %s", pac_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(pac_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(pac_dict_from_json.keys())}"
+        )
+        assert pac_dict_from_json['code'] == pac.code, (
+            "failed on code"
+        )
+        assert pac_dict_from_json['last_change_code'] == (
+            pac.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert pac_dict_from_json['insert_user_id'] == (
+            pac.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert pac_dict_from_json['last_update_user_id'] == (
+            pac.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert pac_dict_from_json['description'] == (
+            pac.description), (
+            "failed on description"
+        )
+        assert pac_dict_from_json['display_order'] == (
+            pac.display_order), (
+            "failed on display_order"
+        )
+        assert pac_dict_from_json['is_active'] == (
+            pac.is_active), (
+            "failed on is_active"
+        )
+        assert pac_dict_from_json['lookup_enum_name'] == (
+            pac.lookup_enum_name), (
+            "failed on lookup_enum_name"
+        )
+        assert pac_dict_from_json['name'] == (
+            pac.name), (
+            "failed on name"
+        )
+# endset
+        assert pac_dict_from_json['insert_utc_date_time'] == (
+            pac.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert pac_dict_from_json['last_update_utc_date_time'] == (
+            pac.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
 
-    # endset
+# endset

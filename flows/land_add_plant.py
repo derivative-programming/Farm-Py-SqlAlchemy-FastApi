@@ -22,10 +22,10 @@ from decimal import Decimal
 
 
 class FlowLandAddPlantResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
-    land_code: uuid.UUID =  uuid.UUID(int=0)
-    plant_code: uuid.UUID =  uuid.UUID(int=0)
-    output_flavor_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+    land_code: uuid.UUID = uuid.UUID(int=0)
+    plant_code: uuid.UUID = uuid.UUID(int=0)
+    output_flavor_code: uuid.UUID = uuid.UUID(int=0)
     output_other_flavor: str = ""
     output_some_int_val: int = 0
     output_some_big_int_val: int = 0
@@ -80,7 +80,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 
     async def process(self,
         land_bus_obj: LandBusObj,
-        request_flavor_code: uuid = uuid.UUID(int=0),
+        request_flavor_code: uuid.UUID = uuid.UUID(int=0),
         request_other_flavor: str = "",
         request_some_int_val: int = 0,
         request_some_big_int_val: int = 0,

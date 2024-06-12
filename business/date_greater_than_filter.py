@@ -12,12 +12,15 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 # from business.pac import PacBusObj  # PacID
-from services.db_config import DB_DIALECT, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import PacManager as PacIDManager  # PacID
 from managers import DateGreaterThanFilterManager
 import managers as managers_and_enums
 from models import DateGreaterThanFilter
 import models
+
+
+UUIDType = get_uuid_type(DB_DIALECT)
 
 
 class DateGreaterThanFilterSessionNotFoundError(Exception):
@@ -30,15 +33,6 @@ class DateGreaterThanFilterInvalidInitError(Exception):
     """
     #TODO add comment
     """
-
-
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 
 
 class DateGreaterThanFilterBusObj:

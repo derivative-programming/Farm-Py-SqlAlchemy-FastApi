@@ -19,6 +19,9 @@ class ReportItemPacUserRoleList():
     pac_name: str = ""
 # endset
     def load_data_provider_dict(self, data: dict):
+        """
+        #TODO add comment
+        """
         self.role_code = (
             TypeConversion.get_uuid(data["role_code"]))
         self.role_description = (

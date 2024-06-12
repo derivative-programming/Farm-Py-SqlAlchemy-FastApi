@@ -21,17 +21,19 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
         super(BaseFlowCustomerUserLogOut, self).__init__(
             "CustomerUserLogOut",
             session_context,
-            )
-    async def _process_validation_rules(self,
-            customer_bus_obj: CustomerBusObj,
+        )
+    async def _process_validation_rules(
+        self,
+        customer_bus_obj: CustomerBusObj,
 
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
         await self._process_security_rules(customer_bus_obj)
-    async def _process_security_rules(self,
+    async def _process_security_rules(
+        self,
         customer_bus_obj: CustomerBusObj,
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
         role_required = "User"

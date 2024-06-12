@@ -53,7 +53,7 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
     async def process_request(
             self,
             session_context: SessionContext,
-            tac_code: uuid,
+            tac_code: uuid.UUID,
             response: TacLoginInitObjWFGetInitModelResponse
     ) -> TacLoginInitObjWFGetInitModelResponse:
         try:

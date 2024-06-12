@@ -73,7 +73,7 @@ class TestReportItemLandPlantList:
             "update_link_plant_code": str(UUID(int=3)),
             "delete_async_button_link_plant_code": str(UUID(int=4)),
             "details_link_plant_code": str(UUID(int=5)),
-# endset
+# endset  # noqa: E122
         }
 
         # report_item = ReportItemLandPlantList(**data)
@@ -86,7 +86,8 @@ class TestReportItemLandPlantList:
         assert report_item.some_bit_val is True
         assert report_item.is_edit_allowed is True
         assert report_item.is_delete_allowed is True
-        assert report_item.some_float_val == 1.23
+        assert math.isclose(report_item.some_float_val, 1.23, rel_tol=1e-9), (
+            "Values must be approximately equal")
         assert report_item.some_decimal_val == Decimal("10.99")
         assert report_item.some_utc_date_time_val == (
             datetime.fromisoformat("2023-01-01T00:00:00"))

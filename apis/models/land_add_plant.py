@@ -4,10 +4,13 @@
     #TODO add comment
 """
 
-from datetime import date, datetime
-from decimal import Decimal
 import json
 import uuid
+import logging
+from datetime import date, datetime
+from pydantic import Field, UUID4
+from decimal import Decimal
+from sqlalchemy.ext.asyncio import AsyncSession
 from helpers import TypeConversion
 from .post_reponse import PostResponse
 from flows.land_add_plant import FlowLandAddPlant, FlowLandAddPlantResult
@@ -17,10 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
-from pydantic import Field, UUID4
-import logging
 from apis.models.validation_error import ValidationErrorItem
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class LandAddPlantPostModelRequest(CamelModel):
@@ -224,7 +224,7 @@ class LandAddPlantPostModelResponse(PostResponse):
     async def process_request(
         self,
         session_context: SessionContext,
-        land_code: uuid,
+        land_code: uuid.UUID,
         request: LandAddPlantPostModelRequest
     ):
         """
@@ -260,7 +260,7 @@ class LandAddPlantPostModelResponse(PostResponse):
                 request.request_some_phone_number,
                 request.request_some_email_address,
                 request.request_sample_image_upload_file
-# endset
+# endset  #noqa: E122
             )
             self.load_flow_response(flowResponse)
             self.success = True

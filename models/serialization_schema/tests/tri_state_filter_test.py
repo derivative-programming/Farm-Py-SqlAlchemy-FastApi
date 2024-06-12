@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import TriStateFilter
 from datetime import datetime
 from decimal import Decimal
@@ -30,7 +31,7 @@ class TestTriStateFilterSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "description": "Vanilla",
         "display_order": 42,
         "is_active": False,
@@ -39,14 +40,14 @@ class TestTriStateFilterSchema:
         "pac_id": 2,
         "state_int_value": 42,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
+# endset  # noqa: E122
     }
     def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter, session):
         schema = TriStateFilterSchema()
@@ -192,46 +193,77 @@ class TestTriStateFilterSchema:
         new_tri_state_filter = TriStateFilter(**deserialized_data)
         assert isinstance(new_tri_state_filter, TriStateFilter)
     def test_to_json(self, tri_state_filter: TriStateFilter, session):
-            # Convert the TriStateFilter instance to JSON using the schema
-            tri_state_filter_schema = TriStateFilterSchema()
-            tri_state_filter_dict = tri_state_filter_schema.dump(tri_state_filter)
-            # Convert the tri_state_filter_dict to JSON string
-            tri_state_filter_json = json.dumps(tri_state_filter_dict)
-            # Convert the JSON strings back to dictionaries
-            tri_state_filter_dict_from_json = json.loads(tri_state_filter_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(tri_state_filter_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tri_state_filter_dict_from_json.keys())}"
-            )
-            assert tri_state_filter_dict_from_json['code'] == tri_state_filter.code
-            assert tri_state_filter_dict_from_json['last_change_code'] == (
-                 tri_state_filter.last_change_code)
-            assert tri_state_filter_dict_from_json['insert_user_id'] == (
-                 tri_state_filter.insert_user_id)
-            assert tri_state_filter_dict_from_json['last_update_user_id'] == (
-                 tri_state_filter.last_update_user_id)
-    # endset
-            assert tri_state_filter_dict_from_json['description'] == (
-                 tri_state_filter.description)
-            assert tri_state_filter_dict_from_json['display_order'] == (
-                 tri_state_filter.display_order)
-            assert tri_state_filter_dict_from_json['is_active'] == (
-                 tri_state_filter.is_active)
-            assert tri_state_filter_dict_from_json['lookup_enum_name'] == (
-                 tri_state_filter.lookup_enum_name)
-            assert tri_state_filter_dict_from_json['name'] == (
-                 tri_state_filter.name)
-            assert tri_state_filter_dict_from_json['pac_id'] == (
-                 tri_state_filter.pac_id)
-            assert tri_state_filter_dict_from_json['state_int_value'] == (
-                 tri_state_filter.state_int_value)
-    # endset
-            assert tri_state_filter_dict_from_json['insert_utc_date_time'] == (
-                 tri_state_filter.insert_utc_date_time.isoformat())
-            assert tri_state_filter_dict_from_json['last_update_utc_date_time'] == (
-                 tri_state_filter.last_update_utc_date_time.isoformat())
-    # endset
-            assert tri_state_filter_dict_from_json['pac_code_peek'] == (  # PacID
-                 tri_state_filter.pac_code_peek)
-    # endset
+        # Convert the TriStateFilter instance to JSON using the schema
+        tri_state_filter_schema = TriStateFilterSchema()
+        tri_state_filter_dict = tri_state_filter_schema.dump(tri_state_filter)
+        # Convert the tri_state_filter_dict to JSON string
+        tri_state_filter_json = json.dumps(tri_state_filter_dict)
+        # Convert the JSON strings back to dictionaries
+        tri_state_filter_dict_from_json = json.loads(tri_state_filter_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("tri_state_filter_dict_from_json.keys() %s", tri_state_filter_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(tri_state_filter_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tri_state_filter_dict_from_json.keys())}"
+        )
+        assert tri_state_filter_dict_from_json['code'] == tri_state_filter.code, (
+            "failed on code"
+        )
+        assert tri_state_filter_dict_from_json['last_change_code'] == (
+            tri_state_filter.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert tri_state_filter_dict_from_json['insert_user_id'] == (
+            tri_state_filter.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert tri_state_filter_dict_from_json['last_update_user_id'] == (
+            tri_state_filter.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert tri_state_filter_dict_from_json['description'] == (
+            tri_state_filter.description), (
+            "failed on description"
+        )
+        assert tri_state_filter_dict_from_json['display_order'] == (
+            tri_state_filter.display_order), (
+            "failed on display_order"
+        )
+        assert tri_state_filter_dict_from_json['is_active'] == (
+            tri_state_filter.is_active), (
+            "failed on is_active"
+        )
+        assert tri_state_filter_dict_from_json['lookup_enum_name'] == (
+            tri_state_filter.lookup_enum_name), (
+            "failed on lookup_enum_name"
+        )
+        assert tri_state_filter_dict_from_json['name'] == (
+            tri_state_filter.name), (
+            "failed on name"
+        )
+        assert tri_state_filter_dict_from_json['pac_id'] == (
+            tri_state_filter.pac_id), (
+            "failed on pac_id"
+        )
+        assert tri_state_filter_dict_from_json['state_int_value'] == (
+            tri_state_filter.state_int_value), (
+            "failed on state_int_value"
+        )
+# endset
+        assert tri_state_filter_dict_from_json['insert_utc_date_time'] == (
+            tri_state_filter.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert tri_state_filter_dict_from_json['last_update_utc_date_time'] == (
+            tri_state_filter.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert tri_state_filter_dict_from_json['pac_code_peek'] == (  # PacID
+            tri_state_filter.pac_code_peek), (
+            "failed on pac_code_peek"
+        )
+# endset

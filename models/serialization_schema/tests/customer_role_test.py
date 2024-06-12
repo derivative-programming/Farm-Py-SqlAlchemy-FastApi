@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import CustomerRole
 from datetime import datetime
 from decimal import Decimal
@@ -30,21 +31,21 @@ class TestCustomerRoleSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "customer_id": 2,
         "is_placeholder": False,
         "placeholder": False,
         "role_id": 1,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+        "last_update_utc_date_time": datetime(
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
         "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # CustomerID
         "role_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # RoleID
-# endset
-        "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+# endset  # noqa: E122
     }
     def test_customer_role_serialization(self, customer_role: CustomerRole, session):
         schema = CustomerRoleSchema()
@@ -174,42 +175,69 @@ class TestCustomerRoleSchema:
         new_customer_role = CustomerRole(**deserialized_data)
         assert isinstance(new_customer_role, CustomerRole)
     def test_to_json(self, customer_role: CustomerRole, session):
-            # Convert the CustomerRole instance to JSON using the schema
-            customer_role_schema = CustomerRoleSchema()
-            customer_role_dict = customer_role_schema.dump(customer_role)
-            # Convert the customer_role_dict to JSON string
-            customer_role_json = json.dumps(customer_role_dict)
-            # Convert the JSON strings back to dictionaries
-            customer_role_dict_from_json = json.loads(customer_role_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(customer_role_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(customer_role_dict_from_json.keys())}"
-            )
-            assert customer_role_dict_from_json['code'] == customer_role.code
-            assert customer_role_dict_from_json['last_change_code'] == (
-                 customer_role.last_change_code)
-            assert customer_role_dict_from_json['insert_user_id'] == (
-                 customer_role.insert_user_id)
-            assert customer_role_dict_from_json['last_update_user_id'] == (
-                 customer_role.last_update_user_id)
-    # endset
-            assert customer_role_dict_from_json['customer_id'] == (
-                 customer_role.customer_id)
-            assert customer_role_dict_from_json['is_placeholder'] == (
-                 customer_role.is_placeholder)
-            assert customer_role_dict_from_json['placeholder'] == (
-                 customer_role.placeholder)
-            assert customer_role_dict_from_json['role_id'] == (
-                 customer_role.role_id)
-    # endset
-            assert customer_role_dict_from_json['insert_utc_date_time'] == (
-                 customer_role.insert_utc_date_time.isoformat())
-            assert customer_role_dict_from_json['last_update_utc_date_time'] == (
-                 customer_role.last_update_utc_date_time.isoformat())
-    # endset
-            assert customer_role_dict_from_json['customer_code_peek'] == (  # CustomerID
-                 customer_role.customer_code_peek)
-            assert customer_role_dict_from_json['role_code_peek'] == (  # RoleID
-                 customer_role.role_code_peek)
-    # endset
+        # Convert the CustomerRole instance to JSON using the schema
+        customer_role_schema = CustomerRoleSchema()
+        customer_role_dict = customer_role_schema.dump(customer_role)
+        # Convert the customer_role_dict to JSON string
+        customer_role_json = json.dumps(customer_role_dict)
+        # Convert the JSON strings back to dictionaries
+        customer_role_dict_from_json = json.loads(customer_role_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("customer_role_dict_from_json.keys() %s", customer_role_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(customer_role_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(customer_role_dict_from_json.keys())}"
+        )
+        assert customer_role_dict_from_json['code'] == customer_role.code, (
+            "failed on code"
+        )
+        assert customer_role_dict_from_json['last_change_code'] == (
+            customer_role.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert customer_role_dict_from_json['insert_user_id'] == (
+            customer_role.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert customer_role_dict_from_json['last_update_user_id'] == (
+            customer_role.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert customer_role_dict_from_json['customer_id'] == (
+            customer_role.customer_id), (
+            "failed on customer_id"
+        )
+        assert customer_role_dict_from_json['is_placeholder'] == (
+            customer_role.is_placeholder), (
+            "failed on is_placeholder"
+        )
+        assert customer_role_dict_from_json['placeholder'] == (
+            customer_role.placeholder), (
+            "failed on placeholder"
+        )
+        assert customer_role_dict_from_json['role_id'] == (
+            customer_role.role_id), (
+            "failed on role_id"
+        )
+# endset
+        assert customer_role_dict_from_json['insert_utc_date_time'] == (
+            customer_role.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert customer_role_dict_from_json['last_update_utc_date_time'] == (
+            customer_role.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert customer_role_dict_from_json['customer_code_peek'] == (  # CustomerID
+            customer_role.customer_code_peek), (
+            "failed on customer_code_peek"
+        )
+        assert customer_role_dict_from_json['role_code_peek'] == (  # RoleID
+            customer_role.role_code_peek), (
+            "failed on role_code_peek"
+        )
+# endset

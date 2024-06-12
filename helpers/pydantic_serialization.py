@@ -4,8 +4,8 @@
     #TODO add comment
 """
 
-from pydantic import BaseModel
 import re
+from pydantic import BaseModel
 
 
 def to_camel(string: str) -> str:

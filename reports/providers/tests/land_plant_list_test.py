@@ -4,18 +4,17 @@
     #TODO add comment
 """
 
-import pytest
 import sqlite3
 from decimal import Decimal
 from datetime import datetime, date
-from sqlalchemy import String
+import pytest
+# from sqlalchemy import String
+# from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
-from services.db_config import DB_DIALECT
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from reports.providers.land_plant_list import ReportProviderLandPlantList
 import current_runtime
 
@@ -23,23 +22,22 @@ import current_runtime
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
 
-DB_DIALECT = "sqlite"
+DB_DIALECT = "sqlite"  # noqa: F811
 
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+UUIDType = get_uuid_type(DB_DIALECT)
 
 
 class TestReportProviderLandPlantList:
     """
     #TODO add comment
     """
+
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
+        """
+        #TODO add comment
+        """
+
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
         report_provider = ReportProviderLandPlantList(session_context)
@@ -62,7 +60,7 @@ class TestReportProviderLandPlantList:
         some_text_val: str = ""
         some_phone_number: str = ""
         some_email_address: str = ""
-        flavor_code: UUIDType = generate_uuid()
+        flavor_code: UUIDType = generate_uuid()  # type: ignore
 # endset
 
         page_number = 1
@@ -71,6 +69,7 @@ class TestReportProviderLandPlantList:
         order_by_descending = False
         results = await report_provider.generate_list(
             land_code,
+            flavor_code,
             some_int_val,
             some_big_int_val,
             some_bit_val,
@@ -86,8 +85,7 @@ class TestReportProviderLandPlantList:
             some_text_val,
             some_phone_number,
             some_email_address,
-            flavor_code,
-# endset
+# endset  # noqa: E122
             page_number,
             item_count_per_page,
             order_by_column_name,
@@ -123,7 +121,7 @@ class TestReportProviderLandPlantList:
                 "update_link_plant_code",
                 "delete_async_button_link_plant_code",
                 "details_link_plant_code"
-# endset
+# endset  # noqa: E122
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result"

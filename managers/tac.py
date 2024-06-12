@@ -131,11 +131,15 @@ class TacManager:
 #         else:
 #             query = select(Tac)
         query = select(
-            Tac
-            , Pac  # pac_id
-            )
+            Tac,
+            Pac,  # pac_id
+        )
 # endset
-        query = query.outerjoin(Pac, and_(Tac.pac_id == Pac.pac_id, Tac.pac_id != 0))
+        query = query.outerjoin(  # pac_id
+            Pac,
+            and_(Tac.pac_id == Pac.pac_id,
+                 Tac.pac_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[Tac]:
@@ -212,8 +216,8 @@ class TacManager:
         logging.info("TacManager.delete %s", tac_id)
         if not isinstance(tac_id, int):
             raise TypeError(
-                "The tac_id must be an integer, got %s instead.",
-                type(tac_id))
+                f"The tac_id must be an integer, got {type(tac_id)} instead."
+            )
         tac = await self.get_by_id(tac_id)
         if not tac:
             raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
@@ -279,9 +283,9 @@ class TacManager:
         await self._session_context.session.flush()
         return tacs
     async def update_bulk(
-            self,
-            tac_updates: List[Dict[int, Dict]]
-            ) -> List[Tac]:
+        self,
+        tac_updates: List[Dict[int, Dict]]
+    ) -> List[Tac]:
         """
         #TODO add comment
         """
@@ -291,8 +295,8 @@ class TacManager:
             tac_id = update.get("tac_id")
             if not isinstance(tac_id, int):
                 raise TypeError(
-                    "The tac_id must be an integer, got %s instead.",
-                    type(tac_id))
+                    f"The tac_id must be an integer, got {type(tac_id)} instead."
+                )
             if not tac_id:
                 continue
             logging.info("TacManager.update_bulk tac_id:%s", tac_id)
@@ -317,13 +321,13 @@ class TacManager:
         for tac_id in tac_ids:
             if not isinstance(tac_id, int):
                 raise TypeError(
-                    "The tac_id must be an integer, got %s instead.",
-                    type(tac_id))
+                    f"The tac_id must be an integer, got {type(tac_id)} instead."
+                )
             tac = await self.get_by_id(tac_id)
             if not tac:
                 raise TacNotFoundError(
-                    "Tac with ID %s not found!",
-                    tac_id)
+                    f"Tac with ID {tac_id} not found!"
+                )
             if tac:
                 await self._session_context.session.delete(tac)
         await self._session_context.session.flush()
@@ -364,8 +368,8 @@ class TacManager:
         logging.info("TacManager.exists %s", tac_id)
         if not isinstance(tac_id, int):
             raise TypeError(
-                "The tac_id must be an integer, got %s instead.",
-                type(tac_id))
+                f"The tac_id must be an integer, got {type(tac_id)} instead."
+            )
         tac = await self.get_by_id(tac_id)
         return bool(tac)
     def is_equal(self, tac1: Tac, tac2: Tac) -> bool:
@@ -385,12 +389,14 @@ class TacManager:
         return dict1 == dict2
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Tac]:  # PacID
+        """
+        #TODO add comment
+        """
         logging.info("TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The tac_id must be an integer, got %s instead.",
-                type(pac_id)
-                )
+                f"The tac_id must be an integer, got {type(pac_id)} instead."
+            )
         query_filter = Tac.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

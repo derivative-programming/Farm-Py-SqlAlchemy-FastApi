@@ -92,11 +92,15 @@ class OrganizationManager:
 #         else:
 #             query = select(Organization)
         query = select(
-            Organization
-            , Tac  # tac_id
-            )
+            Organization,
+            Tac,  # tac_id
+        )
 # endset
-        query = query.outerjoin(Tac, and_(Organization.tac_id == Tac.tac_id, Organization.tac_id != 0))
+        query = query.outerjoin(  # tac_id
+            Tac,
+            and_(Organization.tac_id == Tac.tac_id,
+                 Organization.tac_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[Organization]:
@@ -173,8 +177,8 @@ class OrganizationManager:
         logging.info("OrganizationManager.delete %s", organization_id)
         if not isinstance(organization_id, int):
             raise TypeError(
-                "The organization_id must be an integer, got %s instead.",
-                type(organization_id))
+                f"The organization_id must be an integer, got {type(organization_id)} instead."
+            )
         organization = await self.get_by_id(organization_id)
         if not organization:
             raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
@@ -240,9 +244,9 @@ class OrganizationManager:
         await self._session_context.session.flush()
         return organizations
     async def update_bulk(
-            self,
-            organization_updates: List[Dict[int, Dict]]
-            ) -> List[Organization]:
+        self,
+        organization_updates: List[Dict[int, Dict]]
+    ) -> List[Organization]:
         """
         #TODO add comment
         """
@@ -252,8 +256,8 @@ class OrganizationManager:
             organization_id = update.get("organization_id")
             if not isinstance(organization_id, int):
                 raise TypeError(
-                    "The organization_id must be an integer, got %s instead.",
-                    type(organization_id))
+                    f"The organization_id must be an integer, got {type(organization_id)} instead."
+                )
             if not organization_id:
                 continue
             logging.info("OrganizationManager.update_bulk organization_id:%s", organization_id)
@@ -278,13 +282,13 @@ class OrganizationManager:
         for organization_id in organization_ids:
             if not isinstance(organization_id, int):
                 raise TypeError(
-                    "The organization_id must be an integer, got %s instead.",
-                    type(organization_id))
+                    f"The organization_id must be an integer, got {type(organization_id)} instead."
+                )
             organization = await self.get_by_id(organization_id)
             if not organization:
                 raise OrganizationNotFoundError(
-                    "Organization with ID %s not found!",
-                    organization_id)
+                    f"Organization with ID {organization_id} not found!"
+                )
             if organization:
                 await self._session_context.session.delete(organization)
         await self._session_context.session.flush()
@@ -325,8 +329,8 @@ class OrganizationManager:
         logging.info("OrganizationManager.exists %s", organization_id)
         if not isinstance(organization_id, int):
             raise TypeError(
-                "The organization_id must be an integer, got %s instead.",
-                type(organization_id))
+                f"The organization_id must be an integer, got {type(organization_id)} instead."
+            )
         organization = await self.get_by_id(organization_id)
         return bool(organization)
     def is_equal(self, organization1: Organization, organization2: Organization) -> bool:
@@ -346,12 +350,14 @@ class OrganizationManager:
         return dict1 == dict2
 # endset
     async def get_by_tac_id(self, tac_id: int) -> List[Organization]:  # TacID
+        """
+        #TODO add comment
+        """
         logging.info("OrganizationManager.get_by_tac_id")
         if not isinstance(tac_id, int):
             raise TypeError(
-                "The organization_id must be an integer, got %s instead.",
-                type(tac_id)
-                )
+                f"The organization_id must be an integer, got {type(tac_id)} instead."
+            )
         query_filter = Organization.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return query_results

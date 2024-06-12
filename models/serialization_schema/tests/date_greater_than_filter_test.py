@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import DateGreaterThanFilter
 from datetime import datetime
 from decimal import Decimal
@@ -30,7 +31,7 @@ class TestDateGreaterThanFilterSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "day_count": 42,
         "description": "Vanilla",
         "display_order": 42,
@@ -39,14 +40,14 @@ class TestDateGreaterThanFilterSchema:
         "name": "Vanilla",
         "pac_id": 2,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
+        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
+# endset  # noqa: E122
     }
     def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
         schema = DateGreaterThanFilterSchema()
@@ -192,46 +193,77 @@ class TestDateGreaterThanFilterSchema:
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
     def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter, session):
-            # Convert the DateGreaterThanFilter instance to JSON using the schema
-            date_greater_than_filter_schema = DateGreaterThanFilterSchema()
-            date_greater_than_filter_dict = date_greater_than_filter_schema.dump(date_greater_than_filter)
-            # Convert the date_greater_than_filter_dict to JSON string
-            date_greater_than_filter_json = json.dumps(date_greater_than_filter_dict)
-            # Convert the JSON strings back to dictionaries
-            date_greater_than_filter_dict_from_json = json.loads(date_greater_than_filter_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(date_greater_than_filter_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(date_greater_than_filter_dict_from_json.keys())}"
-            )
-            assert date_greater_than_filter_dict_from_json['code'] == date_greater_than_filter.code
-            assert date_greater_than_filter_dict_from_json['last_change_code'] == (
-                 date_greater_than_filter.last_change_code)
-            assert date_greater_than_filter_dict_from_json['insert_user_id'] == (
-                 date_greater_than_filter.insert_user_id)
-            assert date_greater_than_filter_dict_from_json['last_update_user_id'] == (
-                 date_greater_than_filter.last_update_user_id)
-    # endset
-            assert date_greater_than_filter_dict_from_json['day_count'] == (
-                 date_greater_than_filter.day_count)
-            assert date_greater_than_filter_dict_from_json['description'] == (
-                 date_greater_than_filter.description)
-            assert date_greater_than_filter_dict_from_json['display_order'] == (
-                 date_greater_than_filter.display_order)
-            assert date_greater_than_filter_dict_from_json['is_active'] == (
-                 date_greater_than_filter.is_active)
-            assert date_greater_than_filter_dict_from_json['lookup_enum_name'] == (
-                 date_greater_than_filter.lookup_enum_name)
-            assert date_greater_than_filter_dict_from_json['name'] == (
-                 date_greater_than_filter.name)
-            assert date_greater_than_filter_dict_from_json['pac_id'] == (
-                 date_greater_than_filter.pac_id)
-    # endset
-            assert date_greater_than_filter_dict_from_json['insert_utc_date_time'] == (
-                 date_greater_than_filter.insert_utc_date_time.isoformat())
-            assert date_greater_than_filter_dict_from_json['last_update_utc_date_time'] == (
-                 date_greater_than_filter.last_update_utc_date_time.isoformat())
-    # endset
-            assert date_greater_than_filter_dict_from_json['pac_code_peek'] == (  # PacID
-                 date_greater_than_filter.pac_code_peek)
-    # endset
+        # Convert the DateGreaterThanFilter instance to JSON using the schema
+        date_greater_than_filter_schema = DateGreaterThanFilterSchema()
+        date_greater_than_filter_dict = date_greater_than_filter_schema.dump(date_greater_than_filter)
+        # Convert the date_greater_than_filter_dict to JSON string
+        date_greater_than_filter_json = json.dumps(date_greater_than_filter_dict)
+        # Convert the JSON strings back to dictionaries
+        date_greater_than_filter_dict_from_json = json.loads(date_greater_than_filter_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("date_greater_than_filter_dict_from_json.keys() %s", date_greater_than_filter_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(date_greater_than_filter_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(date_greater_than_filter_dict_from_json.keys())}"
+        )
+        assert date_greater_than_filter_dict_from_json['code'] == date_greater_than_filter.code, (
+            "failed on code"
+        )
+        assert date_greater_than_filter_dict_from_json['last_change_code'] == (
+            date_greater_than_filter.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert date_greater_than_filter_dict_from_json['insert_user_id'] == (
+            date_greater_than_filter.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert date_greater_than_filter_dict_from_json['last_update_user_id'] == (
+            date_greater_than_filter.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert date_greater_than_filter_dict_from_json['day_count'] == (
+            date_greater_than_filter.day_count), (
+            "failed on day_count"
+        )
+        assert date_greater_than_filter_dict_from_json['description'] == (
+            date_greater_than_filter.description), (
+            "failed on description"
+        )
+        assert date_greater_than_filter_dict_from_json['display_order'] == (
+            date_greater_than_filter.display_order), (
+            "failed on display_order"
+        )
+        assert date_greater_than_filter_dict_from_json['is_active'] == (
+            date_greater_than_filter.is_active), (
+            "failed on is_active"
+        )
+        assert date_greater_than_filter_dict_from_json['lookup_enum_name'] == (
+            date_greater_than_filter.lookup_enum_name), (
+            "failed on lookup_enum_name"
+        )
+        assert date_greater_than_filter_dict_from_json['name'] == (
+            date_greater_than_filter.name), (
+            "failed on name"
+        )
+        assert date_greater_than_filter_dict_from_json['pac_id'] == (
+            date_greater_than_filter.pac_id), (
+            "failed on pac_id"
+        )
+# endset
+        assert date_greater_than_filter_dict_from_json['insert_utc_date_time'] == (
+            date_greater_than_filter.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert date_greater_than_filter_dict_from_json['last_update_utc_date_time'] == (
+            date_greater_than_filter.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert date_greater_than_filter_dict_from_json['pac_code_peek'] == (  # PacID
+            date_greater_than_filter.pac_code_peek), (
+            "failed on pac_code_peek"
+        )
+# endset

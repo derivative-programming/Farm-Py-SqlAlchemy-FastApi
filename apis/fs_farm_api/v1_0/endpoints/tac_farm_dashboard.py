@@ -118,7 +118,8 @@ class TacFarmDashboardRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 tac_code = session_context.check_context_code(
                     "TacCode",
-                    tac_code)
+                    tac_code
+                )
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model

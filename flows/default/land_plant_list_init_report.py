@@ -112,9 +112,9 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         some_text_val_output: str = ""
         some_phone_number_output: str = ""
         some_email_address_output: str = ""
-        flavor_code_output: uuid = uuid.UUID(int=0)
-        land_code_output: uuid = uuid.UUID(int=0)
-        tac_code_output: uuid = uuid.UUID(int=0)
+        flavor_code_output: uuid.UUID = uuid.UUID(int=0)
+        land_code_output: uuid.UUID = uuid.UUID(int=0)
+        tac_code_output: uuid.UUID = uuid.UUID(int=0)
         land_name_output: str = ""
 # endset
         # TODO: add flow logic

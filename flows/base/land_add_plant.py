@@ -25,30 +25,30 @@ class BaseFlowLandAddPlant(BaseFlow):
         super(BaseFlowLandAddPlant, self).__init__(
             "LandAddPlant",
             session_context,
-            )
+        )
 
-
-    async def _process_validation_rules(self,
-            land_bus_obj: LandBusObj,
-            request_flavor_code: uuid = uuid.UUID(int=0),
-            request_other_flavor: str = "",
-            request_some_int_val: int = 0,
-            request_some_big_int_val: int = 0,
-            request_some_bit_val: bool = False,
-            request_is_edit_allowed: bool = False,
-            request_is_delete_allowed: bool = False,
-            request_some_float_val: float = 0,
-            request_some_decimal_val: Decimal = 0,
-            request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),
-            request_some_date_val: date = TypeConversion.get_default_date(),
-            request_some_money_val: Decimal = 0,
-            request_some_n_var_char_val: str = "",
-            request_some_var_char_val: str = "",
-            request_some_text_val: str = "",
-            request_some_phone_number: str = "",
-            request_some_email_address: str = "",
-            request_sample_image_upload_file: str = "",
-        ):
+    async def _process_validation_rules(
+        self,
+        land_bus_obj: LandBusObj,
+        request_flavor_code: uuid.UUID = uuid.UUID(int=0),
+        request_other_flavor: str = "",
+        request_some_int_val: int = 0,
+        request_some_big_int_val: int = 0,
+        request_some_bit_val: bool = False,
+        request_is_edit_allowed: bool = False,
+        request_is_delete_allowed: bool = False,
+        request_some_float_val: float = 0,
+        request_some_decimal_val: Decimal = 0,
+        request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),
+        request_some_date_val: date = TypeConversion.get_default_date(),
+        request_some_money_val: Decimal = 0,
+        request_some_n_var_char_val: str = "",
+        request_some_var_char_val: str = "",
+        request_some_text_val: str = "",
+        request_some_phone_number: str = "",
+        request_some_email_address: str = "",
+        request_sample_image_upload_file: str = "",
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
         if request_flavor_code == uuid.UUID(int=0) and FlowConstants.param_request_flavor_code_isRequired is True:
@@ -110,12 +110,10 @@ class BaseFlowLandAddPlant(BaseFlow):
         await self._process_security_rules(land_bus_obj)
 
 
-
-
-
-    async def _process_security_rules(self,
+    async def _process_security_rules(
+        self,
         land_bus_obj: LandBusObj,
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
 
         customerCodeMatchRequired = False

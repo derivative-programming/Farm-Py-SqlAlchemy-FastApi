@@ -5,32 +5,23 @@
 """
 
 import uuid
+import logging
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import String
+from sqlalchemy.future import select
 import pytest
 import pytest_asyncio
-from sqlalchemy.ext.asyncio import AsyncSession
 from helpers.session_context import SessionContext
 from models import Plant
 import models
 from models.factory import PlantFactory
 from managers.plant import PlantManager
 from models.serialization_schema.plant import PlantSchema
-from services.db_config import DB_DIALECT
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import DB_DIALECT, generate_uuid
-from sqlalchemy import String
-from sqlalchemy.future import select
-import logging
 
-DB_DIALECT = "sqlite"
-
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+DB_DIALECT = "sqlite"  # noqa: F811
 
 
 class TestPlantManager:
@@ -41,14 +32,13 @@ class TestPlantManager:
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = uuid.uuid4()
+        session_context.customer_code = generate_uuid()
         return PlantManager(session_context)
 
     @pytest.mark.asyncio
     async def test_build(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -175,8 +165,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -210,8 +199,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -678,8 +666,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -729,8 +716,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -795,8 +781,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_get_sorted_list_empty_database(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -889,8 +874,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_plant(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -960,8 +944,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_get_by_flvr_foreign_key_id_nonexistent(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         """
             #TODO add comment
@@ -1015,8 +998,7 @@ class TestPlantManager:
     @pytest.mark.asyncio
     async def test_get_by_land_id_nonexistent(
         self,
-        plant_manager: PlantManager,
-        session: AsyncSession
+        plant_manager: PlantManager
     ):
         non_existent_id = 999
 

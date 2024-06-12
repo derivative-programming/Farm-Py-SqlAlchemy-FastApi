@@ -21,15 +21,16 @@ class BaseFlowTacRegister(BaseFlow):
         super(BaseFlowTacRegister, self).__init__(
             "TacRegister",
             session_context,
-            )
-    async def _process_validation_rules(self,
-            tac_bus_obj: TacBusObj,
-            email: str = "",
-            password: str = "",
-            confirm_password: str = "",
-            first_name: str = "",
-            last_name: str = "",
-        ):
+        )
+    async def _process_validation_rules(
+        self,
+        tac_bus_obj: TacBusObj,
+        email: str = "",
+        password: str = "",
+        confirm_password: str = "",
+        first_name: str = "",
+        last_name: str = "",
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
         if email == "" and FlowConstants.param_email_isRequired is True:
             self._add_field_validation_error("email","Please enter a Email")
@@ -42,9 +43,10 @@ class BaseFlowTacRegister(BaseFlow):
         if last_name == "" and FlowConstants.param_last_name_isRequired is True:
             self._add_field_validation_error("lastName","Please enter a Last Name")
         await self._process_security_rules(tac_bus_obj)
-    async def _process_security_rules(self,
+    async def _process_security_rules(
+        self,
         tac_bus_obj: TacBusObj,
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
         role_required = ""

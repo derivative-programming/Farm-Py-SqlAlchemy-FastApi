@@ -75,7 +75,7 @@ class PlantUserDeletePostModelResponse(PostResponse):
     async def process_request(
         self,
         session_context: SessionContext,
-        plant_code: uuid,
+        plant_code: uuid.UUID,
         request: PlantUserDeletePostModelRequest
     ):
         """

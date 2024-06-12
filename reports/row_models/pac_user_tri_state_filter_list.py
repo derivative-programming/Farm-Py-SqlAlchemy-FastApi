@@ -19,6 +19,9 @@ class ReportItemPacUserTriStateFilterList():
     tri_state_filter_state_int_value: int = 0
 # endset
     def load_data_provider_dict(self, data: dict):
+        """
+        #TODO add comment
+        """
         self.tri_state_filter_code = (
             TypeConversion.get_uuid(data["tri_state_filter_code"]))
         self.tri_state_filter_description = (

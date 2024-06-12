@@ -97,7 +97,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
     async def process(
         self,
         land_bus_obj: LandBusObj,
-        request_flavor_code: uuid = uuid.UUID(int=0),
+        request_flavor_code: uuid.UUID = uuid.UUID(int=0),
         request_other_flavor: str = "",
         request_some_int_val: int = 0,
         request_some_big_int_val: int = 0,
@@ -146,8 +146,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 
         super()._throw_queued_validation_errors()
 
-        land_code_output: uuid = uuid.UUID(int=0)
-        plant_code_output: uuid = uuid.UUID(int=0)
+        land_code_output: uuid.UUID = uuid.UUID(int=0)
+        plant_code_output: uuid.UUID = uuid.UUID(int=0)
         output_flavor_code_output: str = ""
         output_other_flavor_output: str = ""
         output_some_int_val_output: int = 0

@@ -114,13 +114,21 @@ class PlantManager:
 #         else:
 #             query = select(Plant)
         query = select(
-            Plant
-            , Flavor  # flvr_foreign_key_id
-            , Land  # land_id
-            )
+            Plant,
+            Flavor,  # flvr_foreign_key_id
+            Land,  # land_id
+        )
 # endset
-        query = query.outerjoin(Flavor, and_(Plant.flvr_foreign_key_id == Flavor.flavor_id, Plant.flvr_foreign_key_id != 0))
-        query = query.outerjoin(Land, and_(Plant.land_id == Land.land_id, Plant.land_id != 0))
+        query = query.outerjoin(  # flvr_foreign_key_id
+            Flavor,
+            and_(Plant.flvr_foreign_key_id == Flavor.flavor_id,
+                 Plant.flvr_foreign_key_id != 0)
+        )
+        query = query.outerjoin(  # land_id
+            Land,
+            and_(Plant.land_id == Land.land_id,
+                 Plant.land_id != 0)
+        )
 # endset
 
         return query
@@ -220,8 +228,8 @@ class PlantManager:
         logging.info("PlantManager.delete %s", plant_id)
         if not isinstance(plant_id, int):
             raise TypeError(
-                "The plant_id must be an integer, got %s instead.",
-                type(plant_id))
+                f"The plant_id must be an integer, got {type(plant_id)} instead."
+            )
         plant = await self.get_by_id(plant_id)
         if not plant:
             raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")
@@ -300,9 +308,9 @@ class PlantManager:
         return plants
 
     async def update_bulk(
-            self,
-            plant_updates: List[Dict[int, Dict]]
-            ) -> List[Plant]:
+        self,
+        plant_updates: List[Dict[int, Dict]]
+    ) -> List[Plant]:
         """
         #TODO add comment
         """
@@ -313,8 +321,8 @@ class PlantManager:
             plant_id = update.get("plant_id")
             if not isinstance(plant_id, int):
                 raise TypeError(
-                    "The plant_id must be an integer, got %s instead.",
-                    type(plant_id))
+                    f"The plant_id must be an integer, got {type(plant_id)} instead."
+                )
             if not plant_id:
                 continue
 
@@ -350,14 +358,14 @@ class PlantManager:
         for plant_id in plant_ids:
             if not isinstance(plant_id, int):
                 raise TypeError(
-                    "The plant_id must be an integer, got %s instead.",
-                    type(plant_id))
-            
+                    f"The plant_id must be an integer, got {type(plant_id)} instead."
+                )
+
             plant = await self.get_by_id(plant_id)
             if not plant:
                 raise PlantNotFoundError(
-                    "Plant with ID %s not found!",
-                    plant_id)
+                    f"Plant with ID {plant_id} not found!"
+                )
 
             if plant:
                 await self._session_context.session.delete(plant)
@@ -408,8 +416,8 @@ class PlantManager:
         logging.info("PlantManager.exists %s", plant_id)
         if not isinstance(plant_id, int):
             raise TypeError(
-                "The plant_id must be an integer, got %s instead.",
-                type(plant_id))
+                f"The plant_id must be an integer, got {type(plant_id)} instead."
+            )
         plant = await self.get_by_id(plant_id)
         return bool(plant)
 
@@ -444,13 +452,12 @@ class PlantManager:
         """
         #TODO add comment
         """
-        
+
         logging.info("PlantManager.get_by_flvr_foreign_key_id")
         if not isinstance(flvr_foreign_key_id, int):
             raise TypeError(
-                "The plant_id must be an integer, got %s instead.",
-                type(flvr_foreign_key_id)
-                )
+                f"The plant_id must be an integer, got {type(flvr_foreign_key_id)} instead."
+            )
 
         query_filter = Plant.flvr_foreign_key_id == flvr_foreign_key_id
 
@@ -459,12 +466,15 @@ class PlantManager:
         return query_results
 
     async def get_by_land_id(self, land_id: int) -> List[Plant]:  # LandID
+        """
+        #TODO add comment
+        """
+
         logging.info("PlantManager.get_by_land_id")
         if not isinstance(land_id, int):
             raise TypeError(
-                "The plant_id must be an integer, got %s instead.",
-                type(land_id)
-                )
+                f"The plant_id must be an integer, got {type(land_id)} instead."
+            )
 
         query_filter = Plant.land_id == land_id
 

@@ -21,17 +21,19 @@ class BaseFlowPacUserFlavorListInitReport(BaseFlow):
         super(BaseFlowPacUserFlavorListInitReport, self).__init__(
             "PacUserFlavorListInitReport",
             session_context,
-            )
-    async def _process_validation_rules(self,
-            pac_bus_obj: PacBusObj,
+        )
+    async def _process_validation_rules(
+        self,
+        pac_bus_obj: PacBusObj,
 
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
         await self._process_security_rules(pac_bus_obj)
-    async def _process_security_rules(self,
+    async def _process_security_rules(
+        self,
         pac_bus_obj: PacBusObj,
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
         role_required = ""

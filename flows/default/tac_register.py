@@ -79,9 +79,9 @@ class FlowTacRegister(BaseFlowTacRegister):
 # endset
         )
         super()._throw_queued_validation_errors()
-        customer_code_output: uuid = uuid.UUID(int=0)
+        customer_code_output: uuid.UUID = uuid.UUID(int=0)
         email_output: str = ""
-        user_code_value_output: uuid = uuid.UUID(int=0)
+        user_code_value_output: uuid.UUID = uuid.UUID(int=0)
         utc_offset_in_minutes_output: int = 0
         role_name_csv_list_output: str = ""
         api_key_output: str = ""

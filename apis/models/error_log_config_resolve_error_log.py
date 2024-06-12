@@ -75,7 +75,7 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
     async def process_request(
         self,
         session_context: SessionContext,
-        error_log_code: uuid,
+        error_log_code: uuid.UUID,
         request: ErrorLogConfigResolveErrorLogPostModelRequest
     ):
         """

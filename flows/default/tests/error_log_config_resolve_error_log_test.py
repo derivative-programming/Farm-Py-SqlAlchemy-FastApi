@@ -30,14 +30,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
-DB_DIALECT = "sqlite"
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+DB_DIALECT = "sqlite"  # noqa: F811
 class TestErrorLogConfigResolveErrorLogPostModelResponse:
     """
     #TODO add comment

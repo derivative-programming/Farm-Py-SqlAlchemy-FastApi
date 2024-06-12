@@ -18,7 +18,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from services.db_config import DB_DIALECT
 from sqlalchemy import String
 import flows.constants.pac_user_role_list_init_report as FlowConstants
-DB_DIALECT = "sqlite"
+DB_DIALECT = "sqlite"  # noqa: F811
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)

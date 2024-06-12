@@ -10,25 +10,19 @@ from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import CustomerRoleManager
 from models import CustomerRole
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
+UUIDType = get_uuid_type(DB_DIALECT)
 class CustomerRoleInvalidInitError(Exception):
     """
     #TODO add comment
     """
     pass
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class CustomerRoleBusObj(BaseBusObj):
     """
     #TODO add comment
@@ -40,52 +34,88 @@ class CustomerRoleBusObj(BaseBusObj):
         self.customer_role = CustomerRole()
     @property
     def customer_role_id(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.customer_role_id
     @customer_role_id.setter
     def code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("customer_role_id must be a int.")
         self.customer_role.customer_role_id = value
     # code
     @property
     def code(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.code
     @code.setter
-    def code(self, value: UUIDType):
+    def code(self, value: UUIDType):  # type: ignore
+        """
+        #TODO add comment
+        """
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.customer_role.code = value
     # last_change_code
     @property
     def last_change_code(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.customer_role.last_change_code = value
     # insert_user_id
     @property
     def insert_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.customer_role.insert_user_id = value
     def set_prop_insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.insert_user_id = value
         return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.customer_role.last_update_user_id = value
     def set_prop_last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.last_update_user_id = value
         return self
 # endset
@@ -93,25 +123,43 @@ class CustomerRoleBusObj(BaseBusObj):
     # isPlaceholder
     @property
     def is_placeholder(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.is_placeholder
     @is_placeholder.setter
     def is_placeholder(self, value: bool):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, bool):
             raise ValueError("is_placeholder must be a boolean.")
         self.customer_role.is_placeholder = value
     def set_prop_is_placeholder(self, value: bool):
+        """
+        #TODO add comment
+        """
         self.is_placeholder = value
         return self
     # placeholder
     @property
     def placeholder(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.placeholder
     @placeholder.setter
     def placeholder(self, value: bool):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, bool):
             raise ValueError("placeholder must be a boolean.")
         self.customer_role.placeholder = value
     def set_prop_placeholder(self, value: bool):
+        """
+        #TODO add comment
+        """
         self.placeholder = value
         return self
     # RoleID
@@ -119,17 +167,29 @@ class CustomerRoleBusObj(BaseBusObj):
     # CustomerID
     @property
     def customer_id(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.customer_id
     @customer_id.setter
     def customer_id(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, int) or value is None, (
             "customer_id must be an integer or None")
         self.customer_role.customer_id = value
     def set_prop_customer_id(self, value):
+        """
+        #TODO add comment
+        """
         self.customer_id = value
         return self
     @property
     def customer_code_peek(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.customer_code_peek
     # @customer_code_peek.setter
     # def customer_code_peek(self, value):
@@ -141,17 +201,29 @@ class CustomerRoleBusObj(BaseBusObj):
     # RoleID
     @property
     def role_id(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.role_id
     @role_id.setter
     def role_id(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("role_id must be an integer.")
         self.customer_role.role_id = value
     def set_prop_role_id(self, value):
+        """
+        #TODO add comment
+        """
         self.role_id = value
         return self
     @property
     def role_code_peek(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.role_code_peek
     # @role_code_peek.setter
     # def role_code_peek(self, value):
@@ -163,18 +235,30 @@ class CustomerRoleBusObj(BaseBusObj):
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.customer_role.insert_utc_date_time = value
     # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.customer_role.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.customer_role.last_update_utc_date_time = value
@@ -184,6 +268,9 @@ class CustomerRoleBusObj(BaseBusObj):
                    customer_role_id: int = None,
                    customer_role_obj_instance: CustomerRole = None,
                    customer_role_dict: dict = None):
+        """
+        #TODO add comment
+        """
         if customer_role_id and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self._session_context)
             customer_role_obj = await customer_role_manager.get_by_id(customer_role_id)
@@ -196,7 +283,7 @@ class CustomerRoleBusObj(BaseBusObj):
             customer_role_manager = CustomerRoleManager(self._session_context)
             customer_role_obj = await customer_role_manager.get_by_id(
                 customer_role_obj_instance.customer_role_id
-                )
+            )
             self.customer_role = customer_role_obj
         if json_data and self.customer_role.customer_role_id is None:
             customer_role_manager = CustomerRoleManager(self._session_context)
@@ -214,6 +301,9 @@ class CustomerRoleBusObj(BaseBusObj):
         customer_role_obj_instance: CustomerRole = None,
         customer_role_dict: dict = None
     ):
+        """
+        #TODO add comment
+        """
         result = CustomerRoleBusObj(session_context)
         await result.load(
             json_data,
@@ -225,18 +315,33 @@ class CustomerRoleBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
+        """
+        #TODO add comment
+        """
         customer_role_manager = CustomerRoleManager(self._session_context)
         self.customer_role = await customer_role_manager.refresh(self.customer_role)
         return self
     def is_valid(self):
+        """
+        #TODO add comment
+        """
         return (self.customer_role is not None)
     def to_dict(self):
+        """
+        #TODO add comment
+        """
         customer_role_manager = CustomerRoleManager(self._session_context)
         return customer_role_manager.to_dict(self.customer_role)
     def to_json(self):
+        """
+        #TODO add comment
+        """
         customer_role_manager = CustomerRoleManager(self._session_context)
         return customer_role_manager.to_json(self.customer_role)
     async def save(self):
+        """
+        #TODO add comment
+        """
         if self.customer_role.customer_role_id is not None and self.customer_role.customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = await customer_role_manager.update(self.customer_role)
@@ -245,11 +350,17 @@ class CustomerRoleBusObj(BaseBusObj):
             self.customer_role = await customer_role_manager.add(self.customer_role)
         return self
     async def delete(self):
+        """
+        #TODO add comment
+        """
         if self.customer_role.customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(self._session_context)
             await customer_role_manager.delete(self.customer_role.customer_role_id)
             self.customer_role = None
     async def randomize_properties(self):
+        """
+        #TODO add comment
+        """
         # self.customer_role.customer_id = random.randint(0, 100)
         self.customer_role.is_placeholder = random.choice([True, False])
         self.customer_role.placeholder = random.choice([True, False])
@@ -259,14 +370,23 @@ class CustomerRoleBusObj(BaseBusObj):
 # endset
         return self
     def get_customer_role_obj(self) -> CustomerRole:
+        """
+        #TODO add comment
+        """
         return self.customer_role
     def is_equal(self, customer_role: CustomerRole) -> CustomerRole:
+        """
+        #TODO add comment
+        """
         customer_role_manager = CustomerRoleManager(self._session_context)
         my_customer_role = self.get_customer_role_obj()
         return customer_role_manager.is_equal(customer_role, my_customer_role)
 # endset
     # CustomerID
     async def get_customer_id_rel_obj(self) -> models.Customer:
+        """
+        #TODO add comment
+        """
         customer_manager = managers_and_enums.CustomerManager(self._session_context)
         customer_obj = await customer_manager.get_by_id(self.customer_id)
         return customer_obj
@@ -274,24 +394,46 @@ class CustomerRoleBusObj(BaseBusObj):
     # placeholder,
     # RoleID
     async def get_role_id_rel_obj(self) -> models.Role:
+        """
+        #TODO add comment
+        """
         role_manager = managers_and_enums.RoleManager(
             self._session_context)
         role_obj = await role_manager.get_by_id(
-            self.role_id)
+            self.role_id
+        )
         return role_obj
 # endset
     def get_obj(self) -> CustomerRole:
+        """
+        #TODO add comment
+        """
         return self.customer_role
     def get_object_name(self) -> str:
+        """
+        #TODO add comment
+        """
         return "customer_role"
     def get_id(self) -> int:
+        """
+        #TODO add comment
+        """
         return self.customer_role_id
     # CustomerID
     async def get_parent_name(self) -> str:
+        """
+        #TODO add comment
+        """
         return 'Customer'
     async def get_parent_code(self) -> uuid.UUID:
+        """
+        #TODO add comment
+        """
         return self.customer_code_peek
     async def get_parent_obj(self) -> models.Customer:
+        """
+        #TODO add comment
+        """
         return self.get_customer_id_rel_obj()
     # isPlaceholder,
     # placeholder,
@@ -302,6 +444,9 @@ class CustomerRoleBusObj(BaseBusObj):
         session_context: SessionContext,
         obj_list: List[CustomerRole]
     ):
+        """
+        #TODO add comment
+        """
         result = list()
         for customer_role in obj_list:
             customer_role_bus_obj = CustomerRoleBusObj.get(

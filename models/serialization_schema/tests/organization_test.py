@@ -5,6 +5,7 @@
 import json
 import pytest
 import pytz
+import logging
 from models import Organization
 from datetime import datetime
 from decimal import Decimal
@@ -30,18 +31,18 @@ class TestOrganizationSchema:
         "last_change_code": 0,
         "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-# endset
+# endset  # noqa: E122
         "name": "Vanilla",
         "tac_id": 2,
         "insert_utc_date_time": datetime(
-                        2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-                ).isoformat(),
-# endset
-        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
-# endset
+            2024, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
         "last_update_utc_date_time": datetime(
-             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
-             ).isoformat()
+            2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
+        ).isoformat(),
+# endset  # noqa: E122
+        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
+# endset  # noqa: E122
     }
     def test_organization_serialization(self, organization: Organization, session):
         schema = OrganizationSchema()
@@ -147,36 +148,57 @@ class TestOrganizationSchema:
         new_organization = Organization(**deserialized_data)
         assert isinstance(new_organization, Organization)
     def test_to_json(self, organization: Organization, session):
-            # Convert the Organization instance to JSON using the schema
-            organization_schema = OrganizationSchema()
-            organization_dict = organization_schema.dump(organization)
-            # Convert the organization_dict to JSON string
-            organization_json = json.dumps(organization_dict)
-            # Convert the JSON strings back to dictionaries
-            organization_dict_from_json = json.loads(organization_json)
-            # sample_dict_from_json = json.loads(self.sample_data)
-            # Verify the keys in both dictionaries match
-            assert set(organization_dict_from_json.keys()) == (
-                 set(self.sample_data.keys()), f"Expected keys: {set(self.sample_data.keys())}, Got: {set(organization_dict_from_json.keys())}"
-            )
-            assert organization_dict_from_json['code'] == organization.code
-            assert organization_dict_from_json['last_change_code'] == (
-                 organization.last_change_code)
-            assert organization_dict_from_json['insert_user_id'] == (
-                 organization.insert_user_id)
-            assert organization_dict_from_json['last_update_user_id'] == (
-                 organization.last_update_user_id)
-    # endset
-            assert organization_dict_from_json['name'] == (
-                 organization.name)
-            assert organization_dict_from_json['tac_id'] == (
-                 organization.tac_id)
-    # endset
-            assert organization_dict_from_json['insert_utc_date_time'] == (
-                 organization.insert_utc_date_time.isoformat())
-            assert organization_dict_from_json['last_update_utc_date_time'] == (
-                 organization.last_update_utc_date_time.isoformat())
-    # endset
-            assert organization_dict_from_json['tac_code_peek'] == (  # TacID
-                 organization.tac_code_peek)
-    # endset
+        # Convert the Organization instance to JSON using the schema
+        organization_schema = OrganizationSchema()
+        organization_dict = organization_schema.dump(organization)
+        # Convert the organization_dict to JSON string
+        organization_json = json.dumps(organization_dict)
+        # Convert the JSON strings back to dictionaries
+        organization_dict_from_json = json.loads(organization_json)
+        # sample_dict_from_json = json.loads(self.sample_data)
+        logging.info("organization_dict_from_json.keys() %s", organization_dict_from_json.keys())
+        logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+        # Verify the keys in both dictionaries match
+        assert set(organization_dict_from_json.keys()) == (
+            set(self.sample_data.keys())), (
+            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(organization_dict_from_json.keys())}"
+        )
+        assert organization_dict_from_json['code'] == organization.code, (
+            "failed on code"
+        )
+        assert organization_dict_from_json['last_change_code'] == (
+            organization.last_change_code), (
+            "failed on last_change_code"
+        )
+        assert organization_dict_from_json['insert_user_id'] == (
+            organization.insert_user_id), (
+            "failed on insert_user_id"
+        )
+        assert organization_dict_from_json['last_update_user_id'] == (
+            organization.last_update_user_id), (
+            "failed on last_update_user_id"
+        )
+# endset
+        assert organization_dict_from_json['name'] == (
+            organization.name), (
+            "failed on name"
+        )
+        assert organization_dict_from_json['tac_id'] == (
+            organization.tac_id), (
+            "failed on tac_id"
+        )
+# endset
+        assert organization_dict_from_json['insert_utc_date_time'] == (
+            organization.insert_utc_date_time.isoformat()), (
+            "failed on insert_utc_date_time"
+        )
+        assert organization_dict_from_json['last_update_utc_date_time'] == (
+            organization.last_update_utc_date_time.isoformat()), (
+            "failed on last_update_utc_date_time"
+        )
+# endset
+        assert organization_dict_from_json['tac_code_peek'] == (  # TacID
+            organization.tac_code_peek), (
+            "failed on tac_code_peek"
+        )
+# endset

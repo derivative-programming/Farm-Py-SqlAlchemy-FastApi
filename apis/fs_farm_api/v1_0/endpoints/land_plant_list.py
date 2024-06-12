@@ -49,7 +49,7 @@ class LandPlantListRouter(BaseRouter):
         response_model=api_init_models.LandPlantListInitReportGetInitModelResponse,
         summary="Land Plant List Init Page")
     async def request_get_init(
-        land_code: str = Path(..., description="Land Code"),
+        land_code: uuid.UUID = Path(..., description="Land Code"),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -75,7 +75,8 @@ class LandPlantListRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code(
                     "LandCode",
-                    land_code)
+                    land_code
+                )
                 init_request = api_init_models.LandPlantListInitReportGetInitModelRequest()
                 response = await init_request.process_request(
                     session_context,
@@ -88,6 +89,7 @@ class LandPlantListRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
@@ -116,7 +118,7 @@ class LandPlantListRouter(BaseRouter):
         response_model=api_models.LandPlantListGetModelResponse,
         summary="Land Plant List Report")
     async def request_get_with_id(
-        land_code: str = Path(..., description="Land Code"),
+        land_code: uuid.UUID = Path(..., description="Land Code"),
         request_model: api_models.LandPlantListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -142,7 +144,8 @@ class LandPlantListRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code(
                     "LandCode",
-                    land_code)
+                    land_code
+                )
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
@@ -154,6 +157,7 @@ class LandPlantListRouter(BaseRouter):
                 )
                 logging.info('LandPlantListRouter success')
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
@@ -179,14 +183,14 @@ class LandPlantListRouter(BaseRouter):
         response_class=FileResponse,
         summary="Land Plant List Report to CSV")
     async def request_get_with_id_to_csv(
-        land_code: str = Path(..., description="Land Code"),
+        land_code: uuid.UUID = Path(..., description="Land Code"),
         request_model: api_models.LandPlantListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
         logging.info(
             "LandPlantListRouter.request_get_with_id_to_csv start. landCode:%s",
-                land_code
+            land_code
         )
         auth_dict = BaseRouter.implementation_check(
             LandPlantListRouterConfig.is_get_to_csv_available)
@@ -227,6 +231,7 @@ class LandPlantListRouter(BaseRouter):
                     session_context)
                 report_manager.build_csv(tmp_file_path, response.items)
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string

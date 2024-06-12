@@ -15,6 +15,7 @@ class ReportItemLandPlantList():
     """
     #TODO add comment
     """
+
     plant_code: uuid.UUID = uuid.UUID(int=0)
     some_int_val: int = 0
     some_big_int_val: int = 0
@@ -41,6 +42,10 @@ class ReportItemLandPlantList():
 # endset
 
     def load_data_provider_dict(self, data: dict):
+        """
+        #TODO add comment
+        """
+
         self.plant_code = (
             TypeConversion.get_uuid(data["plant_code"]))
         self.some_int_val = (
@@ -86,7 +91,7 @@ class ReportItemLandPlantList():
         self.delete_async_button_link_plant_code = (
             TypeConversion.get_uuid(
                 data["delete_async_button_link_plant_code"])
-            )
+        )
         self.details_link_plant_code = (
             TypeConversion.get_uuid(data["details_link_plant_code"]))
 # endset

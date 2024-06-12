@@ -92,11 +92,15 @@ class CustomerManager:
 #         else:
 #             query = select(Customer)
         query = select(
-            Customer
-            , Tac  # tac_id
-            )
+            Customer,
+            Tac,  # tac_id
+        )
 # endset
-        query = query.outerjoin(Tac, and_(Customer.tac_id == Tac.tac_id, Customer.tac_id != 0))
+        query = query.outerjoin(  # tac_id
+            Tac,
+            and_(Customer.tac_id == Tac.tac_id,
+                 Customer.tac_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[Customer]:
@@ -173,8 +177,8 @@ class CustomerManager:
         logging.info("CustomerManager.delete %s", customer_id)
         if not isinstance(customer_id, int):
             raise TypeError(
-                "The customer_id must be an integer, got %s instead.",
-                type(customer_id))
+                f"The customer_id must be an integer, got {type(customer_id)} instead."
+            )
         customer = await self.get_by_id(customer_id)
         if not customer:
             raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
@@ -240,9 +244,9 @@ class CustomerManager:
         await self._session_context.session.flush()
         return customers
     async def update_bulk(
-            self,
-            customer_updates: List[Dict[int, Dict]]
-            ) -> List[Customer]:
+        self,
+        customer_updates: List[Dict[int, Dict]]
+    ) -> List[Customer]:
         """
         #TODO add comment
         """
@@ -252,8 +256,8 @@ class CustomerManager:
             customer_id = update.get("customer_id")
             if not isinstance(customer_id, int):
                 raise TypeError(
-                    "The customer_id must be an integer, got %s instead.",
-                    type(customer_id))
+                    f"The customer_id must be an integer, got {type(customer_id)} instead."
+                )
             if not customer_id:
                 continue
             logging.info("CustomerManager.update_bulk customer_id:%s", customer_id)
@@ -278,13 +282,13 @@ class CustomerManager:
         for customer_id in customer_ids:
             if not isinstance(customer_id, int):
                 raise TypeError(
-                    "The customer_id must be an integer, got %s instead.",
-                    type(customer_id))
+                    f"The customer_id must be an integer, got {type(customer_id)} instead."
+                )
             customer = await self.get_by_id(customer_id)
             if not customer:
                 raise CustomerNotFoundError(
-                    "Customer with ID %s not found!",
-                    customer_id)
+                    f"Customer with ID {customer_id} not found!"
+                )
             if customer:
                 await self._session_context.session.delete(customer)
         await self._session_context.session.flush()
@@ -325,8 +329,8 @@ class CustomerManager:
         logging.info("CustomerManager.exists %s", customer_id)
         if not isinstance(customer_id, int):
             raise TypeError(
-                "The customer_id must be an integer, got %s instead.",
-                type(customer_id))
+                f"The customer_id must be an integer, got {type(customer_id)} instead."
+            )
         customer = await self.get_by_id(customer_id)
         return bool(customer)
     def is_equal(self, customer1: Customer, customer2: Customer) -> bool:
@@ -346,12 +350,14 @@ class CustomerManager:
         return dict1 == dict2
 # endset
     async def get_by_tac_id(self, tac_id: int) -> List[Customer]:  # TacID
+        """
+        #TODO add comment
+        """
         logging.info("CustomerManager.get_by_tac_id")
         if not isinstance(tac_id, int):
             raise TypeError(
-                "The customer_id must be an integer, got %s instead.",
-                type(tac_id)
-                )
+                f"The customer_id must be an integer, got {type(tac_id)} instead."
+            )
         query_filter = Customer.tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return query_results

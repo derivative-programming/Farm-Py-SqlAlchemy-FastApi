@@ -3,23 +3,21 @@
     #TODO add comment
 """
 from decimal import Decimal
-import pytest
 import time
 import math
-from decimal import Decimal
 from datetime import datetime, date, timedelta
+import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, ErrorLog
-from models.factory import ErrorLogFactory
-from services.db_config import DB_DIALECT
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from models import Base, ErrorLog
+from models.factory import ErrorLogFactory
+from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite:///:memory:"
-DB_DIALECT = "sqlite"
+DB_DIALECT = "sqlite"  # noqa: F811
 # Conditionally set the UUID column type
 if DB_DIALECT == 'postgresql':
     UUIDType = UUID(as_uuid=True)

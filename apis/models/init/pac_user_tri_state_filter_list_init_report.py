@@ -45,7 +45,7 @@ class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(
             self,
             session_context: SessionContext,
-            pac_code: uuid,
+            pac_code: uuid.UUID,
             response: PacUserTriStateFilterListInitReportGetInitModelResponse
     ) -> PacUserTriStateFilterListInitReportGetInitModelResponse:
         try:

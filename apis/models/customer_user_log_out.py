@@ -75,7 +75,7 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
     async def process_request(
         self,
         session_context: SessionContext,
-        customer_code: uuid,
+        customer_code: uuid.UUID,
         request: CustomerUserLogOutPostModelRequest
     ):
         """

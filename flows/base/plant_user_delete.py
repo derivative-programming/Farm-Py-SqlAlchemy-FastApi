@@ -21,17 +21,19 @@ class BaseFlowPlantUserDelete(BaseFlow):
         super(BaseFlowPlantUserDelete, self).__init__(
             "PlantUserDelete",
             session_context,
-            )
-    async def _process_validation_rules(self,
-            plant_bus_obj: PlantBusObj,
+        )
+    async def _process_validation_rules(
+        self,
+        plant_bus_obj: PlantBusObj,
 
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
         await self._process_security_rules(plant_bus_obj)
-    async def _process_security_rules(self,
+    async def _process_security_rules(
+        self,
         plant_bus_obj: PlantBusObj,
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
         role_required = "User"

@@ -137,7 +137,7 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
     async def process_request(
             self,
             session_context: SessionContext,
-            land_code: uuid,
+            land_code: uuid.UUID,
             response: LandPlantListInitReportGetInitModelResponse
     ) -> LandPlantListInitReportGetInitModelResponse:
         try:

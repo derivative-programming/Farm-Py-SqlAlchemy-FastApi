@@ -118,7 +118,8 @@ class PlantUserDetailsRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 plant_code = session_context.check_context_code(
                     "PlantCode",
-                    plant_code)
+                    plant_code
+                )
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model

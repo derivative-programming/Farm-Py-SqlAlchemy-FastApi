@@ -131,11 +131,15 @@ class LandManager:
 #         else:
 #             query = select(Land)
         query = select(
-            Land
-            , Pac  # pac_id
-            )
+            Land,
+            Pac,  # pac_id
+        )
 # endset
-        query = query.outerjoin(Pac, and_(Land.pac_id == Pac.pac_id, Land.pac_id != 0))
+        query = query.outerjoin(  # pac_id
+            Pac,
+            and_(Land.pac_id == Pac.pac_id,
+                 Land.pac_id != 0)
+        )
 # endset
         return query
     async def _run_query(self, query_filter) -> List[Land]:
@@ -212,8 +216,8 @@ class LandManager:
         logging.info("LandManager.delete %s", land_id)
         if not isinstance(land_id, int):
             raise TypeError(
-                "The land_id must be an integer, got %s instead.",
-                type(land_id))
+                f"The land_id must be an integer, got {type(land_id)} instead."
+            )
         land = await self.get_by_id(land_id)
         if not land:
             raise LandNotFoundError(f"Land with ID {land_id} not found!")
@@ -279,9 +283,9 @@ class LandManager:
         await self._session_context.session.flush()
         return lands
     async def update_bulk(
-            self,
-            land_updates: List[Dict[int, Dict]]
-            ) -> List[Land]:
+        self,
+        land_updates: List[Dict[int, Dict]]
+    ) -> List[Land]:
         """
         #TODO add comment
         """
@@ -291,8 +295,8 @@ class LandManager:
             land_id = update.get("land_id")
             if not isinstance(land_id, int):
                 raise TypeError(
-                    "The land_id must be an integer, got %s instead.",
-                    type(land_id))
+                    f"The land_id must be an integer, got {type(land_id)} instead."
+                )
             if not land_id:
                 continue
             logging.info("LandManager.update_bulk land_id:%s", land_id)
@@ -317,13 +321,13 @@ class LandManager:
         for land_id in land_ids:
             if not isinstance(land_id, int):
                 raise TypeError(
-                    "The land_id must be an integer, got %s instead.",
-                    type(land_id))
+                    f"The land_id must be an integer, got {type(land_id)} instead."
+                )
             land = await self.get_by_id(land_id)
             if not land:
                 raise LandNotFoundError(
-                    "Land with ID %s not found!",
-                    land_id)
+                    f"Land with ID {land_id} not found!"
+                )
             if land:
                 await self._session_context.session.delete(land)
         await self._session_context.session.flush()
@@ -364,8 +368,8 @@ class LandManager:
         logging.info("LandManager.exists %s", land_id)
         if not isinstance(land_id, int):
             raise TypeError(
-                "The land_id must be an integer, got %s instead.",
-                type(land_id))
+                f"The land_id must be an integer, got {type(land_id)} instead."
+            )
         land = await self.get_by_id(land_id)
         return bool(land)
     def is_equal(self, land1: Land, land2: Land) -> bool:
@@ -385,12 +389,14 @@ class LandManager:
         return dict1 == dict2
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Land]:  # PacID
+        """
+        #TODO add comment
+        """
         logging.info("LandManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The land_id must be an integer, got %s instead.",
-                type(pac_id)
-                )
+                f"The land_id must be an integer, got {type(pac_id)} instead."
+            )
         query_filter = Land.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

@@ -21,21 +21,23 @@ class BaseFlowTacLogin(BaseFlow):
         super(BaseFlowTacLogin, self).__init__(
             "TacLogin",
             session_context,
-            )
-    async def _process_validation_rules(self,
-            tac_bus_obj: TacBusObj,
-            email: str = "",
-            password: str = "",
-        ):
+        )
+    async def _process_validation_rules(
+        self,
+        tac_bus_obj: TacBusObj,
+        email: str = "",
+        password: str = "",
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
         if email == "" and FlowConstants.param_email_isRequired is True:
             self._add_field_validation_error("email","Please enter a Email")
         if password == "" and FlowConstants.param_password_isRequired is True:
             self._add_field_validation_error("password","Please enter a ")
         await self._process_security_rules(tac_bus_obj)
-    async def _process_security_rules(self,
+    async def _process_security_rules(
+        self,
         tac_bus_obj: TacBusObj,
-        ):
+    ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Processing security rules...")
         customerCodeMatchRequired = False
         role_required = ""

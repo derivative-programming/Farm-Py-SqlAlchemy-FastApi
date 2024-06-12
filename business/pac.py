@@ -10,7 +10,7 @@ from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import PacManager
 from models import Pac
 import models
@@ -31,18 +31,12 @@ from business.error_log import ErrorLogBusObj
 
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 
+UUIDType = get_uuid_type(DB_DIALECT)
 class PacInvalidInitError(Exception):
     """
     #TODO add comment
     """
     pass
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class PacBusObj(BaseBusObj):
     """
     #TODO add comment
@@ -54,110 +48,191 @@ class PacBusObj(BaseBusObj):
         self.pac = Pac()
     @property
     def pac_id(self):
+        """
+        #TODO add comment
+        """
         return self.pac.pac_id
     @pac_id.setter
     def code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("pac_id must be a int.")
         self.pac.pac_id = value
     # code
     @property
     def code(self):
+        """
+        #TODO add comment
+        """
         return self.pac.code
     @code.setter
-    def code(self, value: UUIDType):
+    def code(self, value: UUIDType):  # type: ignore
+        """
+        #TODO add comment
+        """
         #if not isinstance(value, UUIDType):
         #raise ValueError("code must be a UUID.")
         self.pac.code = value
     # last_change_code
     @property
     def last_change_code(self):
+        """
+        #TODO add comment
+        """
         return self.pac.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.pac.last_change_code = value
     # insert_user_id
     @property
     def insert_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.pac.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.pac.insert_user_id = value
     def set_prop_insert_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.insert_user_id = value
         return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
+        """
+        #TODO add comment
+        """
         return self.pac.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.pac.last_update_user_id = value
     def set_prop_last_update_user_id(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
         self.last_update_user_id = value
         return self
 # endset
     # description
     @property
     def description(self):
+        """
+        #TODO add comment
+        """
         return self.pac.description
     @description.setter
     def description(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, str), "description must be a string"
         self.pac.description = value
     def set_prop_description(self, value):
+        """
+        #TODO add comment
+        """
         self.description = value
         return self
     # displayOrder
     @property
     def display_order(self):
+        """
+        #TODO add comment
+        """
         return self.pac.display_order
     @display_order.setter
     def display_order(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.pac.display_order = value
     def set_prop_display_order(self, value):
+        """
+        #TODO add comment
+        """
         self.display_order = value
         return self
     # isActive
     @property
     def is_active(self):
+        """
+        #TODO add comment
+        """
         return self.pac.is_active
     @is_active.setter
     def is_active(self, value: bool):
+        """
+        #TODO add comment
+        """
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.pac.is_active = value
     def set_prop_is_active(self, value: bool):
+        """
+        #TODO add comment
+        """
         self.is_active = value
         return self
     # lookupEnumName
     @property
     def lookup_enum_name(self):
+        """
+        #TODO add comment
+        """
         return self.pac.lookup_enum_name
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.pac.lookup_enum_name = value
     def set_prop_lookup_enum_name(self, value):
+        """
+        #TODO add comment
+        """
         self.lookup_enum_name = value
         return self
     # name
     @property
     def name(self):
+        """
+        #TODO add comment
+        """
         return self.pac.name
     @name.setter
     def name(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, str), "name must be a string"
         self.pac.name = value
     def set_prop_name(self, value):
+        """
+        #TODO add comment
+        """
         self.name = value
         return self
 # endset
@@ -170,18 +245,30 @@ class PacBusObj(BaseBusObj):
     # insert_utc_date_time
     @property
     def insert_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.pac.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.pac.insert_utc_date_time = value
     # update_utc_date_time
     @property
     def last_update_utc_date_time(self):
+        """
+        #TODO add comment
+        """
         return self.pac.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
+        """
+        #TODO add comment
+        """
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.pac.last_update_utc_date_time = value
@@ -245,18 +332,33 @@ class PacBusObj(BaseBusObj):
         return result
 
     async def refresh(self):
+        """
+        #TODO add comment
+        """
         pac_manager = PacManager(self._session_context)
         self.pac = await pac_manager.refresh(self.pac)
         return self
     def is_valid(self):
+        """
+        #TODO add comment
+        """
         return (self.pac is not None)
     def to_dict(self):
+        """
+        #TODO add comment
+        """
         pac_manager = PacManager(self._session_context)
         return pac_manager.to_dict(self.pac)
     def to_json(self):
+        """
+        #TODO add comment
+        """
         pac_manager = PacManager(self._session_context)
         return pac_manager.to_json(self.pac)
     async def save(self):
+        """
+        #TODO add comment
+        """
         if self.pac.pac_id is not None and self.pac.pac_id > 0:
             pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.update(self.pac)
@@ -265,11 +367,17 @@ class PacBusObj(BaseBusObj):
             self.pac = await pac_manager.add(self.pac)
         return self
     async def delete(self):
+        """
+        #TODO add comment
+        """
         if self.pac.pac_id > 0:
             pac_manager = PacManager(self._session_context)
             await pac_manager.delete(self.pac.pac_id)
             self.pac = None
     async def randomize_properties(self):
+        """
+        #TODO add comment
+        """
         self.pac.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.pac.display_order = random.randint(0, 100)
@@ -281,8 +389,14 @@ class PacBusObj(BaseBusObj):
 # endset
         return self
     def get_pac_obj(self) -> Pac:
+        """
+        #TODO add comment
+        """
         return self.pac
     def is_equal(self, pac: Pac) -> Pac:
+        """
+        #TODO add comment
+        """
         pac_manager = PacManager(self._session_context)
         my_pac = self.get_pac_obj()
         return pac_manager.is_equal(pac, my_pac)
@@ -294,10 +408,19 @@ class PacBusObj(BaseBusObj):
     # name,
 # endset
     def get_obj(self) -> Pac:
+        """
+        #TODO add comment
+        """
         return self.pac
     def get_object_name(self) -> str:
+        """
+        #TODO add comment
+        """
         return "pac"
     def get_id(self) -> int:
+        """
+        #TODO add comment
+        """
         return self.pac_id
     # description,
     # displayOrder,
@@ -310,6 +433,9 @@ class PacBusObj(BaseBusObj):
         session_context: SessionContext,
         obj_list: List[Pac]
     ):
+        """
+        #TODO add comment
+        """
         result = list()
         for pac in obj_list:
             pac_bus_obj = PacBusObj.get(

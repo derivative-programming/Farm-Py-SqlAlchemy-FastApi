@@ -31,14 +31,14 @@ class ReportProviderLandPlantList():
 		
 	async def generate_list(
 		self,
-		context_code: uuid,
-		flavor_code: uuid,
+		context_code: uuid.UUID,
+		flavor_code: uuid.UUID,
 		some_int_val: int,
 		some_big_int_val: int,
-		some_float_val: float,
 		some_bit_val: bool,
 		is_edit_allowed: bool,
 		is_delete_allowed: bool,
+		some_float_val: float,
 		some_decimal_val: Decimal,
 		some_min_utc_date_time_val: datetime,
 		some_min_date_val: date,

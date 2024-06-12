@@ -177,9 +177,10 @@ class DateGreaterThanFilterManager:
 #                         ).select_from(join_condition)
 #         else:
 #             query = select(DateGreaterThanFilter)
-        query = select(DateGreaterThanFilter
-                    , Pac  # pac_id
-                    )
+        query = select(
+            DateGreaterThanFilter,
+            Pac,  # pac_id
+        )
 
         query = query.outerjoin(Pac, and_(DateGreaterThanFilter.pac_id == Pac.pac_id, DateGreaterThanFilter.pac_id != 0))
 

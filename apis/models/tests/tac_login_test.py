@@ -22,24 +22,16 @@ from models.factory.tac import TacFactory
 from ...models.tac_login import TacLoginPostModelRequest, TacLoginPostModelResponse
 from models import Base
 from ..factory.tac_login import TacLoginPostModelRequestFactory
-from services.db_config import DB_DIALECT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from unittest.mock import patch, AsyncMock
-DB_DIALECT = "sqlite"
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+DB_DIALECT = "sqlite"  # noqa: F811
 class TestTacLoginPostModelResponse:
     """
     #TODO add comment

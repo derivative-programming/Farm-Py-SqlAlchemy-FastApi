@@ -118,7 +118,8 @@ class PacUserTacListRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 pac_code = session_context.check_context_code(
                     "PacCode",
-                    pac_code)
+                    pac_code
+                )
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model

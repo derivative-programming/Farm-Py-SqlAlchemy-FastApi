@@ -121,9 +121,9 @@ class PacManager:
 #         else:
 #             query = select(Pac)
         query = select(
-            Pac
+            Pac,
 
-            )
+        )
 # endset
 
 # endset
@@ -201,8 +201,8 @@ class PacManager:
         logging.info("PacManager.delete %s", pac_id)
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The pac_id must be an integer, got %s instead.",
-                type(pac_id))
+                f"The pac_id must be an integer, got {type(pac_id)} instead."
+            )
         pac = await self.get_by_id(pac_id)
         if not pac:
             raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
@@ -268,9 +268,9 @@ class PacManager:
         await self._session_context.session.flush()
         return pacs
     async def update_bulk(
-            self,
-            pac_updates: List[Dict[int, Dict]]
-            ) -> List[Pac]:
+        self,
+        pac_updates: List[Dict[int, Dict]]
+    ) -> List[Pac]:
         """
         #TODO add comment
         """
@@ -280,8 +280,8 @@ class PacManager:
             pac_id = update.get("pac_id")
             if not isinstance(pac_id, int):
                 raise TypeError(
-                    "The pac_id must be an integer, got %s instead.",
-                    type(pac_id))
+                    f"The pac_id must be an integer, got {type(pac_id)} instead."
+                )
             if not pac_id:
                 continue
             logging.info("PacManager.update_bulk pac_id:%s", pac_id)
@@ -306,13 +306,13 @@ class PacManager:
         for pac_id in pac_ids:
             if not isinstance(pac_id, int):
                 raise TypeError(
-                    "The pac_id must be an integer, got %s instead.",
-                    type(pac_id))
+                    f"The pac_id must be an integer, got {type(pac_id)} instead."
+                )
             pac = await self.get_by_id(pac_id)
             if not pac:
                 raise PacNotFoundError(
-                    "Pac with ID %s not found!",
-                    pac_id)
+                    f"Pac with ID {pac_id} not found!"
+                )
             if pac:
                 await self._session_context.session.delete(pac)
         await self._session_context.session.flush()
@@ -353,8 +353,8 @@ class PacManager:
         logging.info("PacManager.exists %s", pac_id)
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The pac_id must be an integer, got %s instead.",
-                type(pac_id))
+                f"The pac_id must be an integer, got {type(pac_id)} instead."
+            )
         pac = await self.get_by_id(pac_id)
         return bool(pac)
     def is_equal(self, pac1: Pac, pac2: Pac) -> bool:

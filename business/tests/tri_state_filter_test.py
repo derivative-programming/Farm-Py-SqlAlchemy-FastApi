@@ -2,33 +2,25 @@
 """
     #TODO add comment
 """
-import pytest
-import pytest_asyncio
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import String
+import pytest
+import pytest_asyncio
 from helpers.session_context import SessionContext
 from models import TriStateFilter
 from models.factory import TriStateFilterFactory
 from managers.tri_state_filter import TriStateFilterManager
 from business.tri_state_filter import TriStateFilterBusObj
-from services.db_config import DB_DIALECT
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
-from sqlalchemy import String
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+DB_DIALECT = "sqlite"  # noqa: F811
 class TestTriStateFilterBusObj:
     """
         #TODO add comment

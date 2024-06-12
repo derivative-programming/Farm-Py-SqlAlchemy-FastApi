@@ -2,23 +2,17 @@
 """
     #TODO add comment
 """
-from datetime import datetime, date
-from sqlalchemy import (
-    Index, event, BigInteger, Boolean, Column, Date, DateTime,
-    Float, Integer, Numeric, String, ForeignKey, Uuid, func)
+from datetime import date, datetime
+from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+                        ForeignKey, Index, Integer, Numeric, String, Uuid,
+                        event, func)
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy.dialects.postgresql import UUID
+import models.constants.error_log as error_log_constants
+from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid
-import models.constants.error_log as error_log_constants
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
+UUIDType = get_uuid_type(DB_DIALECT)
 class ErrorLog(Base):
     """
     #TODO add comment

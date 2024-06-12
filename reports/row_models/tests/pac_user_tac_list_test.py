@@ -33,7 +33,7 @@ class TestReportItemPacUserTacList:
             "tac_lookup_enum_name": "test",
             "tac_name": "test",
             "pac_name": "test",
-# endset
+# endset  # noqa: E122
         }
         # report_item = ReportItemPacUserTacList(**data)
         report_item = ReportItemPacUserTacList()
