@@ -18,8 +18,8 @@ from models.pac import Pac  # PacID
 from models.date_greater_than_filter import DateGreaterThanFilter
 from models.serialization_schema.date_greater_than_filter import (
     DateGreaterThanFilterSchema)
-from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
 
 
@@ -55,14 +55,8 @@ class DateGreaterThanFilterManager:
             raise ValueError("session required")
         self._session_context = session_context
 
-    def convert_uuid_to_model_uuid(self, value: uuid):
-        # Conditionally set the UUID column type
-        if DB_DIALECT == 'postgresql':
-            return value
-        elif DB_DIALECT == 'mssql':
-            return value
-        else:  # This will cover SQLite, MySQL, and other databases
-            return str(value)
+    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
+        return value
 
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=true]Start

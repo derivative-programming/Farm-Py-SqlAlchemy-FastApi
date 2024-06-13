@@ -46,7 +46,7 @@ class LandPlantListGetModelRequest(CamelModel):
     force_error_message: str = Field(
         default="",
         description="Force Error Message")
-    flavor_code: Optional[UUID4] = Field(
+    flavor_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
@@ -72,10 +72,10 @@ class LandPlantListGetModelRequest(CamelModel):
     some_decimal_val: Decimal = Field(
         default=Decimal(0),
         description="Some Decimal Val")
-    some_min_utc_date_time_val: Optional[datetime] = Field(
+    some_min_utc_date_time_val: datetime = Field(
         default_factory=TypeConversion.get_default_date_time,
         description="Some Min UTC Date Time Val")
-    some_min_date_val: Optional[date] = Field(
+    some_min_date_val: date = Field(
         default_factory=TypeConversion.get_default_date,
         description="Some Min Date Val")
     some_money_val: Decimal = Field(
@@ -299,10 +299,10 @@ class LandPlantListGetModelResponse(ListModel):
                 request.flavor_code,
                 request.some_int_val,
                 request.some_big_int_val,
-                request.some_float_val,
                 request.some_bit_val,
                 request.is_edit_allowed,
                 request.is_delete_allowed,
+                request.some_float_val,
                 request.some_decimal_val,
                 request.some_min_utc_date_time_val,
                 request.some_min_date_val,

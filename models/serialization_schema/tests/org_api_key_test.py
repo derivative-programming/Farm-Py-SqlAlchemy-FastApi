@@ -59,13 +59,13 @@ class TestOrgApiKeySchema:
     def test_org_api_key_serialization(self, org_api_key: OrgApiKey, session):
         schema = OrgApiKeySchema()
         result = schema.dump(org_api_key)
-        assert result['code'] == org_api_key.code
+        assert result['code'] == str(org_api_key.code)
         assert result['last_change_code'] == (
             org_api_key.last_change_code)
         assert result['insert_user_id'] == (
-            org_api_key.insert_user_id)
+            str(org_api_key.insert_user_id))
         assert result['last_update_user_id'] == (
-            org_api_key.last_update_user_id)
+            str(org_api_key.last_update_user_id))
 # endset
         assert result['api_key_value'] == (
             org_api_key.api_key_value)
@@ -92,9 +92,9 @@ class TestOrgApiKeySchema:
             org_api_key.last_update_utc_date_time.isoformat())
 # endset
         assert result['organization_code_peek'] == (  # OrganizationID
-            org_api_key.organization_code_peek)
+            str(org_api_key.organization_code_peek))
         assert result['org_customer_code_peek'] == (  # OrgCustomerID
-            org_api_key.org_customer_code_peek)
+            str(org_api_key.org_customer_code_peek))
 # endset
     def test_org_api_key_deserialization(self, org_api_key: OrgApiKey, session):
         schema = OrgApiKeySchema()
@@ -239,7 +239,7 @@ class TestOrgApiKeySchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(org_api_key_dict_from_json.keys())}"
         )
-        assert org_api_key_dict_from_json['code'] == org_api_key.code, (
+        assert org_api_key_dict_from_json['code'] == str(org_api_key.code), (
             "failed on code"
         )
         assert org_api_key_dict_from_json['last_change_code'] == (
@@ -247,11 +247,11 @@ class TestOrgApiKeySchema:
             "failed on last_change_code"
         )
         assert org_api_key_dict_from_json['insert_user_id'] == (
-            org_api_key.insert_user_id), (
+            str(org_api_key.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert org_api_key_dict_from_json['last_update_user_id'] == (
-            org_api_key.last_update_user_id), (
+            str(org_api_key.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -302,11 +302,11 @@ class TestOrgApiKeySchema:
         )
 # endset
         assert org_api_key_dict_from_json['organization_code_peek'] == (  # OrganizationID
-            org_api_key.organization_code_peek), (
+            str(org_api_key.organization_code_peek)), (
             "failed on organization_code_peek"
         )
         assert org_api_key_dict_from_json['org_customer_code_peek'] == (  # OrgCustomerID
-            org_api_key.org_customer_code_peek), (
+            str(org_api_key.org_customer_code_peek)), (
             "failed on org_customer_code_peek"
         )
 # endset

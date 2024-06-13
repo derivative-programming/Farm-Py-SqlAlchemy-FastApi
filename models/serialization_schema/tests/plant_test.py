@@ -76,13 +76,13 @@ class TestPlantSchema:
         schema = PlantSchema()
         result = schema.dump(plant)
 
-        assert result['code'] == plant.code
+        assert result['code'] == str(plant.code)
         assert result['last_change_code'] == (
             plant.last_change_code)
         assert result['insert_user_id'] == (
-            plant.insert_user_id)
+            str(plant.insert_user_id))
         assert result['last_update_user_id'] == (
-            plant.last_update_user_id)
+            str(plant.last_update_user_id))
 
 # endset
         assert result['flvr_foreign_key_id'] == (
@@ -118,7 +118,7 @@ class TestPlantSchema:
         assert result['some_text_val'] == (
             plant.some_text_val)
         assert result['some_uniqueidentifier_val'] == (
-            plant.some_uniqueidentifier_val)
+            str(plant.some_uniqueidentifier_val))
         assert result['some_utc_date_time_val'] == (
             plant.some_utc_date_time_val.isoformat())
         assert result['some_var_char_val'] == (
@@ -130,9 +130,9 @@ class TestPlantSchema:
             plant.last_update_utc_date_time.isoformat())
 # endset
         assert result['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
-            plant.flvr_foreign_key_code_peek)
+            str(plant.flvr_foreign_key_code_peek))
         assert result['land_code_peek'] == (  # LandID
-            plant.land_code_peek)
+            str(plant.land_code_peek))
 # endset
 
     def test_plant_deserialization(self, plant: Plant, session):
@@ -360,7 +360,7 @@ class TestPlantSchema:
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(plant_dict_from_json.keys())}"
         )
 
-        assert plant_dict_from_json['code'] == plant.code, (
+        assert plant_dict_from_json['code'] == str(plant.code), (
             "failed on code"
         )
         assert plant_dict_from_json['last_change_code'] == (
@@ -368,11 +368,11 @@ class TestPlantSchema:
             "failed on last_change_code"
         )
         assert plant_dict_from_json['insert_user_id'] == (
-            plant.insert_user_id), (
+            str(plant.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert plant_dict_from_json['last_update_user_id'] == (
-            plant.last_update_user_id), (
+            str(plant.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -438,7 +438,7 @@ class TestPlantSchema:
             "failed on some_text_val"
         )
         assert plant_dict_from_json['some_uniqueidentifier_val'] == (
-            plant.some_uniqueidentifier_val), (
+            str(plant.some_uniqueidentifier_val)), (
             "failed on some_uniqueidentifier_val"
         )
         assert plant_dict_from_json['some_utc_date_time_val'] == (
@@ -464,11 +464,11 @@ class TestPlantSchema:
         )
 # endset
         assert plant_dict_from_json['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
-            plant.flvr_foreign_key_code_peek), (
+            str(plant.flvr_foreign_key_code_peek)), (
             "failed on flvr_foreign_key_code_peek"
         )
         assert plant_dict_from_json['land_code_peek'] == (  # LandID
-            plant.land_code_peek), (
+            str(plant.land_code_peek)), (
             "failed on land_code_peek"
         )
 # endset

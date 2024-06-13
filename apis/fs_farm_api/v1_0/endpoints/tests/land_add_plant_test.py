@@ -32,7 +32,12 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
             #TODO add comment
         """
 
-    with patch.object(apis_models.LandAddPlantPostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
+    with patch.object(
+        apis_models.LandAddPlantPostModelResponse,
+        'process_request',
+        new_callable=AsyncMock
+    ) as mock_method:
+
         mock_method.side_effect = mock_process_request
         land = await model_factorys.LandFactory.create_async(overridden_get_db)
         land_code = land.code

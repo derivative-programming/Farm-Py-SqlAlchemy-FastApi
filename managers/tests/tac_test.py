@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import Tac
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import TacFactory
+from helpers.session_context import SessionContext
 from managers.tac import TacManager
+from models import Tac
+from models.factory import TacFactory
 from models.serialization_schema.tac import TacSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestTacManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestTacManager:
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return TacManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestTacManager:
         """
         # Define mock data for our tac
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         tac = await tac_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestTacManager:
         # Create a test tac using the TacFactory without persisting it to the database
         test_tac = await TacFactory.build_async(session)
         assert test_tac.tac_id is None
-        test_tac.code = generate_uuid()
+        test_tac.code = uuid.uuid4()
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
         assert isinstance(added_tac, Tac)
@@ -163,7 +158,7 @@ class TestTacManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any Tac in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         tac = await tac_manager.get_by_code(random_code)
         assert tac is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestTacManager:
             #TODO add comment
         """
         test_tac = await TacFactory.create_async(session)
-        test_tac.code = generate_uuid()
+        test_tac.code = uuid.uuid4()
         updated_tac = await tac_manager.update(tac=test_tac)
         assert isinstance(updated_tac, Tac)
         assert str(updated_tac.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestTacManager:
             #TODO add comment
         """
         test_tac = await TacFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_tac = await tac_manager.update(
             tac=test_tac,
             code=new_code
@@ -226,7 +221,7 @@ class TestTacManager:
     async def test_update_invalid_tac(self, tac_manager: TacManager):
         # None tac
         tac = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_tac = await tac_manager.update(tac, code=new_code)
         # Assertions
         assert updated_tac is None
@@ -240,7 +235,7 @@ class TestTacManager:
             #TODO add comment
         """
         test_tac = await TacFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_tac = await tac_manager.update(
                 tac=test_tac,
@@ -395,8 +390,8 @@ class TestTacManager:
         tac1 = await TacFactory.create_async(session=session)
         tac2 = await TacFactory.create_async(session=session)
         logging.info(tac1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update tacs
@@ -458,7 +453,7 @@ class TestTacManager:
             #TODO add comment
         """
         # Update tacs
-        updates = [{"tac_id": 1, "code": generate_uuid()}]
+        updates = [{"tac_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_tacs = await tac_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestTacManager:
         """
             #TODO add comment
         """
-        updates = [{"tac_id": "2", "code": generate_uuid()}]
+        updates = [{"tac_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_tacs = await tac_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestTacManager:
         result = await session.execute(select(Tac).filter(Tac.tac_id == tac1.tac_id))
         tac2 = result.scalars().first()
         assert tac1.code == tac2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         tac1.code = updated_code1
         updated_tac1 = await tac_manager.update(tac1)
         assert updated_tac1.code == updated_code1

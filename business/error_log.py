@@ -6,18 +6,13 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import ErrorLogManager
 from models import ErrorLog
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class ErrorLogInvalidInitError(Exception):
     """
     #TODO add comment
@@ -54,11 +49,11 @@ class ErrorLogBusObj(BaseBusObj):
         """
         return self.error_log.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.error_log.code = value
     # last_change_code
@@ -131,7 +126,7 @@ class ErrorLogBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        assert isinstance(value, UUIDType), (
+        assert isinstance(value, uuid.UUID), (
             "browser_code must be a UUID")
         self.error_log.browser_code = value
     def set_prop_browser_code(self, value):
@@ -152,7 +147,7 @@ class ErrorLogBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        assert isinstance(value, UUIDType), (
+        assert isinstance(value, uuid.UUID), (
             "context_code must be a UUID")
         self.error_log.context_code = value
     def set_prop_context_code(self, value):
@@ -301,7 +296,7 @@ class ErrorLogBusObj(BaseBusObj):
         return self.error_log.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType),
+    #     assert isinstance(value, uuid.UUID),
     #           "pac_code_peek must be a UUID"
     #     self.error_log.pac_code_peek = value
     # url,
@@ -435,8 +430,8 @@ class ErrorLogBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        self.error_log.browser_code = generate_uuid()
-        self.error_log.context_code = generate_uuid()
+        self.error_log.browser_code = uuid.uuid4()
+        self.error_log.context_code = uuid.uuid4()
         self.error_log.created_utc_date_time = datetime(
             random.randint(2000, 2023),
             random.randint(1, 12),

@@ -52,13 +52,13 @@ class TestTriStateFilterSchema:
     def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter, session):
         schema = TriStateFilterSchema()
         result = schema.dump(tri_state_filter)
-        assert result['code'] == tri_state_filter.code
+        assert result['code'] == str(tri_state_filter.code)
         assert result['last_change_code'] == (
             tri_state_filter.last_change_code)
         assert result['insert_user_id'] == (
-            tri_state_filter.insert_user_id)
+            str(tri_state_filter.insert_user_id))
         assert result['last_update_user_id'] == (
-            tri_state_filter.last_update_user_id)
+            str(tri_state_filter.last_update_user_id))
 # endset
         assert result['description'] == (
             tri_state_filter.description)
@@ -81,7 +81,7 @@ class TestTriStateFilterSchema:
             tri_state_filter.last_update_utc_date_time.isoformat())
 # endset
         assert result['pac_code_peek'] == (  # PacID
-            tri_state_filter.pac_code_peek)
+            str(tri_state_filter.pac_code_peek))
 # endset
     def test_tri_state_filter_deserialization(self, tri_state_filter: TriStateFilter, session):
         schema = TriStateFilterSchema()
@@ -208,7 +208,7 @@ class TestTriStateFilterSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tri_state_filter_dict_from_json.keys())}"
         )
-        assert tri_state_filter_dict_from_json['code'] == tri_state_filter.code, (
+        assert tri_state_filter_dict_from_json['code'] == str(tri_state_filter.code), (
             "failed on code"
         )
         assert tri_state_filter_dict_from_json['last_change_code'] == (
@@ -216,11 +216,11 @@ class TestTriStateFilterSchema:
             "failed on last_change_code"
         )
         assert tri_state_filter_dict_from_json['insert_user_id'] == (
-            tri_state_filter.insert_user_id), (
+            str(tri_state_filter.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert tri_state_filter_dict_from_json['last_update_user_id'] == (
-            tri_state_filter.last_update_user_id), (
+            str(tri_state_filter.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -263,7 +263,7 @@ class TestTriStateFilterSchema:
         )
 # endset
         assert tri_state_filter_dict_from_json['pac_code_peek'] == (  # PacID
-            tri_state_filter.pac_code_peek), (
+            str(tri_state_filter.pac_code_peek)), (
             "failed on pac_code_peek"
         )
 # endset

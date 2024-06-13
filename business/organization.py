@@ -6,11 +6,7 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import OrganizationManager
 from models import Organization
 import models
@@ -21,7 +17,6 @@ from business.org_customer import OrgCustomerBusObj
 
 from business.org_api_key import OrgApiKeyBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class OrganizationInvalidInitError(Exception):
     """
     #TODO add comment
@@ -58,11 +53,11 @@ class OrganizationBusObj(BaseBusObj):
         """
         return self.organization.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.organization.code = value
     # last_change_code
@@ -175,7 +170,7 @@ class OrganizationBusObj(BaseBusObj):
         return self.organization.tac_code_peek
     # @tac_code_peek.setter
     # def tac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType),
+    #     assert isinstance(value, uuid.UUID),
     #           "tac_code_peek must be a UUID"
     #     self.organization.tac_code_peek = value
 # endset

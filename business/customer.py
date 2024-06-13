@@ -6,11 +6,7 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import CustomerManager
 from models import Customer
 import models
@@ -19,7 +15,6 @@ from .base_bus_obj import BaseBusObj
 
 from business.customer_role import CustomerRoleBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class CustomerInvalidInitError(Exception):
     """
     #TODO add comment
@@ -56,11 +51,11 @@ class CustomerBusObj(BaseBusObj):
         """
         return self.customer.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.customer.code = value
     # last_change_code
@@ -257,7 +252,7 @@ class CustomerBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        assert isinstance(value, UUIDType), (
+        assert isinstance(value, uuid.UUID), (
             "fs_user_code_value must be a UUID")
         self.customer.fs_user_code_value = value
     def set_prop_fs_user_code_value(self, value):
@@ -628,7 +623,7 @@ class CustomerBusObj(BaseBusObj):
         return self.customer.tac_code_peek
     # @tac_code_peek.setter
     # def tac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType),
+    #     assert isinstance(value, uuid.UUID),
     #           "tac_code_peek must be a UUID"
     #     self.customer.tac_code_peek = value
     # uTCOffsetInMinutes,
@@ -777,7 +772,7 @@ class CustomerBusObj(BaseBusObj):
             random.randint(1, 28))
         self.customer.forgot_password_key_value = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.customer.fs_user_code_value = generate_uuid()
+        self.customer.fs_user_code_value = uuid.uuid4()
         self.customer.is_active = random.choice([True, False])
         self.customer.is_email_allowed = random.choice([True, False])
         self.customer.is_email_confirmed = random.choice([True, False])

@@ -50,13 +50,13 @@ class TestPacSchema:
     def test_pac_serialization(self, pac: Pac, session):
         schema = PacSchema()
         result = schema.dump(pac)
-        assert result['code'] == pac.code
+        assert result['code'] == str(pac.code)
         assert result['last_change_code'] == (
             pac.last_change_code)
         assert result['insert_user_id'] == (
-            pac.insert_user_id)
+            str(pac.insert_user_id))
         assert result['last_update_user_id'] == (
-            pac.last_update_user_id)
+            str(pac.last_update_user_id))
 # endset
         assert result['description'] == (
             pac.description)
@@ -186,7 +186,7 @@ class TestPacSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(pac_dict_from_json.keys())}"
         )
-        assert pac_dict_from_json['code'] == pac.code, (
+        assert pac_dict_from_json['code'] == str(pac.code), (
             "failed on code"
         )
         assert pac_dict_from_json['last_change_code'] == (
@@ -194,11 +194,11 @@ class TestPacSchema:
             "failed on last_change_code"
         )
         assert pac_dict_from_json['insert_user_id'] == (
-            pac.insert_user_id), (
+            str(pac.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert pac_dict_from_json['last_update_user_id'] == (
-            pac.last_update_user_id), (
+            str(pac.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset

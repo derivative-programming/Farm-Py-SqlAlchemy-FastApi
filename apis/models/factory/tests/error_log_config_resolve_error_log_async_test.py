@@ -16,14 +16,10 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from ...error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequest
 from models import Base
 from ..error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequestFactory
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestErrorLogConfigResolveErrorLogPostModelRequestFactoryAsync:
     """
     #TODO add comment

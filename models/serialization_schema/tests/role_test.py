@@ -51,13 +51,13 @@ class TestRoleSchema:
     def test_role_serialization(self, role: Role, session):
         schema = RoleSchema()
         result = schema.dump(role)
-        assert result['code'] == role.code
+        assert result['code'] == str(role.code)
         assert result['last_change_code'] == (
             role.last_change_code)
         assert result['insert_user_id'] == (
-            role.insert_user_id)
+            str(role.insert_user_id))
         assert result['last_update_user_id'] == (
-            role.last_update_user_id)
+            str(role.last_update_user_id))
 # endset
         assert result['description'] == (
             role.description)
@@ -78,7 +78,7 @@ class TestRoleSchema:
             role.last_update_utc_date_time.isoformat())
 # endset
         assert result['pac_code_peek'] == (  # PacID
-            role.pac_code_peek)
+            str(role.pac_code_peek))
 # endset
     def test_role_deserialization(self, role: Role, session):
         schema = RoleSchema()
@@ -199,7 +199,7 @@ class TestRoleSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(role_dict_from_json.keys())}"
         )
-        assert role_dict_from_json['code'] == role.code, (
+        assert role_dict_from_json['code'] == str(role.code), (
             "failed on code"
         )
         assert role_dict_from_json['last_change_code'] == (
@@ -207,11 +207,11 @@ class TestRoleSchema:
             "failed on last_change_code"
         )
         assert role_dict_from_json['insert_user_id'] == (
-            role.insert_user_id), (
+            str(role.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert role_dict_from_json['last_update_user_id'] == (
-            role.last_update_user_id), (
+            str(role.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -250,7 +250,7 @@ class TestRoleSchema:
         )
 # endset
         assert role_dict_from_json['pac_code_peek'] == (  # PacID
-            role.pac_code_peek), (
+            str(role.pac_code_peek)), (
             "failed on pac_code_peek"
         )
 # endset

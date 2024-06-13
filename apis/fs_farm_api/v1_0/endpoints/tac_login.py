@@ -41,7 +41,7 @@ class TacLoginRouter(BaseRouter):
         response_model=api_init_models.TacLoginInitObjWFGetInitModelResponse,
         summary="Tac Login Init Page")
     async def request_get_init(
-        tac_code: str = Path(..., description="Tac Code"),
+        tac_code: uuid.UUID = Path(..., description="Tac Code"),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -63,7 +63,8 @@ class TacLoginRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 tac_code = session_context.check_context_code(
                     "TacCode",
-                    tac_code)
+                    tac_code
+                )
                 init_request = api_init_models.TacLoginInitObjWFGetInitModelRequest()
                 response = await init_request.process_request(
                     session_context,
@@ -76,6 +77,7 @@ class TacLoginRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
@@ -96,7 +98,7 @@ class TacLoginRouter(BaseRouter):
         response_model=api_models.TacLoginPostModelResponse,
         summary="Tac Login Business Flow")
     async def request_post_with_id(
-        tac_code: str,
+        tac_code: uuid.UUID,
         request_model: api_models.TacLoginPostModelRequest,
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -130,7 +132,7 @@ class TacLoginRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.exception("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -138,7 +140,7 @@ class TacLoginRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.info("Exception occurred")
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

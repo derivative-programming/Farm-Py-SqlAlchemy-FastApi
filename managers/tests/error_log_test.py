@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import ErrorLog
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import ErrorLogFactory
+from helpers.session_context import SessionContext
 from managers.error_log import ErrorLogManager
+from models import ErrorLog
+from models.factory import ErrorLogFactory
 from models.serialization_schema.error_log import ErrorLogSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestErrorLogManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestErrorLogManager:
     @pytest_asyncio.fixture(scope="function")
     async def error_log_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return ErrorLogManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestErrorLogManager:
         """
         # Define mock data for our error_log
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         error_log = await error_log_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestErrorLogManager:
         # Create a test error_log using the ErrorLogFactory without persisting it to the database
         test_error_log = await ErrorLogFactory.build_async(session)
         assert test_error_log.error_log_id is None
-        test_error_log.code = generate_uuid()
+        test_error_log.code = uuid.uuid4()
         # Add the error_log using the manager's add method
         added_error_log = await error_log_manager.add(error_log=test_error_log)
         assert isinstance(added_error_log, ErrorLog)
@@ -163,7 +158,7 @@ class TestErrorLogManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any ErrorLog in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         error_log = await error_log_manager.get_by_code(random_code)
         assert error_log is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestErrorLogManager:
             #TODO add comment
         """
         test_error_log = await ErrorLogFactory.create_async(session)
-        test_error_log.code = generate_uuid()
+        test_error_log.code = uuid.uuid4()
         updated_error_log = await error_log_manager.update(error_log=test_error_log)
         assert isinstance(updated_error_log, ErrorLog)
         assert str(updated_error_log.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestErrorLogManager:
             #TODO add comment
         """
         test_error_log = await ErrorLogFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_error_log = await error_log_manager.update(
             error_log=test_error_log,
             code=new_code
@@ -226,7 +221,7 @@ class TestErrorLogManager:
     async def test_update_invalid_error_log(self, error_log_manager: ErrorLogManager):
         # None error_log
         error_log = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_error_log = await error_log_manager.update(error_log, code=new_code)
         # Assertions
         assert updated_error_log is None
@@ -240,7 +235,7 @@ class TestErrorLogManager:
             #TODO add comment
         """
         test_error_log = await ErrorLogFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_error_log = await error_log_manager.update(
                 error_log=test_error_log,
@@ -395,8 +390,8 @@ class TestErrorLogManager:
         error_log1 = await ErrorLogFactory.create_async(session=session)
         error_log2 = await ErrorLogFactory.create_async(session=session)
         logging.info(error_log1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update error_logs
@@ -458,7 +453,7 @@ class TestErrorLogManager:
             #TODO add comment
         """
         # Update error_logs
-        updates = [{"error_log_id": 1, "code": generate_uuid()}]
+        updates = [{"error_log_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_error_logs = await error_log_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestErrorLogManager:
         """
             #TODO add comment
         """
-        updates = [{"error_log_id": "2", "code": generate_uuid()}]
+        updates = [{"error_log_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_error_logs = await error_log_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestErrorLogManager:
         result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log1.error_log_id))
         error_log2 = result.scalars().first()
         assert error_log1.code == error_log2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         error_log1.code = updated_code1
         updated_error_log1 = await error_log_manager.update(error_log1)
         assert updated_error_log1.code == updated_code1

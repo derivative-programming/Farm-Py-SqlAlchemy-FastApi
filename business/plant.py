@@ -8,19 +8,13 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import PlantManager
 from models import Plant
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
-
-UUIDType = get_uuid_type(DB_DIALECT)
 
 
 class PlantInvalidInitError(Exception):
@@ -71,12 +65,12 @@ class PlantBusObj(BaseBusObj):
         return self.plant.code
 
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
 
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.plant.code = value
 
@@ -548,7 +542,7 @@ class PlantBusObj(BaseBusObj):
         #TODO add comment
         """
 
-        assert isinstance(value, UUIDType), (
+        assert isinstance(value, uuid.UUID), (
             "some_uniqueidentifier_val must be a UUID")
         self.plant.some_uniqueidentifier_val = value
 
@@ -669,7 +663,7 @@ class PlantBusObj(BaseBusObj):
     # @flvr_foreign_key_code_peek.setter
     # def flvr_foreign_key_code_peek(self, value):
     #     assert isinstance(
-    #       value, UUIDType),
+    #       value, uuid.UUID),
     #       "flvr_foreign_key_code_peek must be a UUID"
     #     self.plant.flvr_foreign_key_code_peek = value
 
@@ -710,7 +704,7 @@ class PlantBusObj(BaseBusObj):
 
     # @land_code_peek.setter
     # def land_code_peek(self, value):
-    #     assert isinstance(value, UUIDType), 
+    #     assert isinstance(value, uuid.UUID), 
     #           "land_code_peek must be a UUID"
     #     self.plant.land_code_peek = value
 
@@ -911,7 +905,7 @@ class PlantBusObj(BaseBusObj):
         self.plant.some_phone_number = (
             f"+1{random.randint(1000000000, 9999999999)}")
         self.plant.some_text_val = "Random text"
-        self.plant.some_uniqueidentifier_val = generate_uuid()
+        self.plant.some_uniqueidentifier_val = uuid.uuid4()
         self.plant.some_utc_date_time_val = datetime(
             random.randint(2000, 2023),
             random.randint(1, 12),

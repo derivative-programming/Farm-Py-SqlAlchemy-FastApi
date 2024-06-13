@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import OrgCustomer
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import OrgCustomerFactory
+from helpers.session_context import SessionContext
 from managers.org_customer import OrgCustomerManager
+from models import OrgCustomer
+from models.factory import OrgCustomerFactory
 from models.serialization_schema.org_customer import OrgCustomerSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestOrgCustomerManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestOrgCustomerManager:
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return OrgCustomerManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestOrgCustomerManager:
         """
         # Define mock data for our org_customer
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         org_customer = await org_customer_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestOrgCustomerManager:
         # Create a test org_customer using the OrgCustomerFactory without persisting it to the database
         test_org_customer = await OrgCustomerFactory.build_async(session)
         assert test_org_customer.org_customer_id is None
-        test_org_customer.code = generate_uuid()
+        test_org_customer.code = uuid.uuid4()
         # Add the org_customer using the manager's add method
         added_org_customer = await org_customer_manager.add(org_customer=test_org_customer)
         assert isinstance(added_org_customer, OrgCustomer)
@@ -163,7 +158,7 @@ class TestOrgCustomerManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any OrgCustomer in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         org_customer = await org_customer_manager.get_by_code(random_code)
         assert org_customer is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         test_org_customer = await OrgCustomerFactory.create_async(session)
-        test_org_customer.code = generate_uuid()
+        test_org_customer.code = uuid.uuid4()
         updated_org_customer = await org_customer_manager.update(org_customer=test_org_customer)
         assert isinstance(updated_org_customer, OrgCustomer)
         assert str(updated_org_customer.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         test_org_customer = await OrgCustomerFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_org_customer = await org_customer_manager.update(
             org_customer=test_org_customer,
             code=new_code
@@ -226,7 +221,7 @@ class TestOrgCustomerManager:
     async def test_update_invalid_org_customer(self, org_customer_manager: OrgCustomerManager):
         # None org_customer
         org_customer = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_org_customer = await org_customer_manager.update(org_customer, code=new_code)
         # Assertions
         assert updated_org_customer is None
@@ -240,7 +235,7 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         test_org_customer = await OrgCustomerFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_org_customer = await org_customer_manager.update(
                 org_customer=test_org_customer,
@@ -395,8 +390,8 @@ class TestOrgCustomerManager:
         org_customer1 = await OrgCustomerFactory.create_async(session=session)
         org_customer2 = await OrgCustomerFactory.create_async(session=session)
         logging.info(org_customer1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update org_customers
@@ -458,7 +453,7 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         # Update org_customers
-        updates = [{"org_customer_id": 1, "code": generate_uuid()}]
+        updates = [{"org_customer_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_org_customers = await org_customer_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestOrgCustomerManager:
         """
             #TODO add comment
         """
-        updates = [{"org_customer_id": "2", "code": generate_uuid()}]
+        updates = [{"org_customer_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_org_customers = await org_customer_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestOrgCustomerManager:
         result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer1.org_customer_id))
         org_customer2 = result.scalars().first()
         assert org_customer1.code == org_customer2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         org_customer1.code = updated_code1
         updated_org_customer1 = await org_customer_manager.update(org_customer1)
         assert updated_org_customer1.code == updated_code1

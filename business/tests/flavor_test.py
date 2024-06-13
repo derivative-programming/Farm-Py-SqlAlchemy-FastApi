@@ -4,9 +4,6 @@
 """
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -14,13 +11,11 @@ from models import Flavor
 from models.factory import FlavorFactory
 from managers.flavor import FlavorManager
 from business.flavor import FlavorBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestFlavorBusObj:
     """
         #TODO add comment
@@ -60,12 +55,7 @@ class TestFlavorBusObj:
         # Test creating a new flavor
         assert flavor_bus_obj.flavor_id is None
         # assert isinstance(flavor_bus_obj.flavor_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(flavor_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(flavor_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(flavor_bus_obj.code, str)
+        assert isinstance(flavor_bus_obj.code, UUID)
         assert isinstance(flavor_bus_obj.last_change_code, int)
         assert flavor_bus_obj.insert_user_id is None
         assert flavor_bus_obj.last_update_user_id is None
@@ -169,7 +159,7 @@ class TestFlavorBusObj:
         """
         # Test updating a flavor's data
         new_flavor = await flavor_manager.get_by_id(new_flavor.flavor_id)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         await flavor_bus_obj.load(flavor_obj_instance=new_flavor)
         flavor_bus_obj.code = new_code
         await flavor_bus_obj.save()

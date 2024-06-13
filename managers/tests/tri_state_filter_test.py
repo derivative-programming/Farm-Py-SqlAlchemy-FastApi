@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import TriStateFilter
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import TriStateFilterFactory
+from helpers.session_context import SessionContext
 from managers.tri_state_filter import TriStateFilterManager
+from models import TriStateFilter
+from models.factory import TriStateFilterFactory
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestTriStateFilterManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestTriStateFilterManager:
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return TriStateFilterManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestTriStateFilterManager:
         """
         # Define mock data for our tri_state_filter
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         tri_state_filter = await tri_state_filter_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestTriStateFilterManager:
         # Create a test tri_state_filter using the TriStateFilterFactory without persisting it to the database
         test_tri_state_filter = await TriStateFilterFactory.build_async(session)
         assert test_tri_state_filter.tri_state_filter_id is None
-        test_tri_state_filter.code = generate_uuid()
+        test_tri_state_filter.code = uuid.uuid4()
         # Add the tri_state_filter using the manager's add method
         added_tri_state_filter = await tri_state_filter_manager.add(tri_state_filter=test_tri_state_filter)
         assert isinstance(added_tri_state_filter, TriStateFilter)
@@ -163,7 +158,7 @@ class TestTriStateFilterManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any TriStateFilter in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         tri_state_filter = await tri_state_filter_manager.get_by_code(random_code)
         assert tri_state_filter is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestTriStateFilterManager:
             #TODO add comment
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
-        test_tri_state_filter.code = generate_uuid()
+        test_tri_state_filter.code = uuid.uuid4()
         updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter=test_tri_state_filter)
         assert isinstance(updated_tri_state_filter, TriStateFilter)
         assert str(updated_tri_state_filter.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestTriStateFilterManager:
             #TODO add comment
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_tri_state_filter = await tri_state_filter_manager.update(
             tri_state_filter=test_tri_state_filter,
             code=new_code
@@ -226,7 +221,7 @@ class TestTriStateFilterManager:
     async def test_update_invalid_tri_state_filter(self, tri_state_filter_manager: TriStateFilterManager):
         # None tri_state_filter
         tri_state_filter = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter, code=new_code)
         # Assertions
         assert updated_tri_state_filter is None
@@ -240,7 +235,7 @@ class TestTriStateFilterManager:
             #TODO add comment
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_tri_state_filter = await tri_state_filter_manager.update(
                 tri_state_filter=test_tri_state_filter,
@@ -395,8 +390,8 @@ class TestTriStateFilterManager:
         tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
         tri_state_filter2 = await TriStateFilterFactory.create_async(session=session)
         logging.info(tri_state_filter1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update tri_state_filters
@@ -458,7 +453,7 @@ class TestTriStateFilterManager:
             #TODO add comment
         """
         # Update tri_state_filters
-        updates = [{"tri_state_filter_id": 1, "code": generate_uuid()}]
+        updates = [{"tri_state_filter_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_tri_state_filters = await tri_state_filter_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestTriStateFilterManager:
         """
             #TODO add comment
         """
-        updates = [{"tri_state_filter_id": "2", "code": generate_uuid()}]
+        updates = [{"tri_state_filter_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_tri_state_filters = await tri_state_filter_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestTriStateFilterManager:
         result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == tri_state_filter1.tri_state_filter_id))
         tri_state_filter2 = result.scalars().first()
         assert tri_state_filter1.code == tri_state_filter2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         tri_state_filter1.code = updated_code1
         updated_tri_state_filter1 = await tri_state_filter_manager.update(tri_state_filter1)
         assert updated_tri_state_filter1.code == updated_code1

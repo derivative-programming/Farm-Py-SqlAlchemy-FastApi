@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import Customer
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import CustomerFactory
+from helpers.session_context import SessionContext
 from managers.customer import CustomerManager
+from models import Customer
+from models.factory import CustomerFactory
 from models.serialization_schema.customer import CustomerSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestCustomerManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestCustomerManager:
     @pytest_asyncio.fixture(scope="function")
     async def customer_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return CustomerManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestCustomerManager:
         """
         # Define mock data for our customer
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         customer = await customer_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestCustomerManager:
         # Create a test customer using the CustomerFactory without persisting it to the database
         test_customer = await CustomerFactory.build_async(session)
         assert test_customer.customer_id is None
-        test_customer.code = generate_uuid()
+        test_customer.code = uuid.uuid4()
         # Add the customer using the manager's add method
         added_customer = await customer_manager.add(customer=test_customer)
         assert isinstance(added_customer, Customer)
@@ -163,7 +158,7 @@ class TestCustomerManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any Customer in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         customer = await customer_manager.get_by_code(random_code)
         assert customer is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestCustomerManager:
             #TODO add comment
         """
         test_customer = await CustomerFactory.create_async(session)
-        test_customer.code = generate_uuid()
+        test_customer.code = uuid.uuid4()
         updated_customer = await customer_manager.update(customer=test_customer)
         assert isinstance(updated_customer, Customer)
         assert str(updated_customer.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestCustomerManager:
             #TODO add comment
         """
         test_customer = await CustomerFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_customer = await customer_manager.update(
             customer=test_customer,
             code=new_code
@@ -226,7 +221,7 @@ class TestCustomerManager:
     async def test_update_invalid_customer(self, customer_manager: CustomerManager):
         # None customer
         customer = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_customer = await customer_manager.update(customer, code=new_code)
         # Assertions
         assert updated_customer is None
@@ -240,7 +235,7 @@ class TestCustomerManager:
             #TODO add comment
         """
         test_customer = await CustomerFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_customer = await customer_manager.update(
                 customer=test_customer,
@@ -395,8 +390,8 @@ class TestCustomerManager:
         customer1 = await CustomerFactory.create_async(session=session)
         customer2 = await CustomerFactory.create_async(session=session)
         logging.info(customer1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update customers
@@ -458,7 +453,7 @@ class TestCustomerManager:
             #TODO add comment
         """
         # Update customers
-        updates = [{"customer_id": 1, "code": generate_uuid()}]
+        updates = [{"customer_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_customers = await customer_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestCustomerManager:
         """
             #TODO add comment
         """
-        updates = [{"customer_id": "2", "code": generate_uuid()}]
+        updates = [{"customer_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_customers = await customer_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestCustomerManager:
         result = await session.execute(select(Customer).filter(Customer.customer_id == customer1.customer_id))
         customer2 = result.scalars().first()
         assert customer1.code == customer2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         customer1.code = updated_code1
         updated_customer1 = await customer_manager.update(customer1)
         assert updated_customer1.code == updated_code1

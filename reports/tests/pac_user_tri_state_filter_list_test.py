@@ -9,10 +9,7 @@ from datetime import datetime, date
 import sqlite3
 from unittest.mock import patch, AsyncMock
 import pytest
-# from sqlalchemy import String
 # from typing import List
-# from sqlalchemy.dialects.postgresql import UUID
-# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.pac import PacFactory
@@ -20,11 +17,8 @@ from reports.pac_user_tri_state_filter_list import ReportManagerPacUserTriStateF
 from reports.report_request_validation_error import ReportRequestValidationError
 from reports.providers.pac_user_tri_state_filter_list import ReportProviderPacUserTriStateFilterList
 from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
-DB_DIALECT = "sqlite"  # noqa: F811
-UUIDType = get_uuid_type(DB_DIALECT)
 class TestReportManagerPacUserTriStateFilterList:
     """
     #TODO add comment

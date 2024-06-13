@@ -6,19 +6,13 @@ import sqlite3
 from decimal import Decimal
 from datetime import datetime, date
 import pytest
-# from sqlalchemy import String
-# from sqlalchemy.dialects.postgresql import UUID
-# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.pac import PacFactory
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from reports.providers.pac_user_tac_list import ReportProviderPacUserTacList
 import current_runtime
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
-DB_DIALECT = "sqlite"  # noqa: F811
-UUIDType = get_uuid_type(DB_DIALECT)
 class TestReportProviderPacUserTacList:
     """
     #TODO add comment

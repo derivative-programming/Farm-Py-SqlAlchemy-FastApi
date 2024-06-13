@@ -4,9 +4,6 @@
 """
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -14,13 +11,11 @@ from models import Organization
 from models.factory import OrganizationFactory
 from managers.organization import OrganizationManager
 from business.organization import OrganizationBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestOrganizationBusObj:
     """
         #TODO add comment
@@ -60,12 +55,7 @@ class TestOrganizationBusObj:
         # Test creating a new organization
         assert organization_bus_obj.organization_id is None
         # assert isinstance(organization_bus_obj.organization_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(organization_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(organization_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(organization_bus_obj.code, str)
+        assert isinstance(organization_bus_obj.code, UUID)
         assert isinstance(organization_bus_obj.last_change_code, int)
         assert organization_bus_obj.insert_user_id is None
         assert organization_bus_obj.last_update_user_id is None
@@ -163,7 +153,7 @@ class TestOrganizationBusObj:
         """
         # Test updating a organization's data
         new_organization = await organization_manager.get_by_id(new_organization.organization_id)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         await organization_bus_obj.load(organization_obj_instance=new_organization)
         organization_bus_obj.code = new_code
         await organization_bus_obj.save()

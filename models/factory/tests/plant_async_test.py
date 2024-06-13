@@ -4,15 +4,13 @@
     #TODO add comment
 """
 
+import uuid
 import asyncio
 import time
 import math
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy import event
@@ -22,19 +20,8 @@ import pytest
 import pytest_asyncio
 from models import Base, Plant
 from models.factory import PlantFactory
-from services.db_config import DB_DIALECT, generate_uuid
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-
-DB_DIALECT = "sqlite"  # noqa: F811
-
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 
 
 class TestPlantFactoryAsync:
@@ -113,12 +100,7 @@ class TestPlantFactoryAsync:
         """
 
         plant = await PlantFactory.create_async(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.code, str)
+        assert isinstance(plant.code, uuid.UUID)
 
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
@@ -146,7 +128,7 @@ class TestPlantFactoryAsync:
 
         plant = await PlantFactory.create_async(session=session)
         initial_code = plant.last_change_code
-        plant.code = generate_uuid()
+        plant.code = uuid.uuid4()
         await session.commit()
         assert plant.last_change_code != initial_code
 
@@ -170,7 +152,7 @@ class TestPlantFactoryAsync:
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        plant.code = generate_uuid()
+        plant.code = uuid.uuid4()
         await session.commit()
         assert plant.insert_utc_date_time > initial_time
 
@@ -184,7 +166,7 @@ class TestPlantFactoryAsync:
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
         initial_time = plant.insert_utc_date_time
-        plant.code = generate_uuid()
+        plant.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert plant.insert_utc_date_time == initial_time
@@ -209,7 +191,7 @@ class TestPlantFactoryAsync:
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        plant.code = generate_uuid()
+        plant.code = uuid.uuid4()
         await session.commit()
         assert plant.last_update_utc_date_time > initial_time
 
@@ -223,7 +205,7 @@ class TestPlantFactoryAsync:
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
         initial_time = plant.last_update_utc_date_time
-        plant.code = generate_uuid()
+        plant.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert plant.last_update_utc_date_time > initial_time
@@ -260,28 +242,13 @@ class TestPlantFactoryAsync:
 
         plant = await PlantFactory.create_async(session=session)
         assert isinstance(plant.plant_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.code, str)
+        assert isinstance(plant.code, uuid.UUID)
 
         assert isinstance(plant.last_change_code, int)
 
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.insert_user_id, str)
+        assert isinstance(plant.insert_user_id, uuid.UUID)
 
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.last_update_user_id, str)
+        assert isinstance(plant.last_update_user_id, uuid.UUID)
 
         assert isinstance(plant.flvr_foreign_key_id, int)
         assert isinstance(plant.is_delete_allowed, bool)
@@ -303,15 +270,8 @@ class TestPlantFactoryAsync:
             plant.some_phone_number, str)
         assert plant.some_text_val == "" or isinstance(
             plant.some_text_val, str)
-        # some_uniqueidentifier_val
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.some_uniqueidentifier_val, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                plant.some_uniqueidentifier_val, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                plant.some_uniqueidentifier_val, str)
+        assert isinstance(plant.some_uniqueidentifier_val, uuid.UUID)
+        
         assert isinstance(plant.some_utc_date_time_val, datetime)
         assert plant.some_var_char_val == "" or isinstance(
             plant.some_var_char_val, str)
@@ -333,21 +293,9 @@ class TestPlantFactoryAsync:
         # someDateVal
         # someUTCDateTimeVal
         # flvrForeignKeyID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.flvr_foreign_key_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.flvr_foreign_key_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.flvr_foreign_key_code_peek, str)
+        assert isinstance(plant.flvr_foreign_key_code_peek, uuid.UUID)
         # landID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.land_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.land_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.land_code_peek, str)
+        assert isinstance(plant.land_code_peek, uuid.UUID)
         # someNVarCharVal,
         # somePhoneNumber,
         # someTextVal,
@@ -381,8 +329,8 @@ class TestPlantFactoryAsync:
         plant = Plant()
         assert plant.code is not None
         assert plant.last_change_code is not None
-        assert plant.insert_user_id is None
-        assert plant.last_update_user_id is None
+        assert plant.insert_user_id is not None
+        assert plant.last_update_user_id is not None
         assert plant.insert_utc_date_time is not None
         assert plant.last_update_utc_date_time is not None
 
@@ -401,21 +349,10 @@ class TestPlantFactoryAsync:
         # someDateVal
         # someUTCDateTimeVal
         # LandID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.land_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.land_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.land_code_peek, str)
+        assert isinstance(plant.land_code_peek, uuid.UUID)
 
         # FlvrForeignKeyID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.flvr_foreign_key_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.flvr_foreign_key_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.flvr_foreign_key_code_peek, str)
+        assert isinstance(plant.flvr_foreign_key_code_peek, uuid.UUID)
 
         # somePhoneNumber,
         # someTextVal,
@@ -440,14 +377,7 @@ class TestPlantFactoryAsync:
         assert plant.some_n_var_char_val == ""
         assert plant.some_phone_number == ""
         assert plant.some_text_val == ""
-        # some_uniqueidentifier_val
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant.some_uniqueidentifier_val, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant.some_uniqueidentifier_val,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant.some_uniqueidentifier_val, str)
+        assert isinstance(plant.some_uniqueidentifier_val, uuid.UUID)
         assert plant.some_utc_date_time_val == datetime(1753, 1, 1)
         assert plant.some_var_char_val == ""
 # endset
@@ -467,7 +397,7 @@ class TestPlantFactoryAsync:
 
         # plant_1 = await session.query(Plant).filter_by(
         # plant_id=plant.plant_id).first()
-        plant_1.code = generate_uuid()
+        plant_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(Plant).where(Plant.plant_id == plant.plant_id)
@@ -476,7 +406,7 @@ class TestPlantFactoryAsync:
 
         # plant_2 = await session.query(Plant).filter_by(
         # plant_id=plant.plant_id).first()
-        plant_2.code = generate_uuid()
+        plant_2.code = uuid.uuid4()
         await session.commit()
         assert plant_2.last_change_code != original_last_change_code
 # endset

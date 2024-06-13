@@ -11,9 +11,6 @@ import asyncio
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-# from sqlalchemy.dialects.postgresql import UUID
-# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-# from sqlalchemy import String
 # from sqlalchemy.exc import IntegrityError
 # from sqlalchemy.future import select
 import pytest
@@ -22,7 +19,6 @@ from models import Base, Plant
 # from models.factory import PlantFactory
 # from managers.plant import PlantManager
 # from models.serialization_schema.plant import PlantSchema
-# from services.db_config import DB_DIALECT, generate_uuid
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 

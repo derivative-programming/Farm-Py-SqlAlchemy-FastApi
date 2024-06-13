@@ -52,13 +52,13 @@ class TestDateGreaterThanFilterSchema:
     def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
         schema = DateGreaterThanFilterSchema()
         result = schema.dump(date_greater_than_filter)
-        assert result['code'] == date_greater_than_filter.code
+        assert result['code'] == str(date_greater_than_filter.code)
         assert result['last_change_code'] == (
             date_greater_than_filter.last_change_code)
         assert result['insert_user_id'] == (
-            date_greater_than_filter.insert_user_id)
+            str(date_greater_than_filter.insert_user_id))
         assert result['last_update_user_id'] == (
-            date_greater_than_filter.last_update_user_id)
+            str(date_greater_than_filter.last_update_user_id))
 # endset
         assert result['day_count'] == (
             date_greater_than_filter.day_count)
@@ -81,7 +81,7 @@ class TestDateGreaterThanFilterSchema:
             date_greater_than_filter.last_update_utc_date_time.isoformat())
 # endset
         assert result['pac_code_peek'] == (  # PacID
-            date_greater_than_filter.pac_code_peek)
+            str(date_greater_than_filter.pac_code_peek))
 # endset
     def test_date_greater_than_filter_deserialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
         schema = DateGreaterThanFilterSchema()
@@ -208,7 +208,7 @@ class TestDateGreaterThanFilterSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(date_greater_than_filter_dict_from_json.keys())}"
         )
-        assert date_greater_than_filter_dict_from_json['code'] == date_greater_than_filter.code, (
+        assert date_greater_than_filter_dict_from_json['code'] == str(date_greater_than_filter.code), (
             "failed on code"
         )
         assert date_greater_than_filter_dict_from_json['last_change_code'] == (
@@ -216,11 +216,11 @@ class TestDateGreaterThanFilterSchema:
             "failed on last_change_code"
         )
         assert date_greater_than_filter_dict_from_json['insert_user_id'] == (
-            date_greater_than_filter.insert_user_id), (
+            str(date_greater_than_filter.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert date_greater_than_filter_dict_from_json['last_update_user_id'] == (
-            date_greater_than_filter.last_update_user_id), (
+            str(date_greater_than_filter.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -263,7 +263,7 @@ class TestDateGreaterThanFilterSchema:
         )
 # endset
         assert date_greater_than_filter_dict_from_json['pac_code_peek'] == (  # PacID
-            date_greater_than_filter.pac_code_peek), (
+            str(date_greater_than_filter.pac_code_peek)), (
             "failed on pac_code_peek"
         )
 # endset

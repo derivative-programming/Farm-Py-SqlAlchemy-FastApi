@@ -2,15 +2,13 @@
 """
     #TODO add comment
 """
+import uuid
 import asyncio
 import time
 import math
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy import event
@@ -20,16 +18,7 @@ import pytest
 import pytest_asyncio
 from models import Base, Flavor
 from models.factory import FlavorFactory
-from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestFlavorFactoryAsync:
     """
     #TODO add comment
@@ -94,12 +83,7 @@ class TestFlavorFactoryAsync:
         #TODO add comment
         """
         flavor = await FlavorFactory.create_async(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(flavor.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(flavor.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(flavor.code, str)
+        assert isinstance(flavor.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
         """
@@ -121,7 +105,7 @@ class TestFlavorFactoryAsync:
         """
         flavor = await FlavorFactory.create_async(session=session)
         initial_code = flavor.last_change_code
-        flavor.code = generate_uuid()
+        flavor.code = uuid.uuid4()
         await session.commit()
         assert flavor.last_change_code != initial_code
     @pytest.mark.asyncio
@@ -141,7 +125,7 @@ class TestFlavorFactoryAsync:
         assert flavor.insert_utc_date_time is not None
         assert isinstance(flavor.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        flavor.code = generate_uuid()
+        flavor.code = uuid.uuid4()
         await session.commit()
         assert flavor.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -153,7 +137,7 @@ class TestFlavorFactoryAsync:
         assert flavor.insert_utc_date_time is not None
         assert isinstance(flavor.insert_utc_date_time, datetime)
         initial_time = flavor.insert_utc_date_time
-        flavor.code = generate_uuid()
+        flavor.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert flavor.insert_utc_date_time == initial_time
@@ -174,7 +158,7 @@ class TestFlavorFactoryAsync:
         assert flavor.last_update_utc_date_time is not None
         assert isinstance(flavor.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        flavor.code = generate_uuid()
+        flavor.code = uuid.uuid4()
         await session.commit()
         assert flavor.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -186,7 +170,7 @@ class TestFlavorFactoryAsync:
         assert flavor.last_update_utc_date_time is not None
         assert isinstance(flavor.last_update_utc_date_time, datetime)
         initial_time = flavor.last_update_utc_date_time
-        flavor.code = generate_uuid()
+        flavor.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert flavor.last_update_utc_date_time > initial_time
@@ -214,25 +198,10 @@ class TestFlavorFactoryAsync:
         """
         flavor = await FlavorFactory.create_async(session=session)
         assert isinstance(flavor.flavor_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(flavor.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(flavor.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(flavor.code, str)
+        assert isinstance(flavor.code, uuid.UUID)
         assert isinstance(flavor.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(flavor.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(flavor.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(flavor.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(flavor.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(flavor.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(flavor.last_update_user_id, str)
+        assert isinstance(flavor.insert_user_id, uuid.UUID)
+        assert isinstance(flavor.last_update_user_id, uuid.UUID)
         assert flavor.description == "" or isinstance(flavor.description, str)
         assert isinstance(flavor.display_order, int)
         assert isinstance(flavor.is_active, bool)
@@ -247,13 +216,7 @@ class TestFlavorFactoryAsync:
         # lookupEnumName,
         # name,
         # pacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(flavor.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(flavor.pac_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(flavor.pac_code_peek, str)
+        assert isinstance(flavor.pac_code_peek, uuid.UUID)
 # endset
         assert isinstance(flavor.insert_utc_date_time, datetime)
         assert isinstance(flavor.last_update_utc_date_time, datetime)
@@ -277,8 +240,8 @@ class TestFlavorFactoryAsync:
         flavor = Flavor()
         assert flavor.code is not None
         assert flavor.last_change_code is not None
-        assert flavor.insert_user_id is None
-        assert flavor.last_update_user_id is None
+        assert flavor.insert_user_id is not None
+        assert flavor.last_update_user_id is not None
         assert flavor.insert_utc_date_time is not None
         assert flavor.last_update_utc_date_time is not None
 # endset
@@ -288,12 +251,7 @@ class TestFlavorFactoryAsync:
         # lookupEnumName,
         # name,
         # PacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(flavor.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(flavor.pac_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(flavor.pac_code_peek, str)
+        assert isinstance(flavor.pac_code_peek, uuid.UUID)
 # endset
         assert flavor.description == ""
         assert flavor.display_order == 0
@@ -314,14 +272,14 @@ class TestFlavorFactoryAsync:
         flavor_1 = result.scalars().first()
         # flavor_1 = await session.query(Flavor).filter_by(
         # flavor_id=flavor.flavor_id).first()
-        flavor_1.code = generate_uuid()
+        flavor_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(Flavor).where(Flavor.flavor_id == flavor.flavor_id)
         result = await session.execute(stmt)
         flavor_2 = result.scalars().first()
         # flavor_2 = await session.query(Flavor).filter_by(
         # flavor_id=flavor.flavor_id).first()
-        flavor_2.code = generate_uuid()
+        flavor_2.code = uuid.uuid4()
         await session.commit()
         assert flavor_2.last_change_code != original_last_change_code
 # endset

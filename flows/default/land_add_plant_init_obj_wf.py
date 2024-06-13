@@ -19,7 +19,6 @@ from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
 import business
-from services.db_config import DB_DIALECT, generate_uuid
 class FlowLandAddPlantInitObjWFResult():
     """
     #TODO add comment

@@ -41,7 +41,7 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
         response_model=api_models.ErrorLogConfigResolveErrorLogPostModelResponse,
         summary="Error Log Config Resolve Error Log Business Flow")
     async def request_post_with_id(
-        error_log_code: str,
+        error_log_code: uuid.UUID,
         request_model: api_models.ErrorLogConfigResolveErrorLogPostModelRequest,
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -75,7 +75,7 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.exception("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -83,7 +83,7 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.info("Exception occurred")
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

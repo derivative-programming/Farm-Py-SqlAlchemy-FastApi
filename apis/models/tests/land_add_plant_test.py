@@ -5,36 +5,34 @@
 """
 
 import asyncio
-from decimal import Decimal
+import time
 import uuid
+from datetime import date, datetime
+from decimal import Decimal
+from typing import AsyncGenerator
+from unittest.mock import AsyncMock, patch
+
 import pytest
 import pytest_asyncio
-import time
-from typing import AsyncGenerator
-from datetime import datetime, date
-from sqlalchemy import event
+from pydantic import UUID4, Field
+from sqlalchemy import String, event
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+
+import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from business.land import LandBusObj
 from flows.base.flow_validation_error import FlowValidationError
 from flows.land_add_plant import FlowLandAddPlant, FlowLandAddPlantResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.land import LandFactory
-from ...models.land_add_plant import LandAddPlantPostModelRequest, LandAddPlantPostModelResponse
 from models import Base
-from ..factory.land_add_plant import LandAddPlantPostModelRequestFactory
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-from pydantic import Field, UUID4
-import flows.constants.error_log_config_resolve_error_log as FlowConstants
-from unittest.mock import patch, AsyncMock
+from models.factory.land import LandFactory
 
-DB_DIALECT = "sqlite"  # noqa: F811
+from ...models.land_add_plant import (LandAddPlantPostModelRequest,
+                                      LandAddPlantPostModelResponse)
+from ..factory.land_add_plant import LandAddPlantPostModelRequestFactory
 
 
 class TestLandAddPlantPostModelResponse:
@@ -45,25 +43,25 @@ class TestLandAddPlantPostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         async def mock_process(
-            land_bus_obj: LandBusObj,
-            request_flavor_code: uuid = uuid.UUID(int=0),
-            request_other_flavor: str = "",
-            request_some_int_val: int = 0,
-            request_some_big_int_val: int = 0,
-            request_some_bit_val: bool = False,
-            request_is_edit_allowed: bool = False,
-            request_is_delete_allowed: bool = False,
-            request_some_float_val: float = 0,
-            request_some_decimal_val: Decimal = 0,
-            request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),
-            request_some_date_val: date = TypeConversion.get_default_date(),
-            request_some_money_val: Decimal = 0,
-            request_some_n_var_char_val: str = "",
-            request_some_var_char_val: str = "",
-            request_some_text_val: str = "",
-            request_some_phone_number: str = "",
-            request_some_email_address: str = "",
-            request_sample_image_upload_file: str = "",
+            land_bus_obj: LandBusObj,  # pylint: disable=unused-argument
+            request_flavor_code: uuid.UUID = uuid.UUID(int=0),  # pylint: disable=unused-argument
+            request_other_flavor: str = "",  # pylint: disable=unused-argument
+            request_some_int_val: int = 0,  # pylint: disable=unused-argument
+            request_some_big_int_val: int = 0,  # pylint: disable=unused-argument
+            request_some_bit_val: bool = False,  # pylint: disable=unused-argument
+            request_is_edit_allowed: bool = False,  # pylint: disable=unused-argument
+            request_is_delete_allowed: bool = False,  # pylint: disable=unused-argument
+            request_some_float_val: float = 0,  # pylint: disable=unused-argument
+            request_some_decimal_val: Decimal = 0,  # pylint: disable=unused-argument
+            request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),  # pylint: disable=unused-argument
+            request_some_date_val: date = TypeConversion.get_default_date(),  # pylint: disable=unused-argument
+            request_some_money_val: Decimal = 0,  # pylint: disable=unused-argument
+            request_some_n_var_char_val: str = "",  # pylint: disable=unused-argument
+            request_some_var_char_val: str = "",  # pylint: disable=unused-argument
+            request_some_text_val: str = "",  # pylint: disable=unused-argument
+            request_some_phone_number: str = "",  # pylint: disable=unused-argument
+            request_some_email_address: str = "",  # pylint: disable=unused-argument
+            request_sample_image_upload_file: str = "",  # pylint: disable=unused-argument
         ):
             return FlowLandAddPlantResult()
         with patch.object(FlowLandAddPlant, 'process', new_callable=AsyncMock) as mock_method:

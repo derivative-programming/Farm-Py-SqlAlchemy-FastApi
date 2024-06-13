@@ -2,15 +2,13 @@
 """
     #TODO add comment
 """
+import uuid
 import asyncio
 import time
 import math
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy import event
@@ -20,16 +18,7 @@ import pytest
 import pytest_asyncio
 from models import Base, Land
 from models.factory import LandFactory
-from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestLandFactoryAsync:
     """
     #TODO add comment
@@ -94,12 +83,7 @@ class TestLandFactoryAsync:
         #TODO add comment
         """
         land = await LandFactory.create_async(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(land.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(land.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(land.code, str)
+        assert isinstance(land.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
         """
@@ -121,7 +105,7 @@ class TestLandFactoryAsync:
         """
         land = await LandFactory.create_async(session=session)
         initial_code = land.last_change_code
-        land.code = generate_uuid()
+        land.code = uuid.uuid4()
         await session.commit()
         assert land.last_change_code != initial_code
     @pytest.mark.asyncio
@@ -141,7 +125,7 @@ class TestLandFactoryAsync:
         assert land.insert_utc_date_time is not None
         assert isinstance(land.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        land.code = generate_uuid()
+        land.code = uuid.uuid4()
         await session.commit()
         assert land.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -153,7 +137,7 @@ class TestLandFactoryAsync:
         assert land.insert_utc_date_time is not None
         assert isinstance(land.insert_utc_date_time, datetime)
         initial_time = land.insert_utc_date_time
-        land.code = generate_uuid()
+        land.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert land.insert_utc_date_time == initial_time
@@ -174,7 +158,7 @@ class TestLandFactoryAsync:
         assert land.last_update_utc_date_time is not None
         assert isinstance(land.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        land.code = generate_uuid()
+        land.code = uuid.uuid4()
         await session.commit()
         assert land.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -186,7 +170,7 @@ class TestLandFactoryAsync:
         assert land.last_update_utc_date_time is not None
         assert isinstance(land.last_update_utc_date_time, datetime)
         initial_time = land.last_update_utc_date_time
-        land.code = generate_uuid()
+        land.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert land.last_update_utc_date_time > initial_time
@@ -214,25 +198,10 @@ class TestLandFactoryAsync:
         """
         land = await LandFactory.create_async(session=session)
         assert isinstance(land.land_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(land.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(land.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(land.code, str)
+        assert isinstance(land.code, uuid.UUID)
         assert isinstance(land.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(land.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(land.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(land.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(land.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(land.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(land.last_update_user_id, str)
+        assert isinstance(land.insert_user_id, uuid.UUID)
+        assert isinstance(land.last_update_user_id, uuid.UUID)
         assert land.description == "" or isinstance(land.description, str)
         assert isinstance(land.display_order, int)
         assert isinstance(land.is_active, bool)
@@ -247,13 +216,7 @@ class TestLandFactoryAsync:
         # lookupEnumName,
         # name,
         # pacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(land.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(land.pac_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(land.pac_code_peek, str)
+        assert isinstance(land.pac_code_peek, uuid.UUID)
 # endset
         assert isinstance(land.insert_utc_date_time, datetime)
         assert isinstance(land.last_update_utc_date_time, datetime)
@@ -277,8 +240,8 @@ class TestLandFactoryAsync:
         land = Land()
         assert land.code is not None
         assert land.last_change_code is not None
-        assert land.insert_user_id is None
-        assert land.last_update_user_id is None
+        assert land.insert_user_id is not None
+        assert land.last_update_user_id is not None
         assert land.insert_utc_date_time is not None
         assert land.last_update_utc_date_time is not None
 # endset
@@ -288,12 +251,7 @@ class TestLandFactoryAsync:
         # lookupEnumName,
         # name,
         # PacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(land.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(land.pac_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(land.pac_code_peek, str)
+        assert isinstance(land.pac_code_peek, uuid.UUID)
 # endset
         assert land.description == ""
         assert land.display_order == 0
@@ -314,14 +272,14 @@ class TestLandFactoryAsync:
         land_1 = result.scalars().first()
         # land_1 = await session.query(Land).filter_by(
         # land_id=land.land_id).first()
-        land_1.code = generate_uuid()
+        land_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(Land).where(Land.land_id == land.land_id)
         result = await session.execute(stmt)
         land_2 = result.scalars().first()
         # land_2 = await session.query(Land).filter_by(
         # land_id=land.land_id).first()
-        land_2.code = generate_uuid()
+        land_2.code = uuid.uuid4()
         await session.commit()
         assert land_2.last_change_code != original_last_change_code
 # endset

@@ -12,20 +12,7 @@ from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.flavor import FlavorFactory
 from models.factory.land import LandFactory
-from services.db_config import DB_DIALECT
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT
-from sqlalchemy import String
 import flows.constants.land_plant_list_init_report as FlowConstants
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestBaseFlowLandPlantListInitReport():
     """
     #TODO add comment

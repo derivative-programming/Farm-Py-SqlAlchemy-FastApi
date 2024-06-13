@@ -51,13 +51,13 @@ class TestTacSchema:
     def test_tac_serialization(self, tac: Tac, session):
         schema = TacSchema()
         result = schema.dump(tac)
-        assert result['code'] == tac.code
+        assert result['code'] == str(tac.code)
         assert result['last_change_code'] == (
             tac.last_change_code)
         assert result['insert_user_id'] == (
-            tac.insert_user_id)
+            str(tac.insert_user_id))
         assert result['last_update_user_id'] == (
-            tac.last_update_user_id)
+            str(tac.last_update_user_id))
 # endset
         assert result['description'] == (
             tac.description)
@@ -78,7 +78,7 @@ class TestTacSchema:
             tac.last_update_utc_date_time.isoformat())
 # endset
         assert result['pac_code_peek'] == (  # PacID
-            tac.pac_code_peek)
+            str(tac.pac_code_peek))
 # endset
     def test_tac_deserialization(self, tac: Tac, session):
         schema = TacSchema()
@@ -199,7 +199,7 @@ class TestTacSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tac_dict_from_json.keys())}"
         )
-        assert tac_dict_from_json['code'] == tac.code, (
+        assert tac_dict_from_json['code'] == str(tac.code), (
             "failed on code"
         )
         assert tac_dict_from_json['last_change_code'] == (
@@ -207,11 +207,11 @@ class TestTacSchema:
             "failed on last_change_code"
         )
         assert tac_dict_from_json['insert_user_id'] == (
-            tac.insert_user_id), (
+            str(tac.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert tac_dict_from_json['last_update_user_id'] == (
-            tac.last_update_user_id), (
+            str(tac.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -250,7 +250,7 @@ class TestTacSchema:
         )
 # endset
         assert tac_dict_from_json['pac_code_peek'] == (  # PacID
-            tac.pac_code_peek), (
+            str(tac.pac_code_peek)), (
             "failed on pac_code_peek"
         )
 # endset

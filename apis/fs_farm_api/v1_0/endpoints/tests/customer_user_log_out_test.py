@@ -147,7 +147,11 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         """
             #TODO add comment
         """
-    with patch.object(apis_models.CustomerUserLogOutPostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
+    with patch.object(
+        apis_models.CustomerUserLogOutPostModelResponse,
+        'process_request',
+        new_callable=AsyncMock
+    ) as mock_method:
         mock_method.side_effect = mock_process_request
         customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
         customer_code = customer.code

@@ -47,13 +47,13 @@ class TestOrganizationSchema:
     def test_organization_serialization(self, organization: Organization, session):
         schema = OrganizationSchema()
         result = schema.dump(organization)
-        assert result['code'] == organization.code
+        assert result['code'] == str(organization.code)
         assert result['last_change_code'] == (
             organization.last_change_code)
         assert result['insert_user_id'] == (
-            organization.insert_user_id)
+            str(organization.insert_user_id))
         assert result['last_update_user_id'] == (
-            organization.last_update_user_id)
+            str(organization.last_update_user_id))
 # endset
         assert result['name'] == (
             organization.name)
@@ -66,7 +66,7 @@ class TestOrganizationSchema:
             organization.last_update_utc_date_time.isoformat())
 # endset
         assert result['tac_code_peek'] == (  # TacID
-            organization.tac_code_peek)
+            str(organization.tac_code_peek))
 # endset
     def test_organization_deserialization(self, organization: Organization, session):
         schema = OrganizationSchema()
@@ -163,7 +163,7 @@ class TestOrganizationSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(organization_dict_from_json.keys())}"
         )
-        assert organization_dict_from_json['code'] == organization.code, (
+        assert organization_dict_from_json['code'] == str(organization.code), (
             "failed on code"
         )
         assert organization_dict_from_json['last_change_code'] == (
@@ -171,11 +171,11 @@ class TestOrganizationSchema:
             "failed on last_change_code"
         )
         assert organization_dict_from_json['insert_user_id'] == (
-            organization.insert_user_id), (
+            str(organization.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert organization_dict_from_json['last_update_user_id'] == (
-            organization.last_update_user_id), (
+            str(organization.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -198,7 +198,7 @@ class TestOrganizationSchema:
         )
 # endset
         assert organization_dict_from_json['tac_code_peek'] == (  # TacID
-            organization.tac_code_peek), (
+            str(organization.tac_code_peek)), (
             "failed on tac_code_peek"
         )
 # endset

@@ -4,9 +4,6 @@
 """
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -14,13 +11,11 @@ from models import Land
 from models.factory import LandFactory
 from managers.land import LandManager
 from business.land import LandBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestLandBusObj:
     """
         #TODO add comment
@@ -60,12 +55,7 @@ class TestLandBusObj:
         # Test creating a new land
         assert land_bus_obj.land_id is None
         # assert isinstance(land_bus_obj.land_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(land_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(land_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(land_bus_obj.code, str)
+        assert isinstance(land_bus_obj.code, UUID)
         assert isinstance(land_bus_obj.last_change_code, int)
         assert land_bus_obj.insert_user_id is None
         assert land_bus_obj.last_update_user_id is None
@@ -169,7 +159,7 @@ class TestLandBusObj:
         """
         # Test updating a land's data
         new_land = await land_manager.get_by_id(new_land.land_id)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         await land_bus_obj.load(land_obj_instance=new_land)
         land_bus_obj.code = new_code
         await land_bus_obj.save()

@@ -49,13 +49,13 @@ class TestOrgCustomerSchema:
     def test_org_customer_serialization(self, org_customer: OrgCustomer, session):
         schema = OrgCustomerSchema()
         result = schema.dump(org_customer)
-        assert result['code'] == org_customer.code
+        assert result['code'] == str(org_customer.code)
         assert result['last_change_code'] == (
             org_customer.last_change_code)
         assert result['insert_user_id'] == (
-            org_customer.insert_user_id)
+            str(org_customer.insert_user_id))
         assert result['last_update_user_id'] == (
-            org_customer.last_update_user_id)
+            str(org_customer.last_update_user_id))
 # endset
         assert result['customer_id'] == (
             org_customer.customer_id)
@@ -70,9 +70,9 @@ class TestOrgCustomerSchema:
             org_customer.last_update_utc_date_time.isoformat())
 # endset
         assert result['customer_code_peek'] == (  # CustomerID
-            org_customer.customer_code_peek)
+            str(org_customer.customer_code_peek))
         assert result['organization_code_peek'] == (  # OrganizationID
-            org_customer.organization_code_peek)
+            str(org_customer.organization_code_peek))
 # endset
     def test_org_customer_deserialization(self, org_customer: OrgCustomer, session):
         schema = OrgCustomerSchema()
@@ -181,7 +181,7 @@ class TestOrgCustomerSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(org_customer_dict_from_json.keys())}"
         )
-        assert org_customer_dict_from_json['code'] == org_customer.code, (
+        assert org_customer_dict_from_json['code'] == str(org_customer.code), (
             "failed on code"
         )
         assert org_customer_dict_from_json['last_change_code'] == (
@@ -189,11 +189,11 @@ class TestOrgCustomerSchema:
             "failed on last_change_code"
         )
         assert org_customer_dict_from_json['insert_user_id'] == (
-            org_customer.insert_user_id), (
+            str(org_customer.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert org_customer_dict_from_json['last_update_user_id'] == (
-            org_customer.last_update_user_id), (
+            str(org_customer.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -220,11 +220,11 @@ class TestOrgCustomerSchema:
         )
 # endset
         assert org_customer_dict_from_json['customer_code_peek'] == (  # CustomerID
-            org_customer.customer_code_peek), (
+            str(org_customer.customer_code_peek)), (
             "failed on customer_code_peek"
         )
         assert org_customer_dict_from_json['organization_code_peek'] == (  # OrganizationID
-            org_customer.organization_code_peek), (
+            str(org_customer.organization_code_peek)), (
             "failed on organization_code_peek"
         )
 # endset

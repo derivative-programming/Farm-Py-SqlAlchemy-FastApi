@@ -5,26 +5,18 @@
 from decimal import Decimal
 import time
 import math
+import uuid
+import logging
 from datetime import datetime, date, timedelta
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from models import Base, CustomerRole
 from models.factory import CustomerRoleFactory
-from services.db_config import DB_DIALECT, generate_uuid
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestCustomerRoleFactory:
     """
     #TODO add comment
@@ -60,13 +52,9 @@ class TestCustomerRoleFactory:
         """
         #TODO add comment
         """
+        logging.info("vrtest")
         customer_role = CustomerRoleFactory.create(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer_role.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer_role.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer_role.code, str)
+        assert isinstance(customer_role.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         #TODO add comment
@@ -85,7 +73,7 @@ class TestCustomerRoleFactory:
         """
         customer_role = CustomerRoleFactory.create(session=session)
         initial_code = customer_role.last_change_code
-        customer_role.code = generate_uuid()
+        customer_role.code = uuid.uuid4()
         session.commit()
         assert customer_role.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
@@ -103,7 +91,7 @@ class TestCustomerRoleFactory:
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(customer_role.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer_role.code = generate_uuid()
+        customer_role.code = uuid.uuid4()
         session.commit()
         assert customer_role.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -114,7 +102,7 @@ class TestCustomerRoleFactory:
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(customer_role.insert_utc_date_time, datetime)
         initial_time = customer_role.insert_utc_date_time
-        customer_role.code = generate_uuid()
+        customer_role.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert customer_role.insert_utc_date_time == initial_time
@@ -133,7 +121,7 @@ class TestCustomerRoleFactory:
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer_role.code = generate_uuid()
+        customer_role.code = uuid.uuid4()
         session.commit()
         assert customer_role.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
@@ -144,7 +132,7 @@ class TestCustomerRoleFactory:
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
         initial_time = customer_role.last_update_utc_date_time
-        customer_role.code = generate_uuid()
+        customer_role.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert customer_role.last_update_utc_date_time > initial_time
@@ -164,25 +152,10 @@ class TestCustomerRoleFactory:
         """
         customer_role = CustomerRoleFactory.create(session=session)
         assert isinstance(customer_role.customer_role_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer_role.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer_role.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer_role.code, str)
+        assert isinstance(customer_role.code, uuid.UUID)
         assert isinstance(customer_role.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer_role.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer_role.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer_role.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer_role.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer_role.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer_role.last_update_user_id, str)
+        assert isinstance(customer_role.insert_user_id, uuid.UUID)
+        assert isinstance(customer_role.last_update_user_id, uuid.UUID)
         assert isinstance(customer_role.customer_id, int)
         assert isinstance(customer_role.is_placeholder, bool)
         assert isinstance(customer_role.placeholder, bool)
@@ -191,27 +164,13 @@ class TestCustomerRoleFactory:
         # assuming they are UUIDs based on your model
 # endset
         # customerID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                customer_role.customer_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer_role.customer_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                customer_role.customer_code_peek, str)
+        assert isinstance(
+            customer_role.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # roleID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                customer_role.role_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer_role.role_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                customer_role.role_code_peek, str)
+        assert isinstance(
+            customer_role.role_code_peek, uuid.UUID)
 # endset
         assert isinstance(customer_role.insert_utc_date_time, datetime)
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
@@ -233,35 +192,19 @@ class TestCustomerRoleFactory:
         customer_role = CustomerRole()
         assert customer_role.code is not None
         assert customer_role.last_change_code is not None
-        assert customer_role.insert_user_id is None
-        assert customer_role.last_update_user_id is None
+        assert customer_role.insert_user_id is not None
+        assert customer_role.last_update_user_id is not None
         assert customer_role.insert_utc_date_time is not None
         assert customer_role.last_update_utc_date_time is not None
 # endset
         # CustomerID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                customer_role.customer_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer_role.customer_code_peek,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                customer_role.customer_code_peek, str)
+        assert isinstance(
+            customer_role.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # RoleID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                customer_role.role_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer_role.role_code_peek,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                customer_role.role_code_peek, str)
+        assert isinstance(
+            customer_role.role_code_peek, uuid.UUID)
 # endset
         assert customer_role.customer_id == 0
         assert customer_role.is_placeholder is False
@@ -276,11 +219,11 @@ class TestCustomerRoleFactory:
         original_last_change_code = customer_role.last_change_code
         customer_role_1 = session.query(CustomerRole).filter_by(
             customer_role_id=customer_role.customer_role_id).first()
-        customer_role_1.code = generate_uuid()
+        customer_role_1.code = uuid.uuid4()
         session.commit()
         customer_role_2 = session.query(CustomerRole).filter_by(
             customer_role_id=customer_role.customer_role_id).first()
-        customer_role_2.code = generate_uuid()
+        customer_role_2.code = uuid.uuid4()
         session.commit()
         assert customer_role_2.last_change_code != original_last_change_code
 # endset

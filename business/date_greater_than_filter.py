@@ -7,20 +7,13 @@
 import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 # from business.pac import PacBusObj  # PacID
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import PacManager as PacIDManager  # PacID
 from managers import DateGreaterThanFilterManager
 import managers as managers_and_enums
 from models import DateGreaterThanFilter
 import models
-
-
-UUIDType = get_uuid_type(DB_DIALECT)
 
 
 class DateGreaterThanFilterSessionNotFoundError(Exception):
@@ -63,8 +56,8 @@ class DateGreaterThanFilterBusObj:
         return self.date_greater_than_filter.code
 
     @code.setter
-    def code(self, value: UUIDType):
-        # if not isinstance(value, UUIDType):
+    def code(self, value: uuid.UUID):
+        # if not isinstance(value, uuid.UUID):
         # raise ValueError("code must be a UUID.")
         self.date_greater_than_filter.code = value
 
@@ -187,7 +180,7 @@ class DateGreaterThanFilterBusObj:
 
     @pac_code_peek.setter
     def pac_code_peek(self, value):
-        assert isinstance(value, UUIDType), "pac_code_peek must be a UUID"
+        assert isinstance(value, uuid.UUID), "pac_code_peek must be a UUID"
         self.date_greater_than_filter.pac_code_peek = value
 
     # insert_utc_date_time

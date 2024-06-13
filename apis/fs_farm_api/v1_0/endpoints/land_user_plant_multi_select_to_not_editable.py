@@ -41,7 +41,7 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
         response_model=api_models.LandUserPlantMultiSelectToNotEditablePostModelResponse,
         summary="Land User Plant Multi Select To Not Editable Business Flow")
     async def request_post_with_id(
-        land_code: str,
+        land_code: uuid.UUID,
         request_model: api_models.LandUserPlantMultiSelectToNotEditablePostModelRequest,
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -75,7 +75,7 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.exception("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -83,7 +83,7 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.info("Exception occurred")
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

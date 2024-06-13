@@ -11,10 +11,7 @@ from datetime import datetime, date
 import sqlite3
 from unittest.mock import patch, AsyncMock
 import pytest
-# from sqlalchemy import String
 # from typing import List
-# from sqlalchemy.dialects.postgresql import UUID
-# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
@@ -22,16 +19,9 @@ from reports.land_plant_list import ReportManagerLandPlantList
 from reports.report_request_validation_error import ReportRequestValidationError
 from reports.providers.land_plant_list import ReportProviderLandPlantList
 from reports.row_models.land_plant_list import ReportItemLandPlantList
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
-
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
-
-DB_DIALECT = "sqlite"  # noqa: F811
-
-
-UUIDType = get_uuid_type(DB_DIALECT)
 
 
 class TestReportManagerLandPlantList:
@@ -104,7 +94,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = generate_uuid()  # type: ignore
+            flavor_code: UUIDType = uuid.uuid4()  # type: ignore
 # endset
 
             page_number = 1
@@ -113,6 +103,7 @@ class TestReportManagerLandPlantList:
             order_by_descending = False
             results = await report_generator.generate(
                 land_code,
+                flavor_code,
                 some_int_val,
                 some_big_int_val,
                 some_bit_val,
@@ -128,7 +119,6 @@ class TestReportManagerLandPlantList:
                 some_text_val,
                 some_phone_number,
                 some_email_address,
-                flavor_code,
 # endset  # noqa: E122
                 page_number,
                 item_count_per_page,
@@ -204,7 +194,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = generate_uuid()  # type: ignore
+            flavor_code: UUIDType = uuid.uuid4()  # type: ignore
 # endset
 
             page_number = 1
@@ -303,7 +293,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = generate_uuid()  # type: ignore
+            flavor_code: UUIDType = uuid.uuid4()  # type: ignore
 # endset
             # page_number = 1
             item_count_per_page = 10

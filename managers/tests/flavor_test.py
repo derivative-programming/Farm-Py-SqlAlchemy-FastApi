@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import Flavor
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import FlavorFactory
+from helpers.session_context import SessionContext
 from managers.flavor import FlavorManager
+from models import Flavor
+from models.factory import FlavorFactory
 from models.serialization_schema.flavor import FlavorSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestFlavorManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestFlavorManager:
     @pytest_asyncio.fixture(scope="function")
     async def flavor_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return FlavorManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestFlavorManager:
         """
         # Define mock data for our flavor
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         flavor = await flavor_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestFlavorManager:
         # Create a test flavor using the FlavorFactory without persisting it to the database
         test_flavor = await FlavorFactory.build_async(session)
         assert test_flavor.flavor_id is None
-        test_flavor.code = generate_uuid()
+        test_flavor.code = uuid.uuid4()
         # Add the flavor using the manager's add method
         added_flavor = await flavor_manager.add(flavor=test_flavor)
         assert isinstance(added_flavor, Flavor)
@@ -163,7 +158,7 @@ class TestFlavorManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any Flavor in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         flavor = await flavor_manager.get_by_code(random_code)
         assert flavor is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestFlavorManager:
             #TODO add comment
         """
         test_flavor = await FlavorFactory.create_async(session)
-        test_flavor.code = generate_uuid()
+        test_flavor.code = uuid.uuid4()
         updated_flavor = await flavor_manager.update(flavor=test_flavor)
         assert isinstance(updated_flavor, Flavor)
         assert str(updated_flavor.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestFlavorManager:
             #TODO add comment
         """
         test_flavor = await FlavorFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_flavor = await flavor_manager.update(
             flavor=test_flavor,
             code=new_code
@@ -226,7 +221,7 @@ class TestFlavorManager:
     async def test_update_invalid_flavor(self, flavor_manager: FlavorManager):
         # None flavor
         flavor = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_flavor = await flavor_manager.update(flavor, code=new_code)
         # Assertions
         assert updated_flavor is None
@@ -240,7 +235,7 @@ class TestFlavorManager:
             #TODO add comment
         """
         test_flavor = await FlavorFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_flavor = await flavor_manager.update(
                 flavor=test_flavor,
@@ -395,8 +390,8 @@ class TestFlavorManager:
         flavor1 = await FlavorFactory.create_async(session=session)
         flavor2 = await FlavorFactory.create_async(session=session)
         logging.info(flavor1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update flavors
@@ -458,7 +453,7 @@ class TestFlavorManager:
             #TODO add comment
         """
         # Update flavors
-        updates = [{"flavor_id": 1, "code": generate_uuid()}]
+        updates = [{"flavor_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_flavors = await flavor_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestFlavorManager:
         """
             #TODO add comment
         """
-        updates = [{"flavor_id": "2", "code": generate_uuid()}]
+        updates = [{"flavor_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_flavors = await flavor_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestFlavorManager:
         result = await session.execute(select(Flavor).filter(Flavor.flavor_id == flavor1.flavor_id))
         flavor2 = result.scalars().first()
         assert flavor1.code == flavor2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         flavor1.code = updated_code1
         updated_flavor1 = await flavor_manager.update(flavor1)
         assert updated_flavor1.code == updated_code1

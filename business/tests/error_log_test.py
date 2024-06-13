@@ -4,9 +4,6 @@
 """
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -14,13 +11,11 @@ from models import ErrorLog
 from models.factory import ErrorLogFactory
 from managers.error_log import ErrorLogManager
 from business.error_log import ErrorLogBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestErrorLogBusObj:
     """
         #TODO add comment
@@ -60,33 +55,14 @@ class TestErrorLogBusObj:
         # Test creating a new error_log
         assert error_log_bus_obj.error_log_id is None
         # assert isinstance(error_log_bus_obj.error_log_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log_bus_obj.code, str)
+        assert isinstance(error_log_bus_obj.code, UUID)
         assert isinstance(error_log_bus_obj.last_change_code, int)
         assert error_log_bus_obj.insert_user_id is None
         assert error_log_bus_obj.last_update_user_id is None
         # browser_code
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log_bus_obj.browser_code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                error_log_bus_obj.browser_code,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log_bus_obj.browser_code, str)
+        assert isinstance(error_log_bus_obj.browser_code, UUID)
         # context_code
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log_bus_obj.context_code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                error_log_bus_obj.context_code,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log_bus_obj.context_code, str)
+        assert isinstance(error_log_bus_obj.context_code, UUID)
         assert isinstance(error_log_bus_obj.created_utc_date_time, datetime)
         assert error_log_bus_obj.description == "" or isinstance(
             error_log_bus_obj.description, str)
@@ -186,7 +162,7 @@ class TestErrorLogBusObj:
         """
         # Test updating a error_log's data
         new_error_log = await error_log_manager.get_by_id(new_error_log.error_log_id)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         await error_log_bus_obj.load(error_log_obj_instance=new_error_log)
         error_log_bus_obj.code = new_code
         await error_log_bus_obj.save()

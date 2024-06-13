@@ -41,7 +41,7 @@ class PlantUserDeleteRouter(BaseRouter):
         response_model=api_models.PlantUserDeletePostModelResponse,
         summary="Plant User Delete Business Flow")
     async def request_post_with_id(
-        plant_code: str,
+        plant_code: uuid.UUID,
         request_model: api_models.PlantUserDeletePostModelRequest,
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -75,7 +75,7 @@ class PlantUserDeleteRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.exception("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -83,7 +83,7 @@ class PlantUserDeleteRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.info("Exception occurred")
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

@@ -6,18 +6,13 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import OrgApiKeyManager
 from models import OrgApiKey
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class OrgApiKeyInvalidInitError(Exception):
     """
     #TODO add comment
@@ -54,11 +49,11 @@ class OrgApiKeyBusObj(BaseBusObj):
         """
         return self.org_api_key.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.org_api_key.code = value
     # last_change_code
@@ -302,7 +297,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         return self.org_api_key.organization_code_peek
     # @organization_code_peek.setter
     # def organization_code_peek(self, value):
-    #     assert isinstance(value, UUIDType),
+    #     assert isinstance(value, uuid.UUID),
     #           "organization_code_peek must be a UUID"
     #     self.org_api_key.organization_code_peek = value
     # OrgCustomerID
@@ -335,7 +330,7 @@ class OrgApiKeyBusObj(BaseBusObj):
     # @org_customer_code_peek.setter
     # def org_customer_code_peek(self, value):
     #     assert isinstance(
-    #       value, UUIDType),
+    #       value, uuid.UUID),
     #       "org_customer_code_peek must be a UUID"
     #     self.org_api_key.org_customer_code_peek = value
 # endset

@@ -76,13 +76,13 @@ class TestCustomerSchema:
     def test_customer_serialization(self, customer: Customer, session):
         schema = CustomerSchema()
         result = schema.dump(customer)
-        assert result['code'] == customer.code
+        assert result['code'] == str(customer.code)
         assert result['last_change_code'] == (
             customer.last_change_code)
         assert result['insert_user_id'] == (
-            customer.insert_user_id)
+            str(customer.insert_user_id))
         assert result['last_update_user_id'] == (
-            customer.last_update_user_id)
+            str(customer.last_update_user_id))
 # endset
         assert result['active_organization_id'] == (
             customer.active_organization_id)
@@ -97,7 +97,7 @@ class TestCustomerSchema:
         assert result['forgot_password_key_value'] == (
             customer.forgot_password_key_value)
         assert result['fs_user_code_value'] == (
-            customer.fs_user_code_value)
+            str(customer.fs_user_code_value))
         assert result['is_active'] == (
             customer.is_active)
         assert result['is_email_allowed'] == (
@@ -137,7 +137,7 @@ class TestCustomerSchema:
             customer.last_update_utc_date_time.isoformat())
 # endset
         assert result['tac_code_peek'] == (  # TacID
-            customer.tac_code_peek)
+            str(customer.tac_code_peek))
 # endset
     def test_customer_deserialization(self, customer: Customer, session):
         schema = CustomerSchema()
@@ -360,7 +360,7 @@ class TestCustomerSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(customer_dict_from_json.keys())}"
         )
-        assert customer_dict_from_json['code'] == customer.code, (
+        assert customer_dict_from_json['code'] == str(customer.code), (
             "failed on code"
         )
         assert customer_dict_from_json['last_change_code'] == (
@@ -368,11 +368,11 @@ class TestCustomerSchema:
             "failed on last_change_code"
         )
         assert customer_dict_from_json['insert_user_id'] == (
-            customer.insert_user_id), (
+            str(customer.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert customer_dict_from_json['last_update_user_id'] == (
-            customer.last_update_user_id), (
+            str(customer.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -401,7 +401,7 @@ class TestCustomerSchema:
             "failed on forgot_password_key_value"
         )
         assert customer_dict_from_json['fs_user_code_value'] == (
-            customer.fs_user_code_value), (
+            str(customer.fs_user_code_value)), (
             "failed on fs_user_code_value"
         )
         assert customer_dict_from_json['is_active'] == (
@@ -479,7 +479,7 @@ class TestCustomerSchema:
         )
 # endset
         assert customer_dict_from_json['tac_code_peek'] == (  # TacID
-            customer.tac_code_peek), (
+            str(customer.tac_code_peek)), (
             "failed on tac_code_peek"
         )
 # endset

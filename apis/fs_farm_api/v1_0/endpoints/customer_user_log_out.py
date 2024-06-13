@@ -41,7 +41,7 @@ class CustomerUserLogOutRouter(BaseRouter):
         response_model=api_init_models.CustomerUserLogOutInitObjWFGetInitModelResponse,
         summary="Customer User Log Out Init Page")
     async def request_get_init(
-        customer_code: str = Path(..., description="Customer Code"),
+        customer_code: uuid.UUID = Path(..., description="Customer Code"),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -63,7 +63,8 @@ class CustomerUserLogOutRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 customer_code = session_context.check_context_code(
                     "CustomerCode",
-                    customer_code)
+                    customer_code
+                )
                 init_request = api_init_models.CustomerUserLogOutInitObjWFGetInitModelRequest()
                 response = await init_request.process_request(
                     session_context,
@@ -76,6 +77,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
@@ -96,7 +98,7 @@ class CustomerUserLogOutRouter(BaseRouter):
         response_model=api_models.CustomerUserLogOutPostModelResponse,
         summary="Customer User Log Out Business Flow")
     async def request_post_with_id(
-        customer_code: str,
+        customer_code: uuid.UUID,
         request_model: api_models.CustomerUserLogOutPostModelRequest,
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -130,7 +132,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.exception("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -138,7 +140,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.info("Exception occurred")
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import Organization
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import OrganizationFactory
+from helpers.session_context import SessionContext
 from managers.organization import OrganizationManager
+from models import Organization
+from models.factory import OrganizationFactory
 from models.serialization_schema.organization import OrganizationSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestOrganizationManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestOrganizationManager:
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return OrganizationManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestOrganizationManager:
         """
         # Define mock data for our organization
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         organization = await organization_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestOrganizationManager:
         # Create a test organization using the OrganizationFactory without persisting it to the database
         test_organization = await OrganizationFactory.build_async(session)
         assert test_organization.organization_id is None
-        test_organization.code = generate_uuid()
+        test_organization.code = uuid.uuid4()
         # Add the organization using the manager's add method
         added_organization = await organization_manager.add(organization=test_organization)
         assert isinstance(added_organization, Organization)
@@ -163,7 +158,7 @@ class TestOrganizationManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any Organization in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         organization = await organization_manager.get_by_code(random_code)
         assert organization is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestOrganizationManager:
             #TODO add comment
         """
         test_organization = await OrganizationFactory.create_async(session)
-        test_organization.code = generate_uuid()
+        test_organization.code = uuid.uuid4()
         updated_organization = await organization_manager.update(organization=test_organization)
         assert isinstance(updated_organization, Organization)
         assert str(updated_organization.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestOrganizationManager:
             #TODO add comment
         """
         test_organization = await OrganizationFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_organization = await organization_manager.update(
             organization=test_organization,
             code=new_code
@@ -226,7 +221,7 @@ class TestOrganizationManager:
     async def test_update_invalid_organization(self, organization_manager: OrganizationManager):
         # None organization
         organization = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_organization = await organization_manager.update(organization, code=new_code)
         # Assertions
         assert updated_organization is None
@@ -240,7 +235,7 @@ class TestOrganizationManager:
             #TODO add comment
         """
         test_organization = await OrganizationFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_organization = await organization_manager.update(
                 organization=test_organization,
@@ -395,8 +390,8 @@ class TestOrganizationManager:
         organization1 = await OrganizationFactory.create_async(session=session)
         organization2 = await OrganizationFactory.create_async(session=session)
         logging.info(organization1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update organizations
@@ -458,7 +453,7 @@ class TestOrganizationManager:
             #TODO add comment
         """
         # Update organizations
-        updates = [{"organization_id": 1, "code": generate_uuid()}]
+        updates = [{"organization_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_organizations = await organization_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestOrganizationManager:
         """
             #TODO add comment
         """
-        updates = [{"organization_id": "2", "code": generate_uuid()}]
+        updates = [{"organization_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_organizations = await organization_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestOrganizationManager:
         result = await session.execute(select(Organization).filter(Organization.organization_id == organization1.organization_id))
         organization2 = result.scalars().first()
         assert organization1.code == organization2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         organization1.code = updated_code1
         updated_organization1 = await organization_manager.update(organization1)
         assert updated_organization1.code == updated_code1

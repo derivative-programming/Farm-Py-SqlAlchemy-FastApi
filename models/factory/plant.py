@@ -2,30 +2,19 @@
     #TODO add comment
 """
 
+import logging
 from datetime import datetime
 import uuid
 import factory
 from factory import Faker, SubFactory
 import pytz
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 from models import Plant
-from services.db_config import DB_DIALECT, generate_uuid
 from services.logging_config import get_logger
 from .flavor import FlavorFactory  # flvr_foreign_key_id
 from .land import LandFactory  # land_id
 
 logger = get_logger(__name__)
-
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
-
+ 
 
 class PlantFactory(factory.Factory):
 
@@ -33,10 +22,10 @@ class PlantFactory(factory.Factory):
         model = Plant
 
     # plant_id = factory.Sequence(lambda n: n)
-    code = factory.LazyFunction(generate_uuid)
+    code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
-    insert_user_id = factory.LazyFunction(generate_uuid)
-    last_update_user_id = factory.LazyFunction(generate_uuid)
+    insert_user_id = factory.LazyFunction(uuid.uuid4)
+    last_update_user_id = factory.LazyFunction(uuid.uuid4)
     # flvr_foreign_key_id = 0 #factory.LazyAttribute(lambda obj: obj.flavor.flavor_id)
     is_delete_allowed = Faker('boolean')
     is_edit_allowed = Faker('boolean')
@@ -53,15 +42,15 @@ class PlantFactory(factory.Factory):
     some_n_var_char_val = Faker('sentence', nb_words=4)
     some_phone_number = Faker('phone_number')
     some_text_val = Faker('text')
-    some_uniqueidentifier_val = factory.LazyFunction(generate_uuid)
+    some_uniqueidentifier_val = factory.LazyFunction(uuid.uuid4)
     some_utc_date_time_val = factory.LazyFunction(datetime.utcnow)  # Faker('date_time', tzinfo=pytz.utc)
     some_var_char_val = Faker('sentence', nb_words=4)
     insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
     last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
     # endset
 
-    flvr_foreign_key_code_peek = factory.LazyFunction(generate_uuid)  # FlvrForeignKeyID
-    land_code_peek = factory.LazyFunction(generate_uuid)  # LandID
+    flvr_foreign_key_code_peek = factory.LazyFunction(uuid.uuid4)  # FlvrForeignKeyID
+    land_code_peek = factory.LazyFunction(uuid.uuid4)  # LandID
 
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Plant:
@@ -96,6 +85,7 @@ class PlantFactory(factory.Factory):
 
     @classmethod
     def _create(cls, model_class, session=None, *args, **kwargs) -> Plant:
+        logger.info("factory create")
         land_id_land_instance = LandFactory.create(session=session)  # LandID
         flvr_foreign_key_id_flavor_instance = FlavorFactory.create(session=session)  # FlvrForeignKeyID
 # endset

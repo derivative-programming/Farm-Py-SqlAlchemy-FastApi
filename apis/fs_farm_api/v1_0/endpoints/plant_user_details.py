@@ -41,7 +41,7 @@ class PlantUserDetailsRouter(BaseRouter):
         response_model=api_init_models.PlantUserDetailsInitReportGetInitModelResponse,
         summary="Plant User Details Init Page")
     async def request_get_init(
-        plant_code: str = Path(..., description="Plant Code"),
+        plant_code: uuid.UUID = Path(..., description="Plant Code"),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -63,7 +63,8 @@ class PlantUserDetailsRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 plant_code = session_context.check_context_code(
                     "PlantCode",
-                    plant_code)
+                    plant_code
+                )
                 init_request = api_init_models.PlantUserDetailsInitReportGetInitModelRequest()
                 response = await init_request.process_request(
                     session_context,
@@ -76,6 +77,7 @@ class PlantUserDetailsRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
@@ -96,7 +98,7 @@ class PlantUserDetailsRouter(BaseRouter):
         response_model=api_models.PlantUserDetailsGetModelResponse,
         summary="Plant User Details Report")
     async def request_get_with_id(
-        plant_code: str = Path(..., description="Plant Code"),
+        plant_code: uuid.UUID = Path(..., description="Plant Code"),
         request_model: api_models.PlantUserDetailsGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -131,6 +133,7 @@ class PlantUserDetailsRouter(BaseRouter):
                 )
                 logging.info('PlantUserDetailsRouter success')
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
@@ -152,14 +155,14 @@ class PlantUserDetailsRouter(BaseRouter):
         response_class=FileResponse,
         summary="Plant User Details Report to CSV")
     async def request_get_with_id_to_csv(
-        plant_code: str = Path(..., description="Plant Code"),
+        plant_code: uuid.UUID = Path(..., description="Plant Code"),
         request_model: api_models.PlantUserDetailsGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
         logging.info(
             "PlantUserDetailsRouter.request_get_with_id_to_csv start. plantCode:%s",
-                plant_code
+            plant_code
         )
         auth_dict = BaseRouter.implementation_check(
             PlantUserDetailsRouterConfig.is_get_to_csv_available)
@@ -195,6 +198,7 @@ class PlantUserDetailsRouter(BaseRouter):
                     session_context)
                 report_manager.build_csv(tmp_file_path, response.items)
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string

@@ -4,24 +4,20 @@
     #TODO add comment
 """
 
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
+
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import Plant
-import models
-from models.factory import PlantFactory
-from managers.plant import PlantManager
-from models.serialization_schema.plant import PlantSchema
-from services.db_config import DB_DIALECT, generate_uuid
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
-DB_DIALECT = "sqlite"  # noqa: F811
+import models
+from helpers.session_context import SessionContext
+from managers.plant import PlantManager
+from models import Plant
+from models.factory import PlantFactory
+from models.serialization_schema.plant import PlantSchema
 
 
 class TestPlantManager:
@@ -32,7 +28,7 @@ class TestPlantManager:
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return PlantManager(session_context)
 
     @pytest.mark.asyncio
@@ -45,7 +41,7 @@ class TestPlantManager:
         """
         # Define mock data for our plant
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
 
         # Call the build function of the manager
@@ -126,7 +122,7 @@ class TestPlantManager:
 
         assert test_plant.plant_id is None
 
-        test_plant.code = generate_uuid()
+        test_plant.code = uuid.uuid4()
 
         # Add the plant using the manager's add method
         added_plant = await plant_manager.add(plant=test_plant)
@@ -206,7 +202,7 @@ class TestPlantManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any Plant in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
 
         plant = await plant_manager.get_by_code(random_code)
 
@@ -223,7 +219,7 @@ class TestPlantManager:
         """
         test_plant = await PlantFactory.create_async(session)
 
-        test_plant.code = generate_uuid()
+        test_plant.code = uuid.uuid4()
 
         updated_plant = await plant_manager.update(plant=test_plant)
 
@@ -259,7 +255,7 @@ class TestPlantManager:
         """
         test_plant = await PlantFactory.create_async(session)
 
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
 
         updated_plant = await plant_manager.update(
             plant=test_plant,
@@ -293,7 +289,7 @@ class TestPlantManager:
         # None plant
         plant = None
 
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
 
         updated_plant = await plant_manager.update(plant, code=new_code)
 
@@ -311,7 +307,7 @@ class TestPlantManager:
         """
         test_plant = await PlantFactory.create_async(session)
 
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
             updated_plant = await plant_manager.update(
@@ -512,8 +508,8 @@ class TestPlantManager:
         plant2 = await PlantFactory.create_async(session=session)
         logging.info(plant1.__dict__)
 
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
 
@@ -592,7 +588,7 @@ class TestPlantManager:
         """
 
         # Update plants
-        updates = [{"plant_id": 1, "code": generate_uuid()}]
+        updates = [{"plant_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
             updated_plants = await plant_manager.update_bulk(updates)
@@ -609,7 +605,7 @@ class TestPlantManager:
             #TODO add comment
         """
 
-        updates = [{"plant_id": "2", "code": generate_uuid()}]
+        updates = [{"plant_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
             updated_plants = await plant_manager.update_bulk(updates)
@@ -808,7 +804,7 @@ class TestPlantManager:
 
         assert plant1.code == plant2.code
 
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         plant1.code = updated_code1
         updated_plant1 = await plant_manager.update(plant1)
 

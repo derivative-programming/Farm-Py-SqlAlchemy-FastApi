@@ -6,11 +6,7 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import TacManager
 from models import Tac
 import models
@@ -21,7 +17,6 @@ from business.organization import OrganizationBusObj
 
 from business.customer import CustomerBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class TacInvalidInitError(Exception):
     """
     #TODO add comment
@@ -58,11 +53,11 @@ class TacBusObj(BaseBusObj):
         """
         return self.tac.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.tac.code = value
     # last_change_code
@@ -261,7 +256,7 @@ class TacBusObj(BaseBusObj):
         return self.tac.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType),
+    #     assert isinstance(value, uuid.UUID),
     #           "pac_code_peek must be a UUID"
     #     self.tac.pac_code_peek = value
 # endset

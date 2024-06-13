@@ -11,13 +11,15 @@ from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
 from sqlalchemy.ext.asyncio import AsyncSession
-from services.db_config import DB_DIALECT, generate_uuid
+
 # from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 from decimal import Decimal
+
+
 class FlowPacUserDateGreaterThanFilterListInitReportResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         pass

@@ -41,7 +41,7 @@ class PacUserFlavorListRouter(BaseRouter):
         response_model=api_init_models.PacUserFlavorListInitReportGetInitModelResponse,
         summary="Pac User Flavor List Init Page")
     async def request_get_init(
-        pac_code: str = Path(..., description="Pac Code"),
+        pac_code: uuid.UUID = Path(..., description="Pac Code"),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -63,7 +63,8 @@ class PacUserFlavorListRouter(BaseRouter):
                 session_context = SessionContext(auth_dict, session)
                 pac_code = session_context.check_context_code(
                     "PacCode",
-                    pac_code)
+                    pac_code
+                )
                 init_request = api_init_models.PacUserFlavorListInitReportGetInitModelRequest()
                 response = await init_request.process_request(
                     session_context,
@@ -76,6 +77,7 @@ class PacUserFlavorListRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
@@ -96,7 +98,7 @@ class PacUserFlavorListRouter(BaseRouter):
         response_model=api_models.PacUserFlavorListGetModelResponse,
         summary="Pac User Flavor List Report")
     async def request_get_with_id(
-        pac_code: str = Path(..., description="Pac Code"),
+        pac_code: uuid.UUID = Path(..., description="Pac Code"),
         request_model: api_models.PacUserFlavorListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -131,6 +133,7 @@ class PacUserFlavorListRouter(BaseRouter):
                 )
                 logging.info('PacUserFlavorListRouter success')
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
@@ -152,14 +155,14 @@ class PacUserFlavorListRouter(BaseRouter):
         response_class=FileResponse,
         summary="Pac User Flavor List Report to CSV")
     async def request_get_with_id_to_csv(
-        pac_code: str = Path(..., description="Pac Code"),
+        pac_code: uuid.UUID = Path(..., description="Pac Code"),
         request_model: api_models.PacUserFlavorListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
         logging.info(
             "PacUserFlavorListRouter.request_get_with_id_to_csv start. pacCode:%s",
-                pac_code
+            pac_code
         )
         auth_dict = BaseRouter.implementation_check(
             PacUserFlavorListRouterConfig.is_get_to_csv_available)
@@ -195,6 +198,7 @@ class PacUserFlavorListRouter(BaseRouter):
                     session_context)
                 report_manager.build_csv(tmp_file_path, response.items)
             except Exception as e:
+                logging.exception("Exception occurred")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string

@@ -4,29 +4,36 @@
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from models import ErrorLog
-from services.db_config import DB_DIALECT
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    schema_UUIDType = fields.UUID()
-elif DB_DIALECT == 'mssql':
-    schema_UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    schema_UUIDType = fields.Str()
 class ErrorLogSchema(SQLAlchemyAutoSchema):
     """
     #TODO add comment
     """
     class Meta:
         model = ErrorLog
+        exclude = (
+            "_code",
+            "_insert_user_id",
+            "_last_update_user_id",
+            # browserCode,
+            "_browser_code",
+            # contextCode,
+            "_context_code",
+            # createdUTCDateTime
+            # description,
+            # isClientSideError,
+            # isResolved,
+            # PacID
+            # url,
+# endset  # noqa E122
+        )
     error_log_id = fields.Int()
-    code = schema_UUIDType
+    code = fields.UUID()
     last_change_code = fields.Int()
-    insert_user_id = schema_UUIDType
-    last_update_user_id = schema_UUIDType
-    browser_code = schema_UUIDType
-    context_code = schema_UUIDType
+    insert_user_id = fields.UUID()
+    last_update_user_id = fields.UUID()
+    browser_code = fields.UUID()
+    context_code = fields.UUID()
     created_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
     description = fields.Str()
     is_client_side_error = fields.Bool()
@@ -35,5 +42,5 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
     url = fields.Str()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
-    pac_code_peek = schema_UUIDType  # PacID
+    pac_code_peek = fields.UUID()  # PacID
 # endset

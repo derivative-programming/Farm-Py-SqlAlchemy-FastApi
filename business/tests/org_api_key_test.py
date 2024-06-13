@@ -4,9 +4,6 @@
 """
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -14,13 +11,11 @@ from models import OrgApiKey
 from models.factory import OrgApiKeyFactory
 from managers.org_api_key import OrgApiKeyManager
 from business.org_api_key import OrgApiKeyBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestOrgApiKeyBusObj:
     """
         #TODO add comment
@@ -60,12 +55,7 @@ class TestOrgApiKeyBusObj:
         # Test creating a new org_api_key
         assert org_api_key_bus_obj.org_api_key_id is None
         # assert isinstance(org_api_key_bus_obj.org_api_key_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_api_key_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_api_key_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_api_key_bus_obj.code, str)
+        assert isinstance(org_api_key_bus_obj.code, UUID)
         assert isinstance(org_api_key_bus_obj.last_change_code, int)
         assert org_api_key_bus_obj.insert_user_id is None
         assert org_api_key_bus_obj.last_update_user_id is None
@@ -172,7 +162,7 @@ class TestOrgApiKeyBusObj:
         """
         # Test updating a org_api_key's data
         new_org_api_key = await org_api_key_manager.get_by_id(new_org_api_key.org_api_key_id)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         await org_api_key_bus_obj.load(org_api_key_obj_instance=new_org_api_key)
         org_api_key_bus_obj.code = new_code
         await org_api_key_bus_obj.save()

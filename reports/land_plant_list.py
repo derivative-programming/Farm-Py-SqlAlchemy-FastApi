@@ -34,6 +34,8 @@ class ReportManagerLandPlantList():
     async def generate(
         self,
         land_code: uuid.UUID,
+        flavor_code:
+            uuid.UUID = uuid.UUID(int=0),
         some_int_val:
             int = 0,
         some_big_int_val:
@@ -64,8 +66,6 @@ class ReportManagerLandPlantList():
             str = "",
         some_email_address:
             str = "",
-        flavor_code:
-            uuid.UUID = uuid.UUID(int=0),
 # endset  # noqa: E122
         page_number: int = 1,
         item_count_per_page: int = 1,
@@ -100,6 +100,7 @@ class ReportManagerLandPlantList():
 
         data_list = await provider.generate_list(
             land_code,
+            flavor_code,
             some_int_val,
             some_big_int_val,
             some_bit_val,
@@ -115,7 +116,6 @@ class ReportManagerLandPlantList():
             some_text_val,
             some_phone_number,
             some_email_address,
-            flavor_code,
 # endset  # noqa: E122
             page_number,
             item_count_per_page,

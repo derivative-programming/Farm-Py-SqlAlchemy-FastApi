@@ -5,26 +5,18 @@
 from decimal import Decimal
 import time
 import math
+import uuid
+import logging
 from datetime import datetime, date, timedelta
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from models import Base, Customer
 from models.factory import CustomerFactory
-from services.db_config import DB_DIALECT, generate_uuid
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestCustomerFactory:
     """
     #TODO add comment
@@ -60,13 +52,9 @@ class TestCustomerFactory:
         """
         #TODO add comment
         """
+        logging.info("vrtest")
         customer = CustomerFactory.create(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer.code, str)
+        assert isinstance(customer.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         #TODO add comment
@@ -85,7 +73,7 @@ class TestCustomerFactory:
         """
         customer = CustomerFactory.create(session=session)
         initial_code = customer.last_change_code
-        customer.code = generate_uuid()
+        customer.code = uuid.uuid4()
         session.commit()
         assert customer.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
@@ -103,7 +91,7 @@ class TestCustomerFactory:
         assert customer.insert_utc_date_time is not None
         assert isinstance(customer.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer.code = generate_uuid()
+        customer.code = uuid.uuid4()
         session.commit()
         assert customer.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -114,7 +102,7 @@ class TestCustomerFactory:
         assert customer.insert_utc_date_time is not None
         assert isinstance(customer.insert_utc_date_time, datetime)
         initial_time = customer.insert_utc_date_time
-        customer.code = generate_uuid()
+        customer.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert customer.insert_utc_date_time == initial_time
@@ -133,7 +121,7 @@ class TestCustomerFactory:
         assert customer.last_update_utc_date_time is not None
         assert isinstance(customer.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer.code = generate_uuid()
+        customer.code = uuid.uuid4()
         session.commit()
         assert customer.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
@@ -144,7 +132,7 @@ class TestCustomerFactory:
         assert customer.last_update_utc_date_time is not None
         assert isinstance(customer.last_update_utc_date_time, datetime)
         initial_time = customer.last_update_utc_date_time
-        customer.code = generate_uuid()
+        customer.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert customer.last_update_utc_date_time > initial_time
@@ -164,25 +152,10 @@ class TestCustomerFactory:
         """
         customer = CustomerFactory.create(session=session)
         assert isinstance(customer.customer_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer.code, str)
+        assert isinstance(customer.code, uuid.UUID)
         assert isinstance(customer.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer.last_update_user_id, str)
+        assert isinstance(customer.insert_user_id, uuid.UUID)
+        assert isinstance(customer.last_update_user_id, uuid.UUID)
         assert isinstance(customer.active_organization_id, int)
         assert customer.email == "" or isinstance(
             customer.email, str)
@@ -191,14 +164,8 @@ class TestCustomerFactory:
         assert isinstance(customer.forgot_password_key_expiration_utc_date_time, datetime)
         assert customer.forgot_password_key_value == "" or isinstance(customer.forgot_password_key_value, str)
         # fSUserCodeValue
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                customer.fs_user_code_value, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer.fs_user_code_value, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer.fs_user_code_value, str)
+        assert isinstance(
+            customer.fs_user_code_value, uuid.UUID)
         assert isinstance(customer.is_active, bool)
         assert isinstance(customer.is_email_allowed, bool)
         assert isinstance(customer.is_email_confirmed, bool)
@@ -240,15 +207,8 @@ class TestCustomerFactory:
         # province,
         # registrationUTCDateTime
         # tacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                customer.tac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer.tac_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                customer.tac_code_peek, str)
+        assert isinstance(
+            customer.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
 # endset
@@ -272,8 +232,8 @@ class TestCustomerFactory:
         customer = Customer()
         assert customer.code is not None
         assert customer.last_change_code is not None
-        assert customer.insert_user_id is None
-        assert customer.last_update_user_id is None
+        assert customer.insert_user_id is not None
+        assert customer.last_update_user_id is not None
         assert customer.insert_utc_date_time is not None
         assert customer.last_update_utc_date_time is not None
 # endset
@@ -298,16 +258,8 @@ class TestCustomerFactory:
         # province,
         # registrationUTCDateTime
         # TacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                customer.tac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer.tac_code_peek,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                customer.tac_code_peek, str)
+        assert isinstance(
+            customer.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
 # endset
@@ -318,16 +270,9 @@ class TestCustomerFactory:
         assert customer.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
         assert customer.forgot_password_key_value == ""
         # fs_user_code_value
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
+        assert isinstance(
                 customer.fs_user_code_value,
-                UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer.fs_user_code_value,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer.fs_user_code_value, str)
+                uuid.UUID)
         assert customer.is_active is False
         assert customer.is_email_allowed is False
         assert customer.is_email_confirmed is False
@@ -353,11 +298,11 @@ class TestCustomerFactory:
         original_last_change_code = customer.last_change_code
         customer_1 = session.query(Customer).filter_by(
             customer_id=customer.customer_id).first()
-        customer_1.code = generate_uuid()
+        customer_1.code = uuid.uuid4()
         session.commit()
         customer_2 = session.query(Customer).filter_by(
             customer_id=customer.customer_id).first()
-        customer_2.code = generate_uuid()
+        customer_2.code = uuid.uuid4()
         session.commit()
         assert customer_2.last_change_code != original_last_change_code
 # endset

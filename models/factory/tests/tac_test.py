@@ -5,26 +5,18 @@
 from decimal import Decimal
 import time
 import math
+import uuid
+import logging
 from datetime import datetime, date, timedelta
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from models import Base, Tac
 from models.factory import TacFactory
-from services.db_config import DB_DIALECT, generate_uuid
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestTacFactory:
     """
     #TODO add comment
@@ -60,13 +52,9 @@ class TestTacFactory:
         """
         #TODO add comment
         """
+        logging.info("vrtest")
         tac = TacFactory.create(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(tac.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(tac.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(tac.code, str)
+        assert isinstance(tac.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         #TODO add comment
@@ -85,7 +73,7 @@ class TestTacFactory:
         """
         tac = TacFactory.create(session=session)
         initial_code = tac.last_change_code
-        tac.code = generate_uuid()
+        tac.code = uuid.uuid4()
         session.commit()
         assert tac.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
@@ -103,7 +91,7 @@ class TestTacFactory:
         assert tac.insert_utc_date_time is not None
         assert isinstance(tac.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        tac.code = generate_uuid()
+        tac.code = uuid.uuid4()
         session.commit()
         assert tac.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -114,7 +102,7 @@ class TestTacFactory:
         assert tac.insert_utc_date_time is not None
         assert isinstance(tac.insert_utc_date_time, datetime)
         initial_time = tac.insert_utc_date_time
-        tac.code = generate_uuid()
+        tac.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert tac.insert_utc_date_time == initial_time
@@ -133,7 +121,7 @@ class TestTacFactory:
         assert tac.last_update_utc_date_time is not None
         assert isinstance(tac.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        tac.code = generate_uuid()
+        tac.code = uuid.uuid4()
         session.commit()
         assert tac.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
@@ -144,7 +132,7 @@ class TestTacFactory:
         assert tac.last_update_utc_date_time is not None
         assert isinstance(tac.last_update_utc_date_time, datetime)
         initial_time = tac.last_update_utc_date_time
-        tac.code = generate_uuid()
+        tac.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert tac.last_update_utc_date_time > initial_time
@@ -164,25 +152,10 @@ class TestTacFactory:
         """
         tac = TacFactory.create(session=session)
         assert isinstance(tac.tac_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(tac.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(tac.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(tac.code, str)
+        assert isinstance(tac.code, uuid.UUID)
         assert isinstance(tac.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(tac.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(tac.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(tac.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(tac.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(tac.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(tac.last_update_user_id, str)
+        assert isinstance(tac.insert_user_id, uuid.UUID)
+        assert isinstance(tac.last_update_user_id, uuid.UUID)
         assert tac.description == "" or isinstance(tac.description, str)
         assert isinstance(tac.display_order, int)
         assert isinstance(tac.is_active, bool)
@@ -198,15 +171,8 @@ class TestTacFactory:
         # lookupEnumName,
         # name,
         # pacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                tac.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                tac.pac_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                tac.pac_code_peek, str)
+        assert isinstance(
+            tac.pac_code_peek, uuid.UUID)
 # endset
         assert isinstance(tac.insert_utc_date_time, datetime)
         assert isinstance(tac.last_update_utc_date_time, datetime)
@@ -228,8 +194,8 @@ class TestTacFactory:
         tac = Tac()
         assert tac.code is not None
         assert tac.last_change_code is not None
-        assert tac.insert_user_id is None
-        assert tac.last_update_user_id is None
+        assert tac.insert_user_id is not None
+        assert tac.last_update_user_id is not None
         assert tac.insert_utc_date_time is not None
         assert tac.last_update_utc_date_time is not None
 # endset
@@ -239,16 +205,8 @@ class TestTacFactory:
         # lookupEnumName,
         # name,
         # PacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                tac.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                tac.pac_code_peek,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                tac.pac_code_peek, str)
+        assert isinstance(
+            tac.pac_code_peek, uuid.UUID)
 # endset
         assert tac.description == ""
         assert tac.display_order == 0
@@ -265,11 +223,11 @@ class TestTacFactory:
         original_last_change_code = tac.last_change_code
         tac_1 = session.query(Tac).filter_by(
             tac_id=tac.tac_id).first()
-        tac_1.code = generate_uuid()
+        tac_1.code = uuid.uuid4()
         session.commit()
         tac_2 = session.query(Tac).filter_by(
             tac_id=tac.tac_id).first()
-        tac_2.code = generate_uuid()
+        tac_2.code = uuid.uuid4()
         session.commit()
         assert tac_2.last_change_code != original_last_change_code
 # endset

@@ -6,11 +6,7 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import PacManager
 from models import Pac
 import models
@@ -31,7 +27,6 @@ from business.error_log import ErrorLogBusObj
 
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class PacInvalidInitError(Exception):
     """
     #TODO add comment
@@ -68,11 +63,11 @@ class PacBusObj(BaseBusObj):
         """
         return self.pac.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.pac.code = value
     # last_change_code

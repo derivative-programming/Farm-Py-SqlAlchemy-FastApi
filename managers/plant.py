@@ -19,7 +19,6 @@ from models.flavor import Flavor  # FlvrForeignKeyID
 from models.land import Land  # LandID
 from models.plant import Plant
 from models.serialization_schema.plant import PlantSchema
-from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -54,17 +53,12 @@ class PlantManager:
             raise ValueError("session required")
         self._session_context = session_context
 
-    def convert_uuid_to_model_uuid(self, value: uuid):
+    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if DB_DIALECT == 'postgresql':
-            return value
-        elif DB_DIALECT == 'mssql':
-            return value
-        else:  # This will cover SQLite, MySQL, and other databases
-            return str(value)
+        return value
 
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=false]Start
@@ -199,7 +193,7 @@ class PlantManager:
         """
         logging.info("PlantManager.get_by_code %s", code)
 
-        query_filter = Plant.code == code
+        query_filter = Plant._code == str(code)
 
         query_results = await self._run_query(query_filter)
 

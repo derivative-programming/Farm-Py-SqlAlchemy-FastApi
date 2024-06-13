@@ -4,27 +4,33 @@
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from models import OrgApiKey
-from services.db_config import DB_DIALECT
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    schema_UUIDType = fields.UUID()
-elif DB_DIALECT == 'mssql':
-    schema_UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    schema_UUIDType = fields.Str()
 class OrgApiKeySchema(SQLAlchemyAutoSchema):
     """
     #TODO add comment
     """
     class Meta:
         model = OrgApiKey
+        exclude = (
+            "_code",
+            "_insert_user_id",
+            "_last_update_user_id",
+            # apiKeyValue,
+            # createdBy,
+            # createdUTCDateTime
+            # expirationUTCDateTime
+            # isActive,
+            # isTempUserKey,
+            # name,
+            # OrganizationID
+            # orgCustomerID
+# endset  # noqa E122
+        )
     org_api_key_id = fields.Int()
-    code = schema_UUIDType
+    code = fields.UUID()
     last_change_code = fields.Int()
-    insert_user_id = schema_UUIDType
-    last_update_user_id = schema_UUIDType
+    insert_user_id = fields.UUID()
+    last_update_user_id = fields.UUID()
     api_key_value = fields.Str()
     created_by = fields.Str()
     created_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
@@ -36,6 +42,6 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
     org_customer_id = fields.Int()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
-    organization_code_peek = schema_UUIDType  # OrganizationID
-    org_customer_code_peek = schema_UUIDType   # OrgCustomerID
+    organization_code_peek = fields.UUID()  # OrganizationID
+    org_customer_code_peek = fields.UUID()   # OrgCustomerID
 # endset

@@ -50,13 +50,13 @@ class TestCustomerRoleSchema:
     def test_customer_role_serialization(self, customer_role: CustomerRole, session):
         schema = CustomerRoleSchema()
         result = schema.dump(customer_role)
-        assert result['code'] == customer_role.code
+        assert result['code'] == str(customer_role.code)
         assert result['last_change_code'] == (
             customer_role.last_change_code)
         assert result['insert_user_id'] == (
-            customer_role.insert_user_id)
+            str(customer_role.insert_user_id))
         assert result['last_update_user_id'] == (
-            customer_role.last_update_user_id)
+            str(customer_role.last_update_user_id))
 # endset
         assert result['customer_id'] == (
             customer_role.customer_id)
@@ -73,9 +73,9 @@ class TestCustomerRoleSchema:
             customer_role.last_update_utc_date_time.isoformat())
 # endset
         assert result['customer_code_peek'] == (  # CustomerID
-            customer_role.customer_code_peek)
+            str(customer_role.customer_code_peek))
         assert result['role_code_peek'] == (  # RoleID
-            customer_role.role_code_peek)
+            str(customer_role.role_code_peek))
 # endset
     def test_customer_role_deserialization(self, customer_role: CustomerRole, session):
         schema = CustomerRoleSchema()
@@ -190,7 +190,7 @@ class TestCustomerRoleSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(customer_role_dict_from_json.keys())}"
         )
-        assert customer_role_dict_from_json['code'] == customer_role.code, (
+        assert customer_role_dict_from_json['code'] == str(customer_role.code), (
             "failed on code"
         )
         assert customer_role_dict_from_json['last_change_code'] == (
@@ -198,11 +198,11 @@ class TestCustomerRoleSchema:
             "failed on last_change_code"
         )
         assert customer_role_dict_from_json['insert_user_id'] == (
-            customer_role.insert_user_id), (
+            str(customer_role.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert customer_role_dict_from_json['last_update_user_id'] == (
-            customer_role.last_update_user_id), (
+            str(customer_role.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -233,11 +233,11 @@ class TestCustomerRoleSchema:
         )
 # endset
         assert customer_role_dict_from_json['customer_code_peek'] == (  # CustomerID
-            customer_role.customer_code_peek), (
+            str(customer_role.customer_code_peek)), (
             "failed on customer_code_peek"
         )
         assert customer_role_dict_from_json['role_code_peek'] == (  # RoleID
-            customer_role.role_code_peek), (
+            str(customer_role.role_code_peek)), (
             "failed on role_code_peek"
         )
 # endset

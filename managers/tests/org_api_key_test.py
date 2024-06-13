@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import OrgApiKey
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import OrgApiKeyFactory
+from helpers.session_context import SessionContext
 from managers.org_api_key import OrgApiKeyManager
+from models import OrgApiKey
+from models.factory import OrgApiKeyFactory
 from models.serialization_schema.org_api_key import OrgApiKeySchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestOrgApiKeyManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestOrgApiKeyManager:
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return OrgApiKeyManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestOrgApiKeyManager:
         """
         # Define mock data for our org_api_key
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         org_api_key = await org_api_key_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestOrgApiKeyManager:
         # Create a test org_api_key using the OrgApiKeyFactory without persisting it to the database
         test_org_api_key = await OrgApiKeyFactory.build_async(session)
         assert test_org_api_key.org_api_key_id is None
-        test_org_api_key.code = generate_uuid()
+        test_org_api_key.code = uuid.uuid4()
         # Add the org_api_key using the manager's add method
         added_org_api_key = await org_api_key_manager.add(org_api_key=test_org_api_key)
         assert isinstance(added_org_api_key, OrgApiKey)
@@ -163,7 +158,7 @@ class TestOrgApiKeyManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any OrgApiKey in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         org_api_key = await org_api_key_manager.get_by_code(random_code)
         assert org_api_key is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
-        test_org_api_key.code = generate_uuid()
+        test_org_api_key.code = uuid.uuid4()
         updated_org_api_key = await org_api_key_manager.update(org_api_key=test_org_api_key)
         assert isinstance(updated_org_api_key, OrgApiKey)
         assert str(updated_org_api_key.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_org_api_key = await org_api_key_manager.update(
             org_api_key=test_org_api_key,
             code=new_code
@@ -226,7 +221,7 @@ class TestOrgApiKeyManager:
     async def test_update_invalid_org_api_key(self, org_api_key_manager: OrgApiKeyManager):
         # None org_api_key
         org_api_key = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_org_api_key = await org_api_key_manager.update(org_api_key, code=new_code)
         # Assertions
         assert updated_org_api_key is None
@@ -240,7 +235,7 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_org_api_key = await org_api_key_manager.update(
                 org_api_key=test_org_api_key,
@@ -395,8 +390,8 @@ class TestOrgApiKeyManager:
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
         org_api_key2 = await OrgApiKeyFactory.create_async(session=session)
         logging.info(org_api_key1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update org_api_keys
@@ -458,7 +453,7 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         # Update org_api_keys
-        updates = [{"org_api_key_id": 1, "code": generate_uuid()}]
+        updates = [{"org_api_key_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_org_api_keys = await org_api_key_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestOrgApiKeyManager:
         """
             #TODO add comment
         """
-        updates = [{"org_api_key_id": "2", "code": generate_uuid()}]
+        updates = [{"org_api_key_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_org_api_keys = await org_api_key_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestOrgApiKeyManager:
         result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == org_api_key1.org_api_key_id))
         org_api_key2 = result.scalars().first()
         assert org_api_key1.code == org_api_key2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         org_api_key1.code = updated_code1
         updated_org_api_key1 = await org_api_key_manager.update(org_api_key1)
         assert updated_org_api_key1.code == updated_code1

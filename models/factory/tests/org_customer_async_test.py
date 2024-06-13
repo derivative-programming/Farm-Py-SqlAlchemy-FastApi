@@ -2,15 +2,13 @@
 """
     #TODO add comment
 """
+import uuid
 import asyncio
 import time
 import math
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy import event
@@ -20,16 +18,7 @@ import pytest
 import pytest_asyncio
 from models import Base, OrgCustomer
 from models.factory import OrgCustomerFactory
-from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestOrgCustomerFactoryAsync:
     """
     #TODO add comment
@@ -94,12 +83,7 @@ class TestOrgCustomerFactoryAsync:
         #TODO add comment
         """
         org_customer = await OrgCustomerFactory.create_async(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.code, str)
+        assert isinstance(org_customer.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
         """
@@ -121,7 +105,7 @@ class TestOrgCustomerFactoryAsync:
         """
         org_customer = await OrgCustomerFactory.create_async(session=session)
         initial_code = org_customer.last_change_code
-        org_customer.code = generate_uuid()
+        org_customer.code = uuid.uuid4()
         await session.commit()
         assert org_customer.last_change_code != initial_code
     @pytest.mark.asyncio
@@ -141,7 +125,7 @@ class TestOrgCustomerFactoryAsync:
         assert org_customer.insert_utc_date_time is not None
         assert isinstance(org_customer.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        org_customer.code = generate_uuid()
+        org_customer.code = uuid.uuid4()
         await session.commit()
         assert org_customer.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -153,7 +137,7 @@ class TestOrgCustomerFactoryAsync:
         assert org_customer.insert_utc_date_time is not None
         assert isinstance(org_customer.insert_utc_date_time, datetime)
         initial_time = org_customer.insert_utc_date_time
-        org_customer.code = generate_uuid()
+        org_customer.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert org_customer.insert_utc_date_time == initial_time
@@ -174,7 +158,7 @@ class TestOrgCustomerFactoryAsync:
         assert org_customer.last_update_utc_date_time is not None
         assert isinstance(org_customer.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        org_customer.code = generate_uuid()
+        org_customer.code = uuid.uuid4()
         await session.commit()
         assert org_customer.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -186,7 +170,7 @@ class TestOrgCustomerFactoryAsync:
         assert org_customer.last_update_utc_date_time is not None
         assert isinstance(org_customer.last_update_utc_date_time, datetime)
         initial_time = org_customer.last_update_utc_date_time
-        org_customer.code = generate_uuid()
+        org_customer.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert org_customer.last_update_utc_date_time > initial_time
@@ -214,25 +198,10 @@ class TestOrgCustomerFactoryAsync:
         """
         org_customer = await OrgCustomerFactory.create_async(session=session)
         assert isinstance(org_customer.org_customer_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.code, str)
+        assert isinstance(org_customer.code, uuid.UUID)
         assert isinstance(org_customer.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.last_update_user_id, str)
+        assert isinstance(org_customer.insert_user_id, uuid.UUID)
+        assert isinstance(org_customer.last_update_user_id, uuid.UUID)
         assert isinstance(org_customer.customer_id, int)
         assert org_customer.email == "" or isinstance(
             org_customer.email, str)
@@ -240,22 +209,10 @@ class TestOrgCustomerFactoryAsync:
         # Check for the peek values
 # endset
         # customerID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.customer_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.customer_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.customer_code_peek, str)
+        assert isinstance(org_customer.customer_code_peek, uuid.UUID)
         # email,
         # organizationID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.organization_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.organization_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.organization_code_peek, str)
+        assert isinstance(org_customer.organization_code_peek, uuid.UUID)
 # endset
         assert isinstance(org_customer.insert_utc_date_time, datetime)
         assert isinstance(org_customer.last_update_utc_date_time, datetime)
@@ -279,26 +236,16 @@ class TestOrgCustomerFactoryAsync:
         org_customer = OrgCustomer()
         assert org_customer.code is not None
         assert org_customer.last_change_code is not None
-        assert org_customer.insert_user_id is None
-        assert org_customer.last_update_user_id is None
+        assert org_customer.insert_user_id is not None
+        assert org_customer.last_update_user_id is not None
         assert org_customer.insert_utc_date_time is not None
         assert org_customer.last_update_utc_date_time is not None
 # endset
         # CustomerID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.customer_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.customer_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.customer_code_peek, str)
+        assert isinstance(org_customer.customer_code_peek, uuid.UUID)
         # email,
         # OrganizationID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_customer.organization_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_customer.organization_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_customer.organization_code_peek, str)
+        assert isinstance(org_customer.organization_code_peek, uuid.UUID)
 # endset
         assert org_customer.customer_id == 0
         assert org_customer.email == ""
@@ -316,14 +263,14 @@ class TestOrgCustomerFactoryAsync:
         org_customer_1 = result.scalars().first()
         # org_customer_1 = await session.query(OrgCustomer).filter_by(
         # org_customer_id=org_customer.org_customer_id).first()
-        org_customer_1.code = generate_uuid()
+        org_customer_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(OrgCustomer).where(OrgCustomer.org_customer_id == org_customer.org_customer_id)
         result = await session.execute(stmt)
         org_customer_2 = result.scalars().first()
         # org_customer_2 = await session.query(OrgCustomer).filter_by(
         # org_customer_id=org_customer.org_customer_id).first()
-        org_customer_2.code = generate_uuid()
+        org_customer_2.code = uuid.uuid4()
         await session.commit()
         assert org_customer_2.last_change_code != original_last_change_code
 # endset

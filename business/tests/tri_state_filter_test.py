@@ -4,9 +4,6 @@
 """
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -14,13 +11,11 @@ from models import TriStateFilter
 from models.factory import TriStateFilterFactory
 from managers.tri_state_filter import TriStateFilterManager
 from business.tri_state_filter import TriStateFilterBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestTriStateFilterBusObj:
     """
         #TODO add comment
@@ -60,12 +55,7 @@ class TestTriStateFilterBusObj:
         # Test creating a new tri_state_filter
         assert tri_state_filter_bus_obj.tri_state_filter_id is None
         # assert isinstance(tri_state_filter_bus_obj.tri_state_filter_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(tri_state_filter_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(tri_state_filter_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(tri_state_filter_bus_obj.code, str)
+        assert isinstance(tri_state_filter_bus_obj.code, UUID)
         assert isinstance(tri_state_filter_bus_obj.last_change_code, int)
         assert tri_state_filter_bus_obj.insert_user_id is None
         assert tri_state_filter_bus_obj.last_update_user_id is None
@@ -170,7 +160,7 @@ class TestTriStateFilterBusObj:
         """
         # Test updating a tri_state_filter's data
         new_tri_state_filter = await tri_state_filter_manager.get_by_id(new_tri_state_filter.tri_state_filter_id)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         await tri_state_filter_bus_obj.load(tri_state_filter_obj_instance=new_tri_state_filter)
         tri_state_filter_bus_obj.code = new_code
         await tri_state_filter_bus_obj.save()

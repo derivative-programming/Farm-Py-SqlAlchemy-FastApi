@@ -51,13 +51,13 @@ class TestFlavorSchema:
     def test_flavor_serialization(self, flavor: Flavor, session):
         schema = FlavorSchema()
         result = schema.dump(flavor)
-        assert result['code'] == flavor.code
+        assert result['code'] == str(flavor.code)
         assert result['last_change_code'] == (
             flavor.last_change_code)
         assert result['insert_user_id'] == (
-            flavor.insert_user_id)
+            str(flavor.insert_user_id))
         assert result['last_update_user_id'] == (
-            flavor.last_update_user_id)
+            str(flavor.last_update_user_id))
 # endset
         assert result['description'] == (
             flavor.description)
@@ -78,7 +78,7 @@ class TestFlavorSchema:
             flavor.last_update_utc_date_time.isoformat())
 # endset
         assert result['pac_code_peek'] == (  # PacID
-            flavor.pac_code_peek)
+            str(flavor.pac_code_peek))
 # endset
     def test_flavor_deserialization(self, flavor: Flavor, session):
         schema = FlavorSchema()
@@ -199,7 +199,7 @@ class TestFlavorSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(flavor_dict_from_json.keys())}"
         )
-        assert flavor_dict_from_json['code'] == flavor.code, (
+        assert flavor_dict_from_json['code'] == str(flavor.code), (
             "failed on code"
         )
         assert flavor_dict_from_json['last_change_code'] == (
@@ -207,11 +207,11 @@ class TestFlavorSchema:
             "failed on last_change_code"
         )
         assert flavor_dict_from_json['insert_user_id'] == (
-            flavor.insert_user_id), (
+            str(flavor.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert flavor_dict_from_json['last_update_user_id'] == (
-            flavor.last_update_user_id), (
+            str(flavor.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -250,7 +250,7 @@ class TestFlavorSchema:
         )
 # endset
         assert flavor_dict_from_json['pac_code_peek'] == (  # PacID
-            flavor.pac_code_peek), (
+            str(flavor.pac_code_peek)), (
             "failed on pac_code_peek"
         )
 # endset

@@ -15,14 +15,10 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from ..pac_user_tac_list import PacUserTacListGetModelRequest
 from models import Base
 from ..factory.pac_user_tac_list import PacUserTacListGetModelRequestFactory
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from pydantic import Field, UUID4
-DB_DIALECT = "sqlite"  # noqa: F811
 class PacUserTacListGetModelRequestFactoryAsync:
     """
     #TODO add comment

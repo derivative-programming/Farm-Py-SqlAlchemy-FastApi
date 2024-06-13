@@ -16,7 +16,6 @@ from helpers.session_context import SessionContext
 from models.tac import Tac  # TacID
 from models.organization import Organization
 from models.serialization_schema.organization import OrganizationSchema
-from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class OrganizationNotFoundError(Exception):
@@ -40,17 +39,12 @@ class OrganizationManager:
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-    def convert_uuid_to_model_uuid(self, value: uuid):
+    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if DB_DIALECT == 'postgresql':
-            return value
-        elif DB_DIALECT == 'mssql':
-            return value
-        else:  # This will cover SQLite, MySQL, and other databases
-            return str(value)
+        return value
 
     async def initialize(self):
         """
@@ -152,7 +146,7 @@ class OrganizationManager:
             #TODO add comment
         """
         logging.info("OrganizationManager.get_by_code %s", code)
-        query_filter = Organization.code == code
+        query_filter = Organization._code == str(code)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, organization: Organization, **kwargs) -> Optional[Organization]:

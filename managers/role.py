@@ -16,7 +16,6 @@ from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.role import Role
 from models.serialization_schema.role import RoleSchema
-from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class RoleNotFoundError(Exception):
@@ -49,17 +48,12 @@ class RoleManager:
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-    def convert_uuid_to_model_uuid(self, value: uuid):
+    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if DB_DIALECT == 'postgresql':
-            return value
-        elif DB_DIALECT == 'mssql':
-            return value
-        else:  # This will cover SQLite, MySQL, and other databases
-            return str(value)
+        return value
 
     async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
@@ -211,7 +205,7 @@ class RoleManager:
             #TODO add comment
         """
         logging.info("RoleManager.get_by_code %s", code)
-        query_filter = Role.code == code
+        query_filter = Role._code == str(code)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, role: Role, **kwargs) -> Optional[Role]:

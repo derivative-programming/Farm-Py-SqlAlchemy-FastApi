@@ -8,23 +8,15 @@ import sqlite3
 from decimal import Decimal
 from datetime import datetime, date
 import pytest
-# from sqlalchemy import String
-# from sqlalchemy.dialects.postgresql import UUID
-# from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from reports.providers.land_plant_list import ReportProviderLandPlantList
 import current_runtime
 
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
-
-DB_DIALECT = "sqlite"  # noqa: F811
-
-UUIDType = get_uuid_type(DB_DIALECT)
 
 
 class TestReportProviderLandPlantList:
@@ -60,7 +52,7 @@ class TestReportProviderLandPlantList:
         some_text_val: str = ""
         some_phone_number: str = ""
         some_email_address: str = ""
-        flavor_code: UUIDType = generate_uuid()  # type: ignore
+        flavor_code: UUIDType = uuid.uuid4()  # type: ignore
 # endset
 
         page_number = 1

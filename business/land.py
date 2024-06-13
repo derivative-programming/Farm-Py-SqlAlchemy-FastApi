@@ -6,11 +6,7 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import LandManager
 from models import Land
 import models
@@ -19,7 +15,6 @@ from .base_bus_obj import BaseBusObj
 
 from business.plant import PlantBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class LandInvalidInitError(Exception):
     """
     #TODO add comment
@@ -56,11 +51,11 @@ class LandBusObj(BaseBusObj):
         """
         return self.land.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.land.code = value
     # last_change_code
@@ -259,7 +254,7 @@ class LandBusObj(BaseBusObj):
         return self.land.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
-    #     assert isinstance(value, UUIDType),
+    #     assert isinstance(value, uuid.UUID),
     #           "pac_code_peek must be a UUID"
     #     self.land.pac_code_peek = value
 # endset

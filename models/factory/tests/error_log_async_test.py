@@ -2,15 +2,13 @@
 """
     #TODO add comment
 """
+import uuid
 import asyncio
 import time
 import math
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy import event
@@ -20,16 +18,7 @@ import pytest
 import pytest_asyncio
 from models import Base, ErrorLog
 from models.factory import ErrorLogFactory
-from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestErrorLogFactoryAsync:
     """
     #TODO add comment
@@ -94,12 +83,7 @@ class TestErrorLogFactoryAsync:
         #TODO add comment
         """
         error_log = await ErrorLogFactory.create_async(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.code, str)
+        assert isinstance(error_log.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
         """
@@ -121,7 +105,7 @@ class TestErrorLogFactoryAsync:
         """
         error_log = await ErrorLogFactory.create_async(session=session)
         initial_code = error_log.last_change_code
-        error_log.code = generate_uuid()
+        error_log.code = uuid.uuid4()
         await session.commit()
         assert error_log.last_change_code != initial_code
     @pytest.mark.asyncio
@@ -141,7 +125,7 @@ class TestErrorLogFactoryAsync:
         assert error_log.insert_utc_date_time is not None
         assert isinstance(error_log.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        error_log.code = generate_uuid()
+        error_log.code = uuid.uuid4()
         await session.commit()
         assert error_log.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -153,7 +137,7 @@ class TestErrorLogFactoryAsync:
         assert error_log.insert_utc_date_time is not None
         assert isinstance(error_log.insert_utc_date_time, datetime)
         initial_time = error_log.insert_utc_date_time
-        error_log.code = generate_uuid()
+        error_log.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert error_log.insert_utc_date_time == initial_time
@@ -174,7 +158,7 @@ class TestErrorLogFactoryAsync:
         assert error_log.last_update_utc_date_time is not None
         assert isinstance(error_log.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        error_log.code = generate_uuid()
+        error_log.code = uuid.uuid4()
         await session.commit()
         assert error_log.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -186,7 +170,7 @@ class TestErrorLogFactoryAsync:
         assert error_log.last_update_utc_date_time is not None
         assert isinstance(error_log.last_update_utc_date_time, datetime)
         initial_time = error_log.last_update_utc_date_time
-        error_log.code = generate_uuid()
+        error_log.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert error_log.last_update_utc_date_time > initial_time
@@ -214,43 +198,12 @@ class TestErrorLogFactoryAsync:
         """
         error_log = await ErrorLogFactory.create_async(session=session)
         assert isinstance(error_log.error_log_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.code, str)
+        assert isinstance(error_log.code, uuid.UUID)
         assert isinstance(error_log.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.last_update_user_id, str)
-        # browser_code
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.browser_code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                error_log.browser_code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                error_log.browser_code, str)
-        # context_code
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.context_code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                error_log.context_code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                error_log.context_code, str)
+        assert isinstance(error_log.insert_user_id, uuid.UUID)
+        assert isinstance(error_log.last_update_user_id, uuid.UUID)
+        assert isinstance(error_log.browser_code, uuid.UUID)
+        assert isinstance(error_log.context_code, uuid.UUID)
         assert isinstance(error_log.created_utc_date_time, datetime)
         assert error_log.description == "" or isinstance(error_log.description, str)
         assert isinstance(error_log.is_client_side_error, bool)
@@ -266,13 +219,7 @@ class TestErrorLogFactoryAsync:
         # isClientSideError,
         # isResolved,
         # pacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.pac_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.pac_code_peek, str)
+        assert isinstance(error_log.pac_code_peek, uuid.UUID)
         # url,
 # endset
         assert isinstance(error_log.insert_utc_date_time, datetime)
@@ -297,8 +244,8 @@ class TestErrorLogFactoryAsync:
         error_log = ErrorLog()
         assert error_log.code is not None
         assert error_log.last_change_code is not None
-        assert error_log.insert_user_id is None
-        assert error_log.last_update_user_id is None
+        assert error_log.insert_user_id is not None
+        assert error_log.last_update_user_id is not None
         assert error_log.insert_utc_date_time is not None
         assert error_log.last_update_utc_date_time is not None
 # endset
@@ -309,30 +256,11 @@ class TestErrorLogFactoryAsync:
         # isClientSideError,
         # isResolved,
         # PacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.pac_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.pac_code_peek, str)
+        assert isinstance(error_log.pac_code_peek, uuid.UUID)
         # url,
 # endset
-        # browser_code
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.browser_code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.browser_code,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.browser_code, str)
-        # context_code
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(error_log.context_code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(error_log.context_code,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(error_log.context_code, str)
+        assert isinstance(error_log.browser_code, uuid.UUID)
+        assert isinstance(error_log.context_code, uuid.UUID)
         assert error_log.created_utc_date_time == datetime(1753, 1, 1)
         assert error_log.description == ""
         assert error_log.is_client_side_error is False
@@ -352,14 +280,14 @@ class TestErrorLogFactoryAsync:
         error_log_1 = result.scalars().first()
         # error_log_1 = await session.query(ErrorLog).filter_by(
         # error_log_id=error_log.error_log_id).first()
-        error_log_1.code = generate_uuid()
+        error_log_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(ErrorLog).where(ErrorLog.error_log_id == error_log.error_log_id)
         result = await session.execute(stmt)
         error_log_2 = result.scalars().first()
         # error_log_2 = await session.query(ErrorLog).filter_by(
         # error_log_id=error_log.error_log_id).first()
-        error_log_2.code = generate_uuid()
+        error_log_2.code = uuid.uuid4()
         await session.commit()
         assert error_log_2.last_change_code != original_last_change_code
 # endset

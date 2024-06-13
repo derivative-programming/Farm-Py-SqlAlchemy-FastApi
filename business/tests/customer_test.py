@@ -4,9 +4,6 @@
 """
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -14,13 +11,11 @@ from models import Customer
 from models.factory import CustomerFactory
 from managers.customer import CustomerManager
 from business.customer import CustomerBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 
 logger = get_logger(__name__)
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestCustomerBusObj:
     """
         #TODO add comment
@@ -60,12 +55,7 @@ class TestCustomerBusObj:
         # Test creating a new customer
         assert customer_bus_obj.customer_id is None
         # assert isinstance(customer_bus_obj.customer_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(customer_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer_bus_obj.code, str)
+        assert isinstance(customer_bus_obj.code, UUID)
         assert isinstance(customer_bus_obj.last_change_code, int)
         assert customer_bus_obj.insert_user_id is None
         assert customer_bus_obj.last_update_user_id is None
@@ -79,14 +69,7 @@ class TestCustomerBusObj:
         assert customer_bus_obj.forgot_password_key_value == "" or isinstance(
             customer_bus_obj.forgot_password_key_value, str)
         # fs_user_code_value
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(customer_bus_obj.fs_user_code_value, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                customer_bus_obj.fs_user_code_value,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(customer_bus_obj.fs_user_code_value, str)
+        assert isinstance(customer_bus_obj.fs_user_code_value, UUID)
         assert isinstance(customer_bus_obj.is_active, bool)
         assert isinstance(customer_bus_obj.is_email_allowed, bool)
         assert isinstance(customer_bus_obj.is_email_confirmed, bool)
@@ -199,7 +182,7 @@ class TestCustomerBusObj:
         """
         # Test updating a customer's data
         new_customer = await customer_manager.get_by_id(new_customer.customer_id)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         await customer_bus_obj.load(customer_obj_instance=new_customer)
         customer_bus_obj.code = new_code
         await customer_bus_obj.save()

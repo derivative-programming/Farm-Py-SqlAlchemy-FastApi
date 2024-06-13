@@ -2,17 +2,17 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import date, datetime
+from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
-                        ForeignKey, Index, Integer, Numeric, String, Uuid,
+                        ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy.dialects.postgresql import UUID
 import models.constants.org_customer as org_customer_constants
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType
-UUIDType = get_uuid_type(DB_DIALECT)
 class OrgCustomer(Base):
     """
     #TODO add comment
@@ -23,24 +23,25 @@ class OrgCustomer(Base):
         Integer,
         primary_key=True,
         autoincrement=True)
-    code = Column('code',
-                  UUIDType,
-                  unique=True,
-                  default=generate_uuid,
-                  nullable=True)
+    _code = Column(
+        'code',
+        UUIDType(binary=False),
+        unique=True,
+        default=uuid.uuid4,
+        nullable=True)
     last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
-    insert_user_id = Column(
+    _insert_user_id = Column(
         'insert_user_id',
-        UUIDType,
-        default=generate_uuid,
+        UUIDType(binary=False),
+        default=uuid.uuid4,
         nullable=True)
-    last_update_user_id = Column(
+    _last_update_user_id = Column(
         'last_update_user_id',
-        UUIDType,
-        default=generate_uuid,
+        UUIDType(binary=False),
+        default=uuid.uuid4,
         nullable=True)
     customer_id = Column(
         'customer_id',
@@ -61,8 +62,8 @@ class OrgCustomer(Base):
                      ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
                      index=org_customer_constants.organization_id_calculatedIsDBColumnIndexed,
                      nullable=True)
-    customer_code_peek = UUIDType  # CustomerID
-    organization_code_peek = UUIDType  # OrganizationID
+    _customer_code_peek = UUIDType  # CustomerID
+    _organization_code_peek = UUIDType  # OrganizationID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
@@ -79,13 +80,13 @@ class OrgCustomer(Base):
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.code = kwargs.get('code', generate_uuid())
+        self.code = kwargs.get('code', uuid.uuid4())
         self.last_change_code = kwargs.get(
             'last_change_code', 0)
         self.insert_user_id = kwargs.get(
-            'insert_user_id', None)
+            'insert_user_id', uuid.UUID(int=0))
         self.last_update_user_id = kwargs.get(
-            'last_update_user_id', None)
+            'last_update_user_id', uuid.UUID(int=0))
         self.customer_id = kwargs.get(
             'customer_id', 0)
         self.email = kwargs.get(
@@ -98,9 +99,61 @@ class OrgCustomer(Base):
             'last_update_utc_date_time', datetime(1753, 1, 1))
 # endset
         self.customer_code_peek = kwargs.get(  # CustomerID
-            'customer_code_peek', generate_uuid())
+            'customer_code_peek', uuid.uuid4())
         self.organization_code_peek = kwargs.get(  # OrganizationID
-            'organization_code_peek', generate_uuid())
+            'organization_code_peek', uuid.uuid4())
+# endset
+    @property
+    def code(self):
+        return uuid.UUID(str(self._code))
+    @code.setter
+    def code(self, value):
+        if isinstance(value, uuid.UUID):
+            self._code = value
+        else:
+            self._code = uuid.UUID(value)
+        self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def insert_user_id(self):
+        return uuid.UUID(str(self._insert_user_id))
+    @insert_user_id.setter
+    def insert_user_id(self, value):
+        if isinstance(value, uuid.UUID):
+            self._insert_user_id = value
+        else:
+            self._insert_user_id = uuid.UUID(value)
+        self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def last_update_user_id(self):
+        return uuid.UUID(str(self._last_update_user_id))
+    @last_update_user_id.setter
+    def last_update_user_id(self, value):
+        if isinstance(value, uuid.UUID):
+            self._last_update_user_id = value
+        else:
+            self._last_update_user_id = uuid.UUID(value)
+        self.last_update_utc_date_time = datetime.utcnow()
+    # customerID
+    @property
+    def customer_code_peek(self):
+        return uuid.UUID(str(self._customer_code_peek))
+    @customer_code_peek.setter
+    def customer_code_peek(self, value):
+        if isinstance(value, uuid.UUID):
+            self._customer_code_peek = value
+        else:
+            self._customer_code_peek = uuid.UUID(value)
+    # email,
+    # OrganizationID
+    @property
+    def organization_code_peek(self):
+        return uuid.UUID(str(self._organization_code_peek))
+    @code.setter
+    def organization_code_peek(self, value):
+        if isinstance(value, uuid.UUID):
+            self._organization_code_peek = value
+        else:
+            self._organization_code_peek = uuid.UUID(value)
 # endset
     @staticmethod
     def property_list():

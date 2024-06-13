@@ -5,26 +5,18 @@
 from decimal import Decimal
 import time
 import math
+import uuid
+import logging
 from datetime import datetime, date, timedelta
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from models import Base, OrgApiKey
 from models.factory import OrgApiKeyFactory
-from services.db_config import DB_DIALECT, generate_uuid
+from services.logging_config import get_logger
+logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestOrgApiKeyFactory:
     """
     #TODO add comment
@@ -60,13 +52,9 @@ class TestOrgApiKeyFactory:
         """
         #TODO add comment
         """
+        logging.info("vrtest")
         org_api_key = OrgApiKeyFactory.create(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_api_key.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_api_key.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_api_key.code, str)
+        assert isinstance(org_api_key.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         #TODO add comment
@@ -85,7 +73,7 @@ class TestOrgApiKeyFactory:
         """
         org_api_key = OrgApiKeyFactory.create(session=session)
         initial_code = org_api_key.last_change_code
-        org_api_key.code = generate_uuid()
+        org_api_key.code = uuid.uuid4()
         session.commit()
         assert org_api_key.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
@@ -103,7 +91,7 @@ class TestOrgApiKeyFactory:
         assert org_api_key.insert_utc_date_time is not None
         assert isinstance(org_api_key.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        org_api_key.code = generate_uuid()
+        org_api_key.code = uuid.uuid4()
         session.commit()
         assert org_api_key.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -114,7 +102,7 @@ class TestOrgApiKeyFactory:
         assert org_api_key.insert_utc_date_time is not None
         assert isinstance(org_api_key.insert_utc_date_time, datetime)
         initial_time = org_api_key.insert_utc_date_time
-        org_api_key.code = generate_uuid()
+        org_api_key.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert org_api_key.insert_utc_date_time == initial_time
@@ -133,7 +121,7 @@ class TestOrgApiKeyFactory:
         assert org_api_key.last_update_utc_date_time is not None
         assert isinstance(org_api_key.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        org_api_key.code = generate_uuid()
+        org_api_key.code = uuid.uuid4()
         session.commit()
         assert org_api_key.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
@@ -144,7 +132,7 @@ class TestOrgApiKeyFactory:
         assert org_api_key.last_update_utc_date_time is not None
         assert isinstance(org_api_key.last_update_utc_date_time, datetime)
         initial_time = org_api_key.last_update_utc_date_time
-        org_api_key.code = generate_uuid()
+        org_api_key.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
         assert org_api_key.last_update_utc_date_time > initial_time
@@ -164,25 +152,10 @@ class TestOrgApiKeyFactory:
         """
         org_api_key = OrgApiKeyFactory.create(session=session)
         assert isinstance(org_api_key.org_api_key_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_api_key.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_api_key.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_api_key.code, str)
+        assert isinstance(org_api_key.code, uuid.UUID)
         assert isinstance(org_api_key.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_api_key.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_api_key.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_api_key.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(org_api_key.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(org_api_key.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(org_api_key.last_update_user_id, str)
+        assert isinstance(org_api_key.insert_user_id, uuid.UUID)
+        assert isinstance(org_api_key.last_update_user_id, uuid.UUID)
         assert org_api_key.api_key_value == "" or isinstance(org_api_key.api_key_value, str)
         assert org_api_key.created_by == "" or isinstance(org_api_key.created_by, str)
         assert isinstance(org_api_key.created_utc_date_time, datetime)
@@ -203,25 +176,11 @@ class TestOrgApiKeyFactory:
         # isTempUserKey,
         # name,
         # organizationID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                org_api_key.organization_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                org_api_key.organization_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                org_api_key.organization_code_peek, str)
+        assert isinstance(
+            org_api_key.organization_code_peek, uuid.UUID)
         # orgCustomerID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                org_api_key.org_customer_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                org_api_key.org_customer_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                org_api_key.org_customer_code_peek, str)
+        assert isinstance(
+            org_api_key.org_customer_code_peek, uuid.UUID)
 # endset
         assert isinstance(org_api_key.insert_utc_date_time, datetime)
         assert isinstance(org_api_key.last_update_utc_date_time, datetime)
@@ -243,8 +202,8 @@ class TestOrgApiKeyFactory:
         org_api_key = OrgApiKey()
         assert org_api_key.code is not None
         assert org_api_key.last_change_code is not None
-        assert org_api_key.insert_user_id is None
-        assert org_api_key.last_update_user_id is None
+        assert org_api_key.insert_user_id is not None
+        assert org_api_key.last_update_user_id is not None
         assert org_api_key.insert_utc_date_time is not None
         assert org_api_key.last_update_utc_date_time is not None
 # endset
@@ -256,27 +215,11 @@ class TestOrgApiKeyFactory:
         # isTempUserKey,
         # name,
         # OrganizationID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                org_api_key.organization_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                org_api_key.organization_code_peek,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                org_api_key.organization_code_peek, str)
+        assert isinstance(
+            org_api_key.organization_code_peek, uuid.UUID)
         # OrgCustomerID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(
-                org_api_key.org_customer_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                org_api_key.org_customer_code_peek,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(
-                org_api_key.org_customer_code_peek, str)
+        assert isinstance(
+            org_api_key.org_customer_code_peek, uuid.UUID)
 # endset
         assert org_api_key.api_key_value == ""
         assert org_api_key.created_by == ""
@@ -296,11 +239,11 @@ class TestOrgApiKeyFactory:
         original_last_change_code = org_api_key.last_change_code
         org_api_key_1 = session.query(OrgApiKey).filter_by(
             org_api_key_id=org_api_key.org_api_key_id).first()
-        org_api_key_1.code = generate_uuid()
+        org_api_key_1.code = uuid.uuid4()
         session.commit()
         org_api_key_2 = session.query(OrgApiKey).filter_by(
             org_api_key_id=org_api_key.org_api_key_id).first()
-        org_api_key_2.code = generate_uuid()
+        org_api_key_2.code = uuid.uuid4()
         session.commit()
         assert org_api_key_2.last_change_code != original_last_change_code
 # endset

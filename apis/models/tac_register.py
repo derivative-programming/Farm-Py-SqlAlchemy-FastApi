@@ -2,23 +2,23 @@
 """
     #TODO add comment
 """
-from datetime import date, datetime
-from decimal import Decimal
 import json
 import uuid
+import logging
+from datetime import date, datetime
+from decimal import Decimal
+from pydantic import Field, UUID4
+from sqlalchemy.ext.asyncio import AsyncSession
 from helpers import TypeConversion
-from .post_reponse import PostResponse
-from flows.tac_register import FlowTacRegister, FlowTacRegisterResult
 from helpers import SessionContext
+from flows.tac_register import FlowTacRegister, FlowTacRegisterResult
 from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
 import apis.models as view_models
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
-from pydantic import Field, UUID4
-import logging
 from apis.models.validation_error import ValidationErrorItem
-from sqlalchemy.ext.asyncio import AsyncSession
+from .post_reponse import PostResponse
 class TacRegisterPostModelRequest(CamelModel):
     """
         #TODO add comment
@@ -126,16 +126,16 @@ class TacRegisterPostModelResponse(PostResponse):
                 raise ValueError("Invalid tac_code")
             flow = FlowTacRegister(session_context)
             logging.info("process flow...TacRegisterPostModelResponse")
-            flowResponse = await flow.process(
+            flow_response = await flow.process(
                 tac_bus_obj,
                 request.email,
                 request.password,
                 request.confirm_password,
                 request.first_name,
                 request.last_name,
-# endset
+# endset  # noqa: E122
             )
-            self.load_flow_response(flowResponse)
+            self.load_flow_response(flow_response)
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:

@@ -17,7 +17,6 @@ from models.customer import Customer  # CustomerID
 from models.organization import Organization  # OrganizationID
 from models.org_customer import OrgCustomer
 from models.serialization_schema.org_customer import OrgCustomerSchema
-from services.db_config import generate_uuid, DB_DIALECT
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 class OrgCustomerNotFoundError(Exception):
@@ -41,17 +40,12 @@ class OrgCustomerManager:
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-    def convert_uuid_to_model_uuid(self, value: uuid):
+    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
             #TODO add comment
         """
         # Conditionally set the UUID column type
-        if DB_DIALECT == 'postgresql':
-            return value
-        elif DB_DIALECT == 'mssql':
-            return value
-        else:  # This will cover SQLite, MySQL, and other databases
-            return str(value)
+        return value
 
     async def initialize(self):
         """
@@ -164,7 +158,7 @@ class OrgCustomerManager:
             #TODO add comment
         """
         logging.info("OrgCustomerManager.get_by_code %s", code)
-        query_filter = OrgCustomer.code == code
+        query_filter = OrgCustomer._code == str(code)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, org_customer: OrgCustomer, **kwargs) -> Optional[OrgCustomer]:

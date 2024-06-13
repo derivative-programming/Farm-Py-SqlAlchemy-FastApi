@@ -2,17 +2,17 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import date, datetime
+from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
-                        ForeignKey, Index, Integer, Numeric, String, Uuid,
+                        ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy.dialects.postgresql import UUID
 import models.constants.customer_role as customer_role_constants
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType
-UUIDType = get_uuid_type(DB_DIALECT)
 class CustomerRole(Base):
     """
     #TODO add comment
@@ -23,24 +23,25 @@ class CustomerRole(Base):
         Integer,
         primary_key=True,
         autoincrement=True)
-    code = Column('code',
-                  UUIDType,
-                  unique=True,
-                  default=generate_uuid,
-                  nullable=True)
+    _code = Column(
+        'code',
+        UUIDType(binary=False),
+        unique=True,
+        default=uuid.uuid4,
+        nullable=True)
     last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
-    insert_user_id = Column(
+    _insert_user_id = Column(
         'insert_user_id',
-        UUIDType,
-        default=generate_uuid,
+        UUIDType(binary=False),
+        default=uuid.uuid4,
         nullable=True)
-    last_update_user_id = Column(
+    _last_update_user_id = Column(
         'last_update_user_id',
-        UUIDType,
-        default=generate_uuid,
+        UUIDType(binary=False),
+        default=uuid.uuid4,
         nullable=True)
     customer_id = Column('customer_id',
                      Integer,
@@ -65,8 +66,8 @@ class CustomerRole(Base):
         ForeignKey('farm_' + snake_case('Role') + '.role_id'),
         index=customer_role_constants.role_id_calculatedIsDBColumnIndexed,
         nullable=True)
-    customer_code_peek = UUIDType  # CustomerID
-    role_code_peek = UUIDType  # RoleID
+    _customer_code_peek = UUIDType  # CustomerID
+    _role_code_peek = UUIDType  # RoleID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
@@ -83,13 +84,13 @@ class CustomerRole(Base):
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.code = kwargs.get('code', generate_uuid())
+        self.code = kwargs.get('code', uuid.uuid4())
         self.last_change_code = kwargs.get(
             'last_change_code', 0)
         self.insert_user_id = kwargs.get(
-            'insert_user_id', None)
+            'insert_user_id', uuid.UUID(int=0))
         self.last_update_user_id = kwargs.get(
-            'last_update_user_id', None)
+            'last_update_user_id', uuid.UUID(int=0))
         self.customer_id = kwargs.get(
             'customer_id', 0)
         self.is_placeholder = kwargs.get(
@@ -104,9 +105,62 @@ class CustomerRole(Base):
             'last_update_utc_date_time', datetime(1753, 1, 1))
 # endset
         self.customer_code_peek = kwargs.get(  # CustomerID
-            'customer_code_peek', generate_uuid())
+            'customer_code_peek', uuid.uuid4())
         self.role_code_peek = kwargs.get(  # RoleID
-            'role_code_peek', generate_uuid())
+            'role_code_peek', uuid.uuid4())
+# endset
+    @property
+    def code(self):
+        return uuid.UUID(str(self._code))
+    @code.setter
+    def code(self, value):
+        if isinstance(value, uuid.UUID):
+            self._code = value
+        else:
+            self._code = uuid.UUID(value)
+        self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def insert_user_id(self):
+        return uuid.UUID(str(self._insert_user_id))
+    @insert_user_id.setter
+    def insert_user_id(self, value):
+        if isinstance(value, uuid.UUID):
+            self._insert_user_id = value
+        else:
+            self._insert_user_id = uuid.UUID(value)
+        self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def last_update_user_id(self):
+        return uuid.UUID(str(self._last_update_user_id))
+    @last_update_user_id.setter
+    def last_update_user_id(self, value):
+        if isinstance(value, uuid.UUID):
+            self._last_update_user_id = value
+        else:
+            self._last_update_user_id = uuid.UUID(value)
+        self.last_update_utc_date_time = datetime.utcnow()
+    # CustomerID
+    @property
+    def customer_code_peek(self):
+        return uuid.UUID(str(self._customer_code_peek))
+    @code.setter
+    def customer_code_peek(self, value):
+        if isinstance(value, uuid.UUID):
+            self._customer_code_peek = value
+        else:
+            self._customer_code_peek = uuid.UUID(value)
+    # isPlaceholder,
+    # placeholder,
+    # roleID
+    @property
+    def role_code_peek(self):
+        return uuid.UUID(str(self._role_code_peek))
+    @role_code_peek.setter
+    def role_code_peek(self, value):
+        if isinstance(value, uuid.UUID):
+            self._role_code_peek = value
+        else:
+            self._role_code_peek = uuid.UUID(value)
 # endset
     @staticmethod
     def property_list():

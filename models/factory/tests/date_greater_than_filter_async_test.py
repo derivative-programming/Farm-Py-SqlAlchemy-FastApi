@@ -2,15 +2,13 @@
 """
     #TODO add comment
 """
+import uuid
 import asyncio
 import time
 import math
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 from typing import AsyncGenerator
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy import event
@@ -20,16 +18,7 @@ import pytest
 import pytest_asyncio
 from models import Base, DateGreaterThanFilter
 from models.factory import DateGreaterThanFilterFactory
-from services.db_config import DB_DIALECT, generate_uuid
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-DB_DIALECT = "sqlite"  # noqa: F811
-# Conditionally set the UUID column type
-if DB_DIALECT == 'postgresql':
-    UUIDType = UUID(as_uuid=True)
-elif DB_DIALECT == 'mssql':
-    UUIDType = UNIQUEIDENTIFIER
-else:  # This will cover SQLite, MySQL, and other databases
-    UUIDType = String(36)
 class TestDateGreaterThanFilterFactoryAsync:
     """
     #TODO add comment
@@ -94,12 +83,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         #TODO add comment
         """
         date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session=session)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(date_greater_than_filter.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(date_greater_than_filter.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(date_greater_than_filter.code, str)
+        assert isinstance(date_greater_than_filter.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
         """
@@ -121,7 +105,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         """
         date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session=session)
         initial_code = date_greater_than_filter.last_change_code
-        date_greater_than_filter.code = generate_uuid()
+        date_greater_than_filter.code = uuid.uuid4()
         await session.commit()
         assert date_greater_than_filter.last_change_code != initial_code
     @pytest.mark.asyncio
@@ -141,7 +125,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         assert date_greater_than_filter.insert_utc_date_time is not None
         assert isinstance(date_greater_than_filter.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        date_greater_than_filter.code = generate_uuid()
+        date_greater_than_filter.code = uuid.uuid4()
         await session.commit()
         assert date_greater_than_filter.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -153,7 +137,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         assert date_greater_than_filter.insert_utc_date_time is not None
         assert isinstance(date_greater_than_filter.insert_utc_date_time, datetime)
         initial_time = date_greater_than_filter.insert_utc_date_time
-        date_greater_than_filter.code = generate_uuid()
+        date_greater_than_filter.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert date_greater_than_filter.insert_utc_date_time == initial_time
@@ -174,7 +158,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         assert date_greater_than_filter.last_update_utc_date_time is not None
         assert isinstance(date_greater_than_filter.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        date_greater_than_filter.code = generate_uuid()
+        date_greater_than_filter.code = uuid.uuid4()
         await session.commit()
         assert date_greater_than_filter.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -186,7 +170,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         assert date_greater_than_filter.last_update_utc_date_time is not None
         assert isinstance(date_greater_than_filter.last_update_utc_date_time, datetime)
         initial_time = date_greater_than_filter.last_update_utc_date_time
-        date_greater_than_filter.code = generate_uuid()
+        date_greater_than_filter.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
         assert date_greater_than_filter.last_update_utc_date_time > initial_time
@@ -214,25 +198,10 @@ class TestDateGreaterThanFilterFactoryAsync:
         """
         date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session=session)
         assert isinstance(date_greater_than_filter.date_greater_than_filter_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(date_greater_than_filter.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(date_greater_than_filter.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(date_greater_than_filter.code, str)
+        assert isinstance(date_greater_than_filter.code, uuid.UUID)
         assert isinstance(date_greater_than_filter.last_change_code, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(date_greater_than_filter.insert_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(date_greater_than_filter.insert_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(date_greater_than_filter.insert_user_id, str)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(date_greater_than_filter.last_update_user_id, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(date_greater_than_filter.last_update_user_id, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(date_greater_than_filter.last_update_user_id, str)
+        assert isinstance(date_greater_than_filter.insert_user_id, uuid.UUID)
+        assert isinstance(date_greater_than_filter.last_update_user_id, uuid.UUID)
         assert isinstance(date_greater_than_filter.day_count, int)
         assert date_greater_than_filter.description == "" or isinstance(date_greater_than_filter.description, str)
         assert isinstance(date_greater_than_filter.display_order, int)
@@ -249,13 +218,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         # lookupEnumName,
         # name,
         # pacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(date_greater_than_filter.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(date_greater_than_filter.pac_code_peek,
-                              UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(date_greater_than_filter.pac_code_peek, str)
+        assert isinstance(date_greater_than_filter.pac_code_peek, uuid.UUID)
 # endset
         assert isinstance(date_greater_than_filter.insert_utc_date_time, datetime)
         assert isinstance(date_greater_than_filter.last_update_utc_date_time, datetime)
@@ -279,8 +242,8 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter = DateGreaterThanFilter()
         assert date_greater_than_filter.code is not None
         assert date_greater_than_filter.last_change_code is not None
-        assert date_greater_than_filter.insert_user_id is None
-        assert date_greater_than_filter.last_update_user_id is None
+        assert date_greater_than_filter.insert_user_id is not None
+        assert date_greater_than_filter.last_update_user_id is not None
         assert date_greater_than_filter.insert_utc_date_time is not None
         assert date_greater_than_filter.last_update_utc_date_time is not None
 # endset
@@ -291,12 +254,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         # lookupEnumName,
         # name,
         # PacID
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(date_greater_than_filter.pac_code_peek, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(date_greater_than_filter.pac_code_peek, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(date_greater_than_filter.pac_code_peek, str)
+        assert isinstance(date_greater_than_filter.pac_code_peek, uuid.UUID)
 # endset
         assert date_greater_than_filter.day_count == 0
         assert date_greater_than_filter.description == ""
@@ -318,14 +276,14 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter_1 = result.scalars().first()
         # date_greater_than_filter_1 = await session.query(DateGreaterThanFilter).filter_by(
         # date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
-        date_greater_than_filter_1.code = generate_uuid()
+        date_greater_than_filter_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(DateGreaterThanFilter).where(DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)
         result = await session.execute(stmt)
         date_greater_than_filter_2 = result.scalars().first()
         # date_greater_than_filter_2 = await session.query(DateGreaterThanFilter).filter_by(
         # date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
-        date_greater_than_filter_2.code = generate_uuid()
+        date_greater_than_filter_2.code = uuid.uuid4()
         await session.commit()
         assert date_greater_than_filter_2.last_change_code != original_last_change_code
 # endset

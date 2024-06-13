@@ -51,13 +51,13 @@ class TestLandSchema:
     def test_land_serialization(self, land: Land, session):
         schema = LandSchema()
         result = schema.dump(land)
-        assert result['code'] == land.code
+        assert result['code'] == str(land.code)
         assert result['last_change_code'] == (
             land.last_change_code)
         assert result['insert_user_id'] == (
-            land.insert_user_id)
+            str(land.insert_user_id))
         assert result['last_update_user_id'] == (
-            land.last_update_user_id)
+            str(land.last_update_user_id))
 # endset
         assert result['description'] == (
             land.description)
@@ -78,7 +78,7 @@ class TestLandSchema:
             land.last_update_utc_date_time.isoformat())
 # endset
         assert result['pac_code_peek'] == (  # PacID
-            land.pac_code_peek)
+            str(land.pac_code_peek))
 # endset
     def test_land_deserialization(self, land: Land, session):
         schema = LandSchema()
@@ -199,7 +199,7 @@ class TestLandSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(land_dict_from_json.keys())}"
         )
-        assert land_dict_from_json['code'] == land.code, (
+        assert land_dict_from_json['code'] == str(land.code), (
             "failed on code"
         )
         assert land_dict_from_json['last_change_code'] == (
@@ -207,11 +207,11 @@ class TestLandSchema:
             "failed on last_change_code"
         )
         assert land_dict_from_json['insert_user_id'] == (
-            land.insert_user_id), (
+            str(land.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert land_dict_from_json['last_update_user_id'] == (
-            land.last_update_user_id), (
+            str(land.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
@@ -250,7 +250,7 @@ class TestLandSchema:
         )
 # endset
         assert land_dict_from_json['pac_code_peek'] == (  # PacID
-            land.pac_code_peek), (
+            str(land.pac_code_peek)), (
             "failed on pac_code_peek"
         )
 # endset

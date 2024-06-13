@@ -9,8 +9,6 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from sqlalchemy import String
 
-DB_DIALECT = None
-
 
 def get_uuid_type(db_dialect: str):
     """

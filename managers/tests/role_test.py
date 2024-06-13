@@ -2,23 +2,18 @@
 """
     #TODO add comment
 """
-import uuid
 import logging
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.future import select
+import uuid
 import pytest
 import pytest_asyncio
-from helpers.session_context import SessionContext
-from models import Role
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 import models
-from models.factory import RoleFactory
+from helpers.session_context import SessionContext
 from managers.role import RoleManager
+from models import Role
+from models.factory import RoleFactory
 from models.serialization_schema.role import RoleSchema
-from services.db_config import DB_DIALECT, generate_uuid
-DB_DIALECT = "sqlite"  # noqa: F811
 class TestRoleManager:
     """
     #TODO add comment
@@ -26,7 +21,7 @@ class TestRoleManager:
     @pytest_asyncio.fixture(scope="function")
     async def role_manager(self, session: AsyncSession):
         session_context = SessionContext(dict(), session)
-        session_context.customer_code = generate_uuid()
+        session_context.customer_code = uuid.uuid4()
         return RoleManager(session_context)
     @pytest.mark.asyncio
     async def test_build(
@@ -38,7 +33,7 @@ class TestRoleManager:
         """
         # Define mock data for our role
         mock_data = {
-            "code": generate_uuid()
+            "code": uuid.uuid4()
         }
         # Call the build function of the manager
         role = await role_manager.build(**mock_data)
@@ -102,7 +97,7 @@ class TestRoleManager:
         # Create a test role using the RoleFactory without persisting it to the database
         test_role = await RoleFactory.build_async(session)
         assert test_role.role_id is None
-        test_role.code = generate_uuid()
+        test_role.code = uuid.uuid4()
         # Add the role using the manager's add method
         added_role = await role_manager.add(role=test_role)
         assert isinstance(added_role, Role)
@@ -163,7 +158,7 @@ class TestRoleManager:
         """
         # Generate a random UUID that doesn't correspond to
         # any Role in the database
-        random_code = generate_uuid()
+        random_code = uuid.uuid4()
         role = await role_manager.get_by_code(random_code)
         assert role is None
     @pytest.mark.asyncio
@@ -176,7 +171,7 @@ class TestRoleManager:
             #TODO add comment
         """
         test_role = await RoleFactory.create_async(session)
-        test_role.code = generate_uuid()
+        test_role.code = uuid.uuid4()
         updated_role = await role_manager.update(role=test_role)
         assert isinstance(updated_role, Role)
         assert str(updated_role.last_update_user_id) == str(
@@ -202,7 +197,7 @@ class TestRoleManager:
             #TODO add comment
         """
         test_role = await RoleFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_role = await role_manager.update(
             role=test_role,
             code=new_code
@@ -226,7 +221,7 @@ class TestRoleManager:
     async def test_update_invalid_role(self, role_manager: RoleManager):
         # None role
         role = None
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         updated_role = await role_manager.update(role, code=new_code)
         # Assertions
         assert updated_role is None
@@ -240,7 +235,7 @@ class TestRoleManager:
             #TODO add comment
         """
         test_role = await RoleFactory.create_async(session)
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             updated_role = await role_manager.update(
                 role=test_role,
@@ -395,8 +390,8 @@ class TestRoleManager:
         role1 = await RoleFactory.create_async(session=session)
         role2 = await RoleFactory.create_async(session=session)
         logging.info(role1.__dict__)
-        code_updated1 = generate_uuid()
-        code_updated2 = generate_uuid()
+        code_updated1 = uuid.uuid4()
+        code_updated2 = uuid.uuid4()
         logging.info(code_updated1)
         logging.info(code_updated2)
         # Update roles
@@ -458,7 +453,7 @@ class TestRoleManager:
             #TODO add comment
         """
         # Update roles
-        updates = [{"role_id": 1, "code": generate_uuid()}]
+        updates = [{"role_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_roles = await role_manager.update_bulk(updates)
         await session.rollback()
@@ -471,7 +466,7 @@ class TestRoleManager:
         """
             #TODO add comment
         """
-        updates = [{"role_id": "2", "code": generate_uuid()}]
+        updates = [{"role_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
             updated_roles = await role_manager.update_bulk(updates)
         await session.rollback()
@@ -626,7 +621,7 @@ class TestRoleManager:
         result = await session.execute(select(Role).filter(Role.role_id == role1.role_id))
         role2 = result.scalars().first()
         assert role1.code == role2.code
-        updated_code1 = generate_uuid()
+        updated_code1 = uuid.uuid4()
         role1.code = updated_code1
         updated_role1 = await role_manager.update(role1)
         assert updated_role1.code == updated_code1

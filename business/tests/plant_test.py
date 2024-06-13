@@ -6,9 +6,6 @@
 
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
 import pytest
 import pytest_asyncio
 from helpers.session_context import SessionContext
@@ -16,15 +13,12 @@ from models import Plant
 from models.factory import PlantFactory
 from managers.plant import PlantManager
 from business.plant import PlantBusObj
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from services.logging_config import get_logger
 import managers as managers_and_enums
 import current_runtime
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 
 logger = get_logger(__name__)
-
-DB_DIALECT = "sqlite"  # noqa: F811
 
 
 class TestPlantBusObj:
@@ -72,12 +66,7 @@ class TestPlantBusObj:
         assert plant_bus_obj.plant_id is None
 
         # assert isinstance(plant_bus_obj.plant_id, int)
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant_bus_obj.code, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(plant_bus_obj.code, UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant_bus_obj.code, str)
+        assert isinstance(plant_bus_obj.code, UUID)
 
         assert isinstance(plant_bus_obj.last_change_code, int)
 
@@ -107,14 +96,7 @@ class TestPlantBusObj:
         assert plant_bus_obj.some_text_val == "" or isinstance(
             plant_bus_obj.some_text_val, str)
         # some_uniqueidentifier_val
-        if DB_DIALECT == 'postgresql':
-            assert isinstance(plant_bus_obj.some_uniqueidentifier_val, UUID)
-        elif DB_DIALECT == 'mssql':
-            assert isinstance(
-                plant_bus_obj.some_uniqueidentifier_val,
-                UNIQUEIDENTIFIER)
-        else:  # This will cover SQLite, MySQL, and other databases
-            assert isinstance(plant_bus_obj.some_uniqueidentifier_val, str)
+        assert isinstance(plant_bus_obj.some_uniqueidentifier_val, UUID)
         assert isinstance(plant_bus_obj.some_utc_date_time_val, datetime)
         assert plant_bus_obj.some_var_char_val == "" or isinstance(
             plant_bus_obj.some_var_char_val, str)
@@ -232,7 +214,7 @@ class TestPlantBusObj:
 
         new_plant = await plant_manager.get_by_id(new_plant.plant_id)
 
-        new_code = generate_uuid()
+        new_code = uuid.uuid4()
 
         await plant_bus_obj.load(plant_obj_instance=new_plant)
 

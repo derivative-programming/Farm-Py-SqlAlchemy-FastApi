@@ -55,18 +55,18 @@ class TestErrorLogSchema:
     def test_error_log_serialization(self, error_log: ErrorLog, session):
         schema = ErrorLogSchema()
         result = schema.dump(error_log)
-        assert result['code'] == error_log.code
+        assert result['code'] == str(error_log.code)
         assert result['last_change_code'] == (
             error_log.last_change_code)
         assert result['insert_user_id'] == (
-            error_log.insert_user_id)
+            str(error_log.insert_user_id))
         assert result['last_update_user_id'] == (
-            error_log.last_update_user_id)
+            str(error_log.last_update_user_id))
 # endset
         assert result['browser_code'] == (
-            error_log.browser_code)
+            str(error_log.browser_code))
         assert result['context_code'] == (
-            error_log.context_code)
+            str(error_log.context_code))
         assert result['created_utc_date_time'] == (
             error_log.created_utc_date_time.isoformat())
         assert result['description'] == (
@@ -86,7 +86,7 @@ class TestErrorLogSchema:
             error_log.last_update_utc_date_time.isoformat())
 # endset
         assert result['pac_code_peek'] == (  # PacID
-            error_log.pac_code_peek)
+            str(error_log.pac_code_peek))
 # endset
     def test_error_log_deserialization(self, error_log: ErrorLog, session):
         schema = ErrorLogSchema()
@@ -219,7 +219,7 @@ class TestErrorLogSchema:
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, Got: {set(error_log_dict_from_json.keys())}"
         )
-        assert error_log_dict_from_json['code'] == error_log.code, (
+        assert error_log_dict_from_json['code'] == str(error_log.code), (
             "failed on code"
         )
         assert error_log_dict_from_json['last_change_code'] == (
@@ -227,20 +227,20 @@ class TestErrorLogSchema:
             "failed on last_change_code"
         )
         assert error_log_dict_from_json['insert_user_id'] == (
-            error_log.insert_user_id), (
+            str(error_log.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert error_log_dict_from_json['last_update_user_id'] == (
-            error_log.last_update_user_id), (
+            str(error_log.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
         assert error_log_dict_from_json['browser_code'] == (
-            error_log.browser_code), (
+            str(error_log.browser_code)), (
             "failed on browser_code"
         )
         assert error_log_dict_from_json['context_code'] == (
-            error_log.context_code), (
+            str(error_log.context_code)), (
             "failed on context_code"
         )
         assert error_log_dict_from_json['created_utc_date_time'] == (
@@ -278,7 +278,7 @@ class TestErrorLogSchema:
         )
 # endset
         assert error_log_dict_from_json['pac_code_peek'] == (  # PacID
-            error_log.pac_code_peek), (
+            str(error_log.pac_code_peek)), (
             "failed on pac_code_peek"
         )
 # endset

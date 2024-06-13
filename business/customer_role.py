@@ -6,18 +6,13 @@ import random
 import uuid
 from typing import List
 from datetime import datetime, date
-from sqlalchemy import String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from helpers.session_context import SessionContext
-from services.db_config import DB_DIALECT, generate_uuid, get_uuid_type
 from managers import CustomerRoleManager
 from models import CustomerRole
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
-UUIDType = get_uuid_type(DB_DIALECT)
 class CustomerRoleInvalidInitError(Exception):
     """
     #TODO add comment
@@ -54,11 +49,11 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         return self.customer_role.code
     @code.setter
-    def code(self, value: UUIDType):  # type: ignore
+    def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, UUIDType):
+        #if not isinstance(value, uuid.UUID):
         #raise ValueError("code must be a UUID.")
         self.customer_role.code = value
     # last_change_code
@@ -193,7 +188,7 @@ class CustomerRoleBusObj(BaseBusObj):
         return self.customer_role.customer_code_peek
     # @customer_code_peek.setter
     # def customer_code_peek(self, value):
-    #     assert isinstance(value, UUIDType),
+    #     assert isinstance(value, uuid.UUID),
     #           "customer_code_peek must be a UUID"
     #     self.customer_role.customer_code_peek = value
     # isPlaceholder,
@@ -228,7 +223,7 @@ class CustomerRoleBusObj(BaseBusObj):
     # @role_code_peek.setter
     # def role_code_peek(self, value):
     #     assert isinstance(
-    #       value, UUIDType),
+    #       value, uuid.UUID),
     #       "role_code_peek must be a UUID"
     #     self.customer_role.role_code_peek = value
 # endset
