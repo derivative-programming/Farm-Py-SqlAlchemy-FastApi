@@ -3,31 +3,31 @@
     #TODO add comment
 """
 import asyncio
-from decimal import Decimal
+import time
 import uuid
+from datetime import date, datetime
+from decimal import Decimal
+from typing import AsyncGenerator
+from unittest.mock import AsyncMock, patch
 import pytest
 import pytest_asyncio
-import time
-from typing import AsyncGenerator
-from datetime import datetime, date
-from sqlalchemy import event
+from pydantic import UUID4, Field
+from sqlalchemy import String, event
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from business.plant import PlantBusObj
 from flows.base.flow_validation_error import FlowValidationError
 from flows.plant_user_property_random_update import FlowPlantUserPropertyRandomUpdate, FlowPlantUserPropertyRandomUpdateResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.plant import PlantFactory
-from ...models.plant_user_property_random_update import PlantUserPropertyRandomUpdatePostModelRequest, PlantUserPropertyRandomUpdatePostModelResponse
 from models import Base
+from models.factory.plant import PlantFactory
+from ...models.plant_user_property_random_update import (PlantUserPropertyRandomUpdatePostModelRequest,
+                                      PlantUserPropertyRandomUpdatePostModelResponse)
 from ..factory.plant_user_property_random_update import PlantUserPropertyRandomUpdatePostModelRequestFactory
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-from pydantic import Field, UUID4
-import flows.constants.error_log_config_resolve_error_log as FlowConstants
-from unittest.mock import patch, AsyncMock
 class TestPlantUserPropertyRandomUpdatePostModelResponse:
     """
     #TODO add comment
@@ -35,7 +35,7 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         async def mock_process(
-            plant_bus_obj: PlantBusObj,
+            plant_bus_obj: PlantBusObj,  # pylint: disable=unused-argument
 
         ):
             return FlowPlantUserPropertyRandomUpdateResult()

@@ -1,25 +1,29 @@
-import json
-from business.flavor import FlavorBusObj
-from business.land import LandBusObj
-from datetime import date, datetime
+# flows/default/land_plant_list_init_report.py
+"""
+    #TODO add comment
+"""
 import uuid
+import json
+from datetime import date, datetime
+from sqlalchemy import String
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from decimal import Decimal
 from flows.base.land_plant_list_init_report import BaseFlowLandPlantListInitReport
-from managers.flavor import FlavorEnum
 from models import Land
 from flows.base import LogSeverity
+from business.land import LandBusObj
 from helpers import SessionContext
 from helpers import ApiToken
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
-from sqlalchemy.ext.asyncio import AsyncSession
-
-# from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from decimal import Decimal
+import business
 class FlowLandPlantListInitReportResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
+    """
+    #TODO add comment
+    """
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
     some_int_val: int = 0
     some_big_int_val: int = 0
     some_bit_val: bool = False
@@ -35,10 +39,11 @@ class FlowLandPlantListInitReportResult():
     some_text_val: str = ""
     some_phone_number: str = ""
     some_email_address: str = ""
-    flavor_code: uuid.UUID =  uuid.UUID(int=0)
-    land_code: uuid.UUID =  uuid.UUID(int=0)
-    tac_code: uuid.UUID =  uuid.UUID(int=0)
+    flavor_code: uuid.UUID = uuid.UUID(int=0)
+    land_code: uuid.UUID = uuid.UUID(int=0)
+    tac_code: uuid.UUID = uuid.UUID(int=0)
     land_name: str = ""
+# endset
     def __init__(self):
         pass
     def to_json(self):
@@ -64,21 +69,31 @@ class FlowLandPlantListInitReportResult():
             'land_code': str(self.land_code),
             'tac_code': str(self.tac_code),
             'land_name': self.land_name,
+# endset
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
+        """
+        #TODO add comment
+        """
         super(FlowLandPlantListInitReport, self).__init__(session_context)
-    async def process(self,
+    async def process(
+        self,
         land_bus_obj: LandBusObj,
 
+# endset
         ) -> FlowLandPlantListInitReportResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land_bus_obj.code))
         await super()._process_validation_rules(
             land_bus_obj,
 
+# endset
         )
         super()._throw_queued_validation_errors()
         some_int_val_output: int = 0
@@ -96,8 +111,11 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         some_text_val_output: str = ""
         some_phone_number_output: str = ""
         some_email_address_output: str = ""
+        flavor_code_output: uuid.UUID = uuid.UUID(int=0)
+        land_code_output: uuid.UUID = uuid.UUID(int=0)
+        tac_code_output: uuid.UUID = uuid.UUID(int=0)
         land_name_output: str = ""
-
+# endset
         flavor_bus_obj = FlavorBusObj(land_bus_obj.session)
         await flavor_bus_obj.load(flavor_enum=FlavorEnum.Unknown)
         flavor_code_output = flavor_bus_obj.code
@@ -105,6 +123,7 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         land_code_output = land_bus_obj.code
 
         tac_code_output = self._session_context.tac_code
+
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowLandPlantListInitReportResult()
@@ -128,6 +147,7 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         result.land_code = land_code_output
         result.tac_code = tac_code_output
         result.land_name = land_name_output
+# endset
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

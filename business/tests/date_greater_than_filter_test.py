@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
@@ -55,10 +56,10 @@ class TestDateGreaterThanFilterBusObj:
         # Test creating a new date_greater_than_filter
         assert date_greater_than_filter_bus_obj.date_greater_than_filter_id is None
         # assert isinstance(date_greater_than_filter_bus_obj.date_greater_than_filter_id, int)
-        assert isinstance(date_greater_than_filter_bus_obj.code, UUID)
+        assert isinstance(date_greater_than_filter_bus_obj.code, uuid.UUID)
         assert isinstance(date_greater_than_filter_bus_obj.last_change_code, int)
-        assert date_greater_than_filter_bus_obj.insert_user_id is None
-        assert date_greater_than_filter_bus_obj.last_update_user_id is None
+        assert date_greater_than_filter_bus_obj.insert_user_id == uuid.UUID(int=0)
+        assert date_greater_than_filter_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(date_greater_than_filter_bus_obj.day_count, int)
         assert date_greater_than_filter_bus_obj.description == "" or isinstance(
             date_greater_than_filter_bus_obj.description, str)

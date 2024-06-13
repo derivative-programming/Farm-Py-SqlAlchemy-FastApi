@@ -194,8 +194,8 @@ class TestTacFactory:
         tac = Tac()
         assert tac.code is not None
         assert tac.last_change_code is not None
-        assert tac.insert_user_id is not None
-        assert tac.last_update_user_id is not None
+        assert tac.insert_user_id == uuid.UUID(int=0)
+        assert tac.last_update_user_id == uuid.UUID(int=0)
         assert tac.insert_utc_date_time is not None
         assert tac.last_update_utc_date_time is not None
 # endset

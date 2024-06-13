@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
@@ -55,10 +56,10 @@ class TestCustomerBusObj:
         # Test creating a new customer
         assert customer_bus_obj.customer_id is None
         # assert isinstance(customer_bus_obj.customer_id, int)
-        assert isinstance(customer_bus_obj.code, UUID)
+        assert isinstance(customer_bus_obj.code, uuid.UUID)
         assert isinstance(customer_bus_obj.last_change_code, int)
-        assert customer_bus_obj.insert_user_id is None
-        assert customer_bus_obj.last_update_user_id is None
+        assert customer_bus_obj.insert_user_id == uuid.UUID(int=0)
+        assert customer_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(customer_bus_obj.active_organization_id, int)
         assert customer_bus_obj.email == "" or isinstance(
             customer_bus_obj.email, str)
@@ -69,7 +70,7 @@ class TestCustomerBusObj:
         assert customer_bus_obj.forgot_password_key_value == "" or isinstance(
             customer_bus_obj.forgot_password_key_value, str)
         # fs_user_code_value
-        assert isinstance(customer_bus_obj.fs_user_code_value, UUID)
+        assert isinstance(customer_bus_obj.fs_user_code_value, uuid.UUID)
         assert isinstance(customer_bus_obj.is_active, bool)
         assert isinstance(customer_bus_obj.is_email_allowed, bool)
         assert isinstance(customer_bus_obj.is_email_confirmed, bool)

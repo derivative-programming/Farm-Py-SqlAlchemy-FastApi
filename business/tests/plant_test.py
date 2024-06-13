@@ -4,6 +4,7 @@
     #TODO add comment
 """
 
+import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
@@ -66,13 +67,13 @@ class TestPlantBusObj:
         assert plant_bus_obj.plant_id is None
 
         # assert isinstance(plant_bus_obj.plant_id, int)
-        assert isinstance(plant_bus_obj.code, UUID)
+        assert isinstance(plant_bus_obj.code, uuid.UUID)
 
         assert isinstance(plant_bus_obj.last_change_code, int)
 
-        assert plant_bus_obj.insert_user_id is None
+        assert plant_bus_obj.insert_user_id == uuid.UUID(int=0)
 
-        assert plant_bus_obj.last_update_user_id is None
+        assert plant_bus_obj.last_update_user_id == uuid.UUID(int=0)
 
         assert isinstance(plant_bus_obj.flvr_foreign_key_id, int)
         assert isinstance(plant_bus_obj.is_delete_allowed, bool)
@@ -96,7 +97,7 @@ class TestPlantBusObj:
         assert plant_bus_obj.some_text_val == "" or isinstance(
             plant_bus_obj.some_text_val, str)
         # some_uniqueidentifier_val
-        assert isinstance(plant_bus_obj.some_uniqueidentifier_val, UUID)
+        assert isinstance(plant_bus_obj.some_uniqueidentifier_val, uuid.UUID)
         assert isinstance(plant_bus_obj.some_utc_date_time_val, datetime)
         assert plant_bus_obj.some_var_char_val == "" or isinstance(
             plant_bus_obj.some_var_char_val, str)

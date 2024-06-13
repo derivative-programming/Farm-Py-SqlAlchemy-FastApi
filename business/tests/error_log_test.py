@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
@@ -55,14 +56,14 @@ class TestErrorLogBusObj:
         # Test creating a new error_log
         assert error_log_bus_obj.error_log_id is None
         # assert isinstance(error_log_bus_obj.error_log_id, int)
-        assert isinstance(error_log_bus_obj.code, UUID)
+        assert isinstance(error_log_bus_obj.code, uuid.UUID)
         assert isinstance(error_log_bus_obj.last_change_code, int)
-        assert error_log_bus_obj.insert_user_id is None
-        assert error_log_bus_obj.last_update_user_id is None
+        assert error_log_bus_obj.insert_user_id == uuid.UUID(int=0)
+        assert error_log_bus_obj.last_update_user_id == uuid.UUID(int=0)
         # browser_code
-        assert isinstance(error_log_bus_obj.browser_code, UUID)
+        assert isinstance(error_log_bus_obj.browser_code, uuid.UUID)
         # context_code
-        assert isinstance(error_log_bus_obj.context_code, UUID)
+        assert isinstance(error_log_bus_obj.context_code, uuid.UUID)
         assert isinstance(error_log_bus_obj.created_utc_date_time, datetime)
         assert error_log_bus_obj.description == "" or isinstance(
             error_log_bus_obj.description, str)

@@ -3,22 +3,21 @@
     #TODO add comment
 """
 import asyncio
+import time
+from datetime import date, datetime
 from decimal import Decimal
+from typing import AsyncGenerator
 import pytest
 import pytest_asyncio
-import time
-from typing import AsyncGenerator
-from datetime import datetime, date
-from sqlalchemy import event
+from pydantic import UUID4, Field
+from sqlalchemy import String, event
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from ..plant_user_details import PlantUserDetailsGetModelRequest
 from models import Base
 from ..factory.plant_user_details import PlantUserDetailsGetModelRequestFactory
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-from pydantic import Field, UUID4
+from ..plant_user_details import PlantUserDetailsGetModelRequest
 class PlantUserDetailsGetModelRequestFactoryAsync:
     """
     #TODO add comment

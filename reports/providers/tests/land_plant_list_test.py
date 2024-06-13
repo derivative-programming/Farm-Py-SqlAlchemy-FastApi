@@ -4,6 +4,7 @@
     #TODO add comment
 """
 
+import uuid
 import sqlite3
 from decimal import Decimal
 from datetime import datetime, date
@@ -52,7 +53,7 @@ class TestReportProviderLandPlantList:
         some_text_val: str = ""
         some_phone_number: str = ""
         some_email_address: str = ""
-        flavor_code: UUIDType = uuid.uuid4()  # type: ignore
+        flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
 # endset
 
         page_number = 1

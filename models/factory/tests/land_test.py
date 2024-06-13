@@ -194,8 +194,8 @@ class TestLandFactory:
         land = Land()
         assert land.code is not None
         assert land.last_change_code is not None
-        assert land.insert_user_id is not None
-        assert land.last_update_user_id is not None
+        assert land.insert_user_id == uuid.UUID(int=0)
+        assert land.last_update_user_id == uuid.UUID(int=0)
         assert land.insert_utc_date_time is not None
         assert land.last_update_utc_date_time is not None
 # endset

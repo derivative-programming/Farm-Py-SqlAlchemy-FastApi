@@ -202,8 +202,8 @@ class TestOrgApiKeyFactory:
         org_api_key = OrgApiKey()
         assert org_api_key.code is not None
         assert org_api_key.last_change_code is not None
-        assert org_api_key.insert_user_id is not None
-        assert org_api_key.last_update_user_id is not None
+        assert org_api_key.insert_user_id == uuid.UUID(int=0)
+        assert org_api_key.last_update_user_id == uuid.UUID(int=0)
         assert org_api_key.insert_utc_date_time is not None
         assert org_api_key.last_update_utc_date_time is not None
 # endset

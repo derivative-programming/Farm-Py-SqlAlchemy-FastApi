@@ -1,34 +1,36 @@
-import json
-from business.org_api_key import OrgApiKeyBusObj
-from business.role import RoleBusObj
-from business.tac import TacBusObj
-from datetime import date, datetime
+# flows/default/tac_register.py
+"""
+    #TODO add comment
+"""
 import uuid
-import business
+import json
+from datetime import date, datetime
+from sqlalchemy import String
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from decimal import Decimal
 from flows.base.tac_register import BaseFlowTacRegister
-from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey
-from managers.role import RoleEnum
 from models import Tac
 from flows.base import LogSeverity
+from business.tac import TacBusObj
 from helpers import SessionContext
 from helpers import ApiToken
 from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
-from sqlalchemy.ext.asyncio import AsyncSession
-
-# from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from decimal import Decimal
+import business
 class FlowTacRegisterResult():
-    context_object_code: uuid.UUID =  uuid.UUID(int=0)
-    customer_code: uuid.UUID =  uuid.UUID(int=0)
+    """
+    #TODO add comment
+    """
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+    customer_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
-    user_code_value:uuid.UUID =  uuid.UUID(int=0)
+    user_code_value: uuid.UUID = uuid.UUID(int=0)
     utc_offset_in_minutes: int = 0
     role_name_csv_list: str = ""
     api_key: str = ""
+# endset
     def __init__(self):
         pass
     def to_json(self):
@@ -41,19 +43,28 @@ class FlowTacRegisterResult():
             'utc_offset_in_minutes': self.utc_offset_in_minutes,
             'role_name_csv_list': self.role_name_csv_list,
             'api_key': self.api_key,
+# endset
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
 class FlowTacRegister(BaseFlowTacRegister):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
+        """
+        #TODO add comment
+        """
         super(FlowTacRegister, self).__init__(session_context)
-    async def process(self,
+    async def process(
+        self,
         tac_bus_obj: TacBusObj,
         email: str = "",
         password: str = "",
         confirm_password: str = "",
         first_name: str = "",
         last_name: str = "",
+# endset
         ) -> FlowTacRegisterResult:
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(tac_bus_obj.code))
@@ -64,6 +75,7 @@ class FlowTacRegister(BaseFlowTacRegister):
             confirm_password,
             first_name,
             last_name,
+# endset
         )
         if password != confirm_password:
             self._add_field_validation_error("confirm_password","Passwords do not match")
@@ -155,7 +167,6 @@ class FlowTacRegister(BaseFlowTacRegister):
             code=api_key_flow_result.tmp_org_api_key_code)
 
         api_key_output = api_key.api_key_value
-
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowTacRegisterResult()
         result.context_object_code = tac_bus_obj.code
@@ -165,6 +176,7 @@ class FlowTacRegister(BaseFlowTacRegister):
         result.utc_offset_in_minutes = utc_offset_in_minutes_output
         result.role_name_csv_list = role_name_csv_list_output
         result.api_key = api_key_output
+# endset
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
         super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
         return result

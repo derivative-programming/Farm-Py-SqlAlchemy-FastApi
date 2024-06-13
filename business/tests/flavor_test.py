@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
@@ -55,10 +56,10 @@ class TestFlavorBusObj:
         # Test creating a new flavor
         assert flavor_bus_obj.flavor_id is None
         # assert isinstance(flavor_bus_obj.flavor_id, int)
-        assert isinstance(flavor_bus_obj.code, UUID)
+        assert isinstance(flavor_bus_obj.code, uuid.UUID)
         assert isinstance(flavor_bus_obj.last_change_code, int)
-        assert flavor_bus_obj.insert_user_id is None
-        assert flavor_bus_obj.last_update_user_id is None
+        assert flavor_bus_obj.insert_user_id == uuid.UUID(int=0)
+        assert flavor_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert flavor_bus_obj.description == "" or isinstance(
             flavor_bus_obj.description, str)
         assert isinstance(flavor_bus_obj.display_order, int)

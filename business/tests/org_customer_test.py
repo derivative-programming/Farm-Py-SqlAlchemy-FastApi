@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
@@ -55,10 +56,10 @@ class TestOrgCustomerBusObj:
         # Test creating a new org_customer
         assert org_customer_bus_obj.org_customer_id is None
         # assert isinstance(org_customer_bus_obj.org_customer_id, int)
-        assert isinstance(org_customer_bus_obj.code, UUID)
+        assert isinstance(org_customer_bus_obj.code, uuid.UUID)
         assert isinstance(org_customer_bus_obj.last_change_code, int)
-        assert org_customer_bus_obj.insert_user_id is None
-        assert org_customer_bus_obj.last_update_user_id is None
+        assert org_customer_bus_obj.insert_user_id == uuid.UUID(int=0)
+        assert org_customer_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(org_customer_bus_obj.customer_id, int)
         assert org_customer_bus_obj.email == "" or isinstance(
             org_customer_bus_obj.email, str)

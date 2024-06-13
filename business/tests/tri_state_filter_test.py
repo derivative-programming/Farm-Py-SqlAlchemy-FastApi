@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+import uuid
 from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
@@ -55,10 +56,10 @@ class TestTriStateFilterBusObj:
         # Test creating a new tri_state_filter
         assert tri_state_filter_bus_obj.tri_state_filter_id is None
         # assert isinstance(tri_state_filter_bus_obj.tri_state_filter_id, int)
-        assert isinstance(tri_state_filter_bus_obj.code, UUID)
+        assert isinstance(tri_state_filter_bus_obj.code, uuid.UUID)
         assert isinstance(tri_state_filter_bus_obj.last_change_code, int)
-        assert tri_state_filter_bus_obj.insert_user_id is None
-        assert tri_state_filter_bus_obj.last_update_user_id is None
+        assert tri_state_filter_bus_obj.insert_user_id == uuid.UUID(int=0)
+        assert tri_state_filter_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert tri_state_filter_bus_obj.description == "" or isinstance(
             tri_state_filter_bus_obj.description, str)
         assert isinstance(tri_state_filter_bus_obj.display_order, int)

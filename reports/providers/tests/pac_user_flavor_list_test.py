@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+import uuid
 import sqlite3
 from decimal import Decimal
 from datetime import datetime, date
