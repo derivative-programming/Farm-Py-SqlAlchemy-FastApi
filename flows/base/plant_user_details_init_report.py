@@ -29,7 +29,6 @@ class BaseFlowPlantUserDetailsInitReport(BaseFlow):
     ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
-        await self._process_security_rules(plant_bus_obj)
     async def _process_security_rules(
         self,
         plant_bus_obj: PlantBusObj,
@@ -55,4 +54,8 @@ class BaseFlowPlantUserDetailsInitReport(BaseFlow):
 
                 if val is True:
                     # item = await item.get_parent_obj()
-                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())
+                    item = await BusObjFactory.create(
+                        item.session,
+                        item.get_parent_name(),
+                        item.get_parent_code()
+                    )

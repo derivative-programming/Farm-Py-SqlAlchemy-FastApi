@@ -25,7 +25,7 @@
         obj_list = await GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(self.GENVALSnakeParentObjectName_id)
         for obj_item in obj_list:
             bus_obj_item = GENVALPascalNameBusObj(self._session_context)
-            await bus_obj_item.load(GENVALSnakeObjectName_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -38,7 +38,7 @@
         obj_list = await GENVALSnakeObjectName_manager.get_by_GENVALSnakeName_prop(GENVALSnakeName)
         for obj_item in obj_list:
             bus_obj_item = GENVALPascalObjectNameBusObj(self._session_context)
-            await bus_obj_item.load(GENVALSnakeObjectName_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results   
     ##GENIF[isFK=false,forceDBColumnIndex=true]End

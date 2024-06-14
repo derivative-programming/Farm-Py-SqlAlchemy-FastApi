@@ -476,6 +476,11 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log = error_log_manager.from_dict(error_log_dict)
         return self
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -624,10 +629,8 @@ class ErrorLogBusObj(BaseBusObj):
         """
         result = list()
         for error_log in obj_list:
-            error_log_bus_obj = ErrorLogBusObj.get(
-                session_context,
-                error_log_obj_instance=error_log
-            )
+            error_log_bus_obj = ErrorLogBusObj(session_context)
+            await error_log_bus_obj.load_from_obj_instance(error_log)
             result.append(error_log_bus_obj)
         return result
 

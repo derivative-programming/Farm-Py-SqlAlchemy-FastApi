@@ -1,15 +1,15 @@
 
     async def build_pac(self) -> PacBusObj:
-        item = CustomerBusObj(self.session)
+        item = CustomerBusObj(self.get_session_context())
         item._id = self._id
         item._code_peek = self.code
         return item
 
     async def get_all_pac(self) -> List[PacBusObj]:
         results = list()
-        pac_manager = PacManager(self.session)
+        pac_manager = PacManager(self.get_session_context())
         obj_list = pac_manager.get_by__id(self._id)
         for obj_item in obj_list:
-            bus_obj_item = await Pac(self.session).load(pac_obj_instance=obj_item)
+            bus_obj_item = await Pac(self.get_session_context()).load(pac_obj_instance=obj_item)
             results.append(bus_obj_item)
         return results

@@ -443,6 +443,11 @@ class FlavorBusObj(BaseBusObj):
         flavor_manager = FlavorManager(self._session_context)
         self.flavor = await flavor_manager.from_enum(flavor_enum)
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -583,10 +588,8 @@ class FlavorBusObj(BaseBusObj):
         """
         result = list()
         for flavor in obj_list:
-            flavor_bus_obj = FlavorBusObj.get(
-                session_context,
-                flavor_obj_instance=flavor
-            )
+            flavor_bus_obj = FlavorBusObj(session_context)
+            await flavor_bus_obj.load_from_obj_instance(flavor)
             result.append(flavor_bus_obj)
         return result
 

@@ -469,6 +469,11 @@ class TriStateFilterBusObj(BaseBusObj):
         tri_state_filter_manager = TriStateFilterManager(self._session_context)
         self.tri_state_filter = await tri_state_filter_manager.from_enum(tri_state_filter_enum)
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -612,10 +617,8 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         result = list()
         for tri_state_filter in obj_list:
-            tri_state_filter_bus_obj = TriStateFilterBusObj.get(
-                session_context,
-                tri_state_filter_obj_instance=tri_state_filter
-            )
+            tri_state_filter_bus_obj = TriStateFilterBusObj(session_context)
+            await tri_state_filter_bus_obj.load_from_obj_instance(tri_state_filter)
             result.append(tri_state_filter_bus_obj)
         return result
 

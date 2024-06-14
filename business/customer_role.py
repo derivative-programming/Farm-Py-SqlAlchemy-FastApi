@@ -384,6 +384,11 @@ class CustomerRoleBusObj(BaseBusObj):
         self.customer_role = customer_role_manager.from_dict(customer_role_dict)
         return self
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -527,10 +532,8 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         result = list()
         for customer_role in obj_list:
-            customer_role_bus_obj = CustomerRoleBusObj.get(
-                session_context,
-                customer_role_obj_instance=customer_role
-            )
+            customer_role_bus_obj = CustomerRoleBusObj(session_context)
+            await customer_role_bus_obj.load_from_obj_instance(customer_role)
             result.append(customer_role_bus_obj)
         return result
 

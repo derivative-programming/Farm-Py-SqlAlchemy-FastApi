@@ -46,9 +46,7 @@ class TestFlavorBusObj:
     @pytest.mark.asyncio
     async def test_create_flavor(
         self,
-        flavor_manager: FlavorManager,
-        flavor_bus_obj: FlavorBusObj,
-        new_flavor: Flavor
+        flavor_bus_obj: FlavorBusObj
     ):
         """
             #TODO add comment
@@ -136,9 +134,7 @@ class TestFlavorBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_flavor(
         self,
-        flavor_manager: FlavorManager,
-        flavor_bus_obj: FlavorBusObj,
-        new_flavor: Flavor
+        flavor_bus_obj: FlavorBusObj
     ):
         """
             #TODO add comment

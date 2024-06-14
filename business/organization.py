@@ -323,6 +323,11 @@ class OrganizationBusObj(BaseBusObj):
         self.organization = organization_manager.from_dict(organization_dict)
         return self
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -449,10 +454,8 @@ class OrganizationBusObj(BaseBusObj):
         """
         result = list()
         for organization in obj_list:
-            organization_bus_obj = OrganizationBusObj.get(
-                session_context,
-                organization_obj_instance=organization
-            )
+            organization_bus_obj = OrganizationBusObj(session_context)
+            await organization_bus_obj.load_from_obj_instance(organization)
             result.append(organization_bus_obj)
         return result
 
@@ -470,7 +473,7 @@ class OrganizationBusObj(BaseBusObj):
         obj_list = await org_customer_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
             bus_obj_item = OrgCustomerBusObj(self._session_context)
-            await bus_obj_item.load(org_customer_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -488,7 +491,7 @@ class OrganizationBusObj(BaseBusObj):
         obj_list = await org_api_key_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
             bus_obj_item = OrgApiKeyBusObj(self._session_context)
-            await bus_obj_item.load(org_api_key_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

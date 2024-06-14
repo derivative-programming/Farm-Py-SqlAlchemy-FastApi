@@ -445,6 +445,11 @@ class LandBusObj(BaseBusObj):
         land_manager = LandManager(self._session_context)
         self.land = await land_manager.from_enum(land_enum)
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -585,10 +590,8 @@ class LandBusObj(BaseBusObj):
         """
         result = list()
         for land in obj_list:
-            land_bus_obj = LandBusObj.get(
-                session_context,
-                land_obj_instance=land
-            )
+            land_bus_obj = LandBusObj(session_context)
+            await land_bus_obj.load_from_obj_instance(land)
             result.append(land_bus_obj)
         return result
 
@@ -611,7 +614,7 @@ class LandBusObj(BaseBusObj):
         obj_list = await plant_manager.get_by_land_id(self.land_id)
         for obj_item in obj_list:
             bus_obj_item = PlantBusObj(self._session_context)
-            await bus_obj_item.load(plant_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

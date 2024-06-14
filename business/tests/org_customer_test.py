@@ -46,9 +46,7 @@ class TestOrgCustomerBusObj:
     @pytest.mark.asyncio
     async def test_create_org_customer(
         self,
-        org_customer_manager: OrgCustomerManager,
-        org_customer_bus_obj: OrgCustomerBusObj,
-        new_org_customer: OrgCustomer
+        org_customer_bus_obj: OrgCustomerBusObj
     ):
         """
             #TODO add comment
@@ -133,9 +131,7 @@ class TestOrgCustomerBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_org_customer(
         self,
-        org_customer_manager: OrgCustomerManager,
-        org_customer_bus_obj: OrgCustomerBusObj,
-        new_org_customer: OrgCustomer
+        org_customer_bus_obj: OrgCustomerBusObj
     ):
         """
             #TODO add comment

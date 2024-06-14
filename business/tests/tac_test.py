@@ -46,9 +46,7 @@ class TestTacBusObj:
     @pytest.mark.asyncio
     async def test_create_tac(
         self,
-        tac_manager: TacManager,
-        tac_bus_obj: TacBusObj,
-        new_tac: Tac
+        tac_bus_obj: TacBusObj
     ):
         """
             #TODO add comment
@@ -136,9 +134,7 @@ class TestTacBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_tac(
         self,
-        tac_manager: TacManager,
-        tac_bus_obj: TacBusObj,
-        new_tac: Tac
+        tac_bus_obj: TacBusObj
     ):
         """
             #TODO add comment

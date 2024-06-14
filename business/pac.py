@@ -418,6 +418,11 @@ class PacBusObj(BaseBusObj):
         pac_manager = PacManager(self._session_context)
         self.pac = await pac_manager.from_enum(pac_enum)
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -533,10 +538,8 @@ class PacBusObj(BaseBusObj):
         """
         result = list()
         for pac in obj_list:
-            pac_bus_obj = PacBusObj.get(
-                session_context,
-                pac_obj_instance=pac
-            )
+            pac_bus_obj = PacBusObj(session_context)
+            await pac_bus_obj.load_from_obj_instance(pac)
             result.append(pac_bus_obj)
         return result
 
@@ -554,7 +557,7 @@ class PacBusObj(BaseBusObj):
         obj_list = await tri_state_filter_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = TriStateFilterBusObj(self._session_context)
-            await bus_obj_item.load(tri_state_filter_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -572,7 +575,7 @@ class PacBusObj(BaseBusObj):
         obj_list = await tac_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = TacBusObj(self._session_context)
-            await bus_obj_item.load(tac_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -590,7 +593,7 @@ class PacBusObj(BaseBusObj):
         obj_list = await role_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = RoleBusObj(self._session_context)
-            await bus_obj_item.load(role_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -608,7 +611,7 @@ class PacBusObj(BaseBusObj):
         obj_list = await land_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = LandBusObj(self._session_context)
-            await bus_obj_item.load(land_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -626,7 +629,7 @@ class PacBusObj(BaseBusObj):
         obj_list = await flavor_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = FlavorBusObj(self._session_context)
-            await bus_obj_item.load(flavor_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -644,7 +647,7 @@ class PacBusObj(BaseBusObj):
         obj_list = await error_log_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = ErrorLogBusObj(self._session_context)
-            await bus_obj_item.load(error_log_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -662,7 +665,7 @@ class PacBusObj(BaseBusObj):
         obj_list = await date_greater_than_filter_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = DateGreaterThanFilterBusObj(self._session_context)
-            await bus_obj_item.load(date_greater_than_filter_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

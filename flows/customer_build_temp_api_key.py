@@ -68,7 +68,7 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
         if customer_bus_obj.active_organization_id == 0:
             raise ValueError("Active organization not set")
 
-        org_customer_manager = OrgCustomerManager(customer_bus_obj.session)
+        org_customer_manager = OrgCustomerManager(customer_bus_obj.get_session_context())
         org_customer_list = await org_customer_manager.get_by_customer_id(customer_id=customer_bus_obj.customer_id)
         org_customer_list_active_org = []
         for org_customer in org_customer_list:

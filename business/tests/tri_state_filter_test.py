@@ -46,9 +46,7 @@ class TestTriStateFilterBusObj:
     @pytest.mark.asyncio
     async def test_create_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
-        tri_state_filter_bus_obj: TriStateFilterBusObj,
-        new_tri_state_filter: TriStateFilter
+        tri_state_filter_bus_obj: TriStateFilterBusObj
     ):
         """
             #TODO add comment
@@ -137,9 +135,7 @@ class TestTriStateFilterBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
-        tri_state_filter_bus_obj: TriStateFilterBusObj,
-        new_tri_state_filter: TriStateFilter
+        tri_state_filter_bus_obj: TriStateFilterBusObj
     ):
         """
             #TODO add comment

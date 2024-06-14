@@ -46,9 +46,7 @@ class TestOrgApiKeyBusObj:
     @pytest.mark.asyncio
     async def test_create_org_api_key(
         self,
-        org_api_key_manager: OrgApiKeyManager,
-        org_api_key_bus_obj: OrgApiKeyBusObj,
-        new_org_api_key: OrgApiKey
+        org_api_key_bus_obj: OrgApiKeyBusObj
     ):
         """
             #TODO add comment
@@ -139,9 +137,7 @@ class TestOrgApiKeyBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_org_api_key(
         self,
-        org_api_key_manager: OrgApiKeyManager,
-        org_api_key_bus_obj: OrgApiKeyBusObj,
-        new_org_api_key: OrgApiKey
+        org_api_key_bus_obj: OrgApiKeyBusObj
     ):
         """
             #TODO add comment

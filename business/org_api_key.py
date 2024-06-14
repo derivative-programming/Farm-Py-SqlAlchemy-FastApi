@@ -517,6 +517,11 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key = org_api_key_manager.from_dict(org_api_key_dict)
         return self
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -684,10 +689,8 @@ class OrgApiKeyBusObj(BaseBusObj):
         """
         result = list()
         for org_api_key in obj_list:
-            org_api_key_bus_obj = OrgApiKeyBusObj.get(
-                session_context,
-                org_api_key_obj_instance=org_api_key
-            )
+            org_api_key_bus_obj = OrgApiKeyBusObj(session_context)
+            await org_api_key_bus_obj.load_from_obj_instance(org_api_key)
             result.append(org_api_key_bus_obj)
         return result
 

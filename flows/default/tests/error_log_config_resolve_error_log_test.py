@@ -50,7 +50,7 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
         flow = FlowErrorLogConfigResolveErrorLog(session_context)
         error_log = await ErrorLogFactory.create_async(session)
         error_log_bus_obj = ErrorLogBusObj(session_context)
-        await error_log_bus_obj.load(error_log_obj_instance=error_log)
+        await error_log_bus_obj.load_from_obj_instance(error_log)
         role_required = "Config"
 
 # endset

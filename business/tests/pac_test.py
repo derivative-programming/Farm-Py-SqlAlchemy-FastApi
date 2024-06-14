@@ -46,9 +46,7 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_create_pac(
         self,
-        pac_manager: PacManager,
-        pac_bus_obj: PacBusObj,
-        new_pac: Pac
+        pac_bus_obj: PacBusObj
     ):
         """
             #TODO add comment
@@ -135,9 +133,7 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_pac(
         self,
-        pac_manager: PacManager,
-        pac_bus_obj: PacBusObj,
-        new_pac: Pac
+        pac_bus_obj: PacBusObj
     ):
         """
             #TODO add comment

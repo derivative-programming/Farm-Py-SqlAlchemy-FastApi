@@ -65,8 +65,8 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
         code_list = self._parse_csv_string_to_guids(plant_code_list_csv)
 
         for code in code_list:
-            plant_bus_obj = PlantBusObj(land_bus_obj.session)
-            await plant_bus_obj.load(code=code)
+            plant_bus_obj = PlantBusObj(land_bus_obj.get_session_context())
+            await plant_bus_obj.load_from_code(code)
             plant_bus_obj.is_edit_allowed = False
             await plant_bus_obj.save()
 

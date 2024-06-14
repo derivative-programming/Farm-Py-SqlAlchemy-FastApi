@@ -46,9 +46,7 @@ class TestOrganizationBusObj:
     @pytest.mark.asyncio
     async def test_create_organization(
         self,
-        organization_manager: OrganizationManager,
-        organization_bus_obj: OrganizationBusObj,
-        new_organization: Organization
+        organization_bus_obj: OrganizationBusObj
     ):
         """
             #TODO add comment
@@ -132,9 +130,7 @@ class TestOrganizationBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_organization(
         self,
-        organization_manager: OrganizationManager,
-        organization_bus_obj: OrganizationBusObj,
-        new_organization: Organization
+        organization_bus_obj: OrganizationBusObj
     ):
         """
             #TODO add comment

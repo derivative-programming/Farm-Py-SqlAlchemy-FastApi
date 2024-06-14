@@ -46,9 +46,7 @@ class TestLandBusObj:
     @pytest.mark.asyncio
     async def test_create_land(
         self,
-        land_manager: LandManager,
-        land_bus_obj: LandBusObj,
-        new_land: Land
+        land_bus_obj: LandBusObj
     ):
         """
             #TODO add comment
@@ -136,9 +134,7 @@ class TestLandBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_land(
         self,
-        land_manager: LandManager,
-        land_bus_obj: LandBusObj,
-        new_land: Land
+        land_bus_obj: LandBusObj
     ):
         """
             #TODO add comment

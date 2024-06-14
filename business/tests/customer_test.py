@@ -46,9 +46,7 @@ class TestCustomerBusObj:
     @pytest.mark.asyncio
     async def test_create_customer(
         self,
-        customer_manager: CustomerManager,
-        customer_bus_obj: CustomerBusObj,
-        new_customer: Customer
+        customer_bus_obj: CustomerBusObj
     ):
         """
             #TODO add comment
@@ -154,9 +152,7 @@ class TestCustomerBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_customer(
         self,
-        customer_manager: CustomerManager,
-        customer_bus_obj: CustomerBusObj,
-        new_customer: Customer
+        customer_bus_obj: CustomerBusObj
     ):
         """
             #TODO add comment

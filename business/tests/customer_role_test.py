@@ -46,9 +46,7 @@ class TestCustomerRoleBusObj:
     @pytest.mark.asyncio
     async def test_create_customer_role(
         self,
-        customer_role_manager: CustomerRoleManager,
-        customer_role_bus_obj: CustomerRoleBusObj,
-        new_customer_role: CustomerRole
+        customer_role_bus_obj: CustomerRoleBusObj
     ):
         """
             #TODO add comment
@@ -134,9 +132,7 @@ class TestCustomerRoleBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_customer_role(
         self,
-        customer_role_manager: CustomerRoleManager,
-        customer_role_bus_obj: CustomerRoleBusObj,
-        new_customer_role: CustomerRole
+        customer_role_bus_obj: CustomerRoleBusObj
     ):
         """
             #TODO add comment

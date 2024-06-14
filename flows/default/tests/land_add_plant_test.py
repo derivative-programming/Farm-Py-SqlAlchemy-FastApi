@@ -97,7 +97,7 @@ class TestLandAddPlantPostModelResponse:
         land = await LandFactory.create_async(session)
 
         land_bus_obj = LandBusObj(session_context)
-        await land_bus_obj.load(land_obj_instance=land)
+        await land_bus_obj.load_from_obj_instance(land)
 
         role_required = "User"
 

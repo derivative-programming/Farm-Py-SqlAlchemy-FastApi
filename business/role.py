@@ -443,6 +443,11 @@ class RoleBusObj(BaseBusObj):
         role_manager = RoleManager(self._session_context)
         self.role = await role_manager.from_enum(role_enum)
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -583,10 +588,8 @@ class RoleBusObj(BaseBusObj):
         """
         result = list()
         for role in obj_list:
-            role_bus_obj = RoleBusObj.get(
-                session_context,
-                role_obj_instance=role
-            )
+            role_bus_obj = RoleBusObj(session_context)
+            await role_bus_obj.load_from_obj_instance(role)
             result.append(role_bus_obj)
         return result
 

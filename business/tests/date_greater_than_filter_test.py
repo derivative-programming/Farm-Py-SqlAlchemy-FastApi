@@ -46,9 +46,7 @@ class TestDateGreaterThanFilterBusObj:
     @pytest.mark.asyncio
     async def test_create_date_greater_than_filter(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
-        date_greater_than_filter_bus_obj: DateGreaterThanFilterBusObj,
-        new_date_greater_than_filter: DateGreaterThanFilter
+        date_greater_than_filter_bus_obj: DateGreaterThanFilterBusObj
     ):
         """
             #TODO add comment
@@ -137,9 +135,7 @@ class TestDateGreaterThanFilterBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_date_greater_than_filter(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
-        date_greater_than_filter_bus_obj: DateGreaterThanFilterBusObj,
-        new_date_greater_than_filter: DateGreaterThanFilter
+        date_greater_than_filter_bus_obj: DateGreaterThanFilterBusObj
     ):
         """
             #TODO add comment

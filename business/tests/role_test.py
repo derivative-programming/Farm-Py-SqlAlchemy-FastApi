@@ -46,9 +46,7 @@ class TestRoleBusObj:
     @pytest.mark.asyncio
     async def test_create_role(
         self,
-        role_manager: RoleManager,
-        role_bus_obj: RoleBusObj,
-        new_role: Role
+        role_bus_obj: RoleBusObj
     ):
         """
             #TODO add comment
@@ -136,9 +134,7 @@ class TestRoleBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_role(
         self,
-        role_manager: RoleManager,
-        role_bus_obj: RoleBusObj,
-        new_role: Role
+        role_bus_obj: RoleBusObj
     ):
         """
             #TODO add comment

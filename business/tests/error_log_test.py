@@ -46,9 +46,7 @@ class TestErrorLogBusObj:
     @pytest.mark.asyncio
     async def test_create_error_log(
         self,
-        error_log_manager: ErrorLogManager,
-        error_log_bus_obj: ErrorLogBusObj,
-        new_error_log: ErrorLog
+        error_log_bus_obj: ErrorLogBusObj
     ):
         """
             #TODO add comment
@@ -140,9 +138,7 @@ class TestErrorLogBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_error_log(
         self,
-        error_log_manager: ErrorLogManager,
-        error_log_bus_obj: ErrorLogBusObj,
-        new_error_log: ErrorLog
+        error_log_bus_obj: ErrorLogBusObj
     ):
         """
             #TODO add comment

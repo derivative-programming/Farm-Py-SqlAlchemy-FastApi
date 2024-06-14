@@ -563,7 +563,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -603,7 +603,7 @@ class PlantBusObj(BaseBusObj):
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
-        if self.plant.some_n_var_char_val is None:
+        if self.plant.some_phone_number is None:
             return ""
 
         return self.plant.some_phone_number
@@ -1053,6 +1053,13 @@ class PlantBusObj(BaseBusObj):
 ##GENLearn[isLookup=false]End
 ##GENTrainingBlock[caseLookupEnums]End
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+
+        return self._session_context
+
     async def refresh(self):
         """
         #TODO add comment
@@ -1296,10 +1303,10 @@ class PlantBusObj(BaseBusObj):
         result = list()
 
         for plant in obj_list:
-            plant_bus_obj = PlantBusObj.get(
-                session_context,
-                plant_obj_instance=plant
-            )
+            plant_bus_obj = PlantBusObj(session_context)
+
+            await plant_bus_obj.load_from_obj_instance(plant)
+
             result.append(plant_bus_obj)
 
         return result

@@ -577,7 +577,7 @@ class CustomerBusObj(BaseBusObj):
         """
         if not self.customer:
             raise AttributeError("Customer object is not initialized")
-        if self.customer.some_n_var_char_val is None:
+        if self.customer.phone is None:
             return ""
         return self.customer.phone
     @phone.setter
@@ -876,6 +876,11 @@ class CustomerBusObj(BaseBusObj):
         self.customer = customer_manager.from_dict(customer_dict)
         return self
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -1083,10 +1088,8 @@ class CustomerBusObj(BaseBusObj):
         """
         result = list()
         for customer in obj_list:
-            customer_bus_obj = CustomerBusObj.get(
-                session_context,
-                customer_obj_instance=customer
-            )
+            customer_bus_obj = CustomerBusObj(session_context)
+            await customer_bus_obj.load_from_obj_instance(customer)
             result.append(customer_bus_obj)
         return result
 
@@ -1109,7 +1112,7 @@ class CustomerBusObj(BaseBusObj):
         obj_list = await customer_role_manager.get_by_customer_id(self.customer_id)
         for obj_item in obj_list:
             bus_obj_item = CustomerRoleBusObj(self._session_context)
-            await bus_obj_item.load(customer_role_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

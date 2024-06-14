@@ -60,7 +60,7 @@ class TestTacLoginPostModelResponse:
         flow = FlowTacLogin(session_context)
         tac = await TacFactory.create_async(session)
         tac_bus_obj = TacBusObj(session_context)
-        await tac_bus_obj.load(tac_obj_instance=tac)
+        await tac_bus_obj.load_from_obj_instance(tac)
         role_required = ""
         email: str = "",
         password: str = "",

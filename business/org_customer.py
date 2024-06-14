@@ -360,6 +360,11 @@ class OrgCustomerBusObj(BaseBusObj):
         self.org_customer = org_customer_manager.from_dict(org_customer_dict)
         return self
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -500,10 +505,8 @@ class OrgCustomerBusObj(BaseBusObj):
         """
         result = list()
         for org_customer in obj_list:
-            org_customer_bus_obj = OrgCustomerBusObj.get(
-                session_context,
-                org_customer_obj_instance=org_customer
-            )
+            org_customer_bus_obj = OrgCustomerBusObj(session_context)
+            await org_customer_bus_obj.load_from_obj_instance(org_customer)
             result.append(org_customer_bus_obj)
         return result
 

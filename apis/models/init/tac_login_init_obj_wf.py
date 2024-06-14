@@ -60,7 +60,7 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
             logging.info(
                 "loading model...TacLoginInitObjWFGetInitModelRequest")
             tac_bus_obj = TacBusObj(session_context)
-            await tac_bus_obj.load(code=tac_code)
+            await tac_bus_obj.load_from_code(tac_code)
             if tac_bus_obj.get_tac_obj() is None:
                 logging.info("Invalid tac_code")
                 raise ValueError("Invalid tac_code")

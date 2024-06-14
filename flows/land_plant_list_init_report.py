@@ -116,8 +116,8 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         tac_code_output: uuid.UUID = uuid.UUID(int=0)
         land_name_output: str = ""
 # endset
-        flavor_bus_obj = FlavorBusObj(land_bus_obj.session)
-        await flavor_bus_obj.load(flavor_enum=FlavorEnum.Unknown)
+        flavor_bus_obj = business.FlavorBusObj(land_bus_obj.get_session_context())
+        await flavor_bus_obj.load_from_enum(flavor_enum=farm_managers.FlavorEnum.Unknown)
         flavor_code_output = flavor_bus_obj.code
 
         land_code_output = land_bus_obj.code

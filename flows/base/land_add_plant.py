@@ -52,58 +52,112 @@ class BaseFlowLandAddPlant(BaseFlow):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
         if request_flavor_code == uuid.UUID(int=0) and FlowConstants.param_request_flavor_code_isRequired is True:
-            self._add_field_validation_error("requestFlavorCode","Please select a Flavor")
+            self._add_field_validation_error(
+                "requestFlavorCode",
+                "Please select a Flavor"
+            )
 
         if request_other_flavor == "" and FlowConstants.param_request_other_flavor_isRequired is True:
-            self._add_field_validation_error("requestOtherFlavor","Please enter a Other Flavor")
+            self._add_field_validation_error(
+                "requestOtherFlavor",
+                "Please enter a Other Flavor"
+            )
 
         if request_some_int_val == 0 and FlowConstants.param_request_some_int_val_isRequired is True:
-            self._add_field_validation_error("requestSomeIntVal","Please enter a Some Int Val")
+            self._add_field_validation_error(
+                "requestSomeIntVal",
+                "Please enter a Some Int Val"
+            )
 
         if request_some_big_int_val == 0 and FlowConstants.param_request_some_big_int_val_isRequired is True:
-            self._add_field_validation_error("requestSomeBigIntVal","Please enter a Some Big Int Val")
+            self._add_field_validation_error(
+                "requestSomeBigIntVal",
+                "Please enter a Some Big Int Val"
+            )
 
         if request_some_bit_val is None and FlowConstants.param_request_some_bit_val_isRequired is True:
-            self._add_field_validation_error("requestSomeBitVal","Please enter a Some Bit Val")
+            self._add_field_validation_error(
+                "requestSomeBitVal",
+                "Please enter a Some Bit Val"
+            )
 
         if request_is_edit_allowed is None and FlowConstants.param_request_is_edit_allowed_isRequired is True:
-            self._add_field_validation_error("requestIsEditAllowed","Please enter a Is Edit Allowed")
+            self._add_field_validation_error(
+                "requestIsEditAllowed",
+                "Please enter a Is Edit Allowed"
+            )
 
         if request_is_delete_allowed is None and FlowConstants.param_request_is_delete_allowed_isRequired is True:
-            self._add_field_validation_error("requestIsDeleteAllowed","Please enter a Is Delete Allowed")
+            self._add_field_validation_error(
+                "requestIsDeleteAllowed",
+                "Please enter a Is Delete Allowed"
+            )
 
         if request_some_float_val == 0 and FlowConstants.param_request_some_float_val_isRequired is True:
-            self._add_field_validation_error("requestSomeFloatVal","Please enter a Some Float Val")
+            self._add_field_validation_error(
+                "requestSomeFloatVal",
+                "Please enter a Some Float Val"
+            )
 
         if request_some_decimal_val == 0 and FlowConstants.param_request_some_decimal_val_isRequired is True:
-            self._add_field_validation_error("requestSomeDecimalVal","Please enter a Some Decimal Val")
+            self._add_field_validation_error(
+                "requestSomeDecimalVal",
+                "Please enter a Some Decimal Val"
+            )
 
         if request_some_utc_date_time_val == TypeConversion.get_default_date_time() and FlowConstants.param_request_some_utc_date_time_val_isRequired is True:
-            self._add_field_validation_error("requestSomeUTCDateTimeVal","Please enter a Some UTC Date Time Val")
+            self._add_field_validation_error(
+                "requestSomeUTCDateTimeVal",
+                "Please enter a Some UTC Date Time Val"
+            )
 
         if request_some_date_val == TypeConversion.get_default_date() and FlowConstants.param_request_some_date_val_isRequired is True:
-            self._add_field_validation_error("requestSomeDateVal","Please enter a Some Date Val")
+            self._add_field_validation_error(
+                "requestSomeDateVal",
+                "Please enter a Some Date Val"
+            )
 
         if request_some_money_val == 0 and FlowConstants.param_request_some_money_val_isRequired is True:
-            self._add_field_validation_error("requestSomeMoneyVal","Please enter a Some Money Val")
+            self._add_field_validation_error(
+                "requestSomeMoneyVal",
+                "Please enter a Some Money Val"
+            )
 
         if request_some_n_var_char_val == "" and FlowConstants.param_request_some_n_var_char_val_isRequired is True:
-            self._add_field_validation_error("requestSomeNVarCharVal","Please enter a Some N Var Char Val")
+            self._add_field_validation_error(
+                "requestSomeNVarCharVal",
+                "Please enter a Some N Var Char Val"
+            )
 
         if request_some_var_char_val == "" and FlowConstants.param_request_some_var_char_val_isRequired is True:
-            self._add_field_validation_error("requestSomeVarCharVal","Please enter a Some Var Char Val")
+            self._add_field_validation_error(
+                "requestSomeVarCharVal",
+                "Please enter a Some Var Char Val"
+            )
 
         if request_some_text_val == "" and FlowConstants.param_request_some_text_val_isRequired is True:
-            self._add_field_validation_error("requestSomeTextVal","Please enter a Some Text Val")
+            self._add_field_validation_error(
+                "requestSomeTextVal",
+                "Please enter a Some Text Val"
+            )
 
         if request_some_phone_number == "" and FlowConstants.param_request_some_phone_number_isRequired is True:
-            self._add_field_validation_error("requestSomePhoneNumber","Please enter a Some Phone Number")
+            self._add_field_validation_error(
+                "requestSomePhoneNumber",
+                "Please enter a Some Phone Number"
+            )
 
         if request_some_email_address == "" and FlowConstants.param_request_some_email_address_isRequired is True:
-            self._add_field_validation_error("requestSomeEmailAddress","Please enter a Some Email Address")
+            self._add_field_validation_error(
+                "requestSomeEmailAddress",
+                "Please enter a Some Email Address"
+            )
 
         if request_sample_image_upload_file == "" and FlowConstants.param_request_sample_image_upload_file_isRequired is True:
-            self._add_field_validation_error("requestSampleImageUploadFile","Please enter a image file")
+            self._add_field_validation_error(
+                "requestSampleImageUploadFile",
+                "Please enter a image file"
+            )
 
 
 
@@ -123,7 +177,6 @@ class BaseFlowLandAddPlant(BaseFlow):
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
                 self._add_validation_error("Unautorized access. " + role_required + " role not found.")
-
 
         if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
             customerCodeMatchRequired = True
@@ -164,9 +217,9 @@ class BaseFlowLandAddPlant(BaseFlow):
                 if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
                     if item.get_object_name() == "organization":
                         organization_id = item.get_id()
-                        customer_bus_obj = CustomerBusObj(land_bus_obj.session)
-                        await customer_bus_obj.load(code=self._session_context.customer_code)
-                        org_customer_manager = OrgCustomerManager(land_bus_obj.session)
+                        customer_bus_obj = CustomerBusObj(land_bus_obj.get_session_context())
+                        await customer_bus_obj.load_from_code(self._session_context.customer_code)
+                        org_customer_manager = OrgCustomerManager(land_bus_obj.get_session_context())
                         org_customers = org_customer_manager.get_by_customer_id(customer_bus_obj.customer_id)
                         org_customers = filter(lambda x: x.organization_id == organization_id, org_customers)
                         if len(org_customers) == 0:
@@ -175,4 +228,8 @@ class BaseFlowLandAddPlant(BaseFlow):
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End
                 if val is True:
                     # item = await item.get_parent_obj()
-                    item = await BusObjFactory.create(item.session,item.get_parent_name(), item.get_parent_code())
+                    item = await BusObjFactory.create(
+                        item.session,
+                        item.get_parent_name(),
+                        item.get_parent_code()
+                    )

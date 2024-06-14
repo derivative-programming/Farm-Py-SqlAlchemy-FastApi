@@ -64,7 +64,7 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
             logging.info(
                 "loading model...PlantUserDetailsInitReportGetInitModelRequest")
             plant_bus_obj = PlantBusObj(session_context)
-            await plant_bus_obj.load(code=plant_code)
+            await plant_bus_obj.load_from_code(plant_code)
             if plant_bus_obj.get_plant_obj() is None:
                 logging.info("Invalid plant_code")
                 raise ValueError("Invalid plant_code")

@@ -52,7 +52,7 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
             logging.info(
                 "loading model...PacUserDateGreaterThanFilterListInitReportGetInitModelRequest")
             pac_bus_obj = PacBusObj(session_context)
-            await pac_bus_obj.load(code=pac_code)
+            await pac_bus_obj.load_from_code(pac_code)
             if pac_bus_obj.get_pac_obj() is None:
                 logging.info("Invalid pac_code")
                 raise ValueError("Invalid pac_code")

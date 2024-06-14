@@ -58,16 +58,17 @@ async def api_key_fixture(overridden_get_db: AsyncSession):
     customer = await model_factorys.CustomerFactory.create_async(
         overridden_get_db)
 
-    customer_bus_obj = await business.CustomerBusObj.get(
-        session_context, customer_obj_instance=customer)
+    customer_bus_obj = business.CustomerBusObj(session_context)
 
-    tac_bus_obj = await business.TacBusObj.get(
-        session_context,
-        tac_id=customer.tac_id)
+    await customer_bus_obj.load_from_obj_instance(customer) 
 
-    pac_bus_obj = await business.PacBusObj.get(
-        session_context,
-        pac_id=tac_bus_obj.pac_id)
+    tac_bus_obj = business.TacBusObj(session_context)
+
+    await tac_bus_obj.load_from_id(customer_bus_obj.tac_id)
+
+    pac_bus_obj = business.PacBusObj(session_context)
+
+    await pac_bus_obj.load_from_id(tac_bus_obj.pac_id)
 
     api_dict = {'CustomerCode': str(customer_bus_obj.code),
                 'TacCode': str(tac_bus_obj.code),

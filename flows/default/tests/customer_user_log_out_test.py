@@ -50,7 +50,7 @@ class TestCustomerUserLogOutPostModelResponse:
         flow = FlowCustomerUserLogOut(session_context)
         customer = await CustomerFactory.create_async(session)
         customer_bus_obj = CustomerBusObj(session_context)
-        await customer_bus_obj.load(customer_obj_instance=customer)
+        await customer_bus_obj.load_from_obj_instance(customer)
         role_required = "User"
 
 # endset

@@ -50,7 +50,7 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
         flow = FlowPlantUserPropertyRandomUpdate(session_context)
         plant = await PlantFactory.create_async(session)
         plant_bus_obj = PlantBusObj(session_context)
-        await plant_bus_obj.load(plant_obj_instance=plant)
+        await plant_bus_obj.load_from_obj_instance(plant)
         role_required = "User"
 
 # endset

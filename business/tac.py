@@ -447,6 +447,11 @@ class TacBusObj(BaseBusObj):
         tac_manager = TacManager(self._session_context)
         self.tac = await tac_manager.from_enum(tac_enum)
 
+    def get_session_context(self):
+        """
+        #TODO add comment
+        """
+        return self._session_context
     async def refresh(self):
         """
         #TODO add comment
@@ -587,10 +592,8 @@ class TacBusObj(BaseBusObj):
         """
         result = list()
         for tac in obj_list:
-            tac_bus_obj = TacBusObj.get(
-                session_context,
-                tac_obj_instance=tac
-            )
+            tac_bus_obj = TacBusObj(session_context)
+            await tac_bus_obj.load_from_obj_instance(tac)
             result.append(tac_bus_obj)
         return result
 
@@ -608,7 +611,7 @@ class TacBusObj(BaseBusObj):
         obj_list = await organization_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
             bus_obj_item = OrganizationBusObj(self._session_context)
-            await bus_obj_item.load(organization_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
@@ -626,7 +629,7 @@ class TacBusObj(BaseBusObj):
         obj_list = await customer_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
             bus_obj_item = CustomerBusObj(self._session_context)
-            await bus_obj_item.load(customer_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
     async def get_customer_by_email_prop(self, email) -> List[CustomerBusObj]:
@@ -635,7 +638,7 @@ class TacBusObj(BaseBusObj):
         obj_list = await customer_manager.get_by_email_prop(email)
         for obj_item in obj_list:
             bus_obj_item = CustomerBusObj(self._session_context)
-            await bus_obj_item.load(customer_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
     async def get_customer_by_fs_user_code_value_prop(self, fs_user_code_value) -> List[CustomerBusObj]:
@@ -644,7 +647,7 @@ class TacBusObj(BaseBusObj):
         obj_list = await customer_manager.get_by_fs_user_code_value_prop(fs_user_code_value)
         for obj_item in obj_list:
             bus_obj_item = CustomerBusObj(self._session_context)
-            await bus_obj_item.load(customer_obj_instance=obj_item)
+            await bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
