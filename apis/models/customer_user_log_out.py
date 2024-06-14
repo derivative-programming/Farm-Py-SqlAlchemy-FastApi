@@ -84,7 +84,7 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
         try:
             logging.info("loading model...CustomerUserLogOutPostModelResponse")
             customer_bus_obj = CustomerBusObj(session_context)
-            await customer_bus_obj.load(code=customer_code)
+            await customer_bus_obj.load_from_code(code=customer_code)
             if customer_bus_obj.get_customer_obj() is None:
                 logging.info("Invalid customer_code")
                 raise ValueError("Invalid customer_code")

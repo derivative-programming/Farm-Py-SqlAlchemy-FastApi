@@ -60,14 +60,11 @@ class TestFlavorBusObj:
         assert isinstance(flavor_bus_obj.last_change_code, int)
         assert flavor_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert flavor_bus_obj.last_update_user_id == uuid.UUID(int=0)
-        assert flavor_bus_obj.description == "" or isinstance(
-            flavor_bus_obj.description, str)
+        assert isinstance(flavor_bus_obj.description, str)
         assert isinstance(flavor_bus_obj.display_order, int)
         assert isinstance(flavor_bus_obj.is_active, bool)
-        assert flavor_bus_obj.lookup_enum_name == "" or isinstance(
-            flavor_bus_obj.lookup_enum_name, str)
-        assert flavor_bus_obj.name == "" or isinstance(
-            flavor_bus_obj.name, str)
+        assert isinstance(flavor_bus_obj.lookup_enum_name, str)
+        assert isinstance(flavor_bus_obj.name, str)
         assert isinstance(flavor_bus_obj.pac_id, int)
     @pytest.mark.asyncio
     async def test_load_with_flavor_obj(
@@ -79,7 +76,7 @@ class TestFlavorBusObj:
         """
             #TODO add comment
         """
-        await flavor_bus_obj.load(flavor_obj_instance=new_flavor)
+        await flavor_bus_obj.load_from_obj_instance(new_flavor)
         assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_id(
@@ -91,7 +88,8 @@ class TestFlavorBusObj:
         """
             #TODO add comment
         """
-        await flavor_bus_obj.load(flavor_id=new_flavor.flavor_id)
+        new_flavor_flavor_id = new_flavor.flavor_id
+        await flavor_bus_obj.load_from_id(new_flavor_flavor_id)
         assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_code(
@@ -103,7 +101,7 @@ class TestFlavorBusObj:
         """
             #TODO add comment
         """
-        await flavor_bus_obj.load(code=new_flavor.code)
+        await flavor_bus_obj.load_from_code(new_flavor.code)
         assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_json(
@@ -116,7 +114,7 @@ class TestFlavorBusObj:
             #TODO add comment
         """
         flavor_json = flavor_manager.to_json(new_flavor)
-        await flavor_bus_obj.load(json_data=flavor_json)
+        await flavor_bus_obj.load_from_json(flavor_json)
         assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
     @pytest.mark.asyncio
     async def test_load_with_flavor_dict(
@@ -131,7 +129,7 @@ class TestFlavorBusObj:
         logger.info("test_load_with_flavor_dict 1")
         flavor_dict = flavor_manager.to_dict(new_flavor)
         logger.info(flavor_dict)
-        await flavor_bus_obj.load(flavor_dict=flavor_dict)
+        await flavor_bus_obj.load_from_dict(flavor_dict)
         assert flavor_manager.is_equal(
             flavor_bus_obj.flavor,
             new_flavor) is True
@@ -146,7 +144,7 @@ class TestFlavorBusObj:
             #TODO add comment
         """
         # Test retrieving a nonexistent flavor raises an exception
-        await flavor_bus_obj.load(flavor_id=-1)
+        await flavor_bus_obj.load_from_id(-1)
         assert flavor_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_flavor(
@@ -159,12 +157,15 @@ class TestFlavorBusObj:
             #TODO add comment
         """
         # Test updating a flavor's data
-        new_flavor = await flavor_manager.get_by_id(new_flavor.flavor_id)
+        new_flavor_flavor_id_value = new_flavor.flavor_id
+        new_flavor = await flavor_manager.get_by_id(new_flavor_flavor_id_value)
+        assert isinstance(new_flavor, Flavor)
         new_code = uuid.uuid4()
-        await flavor_bus_obj.load(flavor_obj_instance=new_flavor)
+        await flavor_bus_obj.load_from_obj_instance(new_flavor)
         flavor_bus_obj.code = new_code
         await flavor_bus_obj.save()
-        new_flavor = await flavor_manager.get_by_id(new_flavor.flavor_id)
+        new_flavor_flavor_id_value = new_flavor.flavor_id
+        new_flavor = await flavor_manager.get_by_id(new_flavor_flavor_id_value)
         assert flavor_manager.is_equal(
             flavor_bus_obj.flavor,
             new_flavor) is True
@@ -180,9 +181,11 @@ class TestFlavorBusObj:
         """
         assert new_flavor.flavor_id is not None
         assert flavor_bus_obj.flavor_id is None
-        await flavor_bus_obj.load(flavor_id=new_flavor.flavor_id)
+        new_flavor_flavor_id_value = new_flavor.flavor_id
+        await flavor_bus_obj.load_from_id(new_flavor_flavor_id_value)
         assert flavor_bus_obj.flavor_id is not None
         await flavor_bus_obj.delete()
-        new_flavor = await flavor_manager.get_by_id(new_flavor.flavor_id)
+        new_flavor_flavor_id_value = new_flavor.flavor_id
+        new_flavor = await flavor_manager.get_by_id(new_flavor_flavor_id_value)
         assert new_flavor is None
 

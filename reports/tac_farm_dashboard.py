@@ -124,29 +124,32 @@ class ReportManagerTacFarmDashboard():
             for row in reader:
                 obj = ReportItemTacFarmDashboard()
                 for key, value in row.items():
-                    if value is not None and value != '':
-                        if hasattr(obj, key):
-                            # Convert the value to the correct type
-                            # based on the attribute
-                            attr_type = type(getattr(obj, key))
-                            converted_value = self._convert_value(value, attr_type)
-                            setattr(obj, key, converted_value)
-                            # if attr_type == int:
-                            #     setattr(obj, key, int(value))
-                            # elif attr_type == bool:
-                            #     setattr(obj, key, self._parse_bool(value))
-                            # elif attr_type == float:
-                            #     setattr(obj, key, float(value))
-                            # elif attr_type == Decimal:
-                            #     setattr(obj, key, Decimal(value))
-                            # elif attr_type == datetime:
-                            #     setattr(obj, key, datetime.fromisoformat(value))
-                            # elif attr_type == date:
-                            #     setattr(obj, key, date.fromisoformat(value))
-                            # elif attr_type == uuid.UUID:
-                            #     setattr(obj, key, uuid.UUID(value))
-                            # else:
-                            #     setattr(obj, key, value)
+                    if value is None:
+                        continue
+                    if value == '':
+                        continue
+                    if hasattr(obj, key):
+                        # Convert the value to the correct type
+                        # based on the attribute
+                        attr_type = type(getattr(obj, key))
+                        converted_value = self._convert_value(value, attr_type)
+                        setattr(obj, key, converted_value)
+                        # if attr_type == int:
+                        #     setattr(obj, key, int(value))
+                        # elif attr_type == bool:
+                        #     setattr(obj, key, self._parse_bool(value))
+                        # elif attr_type == float:
+                        #     setattr(obj, key, float(value))
+                        # elif attr_type == Decimal:
+                        #     setattr(obj, key, Decimal(value))
+                        # elif attr_type == datetime:
+                        #     setattr(obj, key, datetime.fromisoformat(value))
+                        # elif attr_type == date:
+                        #     setattr(obj, key, date.fromisoformat(value))
+                        # elif attr_type == uuid.UUID:
+                        #     setattr(obj, key, uuid.UUID(value))
+                        # else:
+                        #     setattr(obj, key, value)
                 objects.append(obj)
         return objects
 

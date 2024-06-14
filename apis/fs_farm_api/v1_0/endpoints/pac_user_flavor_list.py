@@ -211,7 +211,7 @@ class PacUserFlavorListRouter(BaseRouter):
         logging.info(
             'PacUserFlavorListRouter.submit get result:%s', response_data
         )
-        output_file_name = 'pac_user_flavor_list_' + pac_code + '_' + str(uuid.uuid4()) + '.csv'
+        output_file_name = 'pac_user_flavor_list_' + str(pac_code) + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

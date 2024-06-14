@@ -84,7 +84,7 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
         try:
             logging.info("loading model...ErrorLogConfigResolveErrorLogPostModelResponse")
             error_log_bus_obj = ErrorLogBusObj(session_context)
-            await error_log_bus_obj.load(code=error_log_code)
+            await error_log_bus_obj.load_from_code(code=error_log_code)
             if error_log_bus_obj.get_error_log_obj() is None:
                 logging.info("Invalid error_log_code")
                 raise ValueError("Invalid error_log_code")

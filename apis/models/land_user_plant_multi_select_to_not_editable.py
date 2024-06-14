@@ -86,7 +86,7 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
         try:
             logging.info("loading model...LandUserPlantMultiSelectToNotEditablePostModelResponse")
             land_bus_obj = LandBusObj(session_context)
-            await land_bus_obj.load(code=land_code)
+            await land_bus_obj.load_from_code(code=land_code)
             if land_bus_obj.get_land_obj() is None:
                 logging.info("Invalid land_code")
                 raise ValueError("Invalid land_code")

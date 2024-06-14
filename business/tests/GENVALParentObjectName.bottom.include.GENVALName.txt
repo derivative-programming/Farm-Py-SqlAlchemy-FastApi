@@ -9,13 +9,21 @@
 ##GENLOOPPropEnd
 
     @pytest.mark.asyncio
-    async def test_build_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName, session:AsyncSession):
+    async def test_build_GENVALSnakeName(
+        self,
+        GENVALSnakeParentObjectName_manager: GENVALPascalParentObjectNameManager,
+        GENVALSnakeParentObjectName_bus_obj: GENVALPascalParentObjectNameBusObj,
+        new_GENVALSnakeParentObjectName: GENVALPascalParentObjectName,
+        session: AsyncSession
+    ):
         
         session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
 
-        await GENVALSnakeParentObjectName_bus_obj.load(GENVALSnakeParentObjectName_id=new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id) 
+        await GENVALSnakeParentObjectName_bus_obj.load_from_id(
+            new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id
+        ) 
         
         GENVALSnakeName_bus_obj = await GENVALSnakeParentObjectName_bus_obj.build_GENVALSnakeName()
 
@@ -28,13 +36,25 @@
 
     
     @pytest.mark.asyncio
-    async def test_get_all_GENVALSnakeName(self, GENVALSnakeParentObjectName_manager:GENVALPascalParentObjectNameManager, GENVALSnakeParentObjectName_bus_obj:GENVALPascalParentObjectNameBusObj, new_GENVALSnakeParentObjectName:GENVALPascalParentObjectName, session:AsyncSession):
+    async def test_get_all_GENVALSnakeName(
+        self,
+        GENVALSnakeParentObjectName_manager: GENVALPascalParentObjectNameManager,
+        GENVALSnakeParentObjectName_bus_obj: GENVALPascalParentObjectNameBusObj,
+        new_GENVALSnakeParentObjectName: GENVALPascalParentObjectName,
+        session: AsyncSession
+    ):
         
         session_context = SessionContext(dict(), session)
 
         await current_runtime.initialize(session_context)
+        
+        new_GENVALSnakeParentObjectName_GENVALSnakeParentObjectName_id = (
+            new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id
+        )
 
-        await GENVALSnakeParentObjectName_bus_obj.load(GENVALSnakeParentObjectName_id=new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id) 
+        await GENVALSnakeParentObjectName_bus_obj.load_from_id(
+            new_GENVALSnakeParentObjectName_GENVALSnakeParentObjectName_id
+        ) 
         
         GENVALSnakeName_bus_obj = await GENVALSnakeParentObjectName_bus_obj.build_GENVALSnakeName() 
 

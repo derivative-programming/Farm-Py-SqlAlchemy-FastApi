@@ -210,63 +210,23 @@ class DateGreaterThanFilterBusObj:
     def lookup_enum(self) -> managers_and_enums.DateGreaterThanFilterEnum:
         return managers_and_enums.DateGreaterThanFilterEnum[self.date_greater_than_filter.lookup_enum_name]
 
-    async def load(
+    async def load_from_enum(
         self,
-        json_data: str = None,
-        code: uuid.UUID = None,
-        date_greater_than_filter_id: int = None,
-        date_greater_than_filter_obj_instance:
-            DateGreaterThanFilter = None,
-        date_greater_than_filter_dict: dict = None,
         date_greater_than_filter_enum:
-            managers_and_enums.DateGreaterThanFilterEnum = None
+            managers_and_enums.DateGreaterThanFilterEnum
     ):
-        if date_greater_than_filter_id and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_id)
-            self.date_greater_than_filter = date_greater_than_filter_obj
-        if code and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_code(code)
-            self.date_greater_than_filter = date_greater_than_filter_obj
-        if date_greater_than_filter_obj_instance and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_obj_instance.date_greater_than_filter_id)
-            self.date_greater_than_filter = date_greater_than_filter_obj
-        if json_data and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            self.date_greater_than_filter = date_greater_than_filter_manager.from_json(json_data)
-        if date_greater_than_filter_dict and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            self.date_greater_than_filter = date_greater_than_filter_manager.from_dict(date_greater_than_filter_dict)
-        if date_greater_than_filter_enum and self.date_greater_than_filter.date_greater_than_filter_id is None:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            self.date_greater_than_filter = await date_greater_than_filter_manager.from_enum(date_greater_than_filter_enum)
+        """
+        Load plant data from dictionary.
 
-    @staticmethod
-    async def get(
-        session_context: SessionContext,
-        json_data: str = None,
-        code: uuid.UUID = None,
-        date_greater_than_filter_id: int = None,
-        date_greater_than_filter_obj_instance:
-            DateGreaterThanFilter = None,
-        date_greater_than_filter_dict: dict = None,
-        date_greater_than_filter_enum:
-            managers_and_enums.DateGreaterThanFilterEnum = None
-    ):
-        result = DateGreaterThanFilterBusObj(session_context)
+        :param plant_dict: Dictionary containing plant data.
+        :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
+        """
+        if not isinstance(date_greater_than_filter_enum, managers_and_enums.DateGreaterThanFilterEnum):
+            raise ValueError("date_greater_than_filter_enum must be a enum")
 
-        await result.load(
-            json_data,
-            code,
-            date_greater_than_filter_id,
-            date_greater_than_filter_obj_instance,
-            date_greater_than_filter_dict,
-            date_greater_than_filter_enum
-        )
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
+        self.date_greater_than_filter = await date_greater_than_filter_manager.from_enum(date_greater_than_filter_enum)
 
-        return result
 ##GENLearn[isLookup=true]End
 ##GENTrainingBlock[caseLookupEnums]End
 

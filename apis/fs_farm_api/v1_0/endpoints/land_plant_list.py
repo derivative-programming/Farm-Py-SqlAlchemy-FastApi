@@ -244,7 +244,7 @@ class LandPlantListRouter(BaseRouter):
         logging.info(
             'LandPlantListRouter.submit get result:%s', response_data
         )
-        output_file_name = 'land_plant_list_' + land_code + '_' + str(uuid.uuid4()) + '.csv'
+        output_file_name = 'land_plant_list_' + str(land_code) + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

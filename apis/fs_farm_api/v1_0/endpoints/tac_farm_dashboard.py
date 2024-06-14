@@ -211,7 +211,7 @@ class TacFarmDashboardRouter(BaseRouter):
         logging.info(
             'TacFarmDashboardRouter.submit get result:%s', response_data
         )
-        output_file_name = 'tac_farm_dashboard_' + tac_code + '_' + str(uuid.uuid4()) + '.csv'
+        output_file_name = 'tac_farm_dashboard_' + str(tac_code) + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

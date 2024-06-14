@@ -211,7 +211,7 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         logging.info(
             'PacUserTriStateFilterListRouter.submit get result:%s', response_data
         )
-        output_file_name = 'pac_user_tri_state_filter_list_' + pac_code + '_' + str(uuid.uuid4()) + '.csv'
+        output_file_name = 'pac_user_tri_state_filter_list_' + str(pac_code) + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

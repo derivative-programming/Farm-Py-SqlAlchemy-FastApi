@@ -211,7 +211,7 @@ class PacUserRoleListRouter(BaseRouter):
         logging.info(
             'PacUserRoleListRouter.submit get result:%s', response_data
         )
-        output_file_name = 'pac_user_role_list_' + pac_code + '_' + str(uuid.uuid4()) + '.csv'
+        output_file_name = 'pac_user_role_list_' + str(pac_code) + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

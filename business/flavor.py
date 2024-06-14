@@ -20,7 +20,8 @@ class FlavorInvalidInitError(Exception):
     pass
 class FlavorBusObj(BaseBusObj):
     """
-    #TODO add comment
+    This class represents the business object for a Flavor.
+    It requires a valid session context for initialization.
     """
     def __init__(self, session_context: SessionContext):
         if not session_context.session:
@@ -30,11 +31,14 @@ class FlavorBusObj(BaseBusObj):
     @property
     def flavor_id(self):
         """
-        #TODO add comment
+        Get the flavor ID from the Flavor object.
+        :return: The flavor ID.
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.flavor_id
     @flavor_id.setter
-    def code(self, value: int):
+    def flavor_id(self, value: int):
         """
         #TODO add comment
         """
@@ -47,14 +51,18 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
         #TODO add comment
         """
-        #if not isinstance(value, uuid.UUID):
-        #raise ValueError("code must be a UUID.")
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
+        if not isinstance(value, uuid.UUID):
+            raise ValueError("code must be a UUID.")
         self.flavor.code = value
     # last_change_code
     @property
@@ -62,12 +70,16 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.flavor.last_change_code = value
@@ -77,42 +89,52 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.flavor.insert_user_id = value
-    def set_prop_insert_user_id(self, value: uuid.UUID):
-        """
-        #TODO add comment
-        """
-        self.insert_user_id = value
-        return self
+    # def set_prop_insert_user_id(self, value: uuid.UUID):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not self.flavor:
+    #         raise AttributeError("Flavor object is not initialized")
+    #     self.insert_user_id = value
+    #     return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.flavor.last_update_user_id = value
-    def set_prop_last_update_user_id(self, value: uuid.UUID):
-        """
-        #TODO add comment
-        """
-        self.last_update_user_id = value
-        return self
+    # def set_prop_last_update_user_id(self, value: uuid.UUID):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     self.last_update_user_id = value
+    #     return self
 # endset
     # description
     @property
@@ -120,102 +142,128 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
+        if self.flavor.description is None:
+            return ""
         return self.flavor.description
     @description.setter
     def description(self, value):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         assert isinstance(value, str), "description must be a string"
         self.flavor.description = value
-    def set_prop_description(self, value):
-        """
-        #TODO add comment
-        """
-        self.description = value
-        return self
+    # def set_prop_description(self, value):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     self.description = value
+    #     return self
     # displayOrder
     @property
     def display_order(self):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.display_order
     @display_order.setter
     def display_order(self, value):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.flavor.display_order = value
-    def set_prop_display_order(self, value):
-        """
-        #TODO add comment
-        """
-        self.display_order = value
-        return self
+    # def set_prop_display_order(self, value):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     self.display_order = value
+    #     return self
     # isActive
     @property
     def is_active(self):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.is_active
     @is_active.setter
     def is_active(self, value: bool):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.flavor.is_active = value
-    def set_prop_is_active(self, value: bool):
-        """
-        #TODO add comment
-        """
-        self.is_active = value
-        return self
+    # def set_prop_is_active(self, value: bool):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     self.is_active = value
+    #     return self
     # lookupEnumName
     @property
     def lookup_enum_name(self):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
+        if self.flavor.lookup_enum_name is None:
+            return ""
         return self.flavor.lookup_enum_name
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.flavor.lookup_enum_name = value
-    def set_prop_lookup_enum_name(self, value):
-        """
-        #TODO add comment
-        """
-        self.lookup_enum_name = value
-        return self
+    # def set_prop_lookup_enum_name(self, value):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     self.lookup_enum_name = value
+    #     return self
     # name
     @property
     def name(self):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
+        if self.flavor.name is None:
+            return ""
         return self.flavor.name
     @name.setter
     def name(self, value):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         assert isinstance(value, str), "name must be a string"
         self.flavor.name = value
-    def set_prop_name(self, value):
-        """
-        #TODO add comment
-        """
-        self.name = value
-        return self
+    # def set_prop_name(self, value):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     self.name = value
+    #     return self
     # PacID
 # endset
     # description,
@@ -229,26 +277,32 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.pac_id
     @pac_id.setter
     def pac_id(self, value):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.flavor.pac_id = value
-    def set_prop_pac_id(self, value):
-        """
-        #TODO add comment
-        """
-        self.pac_id = value
-        return self
+    # def set_prop_pac_id(self, value):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     self.pac_id = value
+    #     return self
     @property
     def pac_code_peek(self):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
@@ -262,12 +316,16 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.flavor.insert_utc_date_time = value
@@ -277,73 +335,113 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.flavor.last_update_utc_date_time = value
+    async def load_from_json(
+        self,
+        json_data: str
+    ):
+        """
+        Load flavor data from JSON string.
+        :param json_data: JSON string containing flavor data.
+        :raises ValueError: If json_data is not a string or if no flavor data is found.
+        """
+        if not isinstance(json_data, str):
+            raise ValueError("json_data must be a string")
+        flavor_manager = FlavorManager(self._session_context)
+        self.flavor = flavor_manager.from_json(json_data)
+        return self
+    async def load_from_code(
+        self,
+        code: uuid.UUID
+    ):
+        """
+        Load flavor data from UUID code.
+        :param code: UUID code for loading a specific flavor.
+        :raises ValueError: If code is not a UUID or if no flavor data is found.
+        """
+        if not isinstance(code, uuid.UUID):
+            raise ValueError("code must be a UUID")
+        flavor_manager = FlavorManager(self._session_context)
+        flavor_obj = await flavor_manager.get_by_code(code)
+        self.flavor = flavor_obj
+        return self
+    async def load_from_id(
+        self,
+        flavor_id: int
+    ):
+        """
+        Load flavor data from flavor ID.
+        :param flavor_id: Integer ID for loading a specific flavor.
+        :raises ValueError: If flavor_id is not an integer or if no flavor data is found.
+        """
+        if not isinstance(flavor_id, int):
+            raise ValueError("flavor_id must be an integer")
+        flavor_manager = FlavorManager(self._session_context)
+        flavor_obj = await flavor_manager.get_by_id(flavor_id)
+        self.flavor = flavor_obj
+        return self
+    async def load_from_obj_instance(
+        self,
+        flavor_obj_instance: Flavor
+    ):
+        """
+        Use the provided Flavor instance.
+        :param flavor_obj_instance: Instance of the Flavor class.
+        :raises ValueError: If flavor_obj_instance is not an instance of Flavor.
+        """
+        if not isinstance(flavor_obj_instance, Flavor):
+            raise ValueError("flavor_obj_instance must be an instance of Flavor")
+        flavor_manager = FlavorManager(self._session_context)
+        flavor_obj_instance_flavor_id = flavor_obj_instance.flavor_id
+        flavor_obj = await flavor_manager.get_by_id(
+            flavor_obj_instance_flavor_id
+        )
+        self.flavor = flavor_obj
+        return self
+    async def load_from_dict(
+        self,
+        flavor_dict: dict
+    ):
+        """
+        Load flavor data from dictionary.
+        :param flavor_dict: Dictionary containing flavor data.
+        :raises ValueError: If flavor_dict is not a dictionary or if no flavor data is found.
+        """
+        if not isinstance(flavor_dict, dict):
+            raise ValueError("flavor_dict must be a dictionary")
+        flavor_manager = FlavorManager(self._session_context)
+        self.flavor = flavor_manager.from_dict(flavor_dict)
+        return self
 
     @property
     def lookup_enum(self) -> managers_and_enums.FlavorEnum:
         return managers_and_enums.FlavorEnum[self.flavor.lookup_enum_name]
-    async def load(
+    async def load_from_enum(
         self,
-        json_data: str = None,
-        code: uuid.UUID = None,
-        flavor_id: int = None,
-        flavor_obj_instance:
-            Flavor = None,
-        flavor_dict: dict = None,
         flavor_enum:
-            managers_and_enums.FlavorEnum = None
+            managers_and_enums.FlavorEnum
     ):
-        if flavor_id and self.flavor.flavor_id is None:
-            flavor_manager = FlavorManager(self._session_context)
-            flavor_obj = await flavor_manager.get_by_id(flavor_id)
-            self.flavor = flavor_obj
-        if code and self.flavor.flavor_id is None:
-            flavor_manager = FlavorManager(self._session_context)
-            flavor_obj = await flavor_manager.get_by_code(code)
-            self.flavor = flavor_obj
-        if flavor_obj_instance and self.flavor.flavor_id is None:
-            flavor_manager = FlavorManager(self._session_context)
-            flavor_obj = await flavor_manager.get_by_id(flavor_obj_instance.flavor_id)
-            self.flavor = flavor_obj
-        if json_data and self.flavor.flavor_id is None:
-            flavor_manager = FlavorManager(self._session_context)
-            self.flavor = flavor_manager.from_json(json_data)
-        if flavor_dict and self.flavor.flavor_id is None:
-            flavor_manager = FlavorManager(self._session_context)
-            self.flavor = flavor_manager.from_dict(flavor_dict)
-        if flavor_enum and self.flavor.flavor_id is None:
-            flavor_manager = FlavorManager(self._session_context)
-            self.flavor = await flavor_manager.from_enum(flavor_enum)
-    @staticmethod
-    async def get(
-        session_context: SessionContext,
-        json_data: str = None,
-        code: uuid.UUID = None,
-        flavor_id: int = None,
-        flavor_obj_instance:
-            Flavor = None,
-        flavor_dict: dict = None,
-        flavor_enum:
-            managers_and_enums.FlavorEnum = None
-    ):
-        result = FlavorBusObj(session_context)
-        await result.load(
-            json_data,
-            code,
-            flavor_id,
-            flavor_obj_instance,
-            flavor_dict,
-            flavor_enum
-        )
-        return result
+        """
+        Load plant data from dictionary.
+        :param plant_dict: Dictionary containing plant data.
+        :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
+        """
+        if not isinstance(flavor_enum, managers_and_enums.FlavorEnum):
+            raise ValueError("flavor_enum must be a enum")
+        flavor_manager = FlavorManager(self._session_context)
+        self.flavor = await flavor_manager.from_enum(flavor_enum)
 
     async def refresh(self):
         """
@@ -373,6 +471,8 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         if self.flavor.flavor_id is not None and self.flavor.flavor_id > 0:
             flavor_manager = FlavorManager(self._session_context)
             self.flavor = await flavor_manager.update(self.flavor)
@@ -384,6 +484,8 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         if self.flavor.flavor_id > 0:
             flavor_manager = FlavorManager(self._session_context)
             await flavor_manager.delete(self.flavor.flavor_id)
@@ -392,6 +494,8 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         self.flavor.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.flavor.display_order = random.randint(0, 100)
@@ -407,8 +511,10 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError("Flavor object is not initialized")
         return self.flavor
-    def is_equal(self, flavor: Flavor) -> Flavor:
+    def is_equal(self, flavor: Flavor) -> bool:
         """
         #TODO add comment
         """

@@ -55,9 +55,7 @@ class TestPlantBusObj:
     @pytest.mark.asyncio
     async def test_create_plant(
         self,
-        plant_manager: PlantManager,
-        plant_bus_obj: PlantBusObj,
-        new_plant: Plant
+        plant_bus_obj: PlantBusObj
     ):
         """
             #TODO add comment
@@ -79,28 +77,22 @@ class TestPlantBusObj:
         assert isinstance(plant_bus_obj.is_delete_allowed, bool)
         assert isinstance(plant_bus_obj.is_edit_allowed, bool)
         assert isinstance(plant_bus_obj.land_id, int)
-        assert plant_bus_obj.other_flavor == "" or isinstance(
-            plant_bus_obj.other_flavor, str)
+        assert isinstance(plant_bus_obj.other_flavor, str)
         assert isinstance(plant_bus_obj.some_big_int_val, int)
         assert isinstance(plant_bus_obj.some_bit_val, bool)
         assert isinstance(plant_bus_obj.some_date_val, date)
         assert isinstance(plant_bus_obj.some_decimal_val, int or float)
-        assert plant_bus_obj.some_email_address == "" or isinstance(
-            plant_bus_obj.some_email_address, str)
+        assert isinstance(plant_bus_obj.some_email_address, str)
         assert isinstance(plant_bus_obj.some_float_val, float)
         assert isinstance(plant_bus_obj.some_int_val, int)
         assert isinstance(plant_bus_obj.some_money_val, int or float)
-        assert plant_bus_obj.some_n_var_char_val == "" or isinstance(
-            plant_bus_obj.some_n_var_char_val, str)
-        assert plant_bus_obj.some_phone_number == "" or isinstance(
-            plant_bus_obj.some_phone_number, str)
-        assert plant_bus_obj.some_text_val == "" or isinstance(
-            plant_bus_obj.some_text_val, str)
+        assert isinstance(plant_bus_obj.some_n_var_char_val, str)
+        assert isinstance(plant_bus_obj.some_phone_number, str)
+        assert isinstance(plant_bus_obj.some_text_val, str)
         # some_uniqueidentifier_val
         assert isinstance(plant_bus_obj.some_uniqueidentifier_val, uuid.UUID)
         assert isinstance(plant_bus_obj.some_utc_date_time_val, datetime)
-        assert plant_bus_obj.some_var_char_val == "" or isinstance(
-            plant_bus_obj.some_var_char_val, str)
+        assert isinstance(plant_bus_obj.some_var_char_val, str)
 
     @pytest.mark.asyncio
     async def test_load_with_plant_obj(
@@ -113,7 +105,7 @@ class TestPlantBusObj:
             #TODO add comment
         """
 
-        await plant_bus_obj.load(plant_obj_instance=new_plant)
+        await plant_bus_obj.load_from_obj_instance(new_plant)
 
         assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
@@ -128,7 +120,9 @@ class TestPlantBusObj:
             #TODO add comment
         """
 
-        await plant_bus_obj.load(plant_id=new_plant.plant_id)
+        new_plant_plant_id = new_plant.plant_id
+
+        await plant_bus_obj.load_from_id(new_plant_plant_id)
 
         assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
@@ -143,7 +137,7 @@ class TestPlantBusObj:
             #TODO add comment
         """
 
-        await plant_bus_obj.load(code=new_plant.code)
+        await plant_bus_obj.load_from_code(new_plant.code)
 
         assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
@@ -160,7 +154,7 @@ class TestPlantBusObj:
 
         plant_json = plant_manager.to_json(new_plant)
 
-        await plant_bus_obj.load(json_data=plant_json)
+        await plant_bus_obj.load_from_json(plant_json)
 
         assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
 
@@ -181,7 +175,7 @@ class TestPlantBusObj:
 
         logger.info(plant_dict)
 
-        await plant_bus_obj.load(plant_dict=plant_dict)
+        await plant_bus_obj.load_from_dict(plant_dict)
 
         assert plant_manager.is_equal(
             plant_bus_obj.plant,
@@ -190,15 +184,13 @@ class TestPlantBusObj:
     @pytest.mark.asyncio
     async def test_get_nonexistent_plant(
         self,
-        plant_manager: PlantManager,
-        plant_bus_obj: PlantBusObj,
-        new_plant: Plant
+        plant_bus_obj: PlantBusObj
     ):
         """
             #TODO add comment
         """
         # Test retrieving a nonexistent plant raises an exception
-        await plant_bus_obj.load(plant_id=-1)
+        await plant_bus_obj.load_from_id(-1)
         assert plant_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
 
     @pytest.mark.asyncio
@@ -213,17 +205,23 @@ class TestPlantBusObj:
         """
         # Test updating a plant's data
 
-        new_plant = await plant_manager.get_by_id(new_plant.plant_id)
+        new_plant_plant_id_value = new_plant.plant_id
+
+        new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)
+
+        assert isinstance(new_plant, Plant)
 
         new_code = uuid.uuid4()
 
-        await plant_bus_obj.load(plant_obj_instance=new_plant)
+        await plant_bus_obj.load_from_obj_instance(new_plant)
 
         plant_bus_obj.code = new_code
 
         await plant_bus_obj.save()
+        
+        new_plant_plant_id_value = new_plant.plant_id
 
-        new_plant = await plant_manager.get_by_id(new_plant.plant_id)
+        new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)
 
         assert plant_manager.is_equal(
             plant_bus_obj.plant,
@@ -243,14 +241,18 @@ class TestPlantBusObj:
         assert new_plant.plant_id is not None
 
         assert plant_bus_obj.plant_id is None
+        
+        new_plant_plant_id_value = new_plant.plant_id
 
-        await plant_bus_obj.load(plant_id=new_plant.plant_id)
+        await plant_bus_obj.load_from_id(new_plant_plant_id_value)
 
         assert plant_bus_obj.plant_id is not None
 
         await plant_bus_obj.delete()
+        
+        new_plant_plant_id_value = new_plant.plant_id
 
-        new_plant = await plant_manager.get_by_id(new_plant.plant_id)
+        new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)
 
         assert new_plant is None
 

@@ -211,7 +211,7 @@ class PlantUserDetailsRouter(BaseRouter):
         logging.info(
             'PlantUserDetailsRouter.submit get result:%s', response_data
         )
-        output_file_name = 'plant_user_details_' + plant_code + '_' + str(uuid.uuid4()) + '.csv'
+        output_file_name = 'plant_user_details_' + str(plant_code) + '_' + str(uuid.uuid4()) + '.csv'
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

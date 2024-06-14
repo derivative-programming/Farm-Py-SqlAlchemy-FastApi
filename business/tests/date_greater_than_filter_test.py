@@ -61,14 +61,11 @@ class TestDateGreaterThanFilterBusObj:
         assert date_greater_than_filter_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert date_greater_than_filter_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(date_greater_than_filter_bus_obj.day_count, int)
-        assert date_greater_than_filter_bus_obj.description == "" or isinstance(
-            date_greater_than_filter_bus_obj.description, str)
+        assert isinstance(date_greater_than_filter_bus_obj.description, str)
         assert isinstance(date_greater_than_filter_bus_obj.display_order, int)
         assert isinstance(date_greater_than_filter_bus_obj.is_active, bool)
-        assert date_greater_than_filter_bus_obj.lookup_enum_name == "" or isinstance(
-            date_greater_than_filter_bus_obj.lookup_enum_name, str)
-        assert date_greater_than_filter_bus_obj.name == "" or isinstance(
-            date_greater_than_filter_bus_obj.name, str)
+        assert isinstance(date_greater_than_filter_bus_obj.lookup_enum_name, str)
+        assert isinstance(date_greater_than_filter_bus_obj.name, str)
         assert isinstance(date_greater_than_filter_bus_obj.pac_id, int)
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_obj(
@@ -80,7 +77,7 @@ class TestDateGreaterThanFilterBusObj:
         """
             #TODO add comment
         """
-        await date_greater_than_filter_bus_obj.load(date_greater_than_filter_obj_instance=new_date_greater_than_filter)
+        await date_greater_than_filter_bus_obj.load_from_obj_instance(new_date_greater_than_filter)
         assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_id(
@@ -92,7 +89,8 @@ class TestDateGreaterThanFilterBusObj:
         """
             #TODO add comment
         """
-        await date_greater_than_filter_bus_obj.load(date_greater_than_filter_id=new_date_greater_than_filter.date_greater_than_filter_id)
+        new_date_greater_than_filter_date_greater_than_filter_id = new_date_greater_than_filter.date_greater_than_filter_id
+        await date_greater_than_filter_bus_obj.load_from_id(new_date_greater_than_filter_date_greater_than_filter_id)
         assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_code(
@@ -104,7 +102,7 @@ class TestDateGreaterThanFilterBusObj:
         """
             #TODO add comment
         """
-        await date_greater_than_filter_bus_obj.load(code=new_date_greater_than_filter.code)
+        await date_greater_than_filter_bus_obj.load_from_code(new_date_greater_than_filter.code)
         assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_json(
@@ -117,7 +115,7 @@ class TestDateGreaterThanFilterBusObj:
             #TODO add comment
         """
         date_greater_than_filter_json = date_greater_than_filter_manager.to_json(new_date_greater_than_filter)
-        await date_greater_than_filter_bus_obj.load(json_data=date_greater_than_filter_json)
+        await date_greater_than_filter_bus_obj.load_from_json(date_greater_than_filter_json)
         assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
     @pytest.mark.asyncio
     async def test_load_with_date_greater_than_filter_dict(
@@ -132,7 +130,7 @@ class TestDateGreaterThanFilterBusObj:
         logger.info("test_load_with_date_greater_than_filter_dict 1")
         date_greater_than_filter_dict = date_greater_than_filter_manager.to_dict(new_date_greater_than_filter)
         logger.info(date_greater_than_filter_dict)
-        await date_greater_than_filter_bus_obj.load(date_greater_than_filter_dict=date_greater_than_filter_dict)
+        await date_greater_than_filter_bus_obj.load_from_dict(date_greater_than_filter_dict)
         assert date_greater_than_filter_manager.is_equal(
             date_greater_than_filter_bus_obj.date_greater_than_filter,
             new_date_greater_than_filter) is True
@@ -147,7 +145,7 @@ class TestDateGreaterThanFilterBusObj:
             #TODO add comment
         """
         # Test retrieving a nonexistent date_greater_than_filter raises an exception
-        await date_greater_than_filter_bus_obj.load(date_greater_than_filter_id=-1)
+        await date_greater_than_filter_bus_obj.load_from_id(-1)
         assert date_greater_than_filter_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
     @pytest.mark.asyncio
     async def test_update_date_greater_than_filter(
@@ -160,12 +158,15 @@ class TestDateGreaterThanFilterBusObj:
             #TODO add comment
         """
         # Test updating a date_greater_than_filter's data
-        new_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(new_date_greater_than_filter.date_greater_than_filter_id)
+        new_date_greater_than_filter_date_greater_than_filter_id_value = new_date_greater_than_filter.date_greater_than_filter_id
+        new_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(new_date_greater_than_filter_date_greater_than_filter_id_value)
+        assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
         new_code = uuid.uuid4()
-        await date_greater_than_filter_bus_obj.load(date_greater_than_filter_obj_instance=new_date_greater_than_filter)
+        await date_greater_than_filter_bus_obj.load_from_obj_instance(new_date_greater_than_filter)
         date_greater_than_filter_bus_obj.code = new_code
         await date_greater_than_filter_bus_obj.save()
-        new_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(new_date_greater_than_filter.date_greater_than_filter_id)
+        new_date_greater_than_filter_date_greater_than_filter_id_value = new_date_greater_than_filter.date_greater_than_filter_id
+        new_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(new_date_greater_than_filter_date_greater_than_filter_id_value)
         assert date_greater_than_filter_manager.is_equal(
             date_greater_than_filter_bus_obj.date_greater_than_filter,
             new_date_greater_than_filter) is True
@@ -181,9 +182,11 @@ class TestDateGreaterThanFilterBusObj:
         """
         assert new_date_greater_than_filter.date_greater_than_filter_id is not None
         assert date_greater_than_filter_bus_obj.date_greater_than_filter_id is None
-        await date_greater_than_filter_bus_obj.load(date_greater_than_filter_id=new_date_greater_than_filter.date_greater_than_filter_id)
+        new_date_greater_than_filter_date_greater_than_filter_id_value = new_date_greater_than_filter.date_greater_than_filter_id
+        await date_greater_than_filter_bus_obj.load_from_id(new_date_greater_than_filter_date_greater_than_filter_id_value)
         assert date_greater_than_filter_bus_obj.date_greater_than_filter_id is not None
         await date_greater_than_filter_bus_obj.delete()
-        new_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(new_date_greater_than_filter.date_greater_than_filter_id)
+        new_date_greater_than_filter_date_greater_than_filter_id_value = new_date_greater_than_filter.date_greater_than_filter_id
+        new_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(new_date_greater_than_filter_date_greater_than_filter_id_value)
         assert new_date_greater_than_filter is None
 
