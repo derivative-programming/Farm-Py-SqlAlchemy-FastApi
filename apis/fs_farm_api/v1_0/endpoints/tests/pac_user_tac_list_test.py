@@ -174,10 +174,13 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}',
+            params=request_dict,
             headers={'API_KEY': 'xxx'}
         )
         if PacUserTacListRouterConfig.is_public is True:
@@ -191,10 +194,13 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}',
+            params=request_dict,
             headers={'API_KEY': ''}
         )
         if PacUserTacListRouterConfig.is_public is True:
@@ -208,10 +214,13 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/pac-user-tac-list/{pac_code}'
+            f'/api/v1_0/pac-user-tac-list/{pac_code}',
+            params=request_dict
         )
         if PacUserTacListRouterConfig.is_public is True:
             assert response.status_code == 200
@@ -227,11 +236,14 @@ async def test_get_endpoint_url_failure(
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}/xxx',
+            params=request_dict,
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 501
@@ -244,11 +256,14 @@ async def test_get_endpoint_invalid_code_failure(
     #TODO add comment
     """
     pac_code = uuid.UUID(int=0)
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}',
+            params=request_dict,
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 200
@@ -305,10 +320,13 @@ async def test_get_csv_success(
 async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}/to-csv',
+            params=request_dict,
             headers={'API_KEY': 'xxx'}
         )
         if PacUserTacListRouterConfig.is_public is True:
@@ -320,10 +338,13 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
 async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}/to-csv',
+            params=request_dict,
             headers={'API_KEY': ''}
         )
         if PacUserTacListRouterConfig.is_public is True:
@@ -335,10 +356,13 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
 async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncSession):
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/pac-user-tac-list/{pac_code}/to-csv'
+            f'/api/v1_0/pac-user-tac-list/{pac_code}/to-csv',
+            params=request_dict,
         )
         if PacUserTacListRouterConfig.is_public is True:
             assert response.status_code == 200
@@ -372,11 +396,14 @@ async def test_get_csv_endpoint_invalid_code_failure(
     #TODO add comment
     """
     pac_code = uuid.UUID(int=0)
+    request = await request_factory.PacUserTacListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/pac-user-tac-list/{pac_code}/to-csv',
+            params=request_dict,
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 200

@@ -92,14 +92,14 @@ class LandAddPlantRouter(BaseRouter):
                     response
                 )
             except TypeError as te:
-                logging.exception("TypeError Exception occurred")
+                logging.info("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.exception("Exception occurred")
+                logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
@@ -164,7 +164,7 @@ class LandAddPlantRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.exception("TypeError Exception occurred")
+                logging.info("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -172,7 +172,7 @@ class LandAddPlantRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.exception("Exception occurred")
+                logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

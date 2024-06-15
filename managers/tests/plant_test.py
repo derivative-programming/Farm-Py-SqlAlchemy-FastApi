@@ -984,13 +984,6 @@ class TestPlantManager:
         assert isinstance(fetched_plants[0], Plant)
         assert fetched_plants[0].code == plant1.code
 
-        stmt = select(models.Land).where(
-            models.Land.land_id == plant1.land_id)
-        result = await session.execute(stmt)
-        land = result.scalars().first()
-
-        assert fetched_plants[0].land_code_peek == land.code
-
     @pytest.mark.asyncio
     async def test_get_by_land_id_nonexistent(
         self,

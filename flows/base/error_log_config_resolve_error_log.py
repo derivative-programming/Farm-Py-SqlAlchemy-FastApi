@@ -29,6 +29,8 @@ class BaseFlowErrorLogConfigResolveErrorLog(BaseFlow):
     ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
+# end set
+        await self._process_security_rules(error_log_bus_obj)
     async def _process_security_rules(
         self,
         error_log_bus_obj: ErrorLogBusObj,

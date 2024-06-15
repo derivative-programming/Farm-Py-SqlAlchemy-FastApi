@@ -2,13 +2,13 @@
 """
     #TODO add comment
 """
+import logging
 import tempfile
 import uuid
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
-import logging
 from helpers import SessionContext, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
@@ -77,7 +77,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
             except Exception as e:
-                logging.exception("Exception occurred")
+                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
@@ -132,7 +132,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.exception("TypeError Exception occurred")
+                logging.info("TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -140,7 +140,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
             except Exception as e:
-                logging.exception("Exception occurred")
+                logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)

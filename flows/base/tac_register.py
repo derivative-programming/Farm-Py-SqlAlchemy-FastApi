@@ -57,6 +57,8 @@ class BaseFlowTacRegister(BaseFlow):
                 "lastName",
                 "Please enter a Last Name"
             )
+# end set
+        await self._process_security_rules(tac_bus_obj)
     async def _process_security_rules(
         self,
         tac_bus_obj: TacBusObj,

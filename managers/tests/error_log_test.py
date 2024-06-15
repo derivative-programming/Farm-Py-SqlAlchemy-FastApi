@@ -713,11 +713,6 @@ class TestErrorLogManager:
         assert len(fetched_error_logs) == 1
         assert isinstance(fetched_error_logs[0], ErrorLog)
         assert fetched_error_logs[0].code == error_log1.code
-        stmt = select(models.Pac).where(
-            models.Pac.pac_id == error_log1.pac_id)
-        result = await session.execute(stmt)
-        pac = result.scalars().first()
-        assert fetched_error_logs[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,

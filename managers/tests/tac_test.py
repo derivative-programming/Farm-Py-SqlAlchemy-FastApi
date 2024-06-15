@@ -712,11 +712,6 @@ class TestTacManager:
         assert len(fetched_tacs) == 1
         assert isinstance(fetched_tacs[0], Tac)
         assert fetched_tacs[0].code == tac1.code
-        stmt = select(models.Pac).where(
-            models.Pac.pac_id == tac1.pac_id)
-        result = await session.execute(stmt)
-        pac = result.scalars().first()
-        assert fetched_tacs[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,

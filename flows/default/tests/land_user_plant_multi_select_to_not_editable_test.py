@@ -59,7 +59,7 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
                 flow_result = await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -74,7 +74,7 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
                 flow_result = await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(

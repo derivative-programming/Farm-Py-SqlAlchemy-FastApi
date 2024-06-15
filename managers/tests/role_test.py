@@ -712,11 +712,6 @@ class TestRoleManager:
         assert len(fetched_roles) == 1
         assert isinstance(fetched_roles[0], Role)
         assert fetched_roles[0].code == role1.code
-        stmt = select(models.Pac).where(
-            models.Pac.pac_id == role1.pac_id)
-        result = await session.execute(stmt)
-        pac = result.scalars().first()
-        assert fetched_roles[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,

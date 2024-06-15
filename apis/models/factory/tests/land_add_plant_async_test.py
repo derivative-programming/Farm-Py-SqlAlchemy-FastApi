@@ -37,7 +37,7 @@ class TestLandAddPlantPostModelRequestFactoryAsync:
         )
         assert isinstance(model_instance, LandAddPlantPostModelRequest)
         assert isinstance(model_instance.request_flavor_code,
-                          str)
+                          uuid.UUID)
         assert isinstance(model_instance.request_other_flavor,
                           str)
         assert isinstance(model_instance.request_some_int_val,

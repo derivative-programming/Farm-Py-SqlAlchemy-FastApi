@@ -29,6 +29,8 @@ class BaseFlowTacLoginInitObjWF(BaseFlow):
     ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
+# end set
+        await self._process_security_rules(tac_bus_obj)
     async def _process_security_rules(
         self,
         tac_bus_obj: TacBusObj,

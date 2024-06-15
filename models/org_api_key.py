@@ -102,8 +102,8 @@ class OrgApiKey(Base):
         ForeignKey('farm_' + snake_case('OrgCustomer') + '.org_customer_id'),
         index=org_api_key_constants.org_customer_id_calculatedIsDBColumnIndexed,
         nullable=True)
-    _organization_code_peek = UUIDType  # OrganizationID
-    _org_customer_code_peek = UUIDType  # OrgCustomerID
+    organization_code_peek = uuid.UUID  # OrganizationID
+    org_customer_code_peek = uuid.UUID  # OrgCustomerID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
@@ -151,9 +151,9 @@ class OrgApiKey(Base):
             'last_update_utc_date_time', datetime(1753, 1, 1))
 # endset
         self.organization_code_peek = kwargs.get(  # OrganizationID
-            'organization_code_peek', uuid.uuid4())
+            'organization_code_peek', uuid.UUID(int=0))
         self.org_customer_code_peek = kwargs.get(  # OrgCustomerID
-            'org_customer_code_peek', uuid.uuid4())
+            'org_customer_code_peek', uuid.UUID(int=0))
 # endset
     @property
     def code(self):
@@ -193,25 +193,7 @@ class OrgApiKey(Base):
     # isTempUserKey,
     # name,
     # OrganizationID
-    @property
-    def organization_code_peek(self):
-        return uuid.UUID(str(self._organization_code_peek))
-    @code.setter
-    def organization_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._organization_code_peek = value
-        else:
-            self._organization_code_peek = uuid.UUID(value)
     # orgCustomerID
-    @property
-    def org_customer_code_peek(self):
-        return uuid.UUID(str(self._org_customer_code_peek))
-    @org_customer_code_peek.setter
-    def org_customer_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._org_customer_code_peek = value
-        else:
-            self._org_customer_code_peek = uuid.UUID(value)
 # endset
     @staticmethod
     def property_list():

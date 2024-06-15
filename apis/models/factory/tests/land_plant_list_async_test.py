@@ -6,6 +6,7 @@
 
 import asyncio
 import time
+import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import AsyncGenerator
@@ -34,7 +35,7 @@ class TestLandPlantListGetModelRequestFactoryAsync:
     async def test_create_async(self, session):
         model_instance = await LandPlantListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance, LandPlantListGetModelRequest)
-        assert isinstance(model_instance.flavor_code, str)
+        assert isinstance(model_instance.flavor_code, uuid.UUID)
         assert isinstance(model_instance.some_int_val, int)
         assert isinstance(model_instance.some_big_int_val, int)
         assert isinstance(model_instance.some_float_val, float)

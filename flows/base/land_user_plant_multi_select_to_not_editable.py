@@ -33,6 +33,8 @@ class BaseFlowLandUserPlantMultiSelectToNotEditable(BaseFlow):
                 "plantCodeListCsv",
                 "Please enter a plant Code List Csv"
             )
+# end set
+        await self._process_security_rules(land_bus_obj)
     async def _process_security_rules(
         self,
         land_bus_obj: LandBusObj,

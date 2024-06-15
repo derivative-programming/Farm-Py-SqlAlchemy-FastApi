@@ -12,6 +12,7 @@ from sqlalchemy.orm import sessionmaker
 from helpers.session_context import SessionContext
 from models import Base
 from helpers.api_token import ApiToken
+import current_runtime
 
 # Define your in-memory SQLite test database URL
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -55,12 +56,15 @@ async def api_key_fixture(overridden_get_db: AsyncSession):
     """
 
     session_context = SessionContext(dict(), overridden_get_db)
+
+    await current_runtime.initialize(session_context)
+
     customer = await model_factorys.CustomerFactory.create_async(
         overridden_get_db)
 
     customer_bus_obj = business.CustomerBusObj(session_context)
 
-    await customer_bus_obj.load_from_obj_instance(customer) 
+    await customer_bus_obj.load_from_obj_instance(customer)
 
     tac_bus_obj = business.TacBusObj(session_context)
 

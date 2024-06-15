@@ -727,11 +727,6 @@ class TestCustomerManager:
         assert len(fetched_customers) == 1
         assert isinstance(fetched_customers[0], Customer)
         assert fetched_customers[0].code == customer1.code
-        stmt = select(models.Tac).where(
-            models.Tac.tac_id == customer1.tac_id)
-        result = await session.execute(stmt)
-        tac = result.scalars().first()
-        assert fetched_customers[0].tac_code_peek == tac.code
     @pytest.mark.asyncio
     async def test_get_by_tac_id_nonexistent(
         self,

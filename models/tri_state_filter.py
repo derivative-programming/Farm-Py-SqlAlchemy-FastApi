@@ -90,7 +90,7 @@ class TriStateFilter(Base):
         default=0,
         index=tri_state_filter_constants.state_int_value_calculatedIsDBColumnIndexed,
         nullable=True)
-    _pac_code_peek = UUIDType  # PacID
+    pac_code_peek = uuid.UUID  # PacID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
@@ -134,7 +134,7 @@ class TriStateFilter(Base):
             'last_update_utc_date_time', datetime(1753, 1, 1))
 # endset
         self.pac_code_peek = kwargs.get(  # PacID
-            'pac_code_peek', uuid.uuid4())
+            'pac_code_peek', uuid.UUID(int=0))
 # endset
     @property
     def code(self):
@@ -172,15 +172,6 @@ class TriStateFilter(Base):
     # lookupEnumName,
     # name,
     # PacID
-    @property
-    def pac_code_peek(self):
-        return uuid.UUID(str(self._pac_code_peek))
-    @code.setter
-    def pac_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._pac_code_peek = value
-        else:
-            self._pac_code_peek = uuid.UUID(value)
     # stateIntValue,
 # endset
     @staticmethod

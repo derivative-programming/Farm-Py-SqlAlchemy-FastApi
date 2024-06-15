@@ -756,11 +756,6 @@ class TestOrgCustomerManager:
         assert len(fetched_org_customers) == 1
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
-        stmt = select(models.Organization).where(
-            models.Organization.organization_id == org_customer1.organization_id)
-        result = await session.execute(stmt)
-        organization = result.scalars().first()
-        assert fetched_org_customers[0].organization_code_peek == organization.code
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(
         self,

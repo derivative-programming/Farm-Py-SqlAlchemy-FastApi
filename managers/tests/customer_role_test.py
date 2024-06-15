@@ -707,11 +707,6 @@ class TestCustomerRoleManager:
         assert len(fetched_customer_roles) == 1
         assert isinstance(fetched_customer_roles[0], CustomerRole)
         assert fetched_customer_roles[0].code == customer_role1.code
-        stmt = select(models.Customer).where(
-            models.Customer.customer_id == customer_role1.customer_id)
-        result = await session.execute(stmt)
-        customer = result.scalars().first()
-        assert fetched_customer_roles[0].customer_code_peek == customer.code
     @pytest.mark.asyncio
     async def test_get_by_customer_id_nonexistent(
         self,

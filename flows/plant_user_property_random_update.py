@@ -62,7 +62,8 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
         super()._throw_queued_validation_errors()
 
 # endset
-        await plant_bus_obj.randomize_properties().save()
+        await plant_bus_obj.randomize_properties()
+        await plant_bus_obj.save()
 
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
         result = FlowPlantUserPropertyRandomUpdateResult()

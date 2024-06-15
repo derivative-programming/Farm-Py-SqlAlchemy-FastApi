@@ -77,7 +77,7 @@ class TestTacRegisterPostModelResponse:
                     confirm_password,
                     first_name,
                     last_name,
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -96,7 +96,7 @@ class TestTacRegisterPostModelResponse:
                     confirm_password,
                     first_name,
                     last_name,
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(

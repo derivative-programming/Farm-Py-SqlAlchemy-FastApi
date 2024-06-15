@@ -231,7 +231,7 @@ class DateGreaterThanFilterManager:
         code: uuid.UUID
     ) -> Optional[DateGreaterThanFilter]:
         logging.info("DateGreaterThanFilterManager.get_by_code {code}")
-        query_filter = DateGreaterThanFilter.code == code
+        query_filter = DateGreaterThanFilter._code == str(code)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 

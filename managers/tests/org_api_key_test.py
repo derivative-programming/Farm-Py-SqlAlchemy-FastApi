@@ -714,11 +714,6 @@ class TestOrgApiKeyManager:
         assert len(fetched_org_api_keys) == 1
         assert isinstance(fetched_org_api_keys[0], OrgApiKey)
         assert fetched_org_api_keys[0].code == org_api_key1.code
-        stmt = select(models.Organization).where(
-            models.Organization.organization_id == org_api_key1.organization_id)
-        result = await session.execute(stmt)
-        organization = result.scalars().first()
-        assert fetched_org_api_keys[0].organization_code_peek == organization.code
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(
         self,

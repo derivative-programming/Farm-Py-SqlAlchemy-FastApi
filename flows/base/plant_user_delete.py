@@ -29,6 +29,8 @@ class BaseFlowPlantUserDelete(BaseFlow):
     ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
+# end set
+        await self._process_security_rules(plant_bus_obj)
     async def _process_security_rules(
         self,
         plant_bus_obj: PlantBusObj,

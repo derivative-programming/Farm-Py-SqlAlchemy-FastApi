@@ -29,6 +29,8 @@ class BaseFlowPacUserTacListInitReport(BaseFlow):
     ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
+# end set
+        await self._process_security_rules(pac_bus_obj)
     async def _process_security_rules(
         self,
         pac_bus_obj: PacBusObj,

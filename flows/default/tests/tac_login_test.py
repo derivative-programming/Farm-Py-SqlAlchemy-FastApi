@@ -71,7 +71,7 @@ class TestTacLoginPostModelResponse:
                     tac_bus_obj,
                     email,
                     password,
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -87,7 +87,7 @@ class TestTacLoginPostModelResponse:
                     tac_bus_obj,
                     email,
                     password,
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(

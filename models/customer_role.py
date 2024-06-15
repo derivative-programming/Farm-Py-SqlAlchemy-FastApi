@@ -66,8 +66,8 @@ class CustomerRole(Base):
         ForeignKey('farm_' + snake_case('Role') + '.role_id'),
         index=customer_role_constants.role_id_calculatedIsDBColumnIndexed,
         nullable=True)
-    _customer_code_peek = UUIDType  # CustomerID
-    _role_code_peek = UUIDType  # RoleID
+    customer_code_peek = uuid.UUID  # CustomerID
+    role_code_peek = uuid.UUID  # RoleID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
@@ -105,9 +105,9 @@ class CustomerRole(Base):
             'last_update_utc_date_time', datetime(1753, 1, 1))
 # endset
         self.customer_code_peek = kwargs.get(  # CustomerID
-            'customer_code_peek', uuid.uuid4())
+            'customer_code_peek', uuid.UUID(int=0))
         self.role_code_peek = kwargs.get(  # RoleID
-            'role_code_peek', uuid.uuid4())
+            'role_code_peek', uuid.UUID(int=0))
 # endset
     @property
     def code(self):
@@ -140,27 +140,9 @@ class CustomerRole(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
     # CustomerID
-    @property
-    def customer_code_peek(self):
-        return uuid.UUID(str(self._customer_code_peek))
-    @code.setter
-    def customer_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._customer_code_peek = value
-        else:
-            self._customer_code_peek = uuid.UUID(value)
     # isPlaceholder,
     # placeholder,
     # roleID
-    @property
-    def role_code_peek(self):
-        return uuid.UUID(str(self._role_code_peek))
-    @role_code_peek.setter
-    def role_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._role_code_peek = value
-        else:
-            self._role_code_peek = uuid.UUID(value)
 # endset
     @staticmethod
     def property_list():

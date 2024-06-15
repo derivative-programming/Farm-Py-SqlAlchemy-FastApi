@@ -29,6 +29,8 @@ class BaseFlowLandPlantListInitReport(BaseFlow):
     ):
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
+# end set
+        await self._process_security_rules(land_bus_obj)
     async def _process_security_rules(
         self,
         land_bus_obj: LandBusObj,

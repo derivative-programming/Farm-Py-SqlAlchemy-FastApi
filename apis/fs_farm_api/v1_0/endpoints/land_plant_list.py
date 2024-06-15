@@ -4,13 +4,13 @@
     #TODO add comment
 """
 
+import logging
 import tempfile
 import uuid
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 import traceback
-import logging
 from helpers import SessionContext, api_key_header
 import apis.models.init as api_init_models
 import apis.models as api_models
@@ -89,7 +89,7 @@ class LandPlantListRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__))
                 response.message = str(te) + " traceback:" + traceback_string
             except Exception as e:
-                logging.exception("Exception occurred")
+                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
@@ -157,7 +157,7 @@ class LandPlantListRouter(BaseRouter):
                 )
                 logging.info('LandPlantListRouter success')
             except Exception as e:
-                logging.exception("Exception occurred")
+                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string
@@ -231,7 +231,7 @@ class LandPlantListRouter(BaseRouter):
                     session_context)
                 report_manager.build_csv(tmp_file_path, response.items)
             except Exception as e:
-                logging.exception("Exception occurred")
+                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
                 response.success = False
                 traceback_string = "".join(traceback.format_tb(e.__traceback__))
                 response.message = str(e) + " traceback:" + traceback_string

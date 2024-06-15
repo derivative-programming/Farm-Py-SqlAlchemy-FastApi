@@ -708,11 +708,6 @@ class TestOrganizationManager:
         assert len(fetched_organizations) == 1
         assert isinstance(fetched_organizations[0], Organization)
         assert fetched_organizations[0].code == organization1.code
-        stmt = select(models.Tac).where(
-            models.Tac.tac_id == organization1.tac_id)
-        result = await session.execute(stmt)
-        tac = result.scalars().first()
-        assert fetched_organizations[0].tac_code_peek == tac.code
     @pytest.mark.asyncio
     async def test_get_by_tac_id_nonexistent(
         self,

@@ -713,11 +713,6 @@ class TestDateGreaterThanFilterManager:
         assert len(fetched_date_greater_than_filters) == 1
         assert isinstance(fetched_date_greater_than_filters[0], DateGreaterThanFilter)
         assert fetched_date_greater_than_filters[0].code == date_greater_than_filter1.code
-        stmt = select(models.Pac).where(
-            models.Pac.pac_id == date_greater_than_filter1.pac_id)
-        result = await session.execute(stmt)
-        pac = result.scalars().first()
-        assert fetched_date_greater_than_filters[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,

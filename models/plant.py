@@ -185,8 +185,8 @@ class Plant(Base):
         default="",
         index=plant_constants.some_var_char_val_calculatedIsDBColumnIndexed,
         nullable=True)
-    _flvr_foreign_key_code_peek = UUIDType  # FlvrForeignKeyID
-    _land_code_peek = UUIDType  # LandID
+    flvr_foreign_key_code_peek = uuid.UUID  # FlvrForeignKeyID
+    land_code_peek = uuid.UUID  # LandID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
@@ -259,9 +259,9 @@ class Plant(Base):
             'last_update_utc_date_time', datetime(1753, 1, 1))
 # endset
         self.flvr_foreign_key_code_peek = kwargs.get(  # FlvrForeignKeyID
-            'flvr_foreign_key_code_peek', uuid.uuid4())
+            'flvr_foreign_key_code_peek', uuid.UUID(int=0))
         self.land_code_peek = kwargs.get(  # LandID
-            'land_code_peek', uuid.uuid4())
+            'land_code_peek', uuid.UUID(int=0))
 # endset
 
     @property
@@ -314,27 +314,7 @@ class Plant(Base):
     # someDateVal
     # someUTCDateTimeVal
     # flvrForeignKeyID
-    @property
-    def flvr_foreign_key_code_peek(self):
-        return uuid.UUID(str(self._flvr_foreign_key_code_peek))
-
-    @flvr_foreign_key_code_peek.setter
-    def flvr_foreign_key_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._flvr_foreign_key_code_peek = value
-        else:
-            self._flvr_foreign_key_code_peek = uuid.UUID(value)
     # LandID
-    @property
-    def land_code_peek(self):
-        return uuid.UUID(str(self._land_code_peek))
-
-    @code.setter
-    def land_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._land_code_peek = value
-        else:
-            self._land_code_peek = uuid.UUID(value)
     # someNVarCharVal,
     # somePhoneNumber,
     # someUniqueidentifierVal,

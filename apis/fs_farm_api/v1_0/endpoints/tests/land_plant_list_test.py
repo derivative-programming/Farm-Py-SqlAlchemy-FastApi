@@ -231,12 +231,15 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-plant-list/{land_code}',
+            params=request_dict,
             headers={'API_KEY': 'xxx'}
 
         )
@@ -255,12 +258,15 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-plant-list/{land_code}',
+            params=request_dict,
             headers={'API_KEY': ''}
 
         )
@@ -279,13 +285,16 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
+
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-plant-list/{land_code}'
-
+            f'/api/v1_0/land-plant-list/{land_code}',
+            params=request_dict
         )
 
         if LandPlantListRouterConfig.is_public is True:
@@ -305,12 +314,16 @@ async def test_get_endpoint_url_failure(
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
+
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-plant-list/{land_code}/xxx',
+            params=request_dict,
             headers={'API_KEY': test_api_key}
         )
 
@@ -327,12 +340,16 @@ async def test_get_endpoint_invalid_code_failure(
     """
 
     land_code = uuid.UUID(int=0)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     test_api_key = api_key_fixture
+
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-plant-list/{land_code}',
+            params=request_dict,
             headers={'API_KEY': test_api_key}
         )
 
@@ -407,12 +424,15 @@ async def test_get_csv_success(
 async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            params=request_dict,
             headers={'API_KEY': 'xxx'}
 
         )
@@ -428,12 +448,15 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
 async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            params=request_dict,
             headers={'API_KEY': ''}
 
         )
@@ -449,12 +472,15 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
 async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncSession):
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-plant-list/{land_code}/to-csv'
+            f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            params=request_dict,
 
         )
 
@@ -498,12 +524,15 @@ async def test_get_csv_endpoint_invalid_code_failure(
     """
 
     land_code = uuid.UUID(int=0)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request_dict = request.to_dict_camel_serialized()
     test_api_key = api_key_fixture
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-plant-list/{land_code}/to-csv',
+            params=request_dict,
             headers={'API_KEY': test_api_key}
         )
 

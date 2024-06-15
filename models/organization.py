@@ -56,7 +56,7 @@ class Organization(Base):
                      ForeignKey('farm_' + snake_case('Tac') + '.tac_id'),
                      index=organization_constants.tac_id_calculatedIsDBColumnIndexed,
                      nullable=True)
-    _tac_code_peek = UUIDType  # TacID
+    tac_code_peek = uuid.UUID  # TacID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
@@ -90,7 +90,7 @@ class Organization(Base):
             'last_update_utc_date_time', datetime(1753, 1, 1))
 # endset
         self.tac_code_peek = kwargs.get(  # TacID
-            'tac_code_peek', uuid.uuid4())
+            'tac_code_peek', uuid.UUID(int=0))
 # endset
     @property
     def code(self):
@@ -124,15 +124,6 @@ class Organization(Base):
         self.last_update_utc_date_time = datetime.utcnow()
     # name,
     # TacID
-    @property
-    def tac_code_peek(self):
-        return uuid.UUID(str(self._tac_code_peek))
-    @code.setter
-    def tac_code_peek(self, value):
-        if isinstance(value, uuid.UUID):
-            self._tac_code_peek = value
-        else:
-            self._tac_code_peek = uuid.UUID(value)
 # endset
     @staticmethod
     def property_list():

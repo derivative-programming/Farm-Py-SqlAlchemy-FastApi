@@ -59,7 +59,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
                 flow_result = await flow.process(
                     customer_bus_obj,
 
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         customerCodeMatchRequired = False
@@ -74,7 +74,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
                 flow_result = await flow.process(
                     customer_bus_obj,
 
-# endset
+# endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
         # result = await response_instance.process_request(
