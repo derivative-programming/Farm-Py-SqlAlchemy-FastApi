@@ -65,10 +65,10 @@ class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
             flow = FlowPacUserTriStateFilterListInitReport(session_context)
             logging.info(
                 "process request...PacUserTriStateFilterListInitReportGetInitModelRequest")
-            flowResponse = await flow.process(
+            flow_response = await flow.process(
                 pac_bus_obj
             )
-            response.load_flow_response(flowResponse)
+            response.load_flow_response(flow_response)
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:

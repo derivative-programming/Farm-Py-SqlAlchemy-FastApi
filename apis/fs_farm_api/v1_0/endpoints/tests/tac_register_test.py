@@ -9,12 +9,13 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
+import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys
 from helpers.api_token import ApiToken  # pylint: disable=unused-import
 from apis import models as apis_models
 from database import get_db
 from main import app
-from .....models import factory as request_factory
+from .....models import factory as request_factory  # pylint: disable=unused-import, reimported
 from ..tac_register import TacRegisterRouterConfig
 
 @pytest.mark.asyncio
@@ -25,7 +26,7 @@ async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: st
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/tac-register/{tac_code}/init',
@@ -40,7 +41,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/tac-register/{tac_code}/init',
@@ -57,7 +58,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/tac-register/{tac_code}/init',
@@ -74,7 +75,7 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/tac-register/{tac_code}/init'
@@ -94,7 +95,7 @@ async def test_init_endpoint_url_failure(
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/tac-register/{tac_code}/init/xxx',
@@ -111,7 +112,7 @@ async def test_init_endpoint_invalid_code_failure(
     """
     tac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/tac-register/{tac_code}/init',
@@ -130,7 +131,7 @@ async def test_init_endpoint_method_failure(
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/tac-register/{tac_code}/init',
@@ -156,7 +157,7 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         tac = await model_factorys.TacFactory.create_async(overridden_get_db)
         tac_code = tac.code
         test_api_key = api_key_fixture
-        async with AsyncClient(app=app, base_url="http://test") as ac:
+        async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
                 f'/api/v1_0/tac-register/{tac_code}',
@@ -174,7 +175,7 @@ async def test_submit_request_validation_error(overridden_get_db, api_key_fixtur
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/tac-register/{tac_code}',
@@ -193,7 +194,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/tac-register/{tac_code}',
@@ -211,7 +212,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/tac-register/{tac_code}',
@@ -231,7 +232,7 @@ async def test_submit_authorization_failure_no_header(
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/tac-register/{tac_code}',
@@ -252,7 +253,7 @@ async def test_submit_endpoint_url_failure(
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/tac-register/{tac_code}/xxxx',
@@ -270,7 +271,7 @@ async def test_submit_endpoint_invalid_code_failure(
     """
     tac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/tac-register/{tac_code}',
@@ -290,7 +291,7 @@ async def test_submit_endpoint_method_failure(
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/tac-register/{tac_code}',

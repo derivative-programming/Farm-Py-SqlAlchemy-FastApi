@@ -3,7 +3,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date  # pylint disable=unused-import
+from datetime import datetime, date  # pylint: disable=unused-import
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -13,7 +13,7 @@ from models.factory import TriStateFilterFactory
 from managers.tri_state_filter import TriStateFilterManager
 from business.tri_state_filter import TriStateFilterBusObj
 from services.logging_config import get_logger
-import current_runtime  # pylint disable=unused-import
+import current_runtime  # pylint: disable=unused-import
 
 logger = get_logger(__name__)
 class TestTriStateFilterBusObj:

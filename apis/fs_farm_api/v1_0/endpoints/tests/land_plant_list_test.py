@@ -13,17 +13,19 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys
 from helpers.api_token import ApiToken  # pylint: disable=unused-import
 from apis import models as apis_models
 from database import get_db
 from main import app
 
-from .....models import factory as request_factory  # pylint: disable=unused-import
+from .....models import factory as request_factory  # pylint: disable=unused-import, reimported
 from ..land_plant_list import LandPlantListRouterConfig
 
 ##GENTrainingBlock[caseisGetInitAvailable]Start
 ##GENLearn[isGetInitAvailable=true]Start
+
 
 @pytest.mark.asyncio
 async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: str):
@@ -34,7 +36,7 @@ async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: st
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -54,7 +56,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -77,7 +79,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -100,7 +102,7 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -125,7 +127,7 @@ async def test_init_endpoint_url_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -146,7 +148,7 @@ async def test_init_endpoint_invalid_code_failure(
 
     land_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -169,7 +171,7 @@ async def test_init_endpoint_method_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -201,17 +203,23 @@ async def test_get_success(
     async def mock_process_request(session, session_context, land_code, request):  # pylint: disable=unused-argument
         pass
 
-    with patch.object(apis_models.LandPlantListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
+    with patch.object(
+        apis_models.LandPlantListGetModelResponse,
+        'process_request',
+        new_callable=AsyncMock
+    ) as mock_method:
         mock_method.side_effect = mock_process_request
 
         land = await model_factorys.LandFactory.create_async(overridden_get_db)
         land_code = land.code
         test_api_key = api_key_fixture
-        request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+        request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+            overridden_get_db
+        )
         request_dict = request.to_dict_camel_serialized()
         logging.info("Test Request...")
         logging.info(request_dict)
-        async with AsyncClient(app=app, base_url="http://test") as ac:
+        async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.get(
@@ -233,10 +241,12 @@ async def test_get_authorization_failure_bad_api_key(overridden_get_db: AsyncSes
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -260,10 +270,12 @@ async def test_get_authorization_failure_empty_header_key(overridden_get_db: Asy
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -287,10 +299,12 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -315,11 +329,13 @@ async def test_get_endpoint_url_failure(
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
 
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -341,11 +357,13 @@ async def test_get_endpoint_invalid_code_failure(
     """
 
     land_code = uuid.UUID(int=0)
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
     test_api_key = api_key_fixture
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -370,7 +388,7 @@ async def test_get_endpoint_method_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -397,17 +415,23 @@ async def test_get_csv_success(
     async def mock_process_request(session, session_context, land_code, request):  # pylint: disable=unused-argument
         pass
 
-    with patch.object(apis_models.LandPlantListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
+    with patch.object(
+        apis_models.LandPlantListGetModelResponse,
+        'process_request',
+        new_callable=AsyncMock
+    ) as mock_method:
         mock_method.side_effect = mock_process_request
 
         land = await model_factorys.LandFactory.create_async(overridden_get_db)
         land_code = land.code
         test_api_key = api_key_fixture
-        request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+        request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+            overridden_get_db
+        )
         request_dict = request.to_dict_camel_serialized()
         logging.info("Test Request...")
         logging.info(request_dict)
-        async with AsyncClient(app=app, base_url="http://test") as ac:
+        async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.get(
@@ -417,7 +441,9 @@ async def test_get_csv_success(
             )
 
             assert response.status_code == 200
-            assert response.headers['content-type'].startswith('text/csv')
+            assert response.headers['content-type'].startswith(
+                test_constants.REPORT_TO_CSV_MEDIA_TYPE
+            )
             mock_method.assert_awaited()
 
 
@@ -429,10 +455,12 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -444,7 +472,9 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
 
         if LandPlantListRouterConfig.is_public is True:
             assert response.status_code == 200
-            assert response.headers['content-type'].startswith('text/csv')
+            assert response.headers['content-type'].startswith(
+                test_constants.REPORT_TO_CSV_MEDIA_TYPE
+            )
         else:
             assert response.status_code == 401
 
@@ -457,10 +487,12 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -472,7 +504,9 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
 
         if LandPlantListRouterConfig.is_public is True:
             assert response.status_code == 200
-            assert response.headers['content-type'].startswith('text/csv')
+            assert response.headers['content-type'].startswith(
+                test_constants.REPORT_TO_CSV_MEDIA_TYPE
+            )
         else:
             assert response.status_code == 401
 
@@ -485,10 +519,12 @@ async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncS
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -499,7 +535,9 @@ async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncS
 
         if LandPlantListRouterConfig.is_public is True:
             assert response.status_code == 200
-            assert response.headers['content-type'].startswith('text/csv')
+            assert response.headers['content-type'].startswith(
+                test_constants.REPORT_TO_CSV_MEDIA_TYPE
+            )
         else:
             assert response.status_code == 401
 
@@ -516,7 +554,7 @@ async def test_get_csv_endpoint_url_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -537,10 +575,12 @@ async def test_get_csv_endpoint_invalid_code_failure(
     """
 
     land_code = uuid.UUID(int=0)
-    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
+    request = await request_factory.LandPlantListGetModelRequestFactory.create_async(
+        overridden_get_db
+    )
     request_dict = request.to_dict_camel_serialized()
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -550,7 +590,9 @@ async def test_get_csv_endpoint_invalid_code_failure(
         )
 
         assert response.status_code == 200
-        assert response.headers['content-type'].startswith('text/csv')
+        assert response.headers['content-type'].startswith(
+            test_constants.REPORT_TO_CSV_MEDIA_TYPE
+        )
 
 
 @pytest.mark.asyncio
@@ -565,7 +607,7 @@ async def test_get_csv_endpoint_method_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(

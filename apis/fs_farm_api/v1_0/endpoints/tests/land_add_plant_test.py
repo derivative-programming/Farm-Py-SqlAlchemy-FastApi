@@ -12,6 +12,7 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys
 from apis import models as apis_models
 from database import get_db
@@ -43,7 +44,7 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         land = await model_factorys.LandFactory.create_async(overridden_get_db)
         land_code = land.code
         test_api_key = api_key_fixture
-        async with AsyncClient(app=app, base_url="http://test") as ac:
+        async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
                 f'/api/v1_0/land-add-plant/{land_code}',
@@ -65,7 +66,7 @@ async def test_submit_request_validation_error(overridden_get_db, api_key_fixtur
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/land-add-plant/{land_code}',
@@ -89,7 +90,7 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -114,7 +115,7 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -141,7 +142,7 @@ async def test_submit_authorization_failure_no_header(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -168,7 +169,7 @@ async def test_submit_endpoint_url_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -191,7 +192,7 @@ async def test_submit_endpoint_invalid_code_failure(
 
     land_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
@@ -216,7 +217,7 @@ async def test_submit_endpoint_method_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -241,7 +242,7 @@ async def test_init_success(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -262,7 +263,7 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -286,7 +287,7 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -310,7 +311,7 @@ async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSess
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -336,7 +337,7 @@ async def test_init_endpoint_url_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -358,7 +359,7 @@ async def test_init_endpoint_invalid_code_failure(
 
     land_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
@@ -382,7 +383,7 @@ async def test_init_endpoint_method_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(

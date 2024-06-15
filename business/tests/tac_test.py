@@ -3,7 +3,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date  # pylint disable=unused-import
+from datetime import datetime, date  # pylint: disable=unused-import
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -13,7 +13,7 @@ from models.factory import TacFactory
 from managers.tac import TacManager
 from business.tac import TacBusObj
 from services.logging_config import get_logger
-import current_runtime  # pylint disable=unused-import
+import current_runtime  # pylint: disable=unused-import
 
 logger = get_logger(__name__)
 class TestTacBusObj:
@@ -187,11 +187,13 @@ class TestTacBusObj:
     @pytest.mark.asyncio
     async def test_build_organization(
         self,
-        tac_manager: TacManager,
         tac_bus_obj: TacBusObj,
         new_tac: Tac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -213,11 +215,13 @@ class TestTacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_organization(
         self,
-        tac_manager: TacManager,
         tac_bus_obj: TacBusObj,
         new_tac: Tac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -246,11 +250,13 @@ class TestTacBusObj:
     @pytest.mark.asyncio
     async def test_build_customer(
         self,
-        tac_manager: TacManager,
         tac_bus_obj: TacBusObj,
         new_tac: Tac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -272,11 +278,13 @@ class TestTacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_customer(
         self,
-        tac_manager: TacManager,
         tac_bus_obj: TacBusObj,
         new_tac: Tac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 

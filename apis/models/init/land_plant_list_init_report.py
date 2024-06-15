@@ -157,10 +157,10 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
             flow = FlowLandPlantListInitReport(session_context)
             logging.info(
                 "process request...LandPlantListInitReportGetInitModelRequest")
-            flowResponse = await flow.process(
+            flow_response = await flow.process(
                 land_bus_obj
             )
-            response.load_flow_response(flowResponse)
+            response.load_flow_response(flow_response)
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:

@@ -3,7 +3,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date  # pylint disable=unused-import
+from datetime import datetime, date  # pylint: disable=unused-import
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -13,7 +13,7 @@ from models.factory import LandFactory
 from managers.land import LandManager
 from business.land import LandBusObj
 from services.logging_config import get_logger
-import current_runtime  # pylint disable=unused-import
+import current_runtime  # pylint: disable=unused-import
 
 logger = get_logger(__name__)
 class TestLandBusObj:
@@ -187,11 +187,13 @@ class TestLandBusObj:
     @pytest.mark.asyncio
     async def test_build_plant(
         self,
-        land_manager: LandManager,
         land_bus_obj: LandBusObj,
         new_land: Land,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -213,11 +215,13 @@ class TestLandBusObj:
     @pytest.mark.asyncio
     async def test_get_all_plant(
         self,
-        land_manager: LandManager,
         land_bus_obj: LandBusObj,
         new_land: Land,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 

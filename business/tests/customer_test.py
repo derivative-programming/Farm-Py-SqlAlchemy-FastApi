@@ -3,7 +3,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date  # pylint disable=unused-import
+from datetime import datetime, date  # pylint: disable=unused-import
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -13,7 +13,7 @@ from models.factory import CustomerFactory
 from managers.customer import CustomerManager
 from business.customer import CustomerBusObj
 from services.logging_config import get_logger
-import current_runtime  # pylint disable=unused-import
+import current_runtime  # pylint: disable=unused-import
 
 logger = get_logger(__name__)
 class TestCustomerBusObj:
@@ -205,11 +205,13 @@ class TestCustomerBusObj:
     @pytest.mark.asyncio
     async def test_build_customer_role(
         self,
-        customer_manager: CustomerManager,
         customer_bus_obj: CustomerBusObj,
         new_customer: Customer,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -231,11 +233,13 @@ class TestCustomerBusObj:
     @pytest.mark.asyncio
     async def test_get_all_customer_role(
         self,
-        customer_manager: CustomerManager,
         customer_bus_obj: CustomerBusObj,
         new_customer: Customer,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 

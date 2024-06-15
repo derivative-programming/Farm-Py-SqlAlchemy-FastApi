@@ -3,7 +3,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date  # pylint disable=unused-import
+from datetime import datetime, date  # pylint: disable=unused-import
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -13,7 +13,7 @@ from models.factory import PacFactory
 from managers.pac import PacManager
 from business.pac import PacBusObj
 from services.logging_config import get_logger
-import current_runtime  # pylint disable=unused-import
+import current_runtime  # pylint: disable=unused-import
 
 logger = get_logger(__name__)
 class TestPacBusObj:
@@ -186,11 +186,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_build_tri_state_filter(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -212,11 +214,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_tri_state_filter(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -245,11 +249,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_build_tac(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -271,11 +277,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_tac(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -304,11 +312,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_build_role(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -330,11 +340,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_role(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -363,11 +375,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_build_land(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -389,11 +403,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_land(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -422,11 +438,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_build_flavor(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -448,11 +466,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_flavor(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -481,11 +501,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_build_error_log(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -507,11 +529,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_error_log(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -540,11 +564,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_build_date_greater_than_filter(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
@@ -566,11 +592,13 @@ class TestPacBusObj:
     @pytest.mark.asyncio
     async def test_get_all_date_greater_than_filter(
         self,
-        pac_manager: PacManager,
         pac_bus_obj: PacBusObj,
         new_pac: Pac,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
 
         session_context = SessionContext(dict(), session)
 
