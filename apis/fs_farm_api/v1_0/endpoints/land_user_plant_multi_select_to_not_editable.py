@@ -15,6 +15,9 @@ import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
 from .base_router import BaseRouter
+LAND_CODE = "Land Code"
+TRACEBACK = " traceback:"
+EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class LandUserPlantMultiSelectToNotEditableRouterConfig():
     """
         #TODO add comment

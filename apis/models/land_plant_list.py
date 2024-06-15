@@ -5,21 +5,23 @@
 """
 
 import json
-from typing import List
-from datetime import date, datetime
-import uuid
 import logging
+import uuid
+from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
-from helpers import TypeConversion
-from reports.row_models.land_plant_list import ReportItemLandPlantList
+from typing import List
+
+from pydantic import UUID4, Field
+
 from apis.models.list_model import ListModel
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from reports.land_plant_list import ReportManagerLandPlantList
-from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
+from reports.land_plant_list import ReportManagerLandPlantList
+from reports.report_request_validation_error import \
+    ReportRequestValidationError
+from reports.row_models.land_plant_list import ReportItemLandPlantList
 
 
 class LandPlantListGetModelRequest(CamelModel):
@@ -267,12 +269,71 @@ class LandPlantListGetModelResponseItem(CamelModel):
             data.details_link_plant_code)
 # endset
 
+    def build_report_item(
+        self
+    ) -> ReportItemLandPlantList:
+        """
+            #TODO add comment
+        """
+
+        data = ReportItemLandPlantList()
+
+        data.plant_code = (
+            self.plant_code)
+        data.some_int_val = (
+            self.some_int_val)
+        data.some_big_int_val = (
+            self.some_big_int_val)
+        data.some_bit_val = (
+            self.some_bit_val)
+        data.is_edit_allowed = (
+            self.is_edit_allowed)
+        data.is_delete_allowed = (
+            self.is_delete_allowed)
+        data.some_float_val = (
+            self.some_float_val)
+        data.some_decimal_val = (
+            self.some_decimal_val)
+        data.some_utc_date_time_val = (
+            self.some_utc_date_time_val)
+        data.some_date_val = (
+            self.some_date_val)
+        data.some_money_val = (
+            self.some_money_val)
+        data.some_n_var_char_val = (
+            self.some_n_var_char_val)
+        data.some_var_char_val = (
+            self.some_var_char_val)
+        data.some_text_val = (
+            self.some_text_val)
+        data.some_phone_number = (
+            self.some_phone_number)
+        data.some_email_address = (
+            self.some_email_address)
+        data.flavor_name = (
+            self.flavor_name)
+        data.flavor_code = (
+            self.flavor_code)
+        data.some_int_conditional_on_deletable = (
+            self.some_int_conditional_on_deletable)
+        data.n_var_char_as_url = (
+            self.n_var_char_as_url)
+        data.update_link_plant_code = (
+            self.update_link_plant_code)
+        data.delete_async_button_link_plant_code = (
+            self.delete_async_button_link_plant_code)
+        data.details_link_plant_code = (
+            self.details_link_plant_code)
+
+        return data
+# endset
+
 
 class LandPlantListGetModelResponse(ListModel):
     """
         #TODO add comment
     """
-    request: LandPlantListGetModelRequest = None
+    request: LandPlantListGetModelRequest = LandPlantListGetModelRequest()
     items: List[LandPlantListGetModelResponseItem] = Field(
         default_factory=list)
 
@@ -307,7 +368,7 @@ class LandPlantListGetModelResponse(ListModel):
                 request.some_text_val,
                 request.some_phone_number,
                 request.some_email_address,
-# endset
+# endset  # noqa: E122
                 request.page_number,
                 request.item_count_per_page,
                 request.order_by_column_name,
@@ -324,12 +385,17 @@ class LandPlantListGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
-            for key in ve.error_dict:
-                self.message = self.message + ve.error_dict[key] + ','
+
+            error_messages = []
+
+            for key, value in ve.error_dict.items():
+                error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
-                validation_error.message = ve.error_dict[key]
+                validation_error.message = value
                 self.validation_errors.append(validation_error)
+
+            self.message = ','.join(error_messages)
 
     def to_json(self):
         """

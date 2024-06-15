@@ -3,21 +3,21 @@
     #TODO add comment
 """
 import json
-from typing import List
-from datetime import date, datetime
-import uuid
 import logging
+import uuid
+from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
-from helpers import TypeConversion
-from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
+from typing import List
+from pydantic import UUID4, Field
 from apis.models.list_model import ListModel
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from reports.pac_user_flavor_list import ReportManagerPacUserFlavorList
-from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
+from reports.pac_user_flavor_list import ReportManagerPacUserFlavorList
+from reports.report_request_validation_error import \
+    ReportRequestValidationError
+from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
 class PacUserFlavorListGetModelRequest(CamelModel):
     """
         #TODO add comment
@@ -117,11 +117,34 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
         self.pac_name = (
             data.pac_name)
 # endset
+    def build_report_item(
+        self
+    ) -> ReportItemPacUserFlavorList:
+        """
+            #TODO add comment
+        """
+        data = ReportItemPacUserFlavorList()
+        data.flavor_code = (
+            self.flavor_code)
+        data.flavor_description = (
+            self.flavor_description)
+        data.flavor_display_order = (
+            self.flavor_display_order)
+        data.flavor_is_active = (
+            self.flavor_is_active)
+        data.flavor_lookup_enum_name = (
+            self.flavor_lookup_enum_name)
+        data.flavor_name = (
+            self.flavor_name)
+        data.pac_name = (
+            self.pac_name)
+        return data
+# endset
 class PacUserFlavorListGetModelResponse(ListModel):
     """
         #TODO add comment
     """
-    request: PacUserFlavorListGetModelRequest = None
+    request: PacUserFlavorListGetModelRequest = PacUserFlavorListGetModelRequest()
     items: List[PacUserFlavorListGetModelResponseItem] = Field(
         default_factory=list)
     async def process_request(
@@ -140,7 +163,7 @@ class PacUserFlavorListGetModelResponse(ListModel):
             items = await generator.generate(
                 pac_code,
 
-# endset
+# endset  # noqa: E122
                 request.page_number,
                 request.item_count_per_page,
                 request.order_by_column_name,
@@ -157,12 +180,14 @@ class PacUserFlavorListGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
-            for key in ve.error_dict:
-                self.message = self.message + ve.error_dict[key] + ','
+            error_messages = []
+            for key, value in ve.error_dict.items():
+                error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
-                validation_error.message = ve.error_dict[key]
+                validation_error.message = value
                 self.validation_errors.append(validation_error)
+            self.message = ','.join(error_messages)
     def to_json(self):
         """
             #TODO add comment

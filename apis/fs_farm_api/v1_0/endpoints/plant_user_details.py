@@ -15,6 +15,9 @@ import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
 from .base_router import BaseRouter
+PLANT_CODE = "Plant Code"
+TRACEBACK = " traceback:"
+EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class PlantUserDetailsRouterConfig():
     """
         #TODO add comment
@@ -38,10 +41,12 @@ class PlantUserDetailsRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/plant-user-details/{plant_code}/init",
-        response_model=api_init_models.PlantUserDetailsInitReportGetInitModelResponse,
+        response_model=(
+            api_init_models.
+            PlantUserDetailsInitReportGetInitModelResponse),
         summary="Plant User Details Init Page")
     async def request_get_init(
-        plant_code: uuid.UUID = Path(..., description="Plant Code"),
+        plant_code: uuid.UUID = Path(..., description=PLANT_CODE),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -53,7 +58,10 @@ class PlantUserDetailsRouter(BaseRouter):
             plant_code)
         auth_dict = BaseRouter.implementation_check(
             PlantUserDetailsRouterConfig.is_get_init_available)
-        response = api_init_models.PlantUserDetailsInitReportGetInitModelResponse()
+        response = (
+            api_init_models.
+            PlantUserDetailsInitReportGetInitModelResponse()
+        )
         auth_dict = BaseRouter.authorization_check(
             PlantUserDetailsRouterConfig.is_public, api_key)
         # Start a transaction
@@ -65,7 +73,10 @@ class PlantUserDetailsRouter(BaseRouter):
                     "PlantCode",
                     plant_code
                 )
-                init_request = api_init_models.PlantUserDetailsInitReportGetInitModelRequest()
+                init_request = (
+                    api_init_models.
+                    PlantUserDetailsInitReportGetInitModelRequest()
+                )
                 response = await init_request.process_request(
                     session_context,
                     plant_code,
@@ -75,13 +86,17 @@ class PlantUserDetailsRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
-                response.message = str(te) + " traceback:" + traceback_string
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                response.message = str(te) + TRACEBACK + traceback_string
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -98,7 +113,7 @@ class PlantUserDetailsRouter(BaseRouter):
         response_model=api_models.PlantUserDetailsGetModelResponse,
         summary="Plant User Details Report")
     async def request_get_with_id(
-        plant_code: uuid.UUID = Path(..., description="Plant Code"),
+        plant_code: uuid.UUID = Path(..., description=PLANT_CODE),
         request_model: api_models.PlantUserDetailsGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -132,11 +147,17 @@ class PlantUserDetailsRouter(BaseRouter):
                     request_model
                 )
                 logging.info('PlantUserDetailsRouter success')
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -155,7 +176,7 @@ class PlantUserDetailsRouter(BaseRouter):
         response_class=FileResponse,
         summary="Plant User Details Report to CSV")
     async def request_get_with_id_to_csv(
-        plant_code: uuid.UUID = Path(..., description="Plant Code"),
+        plant_code: uuid.UUID = Path(..., description=PLANT_CODE),
         request_model: api_models.PlantUserDetailsGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -164,7 +185,8 @@ class PlantUserDetailsRouter(BaseRouter):
             #TODO add comment
         """
         logging.info(
-            "PlantUserDetailsRouter.request_get_with_id_to_csv start. plantCode:%s",
+            "PlantUserDetailsRouter.request_get_with_id_to_csv"
+            " start. plantCode:%s",
             plant_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -199,11 +221,19 @@ class PlantUserDetailsRouter(BaseRouter):
                 )
                 report_manager = reports.ReportManagerPlantUserDetails(
                     session_context)
-                await report_manager.build_csv(tmp_file_path, response.items)
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                report_items = [response_item.build_report_item() for
+                                response_item in response.items]
+                await report_manager.build_csv(tmp_file_path, report_items)
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
                 if response.success is True:
@@ -214,7 +244,10 @@ class PlantUserDetailsRouter(BaseRouter):
         logging.info(
             'PlantUserDetailsRouter.submit get result:%s', response_data
         )
-        output_file_name = 'plant_user_details_' + str(plant_code) + '_' + str(uuid.uuid4()) + '.csv'
+        uuid_value = uuid.uuid4()
+        output_file_name = (
+            f'plant_user_details_{str(plant_code)}_{str(uuid_value)}.csv'
+        )
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

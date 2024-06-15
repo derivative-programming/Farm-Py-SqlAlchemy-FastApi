@@ -3,21 +3,21 @@
     #TODO add comment
 """
 import json
-from typing import List
-from datetime import date, datetime
-import uuid
 import logging
+import uuid
+from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
-from helpers import TypeConversion
-from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+from typing import List
+from pydantic import UUID4, Field
 from apis.models.list_model import ListModel
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from reports.plant_user_details import ReportManagerPlantUserDetails
-from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
+from reports.plant_user_details import ReportManagerPlantUserDetails
+from reports.report_request_validation_error import \
+    ReportRequestValidationError
+from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 class PlantUserDetailsGetModelRequest(CamelModel):
     """
         #TODO add comment
@@ -203,11 +203,66 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
         self.back_to_dashboard_link_tac_code = (
             data.back_to_dashboard_link_tac_code)
 # endset
+    def build_report_item(
+        self
+    ) -> ReportItemPlantUserDetails:
+        """
+            #TODO add comment
+        """
+        data = ReportItemPlantUserDetails()
+        data.flavor_name = (
+            self.flavor_name)
+        data.is_delete_allowed = (
+            self.is_delete_allowed)
+        data.is_edit_allowed = (
+            self.is_edit_allowed)
+        data.other_flavor = (
+            self.other_flavor)
+        data.some_big_int_val = (
+            self.some_big_int_val)
+        data.some_bit_val = (
+            self.some_bit_val)
+        data.some_date_val = (
+            self.some_date_val)
+        data.some_decimal_val = (
+            self.some_decimal_val)
+        data.some_email_address = (
+            self.some_email_address)
+        data.some_float_val = (
+            self.some_float_val)
+        data.some_int_val = (
+            self.some_int_val)
+        data.some_money_val = (
+            self.some_money_val)
+        data.some_n_var_char_val = (
+            self.some_n_var_char_val)
+        data.some_phone_number = (
+            self.some_phone_number)
+        data.some_text_val = (
+            self.some_text_val)
+        data.some_uniqueidentifier_val = (
+            self.some_uniqueidentifier_val)
+        data.some_utc_date_time_val = (
+            self.some_utc_date_time_val)
+        data.some_var_char_val = (
+            self.some_var_char_val)
+        data.phone_num_conditional_on_is_editable = (
+            self.phone_num_conditional_on_is_editable)
+        data.n_var_char_as_url = (
+            self.n_var_char_as_url)
+        data.update_button_text_link_plant_code = (
+            self.update_button_text_link_plant_code)
+        data.random_property_updates_link_plant_code = (
+            self.random_property_updates_link_plant_code)
+        data.back_to_dashboard_link_tac_code = (
+            self.back_to_dashboard_link_tac_code)
+        return data
+# endset
 class PlantUserDetailsGetModelResponse(ListModel):
     """
         #TODO add comment
     """
-    request: PlantUserDetailsGetModelRequest = None
+    request: PlantUserDetailsGetModelRequest = PlantUserDetailsGetModelRequest()
     items: List[PlantUserDetailsGetModelResponseItem] = Field(
         default_factory=list)
     async def process_request(
@@ -226,7 +281,7 @@ class PlantUserDetailsGetModelResponse(ListModel):
             items = await generator.generate(
                 plant_code,
 
-# endset
+# endset  # noqa: E122
                 request.page_number,
                 request.item_count_per_page,
                 request.order_by_column_name,
@@ -243,12 +298,14 @@ class PlantUserDetailsGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
-            for key in ve.error_dict:
-                self.message = self.message + ve.error_dict[key] + ','
+            error_messages = []
+            for key, value in ve.error_dict.items():
+                error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
-                validation_error.message = ve.error_dict[key]
+                validation_error.message = value
                 self.validation_errors.append(validation_error)
+            self.message = ','.join(error_messages)
     def to_json(self):
         """
             #TODO add comment

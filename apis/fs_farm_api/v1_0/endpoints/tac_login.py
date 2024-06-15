@@ -15,6 +15,9 @@ import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
 from .base_router import BaseRouter
+TAC_CODE = "Tac Code"
+TRACEBACK = " traceback:"
+EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class TacLoginRouterConfig():
     """
         #TODO add comment
@@ -38,10 +41,12 @@ class TacLoginRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/tac-login/{tac_code}/init",
-        response_model=api_init_models.TacLoginInitObjWFGetInitModelResponse,
+        response_model=(
+            api_init_models.
+            TacLoginInitObjWFGetInitModelResponse),
         summary="Tac Login Init Page")
     async def request_get_init(
-        tac_code: uuid.UUID = Path(..., description="Tac Code"),
+        tac_code: uuid.UUID = Path(..., description=TAC_CODE),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -53,7 +58,10 @@ class TacLoginRouter(BaseRouter):
             tac_code)
         auth_dict = BaseRouter.implementation_check(
             TacLoginRouterConfig.is_get_init_available)
-        response = api_init_models.TacLoginInitObjWFGetInitModelResponse()
+        response = (
+            api_init_models.
+            TacLoginInitObjWFGetInitModelResponse()
+        )
         auth_dict = BaseRouter.authorization_check(
             TacLoginRouterConfig.is_public, api_key)
         # Start a transaction
@@ -65,7 +73,10 @@ class TacLoginRouter(BaseRouter):
                     "TacCode",
                     tac_code
                 )
-                init_request = api_init_models.TacLoginInitObjWFGetInitModelRequest()
+                init_request = (
+                    api_init_models.
+                    TacLoginInitObjWFGetInitModelRequest()
+                )
                 response = await init_request.process_request(
                     session_context,
                     tac_code,
@@ -75,13 +86,17 @@ class TacLoginRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
-                response.message = str(te) + " traceback:" + traceback_string
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                response.message = str(te) + TRACEBACK + traceback_string
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()

@@ -3,21 +3,21 @@
     #TODO add comment
 """
 import json
-from typing import List
-from datetime import date, datetime
-import uuid
 import logging
+import uuid
+from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
-from helpers import TypeConversion
-from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
+from typing import List
+from pydantic import UUID4, Field
 from apis.models.list_model import ListModel
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from reports.pac_user_tri_state_filter_list import ReportManagerPacUserTriStateFilterList
-from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
+from reports.pac_user_tri_state_filter_list import ReportManagerPacUserTriStateFilterList
+from reports.report_request_validation_error import \
+    ReportRequestValidationError
+from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
 class PacUserTriStateFilterListGetModelRequest(CamelModel):
     """
         #TODO add comment
@@ -117,11 +117,34 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
         self.tri_state_filter_state_int_value = (
             data.tri_state_filter_state_int_value)
 # endset
+    def build_report_item(
+        self
+    ) -> ReportItemPacUserTriStateFilterList:
+        """
+            #TODO add comment
+        """
+        data = ReportItemPacUserTriStateFilterList()
+        data.tri_state_filter_code = (
+            self.tri_state_filter_code)
+        data.tri_state_filter_description = (
+            self.tri_state_filter_description)
+        data.tri_state_filter_display_order = (
+            self.tri_state_filter_display_order)
+        data.tri_state_filter_is_active = (
+            self.tri_state_filter_is_active)
+        data.tri_state_filter_lookup_enum_name = (
+            self.tri_state_filter_lookup_enum_name)
+        data.tri_state_filter_name = (
+            self.tri_state_filter_name)
+        data.tri_state_filter_state_int_value = (
+            self.tri_state_filter_state_int_value)
+        return data
+# endset
 class PacUserTriStateFilterListGetModelResponse(ListModel):
     """
         #TODO add comment
     """
-    request: PacUserTriStateFilterListGetModelRequest = None
+    request: PacUserTriStateFilterListGetModelRequest = PacUserTriStateFilterListGetModelRequest()
     items: List[PacUserTriStateFilterListGetModelResponseItem] = Field(
         default_factory=list)
     async def process_request(
@@ -140,7 +163,7 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
             items = await generator.generate(
                 pac_code,
 
-# endset
+# endset  # noqa: E122
                 request.page_number,
                 request.item_count_per_page,
                 request.order_by_column_name,
@@ -157,12 +180,14 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
-            for key in ve.error_dict:
-                self.message = self.message + ve.error_dict[key] + ','
+            error_messages = []
+            for key, value in ve.error_dict.items():
+                error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
-                validation_error.message = ve.error_dict[key]
+                validation_error.message = value
                 self.validation_errors.append(validation_error)
+            self.message = ','.join(error_messages)
     def to_json(self):
         """
             #TODO add comment

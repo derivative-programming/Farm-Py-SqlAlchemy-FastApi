@@ -15,6 +15,9 @@ import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
 from .base_router import BaseRouter
+PAC_CODE = "Pac Code"
+TRACEBACK = " traceback:"
+EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class PacUserTriStateFilterListRouterConfig():
     """
         #TODO add comment
@@ -38,10 +41,12 @@ class PacUserTriStateFilterListRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init",
-        response_model=api_init_models.PacUserTriStateFilterListInitReportGetInitModelResponse,
+        response_model=(
+            api_init_models.
+            PacUserTriStateFilterListInitReportGetInitModelResponse),
         summary="Pac User Tri State Filter List Init Page")
     async def request_get_init(
-        pac_code: uuid.UUID = Path(..., description="Pac Code"),
+        pac_code: uuid.UUID = Path(..., description=PAC_CODE),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -53,7 +58,10 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             pac_code)
         auth_dict = BaseRouter.implementation_check(
             PacUserTriStateFilterListRouterConfig.is_get_init_available)
-        response = api_init_models.PacUserTriStateFilterListInitReportGetInitModelResponse()
+        response = (
+            api_init_models.
+            PacUserTriStateFilterListInitReportGetInitModelResponse()
+        )
         auth_dict = BaseRouter.authorization_check(
             PacUserTriStateFilterListRouterConfig.is_public, api_key)
         # Start a transaction
@@ -65,7 +73,10 @@ class PacUserTriStateFilterListRouter(BaseRouter):
                     "PacCode",
                     pac_code
                 )
-                init_request = api_init_models.PacUserTriStateFilterListInitReportGetInitModelRequest()
+                init_request = (
+                    api_init_models.
+                    PacUserTriStateFilterListInitReportGetInitModelRequest()
+                )
                 response = await init_request.process_request(
                     session_context,
                     pac_code,
@@ -75,13 +86,17 @@ class PacUserTriStateFilterListRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
-                response.message = str(te) + " traceback:" + traceback_string
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                response.message = str(te) + TRACEBACK + traceback_string
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -98,7 +113,7 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         response_model=api_models.PacUserTriStateFilterListGetModelResponse,
         summary="Pac User Tri State Filter List Report")
     async def request_get_with_id(
-        pac_code: uuid.UUID = Path(..., description="Pac Code"),
+        pac_code: uuid.UUID = Path(..., description=PAC_CODE),
         request_model: api_models.PacUserTriStateFilterListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -132,11 +147,17 @@ class PacUserTriStateFilterListRouter(BaseRouter):
                     request_model
                 )
                 logging.info('PacUserTriStateFilterListRouter success')
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -155,7 +176,7 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         response_class=FileResponse,
         summary="Pac User Tri State Filter List Report to CSV")
     async def request_get_with_id_to_csv(
-        pac_code: uuid.UUID = Path(..., description="Pac Code"),
+        pac_code: uuid.UUID = Path(..., description=PAC_CODE),
         request_model: api_models.PacUserTriStateFilterListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -164,7 +185,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             #TODO add comment
         """
         logging.info(
-            "PacUserTriStateFilterListRouter.request_get_with_id_to_csv start. pacCode:%s",
+            "PacUserTriStateFilterListRouter.request_get_with_id_to_csv"
+            " start. pacCode:%s",
             pac_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -199,11 +221,19 @@ class PacUserTriStateFilterListRouter(BaseRouter):
                 )
                 report_manager = reports.ReportManagerPacUserTriStateFilterList(
                     session_context)
-                await report_manager.build_csv(tmp_file_path, response.items)
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                report_items = [response_item.build_report_item() for
+                                response_item in response.items]
+                await report_manager.build_csv(tmp_file_path, report_items)
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
                 if response.success is True:
@@ -214,7 +244,10 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         logging.info(
             'PacUserTriStateFilterListRouter.submit get result:%s', response_data
         )
-        output_file_name = 'pac_user_tri_state_filter_list_' + str(pac_code) + '_' + str(uuid.uuid4()) + '.csv'
+        uuid_value = uuid.uuid4()
+        output_file_name = (
+            f'pac_user_tri_state_filter_list_{str(pac_code)}_{str(uuid_value)}.csv'
+        )
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

@@ -15,6 +15,9 @@ import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
 from .base_router import BaseRouter
+TAC_CODE = "Tac Code"
+TRACEBACK = " traceback:"
+EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class TacFarmDashboardRouterConfig():
     """
         #TODO add comment
@@ -38,10 +41,12 @@ class TacFarmDashboardRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/tac-farm-dashboard/{tac_code}/init",
-        response_model=api_init_models.TacFarmDashboardInitReportGetInitModelResponse,
+        response_model=(
+            api_init_models.
+            TacFarmDashboardInitReportGetInitModelResponse),
         summary="Tac Farm Dashboard Init Page")
     async def request_get_init(
-        tac_code: uuid.UUID = Path(..., description="Tac Code"),
+        tac_code: uuid.UUID = Path(..., description=TAC_CODE),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -53,7 +58,10 @@ class TacFarmDashboardRouter(BaseRouter):
             tac_code)
         auth_dict = BaseRouter.implementation_check(
             TacFarmDashboardRouterConfig.is_get_init_available)
-        response = api_init_models.TacFarmDashboardInitReportGetInitModelResponse()
+        response = (
+            api_init_models.
+            TacFarmDashboardInitReportGetInitModelResponse()
+        )
         auth_dict = BaseRouter.authorization_check(
             TacFarmDashboardRouterConfig.is_public, api_key)
         # Start a transaction
@@ -65,7 +73,10 @@ class TacFarmDashboardRouter(BaseRouter):
                     "TacCode",
                     tac_code
                 )
-                init_request = api_init_models.TacFarmDashboardInitReportGetInitModelRequest()
+                init_request = (
+                    api_init_models.
+                    TacFarmDashboardInitReportGetInitModelRequest()
+                )
                 response = await init_request.process_request(
                     session_context,
                     tac_code,
@@ -75,13 +86,17 @@ class TacFarmDashboardRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
-                response.message = str(te) + " traceback:" + traceback_string
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                response.message = str(te) + TRACEBACK + traceback_string
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -98,7 +113,7 @@ class TacFarmDashboardRouter(BaseRouter):
         response_model=api_models.TacFarmDashboardGetModelResponse,
         summary="Tac Farm Dashboard Report")
     async def request_get_with_id(
-        tac_code: uuid.UUID = Path(..., description="Tac Code"),
+        tac_code: uuid.UUID = Path(..., description=TAC_CODE),
         request_model: api_models.TacFarmDashboardGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -132,11 +147,17 @@ class TacFarmDashboardRouter(BaseRouter):
                     request_model
                 )
                 logging.info('TacFarmDashboardRouter success')
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -155,7 +176,7 @@ class TacFarmDashboardRouter(BaseRouter):
         response_class=FileResponse,
         summary="Tac Farm Dashboard Report to CSV")
     async def request_get_with_id_to_csv(
-        tac_code: uuid.UUID = Path(..., description="Tac Code"),
+        tac_code: uuid.UUID = Path(..., description=TAC_CODE),
         request_model: api_models.TacFarmDashboardGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -164,7 +185,8 @@ class TacFarmDashboardRouter(BaseRouter):
             #TODO add comment
         """
         logging.info(
-            "TacFarmDashboardRouter.request_get_with_id_to_csv start. tacCode:%s",
+            "TacFarmDashboardRouter.request_get_with_id_to_csv"
+            " start. tacCode:%s",
             tac_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -199,11 +221,19 @@ class TacFarmDashboardRouter(BaseRouter):
                 )
                 report_manager = reports.ReportManagerTacFarmDashboard(
                     session_context)
-                await report_manager.build_csv(tmp_file_path, response.items)
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                report_items = [response_item.build_report_item() for
+                                response_item in response.items]
+                await report_manager.build_csv(tmp_file_path, report_items)
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
                 if response.success is True:
@@ -214,7 +244,10 @@ class TacFarmDashboardRouter(BaseRouter):
         logging.info(
             'TacFarmDashboardRouter.submit get result:%s', response_data
         )
-        output_file_name = 'tac_farm_dashboard_' + str(tac_code) + '_' + str(uuid.uuid4()) + '.csv'
+        uuid_value = uuid.uuid4()
+        output_file_name = (
+            f'tac_farm_dashboard_{str(tac_code)}_{str(uuid_value)}.csv'
+        )
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',

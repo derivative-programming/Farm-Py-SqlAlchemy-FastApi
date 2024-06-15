@@ -4,7 +4,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
@@ -407,4 +407,4 @@ def set_updated_on(mapper, connection, target):
         #TODO add comment
     """
 
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.now(timezone.utc)

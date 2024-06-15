@@ -3,21 +3,21 @@
     #TODO add comment
 """
 import json
-from typing import List
-from datetime import date, datetime
-import uuid
 import logging
+import uuid
+from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
-from helpers import TypeConversion
-from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
+from typing import List
+from pydantic import UUID4, Field
 from apis.models.list_model import ListModel
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from reports.tac_farm_dashboard import ReportManagerTacFarmDashboard
-from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
+from reports.tac_farm_dashboard import ReportManagerTacFarmDashboard
+from reports.report_request_validation_error import \
+    ReportRequestValidationError
+from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
 class TacFarmDashboardGetModelRequest(CamelModel):
     """
         #TODO add comment
@@ -99,11 +99,26 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         self.is_conditional_btn_available = (
             data.is_conditional_btn_available)
 # endset
+    def build_report_item(
+        self
+    ) -> ReportItemTacFarmDashboard:
+        """
+            #TODO add comment
+        """
+        data = ReportItemTacFarmDashboard()
+        data.field_one_plant_list_link_land_code = (
+            self.field_one_plant_list_link_land_code)
+        data.conditional_btn_example_link_land_code = (
+            self.conditional_btn_example_link_land_code)
+        data.is_conditional_btn_available = (
+            self.is_conditional_btn_available)
+        return data
+# endset
 class TacFarmDashboardGetModelResponse(ListModel):
     """
         #TODO add comment
     """
-    request: TacFarmDashboardGetModelRequest = None
+    request: TacFarmDashboardGetModelRequest = TacFarmDashboardGetModelRequest()
     items: List[TacFarmDashboardGetModelResponseItem] = Field(
         default_factory=list)
     async def process_request(
@@ -122,7 +137,7 @@ class TacFarmDashboardGetModelResponse(ListModel):
             items = await generator.generate(
                 tac_code,
 
-# endset
+# endset  # noqa: E122
                 request.page_number,
                 request.item_count_per_page,
                 request.order_by_column_name,
@@ -139,12 +154,14 @@ class TacFarmDashboardGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
-            for key in ve.error_dict:
-                self.message = self.message + ve.error_dict[key] + ','
+            error_messages = []
+            for key, value in ve.error_dict.items():
+                error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
-                validation_error.message = ve.error_dict[key]
+                validation_error.message = value
                 self.validation_errors.append(validation_error)
+            self.message = ','.join(error_messages)
     def to_json(self):
         """
             #TODO add comment

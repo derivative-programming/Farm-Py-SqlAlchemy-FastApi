@@ -21,6 +21,12 @@ from helpers import SessionContext, api_key_header
 
 from .base_router import BaseRouter
 
+LAND_CODE = "Land Code"
+
+TRACEBACK = " traceback:"
+
+EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+
 
 class LandPlantListRouterConfig():
     """
@@ -49,10 +55,12 @@ class LandPlantListRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/land-plant-list/{land_code}/init",
-        response_model=api_init_models.LandPlantListInitReportGetInitModelResponse,
+        response_model=(
+            api_init_models.
+            LandPlantListInitReportGetInitModelResponse),
         summary="Land Plant List Init Page")
     async def request_get_init(
-        land_code: uuid.UUID = Path(..., description="Land Code"),
+        land_code: uuid.UUID = Path(..., description=LAND_CODE),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -66,7 +74,10 @@ class LandPlantListRouter(BaseRouter):
         auth_dict = BaseRouter.implementation_check(
             LandPlantListRouterConfig.is_get_init_available)
 
-        response = api_init_models.LandPlantListInitReportGetInitModelResponse()
+        response = (
+            api_init_models.
+            LandPlantListInitReportGetInitModelResponse()
+        )
 
         auth_dict = BaseRouter.authorization_check(
             LandPlantListRouterConfig.is_public, api_key)
@@ -80,7 +91,10 @@ class LandPlantListRouter(BaseRouter):
                     "LandCode",
                     land_code
                 )
-                init_request = api_init_models.LandPlantListInitReportGetInitModelRequest()
+                init_request = (
+                    api_init_models.
+                    LandPlantListInitReportGetInitModelRequest()
+                )
                 response = await init_request.process_request(
                     session_context,
                     land_code,
@@ -90,13 +104,17 @@ class LandPlantListRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
-                response.message = str(te) + " traceback:" + traceback_string
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+                response.message = str(te) + TRACEBACK + traceback_string
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -121,7 +139,7 @@ class LandPlantListRouter(BaseRouter):
         response_model=api_models.LandPlantListGetModelResponse,
         summary="Land Plant List Report")
     async def request_get_with_id(
-        land_code: uuid.UUID = Path(..., description="Land Code"),
+        land_code: uuid.UUID = Path(..., description=LAND_CODE),
         request_model: api_models.LandPlantListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -159,11 +177,17 @@ class LandPlantListRouter(BaseRouter):
                     request_model
                 )
                 logging.info('LandPlantListRouter success')
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
-                response.message = str(e) + " traceback:" + traceback_string
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
+                response.message = str(e) + TRACEBACK + traceback_string
             finally:
                 if response.success is True:
                     await session.commit()
@@ -186,7 +210,7 @@ class LandPlantListRouter(BaseRouter):
         response_class=FileResponse,
         summary="Land Plant List Report to CSV")
     async def request_get_with_id_to_csv(
-        land_code: uuid.UUID = Path(..., description="Land Code"),
+        land_code: uuid.UUID = Path(..., description=LAND_CODE),
         request_model: api_models.LandPlantListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
@@ -196,7 +220,8 @@ class LandPlantListRouter(BaseRouter):
         """
 
         logging.info(
-            "LandPlantListRouter.request_get_with_id_to_csv start. landCode:%s",
+            "LandPlantListRouter.request_get_with_id_to_csv"
+            " start. landCode:%s",
             land_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -236,11 +261,22 @@ class LandPlantListRouter(BaseRouter):
                 )
                 report_manager = reports.ReportManagerLandPlantList(
                     session_context)
-                await report_manager.build_csv(tmp_file_path, response.items)
-            except Exception as e:
-                logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
+
+                report_items = [response_item.build_report_item() for
+                                response_item in response.items]
+
+                await report_manager.build_csv(tmp_file_path, report_items)
+
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logging.info(
+                    EXCEPTION_OCCURRED,
+                    e.__class__.__name__,
+                    e
+                )
                 response.success = False
-                traceback_string = "".join(traceback.format_tb(e.__traceback__))
+                traceback_string = "".join(
+                    traceback.format_tb(e.__traceback__)
+                )
                 response.message = str(e) + " traceback:" + traceback_string
             finally:
                 if response.success is True:
@@ -251,7 +287,12 @@ class LandPlantListRouter(BaseRouter):
         logging.info(
             'LandPlantListRouter.submit get result:%s', response_data
         )
-        output_file_name = 'land_plant_list_' + str(land_code) + '_' + str(uuid.uuid4()) + '.csv'
+
+        uuid_value = uuid.uuid4()
+
+        output_file_name = (
+            f'land_plant_list_{str(land_code)}_{str(uuid_value)}.csv'
+        )
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',
