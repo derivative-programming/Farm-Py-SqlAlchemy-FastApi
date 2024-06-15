@@ -4,23 +4,11 @@
     #TODO add comment
 """
 
-import asyncio
-import time
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
-from typing import AsyncGenerator
 
 import pytest
-import pytest_asyncio
-from pydantic import UUID4, Field
-from sqlalchemy import String, event
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.future import select
-from sqlalchemy.orm import sessionmaker
-
-from models import Base
 
 from ...land_plant_list import LandPlantListGetModelRequest
 from ..land_plant_list import LandPlantListGetModelRequestFactory
@@ -33,6 +21,10 @@ class TestLandPlantListGetModelRequestFactoryAsync:
 
     @pytest.mark.asyncio
     async def test_create_async(self, session):
+        """
+            #TODO add comment
+        """
+
         model_instance = await LandPlantListGetModelRequestFactory.create_async(session=session)
         assert isinstance(model_instance, LandPlantListGetModelRequest)
         assert isinstance(model_instance.flavor_code, uuid.UUID)

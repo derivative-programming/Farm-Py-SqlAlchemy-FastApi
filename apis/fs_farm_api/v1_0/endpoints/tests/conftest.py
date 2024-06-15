@@ -5,14 +5,15 @@
 """
 
 import pytest_asyncio
-import models.factory as model_factorys
-import business
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
+
+import business
+import current_runtime
+import models.factory as model_factorys
+from helpers.api_token import ApiToken
 from helpers.session_context import SessionContext
 from models import Base
-from helpers.api_token import ApiToken
-import current_runtime
 
 # Define your in-memory SQLite test database URL
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -50,7 +51,7 @@ async def overridden_get_db():
 
 
 @pytest_asyncio.fixture(scope="function")
-async def api_key_fixture(overridden_get_db: AsyncSession):
+async def old_api_key_fixture(overridden_get_db: AsyncSession):
     """
         Build a test api key for unit testing
     """
@@ -78,5 +79,35 @@ async def api_key_fixture(overridden_get_db: AsyncSession):
                 'TacCode': str(tac_bus_obj.code),
                 'PacCode': str(pac_bus_obj.code),
                 'UserName': customer.email}
+    test_api_key = ApiToken.create_token(api_dict, 1)
+    return test_api_key
+
+
+@pytest_asyncio.fixture(scope="function")
+async def api_key_fixture(overridden_get_db: AsyncSession):
+    """
+        Build a test api key for unit testing
+    """
+
+    session_context = SessionContext(dict(), overridden_get_db)
+
+    await current_runtime.initialize(session_context)
+
+    # customer = await model_factorys.CustomerFactory.create_async(
+    #     overridden_get_db)
+
+    # customer_bus_obj = business.CustomerBusObj(session_context)
+
+    # await customer_bus_obj.load_from_obj_instance(customer)
+
+    # tac_bus_obj = business.TacBusObj(session_context)
+
+    # await tac_bus_obj.load_from_id(customer_bus_obj.tac_id)
+
+    # pac_bus_obj = business.PacBusObj(session_context)
+
+    # await pac_bus_obj.load_from_id(tac_bus_obj.pac_id)
+
+    api_dict = {}
     test_api_key = ApiToken.create_token(api_dict, 1)
     return test_api_key

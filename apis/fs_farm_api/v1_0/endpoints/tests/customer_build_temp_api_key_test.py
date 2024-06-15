@@ -2,27 +2,27 @@
 """
     #TODO add comment
 """
-import uuid
-import json
-import pytest
 import logging
+import uuid
+import json  # pylint: disable=unused-import
+from unittest.mock import AsyncMock, patch
+import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
-from unittest.mock import patch, AsyncMock
+import models.factory as model_factorys
+from helpers.api_token import ApiToken  # pylint: disable=unused-import
 from apis import models as apis_models
 from database import get_db
-from helpers.api_token import ApiToken
-import models.factory as model_factorys
 from main import app
-from ..customer_build_temp_api_key import CustomerBuildTempApiKeyRouterConfig
 from .....models import factory as request_factory
+from ..customer_build_temp_api_key import CustomerBuildTempApiKeyRouterConfig
 
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
     """
     #TODO add comment
     """
-    async def mock_process_request(session, session_context, customer_code, request):
+    async def mock_process_request(session, session_context, customer_code, request):  # pylint: disable=unused-argument
         pass
     with patch.object(apis_models.CustomerBuildTempApiKeyPostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
         mock_method.side_effect = mock_process_request
@@ -165,5 +165,8 @@ async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
         )
         assert response.status_code == 405
 
-def teardown_module(module):
+def teardown_module(module):  # pylint: disable=unused-argument
+    """
+        #TODO add comment
+    """
     app.dependency_overrides.clear()

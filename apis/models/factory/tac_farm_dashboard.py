@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import uuid
-import factory
-from factory import Faker
-
-from ..tac_farm_dashboard import TacFarmDashboardGetModelRequest
 from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
+import factory
+from factory import Faker
+from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from ..tac_farm_dashboard import TacFarmDashboardGetModelRequest
 class TacFarmDashboardGetModelRequestFactory(factory.base.Factory):
     """
     #TODO add comment
@@ -26,6 +26,7 @@ class TacFarmDashboardGetModelRequestFactory(factory.base.Factory):
     order_by_column_name: str = ""
     order_by_descending: bool = False
     force_error_message: str = ""
+# endset
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> TacFarmDashboardGetModelRequest:
         if session is None:
@@ -51,6 +52,9 @@ class TacFarmDashboardGetModelRequestFactory(factory.base.Factory):
         return obj
     @classmethod
     async def create_async(cls, session: AsyncSession, *args, **kwargs) -> TacFarmDashboardGetModelRequest:
+        """
+            #TODO add comment
+        """
 
 # endset
 

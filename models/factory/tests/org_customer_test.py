@@ -204,6 +204,7 @@ class TestOrgCustomerFactory:
         assert isinstance(
             org_customer.organization_code_peek, uuid.UUID)
 # endset
+        assert org_customer is not None
         assert org_customer.customer_id == 0
         assert org_customer.email == ""
         assert org_customer.organization_id == 0

@@ -208,6 +208,7 @@ class TestFlavorFactory:
         assert isinstance(
             flavor.pac_code_peek, uuid.UUID)
 # endset
+        assert flavor is not None
         assert flavor.description == ""
         assert flavor.display_order == 0
         assert flavor.is_active is False

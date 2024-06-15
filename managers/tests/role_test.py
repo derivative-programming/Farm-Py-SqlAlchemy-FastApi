@@ -20,6 +20,9 @@ class TestRoleManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def role_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return RoleManager(session_context)
@@ -219,6 +222,9 @@ class TestRoleManager:
         assert new_code == fetched_role.code
     @pytest.mark.asyncio
     async def test_update_invalid_role(self, role_manager: RoleManager):
+        """
+            #TODO add comment
+        """
         # None role
         role = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestRoleManager:
         test_role = await RoleFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_role = await role_manager.update(
+            await role_manager.update(
                 role=test_role,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestRoleManager:
         role1 = await RoleFactory.create_async(session=session)
         role2 = await RoleFactory.create_async(session=session)
         # Delete roles
-        role_ids = [1, 2]
+        role_ids = [role1.role_id, role2.role_id]
         result = await role_manager.delete_bulk(role_ids)
         assert result is True
         for role_id in role_ids:
@@ -705,6 +711,9 @@ class TestRoleManager:
         role_manager: RoleManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a role with a specific pac_id
         role1 = await RoleFactory.create_async(session=session)
         # Fetch the role using the manager function
@@ -717,6 +726,9 @@ class TestRoleManager:
         self,
         role_manager: RoleManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_roles = await role_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_roles) == 0
@@ -726,6 +738,9 @@ class TestRoleManager:
         role_manager: RoleManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await role_manager.get_by_pac_id(invalid_id)

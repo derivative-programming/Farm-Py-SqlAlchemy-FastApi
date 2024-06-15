@@ -7,7 +7,7 @@
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
+from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
@@ -37,7 +37,8 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     request_is_delete_allowed: bool = Faker('boolean')
     request_some_float_val: float = Faker(
          'pyfloat',
-         positive=True)
+         positive=True
+        )
     request_some_decimal_val: Decimal = Faker(
          'pydecimal',
          left_digits=5,
@@ -61,6 +62,7 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     request_some_phone_number: str = Faker('phone_number')
     request_some_email_address: str = Faker('email')
     request_sample_image_upload_file: str = ""
+# endset
 
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> LandAddPlantPostModelRequest:
@@ -100,6 +102,9 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
 
     @classmethod
     async def create_async(cls, session: AsyncSession, *args, **kwargs) -> LandAddPlantPostModelRequest:
+        """
+            #TODO add comment
+        """
 
         request_flavor_code_instance = await FlavorFactory.create_async(session=session)  # requestFlavorCode
 # endset

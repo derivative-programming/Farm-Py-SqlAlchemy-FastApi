@@ -4,13 +4,10 @@
 """
 import json
 import logging
-import random
 import uuid
-from datetime import date, datetime
-from enum import Enum
+from enum import Enum  # pylint: disable=unused-import
 from typing import List, Optional, Dict
-from sqlalchemy import and_, outerjoin
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
@@ -58,6 +55,9 @@ class LandManager:
         item.pac_id = pac.pac_id
         return item
     async def initialize(self):
+        """
+            #TODO add comment
+        """
         logging.info("PlantManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
@@ -86,6 +86,9 @@ class LandManager:
         self,
         enum_val: LandEnum
     ) -> Land:
+        """
+            #TODO add comment
+        """
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = Land.lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)

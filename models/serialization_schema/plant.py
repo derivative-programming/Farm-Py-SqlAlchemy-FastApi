@@ -15,6 +15,10 @@ class PlantSchema(SQLAlchemyAutoSchema):
     """
 
     class Meta:
+        """
+            #TODO add comment
+        """
+
         model = Plant
         exclude = (
             "_code",

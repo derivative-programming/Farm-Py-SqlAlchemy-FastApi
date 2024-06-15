@@ -196,6 +196,7 @@ class TestOrganizationFactory:
         assert isinstance(
             organization.tac_code_peek, uuid.UUID)
 # endset
+        assert organization is not None
         assert organization.name == ""
         assert organization.tac_id == 0
 # endset

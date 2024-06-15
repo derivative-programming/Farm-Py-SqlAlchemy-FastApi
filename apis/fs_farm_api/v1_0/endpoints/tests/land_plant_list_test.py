@@ -4,21 +4,23 @@
     #TODO add comment
 """
 
-import uuid
-import json
-import pytest
 import logging
+import uuid
+import json  # pylint: disable=unused-import
+from unittest.mock import AsyncMock, patch
+
+import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
-from unittest.mock import patch, AsyncMock
+
+import models.factory as model_factorys
+from helpers.api_token import ApiToken  # pylint: disable=unused-import
 from apis import models as apis_models
 from database import get_db
-from helpers.api_token import ApiToken
-import models.factory as model_factorys
 from main import app
-from ..land_plant_list import LandPlantListRouterConfig
-from .....models import factory as request_factory
 
+from .....models import factory as request_factory  # pylint: disable=unused-import
+from ..land_plant_list import LandPlantListRouterConfig
 
 ##GENTrainingBlock[caseisGetInitAvailable]Start
 ##GENLearn[isGetInitAvailable=true]Start
@@ -196,7 +198,7 @@ async def test_get_success(
     #TODO add comment
     """
 
-    async def mock_process_request(session, session_context, land_code, request):
+    async def mock_process_request(session, session_context, land_code, request):  # pylint: disable=unused-argument
         pass
 
     with patch.object(apis_models.LandPlantListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
@@ -392,7 +394,7 @@ async def test_get_csv_success(
     #TODO add comment
     """
 
-    async def mock_process_request(session, session_context, land_code, request):
+    async def mock_process_request(session, session_context, land_code, request):  # pylint: disable=unused-argument
         pass
 
     with patch.object(apis_models.LandPlantListGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
@@ -421,6 +423,10 @@ async def test_get_csv_success(
 
 @pytest.mark.asyncio
 async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+    """
+        #TODO add comment
+    """
+
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
@@ -445,6 +451,10 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
 
 @pytest.mark.asyncio
 async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+    """
+        #TODO add comment
+    """
+
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
@@ -469,6 +479,10 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
 
 @pytest.mark.asyncio
 async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncSession):
+    """
+        #TODO add comment
+    """
+
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
@@ -580,5 +594,9 @@ async def test_get_csv_endpoint_method_failure(
 ##GENTrainingBlock[caseisDeleteAvailable]End
 
 
-def teardown_module(module):
+def teardown_module(module):  # pylint: disable=unused-argument
+    """
+        #TODO add comment
+    """
+
     app.dependency_overrides.clear()

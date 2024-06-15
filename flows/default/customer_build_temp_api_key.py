@@ -5,20 +5,12 @@
 import uuid
 import json
 from datetime import date, datetime
-from sqlalchemy import String
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from decimal import Decimal
 from flows.base.customer_build_temp_api_key import BaseFlowCustomerBuildTempApiKey
-from models import Customer
 from flows.base import LogSeverity
 from business.customer import CustomerBusObj
 from helpers import SessionContext
-from helpers import ApiToken
 from helpers import TypeConversion
-import models as farm_models
-import managers as farm_managers
-import business
 class FlowCustomerBuildTempApiKeyResult():
     """
     #TODO add comment
@@ -27,8 +19,13 @@ class FlowCustomerBuildTempApiKeyResult():
     tmp_org_api_key_code: uuid.UUID = uuid.UUID(int=0)
 # endset
     def __init__(self):
-        pass
+        """
+            #TODO add comment
+        """
     def to_json(self):
+        """
+            #TODO add comment
+        """
         # Create a dictionary representation of the instance
         data = {
             'context_object_code': str(self.context_object_code),
@@ -52,6 +49,9 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
 
 # endset
         ) -> FlowCustomerBuildTempApiKeyResult:
+        """
+            #TODO add comment
+        """
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(customer_bus_obj.code))
         await super()._process_validation_rules(

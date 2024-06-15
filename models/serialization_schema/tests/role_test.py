@@ -49,6 +49,9 @@ class TestRoleSchema:
 # endset  # noqa: E122
     }
     def test_role_serialization(self, role: Role, session):
+        """
+            #TODO add comment
+        """
         schema = RoleSchema()
         result = schema.dump(role)
         assert result['code'] == str(role.code)
@@ -81,6 +84,9 @@ class TestRoleSchema:
             str(role.pac_code_peek))
 # endset
     def test_role_deserialization(self, role: Role, session):
+        """
+            #TODO add comment
+        """
         schema = RoleSchema()
         serialized_data = schema.dump(role)
         deserialized_data = schema.load(serialized_data)
@@ -143,6 +149,9 @@ class TestRoleSchema:
             role.pac_code_peek)
 # endset
     def test_from_json(self, role: Role, session):
+        """
+            #TODO add comment
+        """
         role_schema = RoleSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -184,6 +193,9 @@ class TestRoleSchema:
         new_role = Role(**deserialized_data)
         assert isinstance(new_role, Role)
     def test_to_json(self, role: Role, session):
+        """
+            #TODO add comment
+        """
         # Convert the Role instance to JSON using the schema
         role_schema = RoleSchema()
         role_dict = role_schema.dump(role)

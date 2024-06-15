@@ -21,7 +21,6 @@ from .plant import PlantBusObj
 from .role import RoleBusObj
 from .tac import TacBusObj
 from .tri_state_filter import TriStateFilterBusObj
-from sqlalchemy.ext.asyncio import AsyncSession
 # endset
 
 
@@ -31,6 +30,10 @@ class BusObjFactory:
     """
     @staticmethod
     async def create(session_context: SessionContext, name, code: uuid.UUID = None, id: int = None):
+        """
+            #TODO add comment
+        """
+
         if code is not None:
             if name == 'Customer':
                 return await CustomerBusObj(session_context=session_context).load_from_code(code)

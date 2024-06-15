@@ -41,14 +41,14 @@ class OrganizationBusObj(BaseBusObj):
         if not self.organization:
             raise AttributeError("Organization object is not initialized")
         return self.organization.organization_id
-    @organization_id.setter
-    def organization_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("organization_id must be a int.")
-        self.organization.organization_id = value
+    # @organization_id.setter
+    # def organization_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("organization_id must be a int.")
+    #     self.organization.organization_id = value
     # code
     @property
     def code(self):

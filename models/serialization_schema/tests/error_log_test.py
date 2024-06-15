@@ -53,6 +53,9 @@ class TestErrorLogSchema:
 # endset  # noqa: E122
     }
     def test_error_log_serialization(self, error_log: ErrorLog, session):
+        """
+            #TODO add comment
+        """
         schema = ErrorLogSchema()
         result = schema.dump(error_log)
         assert result['code'] == str(error_log.code)
@@ -89,6 +92,9 @@ class TestErrorLogSchema:
             str(error_log.pac_code_peek))
 # endset
     def test_error_log_deserialization(self, error_log: ErrorLog, session):
+        """
+            #TODO add comment
+        """
         schema = ErrorLogSchema()
         serialized_data = schema.dump(error_log)
         deserialized_data = schema.load(serialized_data)
@@ -159,6 +165,9 @@ class TestErrorLogSchema:
             error_log.pac_code_peek)
 # endset
     def test_from_json(self, error_log: ErrorLog, session):
+        """
+            #TODO add comment
+        """
         error_log_schema = ErrorLogSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -204,6 +213,9 @@ class TestErrorLogSchema:
         new_error_log = ErrorLog(**deserialized_data)
         assert isinstance(new_error_log, ErrorLog)
     def test_to_json(self, error_log: ErrorLog, session):
+        """
+            #TODO add comment
+        """
         # Convert the ErrorLog instance to JSON using the schema
         error_log_schema = ErrorLogSchema()
         error_log_dict = error_log_schema.dump(error_log)

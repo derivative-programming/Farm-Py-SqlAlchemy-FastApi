@@ -5,20 +5,12 @@
 import uuid
 import json
 from datetime import date, datetime
-from sqlalchemy import String
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from decimal import Decimal
 from flows.base.tac_farm_dashboard_init_report import BaseFlowTacFarmDashboardInitReport
-from models import Tac
 from flows.base import LogSeverity
 from business.tac import TacBusObj
 from helpers import SessionContext
-from helpers import ApiToken
 from helpers import TypeConversion
-import models as farm_models
-import managers as farm_managers
-import business
 class FlowTacFarmDashboardInitReportResult():
     """
     #TODO add comment
@@ -27,8 +19,13 @@ class FlowTacFarmDashboardInitReportResult():
     customer_code: uuid.UUID = uuid.UUID(int=0)
 # endset
     def __init__(self):
-        pass
+        """
+            #TODO add comment
+        """
     def to_json(self):
+        """
+            #TODO add comment
+        """
         # Create a dictionary representation of the instance
         data = {
             'context_object_code': str(self.context_object_code),
@@ -52,6 +49,9 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
 
 # endset
         ) -> FlowTacFarmDashboardInitReportResult:
+        """
+            #TODO add comment
+        """
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(tac_bus_obj.code))
         await super()._process_validation_rules(

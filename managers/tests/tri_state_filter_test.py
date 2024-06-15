@@ -20,6 +20,9 @@ class TestTriStateFilterManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return TriStateFilterManager(session_context)
@@ -219,6 +222,9 @@ class TestTriStateFilterManager:
         assert new_code == fetched_tri_state_filter.code
     @pytest.mark.asyncio
     async def test_update_invalid_tri_state_filter(self, tri_state_filter_manager: TriStateFilterManager):
+        """
+            #TODO add comment
+        """
         # None tri_state_filter
         tri_state_filter = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestTriStateFilterManager:
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_tri_state_filter = await tri_state_filter_manager.update(
+            await tri_state_filter_manager.update(
                 tri_state_filter=test_tri_state_filter,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestTriStateFilterManager:
         tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
         tri_state_filter2 = await TriStateFilterFactory.create_async(session=session)
         # Delete tri_state_filters
-        tri_state_filter_ids = [1, 2]
+        tri_state_filter_ids = [tri_state_filter1.tri_state_filter_id, tri_state_filter2.tri_state_filter_id]
         result = await tri_state_filter_manager.delete_bulk(tri_state_filter_ids)
         assert result is True
         for tri_state_filter_id in tri_state_filter_ids:
@@ -705,6 +711,9 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a tri_state_filter with a specific pac_id
         tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
         # Fetch the tri_state_filter using the manager function
@@ -717,6 +726,9 @@ class TestTriStateFilterManager:
         self,
         tri_state_filter_manager: TriStateFilterManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_tri_state_filters = await tri_state_filter_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_tri_state_filters) == 0
@@ -726,6 +738,9 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await tri_state_filter_manager.get_by_pac_id(invalid_id)

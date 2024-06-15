@@ -4,18 +4,19 @@
     #TODO add comment
 """
 
-import json
+import json  # pylint: disable=unused-import
 import uuid
-import logging
+from unittest.mock import AsyncMock, patch
+
 import pytest
-from unittest.mock import patch, AsyncMock
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_db
-from helpers.api_token import ApiToken
+
 import models.factory as model_factorys
 from apis import models as apis_models
+from database import get_db
 from main import app
+
 from ..land_add_plant import LandAddPlantRouterConfig
 
 
@@ -27,7 +28,7 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         #TODO add comment
     """
 
-    async def mock_process_request(session, session_context, land_code, request):
+    async def mock_process_request(session, session_context, land_code, request):  # pylint: disable=unused-argument
         """
             #TODO add comment
         """
@@ -392,7 +393,7 @@ async def test_init_endpoint_method_failure(
         assert response.status_code == 405
 
 
-def teardown_module(module):
+def teardown_module(module):  # pylint: disable=unused-argument
     """
     #TODO add comment
     """

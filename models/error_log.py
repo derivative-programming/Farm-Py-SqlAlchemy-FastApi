@@ -8,8 +8,6 @@ from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy.dialects.postgresql import UUID
 import models.constants.error_log as error_log_constants
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType
@@ -144,9 +142,15 @@ class ErrorLog(Base):
 # endset
     @property
     def code(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._code))
     @code.setter
     def code(self, value):
+        """
+            #TODO add comment
+        """
         if isinstance(value, uuid.UUID):
             self._code = value
         else:
@@ -154,6 +158,9 @@ class ErrorLog(Base):
         self.last_update_utc_date_time = datetime.utcnow()
     @property
     def insert_user_id(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._insert_user_id))
     @insert_user_id.setter
     def insert_user_id(self, value):
@@ -164,6 +171,9 @@ class ErrorLog(Base):
         self.last_update_utc_date_time = datetime.utcnow()
     @property
     def last_update_user_id(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._last_update_user_id))
     @last_update_user_id.setter
     def last_update_user_id(self, value):
@@ -175,9 +185,15 @@ class ErrorLog(Base):
     # browserCode,
     @property
     def browser_code(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._browser_code))
     @code.setter
     def browser_code(self, value):
+        """
+            #TODO add comment
+        """
         if isinstance(value, uuid.UUID):
             self._browser_code = value
         else:
@@ -186,9 +202,15 @@ class ErrorLog(Base):
     # contextCode,
     @property
     def context_code(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._context_code))
     @code.setter
     def context_code(self, value):
+        """
+            #TODO add comment
+        """
         if isinstance(value, uuid.UUID):
             self._context_code = value
         else:
@@ -203,6 +225,9 @@ class ErrorLog(Base):
 # endset
     @staticmethod
     def property_list():
+        """
+            #TODO add comment
+        """
         result = [
             "browser_code",
             "context_code",
@@ -221,8 +246,14 @@ class ErrorLog(Base):
 # Index('farm_error_log_index_pac_id', ErrorLog.pac_id)  # PacID
 @event.listens_for(ErrorLog, 'before_insert')
 def set_created_on(mapper, connection, target):
+    """
+        #TODO add comment
+    """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(ErrorLog, 'before_update')
 def set_updated_on(mapper, connection, target):
+    """
+        #TODO add comment
+    """
     target.last_update_utc_date_time = datetime.utcnow()

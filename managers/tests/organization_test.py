@@ -20,6 +20,9 @@ class TestOrganizationManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return OrganizationManager(session_context)
@@ -219,6 +222,9 @@ class TestOrganizationManager:
         assert new_code == fetched_organization.code
     @pytest.mark.asyncio
     async def test_update_invalid_organization(self, organization_manager: OrganizationManager):
+        """
+            #TODO add comment
+        """
         # None organization
         organization = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestOrganizationManager:
         test_organization = await OrganizationFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_organization = await organization_manager.update(
+            await organization_manager.update(
                 organization=test_organization,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestOrganizationManager:
         organization1 = await OrganizationFactory.create_async(session=session)
         organization2 = await OrganizationFactory.create_async(session=session)
         # Delete organizations
-        organization_ids = [1, 2]
+        organization_ids = [organization1.organization_id, organization2.organization_id]
         result = await organization_manager.delete_bulk(organization_ids)
         assert result is True
         for organization_id in organization_ids:
@@ -701,6 +707,9 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a organization with a specific tac_id
         organization1 = await OrganizationFactory.create_async(session=session)
         # Fetch the organization using the manager function
@@ -713,6 +722,9 @@ class TestOrganizationManager:
         self,
         organization_manager: OrganizationManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_organizations = await organization_manager.get_by_tac_id(non_existent_id)
         assert len(fetched_organizations) == 0
@@ -722,6 +734,9 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await organization_manager.get_by_tac_id(invalid_id)

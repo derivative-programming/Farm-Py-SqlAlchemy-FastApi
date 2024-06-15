@@ -48,6 +48,9 @@ class TestPacSchema:
 # endset  # noqa: E122
     }
     def test_pac_serialization(self, pac: Pac, session):
+        """
+            #TODO add comment
+        """
         schema = PacSchema()
         result = schema.dump(pac)
         assert result['code'] == str(pac.code)
@@ -77,6 +80,9 @@ class TestPacSchema:
 
 # endset
     def test_pac_deserialization(self, pac: Pac, session):
+        """
+            #TODO add comment
+        """
         schema = PacSchema()
         serialized_data = schema.dump(pac)
         deserialized_data = schema.load(serialized_data)
@@ -133,6 +139,9 @@ class TestPacSchema:
 
 # endset
     def test_from_json(self, pac: Pac, session):
+        """
+            #TODO add comment
+        """
         pac_schema = PacSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -171,6 +180,9 @@ class TestPacSchema:
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
     def test_to_json(self, pac: Pac, session):
+        """
+            #TODO add comment
+        """
         # Convert the Pac instance to JSON using the schema
         pac_schema = PacSchema()
         pac_dict = pac_schema.dump(pac)

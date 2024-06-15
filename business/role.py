@@ -37,14 +37,14 @@ class RoleBusObj(BaseBusObj):
         if not self.role:
             raise AttributeError("Role object is not initialized")
         return self.role.role_id
-    @role_id.setter
-    def role_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("role_id must be a int.")
-        self.role.role_id = value
+    # @role_id.setter
+    # def role_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("role_id must be a int.")
+    #     self.role.role_id = value
     # code
     @property
     def code(self):

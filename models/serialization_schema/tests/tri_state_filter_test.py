@@ -50,6 +50,9 @@ class TestTriStateFilterSchema:
 # endset  # noqa: E122
     }
     def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter, session):
+        """
+            #TODO add comment
+        """
         schema = TriStateFilterSchema()
         result = schema.dump(tri_state_filter)
         assert result['code'] == str(tri_state_filter.code)
@@ -84,6 +87,9 @@ class TestTriStateFilterSchema:
             str(tri_state_filter.pac_code_peek))
 # endset
     def test_tri_state_filter_deserialization(self, tri_state_filter: TriStateFilter, session):
+        """
+            #TODO add comment
+        """
         schema = TriStateFilterSchema()
         serialized_data = schema.dump(tri_state_filter)
         deserialized_data = schema.load(serialized_data)
@@ -150,6 +156,9 @@ class TestTriStateFilterSchema:
             tri_state_filter.pac_code_peek)
 # endset
     def test_from_json(self, tri_state_filter: TriStateFilter, session):
+        """
+            #TODO add comment
+        """
         tri_state_filter_schema = TriStateFilterSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -193,6 +202,9 @@ class TestTriStateFilterSchema:
         new_tri_state_filter = TriStateFilter(**deserialized_data)
         assert isinstance(new_tri_state_filter, TriStateFilter)
     def test_to_json(self, tri_state_filter: TriStateFilter, session):
+        """
+            #TODO add comment
+        """
         # Convert the TriStateFilter instance to JSON using the schema
         tri_state_filter_schema = TriStateFilterSchema()
         tri_state_filter_dict = tri_state_filter_schema.dump(tri_state_filter)

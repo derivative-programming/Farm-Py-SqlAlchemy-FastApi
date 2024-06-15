@@ -77,6 +77,9 @@ class CustomerRoleFactory(factory.Factory):
         return obj
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> CustomerRole:
+        """
+            #TODO add comment
+        """
         customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
         role_id_role_instance = await RoleFactory.create_async(session=session)  # RoleID
 # endset
@@ -98,6 +101,9 @@ class CustomerRoleFactory(factory.Factory):
         return obj
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> CustomerRole:
+        """
+            #TODO add comment
+        """
         customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
         role_id_role_instance = await RoleFactory.create_async(session=session)  # RoleID
 # endset

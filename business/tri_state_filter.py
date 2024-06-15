@@ -37,14 +37,14 @@ class TriStateFilterBusObj(BaseBusObj):
         if not self.tri_state_filter:
             raise AttributeError("TriStateFilter object is not initialized")
         return self.tri_state_filter.tri_state_filter_id
-    @tri_state_filter_id.setter
-    def tri_state_filter_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("tri_state_filter_id must be a int.")
-        self.tri_state_filter.tri_state_filter_id = value
+    # @tri_state_filter_id.setter
+    # def tri_state_filter_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("tri_state_filter_id must be a int.")
+    #     self.tri_state_filter.tri_state_filter_id = value
     # code
     @property
     def code(self):

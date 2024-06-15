@@ -4,8 +4,10 @@
     #TODO add comment
 """
 
-from fastapi import HTTPException, status
 import logging
+
+from fastapi import HTTPException, status
+
 from helpers import ApiToken
 
 

@@ -20,6 +20,9 @@ class TestCustomerManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def customer_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return CustomerManager(session_context)
@@ -219,6 +222,9 @@ class TestCustomerManager:
         assert new_code == fetched_customer.code
     @pytest.mark.asyncio
     async def test_update_invalid_customer(self, customer_manager: CustomerManager):
+        """
+            #TODO add comment
+        """
         # None customer
         customer = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestCustomerManager:
         test_customer = await CustomerFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_customer = await customer_manager.update(
+            await customer_manager.update(
                 customer=test_customer,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestCustomerManager:
         customer1 = await CustomerFactory.create_async(session=session)
         customer2 = await CustomerFactory.create_async(session=session)
         # Delete customers
-        customer_ids = [1, 2]
+        customer_ids = [customer1.customer_id, customer2.customer_id]
         result = await customer_manager.delete_bulk(customer_ids)
         assert result is True
         for customer_id in customer_ids:
@@ -720,6 +726,9 @@ class TestCustomerManager:
         customer_manager: CustomerManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a customer with a specific tac_id
         customer1 = await CustomerFactory.create_async(session=session)
         # Fetch the customer using the manager function
@@ -732,6 +741,9 @@ class TestCustomerManager:
         self,
         customer_manager: CustomerManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_customers = await customer_manager.get_by_tac_id(non_existent_id)
         assert len(fetched_customers) == 0
@@ -741,6 +753,9 @@ class TestCustomerManager:
         customer_manager: CustomerManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await customer_manager.get_by_tac_id(invalid_id)

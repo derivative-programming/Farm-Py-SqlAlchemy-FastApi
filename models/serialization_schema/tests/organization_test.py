@@ -45,6 +45,9 @@ class TestOrganizationSchema:
 # endset  # noqa: E122
     }
     def test_organization_serialization(self, organization: Organization, session):
+        """
+            #TODO add comment
+        """
         schema = OrganizationSchema()
         result = schema.dump(organization)
         assert result['code'] == str(organization.code)
@@ -69,6 +72,9 @@ class TestOrganizationSchema:
             str(organization.tac_code_peek))
 # endset
     def test_organization_deserialization(self, organization: Organization, session):
+        """
+            #TODO add comment
+        """
         schema = OrganizationSchema()
         serialized_data = schema.dump(organization)
         deserialized_data = schema.load(serialized_data)
@@ -115,6 +121,9 @@ class TestOrganizationSchema:
             organization.tac_code_peek)
 # endset
     def test_from_json(self, organization: Organization, session):
+        """
+            #TODO add comment
+        """
         organization_schema = OrganizationSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -148,6 +157,9 @@ class TestOrganizationSchema:
         new_organization = Organization(**deserialized_data)
         assert isinstance(new_organization, Organization)
     def test_to_json(self, organization: Organization, session):
+        """
+            #TODO add comment
+        """
         # Convert the Organization instance to JSON using the schema
         organization_schema = OrganizationSchema()
         organization_dict = organization_schema.dump(organization)

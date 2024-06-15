@@ -8,8 +8,6 @@ from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy.dialects.postgresql import UUID
 import models.constants.org_api_key as org_api_key_constants
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType
@@ -157,9 +155,15 @@ class OrgApiKey(Base):
 # endset
     @property
     def code(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._code))
     @code.setter
     def code(self, value):
+        """
+            #TODO add comment
+        """
         if isinstance(value, uuid.UUID):
             self._code = value
         else:
@@ -167,6 +171,9 @@ class OrgApiKey(Base):
         self.last_update_utc_date_time = datetime.utcnow()
     @property
     def insert_user_id(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._insert_user_id))
     @insert_user_id.setter
     def insert_user_id(self, value):
@@ -177,6 +184,9 @@ class OrgApiKey(Base):
         self.last_update_utc_date_time = datetime.utcnow()
     @property
     def last_update_user_id(self):
+        """
+            #TODO add comment
+        """
         return uuid.UUID(str(self._last_update_user_id))
     @last_update_user_id.setter
     def last_update_user_id(self, value):
@@ -197,6 +207,9 @@ class OrgApiKey(Base):
 # endset
     @staticmethod
     def property_list():
+        """
+            #TODO add comment
+        """
         result = [
             "api_key_value",
             "created_by",
@@ -217,8 +230,14 @@ class OrgApiKey(Base):
 # Index('farm_org_api_key_index_org_customer_id', OrgApiKey.org_customer_id)  # OrgCustomerID
 @event.listens_for(OrgApiKey, 'before_insert')
 def set_created_on(mapper, connection, target):
+    """
+        #TODO add comment
+    """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(OrgApiKey, 'before_update')
 def set_updated_on(mapper, connection, target):
+    """
+        #TODO add comment
+    """
     target.last_update_utc_date_time = datetime.utcnow()

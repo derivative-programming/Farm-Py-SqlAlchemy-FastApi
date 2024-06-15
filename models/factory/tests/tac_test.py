@@ -208,6 +208,7 @@ class TestTacFactory:
         assert isinstance(
             tac.pac_code_peek, uuid.UUID)
 # endset
+        assert tac is not None
         assert tac.description == ""
         assert tac.display_order == 0
         assert tac.is_active is False

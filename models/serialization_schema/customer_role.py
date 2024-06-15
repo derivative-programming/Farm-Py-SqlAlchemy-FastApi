@@ -10,6 +10,9 @@ class CustomerRoleSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = CustomerRole
         exclude = (
             "_code",

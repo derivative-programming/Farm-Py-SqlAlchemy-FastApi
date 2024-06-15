@@ -2,20 +2,20 @@
 """
     #TODO add comment
 """
-import uuid
-import json
-import pytest
 import logging
+import uuid
+import json  # pylint: disable=unused-import
+from unittest.mock import AsyncMock, patch
+import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
-from unittest.mock import patch, AsyncMock
+import models.factory as model_factorys
+from helpers.api_token import ApiToken  # pylint: disable=unused-import
 from apis import models as apis_models
 from database import get_db
-from helpers.api_token import ApiToken
-import models.factory as model_factorys
 from main import app
-from ..tac_farm_dashboard import TacFarmDashboardRouterConfig
 from .....models import factory as request_factory
+from ..tac_farm_dashboard import TacFarmDashboardRouterConfig
 
 @pytest.mark.asyncio
 async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: str):
@@ -146,7 +146,7 @@ async def test_get_success(
     """
     #TODO add comment
     """
-    async def mock_process_request(session, session_context, tac_code, request):
+    async def mock_process_request(session, session_context, tac_code, request):  # pylint: disable=unused-argument
         pass
     with patch.object(apis_models.TacFarmDashboardGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
         mock_method.side_effect = mock_process_request
@@ -295,7 +295,7 @@ async def test_get_csv_success(
     """
     #TODO add comment
     """
-    async def mock_process_request(session, session_context, tac_code, request):
+    async def mock_process_request(session, session_context, tac_code, request):  # pylint: disable=unused-argument
         pass
     with patch.object(apis_models.TacFarmDashboardGetModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
         mock_method.side_effect = mock_process_request
@@ -318,6 +318,9 @@ async def test_get_csv_success(
             mock_method.assert_awaited()
 @pytest.mark.asyncio
 async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+    """
+        #TODO add comment
+    """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     request = await request_factory.TacFarmDashboardGetModelRequestFactory.create_async(overridden_get_db)
@@ -336,6 +339,9 @@ async def test_get_csv_authorization_failure_bad_api_key(overridden_get_db: Asyn
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+    """
+        #TODO add comment
+    """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     request = await request_factory.TacFarmDashboardGetModelRequestFactory.create_async(overridden_get_db)
@@ -354,6 +360,9 @@ async def test_get_csv_authorization_failure_empty_header_key(overridden_get_db:
             assert response.status_code == 401
 @pytest.mark.asyncio
 async def test_get_csv_authorization_failure_no_header(overridden_get_db: AsyncSession):
+    """
+        #TODO add comment
+    """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
     request = await request_factory.TacFarmDashboardGetModelRequestFactory.create_async(overridden_get_db)
@@ -427,5 +436,8 @@ async def test_get_csv_endpoint_method_failure(
         )
         assert response.status_code == 405
 
-def teardown_module(module):
+def teardown_module(module):  # pylint: disable=unused-argument
+    """
+        #TODO add comment
+    """
     app.dependency_overrides.clear()

@@ -7,14 +7,13 @@
 import traceback
 import logging
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, status, Path
-from fastapi.security import APIKeyHeader
+from fastapi import APIRouter, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 import apis.models.init as api_init_models
 import apis.models as api_models
 from database import get_db
 from .base_router import BaseRouter
-from helpers import SessionContext, ApiToken, api_key_header
+from helpers import SessionContext, api_key_header
 
 
 class LandAddPlantRouterConfig():

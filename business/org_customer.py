@@ -37,14 +37,14 @@ class OrgCustomerBusObj(BaseBusObj):
         if not self.org_customer:
             raise AttributeError("OrgCustomer object is not initialized")
         return self.org_customer.org_customer_id
-    @org_customer_id.setter
-    def org_customer_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("org_customer_id must be a int.")
-        self.org_customer.org_customer_id = value
+    # @org_customer_id.setter
+    # def org_customer_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("org_customer_id must be a int.")
+    #     self.org_customer.org_customer_id = value
     # code
     @property
     def code(self):

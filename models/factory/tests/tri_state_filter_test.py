@@ -211,6 +211,7 @@ class TestTriStateFilterFactory:
             tri_state_filter.pac_code_peek, uuid.UUID)
         # stateIntValue,
 # endset
+        assert tri_state_filter is not None
         assert tri_state_filter.description == ""
         assert tri_state_filter.display_order == 0
         assert tri_state_filter.is_active is False

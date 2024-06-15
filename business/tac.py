@@ -41,14 +41,14 @@ class TacBusObj(BaseBusObj):
         if not self.tac:
             raise AttributeError("Tac object is not initialized")
         return self.tac.tac_id
-    @tac_id.setter
-    def tac_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("tac_id must be a int.")
-        self.tac.tac_id = value
+    # @tac_id.setter
+    # def tac_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("tac_id must be a int.")
+    #     self.tac.tac_id = value
     # code
     @property
     def code(self):

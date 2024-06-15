@@ -51,16 +51,16 @@ class PlantBusObj(BaseBusObj):
 
         return self.plant.plant_id
 
-    @plant_id.setter
-    def plant_id(self, value: int):
-        """
-        #TODO add comment
-        """
+    # @plant_id.setter
+    # def plant_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
 
-        if not isinstance(value, int):
-            raise ValueError("plant_id must be a int.")
+    #     if not isinstance(value, int):
+    #         raise ValueError("plant_id must be a int.")
 
-        self.plant.plant_id = value
+    #     self.plant.plant_id = value
 
     # code
     @property

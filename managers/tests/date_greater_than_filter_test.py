@@ -20,6 +20,9 @@ class TestDateGreaterThanFilterManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def date_greater_than_filter_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return DateGreaterThanFilterManager(session_context)
@@ -219,6 +222,9 @@ class TestDateGreaterThanFilterManager:
         assert new_code == fetched_date_greater_than_filter.code
     @pytest.mark.asyncio
     async def test_update_invalid_date_greater_than_filter(self, date_greater_than_filter_manager: DateGreaterThanFilterManager):
+        """
+            #TODO add comment
+        """
         # None date_greater_than_filter
         date_greater_than_filter = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestDateGreaterThanFilterManager:
         test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_date_greater_than_filter = await date_greater_than_filter_manager.update(
+            await date_greater_than_filter_manager.update(
                 date_greater_than_filter=test_date_greater_than_filter,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
         date_greater_than_filter2 = await DateGreaterThanFilterFactory.create_async(session=session)
         # Delete date_greater_than_filters
-        date_greater_than_filter_ids = [1, 2]
+        date_greater_than_filter_ids = [date_greater_than_filter1.date_greater_than_filter_id, date_greater_than_filter2.date_greater_than_filter_id]
         result = await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
         assert result is True
         for date_greater_than_filter_id in date_greater_than_filter_ids:
@@ -706,6 +712,9 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a date_greater_than_filter with a specific pac_id
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
         # Fetch the date_greater_than_filter using the manager function
@@ -718,6 +727,9 @@ class TestDateGreaterThanFilterManager:
         self,
         date_greater_than_filter_manager: DateGreaterThanFilterManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_date_greater_than_filters = await date_greater_than_filter_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_date_greater_than_filters) == 0
@@ -727,6 +739,9 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await date_greater_than_filter_manager.get_by_pac_id(invalid_id)

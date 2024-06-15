@@ -10,6 +10,9 @@ class TriStateFilterSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = TriStateFilter
         exclude = (
             "_code",

@@ -20,6 +20,9 @@ class TestLandManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def land_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return LandManager(session_context)
@@ -219,6 +222,9 @@ class TestLandManager:
         assert new_code == fetched_land.code
     @pytest.mark.asyncio
     async def test_update_invalid_land(self, land_manager: LandManager):
+        """
+            #TODO add comment
+        """
         # None land
         land = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestLandManager:
         test_land = await LandFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_land = await land_manager.update(
+            await land_manager.update(
                 land=test_land,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestLandManager:
         land1 = await LandFactory.create_async(session=session)
         land2 = await LandFactory.create_async(session=session)
         # Delete lands
-        land_ids = [1, 2]
+        land_ids = [land1.land_id, land2.land_id]
         result = await land_manager.delete_bulk(land_ids)
         assert result is True
         for land_id in land_ids:
@@ -705,6 +711,9 @@ class TestLandManager:
         land_manager: LandManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a land with a specific pac_id
         land1 = await LandFactory.create_async(session=session)
         # Fetch the land using the manager function
@@ -717,6 +726,9 @@ class TestLandManager:
         self,
         land_manager: LandManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_lands = await land_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_lands) == 0
@@ -726,6 +738,9 @@ class TestLandManager:
         land_manager: LandManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await land_manager.get_by_pac_id(invalid_id)

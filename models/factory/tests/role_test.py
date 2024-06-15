@@ -208,6 +208,7 @@ class TestRoleFactory:
         assert isinstance(
             role.pac_code_peek, uuid.UUID)
 # endset
+        assert role is not None
         assert role.description == ""
         assert role.display_order == 0
         assert role.is_active is False

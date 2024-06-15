@@ -10,6 +10,9 @@ class PacSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = Pac
         exclude = (
             "_code",

@@ -6,7 +6,7 @@
 
 from typing import List
 from pydantic import Field
-from helpers.pydantic_serialization import CamelModel, SnakeModel
+from helpers.pydantic_serialization import CamelModel
 from .validation_error import ValidationErrorItem
 
 

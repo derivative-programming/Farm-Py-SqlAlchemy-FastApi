@@ -2,23 +2,20 @@
 """
     #TODO add comment
 """
+import logging
+import uuid
 from datetime import date, datetime
 from decimal import Decimal
-import json
 from typing import List
-import uuid
-from apis.models import validation_error
-from helpers import TypeConversion
-from flows.pac_user_tri_state_filter_list_init_report import FlowPacUserTriStateFilterListInitReportResult, FlowPacUserTriStateFilterListInitReport
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from business.pac import PacBusObj
-from flows.base.flow_validation_error import FlowValidationError
-from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
-import logging
-from sqlalchemy.ext.asyncio import AsyncSession
+from business.pac import PacBusObj
+from flows.base.flow_validation_error import FlowValidationError
+from flows.pac_user_tri_state_filter_list_init_report import (FlowPacUserTriStateFilterListInitReport,
+                                              FlowPacUserTriStateFilterListInitReportResult)
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
     """
     #TODO add comment
@@ -32,11 +29,17 @@ class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
         self,
         data: FlowPacUserTriStateFilterListInitReportResult
     ):
+        """
+            #TODO add comment
+        """
         self.validation_errors = list()
         self.success = False
         self.message = ""
 
     def to_json(self):
+        """
+            #TODO add comment
+        """
         return self.model_dump_json()
 class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
     """
@@ -48,6 +51,9 @@ class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
             pac_code: uuid.UUID,
             response: PacUserTriStateFilterListInitReportGetInitModelResponse
     ) -> PacUserTriStateFilterListInitReportGetInitModelResponse:
+        """
+            #TODO add comment
+        """
         try:
             logging.info(
                 "loading model...PacUserTriStateFilterListInitReportGetInitModelRequest")

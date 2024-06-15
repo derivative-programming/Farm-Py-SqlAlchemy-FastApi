@@ -10,6 +10,9 @@ class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = DateGreaterThanFilter
         exclude = (
             "_code",

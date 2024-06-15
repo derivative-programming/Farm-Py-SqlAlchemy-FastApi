@@ -51,14 +51,14 @@ class PacBusObj(BaseBusObj):
         if not self.pac:
             raise AttributeError("Pac object is not initialized")
         return self.pac.pac_id
-    @pac_id.setter
-    def pac_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("pac_id must be a int.")
-        self.pac.pac_id = value
+    # @pac_id.setter
+    # def pac_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("pac_id must be a int.")
+    #     self.pac.pac_id = value
     # code
     @property
     def code(self):

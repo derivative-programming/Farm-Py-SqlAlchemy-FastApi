@@ -10,6 +10,10 @@ ENCRYPTION_KEY_SECRET = "your_test_key_here"  # Use a test key
 
 
 def test_encrypt_decrypt():
+    """
+        #TODO add comment
+    """
+
     original_message = "Hello, World!"
 
     # Encrypt and then decrypt the message
@@ -21,6 +25,10 @@ def test_encrypt_decrypt():
 
 
 def test_empty_string():
+    """
+        #TODO add comment
+    """
+
     original_message = ""
 
     encrypted_message = encrypt_message(original_message)

@@ -37,14 +37,14 @@ class OrgApiKeyBusObj(BaseBusObj):
         if not self.org_api_key:
             raise AttributeError("OrgApiKey object is not initialized")
         return self.org_api_key.org_api_key_id
-    @org_api_key_id.setter
-    def org_api_key_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("org_api_key_id must be a int.")
-        self.org_api_key.org_api_key_id = value
+    # @org_api_key_id.setter
+    # def org_api_key_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("org_api_key_id must be a int.")
+    #     self.org_api_key.org_api_key_id = value
     # code
     @property
     def code(self):

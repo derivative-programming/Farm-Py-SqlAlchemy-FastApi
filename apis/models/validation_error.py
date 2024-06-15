@@ -4,7 +4,7 @@
     #TODO add comment
 """
 
-from helpers.pydantic_serialization import CamelModel, SnakeModel
+from helpers.pydantic_serialization import CamelModel
 from pydantic import Field
 
 

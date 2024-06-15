@@ -7,11 +7,9 @@
 import json
 import uuid
 import logging
-from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional, Dict
-from sqlalchemy import and_, outerjoin
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
@@ -56,6 +54,10 @@ class DateGreaterThanFilterManager:
         self._session_context = session_context
 
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
+        """
+            #TODO add comment
+        """
+
         return value
 
 ##GENTrainingBlock[caseIsLookupObject]Start
@@ -66,6 +68,10 @@ class DateGreaterThanFilterManager:
         return item
 
     async def initialize(self):
+        """
+            #TODO add comment
+        """
+
         logging.info("PlantManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
@@ -131,6 +137,10 @@ class DateGreaterThanFilterManager:
         self,
         enum_val: DateGreaterThanFilterEnum
     ) -> DateGreaterThanFilter:
+        """
+            #TODO add comment
+        """
+
         # return self.get(lookup_enum_name=enum_val.value)
         query_filter = DateGreaterThanFilter.lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
@@ -139,6 +149,10 @@ class DateGreaterThanFilterManager:
 ##GENTrainingBlock[caseIsLookupObject]End
 
     async def build(self, **kwargs) -> DateGreaterThanFilter:
+        """
+            #TODO add comment
+        """
+
         logging.info("DateGreaterThanFilterManager.build")
         return DateGreaterThanFilter(**kwargs)
 
@@ -146,6 +160,10 @@ class DateGreaterThanFilterManager:
         self,
         date_greater_than_filter: DateGreaterThanFilter
     ) -> DateGreaterThanFilter:
+        """
+            #TODO add comment
+        """
+
         logging.info("DateGreaterThanFilterManager.add")
         date_greater_than_filter.insert_user_id = (
             self.convert_uuid_to_model_uuid(
@@ -184,6 +202,10 @@ class DateGreaterThanFilterManager:
         self,
         query_filter
     ) -> List[DateGreaterThanFilter]:
+        """
+            #TODO add comment
+        """
+
         logging.info("DateGreaterThanFilterManager._run_query")
         date_greater_than_filter_query_all = self._build_query()
         if query_filter is not None:
@@ -210,12 +232,20 @@ class DateGreaterThanFilterManager:
         self,
         date_greater_than_filter_list: List
     ) -> DateGreaterThanFilter:
+        """
+            #TODO add comment
+        """
+
         return date_greater_than_filter_list[0] if date_greater_than_filter_list else None
 
     async def get_by_id(
         self,
         date_greater_than_filter_id: int
     ) -> Optional[DateGreaterThanFilter]:
+        """
+            #TODO add comment
+        """
+
         logging.info(
             "DateGreaterThanFilterManager.get_by_id "
             "start date_greater_than_filter_id:" + str(date_greater_than_filter_id))
@@ -230,6 +260,10 @@ class DateGreaterThanFilterManager:
         self,
         code: uuid.UUID
     ) -> Optional[DateGreaterThanFilter]:
+        """
+            #TODO add comment
+        """
+
         logging.info("DateGreaterThanFilterManager.get_by_code {code}")
         query_filter = DateGreaterThanFilter._code == str(code)
         query_results = await self._run_query(query_filter)
@@ -240,6 +274,10 @@ class DateGreaterThanFilterManager:
         date_greater_than_filter: DateGreaterThanFilter,
         **kwargs
     ) -> Optional[DateGreaterThanFilter]:
+        """
+            #TODO add comment
+        """
+
         logging.info("DateGreaterThanFilterManager.update")
         property_list = DateGreaterThanFilter.property_list()
         if date_greater_than_filter:
@@ -255,6 +293,10 @@ class DateGreaterThanFilterManager:
         return date_greater_than_filter
 
     async def delete(self, date_greater_than_filter_id: int):
+        """
+            #TODO add comment
+        """
+
         logging.info(
             "DateGreaterThanFilterManager.delete %s",
             date_greater_than_filter_id)
@@ -271,6 +313,10 @@ class DateGreaterThanFilterManager:
         await self._session_context.session.flush()
 
     async def get_list(self) -> List[DateGreaterThanFilter]:
+        """
+            #TODO add comment
+        """
+
         logging.info(
             "DateGreaterThanFilterManager.get_list")
         query_results = await self._run_query(None)
@@ -294,7 +340,7 @@ class DateGreaterThanFilterManager:
         date_greater_than_filter: DateGreaterThanFilter
     ) -> dict:
         """
-        Serialize the DateGreaterThanFilter object to a JSON string using 
+        Serialize the DateGreaterThanFilter object to a JSON string using
         the DateGreaterThanFilterSchema.
         """
         logging.info("DateGreaterThanFilterManager.to_dict")
@@ -322,6 +368,10 @@ class DateGreaterThanFilterManager:
         self,
         date_greater_than_filter_dict: str
     ) -> DateGreaterThanFilter:
+        """
+            #TODO add comment
+        """
+
         logging.info("DateGreaterThanFilterManager.from_dict")
         schema = DateGreaterThanFilterSchema()
         date_greater_than_filter_dict_converted = schema.load(
@@ -356,6 +406,10 @@ class DateGreaterThanFilterManager:
         self,
         date_greater_than_filter_updates: List[Dict[int, Dict]]
     ) -> List[DateGreaterThanFilter]:
+        """
+            #TODO add comment
+        """
+
         logging.info(
             "DateGreaterThanFilterManager.update_bulk start")
         updated_date_greater_than_filters = []
@@ -387,8 +441,8 @@ class DateGreaterThanFilterManager:
         return updated_date_greater_than_filters
 
     async def delete_bulk(self, date_greater_than_filter_ids: List[int]) -> bool:
-        logging.info("DateGreaterThanFilterManager.delete_bulk")
         """Delete multiple date_greater_than_filters by their IDs."""
+        logging.info("DateGreaterThanFilterManager.delete_bulk")
         for date_greater_than_filter_id in date_greater_than_filter_ids:
             if not isinstance(date_greater_than_filter_id, int):
                 raise TypeError("The date_greater_than_filter_id must be an integer, got {type(date_greater_than_filter_id)} instead.")
@@ -404,8 +458,8 @@ class DateGreaterThanFilterManager:
         return True
 
     async def count(self) -> int:
-        logging.info("DateGreaterThanFilterManager.count")
         """Return the total number of date_greater_than_filters."""
+        logging.info("DateGreaterThanFilterManager.count")
         result = await self._session_context.session.execute(select(DateGreaterThanFilter))
         return len(result.scalars().all())
 
@@ -416,7 +470,7 @@ class DateGreaterThanFilterManager:
         order: Optional[str] = "asc"
     ) -> List[DateGreaterThanFilter]:
         """
-        Retrieve date_greater_than_filters sorted by a 
+        Retrieve date_greater_than_filters sorted by a
         particular attribute.
         """
         if order == "asc":
@@ -434,7 +488,7 @@ class DateGreaterThanFilterManager:
         date_greater_than_filter: DateGreaterThanFilter
     ) -> DateGreaterThanFilter:
         """
-        Refresh the state of a given date_greater_than_filter 
+        Refresh the state of a given date_greater_than_filter
         instance from the database.
         """
         logging.info("DateGreaterThanFilterManager.refresh")
@@ -446,7 +500,7 @@ class DateGreaterThanFilterManager:
         date_greater_than_filter_id: int
     ) -> bool:
         """
-        Check if a date_greater_than_filter with 
+        Check if a date_greater_than_filter with
         the given ID exists.
         """
         logging.info("DateGreaterThanFilterManager.exists {date_greater_than_filter_id}")
@@ -461,6 +515,10 @@ class DateGreaterThanFilterManager:
         date_greater_than_filter1: DateGreaterThanFilter,
         date_greater_than_filter2: DateGreaterThanFilter
     ) -> bool:
+        """
+            #TODO add comment
+        """
+
         if not date_greater_than_filter1:
             raise TypeError("DateGreaterThanFilter1 required.")
         if not date_greater_than_filter2:
@@ -479,6 +537,10 @@ class DateGreaterThanFilterManager:
         self,
         pac_id: int
     ) -> List[DateGreaterThanFilter]:
+        """
+            #TODO add comment
+        """
+
         logging.info("DateGreaterThanFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError("The date_greater_than_filter_id must be an integer, got {type(pac_id)} instead.")

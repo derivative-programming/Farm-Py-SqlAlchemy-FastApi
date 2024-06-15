@@ -10,6 +10,9 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = ErrorLog
         exclude = (
             "_code",

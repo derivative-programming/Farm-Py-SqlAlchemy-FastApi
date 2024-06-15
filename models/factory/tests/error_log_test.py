@@ -218,14 +218,17 @@ class TestErrorLogFactory:
             error_log.pac_code_peek, uuid.UUID)
         # url,
 # endset
+        assert error_log is not None
         # browser_code
         assert isinstance(
-                error_log.browser_code,
-                uuid.UUID)
+            error_log.browser_code,
+            uuid.UUID
+        )
         # context_code
         assert isinstance(
-                error_log.context_code,
-                uuid.UUID)
+            error_log.context_code,
+            uuid.UUID
+        )
         assert error_log.created_utc_date_time == datetime(1753, 1, 1)
         assert error_log.description == ""
         assert error_log.is_client_side_error is False

@@ -4,17 +4,17 @@
 """
 import logging
 import tempfile
+import traceback
 import uuid
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-import traceback
-from helpers import SessionContext, api_key_header
-import apis.models.init as api_init_models
 import apis.models as api_models
+import apis.models.init as api_init_models
 import reports
-from .base_router import BaseRouter
 from database import get_db
+from helpers import SessionContext, api_key_header
+from .base_router import BaseRouter
 class CustomerUserLogOutRouterConfig():
     """
         #TODO add comment

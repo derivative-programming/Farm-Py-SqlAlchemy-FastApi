@@ -20,6 +20,9 @@ class TestCustomerRoleManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return CustomerRoleManager(session_context)
@@ -219,6 +222,9 @@ class TestCustomerRoleManager:
         assert new_code == fetched_customer_role.code
     @pytest.mark.asyncio
     async def test_update_invalid_customer_role(self, customer_role_manager: CustomerRoleManager):
+        """
+            #TODO add comment
+        """
         # None customer_role
         customer_role = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestCustomerRoleManager:
         test_customer_role = await CustomerRoleFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_customer_role = await customer_role_manager.update(
+            await customer_role_manager.update(
                 customer_role=test_customer_role,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestCustomerRoleManager:
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
         customer_role2 = await CustomerRoleFactory.create_async(session=session)
         # Delete customer_roles
-        customer_role_ids = [1, 2]
+        customer_role_ids = [customer_role1.customer_role_id, customer_role2.customer_role_id]
         result = await customer_role_manager.delete_bulk(customer_role_ids)
         assert result is True
         for customer_role_id in customer_role_ids:
@@ -700,6 +706,9 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a customer_role with a specific customer_id
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
         # Fetch the customer_role using the manager function
@@ -712,6 +721,9 @@ class TestCustomerRoleManager:
         self,
         customer_role_manager: CustomerRoleManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_customer_roles = await customer_role_manager.get_by_customer_id(non_existent_id)
         assert len(fetched_customer_roles) == 0
@@ -721,6 +733,9 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await customer_role_manager.get_by_customer_id(invalid_id)

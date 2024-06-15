@@ -2,23 +2,20 @@
 """
     #TODO add comment
 """
+import logging
+import uuid
 from datetime import date, datetime
 from decimal import Decimal
-import json
 from typing import List
-import uuid
-from apis.models import validation_error
-from helpers import TypeConversion
-from flows.customer_user_log_out_init_obj_wf import FlowCustomerUserLogOutInitObjWFResult, FlowCustomerUserLogOutInitObjWF
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from business.customer import CustomerBusObj
-from flows.base.flow_validation_error import FlowValidationError
-from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
-import logging
-from sqlalchemy.ext.asyncio import AsyncSession
+from business.customer import CustomerBusObj
+from flows.base.flow_validation_error import FlowValidationError
+from flows.customer_user_log_out_init_obj_wf import (FlowCustomerUserLogOutInitObjWF,
+                                              FlowCustomerUserLogOutInitObjWFResult)
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
     """
     #TODO add comment
@@ -36,12 +33,18 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
         self,
         data: FlowCustomerUserLogOutInitObjWFResult
     ):
+        """
+            #TODO add comment
+        """
         self.validation_errors = list()
         self.success = False
         self.message = ""
         self.tac_code = (
             data.tac_code)
     def to_json(self):
+        """
+            #TODO add comment
+        """
         return self.model_dump_json()
 class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
     """
@@ -53,6 +56,9 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             customer_code: uuid.UUID,
             response: CustomerUserLogOutInitObjWFGetInitModelResponse
     ) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
+        """
+            #TODO add comment
+        """
         try:
             logging.info(
                 "loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")

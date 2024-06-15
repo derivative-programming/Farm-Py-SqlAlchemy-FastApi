@@ -20,6 +20,9 @@ class TestFlavorManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def flavor_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return FlavorManager(session_context)
@@ -219,6 +222,9 @@ class TestFlavorManager:
         assert new_code == fetched_flavor.code
     @pytest.mark.asyncio
     async def test_update_invalid_flavor(self, flavor_manager: FlavorManager):
+        """
+            #TODO add comment
+        """
         # None flavor
         flavor = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestFlavorManager:
         test_flavor = await FlavorFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_flavor = await flavor_manager.update(
+            await flavor_manager.update(
                 flavor=test_flavor,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestFlavorManager:
         flavor1 = await FlavorFactory.create_async(session=session)
         flavor2 = await FlavorFactory.create_async(session=session)
         # Delete flavors
-        flavor_ids = [1, 2]
+        flavor_ids = [flavor1.flavor_id, flavor2.flavor_id]
         result = await flavor_manager.delete_bulk(flavor_ids)
         assert result is True
         for flavor_id in flavor_ids:
@@ -705,6 +711,9 @@ class TestFlavorManager:
         flavor_manager: FlavorManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a flavor with a specific pac_id
         flavor1 = await FlavorFactory.create_async(session=session)
         # Fetch the flavor using the manager function
@@ -717,6 +726,9 @@ class TestFlavorManager:
         self,
         flavor_manager: FlavorManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_flavors = await flavor_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_flavors) == 0
@@ -726,6 +738,9 @@ class TestFlavorManager:
         flavor_manager: FlavorManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await flavor_manager.get_by_pac_id(invalid_id)

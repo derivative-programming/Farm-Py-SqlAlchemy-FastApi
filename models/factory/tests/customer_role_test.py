@@ -206,6 +206,7 @@ class TestCustomerRoleFactory:
         assert isinstance(
             customer_role.role_code_peek, uuid.UUID)
 # endset
+        assert customer_role is not None
         assert customer_role.customer_id == 0
         assert customer_role.is_placeholder is False
         assert customer_role.placeholder is False

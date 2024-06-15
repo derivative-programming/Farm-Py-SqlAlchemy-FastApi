@@ -2,23 +2,20 @@
 """
     #TODO add comment
 """
+import logging
+import uuid
 from datetime import date, datetime
 from decimal import Decimal
-import json
 from typing import List
-import uuid
-from apis.models import validation_error
-from helpers import TypeConversion
-from flows.tac_farm_dashboard_init_report import FlowTacFarmDashboardInitReportResult, FlowTacFarmDashboardInitReport
-from helpers import SessionContext
-from helpers.formatting import snake_to_camel
-from business.tac import TacBusObj
-from flows.base.flow_validation_error import FlowValidationError
-from helpers.pydantic_serialization import CamelModel, SnakeModel
 from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
-import logging
-from sqlalchemy.ext.asyncio import AsyncSession
+from business.tac import TacBusObj
+from flows.base.flow_validation_error import FlowValidationError
+from flows.tac_farm_dashboard_init_report import (FlowTacFarmDashboardInitReport,
+                                              FlowTacFarmDashboardInitReportResult)
+from helpers import SessionContext, TypeConversion
+from helpers.formatting import snake_to_camel
+from helpers.pydantic_serialization import CamelModel, SnakeModel
 class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
     """
     #TODO add comment
@@ -36,12 +33,18 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
         self,
         data: FlowTacFarmDashboardInitReportResult
     ):
+        """
+            #TODO add comment
+        """
         self.validation_errors = list()
         self.success = False
         self.message = ""
         self.customer_code = (
             data.customer_code)
     def to_json(self):
+        """
+            #TODO add comment
+        """
         return self.model_dump_json()
 class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
     """
@@ -53,6 +56,9 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
             tac_code: uuid.UUID,
             response: TacFarmDashboardInitReportGetInitModelResponse
     ) -> TacFarmDashboardInitReportGetInitModelResponse:
+        """
+            #TODO add comment
+        """
         try:
             logging.info(
                 "loading model...TacFarmDashboardInitReportGetInitModelRequest")

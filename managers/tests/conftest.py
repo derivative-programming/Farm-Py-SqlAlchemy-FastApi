@@ -15,7 +15,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 # from sqlalchemy.future import select
 import pytest
 import pytest_asyncio
-from models import Base, Plant
+from models import Base
 # from models.factory import PlantFactory
 # from managers.plant import PlantManager
 # from models.serialization_schema.plant import PlantSchema

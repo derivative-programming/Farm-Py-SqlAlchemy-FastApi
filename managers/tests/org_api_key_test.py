@@ -20,6 +20,9 @@ class TestOrgApiKeyManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return OrgApiKeyManager(session_context)
@@ -219,6 +222,9 @@ class TestOrgApiKeyManager:
         assert new_code == fetched_org_api_key.code
     @pytest.mark.asyncio
     async def test_update_invalid_org_api_key(self, org_api_key_manager: OrgApiKeyManager):
+        """
+            #TODO add comment
+        """
         # None org_api_key
         org_api_key = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestOrgApiKeyManager:
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_org_api_key = await org_api_key_manager.update(
+            await org_api_key_manager.update(
                 org_api_key=test_org_api_key,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestOrgApiKeyManager:
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
         org_api_key2 = await OrgApiKeyFactory.create_async(session=session)
         # Delete org_api_keys
-        org_api_key_ids = [1, 2]
+        org_api_key_ids = [org_api_key1.org_api_key_id, org_api_key2.org_api_key_id]
         result = await org_api_key_manager.delete_bulk(org_api_key_ids)
         assert result is True
         for org_api_key_id in org_api_key_ids:
@@ -707,6 +713,9 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a org_api_key with a specific organization_id
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
         # Fetch the org_api_key using the manager function
@@ -719,6 +728,9 @@ class TestOrgApiKeyManager:
         self,
         org_api_key_manager: OrgApiKeyManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_org_api_keys = await org_api_key_manager.get_by_organization_id(non_existent_id)
         assert len(fetched_org_api_keys) == 0
@@ -728,6 +740,9 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await org_api_key_manager.get_by_organization_id(invalid_id)

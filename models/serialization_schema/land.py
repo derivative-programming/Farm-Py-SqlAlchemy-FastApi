@@ -10,6 +10,9 @@ class LandSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = Land
         exclude = (
             "_code",

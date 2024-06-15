@@ -208,6 +208,7 @@ class TestLandFactory:
         assert isinstance(
             land.pac_code_peek, uuid.UUID)
 # endset
+        assert land is not None
         assert land.description == ""
         assert land.display_order == 0
         assert land.is_active is False

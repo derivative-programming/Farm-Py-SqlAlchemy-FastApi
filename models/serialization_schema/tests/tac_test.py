@@ -49,6 +49,9 @@ class TestTacSchema:
 # endset  # noqa: E122
     }
     def test_tac_serialization(self, tac: Tac, session):
+        """
+            #TODO add comment
+        """
         schema = TacSchema()
         result = schema.dump(tac)
         assert result['code'] == str(tac.code)
@@ -81,6 +84,9 @@ class TestTacSchema:
             str(tac.pac_code_peek))
 # endset
     def test_tac_deserialization(self, tac: Tac, session):
+        """
+            #TODO add comment
+        """
         schema = TacSchema()
         serialized_data = schema.dump(tac)
         deserialized_data = schema.load(serialized_data)
@@ -143,6 +149,9 @@ class TestTacSchema:
             tac.pac_code_peek)
 # endset
     def test_from_json(self, tac: Tac, session):
+        """
+            #TODO add comment
+        """
         tac_schema = TacSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -184,6 +193,9 @@ class TestTacSchema:
         new_tac = Tac(**deserialized_data)
         assert isinstance(new_tac, Tac)
     def test_to_json(self, tac: Tac, session):
+        """
+            #TODO add comment
+        """
         # Convert the Tac instance to JSON using the schema
         tac_schema = TacSchema()
         tac_dict = tac_schema.dump(tac)

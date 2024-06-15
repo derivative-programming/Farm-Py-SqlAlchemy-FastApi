@@ -10,6 +10,9 @@ class FlavorSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = Flavor
         exclude = (
             "_code",

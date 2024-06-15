@@ -7,22 +7,17 @@ from typing import List
 from datetime import date, datetime
 import uuid
 import logging
-from typing import Optional
 from decimal import Decimal
-from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import Field, UUID4
-from business.plant import PlantBusObj
 from helpers import TypeConversion
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 from apis.models.list_model import ListModel
 from helpers import SessionContext
 from helpers.formatting import snake_to_camel
-from models import Plant
 from reports.plant_user_details import ReportManagerPlantUserDetails
 from reports.report_request_validation_error import ReportRequestValidationError
 from apis.models.validation_error import ValidationErrorItem
-import apis.models as view_models
-from helpers.pydantic_serialization import CamelModel, SnakeModel, BaseModel
+from helpers.pydantic_serialization import CamelModel
 class PlantUserDetailsGetModelRequest(CamelModel):
     """
         #TODO add comment

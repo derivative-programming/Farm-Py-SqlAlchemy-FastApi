@@ -20,6 +20,9 @@ class TestPacManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return PacManager(session_context)
@@ -219,6 +222,9 @@ class TestPacManager:
         assert new_code == fetched_pac.code
     @pytest.mark.asyncio
     async def test_update_invalid_pac(self, pac_manager: PacManager):
+        """
+            #TODO add comment
+        """
         # None pac
         pac = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestPacManager:
         test_pac = await PacFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_pac = await pac_manager.update(
+            await pac_manager.update(
                 pac=test_pac,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestPacManager:
         pac1 = await PacFactory.create_async(session=session)
         pac2 = await PacFactory.create_async(session=session)
         # Delete pacs
-        pac_ids = [1, 2]
+        pac_ids = [pac1.pac_id, pac2.pac_id]
         result = await pac_manager.delete_bulk(pac_ids)
         assert result is True
         for pac_id in pac_ids:

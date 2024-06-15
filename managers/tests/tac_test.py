@@ -20,6 +20,9 @@ class TestTacManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return TacManager(session_context)
@@ -219,6 +222,9 @@ class TestTacManager:
         assert new_code == fetched_tac.code
     @pytest.mark.asyncio
     async def test_update_invalid_tac(self, tac_manager: TacManager):
+        """
+            #TODO add comment
+        """
         # None tac
         tac = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestTacManager:
         test_tac = await TacFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_tac = await tac_manager.update(
+            await tac_manager.update(
                 tac=test_tac,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestTacManager:
         tac1 = await TacFactory.create_async(session=session)
         tac2 = await TacFactory.create_async(session=session)
         # Delete tacs
-        tac_ids = [1, 2]
+        tac_ids = [tac1.tac_id, tac2.tac_id]
         result = await tac_manager.delete_bulk(tac_ids)
         assert result is True
         for tac_id in tac_ids:
@@ -705,6 +711,9 @@ class TestTacManager:
         tac_manager: TacManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a tac with a specific pac_id
         tac1 = await TacFactory.create_async(session=session)
         # Fetch the tac using the manager function
@@ -717,6 +726,9 @@ class TestTacManager:
         self,
         tac_manager: TacManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_tacs = await tac_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_tacs) == 0
@@ -726,6 +738,9 @@ class TestTacManager:
         tac_manager: TacManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await tac_manager.get_by_pac_id(invalid_id)

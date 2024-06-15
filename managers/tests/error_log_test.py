@@ -20,6 +20,9 @@ class TestErrorLogManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def error_log_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return ErrorLogManager(session_context)
@@ -219,6 +222,9 @@ class TestErrorLogManager:
         assert new_code == fetched_error_log.code
     @pytest.mark.asyncio
     async def test_update_invalid_error_log(self, error_log_manager: ErrorLogManager):
+        """
+            #TODO add comment
+        """
         # None error_log
         error_log = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestErrorLogManager:
         test_error_log = await ErrorLogFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_error_log = await error_log_manager.update(
+            await error_log_manager.update(
                 error_log=test_error_log,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestErrorLogManager:
         error_log1 = await ErrorLogFactory.create_async(session=session)
         error_log2 = await ErrorLogFactory.create_async(session=session)
         # Delete error_logs
-        error_log_ids = [1, 2]
+        error_log_ids = [error_log1.error_log_id, error_log2.error_log_id]
         result = await error_log_manager.delete_bulk(error_log_ids)
         assert result is True
         for error_log_id in error_log_ids:
@@ -706,6 +712,9 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a error_log with a specific pac_id
         error_log1 = await ErrorLogFactory.create_async(session=session)
         # Fetch the error_log using the manager function
@@ -718,6 +727,9 @@ class TestErrorLogManager:
         self,
         error_log_manager: ErrorLogManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_error_logs = await error_log_manager.get_by_pac_id(non_existent_id)
         assert len(fetched_error_logs) == 0
@@ -727,6 +739,9 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await error_log_manager.get_by_pac_id(invalid_id)

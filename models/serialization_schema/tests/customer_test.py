@@ -74,6 +74,9 @@ class TestCustomerSchema:
 # endset  # noqa: E122
     }
     def test_customer_serialization(self, customer: Customer, session):
+        """
+            #TODO add comment
+        """
         schema = CustomerSchema()
         result = schema.dump(customer)
         assert result['code'] == str(customer.code)
@@ -140,6 +143,9 @@ class TestCustomerSchema:
             str(customer.tac_code_peek))
 # endset
     def test_customer_deserialization(self, customer: Customer, session):
+        """
+            #TODO add comment
+        """
         schema = CustomerSchema()
         serialized_data = schema.dump(customer)
         deserialized_data = schema.load(serialized_data)
@@ -270,6 +276,9 @@ class TestCustomerSchema:
             customer.tac_code_peek)
 # endset
     def test_from_json(self, customer: Customer, session):
+        """
+            #TODO add comment
+        """
         customer_schema = CustomerSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -345,6 +354,9 @@ class TestCustomerSchema:
         new_customer = Customer(**deserialized_data)
         assert isinstance(new_customer, Customer)
     def test_to_json(self, customer: Customer, session):
+        """
+            #TODO add comment
+        """
         # Convert the Customer instance to JSON using the schema
         customer_schema = CustomerSchema()
         customer_dict = customer_schema.dump(customer)

@@ -4,24 +4,14 @@
     #TODO add comment
 """
 
-import asyncio
-from decimal import Decimal
 import uuid
+from datetime import date, datetime
+from decimal import Decimal
+
 import pytest
-import pytest_asyncio
-import time
-from typing import AsyncGenerator
-from datetime import datetime, date
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+
 from ...land_add_plant import LandAddPlantPostModelRequest
-from models import Base
 from ..land_add_plant import LandAddPlantPostModelRequestFactory
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-from pydantic import Field, UUID4
 
 
 class TestLandAddPlantPostModelRequestFactoryAsync:
@@ -31,6 +21,10 @@ class TestLandAddPlantPostModelRequestFactoryAsync:
 
     @pytest.mark.asyncio
     async def test_create_async(self, session):
+        """
+            #TODO add comment
+        """
+
         model_instance = (
             await LandAddPlantPostModelRequestFactory.create_async(
                 session=session)

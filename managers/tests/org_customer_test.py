@@ -20,6 +20,9 @@ class TestOrgCustomerManager:
     """
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return OrgCustomerManager(session_context)
@@ -219,6 +222,9 @@ class TestOrgCustomerManager:
         assert new_code == fetched_org_customer.code
     @pytest.mark.asyncio
     async def test_update_invalid_org_customer(self, org_customer_manager: OrgCustomerManager):
+        """
+            #TODO add comment
+        """
         # None org_customer
         org_customer = None
         new_code = uuid.uuid4()
@@ -237,7 +243,7 @@ class TestOrgCustomerManager:
         test_org_customer = await OrgCustomerFactory.create_async(session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
-            updated_org_customer = await org_customer_manager.update(
+            await org_customer_manager.update(
                 org_customer=test_org_customer,
                 xxx=new_code
             )
@@ -482,7 +488,7 @@ class TestOrgCustomerManager:
         org_customer1 = await OrgCustomerFactory.create_async(session=session)
         org_customer2 = await OrgCustomerFactory.create_async(session=session)
         # Delete org_customers
-        org_customer_ids = [1, 2]
+        org_customer_ids = [org_customer1.org_customer_id, org_customer2.org_customer_id]
         result = await org_customer_manager.delete_bulk(org_customer_ids)
         assert result is True
         for org_customer_id in org_customer_ids:
@@ -749,6 +755,9 @@ class TestOrgCustomerManager:
         org_customer_manager: OrgCustomerManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         # Add a org_customer with a specific organization_id
         org_customer1 = await OrgCustomerFactory.create_async(session=session)
         # Fetch the org_customer using the manager function
@@ -761,6 +770,9 @@ class TestOrgCustomerManager:
         self,
         org_customer_manager: OrgCustomerManager
     ):
+        """
+            #TODO add comment
+        """
         non_existent_id = 999
         fetched_org_customers = await org_customer_manager.get_by_organization_id(non_existent_id)
         assert len(fetched_org_customers) == 0
@@ -770,6 +782,9 @@ class TestOrgCustomerManager:
         org_customer_manager: OrgCustomerManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
             await org_customer_manager.get_by_organization_id(invalid_id)

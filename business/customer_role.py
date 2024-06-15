@@ -37,14 +37,14 @@ class CustomerRoleBusObj(BaseBusObj):
         if not self.customer_role:
             raise AttributeError("CustomerRole object is not initialized")
         return self.customer_role.customer_role_id
-    @customer_role_id.setter
-    def customer_role_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("customer_role_id must be a int.")
-        self.customer_role.customer_role_id = value
+    # @customer_role_id.setter
+    # def customer_role_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("customer_role_id must be a int.")
+    #     self.customer_role.customer_role_id = value
     # code
     @property
     def code(self):

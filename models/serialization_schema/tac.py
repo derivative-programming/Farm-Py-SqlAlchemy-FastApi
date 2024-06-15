@@ -10,6 +10,9 @@ class TacSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = Tac
         exclude = (
             "_code",

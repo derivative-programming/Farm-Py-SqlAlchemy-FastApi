@@ -48,6 +48,9 @@ class TestCustomerRoleSchema:
 # endset  # noqa: E122
     }
     def test_customer_role_serialization(self, customer_role: CustomerRole, session):
+        """
+            #TODO add comment
+        """
         schema = CustomerRoleSchema()
         result = schema.dump(customer_role)
         assert result['code'] == str(customer_role.code)
@@ -78,6 +81,9 @@ class TestCustomerRoleSchema:
             str(customer_role.role_code_peek))
 # endset
     def test_customer_role_deserialization(self, customer_role: CustomerRole, session):
+        """
+            #TODO add comment
+        """
         schema = CustomerRoleSchema()
         serialized_data = schema.dump(customer_role)
         deserialized_data = schema.load(serialized_data)
@@ -136,6 +142,9 @@ class TestCustomerRoleSchema:
             customer_role.role_code_peek)
 # endset
     def test_from_json(self, customer_role: CustomerRole, session):
+        """
+            #TODO add comment
+        """
         customer_role_schema = CustomerRoleSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -175,6 +184,9 @@ class TestCustomerRoleSchema:
         new_customer_role = CustomerRole(**deserialized_data)
         assert isinstance(new_customer_role, CustomerRole)
     def test_to_json(self, customer_role: CustomerRole, session):
+        """
+            #TODO add comment
+        """
         # Convert the CustomerRole instance to JSON using the schema
         customer_role_schema = CustomerRoleSchema()
         customer_role_dict = customer_role_schema.dump(customer_role)

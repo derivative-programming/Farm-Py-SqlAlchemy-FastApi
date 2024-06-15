@@ -37,14 +37,14 @@ class ErrorLogBusObj(BaseBusObj):
         if not self.error_log:
             raise AttributeError("ErrorLog object is not initialized")
         return self.error_log.error_log_id
-    @error_log_id.setter
-    def error_log_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("error_log_id must be a int.")
-        self.error_log.error_log_id = value
+    # @error_log_id.setter
+    # def error_log_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("error_log_id must be a int.")
+    #     self.error_log.error_log_id = value
     # code
     @property
     def code(self):

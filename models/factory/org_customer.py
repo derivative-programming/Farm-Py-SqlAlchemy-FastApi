@@ -76,6 +76,9 @@ class OrgCustomerFactory(factory.Factory):
         return obj
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> OrgCustomer:
+        """
+            #TODO add comment
+        """
         customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
         organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  # OrganizationID
 # endset
@@ -97,6 +100,9 @@ class OrgCustomerFactory(factory.Factory):
         return obj
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> OrgCustomer:
+        """
+            #TODO add comment
+        """
         customer_id_customer_instance = await CustomerFactory.create_async(session=session)  # CustomerID
         organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  # OrganizationID
 # endset

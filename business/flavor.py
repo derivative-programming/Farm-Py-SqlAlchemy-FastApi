@@ -37,14 +37,14 @@ class FlavorBusObj(BaseBusObj):
         if not self.flavor:
             raise AttributeError("Flavor object is not initialized")
         return self.flavor.flavor_id
-    @flavor_id.setter
-    def flavor_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("flavor_id must be a int.")
-        self.flavor.flavor_id = value
+    # @flavor_id.setter
+    # def flavor_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("flavor_id must be a int.")
+    #     self.flavor.flavor_id = value
     # code
     @property
     def code(self):

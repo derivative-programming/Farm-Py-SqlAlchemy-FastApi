@@ -211,6 +211,7 @@ class TestDateGreaterThanFilterFactory:
         assert isinstance(
             date_greater_than_filter.pac_code_peek, uuid.UUID)
 # endset
+        assert date_greater_than_filter is not None
         assert date_greater_than_filter.day_count == 0
         assert date_greater_than_filter.description == ""
         assert date_greater_than_filter.display_order == 0

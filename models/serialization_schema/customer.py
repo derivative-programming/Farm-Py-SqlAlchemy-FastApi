@@ -10,6 +10,9 @@ class CustomerSchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = Customer
         exclude = (
             "_code",

@@ -10,6 +10,9 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
     #TODO add comment
     """
     class Meta:
+        """
+            #TODO add comment
+        """
         model = OrgApiKey
         exclude = (
             "_code",

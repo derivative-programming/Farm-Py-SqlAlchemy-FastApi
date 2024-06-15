@@ -309,7 +309,7 @@ class TestPlantFactory:
         # someUniqueidentifierVal,
         # someVarCharVal,
 # endset
-
+        assert plant is not None
         assert plant.flvr_foreign_key_id == 0
         assert plant.is_delete_allowed is False
         assert plant.is_edit_allowed is False
@@ -329,8 +329,9 @@ class TestPlantFactory:
         assert plant.some_text_val == ""
         # some_uniqueidentifier_val
         assert isinstance(
-                plant.some_uniqueidentifier_val,
-                uuid.UUID)
+            plant.some_uniqueidentifier_val,
+            uuid.UUID
+        )
         assert plant.some_utc_date_time_val == datetime(1753, 1, 1)
         assert plant.some_var_char_val == ""
 # endset

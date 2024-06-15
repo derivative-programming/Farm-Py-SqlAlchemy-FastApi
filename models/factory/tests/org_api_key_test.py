@@ -221,6 +221,7 @@ class TestOrgApiKeyFactory:
         assert isinstance(
             org_api_key.org_customer_code_peek, uuid.UUID)
 # endset
+        assert org_api_key is not None
         assert org_api_key.api_key_value == ""
         assert org_api_key.created_by == ""
         assert org_api_key.created_utc_date_time == datetime(1753, 1, 1)

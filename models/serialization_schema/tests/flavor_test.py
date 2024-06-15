@@ -49,6 +49,9 @@ class TestFlavorSchema:
 # endset  # noqa: E122
     }
     def test_flavor_serialization(self, flavor: Flavor, session):
+        """
+            #TODO add comment
+        """
         schema = FlavorSchema()
         result = schema.dump(flavor)
         assert result['code'] == str(flavor.code)
@@ -81,6 +84,9 @@ class TestFlavorSchema:
             str(flavor.pac_code_peek))
 # endset
     def test_flavor_deserialization(self, flavor: Flavor, session):
+        """
+            #TODO add comment
+        """
         schema = FlavorSchema()
         serialized_data = schema.dump(flavor)
         deserialized_data = schema.load(serialized_data)
@@ -143,6 +149,9 @@ class TestFlavorSchema:
             flavor.pac_code_peek)
 # endset
     def test_from_json(self, flavor: Flavor, session):
+        """
+            #TODO add comment
+        """
         flavor_schema = FlavorSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -184,6 +193,9 @@ class TestFlavorSchema:
         new_flavor = Flavor(**deserialized_data)
         assert isinstance(new_flavor, Flavor)
     def test_to_json(self, flavor: Flavor, session):
+        """
+            #TODO add comment
+        """
         # Convert the Flavor instance to JSON using the schema
         flavor_schema = FlavorSchema()
         flavor_dict = flavor_schema.dump(flavor)

@@ -19,6 +19,9 @@ class ReportProviderPlantUserDetails():
 	_session: AsyncSession
 	_cached_sql_query: str = None  # Static variable for caching the SQL query
 	def __init__(self, session_context: SessionContext):
+		"""
+			#TODO add comment
+		"""
 		if not session_context.session:
 			raise ValueError("session required")
 		self._session_context = session_context
@@ -31,6 +34,9 @@ class ReportProviderPlantUserDetails():
 		order_by_column_name: str,
 		order_by_descending: bool,
 	) -> list[dict[str, any]]:
+		"""
+			#TODO add comment
+		"""
 		logging.info("ReportProviderPlantUserDetails.generate_list Start")
 		logging.info("ReportProviderPlantUserDetails.generate_list context_code:" + str(context_code))
 		offset = (page_number - 1) * item_count_per_page

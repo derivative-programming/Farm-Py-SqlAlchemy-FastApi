@@ -201,6 +201,7 @@ class TestPacFactory:
         # lookupEnumName,
         # name,
 # endset
+        assert pac is not None
         assert pac.description == ""
         assert pac.display_order == 0
         assert pac.is_active is False

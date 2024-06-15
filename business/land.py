@@ -39,14 +39,14 @@ class LandBusObj(BaseBusObj):
         if not self.land:
             raise AttributeError("Land object is not initialized")
         return self.land.land_id
-    @land_id.setter
-    def land_id(self, value: int):
-        """
-        #TODO add comment
-        """
-        if not isinstance(value, int):
-            raise ValueError("land_id must be a int.")
-        self.land.land_id = value
+    # @land_id.setter
+    # def land_id(self, value: int):
+    #     """
+    #     #TODO add comment
+    #     """
+    #     if not isinstance(value, int):
+    #         raise ValueError("land_id must be a int.")
+    #     self.land.land_id = value
     # code
     @property
     def code(self):

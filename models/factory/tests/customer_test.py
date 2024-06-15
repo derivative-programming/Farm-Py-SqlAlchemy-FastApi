@@ -263,6 +263,7 @@ class TestCustomerFactory:
         # uTCOffsetInMinutes,
         # zip,
 # endset
+        assert customer is not None
         assert customer.active_organization_id == 0
         assert customer.email == ""
         assert customer.email_confirmed_utc_date_time == datetime(1753, 1, 1)
@@ -271,8 +272,9 @@ class TestCustomerFactory:
         assert customer.forgot_password_key_value == ""
         # fs_user_code_value
         assert isinstance(
-                customer.fs_user_code_value,
-                uuid.UUID)
+            customer.fs_user_code_value,
+            uuid.UUID
+        )
         assert customer.is_active is False
         assert customer.is_email_allowed is False
         assert customer.is_email_confirmed is False

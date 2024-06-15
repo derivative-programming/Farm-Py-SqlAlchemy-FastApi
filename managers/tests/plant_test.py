@@ -27,6 +27,9 @@ class TestPlantManager:
 
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session: AsyncSession):
+        """
+            #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return PlantManager(session_context)
@@ -286,6 +289,10 @@ class TestPlantManager:
 
     @pytest.mark.asyncio
     async def test_update_invalid_plant(self, plant_manager: PlantManager):
+        """
+            #TODO add comment
+        """
+
         # None plant
         plant = None
 
@@ -310,7 +317,7 @@ class TestPlantManager:
         new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
-            updated_plant = await plant_manager.update(
+            await plant_manager.update(
                 plant=test_plant,
                 xxx=new_code
             )
@@ -627,7 +634,7 @@ class TestPlantManager:
         plant2 = await PlantFactory.create_async(session=session)
 
         # Delete plants
-        plant_ids = [1, 2]
+        plant_ids = [plant1.plant_id, plant2.plant_id]
         result = await plant_manager.delete_bulk(plant_ids)
 
         assert result is True
@@ -974,6 +981,10 @@ class TestPlantManager:
         plant_manager: PlantManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
+
         # Add a plant with a specific land_id
         plant1 = await PlantFactory.create_async(session=session)
 
@@ -989,6 +1000,10 @@ class TestPlantManager:
         self,
         plant_manager: PlantManager
     ):
+        """
+            #TODO add comment
+        """
+
         non_existent_id = 999
 
         fetched_plants = await plant_manager.get_by_land_id(non_existent_id)
@@ -1000,6 +1015,10 @@ class TestPlantManager:
         plant_manager: PlantManager,
         session: AsyncSession
     ):
+        """
+            #TODO add comment
+        """
+
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):

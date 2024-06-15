@@ -5,7 +5,7 @@
 """
 
 import uuid
-from datetime import datetime, date
+from datetime import datetime, date  # pylint disable=unused-import
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -15,8 +15,7 @@ from models.factory import PlantFactory
 from managers.plant import PlantManager
 from business.plant import PlantBusObj
 from services.logging_config import get_logger
-import managers as managers_and_enums
-import current_runtime
+import current_runtime  # pylint disable=unused-import
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 
 logger = get_logger(__name__)

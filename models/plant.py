@@ -9,8 +9,6 @@ from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy.dialects.postgresql import UUID
 import models.constants.plant as plant_constants
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType
@@ -265,10 +263,18 @@ class Plant(Base):
 
     @property
     def code(self):
+        """
+            #TODO add comment
+        """
+
         return uuid.UUID(str(self._code))
 
     @code.setter
     def code(self, value):
+        """
+            #TODO add comment
+        """
+
         if isinstance(value, uuid.UUID):
             self._code = value
         else:
@@ -277,6 +283,10 @@ class Plant(Base):
 
     @property
     def insert_user_id(self):
+        """
+            #TODO add comment
+        """
+
         return uuid.UUID(str(self._insert_user_id))
 
     @insert_user_id.setter
@@ -289,6 +299,10 @@ class Plant(Base):
 
     @property
     def last_update_user_id(self):
+        """
+            #TODO add comment
+        """
+
         return uuid.UUID(str(self._last_update_user_id))
 
     @last_update_user_id.setter
@@ -319,10 +333,18 @@ class Plant(Base):
     # someUniqueidentifierVal,
     @property
     def some_uniqueidentifier_val(self):
+        """
+            #TODO add comment
+        """
+
         return uuid.UUID(str(self._some_uniqueidentifier_val))
 
     @code.setter
     def some_uniqueidentifier_val(self, value):
+        """
+            #TODO add comment
+        """
+
         if isinstance(value, uuid.UUID):
             self._some_uniqueidentifier_val = value
         else:
@@ -334,6 +356,10 @@ class Plant(Base):
 
     @staticmethod
     def property_list():
+        """
+            #TODO add comment
+        """
+
         result = [
             "flvr_foreign_key_id",
             "is_delete_allowed",
@@ -367,10 +393,18 @@ class Plant(Base):
 
 @event.listens_for(Plant, 'before_insert')
 def set_created_on(mapper, connection, target):
+    """
+        #TODO add comment
+    """
+
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 
 
 @event.listens_for(Plant, 'before_update')
 def set_updated_on(mapper, connection, target):
+    """
+        #TODO add comment
+    """
+
     target.last_update_utc_date_time = datetime.utcnow()

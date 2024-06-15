@@ -6,18 +6,20 @@
 
 import json
 import uuid
+from unittest.mock import AsyncMock, patch
+
 import pytest
-import logging
-from unittest.mock import patch, AsyncMock
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
-from .....models import factory as request_factory
-from database import get_db
-from helpers.api_token import ApiToken
+
 import models.factory as model_factorys
 from apis import models as apis_models
-from ..plant_user_delete import PlantUserDeleteRouterConfig
+from database import get_db
+from helpers.api_token import ApiToken
 from main import app
+
+from ..plant_user_delete import PlantUserDeleteRouterConfig
+
 # from main import app
 
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
@@ -30,7 +32,7 @@ async def test_submit_success(overridden_get_db):
     #TODO add comment
     """
 
-    async def mock_process_request(session, session_context, plant_code, request):
+    async def mock_process_request(session, session_context, plant_code, request):  # pylint: disable=unused-argument
         pass
 
     with patch.object(apis_models.PlantUserDeletePostModelResponse, 'process_request', new_callable=AsyncMock) as mock_method:
@@ -209,5 +211,9 @@ async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
 ##GENTrainingBlock[caseisPostWithIdAvailable]End
 
 
-def teardown_module(module):
+def teardown_module(module):  # pylint: disable=unused-argument
+    """
+        #TODO add comment
+    """
+
     app.dependency_overrides.clear()

@@ -47,6 +47,9 @@ class TestOrgCustomerSchema:
 # endset  # noqa: E122
     }
     def test_org_customer_serialization(self, org_customer: OrgCustomer, session):
+        """
+            #TODO add comment
+        """
         schema = OrgCustomerSchema()
         result = schema.dump(org_customer)
         assert result['code'] == str(org_customer.code)
@@ -75,6 +78,9 @@ class TestOrgCustomerSchema:
             str(org_customer.organization_code_peek))
 # endset
     def test_org_customer_deserialization(self, org_customer: OrgCustomer, session):
+        """
+            #TODO add comment
+        """
         schema = OrgCustomerSchema()
         serialized_data = schema.dump(org_customer)
         deserialized_data = schema.load(serialized_data)
@@ -129,6 +135,9 @@ class TestOrgCustomerSchema:
             org_customer.organization_code_peek)
 # endset
     def test_from_json(self, org_customer: OrgCustomer, session):
+        """
+            #TODO add comment
+        """
         org_customer_schema = OrgCustomerSchema()
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
@@ -166,6 +175,9 @@ class TestOrgCustomerSchema:
         new_org_customer = OrgCustomer(**deserialized_data)
         assert isinstance(new_org_customer, OrgCustomer)
     def test_to_json(self, org_customer: OrgCustomer, session):
+        """
+            #TODO add comment
+        """
         # Convert the OrgCustomer instance to JSON using the schema
         org_customer_schema = OrgCustomerSchema()
         org_customer_dict = org_customer_schema.dump(org_customer)

@@ -6,17 +6,20 @@
 
 import logging
 import tempfile
+import traceback
 import uuid
+
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-import traceback
-from helpers import SessionContext, api_key_header
-import apis.models.init as api_init_models
+
 import apis.models as api_models
+import apis.models.init as api_init_models
 import reports
-from .base_router import BaseRouter
 from database import get_db
+from helpers import SessionContext, api_key_header
+
+from .base_router import BaseRouter
 
 
 class LandPlantListRouterConfig():
@@ -188,6 +191,10 @@ class LandPlantListRouter(BaseRouter):
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
+        """
+            #TODO add comment
+        """
+
         logging.info(
             "LandPlantListRouter.request_get_with_id_to_csv start. landCode:%s",
             land_code
@@ -229,7 +236,7 @@ class LandPlantListRouter(BaseRouter):
                 )
                 report_manager = reports.ReportManagerLandPlantList(
                     session_context)
-                report_manager.build_csv(tmp_file_path, response.items)
+                await report_manager.build_csv(tmp_file_path, response.items)
             except Exception as e:
                 logging.info(f"Exception occurred: {e.__class__.__name__} - {e}")
                 response.success = False

@@ -5,7 +5,7 @@
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
-from pydantic import Field, UUID4
+from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
@@ -25,6 +25,7 @@ class TacLoginPostModelRequestFactory(factory.base.Factory):
     password: str = Faker(
          'sentence',
          nb_words=4)
+# endset
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> TacLoginPostModelRequest:
         if session is None:
@@ -50,6 +51,9 @@ class TacLoginPostModelRequestFactory(factory.base.Factory):
         return obj
     @classmethod
     async def create_async(cls, session: AsyncSession, *args, **kwargs) -> TacLoginPostModelRequest:
+        """
+            #TODO add comment
+        """
 
 # endset
 
