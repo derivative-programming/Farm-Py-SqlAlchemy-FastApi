@@ -14,7 +14,7 @@ from sqlalchemy.dialects.postgresql import UUID
 import models.constants.plant as plant_constants
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType
- 
+
 
 class Plant(Base):
     """
@@ -196,7 +196,6 @@ class Plant(Base):
         DateTime,
         nullable=True)
 
-
     #no relationsip properties. they are not updated immediately if the id prop is updated directly
     # land = relationship('Land', back_populates=snake_case('Land'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
@@ -275,7 +274,7 @@ class Plant(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
-    
+
     @property
     def insert_user_id(self):
         return uuid.UUID(str(self._insert_user_id))
@@ -287,7 +286,7 @@ class Plant(Base):
         else:
             self._insert_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
-    
+
     @property
     def last_update_user_id(self):
         return uuid.UUID(str(self._last_update_user_id))

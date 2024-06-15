@@ -19,6 +19,8 @@ from helpers import TypeConversion
 import models as farm_models
 import managers as farm_managers
 import business
+
+
 class FlowErrorLogConfigResolveErrorLogResult():
     """
     #TODO add comment
@@ -28,6 +30,7 @@ class FlowErrorLogConfigResolveErrorLogResult():
 # endset
     def __init__(self):
         pass
+
     def to_json(self):
         # Create a dictionary representation of the instance
         data = {
@@ -37,6 +40,8 @@ class FlowErrorLogConfigResolveErrorLogResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
+
+
 class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
     """
     #TODO add comment
@@ -46,6 +51,7 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
         #TODO add comment
         """
         super(FlowErrorLogConfigResolveErrorLog, self).__init__(session_context)
+
     async def process(
         self,
         error_log_bus_obj: ErrorLogBusObj,

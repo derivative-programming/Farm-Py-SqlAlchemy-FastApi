@@ -218,7 +218,7 @@ class TestPlantBusObj:
         plant_bus_obj.code = new_code
 
         await plant_bus_obj.save()
-        
+
         new_plant_plant_id_value = new_plant.plant_id
 
         new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)
@@ -241,7 +241,7 @@ class TestPlantBusObj:
         assert new_plant.plant_id is not None
 
         assert plant_bus_obj.plant_id is None
-        
+
         new_plant_plant_id_value = new_plant.plant_id
 
         await plant_bus_obj.load_from_id(new_plant_plant_id_value)
@@ -249,7 +249,7 @@ class TestPlantBusObj:
         assert plant_bus_obj.plant_id is not None
 
         await plant_bus_obj.delete()
-        
+
         new_plant_plant_id_value = new_plant.plant_id
 
         new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)

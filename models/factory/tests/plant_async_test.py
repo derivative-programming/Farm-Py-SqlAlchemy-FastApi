@@ -220,7 +220,6 @@ class TestPlantFactoryAsync:
         await session.delete(plant)
         await session.commit()
 
-
         # Construct the select statement
         stmt = select(Plant).where(Plant.plant_id == plant.plant_id)
 
@@ -271,7 +270,6 @@ class TestPlantFactoryAsync:
         assert plant.some_text_val == "" or isinstance(
             plant.some_text_val, str)
         assert isinstance(plant.some_uniqueidentifier_val, uuid.UUID)
-        
         assert isinstance(plant.some_utc_date_time_val, datetime)
         assert plant.some_var_char_val == "" or isinstance(
             plant.some_var_char_val, str)

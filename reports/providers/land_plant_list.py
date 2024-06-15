@@ -28,7 +28,7 @@ class ReportProviderLandPlantList():
 		if not session_context.session:
 			raise ValueError("session required")
 		self._session_context = session_context
-		
+
 	async def generate_list(
 		self,
 		context_code: uuid.UUID,

@@ -288,7 +288,6 @@ async def test_get_authorization_failure_no_header(overridden_get_db: AsyncSessi
     request = await request_factory.LandPlantListGetModelRequestFactory.create_async(overridden_get_db)
     request_dict = request.to_dict_camel_serialized()
 
-
     async with AsyncClient(app=app, base_url="http://test") as ac:
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db

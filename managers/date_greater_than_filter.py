@@ -275,13 +275,13 @@ class DateGreaterThanFilterManager:
             "DateGreaterThanFilterManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    
+
     def to_json(
         self,
         date_greater_than_filter: DateGreaterThanFilter
     ) -> str:
         """
-        Serialize the DateGreaterThanFilter object to a JSON string using 
+        Serialize the DateGreaterThanFilter object to a JSON string using
         the DateGreaterThanFilterSchema.
         """
         logging.info("DateGreaterThanFilterManager.to_json")
@@ -307,7 +307,7 @@ class DateGreaterThanFilterManager:
         json_str: str
     ) -> DateGreaterThanFilter:
         """
-        Deserialize a JSON string into a DateGreaterThanFilter object 
+        Deserialize a JSON string into a DateGreaterThanFilter object
         using the DateGreaterThanFilterSchema.
         """
         logging.info("DateGreaterThanFilterManager.from_json")
@@ -408,7 +408,7 @@ class DateGreaterThanFilterManager:
         """Return the total number of date_greater_than_filters."""
         result = await self._session_context.session.execute(select(DateGreaterThanFilter))
         return len(result.scalars().all())
-    
+
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(
         self,

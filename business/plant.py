@@ -59,7 +59,7 @@ class PlantBusObj(BaseBusObj):
 
         if not isinstance(value, int):
             raise ValueError("plant_id must be a int.")
-        
+
         self.plant.plant_id = value
 
     # code
@@ -68,7 +68,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -79,13 +79,13 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
-        
+
         self.plant.code = value
 
     # last_change_code
@@ -94,7 +94,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -105,13 +105,13 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
-        
+
         self.plant.last_change_code = value
 
     # insert_user_id
@@ -120,7 +120,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -131,7 +131,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -144,7 +144,7 @@ class PlantBusObj(BaseBusObj):
     #     """
     #     #TODO add comment
     #     """
-        
+
     #     if not self.plant:
     #         raise AttributeError("Plant object is not initialized")
 
@@ -157,7 +157,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -168,7 +168,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -195,7 +195,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -206,7 +206,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -229,7 +229,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -240,7 +240,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -261,13 +261,13 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
         if self.plant.other_flavor is None:
             return ""
-        
+
         return self.plant.other_flavor
 
     @other_flavor.setter
@@ -275,7 +275,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -296,7 +296,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -307,7 +307,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -339,7 +339,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -360,7 +360,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -371,7 +371,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -394,7 +394,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -405,7 +405,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -428,10 +428,10 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
-        
+
         if self.plant.some_email_address is None:
             return ""
 
@@ -442,7 +442,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -464,7 +464,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -475,7 +475,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -497,7 +497,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -508,7 +508,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -530,7 +530,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -541,7 +541,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -577,7 +577,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -599,7 +599,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -613,7 +613,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -635,7 +635,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -649,7 +649,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -671,7 +671,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -682,7 +682,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -704,7 +704,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -715,7 +715,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -737,7 +737,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -751,7 +751,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -790,7 +790,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -801,7 +801,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -823,7 +823,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -842,7 +842,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -853,7 +853,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -875,7 +875,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -883,7 +883,7 @@ class PlantBusObj(BaseBusObj):
 
     # @land_code_peek.setter
     # def land_code_peek(self, value):
-    #     assert isinstance(value, uuid.UUID), 
+    #     assert isinstance(value, uuid.UUID),
     #           "land_code_peek must be a UUID"
     #     self.plant.land_code_peek = value
 
@@ -900,7 +900,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -911,7 +911,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -926,7 +926,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -937,7 +937,7 @@ class PlantBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.plant:
             raise AttributeError("Plant object is not initialized")
 
@@ -997,7 +997,7 @@ class PlantBusObj(BaseBusObj):
 
         if not isinstance(plant_id, int):
             raise ValueError("plant_id must be an integer")
- 
+
         plant_manager = PlantManager(self._session_context)
         plant_obj = await plant_manager.get_by_id(plant_id)
         self.plant = plant_obj

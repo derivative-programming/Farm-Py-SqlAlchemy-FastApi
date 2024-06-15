@@ -4,6 +4,7 @@
     #TODO add comment
 """
 
+
 class ReportRequestValidationError(Exception):
     """
     #TODO add comment

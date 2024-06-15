@@ -14,7 +14,7 @@ from .flavor import FlavorFactory  # flvr_foreign_key_id
 from .land import LandFactory  # land_id
 
 logger = get_logger(__name__)
- 
+
 
 class PlantFactory(factory.Factory):
 
