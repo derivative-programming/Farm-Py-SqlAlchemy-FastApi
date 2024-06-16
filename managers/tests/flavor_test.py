@@ -375,7 +375,11 @@ class TestFlavorManager:
         flavors = await flavor_manager.add_bulk(flavors_data)
         assert len(flavors) == 5
         for updated_flavor in flavors:
-            result = await session.execute(select(Flavor).filter(Flavor.flavor_id == updated_flavor.flavor_id))
+            result = await session.execute(
+                select(Flavor).filter(
+                    Flavor.flavor_id == updated_flavor.flavor_id
+                )
+            )
             fetched_flavor = result.scalars().first()
             assert isinstance(fetched_flavor, Flavor)
             assert str(fetched_flavor.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestFlavorManager:
             str(flavor_manager._session_context.customer_code))
         assert str(updated_flavors[1].last_update_user_id) == (
             str(flavor_manager._session_context.customer_code))
-        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == 1))
+        result = await session.execute(
+            select(Flavor).filter(Flavor.flavor_id == 1)
+        )
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.code == code_updated1
-        result = await session.execute(select(Flavor).filter(Flavor.flavor_id == 2))
+        result = await session.execute(
+            select(Flavor).filter(Flavor.flavor_id == 2)
+        )
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.code == code_updated2

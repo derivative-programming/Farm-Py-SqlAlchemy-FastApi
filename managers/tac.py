@@ -269,10 +269,12 @@ class TacManager:
         """
         logging.info("TacManager.add_bulk")
         for tac in tacs:
+            tac_id = tac.tac_id
+            code = tac.code
             if tac.tac_id is not None and tac.tac_id > 0:
-                raise ValueError("Tac is already added: " +
-                                 str(tac.code) +
-                                 " " + str(tac.tac_id))
+                raise ValueError(
+                    f"Tac is already added: {str(code)} {str(tac_id)}"
+                )
             tac.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             tac.last_update_user_id = self.convert_uuid_to_model_uuid(

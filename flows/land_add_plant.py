@@ -187,8 +187,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         # plant.some_int_val = request_sample_image_upload_file
         plant.save()
 
-        land_code_output:uuid = land.code
-        plant_code_output:uuid = plant.code
+        land_code_output: uuid.UUID = land.code
+        plant_code_output: uuid.UUID = plant.code
         output_flavor_code_output = plant.flvr_foreign_key.code
         output_other_flavor_output = plant.other_flavor
         output_some_int_val_output = plant.some_int_val

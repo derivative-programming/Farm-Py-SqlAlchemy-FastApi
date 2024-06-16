@@ -31,39 +31,39 @@ class LandPlantListGetModelRequestFactory(
         #TODO add comment
         """
         model = LandPlantListGetModelRequest
-    flavor_code: UUID4 = uuid.uuid4()
-    some_int_val: int = Faker('random_int')
-    some_big_int_val: int = Faker('random_int')
-    some_float_val: float = Faker('pyfloat', positive=True)
-    some_bit_val: bool = Faker('boolean')
-    is_edit_allowed: bool = Faker('boolean')
-    is_delete_allowed: bool = Faker('boolean')
-    some_decimal_val: Decimal = Faker(
+    flavor_code = uuid.uuid4()
+    some_int_val = Faker('random_int')
+    some_big_int_val = Faker('random_int')
+    some_float_val = Faker('pyfloat', positive=True)
+    some_bit_val = Faker('boolean')
+    is_edit_allowed = Faker('boolean')
+    is_delete_allowed = Faker('boolean')
+    some_decimal_val = Faker(
         'pydecimal',
         left_digits=5,
         right_digits=2,
         positive=True
     )
-    some_min_utc_date_time_val: datetime = factory.LazyFunction(
+    some_min_utc_date_time_val = factory.LazyFunction(
         datetime.utcnow
     )
-    some_min_date_val: date = Faker('date_object')
-    some_money_val: Decimal = Faker(
+    some_min_date_val = Faker('date_object')
+    some_money_val = Faker(
         'pydecimal',
         left_digits=5,
         right_digits=2,
         positive=True
     )
-    some_n_var_char_val: str = Faker('sentence', nb_words=4)
-    some_var_char_val: str = Faker('sentence', nb_words=4)
-    some_text_val: str = Faker('text')
-    some_phone_number: str = Faker('sentence', nb_words=4)
-    some_email_address: str = Faker('sentence', nb_words=4)
+    some_n_var_char_val = Faker('sentence', nb_words=4)
+    some_var_char_val = Faker('sentence', nb_words=4)
+    some_text_val = Faker('text')
+    some_phone_number = Faker('sentence', nb_words=4)
+    some_email_address = Faker('sentence', nb_words=4)
     page_number = 1
     item_count_per_page = 1
-    order_by_column_name: str = ""
-    order_by_descending: bool = False
-    force_error_message: str = ""
+    order_by_column_name = ""
+    order_by_descending = False
+    force_error_message = ""
 # endset
 
     @classmethod

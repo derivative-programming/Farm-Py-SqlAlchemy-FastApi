@@ -29,9 +29,18 @@ class TestTacLoginPostModelResponse:
             password: str = "",  # pylint: disable=unused-argument
         ):
             return FlowTacLoginResult()
-        with patch.object(FlowTacLogin, 'process', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            FlowTacLogin,
+            'process',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_process
-            request_instance = await TacLoginPostModelRequestFactory.create_async(session=session)
+            request_instance = await (
+                TacLoginPostModelRequestFactory
+                .create_async(
+                    session=session
+                )
+            )
             response_instance = TacLoginPostModelResponse()
             session_context = SessionContext(dict(), session)
             tac = await TacFactory.create_async(session)

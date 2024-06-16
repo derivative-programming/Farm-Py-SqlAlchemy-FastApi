@@ -279,10 +279,12 @@ class TriStateFilterManager:
         """
         logging.info("TriStateFilterManager.add_bulk")
         for tri_state_filter in tri_state_filters:
+            tri_state_filter_id = tri_state_filter.tri_state_filter_id
+            code = tri_state_filter.code
             if tri_state_filter.tri_state_filter_id is not None and tri_state_filter.tri_state_filter_id > 0:
-                raise ValueError("TriStateFilter is already added: " +
-                                 str(tri_state_filter.code) +
-                                 " " + str(tri_state_filter.tri_state_filter_id))
+                raise ValueError(
+                    f"TriStateFilter is already added: {str(code)} {str(tri_state_filter_id)}"
+                )
             tri_state_filter.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             tri_state_filter.last_update_user_id = self.convert_uuid_to_model_uuid(

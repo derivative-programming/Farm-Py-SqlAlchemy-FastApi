@@ -375,7 +375,11 @@ class TestCustomerRoleManager:
         customer_roles = await customer_role_manager.add_bulk(customer_roles_data)
         assert len(customer_roles) == 5
         for updated_customer_role in customer_roles:
-            result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == updated_customer_role.customer_role_id))
+            result = await session.execute(
+                select(CustomerRole).filter(
+                    CustomerRole.customer_role_id == updated_customer_role.customer_role_id
+                )
+            )
             fetched_customer_role = result.scalars().first()
             assert isinstance(fetched_customer_role, CustomerRole)
             assert str(fetched_customer_role.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestCustomerRoleManager:
             str(customer_role_manager._session_context.customer_code))
         assert str(updated_customer_roles[1].last_update_user_id) == (
             str(customer_role_manager._session_context.customer_code))
-        result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == 1))
+        result = await session.execute(
+            select(CustomerRole).filter(CustomerRole.customer_role_id == 1)
+        )
         fetched_customer_role = result.scalars().first()
         assert isinstance(fetched_customer_role, CustomerRole)
         assert fetched_customer_role.code == code_updated1
-        result = await session.execute(select(CustomerRole).filter(CustomerRole.customer_role_id == 2))
+        result = await session.execute(
+            select(CustomerRole).filter(CustomerRole.customer_role_id == 2)
+        )
         fetched_customer_role = result.scalars().first()
         assert isinstance(fetched_customer_role, CustomerRole)
         assert fetched_customer_role.code == code_updated2

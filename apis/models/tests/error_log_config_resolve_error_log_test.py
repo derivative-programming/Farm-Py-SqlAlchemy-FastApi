@@ -28,9 +28,18 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
 
         ):
             return FlowErrorLogConfigResolveErrorLogResult()
-        with patch.object(FlowErrorLogConfigResolveErrorLog, 'process', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            FlowErrorLogConfigResolveErrorLog,
+            'process',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_process
-            request_instance = await ErrorLogConfigResolveErrorLogPostModelRequestFactory.create_async(session=session)
+            request_instance = await (
+                ErrorLogConfigResolveErrorLogPostModelRequestFactory
+                .create_async(
+                    session=session
+                )
+            )
             response_instance = ErrorLogConfigResolveErrorLogPostModelResponse()
             session_context = SessionContext(dict(), session)
             error_log = await ErrorLogFactory.create_async(session)

@@ -224,10 +224,12 @@ class ErrorLogManager:
         """
         logging.info("ErrorLogManager.add_bulk")
         for error_log in error_logs:
+            error_log_id = error_log.error_log_id
+            code = error_log.code
             if error_log.error_log_id is not None and error_log.error_log_id > 0:
-                raise ValueError("ErrorLog is already added: " +
-                                 str(error_log.code) +
-                                 " " + str(error_log.error_log_id))
+                raise ValueError(
+                    f"ErrorLog is already added: {str(code)} {str(error_log_id)}"
+                )
             error_log.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             error_log.last_update_user_id = self.convert_uuid_to_model_uuid(

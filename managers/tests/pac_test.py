@@ -375,7 +375,11 @@ class TestPacManager:
         pacs = await pac_manager.add_bulk(pacs_data)
         assert len(pacs) == 5
         for updated_pac in pacs:
-            result = await session.execute(select(Pac).filter(Pac.pac_id == updated_pac.pac_id))
+            result = await session.execute(
+                select(Pac).filter(
+                    Pac.pac_id == updated_pac.pac_id
+                )
+            )
             fetched_pac = result.scalars().first()
             assert isinstance(fetched_pac, Pac)
             assert str(fetched_pac.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestPacManager:
             str(pac_manager._session_context.customer_code))
         assert str(updated_pacs[1].last_update_user_id) == (
             str(pac_manager._session_context.customer_code))
-        result = await session.execute(select(Pac).filter(Pac.pac_id == 1))
+        result = await session.execute(
+            select(Pac).filter(Pac.pac_id == 1)
+        )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
         assert fetched_pac.code == code_updated1
-        result = await session.execute(select(Pac).filter(Pac.pac_id == 2))
+        result = await session.execute(
+            select(Pac).filter(Pac.pac_id == 2)
+        )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
         assert fetched_pac.code == code_updated2

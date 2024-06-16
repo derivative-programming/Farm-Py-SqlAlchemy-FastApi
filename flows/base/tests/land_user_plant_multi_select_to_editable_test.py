@@ -26,11 +26,13 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
         land = await LandFactory.create_async(session)
         flavor = await FlavorFactory.create_async(session)
         plant_code_list_csv: str = ""
+# endset
         # Call the method being tested
         await flow._process_validation_rules(
             land,
             plant_code_list_csv,
-            )
+# endset  # noqa: E122
+        )
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
@@ -38,6 +40,7 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
         #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
         if FlowConstants.param_plant_code_list_csv_isRequired is True:
             assert 'plantCodeListCsv' in flow.queued_validation_errors and flow.queued_validation_errors['plantCodeListCsv'] == 'Please enter a plant Code List Csv'
+# endset
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """

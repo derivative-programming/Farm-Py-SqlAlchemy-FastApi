@@ -375,7 +375,11 @@ class TestOrgApiKeyManager:
         org_api_keys = await org_api_key_manager.add_bulk(org_api_keys_data)
         assert len(org_api_keys) == 5
         for updated_org_api_key in org_api_keys:
-            result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == updated_org_api_key.org_api_key_id))
+            result = await session.execute(
+                select(OrgApiKey).filter(
+                    OrgApiKey.org_api_key_id == updated_org_api_key.org_api_key_id
+                )
+            )
             fetched_org_api_key = result.scalars().first()
             assert isinstance(fetched_org_api_key, OrgApiKey)
             assert str(fetched_org_api_key.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestOrgApiKeyManager:
             str(org_api_key_manager._session_context.customer_code))
         assert str(updated_org_api_keys[1].last_update_user_id) == (
             str(org_api_key_manager._session_context.customer_code))
-        result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == 1))
+        result = await session.execute(
+            select(OrgApiKey).filter(OrgApiKey.org_api_key_id == 1)
+        )
         fetched_org_api_key = result.scalars().first()
         assert isinstance(fetched_org_api_key, OrgApiKey)
         assert fetched_org_api_key.code == code_updated1
-        result = await session.execute(select(OrgApiKey).filter(OrgApiKey.org_api_key_id == 2))
+        result = await session.execute(
+            select(OrgApiKey).filter(OrgApiKey.org_api_key_id == 2)
+        )
         fetched_org_api_key = result.scalars().first()
         assert isinstance(fetched_org_api_key, OrgApiKey)
         assert fetched_org_api_key.code == code_updated2

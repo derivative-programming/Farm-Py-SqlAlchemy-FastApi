@@ -224,10 +224,12 @@ class CustomerManager:
         """
         logging.info("CustomerManager.add_bulk")
         for customer in customers:
+            customer_id = customer.customer_id
+            code = customer.code
             if customer.customer_id is not None and customer.customer_id > 0:
-                raise ValueError("Customer is already added: " +
-                                 str(customer.code) +
-                                 " " + str(customer.customer_id))
+                raise ValueError(
+                    f"Customer is already added: {str(code)} {str(customer_id)}"
+                )
             customer.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             customer.last_update_user_id = self.convert_uuid_to_model_uuid(

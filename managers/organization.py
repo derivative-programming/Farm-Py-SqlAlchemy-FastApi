@@ -224,10 +224,12 @@ class OrganizationManager:
         """
         logging.info("OrganizationManager.add_bulk")
         for organization in organizations:
+            organization_id = organization.organization_id
+            code = organization.code
             if organization.organization_id is not None and organization.organization_id > 0:
-                raise ValueError("Organization is already added: " +
-                                 str(organization.code) +
-                                 " " + str(organization.organization_id))
+                raise ValueError(
+                    f"Organization is already added: {str(code)} {str(organization_id)}"
+                )
             organization.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             organization.last_update_user_id = self.convert_uuid_to_model_uuid(

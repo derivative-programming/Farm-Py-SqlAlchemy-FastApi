@@ -52,25 +52,44 @@ def include_all_routers():
     #TODO add comment
     """
 
-    fs_farm_api_v1_0_router.include_router(LandPlantListRouter.router)  # LandPlantList
-    fs_farm_api_v1_0_router.include_router(LandAddPlantRouter.router)  # LandAddPlant
-    fs_farm_api_v1_0_router.include_router(CustomerUserLogOutRouter.router)  # CustomerUserLogOut
-    fs_farm_api_v1_0_router.include_router(PacUserDateGreaterThanFilterListRouter.router)  # PacUserDateGreaterThanFilterList
-    fs_farm_api_v1_0_router.include_router(PacUserFlavorListRouter.router)  # PacUserFlavorList
-    fs_farm_api_v1_0_router.include_router(PacUserLandListRouter.router)  # PacUserLandList
-    fs_farm_api_v1_0_router.include_router(PacUserRoleListRouter.router)  # PacUserRoleList
-    fs_farm_api_v1_0_router.include_router(PacUserTacListRouter.router)  # PacUserTacList
-    fs_farm_api_v1_0_router.include_router(PacUserTriStateFilterListRouter.router)  # PacUserTriStateFilterList
-    fs_farm_api_v1_0_router.include_router(PlantUserDetailsRouter.router)  # PlantUserDetails
-    fs_farm_api_v1_0_router.include_router(TacLoginRouter.router)  # TacLogin
-    fs_farm_api_v1_0_router.include_router(TacRegisterRouter.router)  # TacRegister
-    fs_farm_api_v1_0_router.include_router(TacFarmDashboardRouter.router)  # TacFarmDashboard
-    fs_farm_api_v1_0_router.include_router(PlantUserDeleteRouter.router)  # PlantUserDelete
-    fs_farm_api_v1_0_router.include_router(PlantUserPropertyRandomUpdateRouter.router)  # PlantUserPropertyRandomUpdate
-    fs_farm_api_v1_0_router.include_router(CustomerBuildTempApiKeyRouter.router)  # CustomerBuildTempApiKey
-    fs_farm_api_v1_0_router.include_router(ErrorLogConfigResolveErrorLogRouter.router)  # ErrorLogConfigResolveErrorLog
-    fs_farm_api_v1_0_router.include_router(LandUserPlantMultiSelectToEditableRouter.router)  # LandUserPlantMultiSelectToEditable
-    fs_farm_api_v1_0_router.include_router(LandUserPlantMultiSelectToNotEditableRouter.router)  # LandUserPlantMultiSelectToNotEditable
+    fs_farm_api_v1_0_router.include_router(  # LandPlantList
+        LandPlantListRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # LandAddPlant
+        LandAddPlantRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # CustomerUserLogOut
+        CustomerUserLogOutRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PacUserDateGreaterThanFilterList
+        PacUserDateGreaterThanFilterListRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PacUserFlavorList
+        PacUserFlavorListRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PacUserLandList
+        PacUserLandListRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PacUserRoleList
+        PacUserRoleListRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PacUserTacList
+        PacUserTacListRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PacUserTriStateFilterList
+        PacUserTriStateFilterListRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PlantUserDetails
+        PlantUserDetailsRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # TacLogin
+        TacLoginRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # TacRegister
+        TacRegisterRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # TacFarmDashboard
+        TacFarmDashboardRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PlantUserDelete
+        PlantUserDeleteRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # PlantUserPropertyRandomUpdate
+        PlantUserPropertyRandomUpdateRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # CustomerBuildTempApiKey
+        CustomerBuildTempApiKeyRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # ErrorLogConfigResolveErrorLog
+        ErrorLogConfigResolveErrorLogRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # LandUserPlantMultiSelectToEditable
+        LandUserPlantMultiSelectToEditableRouter.router)
+    fs_farm_api_v1_0_router.include_router(  # LandUserPlantMultiSelectToNotEditable
+        LandUserPlantMultiSelectToNotEditableRouter.router)
 
 
 include_all_routers()

@@ -17,7 +17,12 @@ class TestPacUserDateGreaterThanFilterListGetModelRequestFactoryAsync:
         """
             #TODO add comment
         """
-        model_instance = await PacUserDateGreaterThanFilterListGetModelRequestFactory.create_async(session=session)
+        model_instance = await (
+            PacUserDateGreaterThanFilterListGetModelRequestFactory
+            .create_async(
+                session=session
+            )
+        )
         assert isinstance(model_instance, PacUserDateGreaterThanFilterListGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)

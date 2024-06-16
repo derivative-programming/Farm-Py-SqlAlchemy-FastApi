@@ -236,10 +236,12 @@ class OrgApiKeyManager:
         """
         logging.info("OrgApiKeyManager.add_bulk")
         for org_api_key in org_api_keys:
+            org_api_key_id = org_api_key.org_api_key_id
+            code = org_api_key.code
             if org_api_key.org_api_key_id is not None and org_api_key.org_api_key_id > 0:
-                raise ValueError("OrgApiKey is already added: " +
-                                 str(org_api_key.code) +
-                                 " " + str(org_api_key.org_api_key_id))
+                raise ValueError(
+                    f"OrgApiKey is already added: {str(code)} {str(org_api_key_id)}"
+                )
             org_api_key.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             org_api_key.last_update_user_id = self.convert_uuid_to_model_uuid(

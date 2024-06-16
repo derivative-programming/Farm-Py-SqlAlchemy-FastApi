@@ -94,7 +94,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = uuid.uuid4()  # type: ignore
+            flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
 # endset
 
             page_number = 1
@@ -194,7 +194,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = uuid.uuid4()  # type: ignore
+            flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
 # endset
 
             page_number = 1
@@ -293,7 +293,7 @@ class TestReportManagerLandPlantList:
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: UUIDType = uuid.uuid4()  # type: ignore
+            flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
 # endset
             # page_number = 1
             item_count_per_page = 10

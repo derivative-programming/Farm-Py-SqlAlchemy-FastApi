@@ -30,6 +30,7 @@ class TestBaseFlowTacRegister():
         confirm_password: str = ""
         first_name: str = ""
         last_name: str = ""
+# endset
         # Call the method being tested
         await flow._process_validation_rules(
             tac,
@@ -38,7 +39,8 @@ class TestBaseFlowTacRegister():
             confirm_password,
             first_name,
             last_name,
-            )
+# endset  # noqa: E122
+        )
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
@@ -54,6 +56,7 @@ class TestBaseFlowTacRegister():
             assert 'firstName' in flow.queued_validation_errors and flow.queued_validation_errors['firstName'] == 'Please enter a First Name'
         if FlowConstants.param_last_name_isRequired is True:
             assert 'lastName' in flow.queued_validation_errors and flow.queued_validation_errors['lastName'] == 'Please enter a Last Name'
+# endset
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """

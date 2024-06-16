@@ -269,10 +269,12 @@ class LandManager:
         """
         logging.info("LandManager.add_bulk")
         for land in lands:
+            land_id = land.land_id
+            code = land.code
             if land.land_id is not None and land.land_id > 0:
-                raise ValueError("Land is already added: " +
-                                 str(land.code) +
-                                 " " + str(land.land_id))
+                raise ValueError(
+                    f"Land is already added: {str(code)} {str(land_id)}"
+                )
             land.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             land.last_update_user_id = self.convert_uuid_to_model_uuid(

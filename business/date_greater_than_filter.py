@@ -37,7 +37,8 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     @property
     def date_greater_than_filter_id(self):
         """
-        Get the date_greater_than_filter ID from the DateGreaterThanFilter object.
+        Get the date_greater_than_filter ID from the
+        DateGreaterThanFilter object.
         :return: The date_greater_than_filter ID.
         """
         if not self.date_greater_than_filter:
@@ -492,8 +493,14 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        self.date_greater_than_filter = date_greater_than_filter_manager.from_json(json_data)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        self.date_greater_than_filter = (
+            date_greater_than_filter_manager.from_json(
+                json_data
+            )
+        )
         return self
 
     async def load_from_code(
@@ -509,8 +516,15 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         if not isinstance(code, uuid.UUID):
             raise ValueError("code must be a UUID")
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_code(code)
+        date_greater_than_filter_manager = (
+            DateGreaterThanFilterManager(
+                self._session_context
+            )
+        )
+        date_greater_than_filter_obj = await (
+            date_greater_than_filter_manager
+            .get_by_code(code)
+        )
         self.date_greater_than_filter = date_greater_than_filter_obj
         return self
 
@@ -528,8 +542,15 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         if not isinstance(date_greater_than_filter_id, int):
             raise ValueError("date_greater_than_filter_id must be an integer")
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(date_greater_than_filter_id)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        date_greater_than_filter_obj = await (
+            date_greater_than_filter_manager
+            .get_by_id(
+                date_greater_than_filter_id
+            )
+        )
         self.date_greater_than_filter = date_greater_than_filter_obj
         return self
 
@@ -544,12 +565,24 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         :raises ValueError: If date_greater_than_filter_obj_instance
             is not an instance of DateGreaterThanFilter.
         """
-        if not isinstance(date_greater_than_filter_obj_instance, DateGreaterThanFilter):
-            raise ValueError("date_greater_than_filter_obj_instance must be an instance of DateGreaterThanFilter")
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        date_greater_than_filter_obj_instance_date_greater_than_filter_id = date_greater_than_filter_obj_instance.date_greater_than_filter_id
-        date_greater_than_filter_obj = await date_greater_than_filter_manager.get_by_id(
-            date_greater_than_filter_obj_instance_date_greater_than_filter_id
+        if not isinstance(
+            date_greater_than_filter_obj_instance,
+            DateGreaterThanFilter
+        ):
+            raise ValueError(
+                "date_greater_than_filter_obj_instance must be "
+                "an instance of DateGreaterThanFilter")
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        date_greater_than_filter_obj_instance_date_greater_than_filter_id = (
+            date_greater_than_filter_obj_instance.date_greater_than_filter_id
+        )
+        date_greater_than_filter_obj = await (
+            date_greater_than_filter_manager
+            .get_by_id(
+                date_greater_than_filter_obj_instance_date_greater_than_filter_id
+            )
         )
         self.date_greater_than_filter = date_greater_than_filter_obj
         return self
@@ -560,13 +593,24 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     ):
         """
         Load date_greater_than_filter data from dictionary.
-        :param date_greater_than_filter_dict: Dictionary containing date_greater_than_filter data.
-        :raises ValueError: If date_greater_than_filter_dict is not a dictionary or if no date_greater_than_filter data is found.
+        :param date_greater_than_filter_dict: Dictionary
+            containing date_greater_than_filter data.
+        :raises ValueError: If date_greater_than_filter_dict is
+            not a dictionary or if no date_greater_than_filter data is found.
         """
         if not isinstance(date_greater_than_filter_dict, dict):
-            raise ValueError("date_greater_than_filter_dict must be a dictionary")
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        self.date_greater_than_filter = date_greater_than_filter_manager.from_dict(date_greater_than_filter_dict)
+            raise ValueError(
+                "date_greater_than_filter_dict must be a dictionary"
+            )
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        self.date_greater_than_filter = (
+            date_greater_than_filter_manager
+            .from_dict(
+                date_greater_than_filter_dict
+            )
+        )
         return self
 
 ##GENTrainingBlock[caseLookupEnums]Start
@@ -589,7 +633,8 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         Load plant data from dictionary.
 
         :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
+        :raises ValueError: If plant_dict is not a dictionary or
+            if no plant data is found.
         """
         if not isinstance(
             date_greater_than_filter_enum,
@@ -658,11 +703,19 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 "DateGreaterThanFilter object is not initialized"
             )
         if self.date_greater_than_filter.date_greater_than_filter_id is not None and self.date_greater_than_filter.date_greater_than_filter_id > 0:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(
+                self._session_context
+            )
             self.date_greater_than_filter = await date_greater_than_filter_manager.update(self.date_greater_than_filter)
         if self.date_greater_than_filter.date_greater_than_filter_id is None or self.date_greater_than_filter.date_greater_than_filter_id == 0:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            self.date_greater_than_filter = await date_greater_than_filter_manager.add(self.date_greater_than_filter)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(
+                self._session_context
+            )
+            self.date_greater_than_filter = await (
+                date_greater_than_filter_manager.add(
+                    self.date_greater_than_filter
+                )
+            )
         return self
 
     async def delete(self):
@@ -713,7 +766,10 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             )
         return self.date_greater_than_filter
 
-    def is_equal(self, date_greater_than_filter: DateGreaterThanFilter) -> bool:
+    def is_equal(
+        self,
+        date_greater_than_filter: DateGreaterThanFilter
+    ) -> bool:
         """
         #TODO add comment
         """

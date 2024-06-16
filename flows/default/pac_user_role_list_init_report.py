@@ -52,8 +52,14 @@ class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
         """
             #TODO add comment
         """
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(pac_bus_obj.code))
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Code::" + str(pac_bus_obj.code)
+        )
         await super()._process_validation_rules(
             pac_bus_obj,
 

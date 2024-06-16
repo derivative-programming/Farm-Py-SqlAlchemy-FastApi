@@ -375,7 +375,11 @@ class TestTacManager:
         tacs = await tac_manager.add_bulk(tacs_data)
         assert len(tacs) == 5
         for updated_tac in tacs:
-            result = await session.execute(select(Tac).filter(Tac.tac_id == updated_tac.tac_id))
+            result = await session.execute(
+                select(Tac).filter(
+                    Tac.tac_id == updated_tac.tac_id
+                )
+            )
             fetched_tac = result.scalars().first()
             assert isinstance(fetched_tac, Tac)
             assert str(fetched_tac.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestTacManager:
             str(tac_manager._session_context.customer_code))
         assert str(updated_tacs[1].last_update_user_id) == (
             str(tac_manager._session_context.customer_code))
-        result = await session.execute(select(Tac).filter(Tac.tac_id == 1))
+        result = await session.execute(
+            select(Tac).filter(Tac.tac_id == 1)
+        )
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
         assert fetched_tac.code == code_updated1
-        result = await session.execute(select(Tac).filter(Tac.tac_id == 2))
+        result = await session.execute(
+            select(Tac).filter(Tac.tac_id == 2)
+        )
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
         assert fetched_tac.code == code_updated2

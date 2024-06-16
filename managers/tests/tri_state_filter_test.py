@@ -375,7 +375,11 @@ class TestTriStateFilterManager:
         tri_state_filters = await tri_state_filter_manager.add_bulk(tri_state_filters_data)
         assert len(tri_state_filters) == 5
         for updated_tri_state_filter in tri_state_filters:
-            result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == updated_tri_state_filter.tri_state_filter_id))
+            result = await session.execute(
+                select(TriStateFilter).filter(
+                    TriStateFilter.tri_state_filter_id == updated_tri_state_filter.tri_state_filter_id
+                )
+            )
             fetched_tri_state_filter = result.scalars().first()
             assert isinstance(fetched_tri_state_filter, TriStateFilter)
             assert str(fetched_tri_state_filter.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestTriStateFilterManager:
             str(tri_state_filter_manager._session_context.customer_code))
         assert str(updated_tri_state_filters[1].last_update_user_id) == (
             str(tri_state_filter_manager._session_context.customer_code))
-        result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == 1))
+        result = await session.execute(
+            select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == 1)
+        )
         fetched_tri_state_filter = result.scalars().first()
         assert isinstance(fetched_tri_state_filter, TriStateFilter)
         assert fetched_tri_state_filter.code == code_updated1
-        result = await session.execute(select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == 2))
+        result = await session.execute(
+            select(TriStateFilter).filter(TriStateFilter.tri_state_filter_id == 2)
+        )
         fetched_tri_state_filter = result.scalars().first()
         assert isinstance(fetched_tri_state_filter, TriStateFilter)
         assert fetched_tri_state_filter.code == code_updated2

@@ -108,7 +108,7 @@ class PlantFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> Plant:
+    def _create(cls, model_class, session, *args, **kwargs) -> Plant:
         """
         #TODO add comment
         """

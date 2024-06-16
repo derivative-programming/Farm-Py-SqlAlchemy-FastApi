@@ -489,7 +489,11 @@ class TestPlantManager:
         assert len(plants) == 5
 
         for updated_plant in plants:
-            result = await session.execute(select(Plant).filter(Plant.plant_id == updated_plant.plant_id))
+            result = await session.execute(
+                select(Plant).filter(
+                    Plant.plant_id == updated_plant.plant_id
+                )
+            )
             fetched_plant = result.scalars().first()
 
             assert isinstance(fetched_plant, Plant)
@@ -553,14 +557,18 @@ class TestPlantManager:
         assert str(updated_plants[1].last_update_user_id) == (
             str(plant_manager._session_context.customer_code))
 
-        result = await session.execute(select(Plant).filter(Plant.plant_id == 1))
+        result = await session.execute(
+            select(Plant).filter(Plant.plant_id == 1)
+        )
         fetched_plant = result.scalars().first()
 
         assert isinstance(fetched_plant, Plant)
 
         assert fetched_plant.code == code_updated1
 
-        result = await session.execute(select(Plant).filter(Plant.plant_id == 2))
+        result = await session.execute(
+            select(Plant).filter(Plant.plant_id == 2)
+        )
         fetched_plant = result.scalars().first()
 
         assert isinstance(fetched_plant, Plant)

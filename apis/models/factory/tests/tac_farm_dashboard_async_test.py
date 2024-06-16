@@ -17,7 +17,12 @@ class TestTacFarmDashboardGetModelRequestFactoryAsync:
         """
             #TODO add comment
         """
-        model_instance = await TacFarmDashboardGetModelRequestFactory.create_async(session=session)
+        model_instance = await (
+            TacFarmDashboardGetModelRequestFactory
+            .create_async(
+                session=session
+            )
+        )
         assert isinstance(model_instance, TacFarmDashboardGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)

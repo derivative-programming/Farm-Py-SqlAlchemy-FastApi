@@ -54,10 +54,19 @@ class TestLandAddPlantPostModelResponse:
             request_sample_image_upload_file: str = "",  # pylint: disable=unused-argument
         ):
             return FlowLandAddPlantResult()
-        with patch.object(FlowLandAddPlant, 'process', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            FlowLandAddPlant,
+            'process',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_process
 
-            request_instance = await LandAddPlantPostModelRequestFactory.create_async(session=session)
+            request_instance = await (
+                LandAddPlantPostModelRequestFactory
+                .create_async(
+                    session=session
+                )
+            )
             response_instance = LandAddPlantPostModelResponse()
             session_context = SessionContext(dict(), session)
 

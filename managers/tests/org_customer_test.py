@@ -375,7 +375,11 @@ class TestOrgCustomerManager:
         org_customers = await org_customer_manager.add_bulk(org_customers_data)
         assert len(org_customers) == 5
         for updated_org_customer in org_customers:
-            result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == updated_org_customer.org_customer_id))
+            result = await session.execute(
+                select(OrgCustomer).filter(
+                    OrgCustomer.org_customer_id == updated_org_customer.org_customer_id
+                )
+            )
             fetched_org_customer = result.scalars().first()
             assert isinstance(fetched_org_customer, OrgCustomer)
             assert str(fetched_org_customer.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestOrgCustomerManager:
             str(org_customer_manager._session_context.customer_code))
         assert str(updated_org_customers[1].last_update_user_id) == (
             str(org_customer_manager._session_context.customer_code))
-        result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == 1))
+        result = await session.execute(
+            select(OrgCustomer).filter(OrgCustomer.org_customer_id == 1)
+        )
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)
         assert fetched_org_customer.code == code_updated1
-        result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == 2))
+        result = await session.execute(
+            select(OrgCustomer).filter(OrgCustomer.org_customer_id == 2)
+        )
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)
         assert fetched_org_customer.code == code_updated2

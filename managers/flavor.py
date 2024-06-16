@@ -279,10 +279,12 @@ class FlavorManager:
         """
         logging.info("FlavorManager.add_bulk")
         for flavor in flavors:
+            flavor_id = flavor.flavor_id
+            code = flavor.code
             if flavor.flavor_id is not None and flavor.flavor_id > 0:
-                raise ValueError("Flavor is already added: " +
-                                 str(flavor.code) +
-                                 " " + str(flavor.flavor_id))
+                raise ValueError(
+                    f"Flavor is already added: {str(code)} {str(flavor_id)}"
+                )
             flavor.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             flavor.last_update_user_id = self.convert_uuid_to_model_uuid(

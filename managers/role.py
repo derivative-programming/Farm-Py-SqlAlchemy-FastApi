@@ -289,10 +289,12 @@ class RoleManager:
         """
         logging.info("RoleManager.add_bulk")
         for role in roles:
+            role_id = role.role_id
+            code = role.code
             if role.role_id is not None and role.role_id > 0:
-                raise ValueError("Role is already added: " +
-                                 str(role.code) +
-                                 " " + str(role.role_id))
+                raise ValueError(
+                    f"Role is already added: {str(code)} {str(role_id)}"
+                )
             role.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             role.last_update_user_id = self.convert_uuid_to_model_uuid(

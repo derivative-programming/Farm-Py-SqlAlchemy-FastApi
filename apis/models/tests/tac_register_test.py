@@ -32,9 +32,18 @@ class TestTacRegisterPostModelResponse:
             last_name: str = "",  # pylint: disable=unused-argument
         ):
             return FlowTacRegisterResult()
-        with patch.object(FlowTacRegister, 'process', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            FlowTacRegister,
+            'process',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_process
-            request_instance = await TacRegisterPostModelRequestFactory.create_async(session=session)
+            request_instance = await (
+                TacRegisterPostModelRequestFactory
+                .create_async(
+                    session=session
+                )
+            )
             response_instance = TacRegisterPostModelResponse()
             session_context = SessionContext(dict(), session)
             tac = await TacFactory.create_async(session)

@@ -28,9 +28,18 @@ class TestPlantUserDeletePostModelResponse:
 
         ):
             return FlowPlantUserDeleteResult()
-        with patch.object(FlowPlantUserDelete, 'process', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            FlowPlantUserDelete,
+            'process',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_process
-            request_instance = await PlantUserDeletePostModelRequestFactory.create_async(session=session)
+            request_instance = await (
+                PlantUserDeletePostModelRequestFactory
+                .create_async(
+                    session=session
+                )
+            )
             response_instance = PlantUserDeletePostModelResponse()
             session_context = SessionContext(dict(), session)
             plant = await PlantFactory.create_async(session)

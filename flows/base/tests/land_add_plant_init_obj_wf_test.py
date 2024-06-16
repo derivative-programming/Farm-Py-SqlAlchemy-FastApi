@@ -26,17 +26,20 @@ class TestBaseFlowLandAddPlantInitObjWF():
         land = await LandFactory.create_async(session)
         flavor = await FlavorFactory.create_async(session)
 
+# endset
         # Call the method being tested
         await flow._process_validation_rules(
             land,
 
-            )
+# endset  # noqa: E122
+        )
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
         #TODO add validation checks - calculatedIsRowLevelOrgCustomerSecurityUsed
         #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
 
+# endset
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """

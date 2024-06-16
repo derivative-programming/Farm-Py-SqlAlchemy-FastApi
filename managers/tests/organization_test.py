@@ -375,7 +375,11 @@ class TestOrganizationManager:
         organizations = await organization_manager.add_bulk(organizations_data)
         assert len(organizations) == 5
         for updated_organization in organizations:
-            result = await session.execute(select(Organization).filter(Organization.organization_id == updated_organization.organization_id))
+            result = await session.execute(
+                select(Organization).filter(
+                    Organization.organization_id == updated_organization.organization_id
+                )
+            )
             fetched_organization = result.scalars().first()
             assert isinstance(fetched_organization, Organization)
             assert str(fetched_organization.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestOrganizationManager:
             str(organization_manager._session_context.customer_code))
         assert str(updated_organizations[1].last_update_user_id) == (
             str(organization_manager._session_context.customer_code))
-        result = await session.execute(select(Organization).filter(Organization.organization_id == 1))
+        result = await session.execute(
+            select(Organization).filter(Organization.organization_id == 1)
+        )
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)
         assert fetched_organization.code == code_updated1
-        result = await session.execute(select(Organization).filter(Organization.organization_id == 2))
+        result = await session.execute(
+            select(Organization).filter(Organization.organization_id == 2)
+        )
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)
         assert fetched_organization.code == code_updated2

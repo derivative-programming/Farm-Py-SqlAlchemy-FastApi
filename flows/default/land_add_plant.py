@@ -118,8 +118,14 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
             #TODO add comment
         """
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land_bus_obj.code))
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Code::" + str(land_bus_obj.code)
+        )
 
         await super()._process_validation_rules(
             land_bus_obj,
@@ -194,8 +200,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 # endset
         # plant.save()
 
-        # land_code_output:uuid = land.code
-        # plant_code_output:uuid = plant.code
+        # land_code_output:uuid.UUID = land.code
+        # plant_code_output:uuid.UUID = plant.code
         # output_flavor_code_output = plant.flvr_foreign_key.code
         # output_other_flavor_output = plant.other_flavor
         # output_some_int_val_output = plant.some_int_val

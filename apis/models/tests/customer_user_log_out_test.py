@@ -28,9 +28,18 @@ class TestCustomerUserLogOutPostModelResponse:
 
         ):
             return FlowCustomerUserLogOutResult()
-        with patch.object(FlowCustomerUserLogOut, 'process', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            FlowCustomerUserLogOut,
+            'process',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_process
-            request_instance = await CustomerUserLogOutPostModelRequestFactory.create_async(session=session)
+            request_instance = await (
+                CustomerUserLogOutPostModelRequestFactory
+                .create_async(
+                    session=session
+                )
+            )
             response_instance = CustomerUserLogOutPostModelResponse()
             session_context = SessionContext(dict(), session)
             customer = await CustomerFactory.create_async(session)

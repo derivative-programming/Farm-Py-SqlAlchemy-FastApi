@@ -287,10 +287,12 @@ class PlantManager:
         """
         logging.info("PlantManager.add_bulk")
         for plant in plants:
+            plant_id = plant.plant_id
+            code = plant.code
             if plant.plant_id is not None and plant.plant_id > 0:
-                raise ValueError("Plant is already added: " +
-                                 str(plant.code) +
-                                 " " + str(plant.plant_id))
+                raise ValueError(
+                    f"Plant is already added: {str(code)} {str(plant_id)}"
+                )
             plant.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             plant.last_update_user_id = self.convert_uuid_to_model_uuid(

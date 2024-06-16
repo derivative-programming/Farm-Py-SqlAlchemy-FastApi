@@ -53,7 +53,9 @@ async def test_submit_success(overridden_get_db):
         plant_code = plant.code
         api_dict = {'PlantCode': str(plant_code)}
         test_api_key = ApiToken.create_token(api_dict, 1)
-        async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+        async with AsyncClient(
+            app=app, base_url=test_constants.TEST_DOMAIN
+        ) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
                 f'/api/v1_0/plant-user-delete/{plant_code}',
@@ -76,7 +78,9 @@ async def test_submit_request_validation_error(overridden_get_db):
     plant_code = plant.code
     api_dict = {'PlantCode': str(plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/plant-user-delete/{plant_code}',
@@ -102,7 +106,9 @@ async def test_submit_authorization_failure_bad_api_key(
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code
 
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/plant-user-delete/{plant_code}',
@@ -127,7 +133,9 @@ async def test_submit_authorization_failure_empty_header_key(
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code
 
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/plant-user-delete/{plant_code}',
@@ -152,7 +160,9 @@ async def test_submit_authorization_failure_no_header(
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code
 
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/plant-user-delete/{plant_code}',
@@ -177,7 +187,9 @@ async def test_submit_endpoint_url_failure(
     plant_code = plant.code
     api_dict = {'PlantCode': str(plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/plant-user-delete/{plant_code}/xxxx',
@@ -199,7 +211,9 @@ async def test_submit_endpoint_invalid_code_failure(
     plant_code = uuid.UUID(int=0)
     api_dict = {'PlantCode': str(plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/plant-user-delete/{plant_code}',
@@ -223,7 +237,9 @@ async def test_submit_endpoint_method_failure(
     plant_code = plant.code
     api_dict = {'PlantCode': str(plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/plant-user-delete/{plant_code}',

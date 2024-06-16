@@ -375,7 +375,11 @@ class TestCustomerManager:
         customers = await customer_manager.add_bulk(customers_data)
         assert len(customers) == 5
         for updated_customer in customers:
-            result = await session.execute(select(Customer).filter(Customer.customer_id == updated_customer.customer_id))
+            result = await session.execute(
+                select(Customer).filter(
+                    Customer.customer_id == updated_customer.customer_id
+                )
+            )
             fetched_customer = result.scalars().first()
             assert isinstance(fetched_customer, Customer)
             assert str(fetched_customer.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestCustomerManager:
             str(customer_manager._session_context.customer_code))
         assert str(updated_customers[1].last_update_user_id) == (
             str(customer_manager._session_context.customer_code))
-        result = await session.execute(select(Customer).filter(Customer.customer_id == 1))
+        result = await session.execute(
+            select(Customer).filter(Customer.customer_id == 1)
+        )
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)
         assert fetched_customer.code == code_updated1
-        result = await session.execute(select(Customer).filter(Customer.customer_id == 2))
+        result = await session.execute(
+            select(Customer).filter(Customer.customer_id == 2)
+        )
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)
         assert fetched_customer.code == code_updated2

@@ -236,10 +236,12 @@ class OrgCustomerManager:
         """
         logging.info("OrgCustomerManager.add_bulk")
         for org_customer in org_customers:
+            org_customer_id = org_customer.org_customer_id
+            code = org_customer.code
             if org_customer.org_customer_id is not None and org_customer.org_customer_id > 0:
-                raise ValueError("OrgCustomer is already added: " +
-                                 str(org_customer.code) +
-                                 " " + str(org_customer.org_customer_id))
+                raise ValueError(
+                    f"OrgCustomer is already added: {str(code)} {str(org_customer_id)}"
+                )
             org_customer.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             org_customer.last_update_user_id = self.convert_uuid_to_model_uuid(

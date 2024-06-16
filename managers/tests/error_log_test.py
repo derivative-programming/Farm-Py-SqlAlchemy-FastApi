@@ -375,7 +375,11 @@ class TestErrorLogManager:
         error_logs = await error_log_manager.add_bulk(error_logs_data)
         assert len(error_logs) == 5
         for updated_error_log in error_logs:
-            result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == updated_error_log.error_log_id))
+            result = await session.execute(
+                select(ErrorLog).filter(
+                    ErrorLog.error_log_id == updated_error_log.error_log_id
+                )
+            )
             fetched_error_log = result.scalars().first()
             assert isinstance(fetched_error_log, ErrorLog)
             assert str(fetched_error_log.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestErrorLogManager:
             str(error_log_manager._session_context.customer_code))
         assert str(updated_error_logs[1].last_update_user_id) == (
             str(error_log_manager._session_context.customer_code))
-        result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == 1))
+        result = await session.execute(
+            select(ErrorLog).filter(ErrorLog.error_log_id == 1)
+        )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.code == code_updated1
-        result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == 2))
+        result = await session.execute(
+            select(ErrorLog).filter(ErrorLog.error_log_id == 2)
+        )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.code == code_updated2

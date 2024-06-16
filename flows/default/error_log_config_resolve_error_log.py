@@ -52,8 +52,14 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
         """
             #TODO add comment
         """
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(error_log_bus_obj.code))
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Code::" + str(error_log_bus_obj.code)
+        )
         await super()._process_validation_rules(
             error_log_bus_obj,
 

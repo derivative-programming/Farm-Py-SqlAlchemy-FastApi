@@ -27,12 +27,14 @@ class TestBaseFlowTacLogin():
         flavor = await FlavorFactory.create_async(session)
         email: str = ""
         password: str = ""
+# endset
         # Call the method being tested
         await flow._process_validation_rules(
             tac,
             email,
             password,
-            )
+# endset  # noqa: E122
+        )
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
@@ -42,6 +44,7 @@ class TestBaseFlowTacLogin():
             assert 'email' in flow.queued_validation_errors and flow.queued_validation_errors['email'] == 'Please enter a Email'
         if FlowConstants.param_password_isRequired is True:
             assert 'password' in flow.queued_validation_errors and flow.queued_validation_errors['password'] == 'Please enter a '
+# endset
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """

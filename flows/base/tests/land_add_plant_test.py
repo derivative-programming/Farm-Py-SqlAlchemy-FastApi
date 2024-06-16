@@ -2,16 +2,19 @@
 """
     #TODO add comment
 """
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.land_add_plant as FlowConstants
-from flows.base.land_add_plant import BaseFlowLandAddPlant
+from flows.base.land_add_plant import (
+    BaseFlowLandAddPlant)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.flavor import FlavorFactory
 from models.factory.land import LandFactory
+
+
 class TestBaseFlowLandAddPlant():
     """
     #TODO add comment
@@ -34,8 +37,12 @@ class TestBaseFlowLandAddPlant():
         request_is_delete_allowed: bool = None
         request_some_float_val: float = 0
         request_some_decimal_val: Decimal = 0
-        request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
-        request_some_date_val: date = TypeConversion.get_default_date()
+        request_some_utc_date_time_val: datetime = (
+            TypeConversion.get_default_date_time()
+        )
+        request_some_date_val: date = (
+            TypeConversion.get_default_date()
+        )
         request_some_money_val: Decimal = 0
         request_some_n_var_char_val: str = ""
         request_some_var_char_val: str = ""
@@ -43,6 +50,7 @@ class TestBaseFlowLandAddPlant():
         request_some_phone_number: str = ""
         request_some_email_address: str = ""
         request_sample_image_upload_file: str = ""
+# endset
         # Call the method being tested
         await flow._process_validation_rules(
             land,
@@ -64,7 +72,8 @@ class TestBaseFlowLandAddPlant():
             request_some_phone_number,
             request_some_email_address,
             request_sample_image_upload_file,
-            )
+# endset  # noqa: E122
+        )
         #TODO add validation checks - is email
         #TODO add validation checks - is phone,
         #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
@@ -106,6 +115,7 @@ class TestBaseFlowLandAddPlant():
             assert 'requestSomeEmailAddress' in flow.queued_validation_errors and flow.queued_validation_errors['requestSomeEmailAddress'] == 'Please enter a Some Email Address'
         if FlowConstants.param_request_sample_image_upload_file_isRequired is True:
             assert 'requestSampleImageUploadFile' in flow.queued_validation_errors and flow.queued_validation_errors['requestSampleImageUploadFile'] == 'Please enter a image file'
+# endset
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """

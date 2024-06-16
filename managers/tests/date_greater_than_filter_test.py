@@ -375,7 +375,11 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filters = await date_greater_than_filter_manager.add_bulk(date_greater_than_filters_data)
         assert len(date_greater_than_filters) == 5
         for updated_date_greater_than_filter in date_greater_than_filters:
-            result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == updated_date_greater_than_filter.date_greater_than_filter_id))
+            result = await session.execute(
+                select(DateGreaterThanFilter).filter(
+                    DateGreaterThanFilter.date_greater_than_filter_id == updated_date_greater_than_filter.date_greater_than_filter_id
+                )
+            )
             fetched_date_greater_than_filter = result.scalars().first()
             assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
             assert str(fetched_date_greater_than_filter.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestDateGreaterThanFilterManager:
             str(date_greater_than_filter_manager._session_context.customer_code))
         assert str(updated_date_greater_than_filters[1].last_update_user_id) == (
             str(date_greater_than_filter_manager._session_context.customer_code))
-        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == 1))
+        result = await session.execute(
+            select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == 1)
+        )
         fetched_date_greater_than_filter = result.scalars().first()
         assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
         assert fetched_date_greater_than_filter.code == code_updated1
-        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == 2))
+        result = await session.execute(
+            select(DateGreaterThanFilter).filter(DateGreaterThanFilter.date_greater_than_filter_id == 2)
+        )
         fetched_date_greater_than_filter = result.scalars().first()
         assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
         assert fetched_date_greater_than_filter.code == code_updated2

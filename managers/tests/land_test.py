@@ -375,7 +375,11 @@ class TestLandManager:
         lands = await land_manager.add_bulk(lands_data)
         assert len(lands) == 5
         for updated_land in lands:
-            result = await session.execute(select(Land).filter(Land.land_id == updated_land.land_id))
+            result = await session.execute(
+                select(Land).filter(
+                    Land.land_id == updated_land.land_id
+                )
+            )
             fetched_land = result.scalars().first()
             assert isinstance(fetched_land, Land)
             assert str(fetched_land.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestLandManager:
             str(land_manager._session_context.customer_code))
         assert str(updated_lands[1].last_update_user_id) == (
             str(land_manager._session_context.customer_code))
-        result = await session.execute(select(Land).filter(Land.land_id == 1))
+        result = await session.execute(
+            select(Land).filter(Land.land_id == 1)
+        )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.code == code_updated1
-        result = await session.execute(select(Land).filter(Land.land_id == 2))
+        result = await session.execute(
+            select(Land).filter(Land.land_id == 2)
+        )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.code == code_updated2

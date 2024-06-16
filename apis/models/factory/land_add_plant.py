@@ -1,13 +1,12 @@
 # apis/models/factory/land_add_plant.py
-
+# pylint: disable=unused-import
 """
-Factory module for creating instances of LandAddPlantPostModelRequest with various field values for testing.
+Factory module for creating instances of LandAddPlantPostModelRequest with
+various field values for testing.
 """
 
 import uuid
-from datetime import date, datetime
-from decimal import Decimal
-from pydantic import UUID4
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
@@ -27,47 +26,47 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
         """
         model = LandAddPlantPostModelRequest
 
-    force_error_message: str = ""
-    request_other_flavor: str = ""
-    request_flavor_code: UUID4 = uuid.UUID(int=0)
-    request_other_flavor: str = ""
-    request_some_int_val: int = factory.Faker('random_int')
-    request_some_big_int_val: int = Faker('random_int')
-    request_some_bit_val: bool = Faker('boolean')
-    request_is_edit_allowed: bool = Faker('boolean')
-    request_is_delete_allowed: bool = Faker('boolean')
-    request_some_float_val: float = Faker(
+    force_error_message = ""
+    request_other_flavor = ""
+    request_flavor_code = uuid.UUID(int=0)
+    request_other_flavor = ""
+    request_some_int_val = Faker('random_int')
+    request_some_big_int_val = Faker('random_int')
+    request_some_bit_val = Faker('boolean')
+    request_is_edit_allowed = Faker('boolean')
+    request_is_delete_allowed = Faker('boolean')
+    request_some_float_val = Faker(
         'pyfloat',
         positive=True
     )
-    request_some_decimal_val: Decimal = Faker(
+    request_some_decimal_val = Faker(
         'pydecimal',
         left_digits=5,
         right_digits=2,
         positive=True
     )
-    request_some_utc_date_time_val: datetime = factory.LazyFunction(
+    request_some_utc_date_time_val = factory.LazyFunction(
         datetime.utcnow
     )
-    request_some_date_val: date = Faker('date_object')
-    request_some_money_val: Decimal = Faker(
+    request_some_date_val = Faker('date_object')
+    request_some_money_val = Faker(
         'pydecimal',
         left_digits=5,
         right_digits=2,
         positive=True
     )
-    request_some_n_var_char_val: str = Faker(
+    request_some_n_var_char_val = Faker(
         'sentence',
         nb_words=4
     )
-    request_some_var_char_val: str = Faker(
+    request_some_var_char_val = Faker(
         'sentence',
         nb_words=4
     )
-    request_some_text_val: str = Faker('text')
-    request_some_phone_number: str = Faker('phone_number')
-    request_some_email_address: str = Faker('email')
-    request_sample_image_upload_file: str = ""
+    request_some_text_val = Faker('text')
+    request_some_phone_number = Faker('phone_number')
+    request_some_email_address = Faker('email')
+    request_sample_image_upload_file = ""
 # endset
 
     @classmethod
@@ -110,17 +109,6 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     def _create(
         cls, model_class, session=None, *args, **kwargs
     ) -> LandAddPlantPostModelRequest:
-
-        request_flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
-# endset
-
-        kwargs["request_flavor_code"] = request_flavor_code_instance.code  # requestFlavorCode
-# endset
-
-        obj = model_class(*args, **kwargs)
-
-        obj.request_flavor_code = request_flavor_code_instance.code  # requestFlavorCode
-# endset
         """
         Create method for the factory. Uses the session to
         create related objects and persists the instance.
@@ -135,6 +123,17 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
         Returns:
             An instance of LandAddPlantPostModelRequest.
         """
+
+        request_flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
+# endset
+
+        kwargs["request_flavor_code"] = request_flavor_code_instance.code  # requestFlavorCode
+# endset
+
+        obj = model_class(*args, **kwargs)
+
+        obj.request_flavor_code = request_flavor_code_instance.code  # requestFlavorCode
+# endset
         
         return obj
 

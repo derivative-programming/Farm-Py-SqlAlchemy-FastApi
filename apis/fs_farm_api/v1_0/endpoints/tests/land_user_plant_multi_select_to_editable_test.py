@@ -43,7 +43,9 @@ async def test_submit_success(overridden_get_db):
         land_code = land.code
         api_dict = {'LandCode': str(land_code)}
         test_api_key = ApiToken.create_token(api_dict, 1)
-        async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+        async with AsyncClient(
+            app=app, base_url=test_constants.TEST_DOMAIN
+        ) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
                 f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',
@@ -62,7 +64,9 @@ async def test_submit_request_validation_error(overridden_get_db):
     land_code = land.code
     api_dict = {'LandCode': str(land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',
@@ -84,7 +88,9 @@ async def test_submit_authorization_failure_bad_api_key(
     """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',
@@ -104,7 +110,9 @@ async def test_submit_authorization_failure_empty_header_key(
     """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',
@@ -124,7 +132,9 @@ async def test_submit_authorization_failure_no_header(
     """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',
@@ -145,7 +155,9 @@ async def test_submit_endpoint_url_failure(
     land_code = land.code
     api_dict = {'LandCode': str(land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}/xxxx',
@@ -163,7 +175,9 @@ async def test_submit_endpoint_invalid_code_failure(
     land_code = uuid.UUID(int=0)
     api_dict = {'LandCode': str(land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',
@@ -183,7 +197,9 @@ async def test_submit_endpoint_method_failure(
     land_code = land.code
     api_dict = {'LandCode': str(land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
-    async with AsyncClient(app=app, base_url=test_constants.TEST_DOMAIN) as ac:
+    async with AsyncClient(
+        app=app, base_url=test_constants.TEST_DOMAIN
+    ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}',

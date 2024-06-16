@@ -28,9 +28,18 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
             plant_code_list_csv: str = "",  # pylint: disable=unused-argument
         ):
             return FlowLandUserPlantMultiSelectToEditableResult()
-        with patch.object(FlowLandUserPlantMultiSelectToEditable, 'process', new_callable=AsyncMock) as mock_method:
+        with patch.object(
+            FlowLandUserPlantMultiSelectToEditable,
+            'process',
+            new_callable=AsyncMock
+        ) as mock_method:
             mock_method.side_effect = mock_process
-            request_instance = await LandUserPlantMultiSelectToEditablePostModelRequestFactory.create_async(session=session)
+            request_instance = await (
+                LandUserPlantMultiSelectToEditablePostModelRequestFactory
+                .create_async(
+                    session=session
+                )
+            )
             response_instance = LandUserPlantMultiSelectToEditablePostModelResponse()
             session_context = SessionContext(dict(), session)
             land = await LandFactory.create_async(session)

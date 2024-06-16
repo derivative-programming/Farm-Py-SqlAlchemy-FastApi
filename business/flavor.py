@@ -494,7 +494,8 @@ class FlavorBusObj(BaseBusObj):
         """
         Load plant data from dictionary.
         :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
+        :raises ValueError: If plant_dict is not a dictionary or
+            if no plant data is found.
         """
         if not isinstance(
             flavor_enum,

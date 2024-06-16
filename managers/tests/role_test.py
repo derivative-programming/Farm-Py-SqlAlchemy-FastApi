@@ -375,7 +375,11 @@ class TestRoleManager:
         roles = await role_manager.add_bulk(roles_data)
         assert len(roles) == 5
         for updated_role in roles:
-            result = await session.execute(select(Role).filter(Role.role_id == updated_role.role_id))
+            result = await session.execute(
+                select(Role).filter(
+                    Role.role_id == updated_role.role_id
+                )
+            )
             fetched_role = result.scalars().first()
             assert isinstance(fetched_role, Role)
             assert str(fetched_role.insert_user_id) == (
@@ -427,11 +431,15 @@ class TestRoleManager:
             str(role_manager._session_context.customer_code))
         assert str(updated_roles[1].last_update_user_id) == (
             str(role_manager._session_context.customer_code))
-        result = await session.execute(select(Role).filter(Role.role_id == 1))
+        result = await session.execute(
+            select(Role).filter(Role.role_id == 1)
+        )
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
         assert fetched_role.code == code_updated1
-        result = await session.execute(select(Role).filter(Role.role_id == 2))
+        result = await session.execute(
+            select(Role).filter(Role.role_id == 2)
+        )
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
         assert fetched_role.code == code_updated2

@@ -254,10 +254,12 @@ class PacManager:
         """
         logging.info("PacManager.add_bulk")
         for pac in pacs:
+            pac_id = pac.pac_id
+            code = pac.code
             if pac.pac_id is not None and pac.pac_id > 0:
-                raise ValueError("Pac is already added: " +
-                                 str(pac.code) +
-                                 " " + str(pac.pac_id))
+                raise ValueError(
+                    f"Pac is already added: {str(code)} {str(pac_id)}"
+                )
             pac.insert_user_id = self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
             pac.last_update_user_id = self.convert_uuid_to_model_uuid(

@@ -1,6 +1,8 @@
 # apis/models/factory/tac_register.py
+# pylint: disable=unused-import
 """
-    #TODO add comment
+Factory module for creating instances of TacRegisterPostModelRequest with
+various field values for testing.
 """
 import uuid
 from datetime import date, datetime
@@ -13,28 +15,29 @@ from factory import Faker
 from ..tac_register import TacRegisterPostModelRequest
 class TacRegisterPostModelRequestFactory(factory.base.Factory):
     """
-    #TODO add comment
+    Factory class for TacRegisterPostModelRequest. Generates
+    instances with randomized field values for testing.
     """
     class Meta:
         """
-        #TODO add comment
+        Metadata for the factory class. Specifies the model to be used.
         """
         model = TacRegisterPostModelRequest
-    force_error_message: str = ""
-    email: str = Faker('email')
-    password: str = Faker(
+    force_error_message = ""
+    email = Faker('email')
+    password = Faker(
         'sentence',
         nb_words=4
     )
-    confirm_password: str = Faker(
+    confirm_password = Faker(
         'sentence',
         nb_words=4
     )
-    first_name: str = Faker(
+    first_name = Faker(
         'sentence',
         nb_words=4
     )
-    last_name: str = Faker(
+    last_name = Faker(
         'sentence',
         nb_words=4
     )
@@ -43,6 +46,18 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
     def _build(
         cls, model_class, session=None, *args, **kwargs
     ) -> TacRegisterPostModelRequest:
+        """
+        Build method for the factory. If a session is provided,
+        it uses the session to create related objects.
+        Args:
+            model_class: The model class to be instantiated.
+            session: The database session to be used for related
+                object creation.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            An instance of TacRegisterPostModelRequest.
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -58,6 +73,18 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
     def _create(
         cls, model_class, session=None, *args, **kwargs
     ) -> TacRegisterPostModelRequest:
+        """
+        Create method for the factory. Uses the session to
+        create related objects and persists the instance.
+        Args:
+            model_class: The model class to be instantiated.
+            session: The database session to be used for related
+                object creation.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            An instance of TacRegisterPostModelRequest.
+        """
 
 # endset
 
@@ -71,7 +98,15 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
         cls, session: AsyncSession, *args, **kwargs
     ) -> TacRegisterPostModelRequest:
         """
-            #TODO add comment
+        Asynchronous create method for the factory. Uses the
+        session to create related objects and persists the instance.
+        Args:
+            session: The asynchronous database session to be
+                used for related object creation.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            An instance of TacRegisterPostModelRequest.
         """
 
 # endset
