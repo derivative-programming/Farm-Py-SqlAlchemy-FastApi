@@ -1,4 +1,5 @@
 # apis/models/factory/plant_user_details.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
@@ -10,8 +11,11 @@ from factory import Faker
 from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..plant_user_details import PlantUserDetailsGetModelRequest
-class PlantUserDetailsGetModelRequestFactory(factory.base.Factory):
+from ..plant_user_details import (
+    PlantUserDetailsGetModelRequest)
+class PlantUserDetailsGetModelRequestFactory(
+    factory.base.Factory
+):
     """
     #TODO add comment
     """

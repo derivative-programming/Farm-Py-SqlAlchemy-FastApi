@@ -126,6 +126,7 @@ class TestLandFactoryAsync:
         assert isinstance(land.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         land.code = uuid.uuid4()
+        session.add(land)
         await session.commit()
         assert land.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -159,6 +160,7 @@ class TestLandFactoryAsync:
         assert isinstance(land.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         land.code = uuid.uuid4()
+        session.add(land)
         await session.commit()
         assert land.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

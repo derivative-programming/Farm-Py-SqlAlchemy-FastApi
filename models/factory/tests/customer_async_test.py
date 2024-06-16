@@ -126,6 +126,7 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         customer.code = uuid.uuid4()
+        session.add(customer)
         await session.commit()
         assert customer.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -159,6 +160,7 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         customer.code = uuid.uuid4()
+        session.add(customer)
         await session.commit()
         assert customer.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

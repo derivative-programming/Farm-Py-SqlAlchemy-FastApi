@@ -126,6 +126,7 @@ class TestTacFactoryAsync:
         assert isinstance(tac.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         tac.code = uuid.uuid4()
+        session.add(tac)
         await session.commit()
         assert tac.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -159,6 +160,7 @@ class TestTacFactoryAsync:
         assert isinstance(tac.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         tac.code = uuid.uuid4()
+        session.add(tac)
         await session.commit()
         assert tac.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

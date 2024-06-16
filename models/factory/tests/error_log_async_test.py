@@ -126,6 +126,7 @@ class TestErrorLogFactoryAsync:
         assert isinstance(error_log.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         error_log.code = uuid.uuid4()
+        session.add(error_log)
         await session.commit()
         assert error_log.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -159,6 +160,7 @@ class TestErrorLogFactoryAsync:
         assert isinstance(error_log.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         error_log.code = uuid.uuid4()
+        session.add(error_log)
         await session.commit()
         assert error_log.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

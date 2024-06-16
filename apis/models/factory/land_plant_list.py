@@ -1,5 +1,5 @@
 # apis/models/factory/land_plant_list.py
-
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
@@ -15,10 +15,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.factory import FlavorFactory  # requestFlavorCode
 
-from ..land_plant_list import LandPlantListGetModelRequest
+from ..land_plant_list import (
+    LandPlantListGetModelRequest)
 
 
-class LandPlantListGetModelRequestFactory(factory.base.Factory):
+class LandPlantListGetModelRequestFactory(
+    factory.base.Factory
+):
     """
     #TODO add comment
     """

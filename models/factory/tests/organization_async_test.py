@@ -126,6 +126,7 @@ class TestOrganizationFactoryAsync:
         assert isinstance(organization.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = uuid.uuid4()
+        session.add(organization)
         await session.commit()
         assert organization.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -159,6 +160,7 @@ class TestOrganizationFactoryAsync:
         assert isinstance(organization.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = uuid.uuid4()
+        session.add(organization)
         await session.commit()
         assert organization.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

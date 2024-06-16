@@ -1,4 +1,5 @@
 # apis/models/factory/pac_user_role_list.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
@@ -10,8 +11,11 @@ from factory import Faker
 from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..pac_user_role_list import PacUserRoleListGetModelRequest
-class PacUserRoleListGetModelRequestFactory(factory.base.Factory):
+from ..pac_user_role_list import (
+    PacUserRoleListGetModelRequest)
+class PacUserRoleListGetModelRequestFactory(
+    factory.base.Factory
+):
     """
     #TODO add comment
     """

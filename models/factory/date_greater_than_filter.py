@@ -54,7 +54,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -112,6 +112,6 @@ class DateGreaterThanFilterFactory(factory.Factory):
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

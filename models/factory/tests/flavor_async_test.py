@@ -126,6 +126,7 @@ class TestFlavorFactoryAsync:
         assert isinstance(flavor.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         flavor.code = uuid.uuid4()
+        session.add(flavor)
         await session.commit()
         assert flavor.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -159,6 +160,7 @@ class TestFlavorFactoryAsync:
         assert isinstance(flavor.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         flavor.code = uuid.uuid4()
+        session.add(flavor)
         await session.commit()
         assert flavor.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio

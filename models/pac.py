@@ -111,7 +111,6 @@ class Pac(Base):
         'version_id_col': last_change_code
     }
     def __init__(self, **kwargs):
-        print("Pac init")
         super().__init__(**kwargs)
         self.code = kwargs.get('code', uuid.uuid4())
         self.last_change_code = kwargs.get(
@@ -200,15 +199,17 @@ class Pac(Base):
             "code"
         ]
         return result
-
 @event.listens_for(Pac, 'before_insert')
-def set_created_on(mapper, connection, target):  # pylint: disable=unused-argument
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
-
 @event.listens_for(Pac, 'before_update')
 def set_updated_on(
     mapper,

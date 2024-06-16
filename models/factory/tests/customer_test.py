@@ -92,6 +92,7 @@ class TestCustomerFactory:
         assert isinstance(customer.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         customer.code = uuid.uuid4()
+        session.add(customer)
         session.commit()
         assert customer.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -122,6 +123,7 @@ class TestCustomerFactory:
         assert isinstance(customer.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         customer.code = uuid.uuid4()
+        session.add(customer)
         session.commit()
         assert customer.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):

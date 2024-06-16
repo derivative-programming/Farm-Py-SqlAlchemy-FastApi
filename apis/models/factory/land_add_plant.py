@@ -1,7 +1,7 @@
 # apis/models/factory/land_add_plant.py
 
 """
-    #TODO add comment
+Factory module for creating instances of LandAddPlantPostModelRequest with various field values for testing.
 """
 
 import uuid
@@ -17,12 +17,13 @@ from ..land_add_plant import LandAddPlantPostModelRequest
 
 class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     """
-    #TODO add comment
+    Factory class for LandAddPlantPostModelRequest. Generates
+    instances with randomized field values for testing.
     """
 
     class Meta:
         """
-        #TODO add comment
+        Metadata for the factory class. Specifies the model to be used.
         """
         model = LandAddPlantPostModelRequest
 
@@ -30,7 +31,7 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     request_other_flavor: str = ""
     request_flavor_code: UUID4 = uuid.UUID(int=0)
     request_other_flavor: str = ""
-    request_some_int_val: int = Faker('random_int')
+    request_some_int_val: int = factory.Faker('random_int')
     request_some_big_int_val: int = Faker('random_int')
     request_some_bit_val: bool = Faker('boolean')
     request_is_edit_allowed: bool = Faker('boolean')
@@ -73,6 +74,20 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
     def _build(
         cls, model_class, session=None, *args, **kwargs
     ) -> LandAddPlantPostModelRequest:
+        """
+        Build method for the factory. If a session is provided,
+        it uses the session to create related objects.
+        
+        Args:
+            model_class: The model class to be instantiated.
+            session: The database session to be used for related
+                object creation.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        
+        Returns:
+            An instance of LandAddPlantPostModelRequest.
+        """
 
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -106,7 +121,21 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
 
         obj.request_flavor_code = request_flavor_code_instance.code  # requestFlavorCode
 # endset
-
+        """
+        Create method for the factory. Uses the session to
+        create related objects and persists the instance.
+        
+        Args:
+            model_class: The model class to be instantiated.
+            session: The database session to be used for related
+                object creation.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        
+        Returns:
+            An instance of LandAddPlantPostModelRequest.
+        """
+        
         return obj
 
     @classmethod
@@ -114,7 +143,17 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
         cls, session: AsyncSession, *args, **kwargs
     ) -> LandAddPlantPostModelRequest:
         """
-            #TODO add comment
+        Asynchronous create method for the factory. Uses the
+        session to create related objects and persists the instance.
+        
+        Args:
+            session: The asynchronous database session to be
+                used for related object creation.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        
+        Returns:
+            An instance of LandAddPlantPostModelRequest.
         """
 
         request_flavor_code_instance = await FlavorFactory.create_async(session=session)  # requestFlavorCode

@@ -153,6 +153,7 @@ class TestPlantFactoryAsync:
         assert isinstance(plant.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         plant.code = uuid.uuid4()
+        session.add(plant)
         await session.commit()
         assert plant.insert_utc_date_time > initial_time
 
@@ -192,6 +193,7 @@ class TestPlantFactoryAsync:
         assert isinstance(plant.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         plant.code = uuid.uuid4()
+        session.add(plant)
         await session.commit()
         assert plant.last_update_utc_date_time > initial_time
 

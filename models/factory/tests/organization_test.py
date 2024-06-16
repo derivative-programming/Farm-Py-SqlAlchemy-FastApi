@@ -92,6 +92,7 @@ class TestOrganizationFactory:
         assert isinstance(organization.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = uuid.uuid4()
+        session.add(organization)
         session.commit()
         assert organization.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -122,6 +123,7 @@ class TestOrganizationFactory:
         assert isinstance(organization.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = uuid.uuid4()
+        session.add(organization)
         session.commit()
         assert organization.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):

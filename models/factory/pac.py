@@ -50,7 +50,7 @@ class PacFactory(factory.Factory):
 # endset
 
 # endset
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -108,6 +108,6 @@ class PacFactory(factory.Factory):
 # endset
 
 # endset
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

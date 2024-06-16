@@ -65,7 +65,7 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = org_customer_id_org_customer_instance.code  # OrgCustomerID
 # endset
-        session.add(obj)
+        # session.add(obj)
         # session.commit()
         return obj
     @classmethod
@@ -138,6 +138,6 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = org_customer_id_org_customer_instance.code  # OrgCustomerID
 # endset
-        session.add(obj)
+        # session.add(obj)
         # await session.flush()
         return obj

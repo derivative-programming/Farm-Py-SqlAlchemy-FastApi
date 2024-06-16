@@ -1,4 +1,5 @@
 # apis/models/factory/tac_farm_dashboard.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
@@ -10,8 +11,11 @@ from factory import Faker
 from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..tac_farm_dashboard import TacFarmDashboardGetModelRequest
-class TacFarmDashboardGetModelRequestFactory(factory.base.Factory):
+from ..tac_farm_dashboard import (
+    TacFarmDashboardGetModelRequest)
+class TacFarmDashboardGetModelRequestFactory(
+    factory.base.Factory
+):
     """
     #TODO add comment
     """

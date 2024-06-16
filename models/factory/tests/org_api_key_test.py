@@ -92,6 +92,7 @@ class TestOrgApiKeyFactory:
         assert isinstance(org_api_key.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_api_key.code = uuid.uuid4()
+        session.add(org_api_key)
         session.commit()
         assert org_api_key.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
@@ -122,6 +123,7 @@ class TestOrgApiKeyFactory:
         assert isinstance(org_api_key.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_api_key.code = uuid.uuid4()
+        session.add(org_api_key)
         session.commit()
         assert org_api_key.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):

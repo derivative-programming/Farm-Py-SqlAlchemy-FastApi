@@ -126,6 +126,7 @@ class TestTriStateFilterFactoryAsync:
         assert isinstance(tri_state_filter.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         tri_state_filter.code = uuid.uuid4()
+        session.add(tri_state_filter)
         await session.commit()
         assert tri_state_filter.insert_utc_date_time > initial_time
     @pytest.mark.asyncio
@@ -159,6 +160,7 @@ class TestTriStateFilterFactoryAsync:
         assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         tri_state_filter.code = uuid.uuid4()
+        session.add(tri_state_filter)
         await session.commit()
         assert tri_state_filter.last_update_utc_date_time > initial_time
     @pytest.mark.asyncio
