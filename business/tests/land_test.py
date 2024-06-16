@@ -4,7 +4,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date
+from datetime import datetime, date  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -52,7 +52,7 @@ class TestLandBusObj:
             #TODO add comment
         """
         # Test creating a new land
-        assert land_bus_obj.land_id is None
+        assert land_bus_obj.land_id == 0
         # assert isinstance(land_bus_obj.land_id, int)
         assert isinstance(land_bus_obj.code, uuid.UUID)
         assert isinstance(land_bus_obj.last_change_code, int)
@@ -141,7 +141,8 @@ class TestLandBusObj:
         """
         # Test retrieving a nonexistent land raises an exception
         await land_bus_obj.load_from_id(-1)
-        assert land_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
+        # Assuming -1 is an id that wouldn't exist
+        assert land_bus_obj.is_valid() is False
     @pytest.mark.asyncio
     async def test_update_land(
         self,
@@ -176,7 +177,7 @@ class TestLandBusObj:
             #TODO add comment
         """
         assert new_land.land_id is not None
-        assert land_bus_obj.land_id is None
+        assert land_bus_obj.land_id == 0
         new_land_land_id_value = new_land.land_id
         await land_bus_obj.load_from_id(new_land_land_id_value)
         assert land_bus_obj.land_id is not None

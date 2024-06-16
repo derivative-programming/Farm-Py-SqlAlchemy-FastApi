@@ -185,7 +185,7 @@ class TestLandFactoryAsync:
         await session.delete(land)
         await session.commit()
         # Construct the select statement
-        stmt = select(Land).where(Land.land_id == land.land_id)
+        stmt = select(Land).where(Land._land_id == land.land_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -269,14 +269,14 @@ class TestLandFactoryAsync:
         """
         land = await LandFactory.create_async(session=session)
         original_last_change_code = land.last_change_code
-        stmt = select(Land).where(Land.land_id == land.land_id)
+        stmt = select(Land).where(Land._land_id == land.land_id)
         result = await session.execute(stmt)
         land_1 = result.scalars().first()
         # land_1 = await session.query(Land).filter_by(
         # land_id=land.land_id).first()
         land_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(Land).where(Land.land_id == land.land_id)
+        stmt = select(Land).where(Land._land_id == land.land_id)
         result = await session.execute(stmt)
         land_2 = result.scalars().first()
         # land_2 = await session.query(Land).filter_by(

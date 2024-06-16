@@ -5,4 +5,5 @@
 """
 
 TEST_DOMAIN = "http://test"
+
 REPORT_TO_CSV_MEDIA_TYPE = "text/csv"

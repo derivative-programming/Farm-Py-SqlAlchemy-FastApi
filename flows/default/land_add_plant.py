@@ -103,8 +103,10 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         request_is_delete_allowed: bool = False,
         request_some_float_val: float = 0,
         request_some_decimal_val: Decimal = 0,
-        request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),
-        request_some_date_val: date = TypeConversion.get_default_date(),
+        request_some_utc_date_time_val: datetime = (
+            TypeConversion.get_default_date_time()),
+        request_some_date_val: date = (
+            TypeConversion.get_default_date()),
         request_some_money_val: Decimal = 0,
         request_some_n_var_char_val: str = "",
         request_some_var_char_val: str = "",
@@ -154,7 +156,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 
         land_code_output: uuid.UUID = uuid.UUID(int=0)
         plant_code_output: uuid.UUID = uuid.UUID(int=0)
-        output_flavor_code_output: str = ""
+        output_flavor_code_output: uuid.UUID = uuid.UUID(int=0)
         output_other_flavor_output: str = ""
         output_some_int_val_output: int = 0
         output_some_big_int_val_output: int = 0
@@ -163,9 +165,11 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         output_is_delete_allowed_output: bool = False
         output_some_float_val_output: float = 0
         output_some_decimal_val_output: Decimal = Decimal(0)
-        output_some_utc_date_time_val_output: datetime = TypeConversion.get_default_date_time()
-        output_some_date_val_output: date = TypeConversion.get_default_date()
-        output_some_money_val_output: Decimal = 0
+        output_some_utc_date_time_val_output: datetime = (
+            TypeConversion.get_default_date_time())
+        output_some_date_val_output: date = (
+            TypeConversion.get_default_date())
+        output_some_money_val_output: Decimal = Decimal(0)
         output_some_n_var_char_val_output: str = ""
         output_some_var_char_val_output: str = ""
         output_some_text_val_output: str = ""
@@ -224,33 +228,58 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]End
 ##GENTrainingBlock[caseFlowLogic]End
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Building result")
         result = FlowLandAddPlantResult()
 
         result.context_object_code = land_bus_obj.code
-        result.land_code = land_code_output
-        result.plant_code = plant_code_output
-        result.output_flavor_code = output_flavor_code_output
-        result.output_other_flavor = output_other_flavor_output
-        result.output_some_int_val = output_some_int_val_output
-        result.output_some_big_int_val = output_some_big_int_val_output
-        result.output_some_bit_val = output_some_bit_val_output
-        result.output_is_edit_allowed = output_is_edit_allowed_output
-        result.output_is_delete_allowed = output_is_delete_allowed_output
-        result.output_some_float_val = output_some_float_val_output
-        result.output_some_decimal_val = output_some_decimal_val_output
-        result.output_some_utc_date_time_val = output_some_utc_date_time_val_output
-        result.output_some_date_val = output_some_date_val_output
-        result.output_some_money_val = output_some_money_val_output
-        result.output_some_n_var_char_val = output_some_n_var_char_val_output
-        result.output_some_var_char_val = output_some_var_char_val_output
-        result.output_some_text_val = output_some_text_val_output
-        result.output_some_phone_number = output_some_phone_number_output
-        result.output_some_email_address = output_some_email_address_output
+        result.land_code = (
+            land_code_output)
+        result.plant_code = (
+            plant_code_output)
+        result.output_flavor_code = (
+            output_flavor_code_output)
+        result.output_other_flavor = (
+            output_other_flavor_output)
+        result.output_some_int_val = (
+            output_some_int_val_output)
+        result.output_some_big_int_val = (
+            output_some_big_int_val_output)
+        result.output_some_bit_val = (
+            output_some_bit_val_output)
+        result.output_is_edit_allowed = (
+            output_is_edit_allowed_output)
+        result.output_is_delete_allowed = (
+            output_is_delete_allowed_output)
+        result.output_some_float_val = (
+            output_some_float_val_output)
+        result.output_some_decimal_val = (
+            output_some_decimal_val_output)
+        result.output_some_utc_date_time_val = (
+            output_some_utc_date_time_val_output)
+        result.output_some_date_val = (
+            output_some_date_val_output)
+        result.output_some_money_val = (
+            output_some_money_val_output)
+        result.output_some_n_var_char_val = (
+            output_some_n_var_char_val_output)
+        result.output_some_var_char_val = (
+            output_some_var_char_val_output)
+        result.output_some_text_val = (
+            output_some_text_val_output)
+        result.output_some_phone_number = (
+            output_some_phone_number_output)
+        result.output_some_email_address = (
+            output_some_email_address_output)
 # endset
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Result:" + result.to_json())
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "End")
 
         return result

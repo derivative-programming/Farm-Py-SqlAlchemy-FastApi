@@ -1,4 +1,5 @@
 # apis/models/tests/customer_build_temp_api_key_test.py
+# pylint: disable=unused-argument
 """
     #TODO add comment
 """
@@ -24,7 +25,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
             #TODO add comment
         """
         async def mock_process(
-            customer_bus_obj: CustomerBusObj,  # pylint: disable=unused-argument
+            customer_bus_obj: CustomerBusObj,
 
         ):
             return FlowCustomerBuildTempApiKeyResult()

@@ -18,7 +18,7 @@ class ErrorLog(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('ErrorLog')
-    error_log_id = Column(
+    _error_log_id = Column(
         'error_log_id',
         Integer,
         primary_key=True,
@@ -184,6 +184,18 @@ class ErrorLog(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def error_log_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_error_log_id', 0) or 0
+    @error_log_id.setter
+    def error_log_id(self, value: int) -> None:
+        """
+        Set the error_log_id.
+        """
+        self._error_log_id = value
     @property
     def insert_user_id(self):
         """

@@ -145,7 +145,7 @@ class TriStateFilterManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(TriStateFilter.pac_id == Pac.pac_id,
+            and_(TriStateFilter.pac_id == Pac._pac_id,
                  TriStateFilter.pac_id != 0)
         )
 # endset
@@ -171,7 +171,8 @@ class TriStateFilterManager:
             pac = query_result_row[i]  # pac_id
             i = i + 1
 # endset
-            tri_state_filter.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
+            tri_state_filter.pac_code_peek = (  # pac_id
+                pac.code if pac else uuid.UUID(int=0))
 # endset
             result.append(tri_state_filter)
         return result
@@ -189,9 +190,10 @@ class TriStateFilterManager:
             str(tri_state_filter_id))
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(
-                "The tri_state_filter_id must be an integer, got %s instead.",
+                f"The tri_state_filter_id must be an integer, "
+                f"got %s instead.",
                 type(tri_state_filter_id))
-        query_filter = TriStateFilter.tri_state_filter_id == tri_state_filter_id
+        query_filter = TriStateFilter._tri_state_filter_id == tri_state_filter_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[TriStateFilter]:
@@ -199,7 +201,7 @@ class TriStateFilterManager:
             #TODO add comment
         """
         logging.info("TriStateFilterManager.get_by_code %s", code)
-        query_filter = TriStateFilter._code == str(code)
+        query_filter = TriStateFilter._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, tri_state_filter: TriStateFilter, **kwargs) -> Optional[TriStateFilter]:
@@ -224,7 +226,8 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.delete %s", tri_state_filter_id)
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(
-                f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead."
+                f"The tri_state_filter_id must be an integer, "
+                f"got {type(tri_state_filter_id)} instead."
             )
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
         if not tri_state_filter:
@@ -305,7 +308,8 @@ class TriStateFilterManager:
             tri_state_filter_id = update.get("tri_state_filter_id")
             if not isinstance(tri_state_filter_id, int):
                 raise TypeError(
-                    f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead."
+                    f"The tri_state_filter_id must be an integer, "
+                    f"got {type(tri_state_filter_id)} instead."
                 )
             if not tri_state_filter_id:
                 continue
@@ -331,7 +335,8 @@ class TriStateFilterManager:
         for tri_state_filter_id in tri_state_filter_ids:
             if not isinstance(tri_state_filter_id, int):
                 raise TypeError(
-                    f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead."
+                    f"The tri_state_filter_id must be an integer, "
+                    f"got {type(tri_state_filter_id)} instead."
                 )
             tri_state_filter = await self.get_by_id(tri_state_filter_id)
             if not tri_state_filter:
@@ -357,6 +362,8 @@ class TriStateFilterManager:
         """
         Retrieve tri_state_filters sorted by a particular attribute.
         """
+        if sort_by == "tri_state_filter_id":
+            sort_by = "_tri_state_filter_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(TriStateFilter).order_by(getattr(TriStateFilter, sort_by).asc()))
@@ -378,7 +385,8 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.exists %s", tri_state_filter_id)
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(
-                f"The tri_state_filter_id must be an integer, got {type(tri_state_filter_id)} instead."
+                f"The tri_state_filter_id must be an integer, "
+                f"got {type(tri_state_filter_id)} instead."
             )
         tri_state_filter = await self.get_by_id(tri_state_filter_id)
         return bool(tri_state_filter)
@@ -405,7 +413,8 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The tri_state_filter_id must be an integer, got {type(pac_id)} instead."
+                f"The tri_state_filter_id must be an integer, "
+                f"got {type(pac_id)} instead."
             )
         query_filter = TriStateFilter.pac_id == pac_id
         query_results = await self._run_query(query_filter)

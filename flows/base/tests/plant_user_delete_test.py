@@ -1,16 +1,17 @@
 # flows/base/tests/plant_user_delete_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.plant_user_delete as FlowConstants
-from flows.base.plant_user_delete import BaseFlowPlantUserDelete
+from flows.base.plant_user_delete import (
+    BaseFlowPlantUserDelete)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models.factory.flavor import FlavorFactory
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.plant import PlantFactory
 class TestBaseFlowPlantUserDelete():
     """
@@ -24,7 +25,6 @@ class TestBaseFlowPlantUserDelete():
         session_context = SessionContext(dict(), session)
         flow = BaseFlowPlantUserDelete(session_context)
         plant = await PlantFactory.create_async(session)
-        flavor = await FlavorFactory.create_async(session)
 
 # endset
         # Call the method being tested

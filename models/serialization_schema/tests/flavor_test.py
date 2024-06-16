@@ -209,7 +209,8 @@ class TestFlavorSchema:
         # Verify the keys in both dictionaries match
         assert set(flavor_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(flavor_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(flavor_dict_from_json.keys())}"
         )
         assert flavor_dict_from_json['code'] == str(flavor.code), (
             "failed on code"

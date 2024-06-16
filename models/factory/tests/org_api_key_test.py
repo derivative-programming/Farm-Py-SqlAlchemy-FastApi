@@ -241,11 +241,11 @@ class TestOrgApiKeyFactory:
         org_api_key = OrgApiKeyFactory.create(session=session)
         original_last_change_code = org_api_key.last_change_code
         org_api_key_1 = session.query(OrgApiKey).filter_by(
-            org_api_key_id=org_api_key.org_api_key_id).first()
+            _org_api_key_id=org_api_key.org_api_key_id).first()
         org_api_key_1.code = uuid.uuid4()
         session.commit()
         org_api_key_2 = session.query(OrgApiKey).filter_by(
-            org_api_key_id=org_api_key.org_api_key_id).first()
+            _org_api_key_id=org_api_key.org_api_key_id).first()
         org_api_key_2.code = uuid.uuid4()
         session.commit()
         assert org_api_key_2.last_change_code != original_last_change_code

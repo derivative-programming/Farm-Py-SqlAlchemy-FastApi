@@ -87,16 +87,28 @@ class FlowTacLogin(BaseFlowTacLogin):
 # endset
         # TODO: add flow logic
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Building result")
         result = FlowTacLoginResult()
         result.context_object_code = tac_bus_obj.code
-        result.customer_code = customer_code_output
-        result.email = email_output
-        result.user_code_value = user_code_value_output
-        result.utc_offset_in_minutes = utc_offset_in_minutes_output
-        result.role_name_csv_list = role_name_csv_list_output
-        result.api_key = api_key_output
+        result.customer_code = (
+            customer_code_output)
+        result.email = (
+            email_output)
+        result.user_code_value = (
+            user_code_value_output)
+        result.utc_offset_in_minutes = (
+            utc_offset_in_minutes_output)
+        result.role_name_csv_list = (
+            role_name_csv_list_output)
+        result.api_key = (
+            api_key_output)
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Result:" + result.to_json())
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "End")
         return result

@@ -1,16 +1,17 @@
 # flows/base/tests/tac_login_init_obj_wf_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.tac_login_init_obj_wf as FlowConstants
-from flows.base.tac_login_init_obj_wf import BaseFlowTacLoginInitObjWF
+from flows.base.tac_login_init_obj_wf import (
+    BaseFlowTacLoginInitObjWF)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models.factory.flavor import FlavorFactory
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.tac import TacFactory
 class TestBaseFlowTacLoginInitObjWF():
     """
@@ -24,7 +25,6 @@ class TestBaseFlowTacLoginInitObjWF():
         session_context = SessionContext(dict(), session)
         flow = BaseFlowTacLoginInitObjWF(session_context)
         tac = await TacFactory.create_async(session)
-        flavor = await FlavorFactory.create_async(session)
 
 # endset
         # Call the method being tested

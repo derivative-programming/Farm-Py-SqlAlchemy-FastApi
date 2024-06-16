@@ -209,7 +209,8 @@ class TestRoleSchema:
         # Verify the keys in both dictionaries match
         assert set(role_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(role_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(role_dict_from_json.keys())}"
         )
         assert role_dict_from_json['code'] == str(role.code), (
             "failed on code"

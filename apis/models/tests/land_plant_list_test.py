@@ -25,7 +25,10 @@ class LandPlantListGetModelRequestFactoryAsync:
             #TODO add comment
         """
 
-        model_instance = await LandPlantListGetModelRequestFactory.create_async(session=session)
+        model_instance = await (
+            LandPlantListGetModelRequestFactory
+            .create_async(session=session)
+        )
         assert isinstance(model_instance, LandPlantListGetModelRequest)
         assert isinstance(model_instance.flavor_code, uuid.UUID)
         assert isinstance(model_instance.some_int_val, int)

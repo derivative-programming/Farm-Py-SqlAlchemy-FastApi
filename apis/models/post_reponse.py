@@ -17,9 +17,11 @@ class PostResponse(CamelModel):
     success: bool = Field(
         default=False,
         description="Success")
+
     message: str = Field(
         default="",
         description="Message")
+
     validation_errors: List[ValidationErrorItem] = Field(
         default_factory=list,
         description="Validation Errors")

@@ -18,7 +18,7 @@ class Flavor(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('Flavor')
-    flavor_id = Column(
+    _flavor_id = Column(
         'flavor_id',
         Integer,
         primary_key=True,
@@ -164,6 +164,18 @@ class Flavor(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def flavor_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_flavor_id', 0) or 0
+    @flavor_id.setter
+    def flavor_id(self, value: int) -> None:
+        """
+        Set the flavor_id.
+        """
+        self._flavor_id = value
     @property
     def insert_user_id(self):
         """

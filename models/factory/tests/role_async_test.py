@@ -185,7 +185,7 @@ class TestRoleFactoryAsync:
         await session.delete(role)
         await session.commit()
         # Construct the select statement
-        stmt = select(Role).where(Role.role_id == role.role_id)
+        stmt = select(Role).where(Role._role_id == role.role_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -269,14 +269,14 @@ class TestRoleFactoryAsync:
         """
         role = await RoleFactory.create_async(session=session)
         original_last_change_code = role.last_change_code
-        stmt = select(Role).where(Role.role_id == role.role_id)
+        stmt = select(Role).where(Role._role_id == role.role_id)
         result = await session.execute(stmt)
         role_1 = result.scalars().first()
         # role_1 = await session.query(Role).filter_by(
         # role_id=role.role_id).first()
         role_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(Role).where(Role.role_id == role.role_id)
+        stmt = select(Role).where(Role._role_id == role.role_id)
         result = await session.execute(stmt)
         role_2 = result.scalars().first()
         # role_2 = await session.query(Role).filter_by(

@@ -225,11 +225,11 @@ class TestTacFactory:
         tac = TacFactory.create(session=session)
         original_last_change_code = tac.last_change_code
         tac_1 = session.query(Tac).filter_by(
-            tac_id=tac.tac_id).first()
+            _tac_id=tac.tac_id).first()
         tac_1.code = uuid.uuid4()
         session.commit()
         tac_2 = session.query(Tac).filter_by(
-            tac_id=tac.tac_id).first()
+            _tac_id=tac.tac_id).first()
         tac_2.code = uuid.uuid4()
         session.commit()
         assert tac_2.last_change_code != original_last_change_code

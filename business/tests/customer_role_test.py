@@ -52,7 +52,7 @@ class TestCustomerRoleBusObj:
             #TODO add comment
         """
         # Test creating a new customer_role
-        assert customer_role_bus_obj.customer_role_id is None
+        assert customer_role_bus_obj.customer_role_id == 0
         # assert isinstance(customer_role_bus_obj.customer_role_id, int)
         assert isinstance(customer_role_bus_obj.code, uuid.UUID)
         assert isinstance(customer_role_bus_obj.last_change_code, int)
@@ -139,7 +139,8 @@ class TestCustomerRoleBusObj:
         """
         # Test retrieving a nonexistent customer_role raises an exception
         await customer_role_bus_obj.load_from_id(-1)
-        assert customer_role_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
+        # Assuming -1 is an id that wouldn't exist
+        assert customer_role_bus_obj.is_valid() is False
     @pytest.mark.asyncio
     async def test_update_customer_role(
         self,
@@ -174,7 +175,7 @@ class TestCustomerRoleBusObj:
             #TODO add comment
         """
         assert new_customer_role.customer_role_id is not None
-        assert customer_role_bus_obj.customer_role_id is None
+        assert customer_role_bus_obj.customer_role_id == 0
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
         await customer_role_bus_obj.load_from_id(new_customer_role_customer_role_id_value)
         assert customer_role_bus_obj.customer_role_id is not None

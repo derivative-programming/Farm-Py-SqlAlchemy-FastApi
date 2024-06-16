@@ -109,9 +109,11 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         is_delete_allowed_output: bool = False
         some_float_val_output: float = 0
         some_decimal_val_output: Decimal = Decimal(0)
-        some_min_utc_date_time_val_output: datetime = TypeConversion.get_default_date_time()
-        some_min_date_val_output: date = TypeConversion.get_default_date()
-        some_money_val_output: Decimal = 0
+        some_min_utc_date_time_val_output: datetime = (
+            TypeConversion.get_default_date_time())
+        some_min_date_val_output: date = (
+            TypeConversion.get_default_date())
+        some_money_val_output: Decimal = Decimal(0)
         some_n_var_char_val_output: str = ""
         some_var_char_val_output: str = ""
         some_text_val_output: str = ""
@@ -124,29 +126,54 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
 # endset
         # TODO: add flow logic
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Building result")
         result = FlowLandPlantListInitReportResult()
         result.context_object_code = land_bus_obj.code
-        result.some_int_val = some_int_val_output
-        result.some_big_int_val = some_big_int_val_output
-        result.some_bit_val = some_bit_val_output
-        result.is_edit_allowed = is_edit_allowed_output
-        result.is_delete_allowed = is_delete_allowed_output
-        result.some_float_val = some_float_val_output
-        result.some_decimal_val = some_decimal_val_output
-        result.some_min_utc_date_time_val = some_min_utc_date_time_val_output
-        result.some_min_date_val = some_min_date_val_output
-        result.some_money_val = some_money_val_output
-        result.some_n_var_char_val = some_n_var_char_val_output
-        result.some_var_char_val = some_var_char_val_output
-        result.some_text_val = some_text_val_output
-        result.some_phone_number = some_phone_number_output
-        result.some_email_address = some_email_address_output
-        result.flavor_code = flavor_code_output
-        result.land_code = land_code_output
-        result.tac_code = tac_code_output
-        result.land_name = land_name_output
+        result.some_int_val = (
+            some_int_val_output)
+        result.some_big_int_val = (
+            some_big_int_val_output)
+        result.some_bit_val = (
+            some_bit_val_output)
+        result.is_edit_allowed = (
+            is_edit_allowed_output)
+        result.is_delete_allowed = (
+            is_delete_allowed_output)
+        result.some_float_val = (
+            some_float_val_output)
+        result.some_decimal_val = (
+            some_decimal_val_output)
+        result.some_min_utc_date_time_val = (
+            some_min_utc_date_time_val_output)
+        result.some_min_date_val = (
+            some_min_date_val_output)
+        result.some_money_val = (
+            some_money_val_output)
+        result.some_n_var_char_val = (
+            some_n_var_char_val_output)
+        result.some_var_char_val = (
+            some_var_char_val_output)
+        result.some_text_val = (
+            some_text_val_output)
+        result.some_phone_number = (
+            some_phone_number_output)
+        result.some_email_address = (
+            some_email_address_output)
+        result.flavor_code = (
+            flavor_code_output)
+        result.land_code = (
+            land_code_output)
+        result.tac_code = (
+            tac_code_output)
+        result.land_name = (
+            land_name_output)
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Result:" + result.to_json())
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "End")
         return result

@@ -18,7 +18,7 @@ class TriStateFilter(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('TriStateFilter')
-    tri_state_filter_id = Column(
+    _tri_state_filter_id = Column(
         'tri_state_filter_id',
         Integer,
         primary_key=True,
@@ -175,6 +175,18 @@ class TriStateFilter(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def tri_state_filter_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_tri_state_filter_id', 0) or 0
+    @tri_state_filter_id.setter
+    def tri_state_filter_id(self, value: int) -> None:
+        """
+        Set the tri_state_filter_id.
+        """
+        self._tri_state_filter_id = value
     @property
     def insert_user_id(self):
         """

@@ -5,12 +5,10 @@
 """
 
 import uuid
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import datetime
 
 import factory
 from factory import Faker
-from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.factory import FlavorFactory  # requestFlavorCode
@@ -78,7 +76,8 @@ class LandPlantListGetModelRequestFactory(
             obj2 = model_class(*args, **kwargs)
             return obj2
 
-        flavor_code_instance = FlavorFactory.create(session=session)  # FlavorCode
+        flavor_code_instance = FlavorFactory.create(  # FlavorCode
+            session=session)
 # endset
 
         kwargs["flavor_code"] = flavor_code_instance.code  # FlavorCode
@@ -99,8 +98,9 @@ class LandPlantListGetModelRequestFactory(
         *args, **kwargs
     ) -> LandPlantListGetModelRequest:
 
-        flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
-        
+        flavor_code_instance = FlavorFactory.create(  # requestFlavorCode
+            session=session)
+
 # endset
 
         kwargs["flavor_code"] = flavor_code_instance.code  # requestFlavorCode
@@ -123,7 +123,8 @@ class LandPlantListGetModelRequestFactory(
             #TODO add comment
         """
 
-        flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
+        flavor_code_instance = await FlavorFactory.create_async(  # requestFlavorCode
+            session=session)
 # endset
 
         kwargs["flavor_code"] = flavor_code_instance.code  # requestFlavorCode

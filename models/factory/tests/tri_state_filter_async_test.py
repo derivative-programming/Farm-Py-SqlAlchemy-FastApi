@@ -185,7 +185,7 @@ class TestTriStateFilterFactoryAsync:
         await session.delete(tri_state_filter)
         await session.commit()
         # Construct the select statement
-        stmt = select(TriStateFilter).where(TriStateFilter.tri_state_filter_id == tri_state_filter.tri_state_filter_id)
+        stmt = select(TriStateFilter).where(TriStateFilter._tri_state_filter_id == tri_state_filter.tri_state_filter_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -273,14 +273,14 @@ class TestTriStateFilterFactoryAsync:
         """
         tri_state_filter = await TriStateFilterFactory.create_async(session=session)
         original_last_change_code = tri_state_filter.last_change_code
-        stmt = select(TriStateFilter).where(TriStateFilter.tri_state_filter_id == tri_state_filter.tri_state_filter_id)
+        stmt = select(TriStateFilter).where(TriStateFilter._tri_state_filter_id == tri_state_filter.tri_state_filter_id)
         result = await session.execute(stmt)
         tri_state_filter_1 = result.scalars().first()
         # tri_state_filter_1 = await session.query(TriStateFilter).filter_by(
         # tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
         tri_state_filter_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(TriStateFilter).where(TriStateFilter.tri_state_filter_id == tri_state_filter.tri_state_filter_id)
+        stmt = select(TriStateFilter).where(TriStateFilter._tri_state_filter_id == tri_state_filter.tri_state_filter_id)
         result = await session.execute(stmt)
         tri_state_filter_2 = result.scalars().first()
         # tri_state_filter_2 = await session.query(TriStateFilter).filter_by(

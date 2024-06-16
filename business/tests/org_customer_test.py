@@ -52,7 +52,7 @@ class TestOrgCustomerBusObj:
             #TODO add comment
         """
         # Test creating a new org_customer
-        assert org_customer_bus_obj.org_customer_id is None
+        assert org_customer_bus_obj.org_customer_id == 0
         # assert isinstance(org_customer_bus_obj.org_customer_id, int)
         assert isinstance(org_customer_bus_obj.code, uuid.UUID)
         assert isinstance(org_customer_bus_obj.last_change_code, int)
@@ -138,7 +138,8 @@ class TestOrgCustomerBusObj:
         """
         # Test retrieving a nonexistent org_customer raises an exception
         await org_customer_bus_obj.load_from_id(-1)
-        assert org_customer_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
+        # Assuming -1 is an id that wouldn't exist
+        assert org_customer_bus_obj.is_valid() is False
     @pytest.mark.asyncio
     async def test_update_org_customer(
         self,
@@ -173,7 +174,7 @@ class TestOrgCustomerBusObj:
             #TODO add comment
         """
         assert new_org_customer.org_customer_id is not None
-        assert org_customer_bus_obj.org_customer_id is None
+        assert org_customer_bus_obj.org_customer_id == 0
         new_org_customer_org_customer_id_value = new_org_customer.org_customer_id
         await org_customer_bus_obj.load_from_id(new_org_customer_org_customer_id_value)
         assert org_customer_bus_obj.org_customer_id is not None

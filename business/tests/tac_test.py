@@ -52,7 +52,7 @@ class TestTacBusObj:
             #TODO add comment
         """
         # Test creating a new tac
-        assert tac_bus_obj.tac_id is None
+        assert tac_bus_obj.tac_id == 0
         # assert isinstance(tac_bus_obj.tac_id, int)
         assert isinstance(tac_bus_obj.code, uuid.UUID)
         assert isinstance(tac_bus_obj.last_change_code, int)
@@ -141,7 +141,8 @@ class TestTacBusObj:
         """
         # Test retrieving a nonexistent tac raises an exception
         await tac_bus_obj.load_from_id(-1)
-        assert tac_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
+        # Assuming -1 is an id that wouldn't exist
+        assert tac_bus_obj.is_valid() is False
     @pytest.mark.asyncio
     async def test_update_tac(
         self,
@@ -176,7 +177,7 @@ class TestTacBusObj:
             #TODO add comment
         """
         assert new_tac.tac_id is not None
-        assert tac_bus_obj.tac_id is None
+        assert tac_bus_obj.tac_id == 0
         new_tac_tac_id_value = new_tac.tac_id
         await tac_bus_obj.load_from_id(new_tac_tac_id_value)
         assert tac_bus_obj.tac_id is not None

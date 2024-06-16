@@ -111,9 +111,11 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
         request_is_edit_allowed_output: bool = False
         request_some_float_val_output: float = 0
         request_some_decimal_val_output: Decimal = Decimal(0)
-        request_some_utc_date_time_val_output: datetime = TypeConversion.get_default_date_time()
-        request_some_date_val_output: date = TypeConversion.get_default_date()
-        request_some_money_val_output: Decimal = 0
+        request_some_utc_date_time_val_output: datetime = (
+            TypeConversion.get_default_date_time())
+        request_some_date_val_output: date = (
+            TypeConversion.get_default_date())
+        request_some_money_val_output: Decimal = Decimal(0)
         request_some_n_var_char_val_output: str = ""
         request_some_var_char_val_output: str = ""
         request_some_text_val_output: str = ""
@@ -124,29 +126,54 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
 # endset
         # TODO: add flow logic
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Building result")
         result = FlowLandAddPlantInitObjWFResult()
         result.context_object_code = land_bus_obj.code
-        result.request_flavor_code = request_flavor_code_output
-        result.request_other_flavor = request_other_flavor_output
-        result.request_some_int_val = request_some_int_val_output
-        result.request_some_big_int_val = request_some_big_int_val_output
-        result.request_some_bit_val = request_some_bit_val_output
-        result.request_is_delete_allowed = request_is_delete_allowed_output
-        result.request_is_edit_allowed = request_is_edit_allowed_output
-        result.request_some_float_val = request_some_float_val_output
-        result.request_some_decimal_val = request_some_decimal_val_output
-        result.request_some_utc_date_time_val = request_some_utc_date_time_val_output
-        result.request_some_date_val = request_some_date_val_output
-        result.request_some_money_val = request_some_money_val_output
-        result.request_some_n_var_char_val = request_some_n_var_char_val_output
-        result.request_some_var_char_val = request_some_var_char_val_output
-        result.request_some_text_val = request_some_text_val_output
-        result.request_some_phone_number = request_some_phone_number_output
-        result.request_some_email_address = request_some_email_address_output
-        result.land_name = land_name_output
-        result.tac_code = tac_code_output
+        result.request_flavor_code = (
+            request_flavor_code_output)
+        result.request_other_flavor = (
+            request_other_flavor_output)
+        result.request_some_int_val = (
+            request_some_int_val_output)
+        result.request_some_big_int_val = (
+            request_some_big_int_val_output)
+        result.request_some_bit_val = (
+            request_some_bit_val_output)
+        result.request_is_delete_allowed = (
+            request_is_delete_allowed_output)
+        result.request_is_edit_allowed = (
+            request_is_edit_allowed_output)
+        result.request_some_float_val = (
+            request_some_float_val_output)
+        result.request_some_decimal_val = (
+            request_some_decimal_val_output)
+        result.request_some_utc_date_time_val = (
+            request_some_utc_date_time_val_output)
+        result.request_some_date_val = (
+            request_some_date_val_output)
+        result.request_some_money_val = (
+            request_some_money_val_output)
+        result.request_some_n_var_char_val = (
+            request_some_n_var_char_val_output)
+        result.request_some_var_char_val = (
+            request_some_var_char_val_output)
+        result.request_some_text_val = (
+            request_some_text_val_output)
+        result.request_some_phone_number = (
+            request_some_phone_number_output)
+        result.request_some_email_address = (
+            request_some_email_address_output)
+        result.land_name = (
+            land_name_output)
+        result.tac_code = (
+            tac_code_output)
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Result:" + result.to_json())
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "End")
         return result

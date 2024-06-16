@@ -346,11 +346,11 @@ class TestPlantFactory:
         plant = PlantFactory.create(session=session)
         original_last_change_code = plant.last_change_code
         plant_1 = session.query(Plant).filter_by(
-            plant_id=plant.plant_id).first()
+            _plant_id=plant.plant_id).first()
         plant_1.code = uuid.uuid4()
         session.commit()
         plant_2 = session.query(Plant).filter_by(
-            plant_id=plant.plant_id).first()
+            _plant_id=plant.plant_id).first()
         plant_2.code = uuid.uuid4()
         session.commit()
         assert plant_2.last_change_code != original_last_change_code

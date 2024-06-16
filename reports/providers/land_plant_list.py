@@ -61,50 +61,90 @@ class ReportProviderLandPlantList():
             #TODO add comment
         """
 
-        logging.info("ReportProviderLandPlantList.generate_list Start")
-        logging.info("ReportProviderLandPlantList.generate_list context_code:" + str(context_code))
-        offset = (page_number - 1) * item_count_per_page
+        flow_name = "ReportProviderLandPlantList.generate_list"
+
+        logging.info("%s Start", flow_name)
+        logging.info("%s context_code: %s", flow_name, str(context_code))
+        # offset = (page_number - 1) * item_count_per_page
         query_dict = dict()
-        query_dict["context_code"] = str(context_code)
-        query_dict["flavor_code"] = str(flavor_code)
-        query_dict["some_int_val"] = some_int_val
-        query_dict["some_big_int_val"] = some_big_int_val
-        query_dict["some_float_val"] = some_float_val
-        query_dict["some_bit_val"] = some_bit_val
-        query_dict["is_edit_allowed"] = is_edit_allowed
-        query_dict["is_delete_allowed"] = is_delete_allowed
-        query_dict["some_decimal_val"] = some_decimal_val
-        query_dict["some_min_utc_date_time_val"] = some_min_utc_date_time_val
-        query_dict["some_min_date_val"] = some_min_date_val
-        query_dict["some_money_val"] = some_money_val
-        query_dict["some_n_var_char_val"] = some_n_var_char_val
-        query_dict["some_var_char_val"] = some_var_char_val
-        query_dict["some_text_val"] = some_text_val
-        query_dict["some_phone_number"] = some_phone_number
-        query_dict["some_email_address"] = some_email_address
+        query_dict["context_code"] = (
+            str(context_code))
+        query_dict["flavor_code"] = (
+            str(flavor_code))
+        query_dict["some_int_val"] = (
+            some_int_val)
+        query_dict["some_big_int_val"] = (
+            some_big_int_val)
+        query_dict["some_float_val"] = (
+            some_float_val)
+        query_dict["some_bit_val"] = (
+            some_bit_val)
+        query_dict["is_edit_allowed"] = (
+            is_edit_allowed)
+        query_dict["is_delete_allowed"] = (
+            is_delete_allowed)
+        query_dict["some_decimal_val"] = (
+            some_decimal_val)
+        query_dict["some_min_utc_date_time_val"] = (
+            some_min_utc_date_time_val)
+        query_dict["some_min_date_val"] = (
+            some_min_date_val)
+        query_dict["some_money_val"] = (
+            some_money_val)
+        query_dict["some_n_var_char_val"] = (
+            some_n_var_char_val)
+        query_dict["some_var_char_val"] = (
+            some_var_char_val)
+        query_dict["some_text_val"] = (
+            some_text_val)
+        query_dict["some_phone_number"] = (
+            some_phone_number)
+        query_dict["some_email_address"] = (
+            some_email_address)
 
-        query_dict["like_flavor_code"] = str(flavor_code)
-        query_dict["like_some_int_val"] = some_int_val
-        query_dict["like_some_big_int_val"] = some_big_int_val
-        query_dict["like_some_float_val"] = some_float_val
-        query_dict["like_some_bit_val"] = some_bit_val
-        query_dict["like_is_edit_allowed"] = is_edit_allowed
-        query_dict["like_is_delete_allowed"] = is_delete_allowed
-        query_dict["like_some_decimal_val"] = some_decimal_val
-        query_dict["like_some_min_utc_date_time_val"] = some_min_utc_date_time_val
-        query_dict["like_some_min_date_val"] = some_min_date_val
-        query_dict["like_some_money_val"] = some_money_val
-        query_dict["like_some_n_var_char_val"] = '%' + some_n_var_char_val + '%'
-        query_dict["like_some_var_char_val"] = '%' + some_var_char_val + '%'
-        query_dict["like_some_text_val"] = '%' + some_text_val + '%'
-        query_dict["like_some_phone_number"] = '%' + some_phone_number + '%'
-        query_dict["like_some_email_address"] = '%' + some_email_address + '%'
+        query_dict["like_flavor_code"] = (
+            str(flavor_code))
+        query_dict["like_some_int_val"] = (
+            some_int_val)
+        query_dict["like_some_big_int_val"] = (
+            some_big_int_val)
+        query_dict["like_some_float_val"] = (
+            some_float_val)
+        query_dict["like_some_bit_val"] = (
+            some_bit_val)
+        query_dict["like_is_edit_allowed"] = (
+            is_edit_allowed)
+        query_dict["like_is_delete_allowed"] = (
+            is_delete_allowed)
+        query_dict["like_some_decimal_val"] = (
+            some_decimal_val)
+        query_dict["like_some_min_utc_date_time_val"] = (
+            some_min_utc_date_time_val)
+        query_dict["like_some_min_date_val"] = (
+            some_min_date_val)
+        query_dict["like_some_money_val"] = (
+            some_money_val)
+        query_dict["like_some_n_var_char_val"] = (
+            '%' + some_n_var_char_val + '%')
+        query_dict["like_some_var_char_val"] = (
+            '%' + some_var_char_val + '%')
+        query_dict["like_some_text_val"] = (
+            '%' + some_text_val + '%')
+        query_dict["like_some_phone_number"] = (
+            '%' + some_phone_number + '%')
+        query_dict["like_some_email_address"] = (
+            '%' + some_email_address + '%')
 
-        query_dict["page_number"] = page_number
-        query_dict["item_count_per_page"] = item_count_per_page
-        query_dict["order_by_column_name"] = order_by_column_name
-        query_dict["order_by_descending"] = order_by_descending
-        query_dict["user_id"] = str(self._session_context.customer_code)
+        query_dict["page_number"] = (
+            page_number)
+        query_dict["item_count_per_page"] = (
+            item_count_per_page)
+        query_dict["order_by_column_name"] = (
+            order_by_column_name)
+        query_dict["order_by_descending"] = (
+            order_by_descending)
+        query_dict["user_id"] = (
+            str(self._session_context.customer_code))
 
         if ReportProviderLandPlantList._cached_sql_query is None:
             # Prioritize 'land_plant_list.inc.sql' if it exists
@@ -116,7 +156,7 @@ class ReportProviderLandPlantList():
             elif os.path.exists(gen_file_path):
                 file_to_read = gen_file_path
             else:
-                raise FileNotFoundError(f"SQL file not found")
+                raise FileNotFoundError("SQL file not found")
 
             with open(file_to_read, 'r') as file:
                 ReportProviderLandPlantList._cached_sql_query = file.read()
@@ -128,8 +168,9 @@ class ReportProviderLandPlantList():
         )
 
         results = self.dictfetchall(cursor)
-        logging.info("ReportProviderLandPlantList.generate_list Results: " + json.dumps(results))
-        logging.info("ReportProviderLandPlantList.generate_list End")
+        logging.info(
+            "%s Results: %s", flow_name, json.dumps(results))
+        logging.info("%s End", flow_name)
         return results
 
     def dictfetchall(self, cursor) -> list[dict[str, any]]:

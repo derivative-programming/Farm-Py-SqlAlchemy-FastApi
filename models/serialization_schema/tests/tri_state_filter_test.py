@@ -218,7 +218,8 @@ class TestTriStateFilterSchema:
         # Verify the keys in both dictionaries match
         assert set(tri_state_filter_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tri_state_filter_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(tri_state_filter_dict_from_json.keys())}"
         )
         assert tri_state_filter_dict_from_json['code'] == str(tri_state_filter.code), (
             "failed on code"

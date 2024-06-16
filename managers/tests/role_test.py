@@ -1,6 +1,8 @@
 # models/managers/tests/role_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
+    #TODO file too big. split into separate test files
 """
 import logging
 import uuid
@@ -57,7 +59,8 @@ class TestRoleManager:
         mock_data = {
             "non_existant_property": "Rose"
         }
-        # If the build method is expected to raise an exception for missing data, test for that
+        # If the build method is expected to raise an exception for
+        # missing data, test for that
         with pytest.raises(Exception):
             await role_manager.build_async(**mock_data)
         await session.rollback()
@@ -71,7 +74,7 @@ class TestRoleManager:
             #TODO add comment
         """
         test_role = await RoleFactory.build_async(session)
-        assert test_role.role_id is None
+        assert test_role.role_id == 0
         # Add the role using the manager's add method
         added_role = await role_manager.add(role=test_role)
         assert isinstance(added_role, Role)
@@ -82,7 +85,10 @@ class TestRoleManager:
         assert added_role.role_id > 0
         # Fetch the role from the database directly
         result = await session.execute(
-            select(Role).filter(Role.role_id == added_role.role_id))
+            select(Role).filter(
+                Role._role_id == added_role.role_id
+            )
+        )
         fetched_role = result.scalars().first()
         # Assert that the fetched role is not None and matches the added role
         assert fetched_role is not None
@@ -99,7 +105,7 @@ class TestRoleManager:
         """
         # Create a test role using the RoleFactory without persisting it to the database
         test_role = await RoleFactory.build_async(session)
-        assert test_role.role_id is None
+        assert test_role.role_id == 0
         test_role.code = uuid.uuid4()
         # Add the role using the manager's add method
         added_role = await role_manager.add(role=test_role)
@@ -183,7 +189,7 @@ class TestRoleManager:
         assert updated_role.code == test_role.code
         result = await session.execute(
             select(Role).filter(
-                Role.role_id == test_role.role_id)
+                Role._role_id == test_role.role_id)
         )
         fetched_role = result.scalars().first()
         assert updated_role.role_id == fetched_role.role_id
@@ -213,7 +219,7 @@ class TestRoleManager:
         assert updated_role.code == new_code
         result = await session.execute(
             select(Role).filter(
-                Role.role_id == test_role.role_id)
+                Role._role_id == test_role.role_id)
         )
         fetched_role = result.scalars().first()
         assert updated_role.role_id == fetched_role.role_id
@@ -259,14 +265,14 @@ class TestRoleManager:
         """
         role_data = await RoleFactory.create_async(session)
         result = await session.execute(
-            select(Role).filter(Role.role_id == role_data.role_id))
+            select(Role).filter(Role._role_id == role_data.role_id))
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
         assert fetched_role.role_id == role_data.role_id
         deleted_role = await role_manager.delete(
             role_id=role_data.role_id)
         result = await session.execute(
-            select(Role).filter(Role.role_id == role_data.role_id))
+            select(Role).filter(Role._role_id == role_data.role_id))
         fetched_role = result.scalars().first()
         assert fetched_role is None
     @pytest.mark.asyncio
@@ -377,7 +383,7 @@ class TestRoleManager:
         for updated_role in roles:
             result = await session.execute(
                 select(Role).filter(
-                    Role.role_id == updated_role.role_id
+                    Role._role_id == updated_role.role_id
                 )
             )
             fetched_role = result.scalars().first()
@@ -432,13 +438,13 @@ class TestRoleManager:
         assert str(updated_roles[1].last_update_user_id) == (
             str(role_manager._session_context.customer_code))
         result = await session.execute(
-            select(Role).filter(Role.role_id == 1)
+            select(Role).filter(Role._role_id == 1)
         )
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
         assert fetched_role.code == code_updated1
         result = await session.execute(
-            select(Role).filter(Role.role_id == 2)
+            select(Role).filter(Role._role_id == 2)
         )
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
@@ -501,7 +507,7 @@ class TestRoleManager:
         assert result is True
         for role_id in role_ids:
             execute_result = await session.execute(
-                select(Role).filter(Role.role_id == role_id))
+                select(Role).filter(Role._role_id == role_id))
             fetched_role = execute_result.scalars().first()
             assert fetched_role is None
     @pytest.mark.asyncio
@@ -580,7 +586,7 @@ class TestRoleManager:
         # Add roles
         roles_data = (
             [await RoleFactory.create_async(session) for _ in range(5)])
-        sorted_roles = await role_manager.get_sorted_list(sort_by="role_id")
+        sorted_roles = await role_manager.get_sorted_list(sort_by="_role_id")
         assert [role.role_id for role in sorted_roles] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -632,7 +638,7 @@ class TestRoleManager:
         """
         # Add a role
         role1 = await RoleFactory.create_async(session=session)
-        result = await session.execute(select(Role).filter(Role.role_id == role1.role_id))
+        result = await session.execute(select(Role).filter(Role._role_id == role1.role_id))
         role2 = result.scalars().first()
         assert role1.code == role2.code
         updated_code1 = uuid.uuid4()

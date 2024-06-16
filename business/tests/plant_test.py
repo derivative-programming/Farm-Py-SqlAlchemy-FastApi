@@ -6,7 +6,7 @@
 """
 
 import uuid
-from datetime import datetime, date
+from datetime import datetime, date  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -62,7 +62,7 @@ class TestPlantBusObj:
         """
         # Test creating a new plant
 
-        assert plant_bus_obj.plant_id is None
+        assert plant_bus_obj.plant_id == 0
 
         # assert isinstance(plant_bus_obj.plant_id, int)
         assert isinstance(plant_bus_obj.code, uuid.UUID)
@@ -191,7 +191,9 @@ class TestPlantBusObj:
         """
         # Test retrieving a nonexistent plant raises an exception
         await plant_bus_obj.load_from_id(-1)
-        assert plant_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
+
+        # Assuming -1 is an id that wouldn't exist
+        assert plant_bus_obj.is_valid() is False
 
     @pytest.mark.asyncio
     async def test_update_plant(
@@ -240,7 +242,7 @@ class TestPlantBusObj:
 
         assert new_plant.plant_id is not None
 
-        assert plant_bus_obj.plant_id is None
+        assert plant_bus_obj.plant_id == 0
 
         new_plant_plant_id_value = new_plant.plant_id
 

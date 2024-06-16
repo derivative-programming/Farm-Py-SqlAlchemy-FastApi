@@ -195,7 +195,7 @@ class DateGreaterThanFilterManager:
             Pac,  # pac_id
         )
 
-        query = query.outerjoin(Pac, and_(DateGreaterThanFilter.pac_id == Pac.pac_id, DateGreaterThanFilter.pac_id != 0))
+        query = query.outerjoin(Pac, and_(DateGreaterThanFilter.pac_id == Pac._pac_id, DateGreaterThanFilter.pac_id != 0))
 
         return query
 
@@ -252,8 +252,10 @@ class DateGreaterThanFilterManager:
             "start date_greater_than_filter_id:" + str(date_greater_than_filter_id))
         if not isinstance(date_greater_than_filter_id, int):
             raise TypeError(
-                "The date_greater_than_filter_id must be an integer, got {type(date_greater_than_filter_id)} instead.")
-        query_filter = DateGreaterThanFilter.date_greater_than_filter_id == date_greater_than_filter_id
+                "The date_greater_than_filter_id must be an integer, "
+                f"got {type(date_greater_than_filter_id)} instead.")
+        query_filter = (
+            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter_id)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -266,7 +268,7 @@ class DateGreaterThanFilterManager:
         """
 
         logging.info("DateGreaterThanFilterManager.get_by_code {code}")
-        query_filter = DateGreaterThanFilter._code == str(code)
+        query_filter = DateGreaterThanFilter._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -419,16 +421,20 @@ class DateGreaterThanFilterManager:
                 "date_greater_than_filter_id")
             if not isinstance(date_greater_than_filter_id, int):
                 raise TypeError(
-                    "The date_greater_than_filter_id must be an integer, got {type(date_greater_than_filter_id)} instead.")
+                    "The date_greater_than_filter_id must be an integer, "
+                    f"got {type(date_greater_than_filter_id)} instead.")
             if not date_greater_than_filter_id:
                 continue
             logging.info(
-                "DateGreaterThanFilterManager.update_bulk date_greater_than_filter_id:{date_greater_than_filter_id}")
+                "DateGreaterThanFilterManager.update_bulk "
+                "date_greater_than_filter_id: %s",
+                date_greater_than_filter_id)
             date_greater_than_filter = await self.get_by_id(
                 date_greater_than_filter_id)
             if not date_greater_than_filter:
                 raise DateGreaterThanFilterNotFoundError(
-                    f"DateGreaterThanFilter with ID {date_greater_than_filter_id} not found!")
+                    "DateGreaterThanFilter with ID"
+                    f" {date_greater_than_filter_id} not found!")
             for key, value in update.items():
                 if key != "date_greater_than_filter_id":
                     setattr(date_greater_than_filter, key, value)
@@ -446,12 +452,15 @@ class DateGreaterThanFilterManager:
         logging.info("DateGreaterThanFilterManager.delete_bulk")
         for date_greater_than_filter_id in date_greater_than_filter_ids:
             if not isinstance(date_greater_than_filter_id, int):
-                raise TypeError("The date_greater_than_filter_id must be an integer, got {type(date_greater_than_filter_id)} instead.")
+                raise TypeError(
+                    "The date_greater_than_filter_id must be an integer, "
+                    f"got {type(date_greater_than_filter_id)} instead.")
             date_greater_than_filter = await self.get_by_id(
                 date_greater_than_filter_id)
             if not date_greater_than_filter:
                 raise DateGreaterThanFilterNotFoundError(
-                    f"DateGreaterThanFilter with ID {date_greater_than_filter_id} not found!")
+                    f"DateGreaterThanFilter with ID"
+                    f" {date_greater_than_filter_id} not found!")
             if date_greater_than_filter:
                 await self._session_context.session.delete(
                     date_greater_than_filter)
@@ -461,7 +470,8 @@ class DateGreaterThanFilterManager:
     async def count(self) -> int:
         """Return the total number of date_greater_than_filters."""
         logging.info("DateGreaterThanFilterManager.count")
-        result = await self._session_context.session.execute(select(DateGreaterThanFilter))
+        result = await self._session_context.session.execute(
+            select(DateGreaterThanFilter))
         return len(result.scalars().all())
 
     #TODO fix. needs to populate peek props. use getall and sort List
@@ -474,6 +484,10 @@ class DateGreaterThanFilterManager:
         Retrieve date_greater_than_filters sorted by a
         particular attribute.
         """
+        
+        if sort_by == "date_greater_than_filter_id":
+            sort_by = "_date_greater_than_filter_id"
+
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(DateGreaterThanFilter).order_by(
@@ -504,9 +518,13 @@ class DateGreaterThanFilterManager:
         Check if a date_greater_than_filter with
         the given ID exists.
         """
-        logging.info("DateGreaterThanFilterManager.exists {date_greater_than_filter_id}")
+        logging.info(
+            "DateGreaterThanFilterManager.exists %s",
+            date_greater_than_filter_id)
         if not isinstance(date_greater_than_filter_id, int):
-            raise TypeError("The date_greater_than_filter_id must be an integer, got {type(date_greater_than_filter_id)} instead.")
+            raise TypeError(
+                "The date_greater_than_filter_id must be an integer, "
+                f"got {type(date_greater_than_filter_id)} instead.")
         date_greater_than_filter = await self.get_by_id(
             date_greater_than_filter_id)
         return bool(date_greater_than_filter)
@@ -526,10 +544,12 @@ class DateGreaterThanFilterManager:
             raise TypeError("DateGreaterThanFilter2 required.")
         if not isinstance(date_greater_than_filter1, DateGreaterThanFilter):
             raise TypeError(
-                "The date_greater_than_filter1 must be an DateGreaterThanFilter instance.")
+                "The date_greater_than_filter1 must be "
+                "an DateGreaterThanFilter instance.")
         if not isinstance(date_greater_than_filter2, DateGreaterThanFilter):
             raise TypeError(
-                "The date_greater_than_filter2 must be an DateGreaterThanFilter instance.")
+                "The date_greater_than_filter2 must be "
+                "an DateGreaterThanFilter instance.")
         dict1 = self.to_dict(date_greater_than_filter1)
         dict2 = self.to_dict(date_greater_than_filter2)
         return dict1 == dict2
@@ -544,7 +564,9 @@ class DateGreaterThanFilterManager:
 
         logging.info("DateGreaterThanFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):
-            raise TypeError("The date_greater_than_filter_id must be an integer, got {type(pac_id)} instead.")
+            raise TypeError(
+                "The date_greater_than_filter_id must be an integer, "
+                f"got {type(pac_id)} instead.")
         query_filter = DateGreaterThanFilter.pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

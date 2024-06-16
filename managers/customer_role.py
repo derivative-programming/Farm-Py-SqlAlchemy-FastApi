@@ -94,12 +94,12 @@ class CustomerRoleManager:
 # endset
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(CustomerRole.customer_id == Customer.customer_id,
+            and_(CustomerRole.customer_id == Customer._customer_id,
                  CustomerRole.customer_id != 0)
         )
         query = query.outerjoin(  # role_id
             Role,
-            and_(CustomerRole.role_id == Role.role_id,
+            and_(CustomerRole.role_id == Role._role_id,
                  CustomerRole.role_id != 0)
         )
 # endset
@@ -127,8 +127,10 @@ class CustomerRoleManager:
             role = query_result_row[i]  # role_id
             i = i + 1
 # endset
-            customer_role.customer_code_peek = customer.code if customer else uuid.UUID(int=0)  # customer_id
-            customer_role.role_code_peek = role.code if role else uuid.UUID(int=0)  # role_id
+            customer_role.customer_code_peek = (  # customer_id
+                customer.code if customer else uuid.UUID(int=0))
+            customer_role.role_code_peek = (  # role_id
+                role.code if role else uuid.UUID(int=0))
 # endset
             result.append(customer_role)
         return result
@@ -146,9 +148,10 @@ class CustomerRoleManager:
             str(customer_role_id))
         if not isinstance(customer_role_id, int):
             raise TypeError(
-                "The customer_role_id must be an integer, got %s instead.",
+                f"The customer_role_id must be an integer, "
+                f"got %s instead.",
                 type(customer_role_id))
-        query_filter = CustomerRole.customer_role_id == customer_role_id
+        query_filter = CustomerRole._customer_role_id == customer_role_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:
@@ -156,7 +159,7 @@ class CustomerRoleManager:
             #TODO add comment
         """
         logging.info("CustomerRoleManager.get_by_code %s", code)
-        query_filter = CustomerRole._code == str(code)
+        query_filter = CustomerRole._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, customer_role: CustomerRole, **kwargs) -> Optional[CustomerRole]:
@@ -181,7 +184,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.delete %s", customer_role_id)
         if not isinstance(customer_role_id, int):
             raise TypeError(
-                f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+                f"The customer_role_id must be an integer, "
+                f"got {type(customer_role_id)} instead."
             )
         customer_role = await self.get_by_id(customer_role_id)
         if not customer_role:
@@ -262,7 +266,8 @@ class CustomerRoleManager:
             customer_role_id = update.get("customer_role_id")
             if not isinstance(customer_role_id, int):
                 raise TypeError(
-                    f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+                    f"The customer_role_id must be an integer, "
+                    f"got {type(customer_role_id)} instead."
                 )
             if not customer_role_id:
                 continue
@@ -288,7 +293,8 @@ class CustomerRoleManager:
         for customer_role_id in customer_role_ids:
             if not isinstance(customer_role_id, int):
                 raise TypeError(
-                    f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+                    f"The customer_role_id must be an integer, "
+                    f"got {type(customer_role_id)} instead."
                 )
             customer_role = await self.get_by_id(customer_role_id)
             if not customer_role:
@@ -314,6 +320,8 @@ class CustomerRoleManager:
         """
         Retrieve customer_roles sorted by a particular attribute.
         """
+        if sort_by == "customer_role_id":
+            sort_by = "_customer_role_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(CustomerRole).order_by(getattr(CustomerRole, sort_by).asc()))
@@ -335,7 +343,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.exists %s", customer_role_id)
         if not isinstance(customer_role_id, int):
             raise TypeError(
-                f"The customer_role_id must be an integer, got {type(customer_role_id)} instead."
+                f"The customer_role_id must be an integer, "
+                f"got {type(customer_role_id)} instead."
             )
         customer_role = await self.get_by_id(customer_role_id)
         return bool(customer_role)
@@ -362,7 +371,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.get_by_customer_id")
         if not isinstance(customer_id, int):
             raise TypeError(
-                f"The customer_role_id must be an integer, got {type(customer_id)} instead."
+                f"The customer_role_id must be an integer, "
+                f"got {type(customer_id)} instead."
             )
         query_filter = CustomerRole.customer_id == customer_id
         query_results = await self._run_query(query_filter)
@@ -377,7 +387,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.get_by_role_id")
         if not isinstance(role_id, int):
             raise TypeError(
-                f"The customer_role_id must be an integer, got {type(role_id)} instead."
+                f"The customer_role_id must be an integer, "
+                f"got {type(role_id)} instead."
             )
         query_filter = CustomerRole.role_id == role_id
         query_results = await self._run_query(query_filter)

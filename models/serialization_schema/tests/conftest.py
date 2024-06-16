@@ -28,14 +28,51 @@ def engine():
     engine.dispose()
 
 
+# @pytest.fixture(scope="function")
+# def session(engine):
+#     """
+#         #TODO add comment
+#     """
+
+#     Base.metadata.create_all(engine)
+#     SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+#     session_instance = SessionLocal()
+#     yield session_instance
+#     session_instance.close()
+
+
 @pytest.fixture(scope="function")
 def session(engine):
     """
-        #TODO add comment
-    """
+    Create a new database session for a test and
+    ensure it is properly closed after the test.
 
+    This fixture sets up a new database session
+    using the provided engine. It ensures that
+    the database schema is created before the test
+    and that the session is closed after the test.
+
+    Args:
+        engine (Engine): The SQLAlchemy engine to bind the session to.
+
+    Yields:
+        Session: A SQLAlchemy session object.
+
+    Example:
+        def test_something(session):
+            # use the session object for database operations
+    """
+    # Create all tables in the database
     Base.metadata.create_all(engine)
+    
+    # Create a configured "Session" class
     SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+    
+    # Instantiate a session
     session_instance = SessionLocal()
-    yield session_instance
-    session_instance.close()
+    
+    try:
+        yield session_instance
+    finally:
+        # Close the session after the test
+        session_instance.close()

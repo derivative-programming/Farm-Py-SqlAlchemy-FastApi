@@ -1,4 +1,5 @@
 # apis/models/tests/plant_user_delete_test.py
+# pylint: disable=unused-argument
 """
     #TODO add comment
 """
@@ -24,7 +25,7 @@ class TestPlantUserDeletePostModelResponse:
             #TODO add comment
         """
         async def mock_process(
-            plant_bus_obj: PlantBusObj,  # pylint: disable=unused-argument
+            plant_bus_obj: PlantBusObj,
 
         ):
             return FlowPlantUserDeleteResult()

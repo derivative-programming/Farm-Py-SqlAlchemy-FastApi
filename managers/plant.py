@@ -113,12 +113,12 @@ class PlantManager:
 # endset
         query = query.outerjoin(  # flvr_foreign_key_id
             Flavor,
-            and_(Plant.flvr_foreign_key_id == Flavor.flavor_id,
+            and_(Plant.flvr_foreign_key_id == Flavor._flavor_id,
                  Plant.flvr_foreign_key_id != 0)
         )
         query = query.outerjoin(  # land_id
             Land,
-            and_(Plant.land_id == Land.land_id,
+            and_(Plant.land_id == Land._land_id,
                  Plant.land_id != 0)
         )
 # endset
@@ -154,8 +154,10 @@ class PlantManager:
             land = query_result_row[i]  # land_id
             i = i + 1
 # endset
-            plant.flvr_foreign_key_code_peek = flavor.code if flavor else uuid.UUID(int=0)  # flvr_foreign_key_id
-            plant.land_code_peek = land.code if land else uuid.UUID(int=0)  # land_id
+            plant.flvr_foreign_key_code_peek = (  # flvr_foreign_key_id
+                flavor.code if flavor else uuid.UUID(int=0))
+            plant.land_code_peek = (  # land_id
+                land.code if land else uuid.UUID(int=0))
 # endset
             result.append(plant)
 
@@ -176,10 +178,11 @@ class PlantManager:
             str(plant_id))
         if not isinstance(plant_id, int):
             raise TypeError(
-                "The plant_id must be an integer, got %s instead.",
+                f"The plant_id must be an integer, "
+                f"got %s instead.",
                 type(plant_id))
 
-        query_filter = Plant.plant_id == plant_id
+        query_filter = Plant._plant_id == plant_id
 
         query_results = await self._run_query(query_filter)
 
@@ -191,7 +194,7 @@ class PlantManager:
         """
         logging.info("PlantManager.get_by_code %s", code)
 
-        query_filter = Plant._code == str(code)
+        query_filter = Plant._code == str(code)  # pylint: disable=protected-access
 
         query_results = await self._run_query(query_filter)
 
@@ -220,7 +223,8 @@ class PlantManager:
         logging.info("PlantManager.delete %s", plant_id)
         if not isinstance(plant_id, int):
             raise TypeError(
-                f"The plant_id must be an integer, got {type(plant_id)} instead."
+                f"The plant_id must be an integer, "
+                f"got {type(plant_id)} instead."
             )
         plant = await self.get_by_id(plant_id)
         if not plant:
@@ -315,7 +319,8 @@ class PlantManager:
             plant_id = update.get("plant_id")
             if not isinstance(plant_id, int):
                 raise TypeError(
-                    f"The plant_id must be an integer, got {type(plant_id)} instead."
+                    f"The plant_id must be an integer, "
+                    f"got {type(plant_id)} instead."
                 )
             if not plant_id:
                 continue
@@ -352,7 +357,8 @@ class PlantManager:
         for plant_id in plant_ids:
             if not isinstance(plant_id, int):
                 raise TypeError(
-                    f"The plant_id must be an integer, got {type(plant_id)} instead."
+                    f"The plant_id must be an integer, "
+                    f"got {type(plant_id)} instead."
                 )
 
             plant = await self.get_by_id(plant_id)
@@ -384,6 +390,10 @@ class PlantManager:
         """
         Retrieve plants sorted by a particular attribute.
         """
+
+        if sort_by == "plant_id":
+            sort_by = "_plant_id"
+
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Plant).order_by(getattr(Plant, sort_by).asc()))
@@ -410,7 +420,8 @@ class PlantManager:
         logging.info("PlantManager.exists %s", plant_id)
         if not isinstance(plant_id, int):
             raise TypeError(
-                f"The plant_id must be an integer, got {type(plant_id)} instead."
+                f"The plant_id must be an integer, "
+                f"got {type(plant_id)} instead."
             )
         plant = await self.get_by_id(plant_id)
         return bool(plant)
@@ -450,7 +461,8 @@ class PlantManager:
         logging.info("PlantManager.get_by_flvr_foreign_key_id")
         if not isinstance(flvr_foreign_key_id, int):
             raise TypeError(
-                f"The plant_id must be an integer, got {type(flvr_foreign_key_id)} instead."
+                f"The plant_id must be an integer, "
+                f"got {type(flvr_foreign_key_id)} instead."
             )
 
         query_filter = Plant.flvr_foreign_key_id == flvr_foreign_key_id
@@ -467,7 +479,8 @@ class PlantManager:
         logging.info("PlantManager.get_by_land_id")
         if not isinstance(land_id, int):
             raise TypeError(
-                f"The plant_id must be an integer, got {type(land_id)} instead."
+                f"The plant_id must be an integer, "
+                f"got {type(land_id)} instead."
             )
 
         query_filter = Plant.land_id == land_id
@@ -481,7 +494,7 @@ class PlantManager:
     ##GENIF[isFK=false,forceDBColumnIndex=true]Start
     ##GENREMOVECOMMENTasync def get_by_GENVALSnakeName_prop(self, GENVALSnakeName) -> List[GENVALPascalObjectName]:
     ##GENREMOVECOMMENT    logging.info("GENVALPascalObjectNameManager.get_by_GENVALSnakeName_prop")
-    ##GENREMOVECOMMENT    query_filter = GENVALPascalObjectName.GENVALSnakeName == GENVALSnakeName
+    ##GENREMOVECOMMENT    query_filter = GENVALPascalObjectName._GENVALSnakeName == GENVALSnakeName
     ##GENREMOVECOMMENT    query_results = await self._run_query(query_filter)
     ##GENREMOVECOMMENT    return query_results
     ##GENIF[isFK=false,forceDBColumnIndex=true]End

@@ -36,7 +36,9 @@ class BaseFlowTacLogin(BaseFlow):
         """
         #TODO add comment
         """
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Validating...")
         if email == "" and FlowConstants.param_email_isRequired is True:
             self._add_field_validation_error(
                 "email",

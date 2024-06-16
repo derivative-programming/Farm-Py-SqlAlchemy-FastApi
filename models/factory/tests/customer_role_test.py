@@ -221,11 +221,11 @@ class TestCustomerRoleFactory:
         customer_role = CustomerRoleFactory.create(session=session)
         original_last_change_code = customer_role.last_change_code
         customer_role_1 = session.query(CustomerRole).filter_by(
-            customer_role_id=customer_role.customer_role_id).first()
+            _customer_role_id=customer_role.customer_role_id).first()
         customer_role_1.code = uuid.uuid4()
         session.commit()
         customer_role_2 = session.query(CustomerRole).filter_by(
-            customer_role_id=customer_role.customer_role_id).first()
+            _customer_role_id=customer_role.customer_role_id).first()
         customer_role_2.code = uuid.uuid4()
         session.commit()
         assert customer_role_2.last_change_code != original_last_change_code

@@ -1,6 +1,8 @@
 # models/managers/tests/org_customer_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
+    #TODO file too big. split into separate test files
 """
 import logging
 import uuid
@@ -57,7 +59,8 @@ class TestOrgCustomerManager:
         mock_data = {
             "non_existant_property": "Rose"
         }
-        # If the build method is expected to raise an exception for missing data, test for that
+        # If the build method is expected to raise an exception for
+        # missing data, test for that
         with pytest.raises(Exception):
             await org_customer_manager.build_async(**mock_data)
         await session.rollback()
@@ -71,7 +74,7 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         test_org_customer = await OrgCustomerFactory.build_async(session)
-        assert test_org_customer.org_customer_id is None
+        assert test_org_customer.org_customer_id == 0
         # Add the org_customer using the manager's add method
         added_org_customer = await org_customer_manager.add(org_customer=test_org_customer)
         assert isinstance(added_org_customer, OrgCustomer)
@@ -82,7 +85,10 @@ class TestOrgCustomerManager:
         assert added_org_customer.org_customer_id > 0
         # Fetch the org_customer from the database directly
         result = await session.execute(
-            select(OrgCustomer).filter(OrgCustomer.org_customer_id == added_org_customer.org_customer_id))
+            select(OrgCustomer).filter(
+                OrgCustomer._org_customer_id == added_org_customer.org_customer_id
+            )
+        )
         fetched_org_customer = result.scalars().first()
         # Assert that the fetched org_customer is not None and matches the added org_customer
         assert fetched_org_customer is not None
@@ -99,7 +105,7 @@ class TestOrgCustomerManager:
         """
         # Create a test org_customer using the OrgCustomerFactory without persisting it to the database
         test_org_customer = await OrgCustomerFactory.build_async(session)
-        assert test_org_customer.org_customer_id is None
+        assert test_org_customer.org_customer_id == 0
         test_org_customer.code = uuid.uuid4()
         # Add the org_customer using the manager's add method
         added_org_customer = await org_customer_manager.add(org_customer=test_org_customer)
@@ -183,7 +189,7 @@ class TestOrgCustomerManager:
         assert updated_org_customer.code == test_org_customer.code
         result = await session.execute(
             select(OrgCustomer).filter(
-                OrgCustomer.org_customer_id == test_org_customer.org_customer_id)
+                OrgCustomer._org_customer_id == test_org_customer.org_customer_id)
         )
         fetched_org_customer = result.scalars().first()
         assert updated_org_customer.org_customer_id == fetched_org_customer.org_customer_id
@@ -213,7 +219,7 @@ class TestOrgCustomerManager:
         assert updated_org_customer.code == new_code
         result = await session.execute(
             select(OrgCustomer).filter(
-                OrgCustomer.org_customer_id == test_org_customer.org_customer_id)
+                OrgCustomer._org_customer_id == test_org_customer.org_customer_id)
         )
         fetched_org_customer = result.scalars().first()
         assert updated_org_customer.org_customer_id == fetched_org_customer.org_customer_id
@@ -259,14 +265,14 @@ class TestOrgCustomerManager:
         """
         org_customer_data = await OrgCustomerFactory.create_async(session)
         result = await session.execute(
-            select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_data.org_customer_id))
+            select(OrgCustomer).filter(OrgCustomer._org_customer_id == org_customer_data.org_customer_id))
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)
         assert fetched_org_customer.org_customer_id == org_customer_data.org_customer_id
         deleted_org_customer = await org_customer_manager.delete(
             org_customer_id=org_customer_data.org_customer_id)
         result = await session.execute(
-            select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_data.org_customer_id))
+            select(OrgCustomer).filter(OrgCustomer._org_customer_id == org_customer_data.org_customer_id))
         fetched_org_customer = result.scalars().first()
         assert fetched_org_customer is None
     @pytest.mark.asyncio
@@ -377,7 +383,7 @@ class TestOrgCustomerManager:
         for updated_org_customer in org_customers:
             result = await session.execute(
                 select(OrgCustomer).filter(
-                    OrgCustomer.org_customer_id == updated_org_customer.org_customer_id
+                    OrgCustomer._org_customer_id == updated_org_customer.org_customer_id
                 )
             )
             fetched_org_customer = result.scalars().first()
@@ -432,13 +438,13 @@ class TestOrgCustomerManager:
         assert str(updated_org_customers[1].last_update_user_id) == (
             str(org_customer_manager._session_context.customer_code))
         result = await session.execute(
-            select(OrgCustomer).filter(OrgCustomer.org_customer_id == 1)
+            select(OrgCustomer).filter(OrgCustomer._org_customer_id == 1)
         )
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)
         assert fetched_org_customer.code == code_updated1
         result = await session.execute(
-            select(OrgCustomer).filter(OrgCustomer.org_customer_id == 2)
+            select(OrgCustomer).filter(OrgCustomer._org_customer_id == 2)
         )
         fetched_org_customer = result.scalars().first()
         assert isinstance(fetched_org_customer, OrgCustomer)
@@ -501,7 +507,7 @@ class TestOrgCustomerManager:
         assert result is True
         for org_customer_id in org_customer_ids:
             execute_result = await session.execute(
-                select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer_id))
+                select(OrgCustomer).filter(OrgCustomer._org_customer_id == org_customer_id))
             fetched_org_customer = execute_result.scalars().first()
             assert fetched_org_customer is None
     @pytest.mark.asyncio
@@ -580,7 +586,7 @@ class TestOrgCustomerManager:
         # Add org_customers
         org_customers_data = (
             [await OrgCustomerFactory.create_async(session) for _ in range(5)])
-        sorted_org_customers = await org_customer_manager.get_sorted_list(sort_by="org_customer_id")
+        sorted_org_customers = await org_customer_manager.get_sorted_list(sort_by="_org_customer_id")
         assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -632,7 +638,7 @@ class TestOrgCustomerManager:
         """
         # Add a org_customer
         org_customer1 = await OrgCustomerFactory.create_async(session=session)
-        result = await session.execute(select(OrgCustomer).filter(OrgCustomer.org_customer_id == org_customer1.org_customer_id))
+        result = await session.execute(select(OrgCustomer).filter(OrgCustomer._org_customer_id == org_customer1.org_customer_id))
         org_customer2 = result.scalars().first()
         assert org_customer1.code == org_customer2.code
         updated_code1 = uuid.uuid4()
@@ -726,7 +732,7 @@ class TestOrgCustomerManager:
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
         stmt = select(models.Customer).where(
-            models.Customer.customer_id == org_customer1.customer_id)
+            models.Customer._customer_id == org_customer1.customer_id)
         result = await session.execute(stmt)
         customer = result.scalars().first()
         assert fetched_org_customers[0].customer_code_peek == customer.code

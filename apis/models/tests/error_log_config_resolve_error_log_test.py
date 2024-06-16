@@ -1,4 +1,5 @@
 # apis/models/tests/error_log_config_resolve_error_log_test.py
+# pylint: disable=unused-argument
 """
     #TODO add comment
 """
@@ -24,7 +25,7 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
             #TODO add comment
         """
         async def mock_process(
-            error_log_bus_obj: ErrorLogBusObj,  # pylint: disable=unused-argument
+            error_log_bus_obj: ErrorLogBusObj,
 
         ):
             return FlowErrorLogConfigResolveErrorLogResult()

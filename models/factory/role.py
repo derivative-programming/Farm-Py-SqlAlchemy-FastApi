@@ -42,14 +42,17 @@ class RoleFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        pac_id_pac_instance = PacFactory.create(session=session)  # PacID
+        pac_id_pac_instance = PacFactory.create(  # PacID
+            session=session)
 # endset
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
+        kwargs["pac_id"] = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 # endset
         obj = model_class(*args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
+        obj.pac_id = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset
@@ -57,19 +60,22 @@ class RoleFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> Role:
+    def _create(cls, model_class, session, *args, **kwargs) -> Role:
         """
         #TODO add comment
         """
         logger.info("factory create")
-        pac_id_pac_instance = PacFactory.create(session=session)  # PacID
+        pac_id_pac_instance = PacFactory.create(  # PacID
+            session=session)
 # endset
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
+        kwargs["pac_id"] = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 # endset
         obj = model_class(*args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
+        obj.pac_id = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset
@@ -81,14 +87,17 @@ class RoleFactory(factory.Factory):
         """
             #TODO add comment
         """
-        pac_id_pac_instance = await PacFactory.create_async(session=session)  # PacID
+        pac_id_pac_instance = await PacFactory.create_async(  # PacID
+            session=session)
 # endset
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
+        kwargs["pac_id"] = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 # endset
         obj = RoleFactory.build(session=None, *args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
+        obj.pac_id = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset
@@ -100,14 +109,17 @@ class RoleFactory(factory.Factory):
         """
             #TODO add comment
         """
-        pac_id_pac_instance = await PacFactory.create_async(session=session)  # PacID
+        pac_id_pac_instance = await PacFactory.create_async(  # PacID
+            session=session)
 # endset
-        kwargs["pac_id"] = pac_id_pac_instance.pac_id  # PacID
+        kwargs["pac_id"] = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 # endset
         obj = RoleFactory.build(session=None, *args, **kwargs)
-        obj.pac_id = pac_id_pac_instance.pac_id  # PacID
+        obj.pac_id = (  # PacID
+            pac_id_pac_instance.pac_id)
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset

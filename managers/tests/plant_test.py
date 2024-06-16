@@ -1,7 +1,8 @@
 # models/managers/tests/plant_test.py
-
+# pylint: disable=protected-access
 """
     #TODO add comment
+    #TODO file too big. split into separate test files
 """
 
 import logging
@@ -70,7 +71,8 @@ class TestPlantManager:
             "non_existant_property": "Rose"
         }
 
-        # If the build method is expected to raise an exception for missing data, test for that
+        # If the build method is expected to raise an exception for
+        # missing data, test for that
         with pytest.raises(Exception):
             await plant_manager.build_async(**mock_data)
 
@@ -87,7 +89,7 @@ class TestPlantManager:
         """
         test_plant = await PlantFactory.build_async(session)
 
-        assert test_plant.plant_id is None
+        assert test_plant.plant_id == 0
 
         # Add the plant using the manager's add method
         added_plant = await plant_manager.add(plant=test_plant)
@@ -103,7 +105,10 @@ class TestPlantManager:
 
         # Fetch the plant from the database directly
         result = await session.execute(
-            select(Plant).filter(Plant.plant_id == added_plant.plant_id))
+            select(Plant).filter(
+                Plant._plant_id == added_plant.plant_id
+            )
+        )
         fetched_plant = result.scalars().first()
 
         # Assert that the fetched plant is not None and matches the added plant
@@ -123,7 +128,7 @@ class TestPlantManager:
         # Create a test plant using the PlantFactory without persisting it to the database
         test_plant = await PlantFactory.build_async(session)
 
-        assert test_plant.plant_id is None
+        assert test_plant.plant_id == 0
 
         test_plant.code = uuid.uuid4()
 
@@ -236,7 +241,7 @@ class TestPlantManager:
 
         result = await session.execute(
             select(Plant).filter(
-                Plant.plant_id == test_plant.plant_id)
+                Plant._plant_id == test_plant.plant_id)
         )
 
         fetched_plant = result.scalars().first()
@@ -276,7 +281,7 @@ class TestPlantManager:
 
         result = await session.execute(
             select(Plant).filter(
-                Plant.plant_id == test_plant.plant_id)
+                Plant._plant_id == test_plant.plant_id)
         )
 
         fetched_plant = result.scalars().first()
@@ -336,7 +341,7 @@ class TestPlantManager:
         plant_data = await PlantFactory.create_async(session)
 
         result = await session.execute(
-            select(Plant).filter(Plant.plant_id == plant_data.plant_id))
+            select(Plant).filter(Plant._plant_id == plant_data.plant_id))
         fetched_plant = result.scalars().first()
 
         assert isinstance(fetched_plant, Plant)
@@ -347,7 +352,7 @@ class TestPlantManager:
             plant_id=plant_data.plant_id)
 
         result = await session.execute(
-            select(Plant).filter(Plant.plant_id == plant_data.plant_id))
+            select(Plant).filter(Plant._plant_id == plant_data.plant_id))
         fetched_plant = result.scalars().first()
 
         assert fetched_plant is None
@@ -491,7 +496,7 @@ class TestPlantManager:
         for updated_plant in plants:
             result = await session.execute(
                 select(Plant).filter(
-                    Plant.plant_id == updated_plant.plant_id
+                    Plant._plant_id == updated_plant.plant_id
                 )
             )
             fetched_plant = result.scalars().first()
@@ -558,7 +563,7 @@ class TestPlantManager:
             str(plant_manager._session_context.customer_code))
 
         result = await session.execute(
-            select(Plant).filter(Plant.plant_id == 1)
+            select(Plant).filter(Plant._plant_id == 1)
         )
         fetched_plant = result.scalars().first()
 
@@ -567,7 +572,7 @@ class TestPlantManager:
         assert fetched_plant.code == code_updated1
 
         result = await session.execute(
-            select(Plant).filter(Plant.plant_id == 2)
+            select(Plant).filter(Plant._plant_id == 2)
         )
         fetched_plant = result.scalars().first()
 
@@ -649,7 +654,7 @@ class TestPlantManager:
 
         for plant_id in plant_ids:
             execute_result = await session.execute(
-                select(Plant).filter(Plant.plant_id == plant_id))
+                select(Plant).filter(Plant._plant_id == plant_id))
             fetched_plant = execute_result.scalars().first()
 
             assert fetched_plant is None
@@ -750,7 +755,7 @@ class TestPlantManager:
         plants_data = (
             [await PlantFactory.create_async(session) for _ in range(5)])
 
-        sorted_plants = await plant_manager.get_sorted_list(sort_by="plant_id")
+        sorted_plants = await plant_manager.get_sorted_list(sort_by="_plant_id")
 
         assert [plant.plant_id for plant in sorted_plants] == (
             [(i + 1) for i in range(5)])
@@ -814,7 +819,7 @@ class TestPlantManager:
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
-        result = await session.execute(select(Plant).filter(Plant.plant_id == plant1.plant_id))
+        result = await session.execute(select(Plant).filter(Plant._plant_id == plant1.plant_id))
         plant2 = result.scalars().first()
 
         assert plant1.code == plant2.code
@@ -946,7 +951,7 @@ class TestPlantManager:
         assert fetched_plants[0].code == plant1.code
 
         stmt = select(models.Flavor).where(
-            models.Flavor.flavor_id == plant1.flvr_foreign_key_id)
+            models.Flavor._flavor_id == plant1.flvr_foreign_key_id)
         result = await session.execute(stmt)
         flavor = result.scalars().first()
 

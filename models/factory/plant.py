@@ -82,25 +82,33 @@ class PlantFactory(factory.Factory):
             obj2 = model_class(*args, **kwargs)
             return obj2
 
-        land_id_land_instance = LandFactory.create(session=session)  # LandID
-        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(session=session)  # FlvrForeignKeyID
+        land_id_land_instance = LandFactory.create(  # LandID
+            session=session)
+        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(  # FlvrForeignKeyID
+            session=session)
 # endset
 
-        kwargs["land_id"] = land_id_land_instance.land_id  # LandID
-        kwargs["flvr_foreign_key_id"] = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        kwargs["land_id"] = (  # LandID
+            land_id_land_instance.land_id)
+        kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
 
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
-        kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         obj = model_class(*args, **kwargs)
 
-        obj.land_id = land_id_land_instance.land_id  # LandID
-        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        obj.land_id = (  # LandID
+            land_id_land_instance.land_id)
+        obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
         obj.land_code_peek = land_id_land_instance.code  # LandID
-        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         # session.add(obj)
@@ -114,25 +122,33 @@ class PlantFactory(factory.Factory):
         """
 
         logger.info("factory create")
-        land_id_land_instance = LandFactory.create(session=session)  # LandID
-        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(session=session)  # FlvrForeignKeyID
+        land_id_land_instance = LandFactory.create(  # LandID
+            session=session)
+        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(  # FlvrForeignKeyID
+            session=session)
 # endset
 
-        kwargs["land_id"] = land_id_land_instance.land_id  # LandID
-        kwargs["flvr_foreign_key_id"] = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        kwargs["land_id"] = (  # LandID
+            land_id_land_instance.land_id)
+        kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
 
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
-        kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         obj = model_class(*args, **kwargs)
 
-        obj.land_id = land_id_land_instance.land_id  # LandID
-        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        obj.land_id = (  # LandID
+            land_id_land_instance.land_id)
+        obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
         obj.land_code_peek = land_id_land_instance.code  # LandID
-        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         session.add(obj)
@@ -145,25 +161,33 @@ class PlantFactory(factory.Factory):
             #TODO add comment
         """
 
-        land_id_land_instance = await LandFactory.create_async(session=session)  # LandID
-        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(session=session)  # FlvrForeignKeyID
+        land_id_land_instance = await LandFactory.create_async(  # LandID
+            session=session)
+        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(  # FlvrForeignKeyID
+            session=session)
 # endset
 
-        kwargs["land_id"] = land_id_land_instance.land_id  # LandID
-        kwargs["flvr_foreign_key_id"] = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        kwargs["land_id"] = (  # LandID
+            land_id_land_instance.land_id)
+        kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
 
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
-        kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         obj = PlantFactory.build(session=None, *args, **kwargs)
 
-        obj.land_id = land_id_land_instance.land_id  # LandID
-        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        obj.land_id = (  # LandID
+            land_id_land_instance.land_id)
+        obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
         obj.land_code_peek = land_id_land_instance.code  # LandID
-        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         session.add(obj)
@@ -176,25 +200,33 @@ class PlantFactory(factory.Factory):
             #TODO add comment
         """
 
-        land_id_land_instance = await LandFactory.create_async(session=session)  # LandID
-        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(session=session)  # FlvrForeignKeyID
+        land_id_land_instance = await LandFactory.create_async(  # LandID
+            session=session)
+        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(  # FlvrForeignKeyID
+            session=session)
 # endset
 
-        kwargs["land_id"] = land_id_land_instance.land_id  # LandID
-        kwargs["flvr_foreign_key_id"] = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        kwargs["land_id"] = (  # LandID
+            land_id_land_instance.land_id)
+        kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
 
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
-        kwargs["flvr_foreign_key_code_peek"] = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         obj = PlantFactory.build(session=None, *args, **kwargs)
 
-        obj.land_id = land_id_land_instance.land_id  # LandID
-        obj.flvr_foreign_key_id = flvr_foreign_key_id_flavor_instance.flavor_id  # FlvrForeignKeyID
+        obj.land_id = (  # LandID
+            land_id_land_instance.land_id)
+        obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
         obj.land_code_peek = land_id_land_instance.code  # LandID
-        obj.flvr_foreign_key_code_peek = flvr_foreign_key_id_flavor_instance.code  # FlvrForeignKeyID
+        obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
+            flvr_foreign_key_id_flavor_instance.code)
 # endset
 
         # session.add(obj)

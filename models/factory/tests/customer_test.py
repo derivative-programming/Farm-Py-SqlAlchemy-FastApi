@@ -301,11 +301,11 @@ class TestCustomerFactory:
         customer = CustomerFactory.create(session=session)
         original_last_change_code = customer.last_change_code
         customer_1 = session.query(Customer).filter_by(
-            customer_id=customer.customer_id).first()
+            _customer_id=customer.customer_id).first()
         customer_1.code = uuid.uuid4()
         session.commit()
         customer_2 = session.query(Customer).filter_by(
-            customer_id=customer.customer_id).first()
+            _customer_id=customer.customer_id).first()
         customer_2.code = uuid.uuid4()
         session.commit()
         assert customer_2.last_change_code != original_last_change_code

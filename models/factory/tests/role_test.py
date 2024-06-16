@@ -225,11 +225,11 @@ class TestRoleFactory:
         role = RoleFactory.create(session=session)
         original_last_change_code = role.last_change_code
         role_1 = session.query(Role).filter_by(
-            role_id=role.role_id).first()
+            _role_id=role.role_id).first()
         role_1.code = uuid.uuid4()
         session.commit()
         role_2 = session.query(Role).filter_by(
-            role_id=role.role_id).first()
+            _role_id=role.role_id).first()
         role_2.code = uuid.uuid4()
         session.commit()
         assert role_2.last_change_code != original_last_change_code

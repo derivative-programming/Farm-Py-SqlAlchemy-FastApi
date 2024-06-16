@@ -145,7 +145,7 @@ class FlavorManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Flavor.pac_id == Pac.pac_id,
+            and_(Flavor.pac_id == Pac._pac_id,
                  Flavor.pac_id != 0)
         )
 # endset
@@ -171,7 +171,8 @@ class FlavorManager:
             pac = query_result_row[i]  # pac_id
             i = i + 1
 # endset
-            flavor.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
+            flavor.pac_code_peek = (  # pac_id
+                pac.code if pac else uuid.UUID(int=0))
 # endset
             result.append(flavor)
         return result
@@ -189,9 +190,10 @@ class FlavorManager:
             str(flavor_id))
         if not isinstance(flavor_id, int):
             raise TypeError(
-                "The flavor_id must be an integer, got %s instead.",
+                f"The flavor_id must be an integer, "
+                f"got %s instead.",
                 type(flavor_id))
-        query_filter = Flavor.flavor_id == flavor_id
+        query_filter = Flavor._flavor_id == flavor_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Flavor]:
@@ -199,7 +201,7 @@ class FlavorManager:
             #TODO add comment
         """
         logging.info("FlavorManager.get_by_code %s", code)
-        query_filter = Flavor._code == str(code)
+        query_filter = Flavor._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, flavor: Flavor, **kwargs) -> Optional[Flavor]:
@@ -224,7 +226,8 @@ class FlavorManager:
         logging.info("FlavorManager.delete %s", flavor_id)
         if not isinstance(flavor_id, int):
             raise TypeError(
-                f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+                f"The flavor_id must be an integer, "
+                f"got {type(flavor_id)} instead."
             )
         flavor = await self.get_by_id(flavor_id)
         if not flavor:
@@ -305,7 +308,8 @@ class FlavorManager:
             flavor_id = update.get("flavor_id")
             if not isinstance(flavor_id, int):
                 raise TypeError(
-                    f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+                    f"The flavor_id must be an integer, "
+                    f"got {type(flavor_id)} instead."
                 )
             if not flavor_id:
                 continue
@@ -331,7 +335,8 @@ class FlavorManager:
         for flavor_id in flavor_ids:
             if not isinstance(flavor_id, int):
                 raise TypeError(
-                    f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+                    f"The flavor_id must be an integer, "
+                    f"got {type(flavor_id)} instead."
                 )
             flavor = await self.get_by_id(flavor_id)
             if not flavor:
@@ -357,6 +362,8 @@ class FlavorManager:
         """
         Retrieve flavors sorted by a particular attribute.
         """
+        if sort_by == "flavor_id":
+            sort_by = "_flavor_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Flavor).order_by(getattr(Flavor, sort_by).asc()))
@@ -378,7 +385,8 @@ class FlavorManager:
         logging.info("FlavorManager.exists %s", flavor_id)
         if not isinstance(flavor_id, int):
             raise TypeError(
-                f"The flavor_id must be an integer, got {type(flavor_id)} instead."
+                f"The flavor_id must be an integer, "
+                f"got {type(flavor_id)} instead."
             )
         flavor = await self.get_by_id(flavor_id)
         return bool(flavor)
@@ -405,7 +413,8 @@ class FlavorManager:
         logging.info("FlavorManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The flavor_id must be an integer, got {type(pac_id)} instead."
+                f"The flavor_id must be an integer, "
+                f"got {type(pac_id)} instead."
             )
         query_filter = Flavor.pac_id == pac_id
         query_results = await self._run_query(query_filter)

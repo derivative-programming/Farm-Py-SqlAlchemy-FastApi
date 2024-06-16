@@ -1,4 +1,5 @@
 # apis/models/tests/land_user_plant_multi_select_to_editable_test.py
+# pylint: disable=unused-argument
 """
     #TODO add comment
 """
@@ -24,8 +25,8 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
             #TODO add comment
         """
         async def mock_process(
-            land_bus_obj: LandBusObj,  # pylint: disable=unused-argument
-            plant_code_list_csv: str = "",  # pylint: disable=unused-argument
+            land_bus_obj: LandBusObj,
+            plant_code_list_csv: str = "",
         ):
             return FlowLandUserPlantMultiSelectToEditableResult()
         with patch.object(

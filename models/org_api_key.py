@@ -18,7 +18,7 @@ class OrgApiKey(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('OrgApiKey')
-    org_api_key_id = Column(
+    _org_api_key_id = Column(
         'org_api_key_id',
         Integer,
         primary_key=True,
@@ -200,6 +200,18 @@ class OrgApiKey(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def org_api_key_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_org_api_key_id', 0) or 0
+    @org_api_key_id.setter
+    def org_api_key_id(self, value: int) -> None:
+        """
+        Set the org_api_key_id.
+        """
+        self._org_api_key_id = value
     @property
     def insert_user_id(self):
         """

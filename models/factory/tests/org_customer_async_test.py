@@ -185,7 +185,7 @@ class TestOrgCustomerFactoryAsync:
         await session.delete(org_customer)
         await session.commit()
         # Construct the select statement
-        stmt = select(OrgCustomer).where(OrgCustomer.org_customer_id == org_customer.org_customer_id)
+        stmt = select(OrgCustomer).where(OrgCustomer._org_customer_id == org_customer.org_customer_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -260,14 +260,14 @@ class TestOrgCustomerFactoryAsync:
         """
         org_customer = await OrgCustomerFactory.create_async(session=session)
         original_last_change_code = org_customer.last_change_code
-        stmt = select(OrgCustomer).where(OrgCustomer.org_customer_id == org_customer.org_customer_id)
+        stmt = select(OrgCustomer).where(OrgCustomer._org_customer_id == org_customer.org_customer_id)
         result = await session.execute(stmt)
         org_customer_1 = result.scalars().first()
         # org_customer_1 = await session.query(OrgCustomer).filter_by(
         # org_customer_id=org_customer.org_customer_id).first()
         org_customer_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(OrgCustomer).where(OrgCustomer.org_customer_id == org_customer.org_customer_id)
+        stmt = select(OrgCustomer).where(OrgCustomer._org_customer_id == org_customer.org_customer_id)
         result = await session.execute(stmt)
         org_customer_2 = result.scalars().first()
         # org_customer_2 = await session.query(OrgCustomer).filter_by(

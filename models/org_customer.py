@@ -18,7 +18,7 @@ class OrgCustomer(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('OrgCustomer')
-    org_customer_id = Column(
+    _org_customer_id = Column(
         'org_customer_id',
         Integer,
         primary_key=True,
@@ -130,6 +130,18 @@ class OrgCustomer(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def org_customer_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_org_customer_id', 0) or 0
+    @org_customer_id.setter
+    def org_customer_id(self, value: int) -> None:
+        """
+        Set the org_customer_id.
+        """
+        self._org_customer_id = value
     @property
     def insert_user_id(self):
         """

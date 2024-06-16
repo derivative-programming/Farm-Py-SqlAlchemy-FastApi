@@ -94,12 +94,12 @@ class OrgCustomerManager:
 # endset
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(OrgCustomer.customer_id == Customer.customer_id,
+            and_(OrgCustomer.customer_id == Customer._customer_id,
                  OrgCustomer.customer_id != 0)
         )
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgCustomer.organization_id == Organization.organization_id,
+            and_(OrgCustomer.organization_id == Organization._organization_id,
                  OrgCustomer.organization_id != 0)
         )
 # endset
@@ -127,8 +127,10 @@ class OrgCustomerManager:
             organization = query_result_row[i]  # organization_id
             i = i + 1
 # endset
-            org_customer.customer_code_peek = customer.code if customer else uuid.UUID(int=0)  # customer_id
-            org_customer.organization_code_peek = organization.code if organization else uuid.UUID(int=0)  # organization_id
+            org_customer.customer_code_peek = (  # customer_id
+                customer.code if customer else uuid.UUID(int=0))
+            org_customer.organization_code_peek = (  # organization_id
+                organization.code if organization else uuid.UUID(int=0))
 # endset
             result.append(org_customer)
         return result
@@ -146,9 +148,10 @@ class OrgCustomerManager:
             str(org_customer_id))
         if not isinstance(org_customer_id, int):
             raise TypeError(
-                "The org_customer_id must be an integer, got %s instead.",
+                f"The org_customer_id must be an integer, "
+                f"got %s instead.",
                 type(org_customer_id))
-        query_filter = OrgCustomer.org_customer_id == org_customer_id
+        query_filter = OrgCustomer._org_customer_id == org_customer_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgCustomer]:
@@ -156,7 +159,7 @@ class OrgCustomerManager:
             #TODO add comment
         """
         logging.info("OrgCustomerManager.get_by_code %s", code)
-        query_filter = OrgCustomer._code == str(code)
+        query_filter = OrgCustomer._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, org_customer: OrgCustomer, **kwargs) -> Optional[OrgCustomer]:
@@ -181,7 +184,8 @@ class OrgCustomerManager:
         logging.info("OrgCustomerManager.delete %s", org_customer_id)
         if not isinstance(org_customer_id, int):
             raise TypeError(
-                f"The org_customer_id must be an integer, got {type(org_customer_id)} instead."
+                f"The org_customer_id must be an integer, "
+                f"got {type(org_customer_id)} instead."
             )
         org_customer = await self.get_by_id(org_customer_id)
         if not org_customer:
@@ -262,7 +266,8 @@ class OrgCustomerManager:
             org_customer_id = update.get("org_customer_id")
             if not isinstance(org_customer_id, int):
                 raise TypeError(
-                    f"The org_customer_id must be an integer, got {type(org_customer_id)} instead."
+                    f"The org_customer_id must be an integer, "
+                    f"got {type(org_customer_id)} instead."
                 )
             if not org_customer_id:
                 continue
@@ -288,7 +293,8 @@ class OrgCustomerManager:
         for org_customer_id in org_customer_ids:
             if not isinstance(org_customer_id, int):
                 raise TypeError(
-                    f"The org_customer_id must be an integer, got {type(org_customer_id)} instead."
+                    f"The org_customer_id must be an integer, "
+                    f"got {type(org_customer_id)} instead."
                 )
             org_customer = await self.get_by_id(org_customer_id)
             if not org_customer:
@@ -314,6 +320,8 @@ class OrgCustomerManager:
         """
         Retrieve org_customers sorted by a particular attribute.
         """
+        if sort_by == "org_customer_id":
+            sort_by = "_org_customer_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(OrgCustomer).order_by(getattr(OrgCustomer, sort_by).asc()))
@@ -335,7 +343,8 @@ class OrgCustomerManager:
         logging.info("OrgCustomerManager.exists %s", org_customer_id)
         if not isinstance(org_customer_id, int):
             raise TypeError(
-                f"The org_customer_id must be an integer, got {type(org_customer_id)} instead."
+                f"The org_customer_id must be an integer, "
+                f"got {type(org_customer_id)} instead."
             )
         org_customer = await self.get_by_id(org_customer_id)
         return bool(org_customer)
@@ -365,7 +374,8 @@ class OrgCustomerManager:
         logging.info("OrgCustomerManager.get_by_customer_id")
         if not isinstance(customer_id, int):
             raise TypeError(
-                f"The org_customer_id must be an integer, got {type(customer_id)} instead."
+                f"The org_customer_id must be an integer, "
+                f"got {type(customer_id)} instead."
             )
         query_filter = OrgCustomer.customer_id == customer_id
         query_results = await self._run_query(query_filter)
@@ -377,7 +387,8 @@ class OrgCustomerManager:
         logging.info("OrgCustomerManager.get_by_organization_id")
         if not isinstance(organization_id, int):
             raise TypeError(
-                f"The org_customer_id must be an integer, got {type(organization_id)} instead."
+                f"The org_customer_id must be an integer, "
+                f"got {type(organization_id)} instead."
             )
         query_filter = OrgCustomer.organization_id == organization_id
         query_results = await self._run_query(query_filter)

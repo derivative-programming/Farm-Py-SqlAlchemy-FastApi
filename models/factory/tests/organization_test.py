@@ -209,11 +209,11 @@ class TestOrganizationFactory:
         organization = OrganizationFactory.create(session=session)
         original_last_change_code = organization.last_change_code
         organization_1 = session.query(Organization).filter_by(
-            organization_id=organization.organization_id).first()
+            _organization_id=organization.organization_id).first()
         organization_1.code = uuid.uuid4()
         session.commit()
         organization_2 = session.query(Organization).filter_by(
-            organization_id=organization.organization_id).first()
+            _organization_id=organization.organization_id).first()
         organization_2.code = uuid.uuid4()
         session.commit()
         assert organization_2.last_change_code != original_last_change_code

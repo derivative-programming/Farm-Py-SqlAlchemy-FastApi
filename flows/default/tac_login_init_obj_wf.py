@@ -73,12 +73,20 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
 # endset
         # TODO: add flow logic
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Building result")
         result = FlowTacLoginInitObjWFResult()
         result.context_object_code = tac_bus_obj.code
-        result.email = email_output
-        result.password = password_output
+        result.email = (
+            email_output)
+        result.password = (
+            password_output)
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Result:" + result.to_json())
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "End")
         return result

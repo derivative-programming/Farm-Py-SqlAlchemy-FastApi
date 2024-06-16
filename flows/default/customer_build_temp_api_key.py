@@ -70,11 +70,18 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
 # endset
         # TODO: add flow logic
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Building result")
         result = FlowCustomerBuildTempApiKeyResult()
         result.context_object_code = customer_bus_obj.code
-        result.tmp_org_api_key_code = tmp_org_api_key_code_output
+        result.tmp_org_api_key_code = (
+            tmp_org_api_key_code_output)
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Result:" + result.to_json())
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "End")
         return result

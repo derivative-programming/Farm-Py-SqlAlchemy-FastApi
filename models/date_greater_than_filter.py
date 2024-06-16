@@ -18,7 +18,7 @@ class DateGreaterThanFilter(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('DateGreaterThanFilter')
-    date_greater_than_filter_id = Column(
+    _date_greater_than_filter_id = Column(
         'date_greater_than_filter_id',
         Integer,
         primary_key=True,
@@ -175,6 +175,18 @@ class DateGreaterThanFilter(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def date_greater_than_filter_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_date_greater_than_filter_id', 0) or 0
+    @date_greater_than_filter_id.setter
+    def date_greater_than_filter_id(self, value: int) -> None:
+        """
+        Set the date_greater_than_filter_id.
+        """
+        self._date_greater_than_filter_id = value
     @property
     def insert_user_id(self):
         """

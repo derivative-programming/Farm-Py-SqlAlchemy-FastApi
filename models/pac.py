@@ -18,7 +18,7 @@ class Pac(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('Pac')
-    pac_id = Column(
+    _pac_id = Column(
         'pac_id',
         Integer,
         primary_key=True,
@@ -152,6 +152,18 @@ class Pac(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def pac_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_pac_id', 0) or 0
+    @pac_id.setter
+    def pac_id(self, value: int) -> None:
+        """
+        Set the pac_id.
+        """
+        self._pac_id = value
     @property
     def insert_user_id(self):
         """

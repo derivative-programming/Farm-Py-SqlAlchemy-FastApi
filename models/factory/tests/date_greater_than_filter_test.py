@@ -229,11 +229,11 @@ class TestDateGreaterThanFilterFactory:
         date_greater_than_filter = DateGreaterThanFilterFactory.create(session=session)
         original_last_change_code = date_greater_than_filter.last_change_code
         date_greater_than_filter_1 = session.query(DateGreaterThanFilter).filter_by(
-            date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
+            _date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
         date_greater_than_filter_1.code = uuid.uuid4()
         session.commit()
         date_greater_than_filter_2 = session.query(DateGreaterThanFilter).filter_by(
-            date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
+            _date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
         date_greater_than_filter_2.code = uuid.uuid4()
         session.commit()
         assert date_greater_than_filter_2.last_change_code != original_last_change_code

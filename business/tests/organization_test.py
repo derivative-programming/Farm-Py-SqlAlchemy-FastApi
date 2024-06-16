@@ -52,7 +52,7 @@ class TestOrganizationBusObj:
             #TODO add comment
         """
         # Test creating a new organization
-        assert organization_bus_obj.organization_id is None
+        assert organization_bus_obj.organization_id == 0
         # assert isinstance(organization_bus_obj.organization_id, int)
         assert isinstance(organization_bus_obj.code, uuid.UUID)
         assert isinstance(organization_bus_obj.last_change_code, int)
@@ -137,7 +137,8 @@ class TestOrganizationBusObj:
         """
         # Test retrieving a nonexistent organization raises an exception
         await organization_bus_obj.load_from_id(-1)
-        assert organization_bus_obj.is_valid() is False  # Assuming -1 is an id that wouldn't exist
+        # Assuming -1 is an id that wouldn't exist
+        assert organization_bus_obj.is_valid() is False
     @pytest.mark.asyncio
     async def test_update_organization(
         self,
@@ -172,7 +173,7 @@ class TestOrganizationBusObj:
             #TODO add comment
         """
         assert new_organization.organization_id is not None
-        assert organization_bus_obj.organization_id is None
+        assert organization_bus_obj.organization_id == 0
         new_organization_organization_id_value = new_organization.organization_id
         await organization_bus_obj.load_from_id(new_organization_organization_id_value)
         assert organization_bus_obj.organization_id is not None

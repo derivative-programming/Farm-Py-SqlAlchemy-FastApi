@@ -1,16 +1,17 @@
 # flows/base/tests/error_log_config_resolve_error_log_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
-from flows.base.error_log_config_resolve_error_log import BaseFlowErrorLogConfigResolveErrorLog
+from flows.base.error_log_config_resolve_error_log import (
+    BaseFlowErrorLogConfigResolveErrorLog)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models.factory.flavor import FlavorFactory
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.error_log import ErrorLogFactory
 class TestBaseFlowErrorLogConfigResolveErrorLog():
     """
@@ -24,7 +25,6 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         session_context = SessionContext(dict(), session)
         flow = BaseFlowErrorLogConfigResolveErrorLog(session_context)
         error_log = await ErrorLogFactory.create_async(session)
-        flavor = await FlavorFactory.create_async(session)
 
 # endset
         # Call the method being tested

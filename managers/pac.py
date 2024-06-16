@@ -164,9 +164,10 @@ class PacManager:
             str(pac_id))
         if not isinstance(pac_id, int):
             raise TypeError(
-                "The pac_id must be an integer, got %s instead.",
+                f"The pac_id must be an integer, "
+                f"got %s instead.",
                 type(pac_id))
-        query_filter = Pac.pac_id == pac_id
+        query_filter = Pac._pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Pac]:
@@ -174,7 +175,7 @@ class PacManager:
             #TODO add comment
         """
         logging.info("PacManager.get_by_code %s", code)
-        query_filter = Pac._code == str(code)
+        query_filter = Pac._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, pac: Pac, **kwargs) -> Optional[Pac]:
@@ -199,7 +200,8 @@ class PacManager:
         logging.info("PacManager.delete %s", pac_id)
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The pac_id must be an integer, got {type(pac_id)} instead."
+                f"The pac_id must be an integer, "
+                f"got {type(pac_id)} instead."
             )
         pac = await self.get_by_id(pac_id)
         if not pac:
@@ -280,7 +282,8 @@ class PacManager:
             pac_id = update.get("pac_id")
             if not isinstance(pac_id, int):
                 raise TypeError(
-                    f"The pac_id must be an integer, got {type(pac_id)} instead."
+                    f"The pac_id must be an integer, "
+                    f"got {type(pac_id)} instead."
                 )
             if not pac_id:
                 continue
@@ -306,7 +309,8 @@ class PacManager:
         for pac_id in pac_ids:
             if not isinstance(pac_id, int):
                 raise TypeError(
-                    f"The pac_id must be an integer, got {type(pac_id)} instead."
+                    f"The pac_id must be an integer, "
+                    f"got {type(pac_id)} instead."
                 )
             pac = await self.get_by_id(pac_id)
             if not pac:
@@ -332,6 +336,8 @@ class PacManager:
         """
         Retrieve pacs sorted by a particular attribute.
         """
+        if sort_by == "pac_id":
+            sort_by = "_pac_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Pac).order_by(getattr(Pac, sort_by).asc()))
@@ -353,7 +359,8 @@ class PacManager:
         logging.info("PacManager.exists %s", pac_id)
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The pac_id must be an integer, got {type(pac_id)} instead."
+                f"The pac_id must be an integer, "
+                f"got {type(pac_id)} instead."
             )
         pac = await self.get_by_id(pac_id)
         return bool(pac)

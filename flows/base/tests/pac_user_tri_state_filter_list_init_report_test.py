@@ -1,16 +1,17 @@
 # flows/base/tests/pac_user_tri_state_filter_list_init_report_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.pac_user_tri_state_filter_list_init_report as FlowConstants
-from flows.base.pac_user_tri_state_filter_list_init_report import BaseFlowPacUserTriStateFilterListInitReport
+from flows.base.pac_user_tri_state_filter_list_init_report import (
+    BaseFlowPacUserTriStateFilterListInitReport)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models.factory.flavor import FlavorFactory
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
 class TestBaseFlowPacUserTriStateFilterListInitReport():
     """
@@ -24,7 +25,6 @@ class TestBaseFlowPacUserTriStateFilterListInitReport():
         session_context = SessionContext(dict(), session)
         flow = BaseFlowPacUserTriStateFilterListInitReport(session_context)
         pac = await PacFactory.create_async(session)
-        flavor = await FlavorFactory.create_async(session)
 
 # endset
         # Call the method being tested

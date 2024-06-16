@@ -173,7 +173,8 @@ class TestOrganizationSchema:
         # Verify the keys in both dictionaries match
         assert set(organization_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(organization_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(organization_dict_from_json.keys())}"
         )
         assert organization_dict_from_json['code'] == str(organization.code), (
             "failed on code"

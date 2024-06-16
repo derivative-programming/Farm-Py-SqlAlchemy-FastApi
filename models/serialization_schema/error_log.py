@@ -15,6 +15,7 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
         """
         model = ErrorLog
         exclude = (
+            "_error_log_id",
             "_code",
             "_insert_user_id",
             "_last_update_user_id",

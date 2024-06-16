@@ -1,6 +1,8 @@
 # models/managers/tests/land_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
+    #TODO file too big. split into separate test files
 """
 import logging
 import uuid
@@ -57,7 +59,8 @@ class TestLandManager:
         mock_data = {
             "non_existant_property": "Rose"
         }
-        # If the build method is expected to raise an exception for missing data, test for that
+        # If the build method is expected to raise an exception for
+        # missing data, test for that
         with pytest.raises(Exception):
             await land_manager.build_async(**mock_data)
         await session.rollback()
@@ -71,7 +74,7 @@ class TestLandManager:
             #TODO add comment
         """
         test_land = await LandFactory.build_async(session)
-        assert test_land.land_id is None
+        assert test_land.land_id == 0
         # Add the land using the manager's add method
         added_land = await land_manager.add(land=test_land)
         assert isinstance(added_land, Land)
@@ -82,7 +85,10 @@ class TestLandManager:
         assert added_land.land_id > 0
         # Fetch the land from the database directly
         result = await session.execute(
-            select(Land).filter(Land.land_id == added_land.land_id))
+            select(Land).filter(
+                Land._land_id == added_land.land_id
+            )
+        )
         fetched_land = result.scalars().first()
         # Assert that the fetched land is not None and matches the added land
         assert fetched_land is not None
@@ -99,7 +105,7 @@ class TestLandManager:
         """
         # Create a test land using the LandFactory without persisting it to the database
         test_land = await LandFactory.build_async(session)
-        assert test_land.land_id is None
+        assert test_land.land_id == 0
         test_land.code = uuid.uuid4()
         # Add the land using the manager's add method
         added_land = await land_manager.add(land=test_land)
@@ -183,7 +189,7 @@ class TestLandManager:
         assert updated_land.code == test_land.code
         result = await session.execute(
             select(Land).filter(
-                Land.land_id == test_land.land_id)
+                Land._land_id == test_land.land_id)
         )
         fetched_land = result.scalars().first()
         assert updated_land.land_id == fetched_land.land_id
@@ -213,7 +219,7 @@ class TestLandManager:
         assert updated_land.code == new_code
         result = await session.execute(
             select(Land).filter(
-                Land.land_id == test_land.land_id)
+                Land._land_id == test_land.land_id)
         )
         fetched_land = result.scalars().first()
         assert updated_land.land_id == fetched_land.land_id
@@ -259,14 +265,14 @@ class TestLandManager:
         """
         land_data = await LandFactory.create_async(session)
         result = await session.execute(
-            select(Land).filter(Land.land_id == land_data.land_id))
+            select(Land).filter(Land._land_id == land_data.land_id))
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.land_id == land_data.land_id
         deleted_land = await land_manager.delete(
             land_id=land_data.land_id)
         result = await session.execute(
-            select(Land).filter(Land.land_id == land_data.land_id))
+            select(Land).filter(Land._land_id == land_data.land_id))
         fetched_land = result.scalars().first()
         assert fetched_land is None
     @pytest.mark.asyncio
@@ -377,7 +383,7 @@ class TestLandManager:
         for updated_land in lands:
             result = await session.execute(
                 select(Land).filter(
-                    Land.land_id == updated_land.land_id
+                    Land._land_id == updated_land.land_id
                 )
             )
             fetched_land = result.scalars().first()
@@ -432,13 +438,13 @@ class TestLandManager:
         assert str(updated_lands[1].last_update_user_id) == (
             str(land_manager._session_context.customer_code))
         result = await session.execute(
-            select(Land).filter(Land.land_id == 1)
+            select(Land).filter(Land._land_id == 1)
         )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.code == code_updated1
         result = await session.execute(
-            select(Land).filter(Land.land_id == 2)
+            select(Land).filter(Land._land_id == 2)
         )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
@@ -501,7 +507,7 @@ class TestLandManager:
         assert result is True
         for land_id in land_ids:
             execute_result = await session.execute(
-                select(Land).filter(Land.land_id == land_id))
+                select(Land).filter(Land._land_id == land_id))
             fetched_land = execute_result.scalars().first()
             assert fetched_land is None
     @pytest.mark.asyncio
@@ -580,7 +586,7 @@ class TestLandManager:
         # Add lands
         lands_data = (
             [await LandFactory.create_async(session) for _ in range(5)])
-        sorted_lands = await land_manager.get_sorted_list(sort_by="land_id")
+        sorted_lands = await land_manager.get_sorted_list(sort_by="_land_id")
         assert [land.land_id for land in sorted_lands] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -632,7 +638,7 @@ class TestLandManager:
         """
         # Add a land
         land1 = await LandFactory.create_async(session=session)
-        result = await session.execute(select(Land).filter(Land.land_id == land1.land_id))
+        result = await session.execute(select(Land).filter(Land._land_id == land1.land_id))
         land2 = result.scalars().first()
         assert land1.code == land2.code
         updated_code1 = uuid.uuid4()

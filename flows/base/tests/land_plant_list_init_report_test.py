@@ -1,16 +1,17 @@
 # flows/base/tests/land_plant_list_init_report_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.land_plant_list_init_report as FlowConstants
-from flows.base.land_plant_list_init_report import BaseFlowLandPlantListInitReport
+from flows.base.land_plant_list_init_report import (
+    BaseFlowLandPlantListInitReport)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models.factory.flavor import FlavorFactory
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.land import LandFactory
 class TestBaseFlowLandPlantListInitReport():
     """
@@ -24,7 +25,6 @@ class TestBaseFlowLandPlantListInitReport():
         session_context = SessionContext(dict(), session)
         flow = BaseFlowLandPlantListInitReport(session_context)
         land = await LandFactory.create_async(session)
-        flavor = await FlavorFactory.create_async(session)
 
 # endset
         # Call the method being tested

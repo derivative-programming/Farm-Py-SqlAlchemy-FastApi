@@ -59,14 +59,17 @@ class CustomerFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        tac_id_tac_instance = TacFactory.create(session=session)  # TacID
+        tac_id_tac_instance = TacFactory.create(  # TacID
+            session=session)
 # endset
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
+        kwargs["tac_id"] = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 # endset
         obj = model_class(*args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
+        obj.tac_id = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 # endset
@@ -74,19 +77,22 @@ class CustomerFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> Customer:
+    def _create(cls, model_class, session, *args, **kwargs) -> Customer:
         """
         #TODO add comment
         """
         logger.info("factory create")
-        tac_id_tac_instance = TacFactory.create(session=session)  # TacID
+        tac_id_tac_instance = TacFactory.create(  # TacID
+            session=session)
 # endset
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
+        kwargs["tac_id"] = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 # endset
         obj = model_class(*args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
+        obj.tac_id = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 # endset
@@ -98,14 +104,17 @@ class CustomerFactory(factory.Factory):
         """
             #TODO add comment
         """
-        tac_id_tac_instance = await TacFactory.create_async(session=session)  # TacID
+        tac_id_tac_instance = await TacFactory.create_async(  # TacID
+            session=session)
 # endset
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
+        kwargs["tac_id"] = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 # endset
         obj = CustomerFactory.build(session=None, *args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
+        obj.tac_id = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 # endset
@@ -117,14 +126,17 @@ class CustomerFactory(factory.Factory):
         """
             #TODO add comment
         """
-        tac_id_tac_instance = await TacFactory.create_async(session=session)  # TacID
+        tac_id_tac_instance = await TacFactory.create_async(  # TacID
+            session=session)
 # endset
-        kwargs["tac_id"] = tac_id_tac_instance.tac_id  # TacID
+        kwargs["tac_id"] = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 # endset
         obj = CustomerFactory.build(session=None, *args, **kwargs)
-        obj.tac_id = tac_id_tac_instance.tac_id  # TacID
+        obj.tac_id = (  # TacID
+            tac_id_tac_instance.tac_id)
 # endset
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
 # endset

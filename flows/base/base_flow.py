@@ -28,10 +28,14 @@ class BaseFlow():
     def _add_validation_error(self, message: str):
         self._add_field_validation_error("", message)
 
-    def _add_field_validation_error(self, field_name: str = "", message: str = ""):
+    def _add_field_validation_error(
+            self,
+            field_name: str = "",
+            message: str = ""):
         if field_name in self.queued_validation_errors:
             current_val = self.queued_validation_errors[field_name]
-            self.queued_validation_errors[field_name] = current_val + ',' + message
+            self.queued_validation_errors[field_name] = (
+                current_val + ',' + message)
         else:
             self.queued_validation_errors[field_name] = message
 
@@ -46,9 +50,15 @@ class BaseFlow():
             raise FlowValidationError(error_dict=self.queued_validation_errors)
 
     def _log_exception(self, ex: Exception):
-        self._log_message_and_severity(LogSeverity.error_occurred, str(ex))
+        self._log_message_and_severity(
+            LogSeverity.error_occurred,
+            str(ex))
 
-    def _log_message_and_severity(self, log_severity: int, message: str):
+    def _log_message_and_severity(
+        self,
+        log_severity: LogSeverity,
+        message: str
+    ):
 
         log_message = self.__flow_name + " " + message
 

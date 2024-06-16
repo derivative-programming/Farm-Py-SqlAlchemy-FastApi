@@ -223,7 +223,7 @@ class TestPlantFactoryAsync:
         await session.commit()
 
         # Construct the select statement
-        stmt = select(Plant).where(Plant.plant_id == plant.plant_id)
+        stmt = select(Plant).where(Plant._plant_id == plant.plant_id)
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -391,7 +391,7 @@ class TestPlantFactoryAsync:
         plant = await PlantFactory.create_async(session=session)
         original_last_change_code = plant.last_change_code
 
-        stmt = select(Plant).where(Plant.plant_id == plant.plant_id)
+        stmt = select(Plant).where(Plant._plant_id == plant.plant_id)
         result = await session.execute(stmt)
         plant_1 = result.scalars().first()
 
@@ -400,7 +400,7 @@ class TestPlantFactoryAsync:
         plant_1.code = uuid.uuid4()
         await session.commit()
 
-        stmt = select(Plant).where(Plant.plant_id == plant.plant_id)
+        stmt = select(Plant).where(Plant._plant_id == plant.plant_id)
         result = await session.execute(stmt)
         plant_2 = result.scalars().first()
 

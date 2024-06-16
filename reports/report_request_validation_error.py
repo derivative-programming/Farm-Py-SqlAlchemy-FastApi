@@ -11,6 +11,10 @@ class ReportRequestValidationError(Exception):
     error_dict: dict
 
     def __init__(self, field_name: str, message: str):
+        """
+        #TODO add comment
+        """
+
         if field_name is not None and message is not None:
             self.error_dict = dict()
             self.error_dict[field_name] = message

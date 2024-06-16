@@ -218,11 +218,11 @@ class TestOrgCustomerFactory:
         org_customer = OrgCustomerFactory.create(session=session)
         original_last_change_code = org_customer.last_change_code
         org_customer_1 = session.query(OrgCustomer).filter_by(
-            org_customer_id=org_customer.org_customer_id).first()
+            _org_customer_id=org_customer.org_customer_id).first()
         org_customer_1.code = uuid.uuid4()
         session.commit()
         org_customer_2 = session.query(OrgCustomer).filter_by(
-            org_customer_id=org_customer.org_customer_id).first()
+            _org_customer_id=org_customer.org_customer_id).first()
         org_customer_2.code = uuid.uuid4()
         session.commit()
         assert org_customer_2.last_change_code != original_last_change_code

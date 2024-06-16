@@ -209,7 +209,8 @@ class TestTacSchema:
         # Verify the keys in both dictionaries match
         assert set(tac_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(tac_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(tac_dict_from_json.keys())}"
         )
         assert tac_dict_from_json['code'] == str(tac.code), (
             "failed on code"

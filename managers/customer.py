@@ -90,7 +90,7 @@ class CustomerManager:
 # endset
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Customer.tac_id == Tac.tac_id,
+            and_(Customer.tac_id == Tac._tac_id,
                  Customer.tac_id != 0)
         )
 # endset
@@ -116,7 +116,8 @@ class CustomerManager:
             tac = query_result_row[i]  # tac_id
             i = i + 1
 # endset
-            customer.tac_code_peek = tac.code if tac else uuid.UUID(int=0)  # tac_id
+            customer.tac_code_peek = (  # tac_id
+                tac.code if tac else uuid.UUID(int=0))
 # endset
             result.append(customer)
         return result
@@ -134,9 +135,10 @@ class CustomerManager:
             str(customer_id))
         if not isinstance(customer_id, int):
             raise TypeError(
-                "The customer_id must be an integer, got %s instead.",
+                f"The customer_id must be an integer, "
+                f"got %s instead.",
                 type(customer_id))
-        query_filter = Customer.customer_id == customer_id
+        query_filter = Customer._customer_id == customer_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Customer]:
@@ -144,7 +146,7 @@ class CustomerManager:
             #TODO add comment
         """
         logging.info("CustomerManager.get_by_code %s", code)
-        query_filter = Customer._code == str(code)
+        query_filter = Customer._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, customer: Customer, **kwargs) -> Optional[Customer]:
@@ -169,7 +171,8 @@ class CustomerManager:
         logging.info("CustomerManager.delete %s", customer_id)
         if not isinstance(customer_id, int):
             raise TypeError(
-                f"The customer_id must be an integer, got {type(customer_id)} instead."
+                f"The customer_id must be an integer, "
+                f"got {type(customer_id)} instead."
             )
         customer = await self.get_by_id(customer_id)
         if not customer:
@@ -250,7 +253,8 @@ class CustomerManager:
             customer_id = update.get("customer_id")
             if not isinstance(customer_id, int):
                 raise TypeError(
-                    f"The customer_id must be an integer, got {type(customer_id)} instead."
+                    f"The customer_id must be an integer, "
+                    f"got {type(customer_id)} instead."
                 )
             if not customer_id:
                 continue
@@ -276,7 +280,8 @@ class CustomerManager:
         for customer_id in customer_ids:
             if not isinstance(customer_id, int):
                 raise TypeError(
-                    f"The customer_id must be an integer, got {type(customer_id)} instead."
+                    f"The customer_id must be an integer, "
+                    f"got {type(customer_id)} instead."
                 )
             customer = await self.get_by_id(customer_id)
             if not customer:
@@ -302,6 +307,8 @@ class CustomerManager:
         """
         Retrieve customers sorted by a particular attribute.
         """
+        if sort_by == "customer_id":
+            sort_by = "_customer_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Customer).order_by(getattr(Customer, sort_by).asc()))
@@ -323,7 +330,8 @@ class CustomerManager:
         logging.info("CustomerManager.exists %s", customer_id)
         if not isinstance(customer_id, int):
             raise TypeError(
-                f"The customer_id must be an integer, got {type(customer_id)} instead."
+                f"The customer_id must be an integer, "
+                f"got {type(customer_id)} instead."
             )
         customer = await self.get_by_id(customer_id)
         return bool(customer)
@@ -350,7 +358,8 @@ class CustomerManager:
         logging.info("CustomerManager.get_by_tac_id")
         if not isinstance(tac_id, int):
             raise TypeError(
-                f"The customer_id must be an integer, got {type(tac_id)} instead."
+                f"The customer_id must be an integer, "
+                f"got {type(tac_id)} instead."
             )
         query_filter = Customer.tac_id == tac_id
         query_results = await self._run_query(query_filter)
@@ -358,11 +367,11 @@ class CustomerManager:
 # endset
     async def get_by_email_prop(self, email) -> List[Customer]:
         logging.info("CustomerManager.get_by_email_prop")
-        query_filter = Customer.email == email
+        query_filter = Customer._email == email
         query_results = await self._run_query(query_filter)
         return query_results
     async def get_by_fs_user_code_value_prop(self, fs_user_code_value) -> List[Customer]:
         logging.info("CustomerManager.get_by_fs_user_code_value_prop")
-        query_filter = Customer.fs_user_code_value == fs_user_code_value
+        query_filter = Customer._fs_user_code_value == fs_user_code_value
         query_results = await self._run_query(query_filter)
         return query_results

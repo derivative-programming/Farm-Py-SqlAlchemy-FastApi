@@ -225,11 +225,11 @@ class TestLandFactory:
         land = LandFactory.create(session=session)
         original_last_change_code = land.last_change_code
         land_1 = session.query(Land).filter_by(
-            land_id=land.land_id).first()
+            _land_id=land.land_id).first()
         land_1.code = uuid.uuid4()
         session.commit()
         land_2 = session.query(Land).filter_by(
-            land_id=land.land_id).first()
+            _land_id=land.land_id).first()
         land_2.code = uuid.uuid4()
         session.commit()
         assert land_2.last_change_code != original_last_change_code

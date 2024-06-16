@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import random
 import uuid
 from typing import List
@@ -27,6 +28,8 @@ from business.error_log import ErrorLogBusObj
 
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Pac object is not initialized")
 class PacInvalidInitError(Exception):
     """
     #TODO add comment
@@ -43,14 +46,14 @@ class PacBusObj(BaseBusObj):
         self._session_context = session_context
         self.pac = Pac()
     @property
-    def pac_id(self):
+    def pac_id(self) -> int:
         """
         Get the pac ID from the Pac object.
         :return: The pac ID.
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.pac_id
     # @pac_id.setter
@@ -69,7 +72,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.code
     @code.setter
@@ -79,7 +82,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
@@ -92,7 +95,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.last_change_code
     @last_change_code.setter
@@ -102,7 +105,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
@@ -115,7 +118,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.insert_user_id
     @insert_user_id.setter
@@ -125,7 +128,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
@@ -135,7 +138,7 @@ class PacBusObj(BaseBusObj):
     #     #TODO add comment
     #     """
     #     if not self.pac:
-    #         raise AttributeError("Pac object is not initialized")
+    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
     #     self.insert_user_id = value
     #     return self
     # last_update_user_id
@@ -146,7 +149,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.last_update_user_id
     @last_update_user_id.setter
@@ -156,7 +159,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
@@ -176,7 +179,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.pac.description is None:
             return ""
@@ -188,16 +191,16 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, str), "description must be a string"
         self.pac.description = value
-    # def set_prop_description(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.description = value
-    #     return self
+    def set_prop_description(self, value: str):
+        """
+        #TODO add comment
+        """
+        self.description = value
+        return self
     # displayOrder
     @property
     def display_order(self):
@@ -206,7 +209,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.display_order
     @display_order.setter
@@ -216,17 +219,17 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.pac.display_order = value
-    # def set_prop_display_order(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.display_order = value
-    #     return self
+    def set_prop_display_order(self, value: int):
+        """
+        #TODO add comment
+        """
+        self.display_order = value
+        return self
     # isActive
     @property
     def is_active(self):
@@ -235,7 +238,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.is_active
     @is_active.setter
@@ -245,17 +248,17 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.pac.is_active = value
-    # def set_prop_is_active(self, value: bool):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.is_active = value
-    #     return self
+    def set_prop_is_active(self, value: bool):
+        """
+        #TODO add comment
+        """
+        self.is_active = value
+        return self
     # lookupEnumName
     @property
     def lookup_enum_name(self):
@@ -264,7 +267,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.pac.lookup_enum_name is None:
             return ""
@@ -276,16 +279,16 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.pac.lookup_enum_name = value
-    # def set_prop_lookup_enum_name(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.lookup_enum_name = value
-    #     return self
+    def set_prop_lookup_enum_name(self, value: str):
+        """
+        #TODO add comment
+        """
+        self.lookup_enum_name = value
+        return self
     # name
     @property
     def name(self):
@@ -294,7 +297,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.pac.name is None:
             return ""
@@ -306,16 +309,16 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, str), "name must be a string"
         self.pac.name = value
-    # def set_prop_name(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.name = value
-    #     return self
+    def set_prop_name(self, value: str):
+        """
+        #TODO add comment
+        """
+        self.name = value
+        return self
 # endset
     # description,
     # displayOrder,
@@ -331,7 +334,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.insert_utc_date_time
     @insert_utc_date_time.setter
@@ -341,7 +344,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
@@ -354,7 +357,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.last_update_utc_date_time
     @last_update_utc_date_time.setter
@@ -364,7 +367,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
@@ -454,7 +457,11 @@ class PacBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return managers_and_enums.PacEnum[self.pac.lookup_enum_name]
+        return (
+            managers_and_enums.PacEnum[
+                self.pac.lookup_enum_name
+            ]
+        )
     async def load_from_enum(
         self,
         pac_enum:
@@ -513,11 +520,11 @@ class PacBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.pac:
-            raise AttributeError("Pac object is not initialized")
-        if self.pac.pac_id is not None and self.pac.pac_id > 0:
+            raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
+        if self.pac.pac_id > 0:
             pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.update(self.pac)
-        if self.pac.pac_id is None or self.pac.pac_id == 0:
+        if self.pac.pac_id == 0:
             pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.add(self.pac)
         return self
@@ -527,7 +534,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.pac.pac_id > 0:
             pac_manager = PacManager(self._session_context)
@@ -539,7 +546,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         self.pac.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -557,7 +564,7 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(
-                "Pac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac
     def is_equal(self, pac: Pac) -> bool:

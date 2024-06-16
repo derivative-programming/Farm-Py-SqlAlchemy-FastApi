@@ -18,7 +18,7 @@ class CustomerRole(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('CustomerRole')
-    customer_role_id = Column(
+    _customer_role_id = Column(
         'customer_role_id',
         Integer,
         primary_key=True,
@@ -139,6 +139,18 @@ class CustomerRole(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def customer_role_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_customer_role_id', 0) or 0
+    @customer_role_id.setter
+    def customer_role_id(self, value: int) -> None:
+        """
+        Set the customer_role_id.
+        """
+        self._customer_role_id = value
     @property
     def insert_user_id(self):
         """

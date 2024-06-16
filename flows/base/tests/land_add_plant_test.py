@@ -1,4 +1,5 @@
 # flows/base/tests/land_add_plant_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
@@ -11,7 +12,6 @@ from flows.base.land_add_plant import (
     BaseFlowLandAddPlant)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
-from models.factory.flavor import FlavorFactory
 from models.factory.land import LandFactory
 
 
@@ -27,14 +27,13 @@ class TestBaseFlowLandAddPlant():
         session_context = SessionContext(dict(), session)
         flow = BaseFlowLandAddPlant(session_context)
         land = await LandFactory.create_async(session)
-        flavor = await FlavorFactory.create_async(session)
         request_flavor_code: uuid.UUID = uuid.UUID(int=0)
         request_other_flavor: str = ""
         request_some_int_val: int = 0
         request_some_big_int_val: int = 0
         request_some_bit_val: bool = None
-        request_is_edit_allowed: bool = None
-        request_is_delete_allowed: bool = None
+        request_is_edit_allowed: bool = False
+        request_is_delete_allowed: bool = False
         request_some_float_val: float = 0
         request_some_decimal_val: Decimal = 0
         request_some_utc_date_time_val: datetime = (
@@ -43,7 +42,7 @@ class TestBaseFlowLandAddPlant():
         request_some_date_val: date = (
             TypeConversion.get_default_date()
         )
-        request_some_money_val: Decimal = 0
+        request_some_money_val: Decimal = Decimal(0)
         request_some_n_var_char_val: str = ""
         request_some_var_char_val: str = ""
         request_some_text_val: str = ""

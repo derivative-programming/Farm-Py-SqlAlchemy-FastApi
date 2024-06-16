@@ -49,46 +49,62 @@ class OrgApiKeyFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        organization_id_organization_instance = OrganizationFactory.create(session=session)  # OrganizationID
-        org_customer_id_org_customer_instance = OrgCustomerFactory.create(session=session)  # OrgCustomerID
+        organization_id_organization_instance = OrganizationFactory.create(  # OrganizationID
+            session=session)
+        org_customer_id_org_customer_instance = OrgCustomerFactory.create(  # OrgCustomerID
+            session=session)
 # endset
-        kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-        kwargs["org_customer_id"] = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        kwargs["organization_id"] = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        kwargs["org_customer_id"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-        kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        kwargs["org_customer_code_peek"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         obj = model_class(*args, **kwargs)
-        obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-        obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        obj.organization_id = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        obj.org_customer_id = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-        obj.org_customer_code_peek = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        obj.org_customer_code_peek = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         # session.add(obj)
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> OrgApiKey:
+    def _create(cls, model_class, session, *args, **kwargs) -> OrgApiKey:
         """
         #TODO add comment
         """
         logger.info("factory create")
-        organization_id_organization_instance = OrganizationFactory.create(session=session)  # OrganizationID
-        org_customer_id_org_customer_instance = OrgCustomerFactory.create(session=session)  # OrgCustomerID
+        organization_id_organization_instance = OrganizationFactory.create(  # OrganizationID
+            session=session)
+        org_customer_id_org_customer_instance = OrgCustomerFactory.create(  # OrgCustomerID
+            session=session)
 # endset
-        kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-        kwargs["org_customer_id"] = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        kwargs["organization_id"] = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        kwargs["org_customer_id"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-        kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        kwargs["org_customer_code_peek"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         obj = model_class(*args, **kwargs)
-        obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-        obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        obj.organization_id = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        obj.org_customer_id = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-        obj.org_customer_code_peek = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        obj.org_customer_code_peek = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         session.add(obj)
         session.commit()
@@ -98,21 +114,29 @@ class OrgApiKeyFactory(factory.Factory):
         """
             #TODO add comment
         """
-        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  # OrganizationID
-        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(session=session)  # OrgCustomerID
+        organization_id_organization_instance = await OrganizationFactory.create_async(  # OrganizationID
+            session=session)
+        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(  # OrgCustomerID
+            session=session)
 # endset
-        kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-        kwargs["org_customer_id"] = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        kwargs["organization_id"] = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        kwargs["org_customer_id"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-        kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        kwargs["org_customer_code_peek"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
-        obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-        obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        obj.organization_id = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        obj.org_customer_id = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-        obj.org_customer_code_peek = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        obj.org_customer_code_peek = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         session.add(obj)
         await session.flush()
@@ -122,21 +146,29 @@ class OrgApiKeyFactory(factory.Factory):
         """
             #TODO add comment
         """
-        organization_id_organization_instance = await OrganizationFactory.create_async(session=session)  # OrganizationID
-        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(session=session)  # OrgCustomerID
+        organization_id_organization_instance = await OrganizationFactory.create_async(  # OrganizationID
+            session=session)
+        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(  # OrgCustomerID
+            session=session)
 # endset
-        kwargs["organization_id"] = organization_id_organization_instance.organization_id  # OrganizationID
-        kwargs["org_customer_id"] = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        kwargs["organization_id"] = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        kwargs["org_customer_id"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-        kwargs["org_customer_code_peek"] = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        kwargs["org_customer_code_peek"] = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
-        obj.organization_id = organization_id_organization_instance.organization_id  # OrganizationID
-        obj.org_customer_id = org_customer_id_org_customer_instance.org_customer_id  # OrgCustomerID
+        obj.organization_id = (  # OrganizationID
+            organization_id_organization_instance.organization_id)
+        obj.org_customer_id = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.org_customer_id)
 # endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-        obj.org_customer_code_peek = org_customer_id_org_customer_instance.code  # OrgCustomerID
+        obj.org_customer_code_peek = (  # OrgCustomerID
+            org_customer_id_org_customer_instance.code)
 # endset
         # session.add(obj)
         # await session.flush()

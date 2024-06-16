@@ -15,6 +15,7 @@ class CustomerRoleSchema(SQLAlchemyAutoSchema):
         """
         model = CustomerRole
         exclude = (
+            "_customer_role_id",
             "_code",
             "_insert_user_id",
             "_last_update_user_id",

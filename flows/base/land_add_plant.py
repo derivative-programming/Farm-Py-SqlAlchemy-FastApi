@@ -64,7 +64,9 @@ class BaseFlowLandAddPlant(BaseFlow):
         #TODO add comment
         """
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Validating...")
 
         if request_flavor_code == uuid.UUID(int=0) and FlowConstants.param_request_flavor_code_isRequired is True:
             self._add_field_validation_error(
@@ -231,7 +233,8 @@ class BaseFlowLandAddPlant(BaseFlow):
             if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
                 if item.get_object_name() == "customer":
                     if item.code != self._session_context.customer_code:
-                        self._add_validation_error("Unautorized access.  Invalid User.")
+                        self._add_validation_error(
+                            "Unautorized access.  Invalid User.")
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelCustomerSecurityUsed]End
 
@@ -240,19 +243,26 @@ class BaseFlowLandAddPlant(BaseFlow):
             if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
                 if item.get_object_name() == "organization":
                     organization_id = item.get_id()
-                    customer_bus_obj = CustomerBusObj(land_bus_obj.get_session_context())
-                    await customer_bus_obj.load_from_code(self._session_context.customer_code)
-                    org_customer_manager = OrgCustomerManager(land_bus_obj.get_session_context())
-                    org_customers = org_customer_manager.get_by_customer_id(customer_bus_obj.customer_id)
-                    org_customers = filter(lambda x: x.organization_id == organization_id, org_customers)
+                    customer_bus_obj = CustomerBusObj(
+                        land_bus_obj.get_session_context())
+                    await customer_bus_obj.load_from_code(
+                        self._session_context.customer_code)
+                    org_customer_manager = OrgCustomerManager(
+                        land_bus_obj.get_session_context())
+                    org_customers = org_customer_manager.get_by_customer_id(
+                        customer_bus_obj.customer_id)
+                    org_customers = filter(
+                        lambda x: x.organization_id == organization_id, org_customers)
                     if len(org_customers) == 0:
-                        self._add_validation_error("Unautorized access. Invalid user in organization.")
+                        self._add_validation_error(
+                            "Unautorized access. Invalid user in organization."
+                        )
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End
             if val is True:
                 # item = await item.get_parent_obj()
                 item = await BusObjFactory.create(
-                    item.session,
+                    item.get_session_context(),
                     item.get_parent_name(),
                     item.get_parent_code()
                 )

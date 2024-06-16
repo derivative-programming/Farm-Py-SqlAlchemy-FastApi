@@ -1,6 +1,8 @@
 # models/managers/tests/tac_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
+    #TODO file too big. split into separate test files
 """
 import logging
 import uuid
@@ -57,7 +59,8 @@ class TestTacManager:
         mock_data = {
             "non_existant_property": "Rose"
         }
-        # If the build method is expected to raise an exception for missing data, test for that
+        # If the build method is expected to raise an exception for
+        # missing data, test for that
         with pytest.raises(Exception):
             await tac_manager.build_async(**mock_data)
         await session.rollback()
@@ -71,7 +74,7 @@ class TestTacManager:
             #TODO add comment
         """
         test_tac = await TacFactory.build_async(session)
-        assert test_tac.tac_id is None
+        assert test_tac.tac_id == 0
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
         assert isinstance(added_tac, Tac)
@@ -82,7 +85,10 @@ class TestTacManager:
         assert added_tac.tac_id > 0
         # Fetch the tac from the database directly
         result = await session.execute(
-            select(Tac).filter(Tac.tac_id == added_tac.tac_id))
+            select(Tac).filter(
+                Tac._tac_id == added_tac.tac_id
+            )
+        )
         fetched_tac = result.scalars().first()
         # Assert that the fetched tac is not None and matches the added tac
         assert fetched_tac is not None
@@ -99,7 +105,7 @@ class TestTacManager:
         """
         # Create a test tac using the TacFactory without persisting it to the database
         test_tac = await TacFactory.build_async(session)
-        assert test_tac.tac_id is None
+        assert test_tac.tac_id == 0
         test_tac.code = uuid.uuid4()
         # Add the tac using the manager's add method
         added_tac = await tac_manager.add(tac=test_tac)
@@ -183,7 +189,7 @@ class TestTacManager:
         assert updated_tac.code == test_tac.code
         result = await session.execute(
             select(Tac).filter(
-                Tac.tac_id == test_tac.tac_id)
+                Tac._tac_id == test_tac.tac_id)
         )
         fetched_tac = result.scalars().first()
         assert updated_tac.tac_id == fetched_tac.tac_id
@@ -213,7 +219,7 @@ class TestTacManager:
         assert updated_tac.code == new_code
         result = await session.execute(
             select(Tac).filter(
-                Tac.tac_id == test_tac.tac_id)
+                Tac._tac_id == test_tac.tac_id)
         )
         fetched_tac = result.scalars().first()
         assert updated_tac.tac_id == fetched_tac.tac_id
@@ -259,14 +265,14 @@ class TestTacManager:
         """
         tac_data = await TacFactory.create_async(session)
         result = await session.execute(
-            select(Tac).filter(Tac.tac_id == tac_data.tac_id))
+            select(Tac).filter(Tac._tac_id == tac_data.tac_id))
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
         assert fetched_tac.tac_id == tac_data.tac_id
         deleted_tac = await tac_manager.delete(
             tac_id=tac_data.tac_id)
         result = await session.execute(
-            select(Tac).filter(Tac.tac_id == tac_data.tac_id))
+            select(Tac).filter(Tac._tac_id == tac_data.tac_id))
         fetched_tac = result.scalars().first()
         assert fetched_tac is None
     @pytest.mark.asyncio
@@ -377,7 +383,7 @@ class TestTacManager:
         for updated_tac in tacs:
             result = await session.execute(
                 select(Tac).filter(
-                    Tac.tac_id == updated_tac.tac_id
+                    Tac._tac_id == updated_tac.tac_id
                 )
             )
             fetched_tac = result.scalars().first()
@@ -432,13 +438,13 @@ class TestTacManager:
         assert str(updated_tacs[1].last_update_user_id) == (
             str(tac_manager._session_context.customer_code))
         result = await session.execute(
-            select(Tac).filter(Tac.tac_id == 1)
+            select(Tac).filter(Tac._tac_id == 1)
         )
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
         assert fetched_tac.code == code_updated1
         result = await session.execute(
-            select(Tac).filter(Tac.tac_id == 2)
+            select(Tac).filter(Tac._tac_id == 2)
         )
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
@@ -501,7 +507,7 @@ class TestTacManager:
         assert result is True
         for tac_id in tac_ids:
             execute_result = await session.execute(
-                select(Tac).filter(Tac.tac_id == tac_id))
+                select(Tac).filter(Tac._tac_id == tac_id))
             fetched_tac = execute_result.scalars().first()
             assert fetched_tac is None
     @pytest.mark.asyncio
@@ -580,7 +586,7 @@ class TestTacManager:
         # Add tacs
         tacs_data = (
             [await TacFactory.create_async(session) for _ in range(5)])
-        sorted_tacs = await tac_manager.get_sorted_list(sort_by="tac_id")
+        sorted_tacs = await tac_manager.get_sorted_list(sort_by="_tac_id")
         assert [tac.tac_id for tac in sorted_tacs] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -632,7 +638,7 @@ class TestTacManager:
         """
         # Add a tac
         tac1 = await TacFactory.create_async(session=session)
-        result = await session.execute(select(Tac).filter(Tac.tac_id == tac1.tac_id))
+        result = await session.execute(select(Tac).filter(Tac._tac_id == tac1.tac_id))
         tac2 = result.scalars().first()
         assert tac1.code == tac2.code
         updated_code1 = uuid.uuid4()

@@ -4,11 +4,9 @@
     #TODO add comment
 """
 import uuid
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import datetime
 import factory
 from factory import Faker
-from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..tac_farm_dashboard import (

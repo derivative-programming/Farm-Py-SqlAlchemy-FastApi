@@ -209,7 +209,8 @@ class TestLandSchema:
         # Verify the keys in both dictionaries match
         assert set(land_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(land_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(land_dict_from_json.keys())}"
         )
         assert land_dict_from_json['code'] == str(land.code), (
             "failed on code"

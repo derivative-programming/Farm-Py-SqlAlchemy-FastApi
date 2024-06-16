@@ -35,7 +35,9 @@ class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
         """
         #TODO add comment
         """
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Validating...")
         if plant_code_list_csv == "" and FlowConstants.param_plant_code_list_csv_isRequired is True:
             self._add_field_validation_error(
                 "plantCodeListCsv",

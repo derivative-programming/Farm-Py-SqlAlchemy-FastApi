@@ -90,7 +90,7 @@ class OrganizationManager:
 # endset
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Organization.tac_id == Tac.tac_id,
+            and_(Organization.tac_id == Tac._tac_id,
                  Organization.tac_id != 0)
         )
 # endset
@@ -116,7 +116,8 @@ class OrganizationManager:
             tac = query_result_row[i]  # tac_id
             i = i + 1
 # endset
-            organization.tac_code_peek = tac.code if tac else uuid.UUID(int=0)  # tac_id
+            organization.tac_code_peek = (  # tac_id
+                tac.code if tac else uuid.UUID(int=0))
 # endset
             result.append(organization)
         return result
@@ -134,9 +135,10 @@ class OrganizationManager:
             str(organization_id))
         if not isinstance(organization_id, int):
             raise TypeError(
-                "The organization_id must be an integer, got %s instead.",
+                f"The organization_id must be an integer, "
+                f"got %s instead.",
                 type(organization_id))
-        query_filter = Organization.organization_id == organization_id
+        query_filter = Organization._organization_id == organization_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Organization]:
@@ -144,7 +146,7 @@ class OrganizationManager:
             #TODO add comment
         """
         logging.info("OrganizationManager.get_by_code %s", code)
-        query_filter = Organization._code == str(code)
+        query_filter = Organization._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, organization: Organization, **kwargs) -> Optional[Organization]:
@@ -169,7 +171,8 @@ class OrganizationManager:
         logging.info("OrganizationManager.delete %s", organization_id)
         if not isinstance(organization_id, int):
             raise TypeError(
-                f"The organization_id must be an integer, got {type(organization_id)} instead."
+                f"The organization_id must be an integer, "
+                f"got {type(organization_id)} instead."
             )
         organization = await self.get_by_id(organization_id)
         if not organization:
@@ -250,7 +253,8 @@ class OrganizationManager:
             organization_id = update.get("organization_id")
             if not isinstance(organization_id, int):
                 raise TypeError(
-                    f"The organization_id must be an integer, got {type(organization_id)} instead."
+                    f"The organization_id must be an integer, "
+                    f"got {type(organization_id)} instead."
                 )
             if not organization_id:
                 continue
@@ -276,7 +280,8 @@ class OrganizationManager:
         for organization_id in organization_ids:
             if not isinstance(organization_id, int):
                 raise TypeError(
-                    f"The organization_id must be an integer, got {type(organization_id)} instead."
+                    f"The organization_id must be an integer, "
+                    f"got {type(organization_id)} instead."
                 )
             organization = await self.get_by_id(organization_id)
             if not organization:
@@ -302,6 +307,8 @@ class OrganizationManager:
         """
         Retrieve organizations sorted by a particular attribute.
         """
+        if sort_by == "organization_id":
+            sort_by = "_organization_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Organization).order_by(getattr(Organization, sort_by).asc()))
@@ -323,7 +330,8 @@ class OrganizationManager:
         logging.info("OrganizationManager.exists %s", organization_id)
         if not isinstance(organization_id, int):
             raise TypeError(
-                f"The organization_id must be an integer, got {type(organization_id)} instead."
+                f"The organization_id must be an integer, "
+                f"got {type(organization_id)} instead."
             )
         organization = await self.get_by_id(organization_id)
         return bool(organization)
@@ -350,7 +358,8 @@ class OrganizationManager:
         logging.info("OrganizationManager.get_by_tac_id")
         if not isinstance(tac_id, int):
             raise TypeError(
-                f"The organization_id must be an integer, got {type(tac_id)} instead."
+                f"The organization_id must be an integer, "
+                f"got {type(tac_id)} instead."
             )
         query_filter = Organization.tac_id == tac_id
         query_results = await self._run_query(query_filter)

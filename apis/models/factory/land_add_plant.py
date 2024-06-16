@@ -76,14 +76,14 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
         """
         Build method for the factory. If a session is provided,
         it uses the session to create related objects.
-        
+
         Args:
             model_class: The model class to be instantiated.
             session: The database session to be used for related
                 object creation.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
-        
+
         Returns:
             An instance of LandAddPlantPostModelRequest.
         """
@@ -112,14 +112,14 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
         """
         Create method for the factory. Uses the session to
         create related objects and persists the instance.
-        
+
         Args:
             model_class: The model class to be instantiated.
             session: The database session to be used for related
                 object creation.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
-        
+
         Returns:
             An instance of LandAddPlantPostModelRequest.
         """
@@ -144,18 +144,19 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
         """
         Asynchronous create method for the factory. Uses the
         session to create related objects and persists the instance.
-        
+
         Args:
             session: The asynchronous database session to be
                 used for related object creation.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
-        
+
         Returns:
             An instance of LandAddPlantPostModelRequest.
         """
 
-        request_flavor_code_instance = await FlavorFactory.create_async(session=session)  # requestFlavorCode
+        request_flavor_code_instance = await FlavorFactory.create_async(  # requestFlavorCode
+            session=session)
 # endset
 
         kwargs["request_flavor_code"] = request_flavor_code_instance.code  # requestFlavorCode

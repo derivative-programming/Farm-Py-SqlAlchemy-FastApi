@@ -17,7 +17,10 @@ class PacUserLandListGetModelRequestFactoryAsync:
         """
             #TODO add comment
         """
-        model_instance = await PacUserLandListGetModelRequestFactory.create_async(session=session)
+        model_instance = await (
+            PacUserLandListGetModelRequestFactory
+            .create_async(session=session)
+        )
         assert isinstance(model_instance, PacUserLandListGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)

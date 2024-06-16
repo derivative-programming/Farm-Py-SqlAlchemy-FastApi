@@ -35,7 +35,9 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
         """
         #TODO add comment
         """
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Validating...")
 
 # end set
         await self._process_security_rules(customer_bus_obj)
@@ -73,7 +75,8 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
             if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
                 if item.get_object_name() == "customer":
                     if item.code != self._session_context.customer_code:
-                        self._add_validation_error("Unautorized access.  Invalid User.")
+                        self._add_validation_error(
+                            "Unautorized access.  Invalid User.")
 
             if val is True:
                 # item = await item.get_parent_obj()

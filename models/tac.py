@@ -18,7 +18,7 @@ class Tac(Base):
     #TODO add comment
     """
     __tablename__ = 'farm_' + snake_case('Tac')
-    tac_id = Column(
+    _tac_id = Column(
         'tac_id',
         Integer,
         primary_key=True,
@@ -164,6 +164,18 @@ class Tac(Base):
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def tac_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_tac_id', 0) or 0
+    @tac_id.setter
+    def tac_id(self, value: int) -> None:
+        """
+        Set the tac_id.
+        """
+        self._tac_id = value
     @property
     def insert_user_id(self):
         """

@@ -13,9 +13,11 @@ class ValidationErrorItem(CamelModel):
     """
     #TODO add comment
     """
+
     property: str = Field(
         default="",
         description="Property")
+
     message: str = Field(
         default="",
         description="Message")

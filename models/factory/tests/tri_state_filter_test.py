@@ -229,11 +229,11 @@ class TestTriStateFilterFactory:
         tri_state_filter = TriStateFilterFactory.create(session=session)
         original_last_change_code = tri_state_filter.last_change_code
         tri_state_filter_1 = session.query(TriStateFilter).filter_by(
-            tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
+            _tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
         tri_state_filter_1.code = uuid.uuid4()
         session.commit()
         tri_state_filter_2 = session.query(TriStateFilter).filter_by(
-            tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
+            _tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
         tri_state_filter_2.code = uuid.uuid4()
         session.commit()
         assert tri_state_filter_2.last_change_code != original_last_change_code

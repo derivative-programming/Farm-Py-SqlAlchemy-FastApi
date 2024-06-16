@@ -54,7 +54,7 @@ class PacFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> Pac:
+    def _create(cls, model_class, session, *args, **kwargs) -> Pac:
         """
         #TODO add comment
         """

@@ -135,7 +135,7 @@ class TacManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Tac.pac_id == Pac.pac_id,
+            and_(Tac.pac_id == Pac._pac_id,
                  Tac.pac_id != 0)
         )
 # endset
@@ -161,7 +161,8 @@ class TacManager:
             pac = query_result_row[i]  # pac_id
             i = i + 1
 # endset
-            tac.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
+            tac.pac_code_peek = (  # pac_id
+                pac.code if pac else uuid.UUID(int=0))
 # endset
             result.append(tac)
         return result
@@ -179,9 +180,10 @@ class TacManager:
             str(tac_id))
         if not isinstance(tac_id, int):
             raise TypeError(
-                "The tac_id must be an integer, got %s instead.",
+                f"The tac_id must be an integer, "
+                f"got %s instead.",
                 type(tac_id))
-        query_filter = Tac.tac_id == tac_id
+        query_filter = Tac._tac_id == tac_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
@@ -189,7 +191,7 @@ class TacManager:
             #TODO add comment
         """
         logging.info("TacManager.get_by_code %s", code)
-        query_filter = Tac._code == str(code)
+        query_filter = Tac._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, tac: Tac, **kwargs) -> Optional[Tac]:
@@ -214,7 +216,8 @@ class TacManager:
         logging.info("TacManager.delete %s", tac_id)
         if not isinstance(tac_id, int):
             raise TypeError(
-                f"The tac_id must be an integer, got {type(tac_id)} instead."
+                f"The tac_id must be an integer, "
+                f"got {type(tac_id)} instead."
             )
         tac = await self.get_by_id(tac_id)
         if not tac:
@@ -295,7 +298,8 @@ class TacManager:
             tac_id = update.get("tac_id")
             if not isinstance(tac_id, int):
                 raise TypeError(
-                    f"The tac_id must be an integer, got {type(tac_id)} instead."
+                    f"The tac_id must be an integer, "
+                    f"got {type(tac_id)} instead."
                 )
             if not tac_id:
                 continue
@@ -321,7 +325,8 @@ class TacManager:
         for tac_id in tac_ids:
             if not isinstance(tac_id, int):
                 raise TypeError(
-                    f"The tac_id must be an integer, got {type(tac_id)} instead."
+                    f"The tac_id must be an integer, "
+                    f"got {type(tac_id)} instead."
                 )
             tac = await self.get_by_id(tac_id)
             if not tac:
@@ -347,6 +352,8 @@ class TacManager:
         """
         Retrieve tacs sorted by a particular attribute.
         """
+        if sort_by == "tac_id":
+            sort_by = "_tac_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Tac).order_by(getattr(Tac, sort_by).asc()))
@@ -368,7 +375,8 @@ class TacManager:
         logging.info("TacManager.exists %s", tac_id)
         if not isinstance(tac_id, int):
             raise TypeError(
-                f"The tac_id must be an integer, got {type(tac_id)} instead."
+                f"The tac_id must be an integer, "
+                f"got {type(tac_id)} instead."
             )
         tac = await self.get_by_id(tac_id)
         return bool(tac)
@@ -395,7 +403,8 @@ class TacManager:
         logging.info("TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The tac_id must be an integer, got {type(pac_id)} instead."
+                f"The tac_id must be an integer, "
+                f"got {type(pac_id)} instead."
             )
         query_filter = Tac.pac_id == pac_id
         query_results = await self._run_query(query_filter)

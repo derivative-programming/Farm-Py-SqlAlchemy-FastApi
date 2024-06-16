@@ -1,4 +1,5 @@
 # apis/models/tests/tac_login_test.py
+# pylint: disable=unused-argument
 """
     #TODO add comment
 """
@@ -24,9 +25,9 @@ class TestTacLoginPostModelResponse:
             #TODO add comment
         """
         async def mock_process(
-            tac_bus_obj: TacBusObj,  # pylint: disable=unused-argument
-            email: str = "",  # pylint: disable=unused-argument
-            password: str = "",  # pylint: disable=unused-argument
+            tac_bus_obj: TacBusObj,
+            email: str = "",
+            password: str = "",
         ):
             return FlowTacLoginResult()
         with patch.object(

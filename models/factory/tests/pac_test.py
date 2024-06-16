@@ -217,11 +217,11 @@ class TestPacFactory:
         pac = PacFactory.create(session=session)
         original_last_change_code = pac.last_change_code
         pac_1 = session.query(Pac).filter_by(
-            pac_id=pac.pac_id).first()
+            _pac_id=pac.pac_id).first()
         pac_1.code = uuid.uuid4()
         session.commit()
         pac_2 = session.query(Pac).filter_by(
-            pac_id=pac.pac_id).first()
+            _pac_id=pac.pac_id).first()
         pac_2.code = uuid.uuid4()
         session.commit()
         assert pac_2.last_change_code != original_last_change_code

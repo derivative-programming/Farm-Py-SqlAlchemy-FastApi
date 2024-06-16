@@ -1,4 +1,6 @@
 # pac_user_flavor_list_test.py
+# pylint: disable=unused-argument
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
@@ -13,10 +15,14 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.pac import PacFactory
-from reports.pac_user_flavor_list import ReportManagerPacUserFlavorList
-from reports.report_request_validation_error import ReportRequestValidationError
-from reports.providers.pac_user_flavor_list import ReportProviderPacUserFlavorList
-from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
+from reports.pac_user_flavor_list import (
+    ReportManagerPacUserFlavorList)
+from reports.report_request_validation_error import (
+    ReportRequestValidationError)
+from reports.providers.pac_user_flavor_list import (
+    ReportProviderPacUserFlavorList)
+from reports.row_models.pac_user_flavor_list import (
+    ReportItemPacUserFlavorList)
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
 class TestReportManagerPacUserFlavorList:
@@ -29,13 +35,13 @@ class TestReportManagerPacUserFlavorList:
         #TODO add comment
         """
         async def mock_generate_list(
-            context_code: uuid.UUID,  # pylint: disable=unused-argument
+            context_code: uuid.UUID,
 
 # endset  # noqa: E122
-            page_number: int,  # pylint: disable=unused-argument
-            item_count_per_page: int,  # pylint: disable=unused-argument
-            order_by_column_name: str,  # pylint: disable=unused-argument
-            order_by_descending: bool,  # pylint: disable=unused-argument
+            page_number: int,
+            item_count_per_page: int,
+            order_by_column_name: str,
+            order_by_descending: bool,
         ):
             result = list()
             return result
@@ -74,13 +80,13 @@ class TestReportManagerPacUserFlavorList:
         #TODO add comment
         """
         async def mock_generate_list(
-            context_code: uuid.UUID,  # pylint: disable=unused-argument
+            context_code: uuid.UUID,
 
 # endset  # noqa: E122
-            page_number: int,  # pylint: disable=unused-argument
-            item_count_per_page: int,  # pylint: disable=unused-argument
-            order_by_column_name: str,  # pylint: disable=unused-argument
-            order_by_descending: bool,  # pylint: disable=unused-argument
+            page_number: int,
+            item_count_per_page: int,
+            order_by_column_name: str,
+            order_by_descending: bool,
         ):
             result = list()
             return result
@@ -118,13 +124,13 @@ class TestReportManagerPacUserFlavorList:
         #TODO add comment
         """
         async def mock_generate_list(
-            context_code: uuid.UUID,  # pylint: disable=unused-argument
+            context_code: uuid.UUID,
 
 # endset  # noqa: E122
-            page_number: int,  # pylint: disable=unused-argument
-            item_count_per_page: int,  # pylint: disable=unused-argument
-            order_by_column_name: str,  # pylint: disable=unused-argument
-            order_by_descending: bool,  # pylint: disable=unused-argument
+            page_number: int,
+            item_count_per_page: int,
+            order_by_column_name: str,
+            order_by_descending: bool,
         ):
             result = list()
             return result
@@ -195,14 +201,14 @@ class TestReportManagerPacUserFlavorList:
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserFlavorList(session_context)
         # True values
-        assert test_obj._parse_bool('true')  # pylint: disable=protected-access
-        assert test_obj._parse_bool('1')  # pylint: disable=protected-access
-        assert test_obj._parse_bool('yes')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('true')
+        assert test_obj._parse_bool('1')
+        assert test_obj._parse_bool('yes')
         # False values
-        assert not test_obj._parse_bool('false')  # pylint: disable=protected-access
-        assert not test_obj._parse_bool('0')  # pylint: disable=protected-access
-        assert not test_obj._parse_bool('no')  # pylint: disable=protected-access
+        assert not test_obj._parse_bool('false')
+        assert not test_obj._parse_bool('0')
+        assert not test_obj._parse_bool('no')
         # Case insensitivity
-        assert test_obj._parse_bool('True')  # pylint: disable=protected-access
-        assert test_obj._parse_bool('YeS')  # pylint: disable=protected-access
+        assert test_obj._parse_bool('True')
+        assert test_obj._parse_bool('YeS')
 

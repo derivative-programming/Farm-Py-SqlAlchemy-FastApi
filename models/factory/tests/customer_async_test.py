@@ -185,7 +185,7 @@ class TestCustomerFactoryAsync:
         await session.delete(customer)
         await session.commit()
         # Construct the select statement
-        stmt = select(Customer).where(Customer.customer_id == customer.customer_id)
+        stmt = select(Customer).where(Customer._customer_id == customer.customer_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -339,14 +339,14 @@ class TestCustomerFactoryAsync:
         """
         customer = await CustomerFactory.create_async(session=session)
         original_last_change_code = customer.last_change_code
-        stmt = select(Customer).where(Customer.customer_id == customer.customer_id)
+        stmt = select(Customer).where(Customer._customer_id == customer.customer_id)
         result = await session.execute(stmt)
         customer_1 = result.scalars().first()
         # customer_1 = await session.query(Customer).filter_by(
         # customer_id=customer.customer_id).first()
         customer_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(Customer).where(Customer.customer_id == customer.customer_id)
+        stmt = select(Customer).where(Customer._customer_id == customer.customer_id)
         result = await session.execute(stmt)
         customer_2 = result.scalars().first()
         # customer_2 = await session.query(Customer).filter_by(

@@ -1,16 +1,17 @@
 # flows/base/tests/customer_user_log_out_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
 """
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.customer_user_log_out as FlowConstants
-from flows.base.customer_user_log_out import BaseFlowCustomerUserLogOut
+from flows.base.customer_user_log_out import (
+    BaseFlowCustomerUserLogOut)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models.factory.flavor import FlavorFactory
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.customer import CustomerFactory
 class TestBaseFlowCustomerUserLogOut():
     """
@@ -24,7 +25,6 @@ class TestBaseFlowCustomerUserLogOut():
         session_context = SessionContext(dict(), session)
         flow = BaseFlowCustomerUserLogOut(session_context)
         customer = await CustomerFactory.create_async(session)
-        flavor = await FlavorFactory.create_async(session)
 
 # endset
         # Call the method being tested

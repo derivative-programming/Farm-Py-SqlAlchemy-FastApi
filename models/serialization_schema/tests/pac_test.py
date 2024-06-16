@@ -196,7 +196,8 @@ class TestPacSchema:
         # Verify the keys in both dictionaries match
         assert set(pac_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(pac_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(pac_dict_from_json.keys())}"
         )
         assert pac_dict_from_json['code'] == str(pac.code), (
             "failed on code"

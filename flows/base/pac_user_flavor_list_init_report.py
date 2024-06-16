@@ -35,7 +35,9 @@ class BaseFlowPacUserFlavorListInitReport(BaseFlow):
         """
         #TODO add comment
         """
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
+        super()._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            "Validating...")
 
 # end set
         await self._process_security_rules(pac_bus_obj)

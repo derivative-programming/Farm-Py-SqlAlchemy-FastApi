@@ -15,6 +15,7 @@ class PacSchema(SQLAlchemyAutoSchema):
         """
         model = Pac
         exclude = (
+            "_pac_id",
             "_code",
             "_insert_user_id",
             "_last_update_user_id",

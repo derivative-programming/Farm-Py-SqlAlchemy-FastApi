@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import random
 import uuid
 from typing import List
@@ -13,6 +14,8 @@ import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "CustomerRole object is not initialized")
 class CustomerRoleInvalidInitError(Exception):
     """
     #TODO add comment
@@ -29,14 +32,14 @@ class CustomerRoleBusObj(BaseBusObj):
         self._session_context = session_context
         self.customer_role = CustomerRole()
     @property
-    def customer_role_id(self):
+    def customer_role_id(self) -> int:
         """
         Get the customer_role ID from the CustomerRole object.
         :return: The customer_role ID.
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.customer_role_id
     # @customer_role_id.setter
@@ -55,7 +58,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.code
     @code.setter
@@ -65,7 +68,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
@@ -78,7 +81,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.last_change_code
     @last_change_code.setter
@@ -88,7 +91,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
@@ -101,7 +104,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.insert_user_id
     @insert_user_id.setter
@@ -111,7 +114,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
@@ -121,7 +124,7 @@ class CustomerRoleBusObj(BaseBusObj):
     #     #TODO add comment
     #     """
     #     if not self.customer_role:
-    #         raise AttributeError("CustomerRole object is not initialized")
+    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
     #     self.insert_user_id = value
     #     return self
     # last_update_user_id
@@ -132,7 +135,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.last_update_user_id
     @last_update_user_id.setter
@@ -142,7 +145,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
@@ -163,7 +166,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.is_placeholder
     @is_placeholder.setter
@@ -173,17 +176,17 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, bool):
             raise ValueError("is_placeholder must be a boolean.")
         self.customer_role.is_placeholder = value
-    # def set_prop_is_placeholder(self, value: bool):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.is_placeholder = value
-    #     return self
+    def set_prop_is_placeholder(self, value: bool):
+        """
+        #TODO add comment
+        """
+        self.is_placeholder = value
+        return self
     # placeholder
     @property
     def placeholder(self):
@@ -192,7 +195,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.placeholder
     @placeholder.setter
@@ -202,17 +205,17 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, bool):
             raise ValueError("placeholder must be a boolean.")
         self.customer_role.placeholder = value
-    # def set_prop_placeholder(self, value: bool):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.placeholder = value
-    #     return self
+    def set_prop_placeholder(self, value: bool):
+        """
+        #TODO add comment
+        """
+        self.placeholder = value
+        return self
     # RoleID
 # endset
     # CustomerID
@@ -223,7 +226,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.customer_id
     @customer_id.setter
@@ -233,17 +236,17 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, int) or value is None, (
             "customer_id must be an integer or None")
         self.customer_role.customer_id = value
-    # def set_prop_customer_id(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.customer_id = value
-    #     return self
+    def set_prop_customer_id(self, value: int):
+        """
+        #TODO add comment
+        """
+        self.customer_id = value
+        return self
     @property
     def customer_code_peek(self):
         """
@@ -251,7 +254,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.customer_code_peek
     # @customer_code_peek.setter
@@ -269,7 +272,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.role_id
     @role_id.setter
@@ -279,17 +282,17 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, int):
             raise ValueError("role_id must be an integer.")
         self.customer_role.role_id = value
-    # def set_prop_role_id(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.role_id = value
-    #     return self
+    def set_prop_role_id(self, value: int):
+        """
+        #TODO add comment
+        """
+        self.role_id = value
+        return self
     @property
     def role_code_peek(self):
         """
@@ -297,7 +300,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.role_code_peek
     # @role_code_peek.setter
@@ -315,7 +318,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.insert_utc_date_time
     @insert_utc_date_time.setter
@@ -325,7 +328,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
@@ -338,7 +341,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role.last_update_utc_date_time
     @last_update_utc_date_time.setter
@@ -348,7 +351,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
@@ -467,11 +470,11 @@ class CustomerRoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer_role:
-            raise AttributeError("CustomerRole object is not initialized")
-        if self.customer_role.customer_role_id is not None and self.customer_role.customer_role_id > 0:
+            raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
+        if self.customer_role.customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = await customer_role_manager.update(self.customer_role)
-        if self.customer_role.customer_role_id is None or self.customer_role.customer_role_id == 0:
+        if self.customer_role.customer_role_id == 0:
             customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = await customer_role_manager.add(self.customer_role)
         return self
@@ -481,7 +484,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.customer_role.customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(self._session_context)
@@ -493,7 +496,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         # self.customer_role.customer_id = random.randint(0, 100)
         self.customer_role.is_placeholder = random.choice([True, False])
@@ -509,7 +512,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(
-                "CustomerRole object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer_role
     def is_equal(self, customer_role: CustomerRole) -> bool:

@@ -249,7 +249,8 @@ class TestOrgApiKeySchema:
         # Verify the keys in both dictionaries match
         assert set(org_api_key_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(org_api_key_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(org_api_key_dict_from_json.keys())}"
         )
         assert org_api_key_dict_from_json['code'] == str(org_api_key.code), (
             "failed on code"

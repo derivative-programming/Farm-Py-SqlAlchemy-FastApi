@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import random
 import uuid
 from typing import List
@@ -17,6 +18,8 @@ from business.org_customer import OrgCustomerBusObj
 
 from business.org_api_key import OrgApiKeyBusObj
 
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Organization object is not initialized")
 class OrganizationInvalidInitError(Exception):
     """
     #TODO add comment
@@ -33,14 +36,14 @@ class OrganizationBusObj(BaseBusObj):
         self._session_context = session_context
         self.organization = Organization()
     @property
-    def organization_id(self):
+    def organization_id(self) -> int:
         """
         Get the organization ID from the Organization object.
         :return: The organization ID.
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.organization_id
     # @organization_id.setter
@@ -59,7 +62,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.code
     @code.setter
@@ -69,7 +72,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
@@ -82,7 +85,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.last_change_code
     @last_change_code.setter
@@ -92,7 +95,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
@@ -105,7 +108,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.insert_user_id
     @insert_user_id.setter
@@ -115,7 +118,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
@@ -125,7 +128,7 @@ class OrganizationBusObj(BaseBusObj):
     #     #TODO add comment
     #     """
     #     if not self.organization:
-    #         raise AttributeError("Organization object is not initialized")
+    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
     #     self.insert_user_id = value
     #     return self
     # last_update_user_id
@@ -136,7 +139,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.last_update_user_id
     @last_update_user_id.setter
@@ -146,7 +149,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
@@ -166,7 +169,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.organization.name is None:
             return ""
@@ -178,16 +181,16 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, str), "name must be a string"
         self.organization.name = value
-    # def set_prop_name(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.name = value
-    #     return self
+    def set_prop_name(self, value: str):
+        """
+        #TODO add comment
+        """
+        self.name = value
+        return self
     # TacID
 # endset
     # name,
@@ -199,7 +202,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.tac_id
     @tac_id.setter
@@ -209,17 +212,17 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, int) or value is None, (
             "tac_id must be an integer or None")
         self.organization.tac_id = value
-    # def set_prop_tac_id(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.tac_id = value
-    #     return self
+    def set_prop_tac_id(self, value: int):
+        """
+        #TODO add comment
+        """
+        self.tac_id = value
+        return self
     @property
     def tac_code_peek(self):
         """
@@ -227,7 +230,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.tac_code_peek
     # @tac_code_peek.setter
@@ -244,7 +247,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.insert_utc_date_time
     @insert_utc_date_time.setter
@@ -254,7 +257,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
@@ -267,7 +270,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization.last_update_utc_date_time
     @last_update_utc_date_time.setter
@@ -277,7 +280,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
@@ -396,11 +399,11 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
-        if self.organization.organization_id is not None and self.organization.organization_id > 0:
+            raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
+        if self.organization.organization_id > 0:
             organization_manager = OrganizationManager(self._session_context)
             self.organization = await organization_manager.update(self.organization)
-        if self.organization.organization_id is None or self.organization.organization_id == 0:
+        if self.organization.organization_id == 0:
             organization_manager = OrganizationManager(self._session_context)
             self.organization = await organization_manager.add(self.organization)
         return self
@@ -410,7 +413,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.organization.organization_id > 0:
             organization_manager = OrganizationManager(self._session_context)
@@ -422,7 +425,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         self.organization.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -435,7 +438,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(
-                "Organization object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.organization
     def is_equal(self, organization: Organization) -> bool:

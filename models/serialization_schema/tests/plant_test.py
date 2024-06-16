@@ -376,7 +376,8 @@ class TestPlantSchema:
         # Verify the keys in both dictionaries match
         assert set(plant_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(plant_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(plant_dict_from_json.keys())}"
         )
 
         assert plant_dict_from_json['code'] == str(plant.code), (

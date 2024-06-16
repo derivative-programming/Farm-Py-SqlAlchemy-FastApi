@@ -15,6 +15,7 @@ class OrgCustomerSchema(SQLAlchemyAutoSchema):
         """
         model = OrgCustomer
         exclude = (
+            "_org_customer_id",
             "_code",
             "_insert_user_id",
             "_last_update_user_id",

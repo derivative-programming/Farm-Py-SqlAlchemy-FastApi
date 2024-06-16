@@ -15,6 +15,7 @@ class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
         """
         model = DateGreaterThanFilter
         exclude = (
+            "_date_greater_than_filter_id",
             "_code",
             "_insert_user_id",
             "_last_update_user_id",

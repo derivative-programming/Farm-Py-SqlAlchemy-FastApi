@@ -155,7 +155,7 @@ class RoleManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Role.pac_id == Pac.pac_id,
+            and_(Role.pac_id == Pac._pac_id,
                  Role.pac_id != 0)
         )
 # endset
@@ -181,7 +181,8 @@ class RoleManager:
             pac = query_result_row[i]  # pac_id
             i = i + 1
 # endset
-            role.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
+            role.pac_code_peek = (  # pac_id
+                pac.code if pac else uuid.UUID(int=0))
 # endset
             result.append(role)
         return result
@@ -199,9 +200,10 @@ class RoleManager:
             str(role_id))
         if not isinstance(role_id, int):
             raise TypeError(
-                "The role_id must be an integer, got %s instead.",
+                f"The role_id must be an integer, "
+                f"got %s instead.",
                 type(role_id))
-        query_filter = Role.role_id == role_id
+        query_filter = Role._role_id == role_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Role]:
@@ -209,7 +211,7 @@ class RoleManager:
             #TODO add comment
         """
         logging.info("RoleManager.get_by_code %s", code)
-        query_filter = Role._code == str(code)
+        query_filter = Role._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, role: Role, **kwargs) -> Optional[Role]:
@@ -234,7 +236,8 @@ class RoleManager:
         logging.info("RoleManager.delete %s", role_id)
         if not isinstance(role_id, int):
             raise TypeError(
-                f"The role_id must be an integer, got {type(role_id)} instead."
+                f"The role_id must be an integer, "
+                f"got {type(role_id)} instead."
             )
         role = await self.get_by_id(role_id)
         if not role:
@@ -315,7 +318,8 @@ class RoleManager:
             role_id = update.get("role_id")
             if not isinstance(role_id, int):
                 raise TypeError(
-                    f"The role_id must be an integer, got {type(role_id)} instead."
+                    f"The role_id must be an integer, "
+                    f"got {type(role_id)} instead."
                 )
             if not role_id:
                 continue
@@ -341,7 +345,8 @@ class RoleManager:
         for role_id in role_ids:
             if not isinstance(role_id, int):
                 raise TypeError(
-                    f"The role_id must be an integer, got {type(role_id)} instead."
+                    f"The role_id must be an integer, "
+                    f"got {type(role_id)} instead."
                 )
             role = await self.get_by_id(role_id)
             if not role:
@@ -367,6 +372,8 @@ class RoleManager:
         """
         Retrieve roles sorted by a particular attribute.
         """
+        if sort_by == "role_id":
+            sort_by = "_role_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Role).order_by(getattr(Role, sort_by).asc()))
@@ -388,7 +395,8 @@ class RoleManager:
         logging.info("RoleManager.exists %s", role_id)
         if not isinstance(role_id, int):
             raise TypeError(
-                f"The role_id must be an integer, got {type(role_id)} instead."
+                f"The role_id must be an integer, "
+                f"got {type(role_id)} instead."
             )
         role = await self.get_by_id(role_id)
         return bool(role)
@@ -415,7 +423,8 @@ class RoleManager:
         logging.info("RoleManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The role_id must be an integer, got {type(pac_id)} instead."
+                f"The role_id must be an integer, "
+                f"got {type(pac_id)} instead."
             )
         query_filter = Role.pac_id == pac_id
         query_results = await self._run_query(query_filter)

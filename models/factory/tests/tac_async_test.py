@@ -185,7 +185,7 @@ class TestTacFactoryAsync:
         await session.delete(tac)
         await session.commit()
         # Construct the select statement
-        stmt = select(Tac).where(Tac.tac_id == tac.tac_id)
+        stmt = select(Tac).where(Tac._tac_id == tac.tac_id)
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -269,14 +269,14 @@ class TestTacFactoryAsync:
         """
         tac = await TacFactory.create_async(session=session)
         original_last_change_code = tac.last_change_code
-        stmt = select(Tac).where(Tac.tac_id == tac.tac_id)
+        stmt = select(Tac).where(Tac._tac_id == tac.tac_id)
         result = await session.execute(stmt)
         tac_1 = result.scalars().first()
         # tac_1 = await session.query(Tac).filter_by(
         # tac_id=tac.tac_id).first()
         tac_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(Tac).where(Tac.tac_id == tac.tac_id)
+        stmt = select(Tac).where(Tac._tac_id == tac.tac_id)
         result = await session.execute(stmt)
         tac_2 = result.scalars().first()
         # tac_2 = await session.query(Tac).filter_by(

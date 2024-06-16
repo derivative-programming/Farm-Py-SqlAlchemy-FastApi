@@ -1,4 +1,5 @@
 # apis/models/tests/plant_user_property_random_update_test.py
+# pylint: disable=unused-argument
 """
     #TODO add comment
 """
@@ -24,7 +25,7 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
             #TODO add comment
         """
         async def mock_process(
-            plant_bus_obj: PlantBusObj,  # pylint: disable=unused-argument
+            plant_bus_obj: PlantBusObj,
 
         ):
             return FlowPlantUserPropertyRandomUpdateResult()

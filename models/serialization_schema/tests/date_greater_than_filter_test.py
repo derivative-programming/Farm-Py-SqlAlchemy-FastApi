@@ -218,7 +218,8 @@ class TestDateGreaterThanFilterSchema:
         # Verify the keys in both dictionaries match
         assert set(date_greater_than_filter_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
-            f"Expected keys: {set(self.sample_data.keys())}, Got: {set(date_greater_than_filter_dict_from_json.keys())}"
+            f"Expected keys: {set(self.sample_data.keys())}, "
+            f"Got: {set(date_greater_than_filter_dict_from_json.keys())}"
         )
         assert date_greater_than_filter_dict_from_json['code'] == str(date_greater_than_filter.code), (
             "failed on code"

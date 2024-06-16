@@ -1,6 +1,8 @@
 # models/managers/tests/error_log_test.py
+# pylint: disable=protected-access
 """
     #TODO add comment
+    #TODO file too big. split into separate test files
 """
 import logging
 import uuid
@@ -57,7 +59,8 @@ class TestErrorLogManager:
         mock_data = {
             "non_existant_property": "Rose"
         }
-        # If the build method is expected to raise an exception for missing data, test for that
+        # If the build method is expected to raise an exception for
+        # missing data, test for that
         with pytest.raises(Exception):
             await error_log_manager.build_async(**mock_data)
         await session.rollback()
@@ -71,7 +74,7 @@ class TestErrorLogManager:
             #TODO add comment
         """
         test_error_log = await ErrorLogFactory.build_async(session)
-        assert test_error_log.error_log_id is None
+        assert test_error_log.error_log_id == 0
         # Add the error_log using the manager's add method
         added_error_log = await error_log_manager.add(error_log=test_error_log)
         assert isinstance(added_error_log, ErrorLog)
@@ -82,7 +85,10 @@ class TestErrorLogManager:
         assert added_error_log.error_log_id > 0
         # Fetch the error_log from the database directly
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog.error_log_id == added_error_log.error_log_id))
+            select(ErrorLog).filter(
+                ErrorLog._error_log_id == added_error_log.error_log_id
+            )
+        )
         fetched_error_log = result.scalars().first()
         # Assert that the fetched error_log is not None and matches the added error_log
         assert fetched_error_log is not None
@@ -99,7 +105,7 @@ class TestErrorLogManager:
         """
         # Create a test error_log using the ErrorLogFactory without persisting it to the database
         test_error_log = await ErrorLogFactory.build_async(session)
-        assert test_error_log.error_log_id is None
+        assert test_error_log.error_log_id == 0
         test_error_log.code = uuid.uuid4()
         # Add the error_log using the manager's add method
         added_error_log = await error_log_manager.add(error_log=test_error_log)
@@ -183,7 +189,7 @@ class TestErrorLogManager:
         assert updated_error_log.code == test_error_log.code
         result = await session.execute(
             select(ErrorLog).filter(
-                ErrorLog.error_log_id == test_error_log.error_log_id)
+                ErrorLog._error_log_id == test_error_log.error_log_id)
         )
         fetched_error_log = result.scalars().first()
         assert updated_error_log.error_log_id == fetched_error_log.error_log_id
@@ -213,7 +219,7 @@ class TestErrorLogManager:
         assert updated_error_log.code == new_code
         result = await session.execute(
             select(ErrorLog).filter(
-                ErrorLog.error_log_id == test_error_log.error_log_id)
+                ErrorLog._error_log_id == test_error_log.error_log_id)
         )
         fetched_error_log = result.scalars().first()
         assert updated_error_log.error_log_id == fetched_error_log.error_log_id
@@ -259,14 +265,14 @@ class TestErrorLogManager:
         """
         error_log_data = await ErrorLogFactory.create_async(session)
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog.error_log_id == error_log_data.error_log_id))
+            select(ErrorLog).filter(ErrorLog._error_log_id == error_log_data.error_log_id))
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.error_log_id == error_log_data.error_log_id
         deleted_error_log = await error_log_manager.delete(
             error_log_id=error_log_data.error_log_id)
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog.error_log_id == error_log_data.error_log_id))
+            select(ErrorLog).filter(ErrorLog._error_log_id == error_log_data.error_log_id))
         fetched_error_log = result.scalars().first()
         assert fetched_error_log is None
     @pytest.mark.asyncio
@@ -377,7 +383,7 @@ class TestErrorLogManager:
         for updated_error_log in error_logs:
             result = await session.execute(
                 select(ErrorLog).filter(
-                    ErrorLog.error_log_id == updated_error_log.error_log_id
+                    ErrorLog._error_log_id == updated_error_log.error_log_id
                 )
             )
             fetched_error_log = result.scalars().first()
@@ -432,13 +438,13 @@ class TestErrorLogManager:
         assert str(updated_error_logs[1].last_update_user_id) == (
             str(error_log_manager._session_context.customer_code))
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog.error_log_id == 1)
+            select(ErrorLog).filter(ErrorLog._error_log_id == 1)
         )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.code == code_updated1
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog.error_log_id == 2)
+            select(ErrorLog).filter(ErrorLog._error_log_id == 2)
         )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
@@ -501,7 +507,7 @@ class TestErrorLogManager:
         assert result is True
         for error_log_id in error_log_ids:
             execute_result = await session.execute(
-                select(ErrorLog).filter(ErrorLog.error_log_id == error_log_id))
+                select(ErrorLog).filter(ErrorLog._error_log_id == error_log_id))
             fetched_error_log = execute_result.scalars().first()
             assert fetched_error_log is None
     @pytest.mark.asyncio
@@ -580,7 +586,7 @@ class TestErrorLogManager:
         # Add error_logs
         error_logs_data = (
             [await ErrorLogFactory.create_async(session) for _ in range(5)])
-        sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="error_log_id")
+        sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="_error_log_id")
         assert [error_log.error_log_id for error_log in sorted_error_logs] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -632,7 +638,7 @@ class TestErrorLogManager:
         """
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
-        result = await session.execute(select(ErrorLog).filter(ErrorLog.error_log_id == error_log1.error_log_id))
+        result = await session.execute(select(ErrorLog).filter(ErrorLog._error_log_id == error_log1.error_log_id))
         error_log2 = result.scalars().first()
         assert error_log1.code == error_log2.code
         updated_code1 = uuid.uuid4()

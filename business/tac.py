@@ -2,6 +2,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import random
 import uuid
 from typing import List
@@ -17,6 +18,8 @@ from business.organization import OrganizationBusObj
 
 from business.customer import CustomerBusObj
 
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Tac object is not initialized")
 class TacInvalidInitError(Exception):
     """
     #TODO add comment
@@ -33,14 +36,14 @@ class TacBusObj(BaseBusObj):
         self._session_context = session_context
         self.tac = Tac()
     @property
-    def tac_id(self):
+    def tac_id(self) -> int:
         """
         Get the tac ID from the Tac object.
         :return: The tac ID.
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.tac_id
     # @tac_id.setter
@@ -59,7 +62,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.code
     @code.setter
@@ -69,7 +72,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
@@ -82,7 +85,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.last_change_code
     @last_change_code.setter
@@ -92,7 +95,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
@@ -105,7 +108,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.insert_user_id
     @insert_user_id.setter
@@ -115,7 +118,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
@@ -125,7 +128,7 @@ class TacBusObj(BaseBusObj):
     #     #TODO add comment
     #     """
     #     if not self.tac:
-    #         raise AttributeError("Tac object is not initialized")
+    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
     #     self.insert_user_id = value
     #     return self
     # last_update_user_id
@@ -136,7 +139,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.last_update_user_id
     @last_update_user_id.setter
@@ -146,7 +149,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
@@ -166,7 +169,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.tac.description is None:
             return ""
@@ -178,16 +181,16 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, str), "description must be a string"
         self.tac.description = value
-    # def set_prop_description(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.description = value
-    #     return self
+    def set_prop_description(self, value: str):
+        """
+        #TODO add comment
+        """
+        self.description = value
+        return self
     # displayOrder
     @property
     def display_order(self):
@@ -196,7 +199,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.display_order
     @display_order.setter
@@ -206,17 +209,17 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.tac.display_order = value
-    # def set_prop_display_order(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.display_order = value
-    #     return self
+    def set_prop_display_order(self, value: int):
+        """
+        #TODO add comment
+        """
+        self.display_order = value
+        return self
     # isActive
     @property
     def is_active(self):
@@ -225,7 +228,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.is_active
     @is_active.setter
@@ -235,17 +238,17 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.tac.is_active = value
-    # def set_prop_is_active(self, value: bool):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.is_active = value
-    #     return self
+    def set_prop_is_active(self, value: bool):
+        """
+        #TODO add comment
+        """
+        self.is_active = value
+        return self
     # lookupEnumName
     @property
     def lookup_enum_name(self):
@@ -254,7 +257,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.tac.lookup_enum_name is None:
             return ""
@@ -266,16 +269,16 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.tac.lookup_enum_name = value
-    # def set_prop_lookup_enum_name(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.lookup_enum_name = value
-    #     return self
+    def set_prop_lookup_enum_name(self, value: str):
+        """
+        #TODO add comment
+        """
+        self.lookup_enum_name = value
+        return self
     # name
     @property
     def name(self):
@@ -284,7 +287,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.tac.name is None:
             return ""
@@ -296,16 +299,16 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, str), "name must be a string"
         self.tac.name = value
-    # def set_prop_name(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.name = value
-    #     return self
+    def set_prop_name(self, value: str):
+        """
+        #TODO add comment
+        """
+        self.name = value
+        return self
     # PacID
 # endset
     # description,
@@ -321,7 +324,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.pac_id
     @pac_id.setter
@@ -331,17 +334,17 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.tac.pac_id = value
-    # def set_prop_pac_id(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.pac_id = value
-    #     return self
+    def set_prop_pac_id(self, value: int):
+        """
+        #TODO add comment
+        """
+        self.pac_id = value
+        return self
     @property
     def pac_code_peek(self):
         """
@@ -349,7 +352,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.pac_code_peek
     # @pac_code_peek.setter
@@ -366,7 +369,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.insert_utc_date_time
     @insert_utc_date_time.setter
@@ -376,7 +379,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
@@ -389,7 +392,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac.last_update_utc_date_time
     @last_update_utc_date_time.setter
@@ -399,7 +402,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
@@ -489,7 +492,11 @@ class TacBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return managers_and_enums.TacEnum[self.tac.lookup_enum_name]
+        return (
+            managers_and_enums.TacEnum[
+                self.tac.lookup_enum_name
+            ]
+        )
     async def load_from_enum(
         self,
         tac_enum:
@@ -548,11 +555,11 @@ class TacBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tac:
-            raise AttributeError("Tac object is not initialized")
-        if self.tac.tac_id is not None and self.tac.tac_id > 0:
+            raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
+        if self.tac.tac_id > 0:
             tac_manager = TacManager(self._session_context)
             self.tac = await tac_manager.update(self.tac)
-        if self.tac.tac_id is None or self.tac.tac_id == 0:
+        if self.tac.tac_id == 0:
             tac_manager = TacManager(self._session_context)
             self.tac = await tac_manager.add(self.tac)
         return self
@@ -562,7 +569,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.tac.tac_id > 0:
             tac_manager = TacManager(self._session_context)
@@ -574,7 +581,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         self.tac.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -593,7 +600,7 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(
-                "Tac object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tac
     def is_equal(self, tac: Tac) -> bool:

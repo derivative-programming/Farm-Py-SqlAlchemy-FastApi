@@ -4,6 +4,7 @@
     #TODO add comment
 """
 
+from decimal import Decimal
 import random
 import uuid
 from typing import List
@@ -15,6 +16,9 @@ import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Plant object is not initialized")
 
 
 class PlantInvalidInitError(Exception):
@@ -39,7 +43,7 @@ class PlantBusObj(BaseBusObj):
         self.plant = Plant()
 
     @property
-    def plant_id(self):
+    def plant_id(self) -> int:
         """
         Get the plant ID from the Plant object.
 
@@ -48,7 +52,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.plant_id
@@ -73,7 +77,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.code
@@ -86,7 +90,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if not isinstance(value, uuid.UUID):
@@ -103,7 +107,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.last_change_code
@@ -116,7 +120,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if not isinstance(value, int):
@@ -133,7 +137,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.insert_user_id
@@ -146,7 +150,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if not isinstance(value, uuid.UUID):
@@ -160,7 +164,7 @@ class PlantBusObj(BaseBusObj):
     #     """
 
     #     if not self.plant:
-    #         raise AttributeError("Plant object is not initialized")
+    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
 
     #     self.insert_user_id = value
     #     return self
@@ -174,7 +178,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.last_update_user_id
@@ -187,7 +191,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if not isinstance(value, uuid.UUID):
@@ -216,7 +220,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.is_delete_allowed
@@ -229,7 +233,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if not isinstance(value, bool):
@@ -237,13 +241,13 @@ class PlantBusObj(BaseBusObj):
 
         self.plant.is_delete_allowed = value
 
-    # def set_prop_is_delete_allowed(self, value: bool):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_is_delete_allowed(self, value: bool):
+        """
+        #TODO add comment
+        """
 
-    #     self.is_delete_allowed = value
-    #     return self
+        self.is_delete_allowed = value
+        return self
 
     # isEditAllowed
     @property
@@ -254,7 +258,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.is_edit_allowed
@@ -267,19 +271,19 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, bool), "is_edit_allowed must be a boolean"
         self.plant.is_edit_allowed = value
 
-    # def set_prop_is_edit_allowed(self, value: bool):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_is_edit_allowed(self, value: bool):
+        """
+        #TODO add comment
+        """
 
-    #     self.is_edit_allowed = value
-    #     return self
+        self.is_edit_allowed = value
+        return self
 
     # otherFlavor
     @property
@@ -290,7 +294,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if self.plant.other_flavor is None:
@@ -306,19 +310,19 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, str), "other_flavor must be a string"
         self.plant.other_flavor = value
 
-    # def set_prop_other_flavor(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_other_flavor(self, value: str):
+        """
+        #TODO add comment
+        """
 
-    #     self.other_flavor = value
-    #     return self
+        self.other_flavor = value
+        return self
 
     # someBigIntVal
     @property
@@ -329,7 +333,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_big_int_val
@@ -342,19 +346,19 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, int), "some_big_int_val must be an integer"
         self.plant.some_big_int_val = value
 
-    # def set_prop_some_big_int_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_big_int_val(self, value: int):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_big_int_val = value
-    #     return self
+        self.some_big_int_val = value
+        return self
 
     # someBitVal
     @property
@@ -365,7 +369,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_bit_val
@@ -378,19 +382,19 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, bool), "some_bit_val must be a boolean"
         self.plant.some_bit_val = value
 
-    # def set_prop_some_bit_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_bit_val(self, value: bool):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_bit_val = value
-    #     return self
+        self.some_bit_val = value
+        return self
 
     # someDateVal
     @property
@@ -401,7 +405,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_date_val
@@ -414,7 +418,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, date), (
@@ -422,13 +426,13 @@ class PlantBusObj(BaseBusObj):
         )
         self.plant.some_date_val = value
 
-    # def set_prop_some_date_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_date_val(self, value: date):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_date_val = value
-    #     return self
+        self.some_date_val = value
+        return self
 
     # someDecimalVal
     @property
@@ -439,7 +443,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_decimal_val
@@ -452,7 +456,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, (int, float)), (
@@ -460,13 +464,13 @@ class PlantBusObj(BaseBusObj):
         )
         self.plant.some_decimal_val = value
 
-    # def set_prop_some_decimal_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_decimal_val(self, value: Decimal):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_decimal_val = value
-    #     return self
+        self.some_decimal_val = value
+        return self
 
     # someEmailAddress
     @property
@@ -477,7 +481,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if self.plant.some_email_address is None:
@@ -493,20 +497,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, str), (
             "some_email_address must be a string")
         self.plant.some_email_address = value
 
-    # def set_prop_some_email_address(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_email_address(self, value: str):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_email_address = value
-    #     return self
+        self.some_email_address = value
+        return self
 
     # someFloatVal
     @property
@@ -517,7 +521,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_float_val
@@ -530,20 +534,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, float), (
             "some_float_val must be a float")
         self.plant.some_float_val = value
 
-    # def set_prop_some_float_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_float_val(self, value):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_float_val = value
-    #     return self
+        self.some_float_val = value
+        return self
 
     # someIntVal
     @property
@@ -554,7 +558,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_int_val
@@ -567,20 +571,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, int), (
             "some_int_val must be an integer")
         self.plant.some_int_val = value
 
-    # def set_prop_some_int_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_int_val(self, value: int):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_int_val = value
-    #     return self
+        self.some_int_val = value
+        return self
 
     # someMoneyVal
     @property
@@ -591,7 +595,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_money_val
@@ -604,20 +608,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, (int, float)), (
             "some_money_val must be a number")
         self.plant.some_money_val = value
 
-    # def set_prop_some_money_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_money_val(self, value: Decimal):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_money_val = value
-    #     return self
+        self.some_money_val = value
+        return self
 
     # someNVarCharVal
     @property
@@ -628,7 +632,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if self.plant.some_n_var_char_val is None:
@@ -644,20 +648,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, str), (
             "some_n_var_char_val must be a string")
         self.plant.some_n_var_char_val = value
 
-    # def set_prop_some_n_var_char_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_n_var_char_val(self, value: str):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_n_var_char_val = value
-    #     return self
+        self.some_n_var_char_val = value
+        return self
 
     # somePhoneNumber
     @property
@@ -668,7 +672,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if self.plant.some_phone_number is None:
@@ -684,20 +688,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, str), (
             "some_phone_number must be a string")
         self.plant.some_phone_number = value
 
-    # def set_prop_some_phone_number(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_phone_number(self, value: str):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_phone_number = value
-    #     return self
+        self.some_phone_number = value
+        return self
 
     # someTextVal
     @property
@@ -708,7 +712,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if self.plant.some_text_val is None:
@@ -724,20 +728,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, str), (
             "some_text_val must be a string")
         self.plant.some_text_val = value
 
-    # def set_prop_some_text_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_text_val(self, value: str):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_text_val = value
-    #     return self
+        self.some_text_val = value
+        return self
 
     # someUniqueidentifierVal
     @property
@@ -748,7 +752,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_uniqueidentifier_val
@@ -761,20 +765,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, uuid.UUID), (
             "some_uniqueidentifier_val must be a UUID")
         self.plant.some_uniqueidentifier_val = value
 
-    # def set_prop_some_uniqueidentifier_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_uniqueidentifier_val(self, value: uuid.UUID):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_uniqueidentifier_val = value
-    #     return self
+        self.some_uniqueidentifier_val = value
+        return self
 
     # someUTCDateTimeVal
     @property
@@ -785,7 +789,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.some_utc_date_time_val
@@ -798,20 +802,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, datetime), (
             "some_utc_date_time_val must be a datetime object")
         self.plant.some_utc_date_time_val = value
 
-    # def set_prop_some_utc_date_time_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_utc_date_time_val(self, value: datetime):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_utc_date_time_val = value
-    #     return self
+        self.some_utc_date_time_val = value
+        return self
 
     # someVarCharVal
     @property
@@ -822,7 +826,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if self.plant.some_var_char_val is None:
@@ -838,20 +842,20 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, str), (
             "some_var_char_val must be a string")
         self.plant.some_var_char_val = value
 
-    # def set_prop_some_var_char_val(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_some_var_char_val(self, value: str):
+        """
+        #TODO add comment
+        """
 
-    #     self.some_var_char_val = value
-    #     return self
+        self.some_var_char_val = value
+        return self
 
     # LandID
 
@@ -879,7 +883,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.flvr_foreign_key_id
@@ -892,7 +896,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if not isinstance(value, int):
@@ -900,13 +904,13 @@ class PlantBusObj(BaseBusObj):
 
         self.plant.flvr_foreign_key_id = value
 
-    # def set_prop_flvr_foreign_key_id(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_flvr_foreign_key_id(self, value: int):
+        """
+        #TODO add comment
+        """
 
-    #     self.flvr_foreign_key_id = value
-    #     return self
+        self.flvr_foreign_key_id = value
+        return self
 
     @property
     def flvr_foreign_key_code_peek(self):
@@ -916,7 +920,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.flvr_foreign_key_code_peek
@@ -937,7 +941,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.land_id
@@ -950,7 +954,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, int) or value is None, (
@@ -958,13 +962,13 @@ class PlantBusObj(BaseBusObj):
 
         self.plant.land_id = value
 
-    # def set_prop_land_id(self, value):
-    #     """
-    #     #TODO add comment
-    #     """
+    def set_prop_land_id(self, value: int):
+        """
+        #TODO add comment
+        """
 
-    #     self.land_id = value
-    #     return self
+        self.land_id = value
+        return self
 
     @property
     def land_code_peek(self):
@@ -974,7 +978,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.land_code_peek
@@ -1001,7 +1005,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.insert_utc_date_time
@@ -1014,7 +1018,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, datetime) or value is None, (
@@ -1031,7 +1035,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant.last_update_utc_date_time
@@ -1044,7 +1048,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         assert isinstance(value, datetime) or value is None, (
@@ -1208,12 +1212,12 @@ class PlantBusObj(BaseBusObj):
         """
 
         if not self.plant:
-            raise AttributeError("Plant object is not initialized")
+            raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
 
-        if self.plant.plant_id is not None and self.plant.plant_id > 0:
+        if self.plant.plant_id > 0:
             plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.update(self.plant)
-        if self.plant.plant_id is None or self.plant.plant_id == 0:
+        if self.plant.plant_id == 0:
             plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.add(self.plant)
 
@@ -1226,7 +1230,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         if self.plant.plant_id > 0:
@@ -1241,7 +1245,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         self.plant.flvr_foreign_key_id = random.choice(
@@ -1286,7 +1290,7 @@ class PlantBusObj(BaseBusObj):
 
         if not self.plant:
             raise AttributeError(
-                "Plant object is not initialized"
+                NOT_INITIALIZED_ERROR_MESSAGE
             )
 
         return self.plant

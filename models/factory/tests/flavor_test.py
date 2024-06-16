@@ -225,11 +225,11 @@ class TestFlavorFactory:
         flavor = FlavorFactory.create(session=session)
         original_last_change_code = flavor.last_change_code
         flavor_1 = session.query(Flavor).filter_by(
-            flavor_id=flavor.flavor_id).first()
+            _flavor_id=flavor.flavor_id).first()
         flavor_1.code = uuid.uuid4()
         session.commit()
         flavor_2 = session.query(Flavor).filter_by(
-            flavor_id=flavor.flavor_id).first()
+            _flavor_id=flavor.flavor_id).first()
         flavor_2.code = uuid.uuid4()
         session.commit()
         assert flavor_2.last_change_code != original_last_change_code

@@ -15,6 +15,7 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
         """
         model = OrgApiKey
         exclude = (
+            "_org_api_key_id",
             "_code",
             "_insert_user_id",
             "_last_update_user_id",

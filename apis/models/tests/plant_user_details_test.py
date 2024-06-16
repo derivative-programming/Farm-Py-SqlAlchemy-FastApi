@@ -17,7 +17,10 @@ class PlantUserDetailsGetModelRequestFactoryAsync:
         """
             #TODO add comment
         """
-        model_instance = await PlantUserDetailsGetModelRequestFactory.create_async(session=session)
+        model_instance = await (
+            PlantUserDetailsGetModelRequestFactory
+            .create_async(session=session)
+        )
         assert isinstance(model_instance, PlantUserDetailsGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)

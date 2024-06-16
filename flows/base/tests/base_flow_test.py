@@ -1,4 +1,5 @@
 # flows/base/tests/base_flow_test.py
+# pylint: disable=protected-access
 
 """
     #TODO add comment

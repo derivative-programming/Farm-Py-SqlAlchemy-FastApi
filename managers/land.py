@@ -135,7 +135,7 @@ class LandManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Land.pac_id == Pac.pac_id,
+            and_(Land.pac_id == Pac._pac_id,
                  Land.pac_id != 0)
         )
 # endset
@@ -161,7 +161,8 @@ class LandManager:
             pac = query_result_row[i]  # pac_id
             i = i + 1
 # endset
-            land.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
+            land.pac_code_peek = (  # pac_id
+                pac.code if pac else uuid.UUID(int=0))
 # endset
             result.append(land)
         return result
@@ -179,9 +180,10 @@ class LandManager:
             str(land_id))
         if not isinstance(land_id, int):
             raise TypeError(
-                "The land_id must be an integer, got %s instead.",
+                f"The land_id must be an integer, "
+                f"got %s instead.",
                 type(land_id))
-        query_filter = Land.land_id == land_id
+        query_filter = Land._land_id == land_id
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Land]:
@@ -189,7 +191,7 @@ class LandManager:
             #TODO add comment
         """
         logging.info("LandManager.get_by_code %s", code)
-        query_filter = Land._code == str(code)
+        query_filter = Land._code == str(code)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, land: Land, **kwargs) -> Optional[Land]:
@@ -214,7 +216,8 @@ class LandManager:
         logging.info("LandManager.delete %s", land_id)
         if not isinstance(land_id, int):
             raise TypeError(
-                f"The land_id must be an integer, got {type(land_id)} instead."
+                f"The land_id must be an integer, "
+                f"got {type(land_id)} instead."
             )
         land = await self.get_by_id(land_id)
         if not land:
@@ -295,7 +298,8 @@ class LandManager:
             land_id = update.get("land_id")
             if not isinstance(land_id, int):
                 raise TypeError(
-                    f"The land_id must be an integer, got {type(land_id)} instead."
+                    f"The land_id must be an integer, "
+                    f"got {type(land_id)} instead."
                 )
             if not land_id:
                 continue
@@ -321,7 +325,8 @@ class LandManager:
         for land_id in land_ids:
             if not isinstance(land_id, int):
                 raise TypeError(
-                    f"The land_id must be an integer, got {type(land_id)} instead."
+                    f"The land_id must be an integer, "
+                    f"got {type(land_id)} instead."
                 )
             land = await self.get_by_id(land_id)
             if not land:
@@ -347,6 +352,8 @@ class LandManager:
         """
         Retrieve lands sorted by a particular attribute.
         """
+        if sort_by == "land_id":
+            sort_by = "_land_id"
         if order == "asc":
             result = await self._session_context.session.execute(
                 select(Land).order_by(getattr(Land, sort_by).asc()))
@@ -368,7 +375,8 @@ class LandManager:
         logging.info("LandManager.exists %s", land_id)
         if not isinstance(land_id, int):
             raise TypeError(
-                f"The land_id must be an integer, got {type(land_id)} instead."
+                f"The land_id must be an integer, "
+                f"got {type(land_id)} instead."
             )
         land = await self.get_by_id(land_id)
         return bool(land)
@@ -395,7 +403,8 @@ class LandManager:
         logging.info("LandManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The land_id must be an integer, got {type(pac_id)} instead."
+                f"The land_id must be an integer, "
+                f"got {type(pac_id)} instead."
             )
         query_filter = Land.pac_id == pac_id
         query_results = await self._run_query(query_filter)

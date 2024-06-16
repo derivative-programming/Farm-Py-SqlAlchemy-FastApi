@@ -1,4 +1,5 @@
 # apis/models/tests/customer_user_log_out_test.py
+# pylint: disable=unused-argument
 """
     #TODO add comment
 """
@@ -24,7 +25,7 @@ class TestCustomerUserLogOutPostModelResponse:
             #TODO add comment
         """
         async def mock_process(
-            customer_bus_obj: CustomerBusObj,  # pylint: disable=unused-argument
+            customer_bus_obj: CustomerBusObj,
 
         ):
             return FlowCustomerUserLogOutResult()
