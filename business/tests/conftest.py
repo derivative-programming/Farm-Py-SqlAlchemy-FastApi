@@ -1,4 +1,5 @@
 # business/tests/conftest.py
+# pylint: disable=unused-argument
 
 """
     #TODO add comment

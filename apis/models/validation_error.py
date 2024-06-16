@@ -4,8 +4,9 @@
     #TODO add comment
 """
 
-from helpers.pydantic_serialization import CamelModel
 from pydantic import Field
+
+from helpers.pydantic_serialization import CamelModel
 
 
 class ValidationErrorItem(CamelModel):

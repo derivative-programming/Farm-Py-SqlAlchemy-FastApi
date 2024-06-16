@@ -30,7 +30,7 @@ class FlowErrorLogConfigResolveErrorLogResult():
         data = {
             'context_object_code': str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
         self,
         error_log_bus_obj: ErrorLogBusObj,
 
-# endset
-        ) -> FlowErrorLogConfigResolveErrorLogResult:
+# endset  # noqa: E122
+    ) -> FlowErrorLogConfigResolveErrorLogResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
         await super()._process_validation_rules(
             error_log_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 

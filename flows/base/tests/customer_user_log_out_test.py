@@ -2,23 +2,25 @@
 """
     #TODO add comment
 """
-from decimal import Decimal
 import uuid
-import pytest
+from datetime import date, datetime
 from decimal import Decimal
-from datetime import datetime, date
+import pytest
+import flows.constants.customer_user_log_out as FlowConstants
 from flows.base.customer_user_log_out import BaseFlowCustomerUserLogOut
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.flavor import FlavorFactory
 from models.factory.customer import CustomerFactory
-import flows.constants.customer_user_log_out as FlowConstants
 class TestBaseFlowCustomerUserLogOut():
     """
     #TODO add comment
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         flow = BaseFlowCustomerUserLogOut(session_context)
         customer = await CustomerFactory.create_async(session)
@@ -37,6 +39,9 @@ class TestBaseFlowCustomerUserLogOut():
 
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         customer = await CustomerFactory.create_async(session)
         flow = BaseFlowCustomerUserLogOut(session_context)

@@ -30,7 +30,7 @@ class FlowCustomerBuildTempApiKeyResult():
         data = {
             'context_object_code': str(self.context_object_code),
             'tmp_org_api_key_code': str(self.tmp_org_api_key_code),
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
         self,
         customer_bus_obj: CustomerBusObj,
 
-# endset
-        ) -> FlowCustomerBuildTempApiKeyResult:
+# endset  # noqa: E122
+    ) -> FlowCustomerBuildTempApiKeyResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
         await super()._process_validation_rules(
             customer_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         tmp_org_api_key_code_output: uuid.UUID = uuid.UUID(int=0)

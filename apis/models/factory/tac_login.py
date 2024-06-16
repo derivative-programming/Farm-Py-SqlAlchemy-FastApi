@@ -23,14 +23,17 @@ class TacLoginPostModelRequestFactory(factory.base.Factory):
     force_error_message: str = ""
     email: str = Faker('email')
     password: str = Faker(
-         'sentence',
-         nb_words=4)
+        'sentence',
+        nb_words=4
+    )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> TacLoginPostModelRequest:
+    def _build(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> TacLoginPostModelRequest:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
 # endset
 
@@ -40,7 +43,9 @@ class TacLoginPostModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> TacLoginPostModelRequest:
+    def _create(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> TacLoginPostModelRequest:
 
 # endset
 
@@ -50,7 +55,9 @@ class TacLoginPostModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> TacLoginPostModelRequest:
+    async def create_async(
+        cls, session: AsyncSession, *args, **kwargs
+    ) -> TacLoginPostModelRequest:
         """
             #TODO add comment
         """
@@ -58,7 +65,9 @@ class TacLoginPostModelRequestFactory(factory.base.Factory):
 # endset
 
 # endset
-        obj = TacLoginPostModelRequestFactory.build(session=None, *args, **kwargs)
+        obj = TacLoginPostModelRequestFactory.build(
+            session=None, *args, **kwargs
+        )
 
 # endset
         return obj

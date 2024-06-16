@@ -33,7 +33,12 @@ async def test_submit_success(overridden_get_db):
     #TODO add comment
     """
 
-    async def mock_process_request(session, session_context, plant_code, request):  # pylint: disable=unused-argument
+    async def mock_process_request(
+        session,
+        session_context,
+        plant_code,
+        request
+    ):  # pylint: disable=unused-argument
         pass
 
     with patch.object(
@@ -42,7 +47,9 @@ async def test_submit_success(overridden_get_db):
         new_callable=AsyncMock
     ) as mock_method:
         mock_method.side_effect = mock_process_request
-        plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
+        plant = await model_factorys.PlantFactory.create_async(
+            overridden_get_db
+        )
         plant_code = plant.code
         api_dict = {'PlantCode': str(plant_code)}
         test_api_key = ApiToken.create_token(api_dict, 1)
@@ -80,12 +87,14 @@ async def test_submit_request_validation_error(overridden_get_db):
             ),
             headers={'API_KEY': test_api_key}
         )
-
-        assert response.status_code == 400  # Expecting validation error for incorrect data
+        # Expecting validation error for incorrect data
+        assert response.status_code == 400
 
 
 @pytest.mark.asyncio
-async def test_submit_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+async def test_submit_authorization_failure_bad_api_key(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -108,7 +117,9 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
 
 
 @pytest.mark.asyncio
-async def test_submit_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+async def test_submit_authorization_failure_empty_header_key(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -131,7 +142,9 @@ async def test_submit_authorization_failure_empty_header_key(overridden_get_db: 
 
 
 @pytest.mark.asyncio
-async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSession):
+async def test_submit_authorization_failure_no_header(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -153,7 +166,9 @@ async def test_submit_authorization_failure_no_header(overridden_get_db: AsyncSe
 
 
 @pytest.mark.asyncio
-async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
+async def test_submit_endpoint_url_failure(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -174,7 +189,9 @@ async def test_submit_endpoint_url_failure(overridden_get_db: AsyncSession):
 
 
 @pytest.mark.asyncio
-async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSession):
+async def test_submit_endpoint_invalid_code_failure(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -195,7 +212,9 @@ async def test_submit_endpoint_invalid_code_failure(overridden_get_db: AsyncSess
 
 
 @pytest.mark.asyncio
-async def test_submit_endpoint_method_failure(overridden_get_db: AsyncSession):
+async def test_submit_endpoint_method_failure(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """

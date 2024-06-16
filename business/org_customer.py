@@ -35,7 +35,9 @@ class OrgCustomerBusObj(BaseBusObj):
         :return: The org_customer ID.
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.org_customer_id
     # @org_customer_id.setter
     # def org_customer_id(self, value: int):
@@ -52,7 +54,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
@@ -60,7 +64,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.org_customer.code = value
@@ -71,7 +77,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
@@ -79,7 +87,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.org_customer.last_change_code = value
@@ -90,7 +100,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
@@ -98,7 +110,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.org_customer.insert_user_id = value
@@ -117,7 +131,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
@@ -125,7 +141,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.org_customer.last_update_user_id = value
@@ -144,7 +162,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         if self.org_customer.email is None:
             return ""
         return self.org_customer.email
@@ -154,7 +174,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         assert isinstance(value, str), (
             "email must be a string")
         self.org_customer.email = value
@@ -173,7 +195,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.customer_id
     @customer_id.setter
     def customer_id(self, value: int):
@@ -181,7 +205,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("customer_id must be an integer.")
         self.org_customer.customer_id = value
@@ -197,7 +223,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.customer_code_peek
     # @customer_code_peek.setter
     # def customer_code_peek(self, value):
@@ -213,7 +241,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.organization_id
     @organization_id.setter
     def organization_id(self, value):
@@ -221,7 +251,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "organization_id must be an integer or None")
         self.org_customer.organization_id = value
@@ -237,7 +269,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.organization_code_peek
     # @organization_code_peek.setter
     # def organization_code_peek(self, value):
@@ -252,7 +286,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
@@ -260,7 +296,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.org_customer.insert_utc_date_time = value
@@ -271,7 +309,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
@@ -279,7 +319,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.org_customer.last_update_utc_date_time = value
@@ -290,7 +332,8 @@ class OrgCustomerBusObj(BaseBusObj):
         """
         Load org_customer data from JSON string.
         :param json_data: JSON string containing org_customer data.
-        :raises ValueError: If json_data is not a string or if no org_customer data is found.
+        :raises ValueError: If json_data is not a string
+            or if no org_customer data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -319,7 +362,8 @@ class OrgCustomerBusObj(BaseBusObj):
         """
         Load org_customer data from org_customer ID.
         :param org_customer_id: Integer ID for loading a specific org_customer.
-        :raises ValueError: If org_customer_id is not an integer or if no org_customer data is found.
+        :raises ValueError: If org_customer_id is not an integer or
+            if no org_customer data is found.
         """
         if not isinstance(org_customer_id, int):
             raise ValueError("org_customer_id must be an integer")
@@ -352,7 +396,8 @@ class OrgCustomerBusObj(BaseBusObj):
         """
         Load org_customer data from dictionary.
         :param org_customer_dict: Dictionary containing org_customer data.
-        :raises ValueError: If org_customer_dict is not a dictionary or if no org_customer data is found.
+        :raises ValueError: If org_customer_dict is not a
+            dictionary or if no org_customer data is found.
         """
         if not isinstance(org_customer_dict, dict):
             raise ValueError("org_customer_dict must be a dictionary")
@@ -407,7 +452,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         if self.org_customer.org_customer_id > 0:
             org_customer_manager = OrgCustomerManager(self._session_context)
             await org_customer_manager.delete(self.org_customer.org_customer_id)
@@ -417,7 +464,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         self.org_customer.customer_id = random.choice(
             await managers_and_enums.CustomerManager(
                 self._session_context).get_list()).customer_id
@@ -430,7 +479,9 @@ class OrgCustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.org_customer:
-            raise AttributeError("OrgCustomer object is not initialized")
+            raise AttributeError(
+                "OrgCustomer object is not initialized"
+            )
         return self.org_customer
     def is_equal(self, org_customer: OrgCustomer) -> bool:
         """

@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import Tac
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import TacSchema
+import pytest
+import pytz
+from models import Tac
 from models.factory import TacFactory
+from models.serialization_schema import TacSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -48,7 +48,7 @@ class TestTacSchema:
         "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 # endset  # noqa: E122
     }
-    def test_tac_serialization(self, tac: Tac, session):
+    def test_tac_serialization(self, tac: Tac):
         """
             #TODO add comment
         """
@@ -83,7 +83,7 @@ class TestTacSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tac.pac_code_peek))
 # endset
-    def test_tac_deserialization(self, tac: Tac, session):
+    def test_tac_deserialization(self, tac: Tac):
         """
             #TODO add comment
         """
@@ -148,7 +148,7 @@ class TestTacSchema:
         assert new_tac.pac_code_peek == (  # PacID
             tac.pac_code_peek)
 # endset
-    def test_from_json(self, tac: Tac, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -192,7 +192,7 @@ class TestTacSchema:
             self.sample_data['last_update_utc_date_time'])
         new_tac = Tac(**deserialized_data)
         assert isinstance(new_tac, Tac)
-    def test_to_json(self, tac: Tac, session):
+    def test_to_json(self, tac: Tac):
         """
             #TODO add comment
         """

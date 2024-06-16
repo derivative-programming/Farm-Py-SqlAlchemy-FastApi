@@ -184,7 +184,7 @@ class TestOrgCustomerFactory:
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
-    def test_fields_default(self, session):
+    def test_fields_default(self):
         """
         #TODO add comment
         """

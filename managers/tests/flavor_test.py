@@ -403,11 +403,11 @@ class TestFlavorManager:
         # Update flavors
         updates = [
             {
-                "flavor_id": 1,
+                "flavor_id": flavor1.flavor_id,
                 "code": code_updated1
             },
             {
-                "flavor_id": 2,
+                "flavor_id": flavor2.flavor_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestFlavorManager:
         # No flavors to update since flavor_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_flavors = await flavor_manager.update_bulk(updates)
+            await flavor_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_flavor_not_found(
@@ -474,7 +474,7 @@ class TestFlavorManager:
         """
         updates = [{"flavor_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_flavors = await flavor_manager.update_bulk(updates)
+            await flavor_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestFlavorManager:
         # Delete flavors
         flavor_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await flavor_manager.delete_bulk(flavor_ids)
+            await flavor_manager.delete_bulk(flavor_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestFlavorManager:
         """
         flavor_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await flavor_manager.delete_bulk(flavor_ids)
+            await flavor_manager.delete_bulk(flavor_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

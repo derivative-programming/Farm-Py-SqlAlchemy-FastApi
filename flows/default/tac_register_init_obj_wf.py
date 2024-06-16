@@ -38,7 +38,7 @@ class FlowTacRegisterInitObjWFResult():
             'confirm_password': self.confirm_password,
             'first_name': self.first_name,
             'last_name': self.last_name,
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -55,8 +55,8 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         self,
         tac_bus_obj: TacBusObj,
 
-# endset
-        ) -> FlowTacRegisterInitObjWFResult:
+# endset  # noqa: E122
+    ) -> FlowTacRegisterInitObjWFResult:
         """
             #TODO add comment
         """
@@ -65,7 +65,7 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
         await super()._process_validation_rules(
             tac_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         email_output: str = ""

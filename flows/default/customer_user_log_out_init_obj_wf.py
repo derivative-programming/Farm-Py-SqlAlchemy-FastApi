@@ -30,7 +30,7 @@ class FlowCustomerUserLogOutInitObjWFResult():
         data = {
             'context_object_code': str(self.context_object_code),
             'tac_code': str(self.tac_code),
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
         self,
         customer_bus_obj: CustomerBusObj,
 
-# endset
-        ) -> FlowCustomerUserLogOutInitObjWFResult:
+# endset  # noqa: E122
+    ) -> FlowCustomerUserLogOutInitObjWFResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
         await super()._process_validation_rules(
             customer_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         tac_code_output: uuid.UUID = uuid.UUID(int=0)

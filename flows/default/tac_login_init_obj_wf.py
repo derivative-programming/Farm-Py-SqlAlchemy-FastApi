@@ -32,7 +32,7 @@ class FlowTacLoginInitObjWFResult():
             'context_object_code': str(self.context_object_code),
             'email': self.email,
             'password': self.password,
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -49,8 +49,8 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
         self,
         tac_bus_obj: TacBusObj,
 
-# endset
-        ) -> FlowTacLoginInitObjWFResult:
+# endset  # noqa: E122
+    ) -> FlowTacLoginInitObjWFResult:
         """
             #TODO add comment
         """
@@ -59,7 +59,7 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
         await super()._process_validation_rules(
             tac_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         email_output: str = ""

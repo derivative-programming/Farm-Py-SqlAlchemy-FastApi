@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import ErrorLog
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import ErrorLogSchema
+import pytest
+import pytz
+from models import ErrorLog
 from models.factory import ErrorLogFactory
+from models.serialization_schema import ErrorLogSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -52,7 +52,7 @@ class TestErrorLogSchema:
         "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 # endset  # noqa: E122
     }
-    def test_error_log_serialization(self, error_log: ErrorLog, session):
+    def test_error_log_serialization(self, error_log: ErrorLog):
         """
             #TODO add comment
         """
@@ -91,7 +91,7 @@ class TestErrorLogSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(error_log.pac_code_peek))
 # endset
-    def test_error_log_deserialization(self, error_log: ErrorLog, session):
+    def test_error_log_deserialization(self, error_log: ErrorLog):
         """
             #TODO add comment
         """
@@ -164,7 +164,7 @@ class TestErrorLogSchema:
         assert new_error_log.pac_code_peek == (  # PacID
             error_log.pac_code_peek)
 # endset
-    def test_from_json(self, error_log: ErrorLog, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -212,7 +212,7 @@ class TestErrorLogSchema:
             self.sample_data['last_update_utc_date_time'])
         new_error_log = ErrorLog(**deserialized_data)
         assert isinstance(new_error_log, ErrorLog)
-    def test_to_json(self, error_log: ErrorLog, session):
+    def test_to_json(self, error_log: ErrorLog):
         """
             #TODO add comment
         """

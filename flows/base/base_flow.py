@@ -4,10 +4,12 @@
     #TODO add comment
 """
 
+import logging
+
+from helpers import SessionContext
+
 from .flow_validation_error import FlowValidationError
 from .log_severity import LogSeverity
-import logging
-from helpers import SessionContext
 
 
 class BaseFlow():
@@ -43,7 +45,7 @@ class BaseFlow():
         if len(self.queued_validation_errors) > 0:
             raise FlowValidationError(error_dict=self.queued_validation_errors)
 
-    def _log_exception(self, ex:Exception):
+    def _log_exception(self, ex: Exception):
         self._log_message_and_severity(LogSeverity.error_occurred, str(ex))
 
     def _log_message_and_severity(self, log_severity: int, message: str):
@@ -63,4 +65,7 @@ class BaseFlow():
                 logging.debug(log_message)
 
     def _log_message(self, message: str):
-        self._log_message_and_severity(LogSeverity.information_high_detail,message)
+        self._log_message_and_severity(
+            LogSeverity.information_high_detail,
+            message
+        )

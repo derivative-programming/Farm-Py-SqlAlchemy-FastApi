@@ -1,16 +1,18 @@
 # models/organization.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.organization as organization_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 class Organization(Base):
     """
     #TODO add comment
@@ -47,13 +49,20 @@ class Organization(Base):
         String,
 
         default="",
-        index=organization_constants.name_calculatedIsDBColumnIndexed,
+        index=(
+            organization_constants.
+            name_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
-    tac_id = Column('tac_id',
-                     Integer,
-                     ForeignKey('farm_' + snake_case('Tac') + '.tac_id'),
-                     index=organization_constants.tac_id_calculatedIsDBColumnIndexed,
-                     nullable=True)
+    tac_id = Column(
+        'tac_id',
+        Integer,
+        ForeignKey('farm_' + snake_case('Tac') + '.tac_id'),
+        index=(
+            organization_constants.
+            tac_id_calculatedIsDBColumnIndexed
+        ),
+        nullable=True)
     tac_code_peek = uuid.UUID  # TacID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
@@ -63,7 +72,8 @@ class Organization(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     # tac = relationship('Tac', back_populates=snake_case('Tac'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
@@ -143,22 +153,27 @@ class Organization(Base):
         result = [
             "name",
             "tac_id",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-# Define the index separately from the column
-# Index('index_code', Organization.code)
-# Index('farm_organization_index_tac_id', Organization.tac_id)  # TacID
 @event.listens_for(Organization, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(Organization, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """

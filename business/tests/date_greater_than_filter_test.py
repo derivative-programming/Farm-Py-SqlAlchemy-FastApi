@@ -1,9 +1,10 @@
 # business/tests/date_greater_than_filter_test.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date  # pylint: disable=unused-import
+from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -13,7 +14,7 @@ from models.factory import DateGreaterThanFilterFactory
 from managers.date_greater_than_filter import DateGreaterThanFilterManager
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 from services.logging_config import get_logger
-import current_runtime  # pylint: disable=unused-import
+import current_runtime  # noqa: F401
 
 logger = get_logger(__name__)
 class TestDateGreaterThanFilterBusObj:

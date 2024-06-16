@@ -21,17 +21,17 @@ class PacUserTriStateFilterListGetModelRequestFactory(factory.base.Factory):
         """
         model = PacUserTriStateFilterListGetModelRequest
 
-    page_number = 1
-    item_count_per_page = 1
-    order_by_column_name: str = ""
-    order_by_descending: bool = False
-    force_error_message: str = ""
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> PacUserTriStateFilterListGetModelRequest:
+    def _build(
+        cls,
+        model_class,
+        session=None,
+        *args, **kwargs
+    ) -> PacUserTriStateFilterListGetModelRequest:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
 # endset
 
@@ -41,7 +41,12 @@ class PacUserTriStateFilterListGetModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> PacUserTriStateFilterListGetModelRequest:
+    def _create(
+        cls,
+        model_class,
+        session=None,
+        *args, **kwargs
+    ) -> PacUserTriStateFilterListGetModelRequest:
 
 # endset
 
@@ -51,7 +56,11 @@ class PacUserTriStateFilterListGetModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> PacUserTriStateFilterListGetModelRequest:
+    async def create_async(
+        cls,
+        session: AsyncSession,
+        *args, **kwargs
+    ) -> PacUserTriStateFilterListGetModelRequest:
         """
             #TODO add comment
         """
@@ -59,7 +68,10 @@ class PacUserTriStateFilterListGetModelRequestFactory(factory.base.Factory):
 # endset
 
 # endset
-        obj = PacUserTriStateFilterListGetModelRequestFactory.build(session = None, *args, **kwargs)
+        obj = PacUserTriStateFilterListGetModelRequestFactory.build(
+            session=None,
+            *args, **kwargs
+        )
 
 # endset
         return obj

@@ -5,45 +5,42 @@
 """
 
 import asyncio
-from decimal import Decimal
+from typing import AsyncGenerator
+
 import pytest
 import pytest_asyncio
-import time
-from typing import AsyncGenerator
-from decimal import Decimal
-from datetime import datetime, date
 from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from sqlalchemy import String
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
-from models import Base, CustomerRole
-from models.factory import CustomerRoleFactory
-from models.factory.land import LandFactory
-# from reports.providers.land_plant_list import ReportProviderLandPlantList
-import sqlite3
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 @pytest.fixture(scope="session")
 def event_loop() -> asyncio.AbstractEventLoop:
+    """
+    #TODO add comment
+    """
+
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
 
 @pytest.fixture(scope="session")
 def engine():
+    """
+    #TODO add comment
+    """
+
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()
 
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
+    """
+    #TODO add comment
+    """
+
     @event.listens_for(engine.sync_engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()

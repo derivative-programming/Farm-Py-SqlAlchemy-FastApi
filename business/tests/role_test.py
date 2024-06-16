@@ -1,9 +1,10 @@
 # business/tests/role_test.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date  # pylint: disable=unused-import
+from datetime import datetime, date
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio
@@ -13,7 +14,7 @@ from models.factory import RoleFactory
 from managers.role import RoleManager
 from business.role import RoleBusObj
 from services.logging_config import get_logger
-import current_runtime  # pylint: disable=unused-import
+import current_runtime  # noqa: F401
 
 logger = get_logger(__name__)
 class TestRoleBusObj:

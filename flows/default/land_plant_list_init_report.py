@@ -66,7 +66,7 @@ class FlowLandPlantListInitReportResult():
             'land_code': str(self.land_code),
             'tac_code': str(self.tac_code),
             'land_name': self.land_name,
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -83,8 +83,8 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         self,
         land_bus_obj: LandBusObj,
 
-# endset
-        ) -> FlowLandPlantListInitReportResult:
+# endset  # noqa: E122
+    ) -> FlowLandPlantListInitReportResult:
         """
             #TODO add comment
         """
@@ -93,7 +93,7 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         await super()._process_validation_rules(
             land_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         some_int_val_output: int = 0

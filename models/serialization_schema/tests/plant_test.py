@@ -5,15 +5,18 @@
 """
 
 import json
-import pytest
-import pytz
 import logging
-from models import Plant
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import PlantSchema
+
+import pytest
+import pytz
+
+from models import Plant
 from models.factory import PlantFactory
+from models.serialization_schema import PlantSchema
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
 
 
@@ -72,7 +75,7 @@ class TestPlantSchema:
 # endset  # noqa: E122
     }
 
-    def test_plant_serialization(self, plant: Plant, session):
+    def test_plant_serialization(self, plant: Plant):
         """
             #TODO add comment
         """
@@ -139,7 +142,7 @@ class TestPlantSchema:
             str(plant.land_code_peek))
 # endset
 
-    def test_plant_deserialization(self, plant: Plant, session):
+    def test_plant_deserialization(self, plant: Plant):
         """
             #TODO add comment
         """
@@ -270,7 +273,7 @@ class TestPlantSchema:
             plant.land_code_peek)
 # endset
 
-    def test_from_json(self, plant: Plant, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -350,7 +353,7 @@ class TestPlantSchema:
 
         assert isinstance(new_plant, Plant)
 
-    def test_to_json(self, plant: Plant, session):
+    def test_to_json(self, plant: Plant):
         """
             #TODO add comment
         """

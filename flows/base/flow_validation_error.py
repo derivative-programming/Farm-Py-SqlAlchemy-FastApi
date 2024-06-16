@@ -4,9 +4,6 @@
     #TODO add comment
 """
 
-import uuid
-from models import Tac
-
 
 class FlowValidationError(Exception):
     """

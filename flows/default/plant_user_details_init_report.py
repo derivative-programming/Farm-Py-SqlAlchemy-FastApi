@@ -32,7 +32,7 @@ class FlowPlantUserDetailsInitReportResult():
             'context_object_code': str(self.context_object_code),
             'land_code': str(self.land_code),
             'tac_code': str(self.tac_code),
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -49,8 +49,8 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
         self,
         plant_bus_obj: PlantBusObj,
 
-# endset
-        ) -> FlowPlantUserDetailsInitReportResult:
+# endset  # noqa: E122
+    ) -> FlowPlantUserDetailsInitReportResult:
         """
             #TODO add comment
         """
@@ -59,7 +59,7 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
         await super()._process_validation_rules(
             plant_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         land_code_output: uuid.UUID = uuid.UUID(int=0)

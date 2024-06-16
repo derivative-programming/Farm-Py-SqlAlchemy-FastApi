@@ -403,11 +403,11 @@ class TestOrgApiKeyManager:
         # Update org_api_keys
         updates = [
             {
-                "org_api_key_id": 1,
+                "org_api_key_id": org_api_key1.org_api_key_id,
                 "code": code_updated1
             },
             {
-                "org_api_key_id": 2,
+                "org_api_key_id": org_api_key2.org_api_key_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestOrgApiKeyManager:
         # No org_api_keys to update since org_api_key_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_org_api_keys = await org_api_key_manager.update_bulk(updates)
+            await org_api_key_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_org_api_key_not_found(
@@ -474,7 +474,7 @@ class TestOrgApiKeyManager:
         """
         updates = [{"org_api_key_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_org_api_keys = await org_api_key_manager.update_bulk(updates)
+            await org_api_key_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestOrgApiKeyManager:
         # Delete org_api_keys
         org_api_key_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await org_api_key_manager.delete_bulk(org_api_key_ids)
+            await org_api_key_manager.delete_bulk(org_api_key_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestOrgApiKeyManager:
         """
         org_api_key_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await org_api_key_manager.delete_bulk(org_api_key_ids)
+            await org_api_key_manager.delete_bulk(org_api_key_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

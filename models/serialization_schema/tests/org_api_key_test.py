@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import OrgApiKey
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import OrgApiKeySchema
+import pytest
+import pytz
+from models import OrgApiKey
 from models.factory import OrgApiKeyFactory
+from models.serialization_schema import OrgApiKeySchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -56,7 +56,7 @@ class TestOrgApiKeySchema:
         "org_customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrgCustomerID
 # endset  # noqa: E122
     }
-    def test_org_api_key_serialization(self, org_api_key: OrgApiKey, session):
+    def test_org_api_key_serialization(self, org_api_key: OrgApiKey):
         """
             #TODO add comment
         """
@@ -99,7 +99,7 @@ class TestOrgApiKeySchema:
         assert result['org_customer_code_peek'] == (  # OrgCustomerID
             str(org_api_key.org_customer_code_peek))
 # endset
-    def test_org_api_key_deserialization(self, org_api_key: OrgApiKey, session):
+    def test_org_api_key_deserialization(self, org_api_key: OrgApiKey):
         """
             #TODO add comment
         """
@@ -180,7 +180,7 @@ class TestOrgApiKeySchema:
         assert new_org_api_key.org_customer_code_peek == (  # OrgCustomerID
             org_api_key.org_customer_code_peek)
 # endset
-    def test_from_json(self, org_api_key: OrgApiKey, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -232,7 +232,7 @@ class TestOrgApiKeySchema:
             self.sample_data['last_update_utc_date_time'])
         new_org_api_key = OrgApiKey(**deserialized_data)
         assert isinstance(new_org_api_key, OrgApiKey)
-    def test_to_json(self, org_api_key: OrgApiKey, session):
+    def test_to_json(self, org_api_key: OrgApiKey):
         """
             #TODO add comment
         """

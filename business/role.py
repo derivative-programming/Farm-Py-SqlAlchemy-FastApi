@@ -35,7 +35,9 @@ class RoleBusObj(BaseBusObj):
         :return: The role ID.
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.role_id
     # @role_id.setter
     # def role_id(self, value: int):
@@ -52,7 +54,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
@@ -60,7 +64,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.role.code = value
@@ -71,7 +77,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
@@ -79,7 +87,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.role.last_change_code = value
@@ -90,7 +100,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
@@ -98,7 +110,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.role.insert_user_id = value
@@ -117,7 +131,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
@@ -125,7 +141,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.role.last_update_user_id = value
@@ -143,7 +161,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if self.role.description is None:
             return ""
         return self.role.description
@@ -153,7 +173,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         assert isinstance(value, str), "description must be a string"
         self.role.description = value
     # def set_prop_description(self, value):
@@ -169,7 +191,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.display_order
     @display_order.setter
     def display_order(self, value):
@@ -177,7 +201,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.role.display_order = value
@@ -194,7 +220,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.is_active
     @is_active.setter
     def is_active(self, value: bool):
@@ -202,7 +230,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.role.is_active = value
@@ -219,7 +249,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if self.role.lookup_enum_name is None:
             return ""
         return self.role.lookup_enum_name
@@ -229,7 +261,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.role.lookup_enum_name = value
     # def set_prop_lookup_enum_name(self, value):
@@ -245,7 +279,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if self.role.name is None:
             return ""
         return self.role.name
@@ -255,7 +291,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         assert isinstance(value, str), "name must be a string"
         self.role.name = value
     # def set_prop_name(self, value):
@@ -278,7 +316,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.pac_id
     @pac_id.setter
     def pac_id(self, value):
@@ -286,7 +326,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.role.pac_id = value
@@ -302,7 +344,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
@@ -317,7 +361,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
@@ -325,7 +371,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.role.insert_utc_date_time = value
@@ -336,7 +384,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
@@ -344,7 +394,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.role.last_update_utc_date_time = value
@@ -355,7 +407,8 @@ class RoleBusObj(BaseBusObj):
         """
         Load role data from JSON string.
         :param json_data: JSON string containing role data.
-        :raises ValueError: If json_data is not a string or if no role data is found.
+        :raises ValueError: If json_data is not a string
+            or if no role data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -384,7 +437,8 @@ class RoleBusObj(BaseBusObj):
         """
         Load role data from role ID.
         :param role_id: Integer ID for loading a specific role.
-        :raises ValueError: If role_id is not an integer or if no role data is found.
+        :raises ValueError: If role_id is not an integer or
+            if no role data is found.
         """
         if not isinstance(role_id, int):
             raise ValueError("role_id must be an integer")
@@ -417,7 +471,8 @@ class RoleBusObj(BaseBusObj):
         """
         Load role data from dictionary.
         :param role_dict: Dictionary containing role data.
-        :raises ValueError: If role_dict is not a dictionary or if no role data is found.
+        :raises ValueError: If role_dict is not a
+            dictionary or if no role data is found.
         """
         if not isinstance(role_dict, dict):
             raise ValueError("role_dict must be a dictionary")
@@ -427,6 +482,9 @@ class RoleBusObj(BaseBusObj):
 
     @property
     def lookup_enum(self) -> managers_and_enums.RoleEnum:
+        """
+        #TODO add comment
+        """
         return managers_and_enums.RoleEnum[self.role.lookup_enum_name]
     async def load_from_enum(
         self,
@@ -438,10 +496,18 @@ class RoleBusObj(BaseBusObj):
         :param plant_dict: Dictionary containing plant data.
         :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
         """
-        if not isinstance(role_enum, managers_and_enums.RoleEnum):
+        if not isinstance(
+            role_enum,
+            managers_and_enums.RoleEnum
+        ):
             raise ValueError("role_enum must be a enum")
-        role_manager = RoleManager(self._session_context)
-        self.role = await role_manager.from_enum(role_enum)
+        role_manager = RoleManager(
+            self._session_context
+        )
+        self.role = await (
+            role_manager.
+            from_enum(role_enum)
+        )
 
     def get_session_context(self):
         """
@@ -490,7 +556,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         if self.role.role_id > 0:
             role_manager = RoleManager(self._session_context)
             await role_manager.delete(self.role.role_id)
@@ -500,7 +568,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         self.role.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.role.display_order = random.randint(0, 100)
@@ -517,7 +587,9 @@ class RoleBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.role:
-            raise AttributeError("Role object is not initialized")
+            raise AttributeError(
+                "Role object is not initialized"
+            )
         return self.role
     def is_equal(self, role: Role) -> bool:
         """

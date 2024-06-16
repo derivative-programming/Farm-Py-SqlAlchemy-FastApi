@@ -30,7 +30,7 @@ class FlowLandUserPlantMultiSelectToEditableResult():
         data = {
             'context_object_code': str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowLandUserPlantMultiSelectToEditable(BaseFlowLandUserPlantMultiSelectToE
         self,
         land_bus_obj: LandBusObj,
         plant_code_list_csv: str = "",
-# endset
-        ) -> FlowLandUserPlantMultiSelectToEditableResult:
+# endset  # noqa: E122
+    ) -> FlowLandUserPlantMultiSelectToEditableResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowLandUserPlantMultiSelectToEditable(BaseFlowLandUserPlantMultiSelectToE
         await super()._process_validation_rules(
             land_bus_obj,
             plant_code_list_csv,
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 

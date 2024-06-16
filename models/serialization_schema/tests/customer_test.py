@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import Customer
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import CustomerSchema
+import pytest
+import pytz
+from models import Customer
 from models.factory import CustomerFactory
+from models.serialization_schema import CustomerSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -73,7 +73,7 @@ class TestCustomerSchema:
         "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
 # endset  # noqa: E122
     }
-    def test_customer_serialization(self, customer: Customer, session):
+    def test_customer_serialization(self, customer: Customer):
         """
             #TODO add comment
         """
@@ -142,7 +142,7 @@ class TestCustomerSchema:
         assert result['tac_code_peek'] == (  # TacID
             str(customer.tac_code_peek))
 # endset
-    def test_customer_deserialization(self, customer: Customer, session):
+    def test_customer_deserialization(self, customer: Customer):
         """
             #TODO add comment
         """
@@ -275,7 +275,7 @@ class TestCustomerSchema:
         assert new_customer.tac_code_peek == (  # TacID
             customer.tac_code_peek)
 # endset
-    def test_from_json(self, customer: Customer, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -353,7 +353,7 @@ class TestCustomerSchema:
             self.sample_data['last_update_utc_date_time'])
         new_customer = Customer(**deserialized_data)
         assert isinstance(new_customer, Customer)
-    def test_to_json(self, customer: Customer, session):
+    def test_to_json(self, customer: Customer):
         """
             #TODO add comment
         """

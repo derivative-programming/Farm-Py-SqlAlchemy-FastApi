@@ -403,11 +403,11 @@ class TestRoleManager:
         # Update roles
         updates = [
             {
-                "role_id": 1,
+                "role_id": role1.role_id,
                 "code": code_updated1
             },
             {
-                "role_id": 2,
+                "role_id": role2.role_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestRoleManager:
         # No roles to update since role_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_roles = await role_manager.update_bulk(updates)
+            await role_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_role_not_found(
@@ -474,7 +474,7 @@ class TestRoleManager:
         """
         updates = [{"role_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_roles = await role_manager.update_bulk(updates)
+            await role_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestRoleManager:
         # Delete roles
         role_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await role_manager.delete_bulk(role_ids)
+            await role_manager.delete_bulk(role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestRoleManager:
         """
         role_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await role_manager.delete_bulk(role_ids)
+            await role_manager.delete_bulk(role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

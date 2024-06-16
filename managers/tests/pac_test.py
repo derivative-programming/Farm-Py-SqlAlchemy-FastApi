@@ -403,11 +403,11 @@ class TestPacManager:
         # Update pacs
         updates = [
             {
-                "pac_id": 1,
+                "pac_id": pac1.pac_id,
                 "code": code_updated1
             },
             {
-                "pac_id": 2,
+                "pac_id": pac2.pac_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestPacManager:
         # No pacs to update since pac_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_pacs = await pac_manager.update_bulk(updates)
+            await pac_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_pac_not_found(
@@ -474,7 +474,7 @@ class TestPacManager:
         """
         updates = [{"pac_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_pacs = await pac_manager.update_bulk(updates)
+            await pac_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestPacManager:
         # Delete pacs
         pac_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await pac_manager.delete_bulk(pac_ids)
+            await pac_manager.delete_bulk(pac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestPacManager:
         """
         pac_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await pac_manager.delete_bulk(pac_ids)
+            await pac_manager.delete_bulk(pac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

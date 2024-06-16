@@ -1,4 +1,5 @@
 # flows/base/tests/conftest.py
+# pylint: disable=unused-argument
 
 """
     #TODO add comment
@@ -9,7 +10,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine,AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from models import Base
 from database import AsyncSessionLocal
 
@@ -18,6 +19,10 @@ DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 @pytest.fixture(scope="function")
 def event_loop() -> asyncio.AbstractEventLoop:
+    """
+    #TODO add comment
+    """
+
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
@@ -25,13 +30,21 @@ def event_loop() -> asyncio.AbstractEventLoop:
 
 @pytest.fixture(scope="function")
 def engine():
+    """
+    #TODO add comment
+    """
+
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()
 
-    
+
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncSessionLocal:
+    """
+    #TODO add comment
+    """
+
     @event.listens_for(engine.sync_engine, "connect")
     def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()

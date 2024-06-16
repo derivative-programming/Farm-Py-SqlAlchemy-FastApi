@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import Pac
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import PacSchema
+import pytest
+import pytz
+from models import Pac
 from models.factory import PacFactory
+from models.serialization_schema import PacSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -47,7 +47,7 @@ class TestPacSchema:
 
 # endset  # noqa: E122
     }
-    def test_pac_serialization(self, pac: Pac, session):
+    def test_pac_serialization(self, pac: Pac):
         """
             #TODO add comment
         """
@@ -79,7 +79,7 @@ class TestPacSchema:
 # endset
 
 # endset
-    def test_pac_deserialization(self, pac: Pac, session):
+    def test_pac_deserialization(self, pac: Pac):
         """
             #TODO add comment
         """
@@ -138,7 +138,7 @@ class TestPacSchema:
 # endset
 
 # endset
-    def test_from_json(self, pac: Pac, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -179,7 +179,7 @@ class TestPacSchema:
             self.sample_data['last_update_utc_date_time'])
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
-    def test_to_json(self, pac: Pac, session):
+    def test_to_json(self, pac: Pac):
         """
             #TODO add comment
         """

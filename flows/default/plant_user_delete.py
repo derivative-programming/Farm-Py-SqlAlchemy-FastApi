@@ -30,7 +30,7 @@ class FlowPlantUserDeleteResult():
         data = {
             'context_object_code': str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowPlantUserDelete(BaseFlowPlantUserDelete):
         self,
         plant_bus_obj: PlantBusObj,
 
-# endset
-        ) -> FlowPlantUserDeleteResult:
+# endset  # noqa: E122
+    ) -> FlowPlantUserDeleteResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowPlantUserDelete(BaseFlowPlantUserDelete):
         await super()._process_validation_rules(
             plant_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 

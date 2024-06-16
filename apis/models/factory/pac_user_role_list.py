@@ -21,17 +21,17 @@ class PacUserRoleListGetModelRequestFactory(factory.base.Factory):
         """
         model = PacUserRoleListGetModelRequest
 
-    page_number = 1
-    item_count_per_page = 1
-    order_by_column_name: str = ""
-    order_by_descending: bool = False
-    force_error_message: str = ""
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> PacUserRoleListGetModelRequest:
+    def _build(
+        cls,
+        model_class,
+        session=None,
+        *args, **kwargs
+    ) -> PacUserRoleListGetModelRequest:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
 # endset
 
@@ -41,7 +41,12 @@ class PacUserRoleListGetModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> PacUserRoleListGetModelRequest:
+    def _create(
+        cls,
+        model_class,
+        session=None,
+        *args, **kwargs
+    ) -> PacUserRoleListGetModelRequest:
 
 # endset
 
@@ -51,7 +56,11 @@ class PacUserRoleListGetModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> PacUserRoleListGetModelRequest:
+    async def create_async(
+        cls,
+        session: AsyncSession,
+        *args, **kwargs
+    ) -> PacUserRoleListGetModelRequest:
         """
             #TODO add comment
         """
@@ -59,7 +68,10 @@ class PacUserRoleListGetModelRequestFactory(factory.base.Factory):
 # endset
 
 # endset
-        obj = PacUserRoleListGetModelRequestFactory.build(session = None, *args, **kwargs)
+        obj = PacUserRoleListGetModelRequestFactory.build(
+            session=None,
+            *args, **kwargs
+        )
 
 # endset
         return obj

@@ -1,16 +1,18 @@
 # models/customer_role.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.customer_role as customer_role_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 class CustomerRole(Base):
     """
     #TODO add comment
@@ -41,28 +43,41 @@ class CustomerRole(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    customer_id = Column('customer_id',
-                     Integer,
-                     ForeignKey('farm_' + snake_case('Customer') + '.customer_id'),
-                     index=customer_role_constants.customer_id_calculatedIsDBColumnIndexed,
-                     nullable=True)
+    customer_id = Column(
+        'customer_id',
+        Integer,
+        ForeignKey('farm_' + snake_case('Customer') + '.customer_id'),
+        index=(
+            customer_role_constants.
+            customer_id_calculatedIsDBColumnIndexed
+        ),
+        nullable=True)
     is_placeholder = Column(
         'is_placeholder',
         Boolean,
         default=False,
-        index=customer_role_constants.is_placeholder_calculatedIsDBColumnIndexed,
+        index=(
+            customer_role_constants.
+            is_placeholder_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     placeholder = Column(
         'placeholder',
         Boolean,
         default=False,
-        index=customer_role_constants.placeholder_calculatedIsDBColumnIndexed,
+        index=(
+            customer_role_constants.
+            placeholder_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     role_id = Column(
         'role_id',
         Integer,
         ForeignKey('farm_' + snake_case('Role') + '.role_id'),
-        index=customer_role_constants.role_id_calculatedIsDBColumnIndexed,
+        index=(
+            customer_role_constants.
+            role_id_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     customer_code_peek = uuid.UUID  # CustomerID
     role_code_peek = uuid.UUID  # RoleID
@@ -74,7 +89,8 @@ class CustomerRole(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     # customer = relationship('Customer', back_populates=snake_case('Customer'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
@@ -164,23 +180,27 @@ class CustomerRole(Base):
             "is_placeholder",
             "placeholder",
             "role_id",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-# Define the index separately from the column
-# Index('index_code', CustomerRole.code)
-# Index('farm_customer_role_index_customer_id', CustomerRole.customer_id)  # CustomerID
-# Index('farm_customer_role_index_role_id', CustomerRole.role_id)  # RoleID
 @event.listens_for(CustomerRole, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(CustomerRole, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """

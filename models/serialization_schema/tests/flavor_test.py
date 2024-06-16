@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import Flavor
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import FlavorSchema
+import pytest
+import pytz
+from models import Flavor
 from models.factory import FlavorFactory
+from models.serialization_schema import FlavorSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -48,7 +48,7 @@ class TestFlavorSchema:
         "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 # endset  # noqa: E122
     }
-    def test_flavor_serialization(self, flavor: Flavor, session):
+    def test_flavor_serialization(self, flavor: Flavor):
         """
             #TODO add comment
         """
@@ -83,7 +83,7 @@ class TestFlavorSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(flavor.pac_code_peek))
 # endset
-    def test_flavor_deserialization(self, flavor: Flavor, session):
+    def test_flavor_deserialization(self, flavor: Flavor):
         """
             #TODO add comment
         """
@@ -148,7 +148,7 @@ class TestFlavorSchema:
         assert new_flavor.pac_code_peek == (  # PacID
             flavor.pac_code_peek)
 # endset
-    def test_from_json(self, flavor: Flavor, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -192,7 +192,7 @@ class TestFlavorSchema:
             self.sample_data['last_update_utc_date_time'])
         new_flavor = Flavor(**deserialized_data)
         assert isinstance(new_flavor, Flavor)
-    def test_to_json(self, flavor: Flavor, session):
+    def test_to_json(self, flavor: Flavor):
         """
             #TODO add comment
         """

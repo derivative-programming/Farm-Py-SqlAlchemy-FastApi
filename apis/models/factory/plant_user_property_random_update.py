@@ -24,10 +24,12 @@ class PlantUserPropertyRandomUpdatePostModelRequestFactory(factory.base.Factory)
 
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> PlantUserPropertyRandomUpdatePostModelRequest:
+    def _build(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> PlantUserPropertyRandomUpdatePostModelRequest:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
 # endset
 
@@ -37,7 +39,9 @@ class PlantUserPropertyRandomUpdatePostModelRequestFactory(factory.base.Factory)
 # endset
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> PlantUserPropertyRandomUpdatePostModelRequest:
+    def _create(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> PlantUserPropertyRandomUpdatePostModelRequest:
 
 # endset
 
@@ -47,7 +51,9 @@ class PlantUserPropertyRandomUpdatePostModelRequestFactory(factory.base.Factory)
 # endset
         return obj
     @classmethod
-    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> PlantUserPropertyRandomUpdatePostModelRequest:
+    async def create_async(
+        cls, session: AsyncSession, *args, **kwargs
+    ) -> PlantUserPropertyRandomUpdatePostModelRequest:
         """
             #TODO add comment
         """
@@ -55,7 +61,9 @@ class PlantUserPropertyRandomUpdatePostModelRequestFactory(factory.base.Factory)
 # endset
 
 # endset
-        obj = PlantUserPropertyRandomUpdatePostModelRequestFactory.build(session=None, *args, **kwargs)
+        obj = PlantUserPropertyRandomUpdatePostModelRequestFactory.build(
+            session=None, *args, **kwargs
+        )
 
 # endset
         return obj

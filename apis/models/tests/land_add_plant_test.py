@@ -42,10 +42,10 @@ class TestLandAddPlantPostModelResponse:
             request_is_edit_allowed: bool = False,  # pylint: disable=unused-argument
             request_is_delete_allowed: bool = False,  # pylint: disable=unused-argument
             request_some_float_val: float = 0,  # pylint: disable=unused-argument
-            request_some_decimal_val: Decimal = 0,  # pylint: disable=unused-argument
+            request_some_decimal_val: Decimal = Decimal(0),  # pylint: disable=unused-argument
             request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),  # pylint: disable=unused-argument
             request_some_date_val: date = TypeConversion.get_default_date(),  # pylint: disable=unused-argument
-            request_some_money_val: Decimal = 0,  # pylint: disable=unused-argument
+            request_some_money_val: Decimal = Decimal(0),  # pylint: disable=unused-argument
             request_some_n_var_char_val: str = "",  # pylint: disable=unused-argument
             request_some_var_char_val: str = "",  # pylint: disable=unused-argument
             request_some_text_val: str = "",  # pylint: disable=unused-argument

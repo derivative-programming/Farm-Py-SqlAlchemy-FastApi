@@ -1,25 +1,29 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/tac_register_test.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import logging
 import uuid
-import json  # pylint: disable=unused-import
+import json  # noqa: F401
 from unittest.mock import AsyncMock, patch
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys
-from helpers.api_token import ApiToken  # pylint: disable=unused-import
+from helpers.api_token import ApiToken  # noqa: F401
 from apis import models as apis_models
 from database import get_db
 from main import app
-from .....models import factory as request_factory  # pylint: disable=unused-import, reimported
+from .....models import factory as request_factory
 from ..tac_register import TacRegisterRouterConfig
 
 @pytest.mark.asyncio
-async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: str):
+async def test_init_success(
+    overridden_get_db: AsyncSession,
+    api_key_fixture: str
+):
     """
     #TODO add comment
     """
@@ -35,7 +39,9 @@ async def test_init_success(overridden_get_db: AsyncSession, api_key_fixture: st
         assert response.status_code == 200
         assert response.json()['success'] is True
 @pytest.mark.asyncio
-async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+async def test_init_authorization_failure_bad_api_key(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -52,7 +58,9 @@ async def test_init_authorization_failure_bad_api_key(overridden_get_db: AsyncSe
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_init_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+async def test_init_authorization_failure_empty_header_key(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -69,7 +77,9 @@ async def test_init_authorization_failure_empty_header_key(overridden_get_db: As
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_init_authorization_failure_no_header(overridden_get_db: AsyncSession):
+async def test_init_authorization_failure_no_header(
+    overridden_get_db: AsyncSession
+):
     """
     #TODO add comment
     """
@@ -144,7 +154,12 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
     """
         #TODO add comment
     """
-    async def mock_process_request(session, session_context, tac_code, request):  # pylint: disable=unused-argument
+    async def mock_process_request(
+        session,
+        session_context,
+        tac_code,
+        request
+    ):  # pylint: disable=unused-argument
         """
             #TODO add comment
         """
@@ -168,7 +183,10 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         assert response.json()['success'] is False
         mock_method.assert_awaited()
 @pytest.mark.asyncio
-async def test_submit_request_validation_error(overridden_get_db, api_key_fixture: str):
+async def test_submit_request_validation_error(
+    overridden_get_db,
+    api_key_fixture: str
+):
     """
         #TODO add comment
     """
@@ -186,9 +204,12 @@ async def test_submit_request_validation_error(overridden_get_db, api_key_fixtur
             ),
             headers={'API_KEY': test_api_key}
         )
-        assert response.status_code == 400  # Expecting validation error for incorrect data
+        # Expecting validation error for incorrect data
+        assert response.status_code == 400
 @pytest.mark.asyncio
-async def test_submit_authorization_failure_bad_api_key(overridden_get_db: AsyncSession):
+async def test_submit_authorization_failure_bad_api_key(
+    overridden_get_db: AsyncSession
+):
     """
         #TODO add comment
     """
@@ -206,7 +227,9 @@ async def test_submit_authorization_failure_bad_api_key(overridden_get_db: Async
         else:
             assert response.status_code == 401
 @pytest.mark.asyncio
-async def test_submit_authorization_failure_empty_header_key(overridden_get_db: AsyncSession):
+async def test_submit_authorization_failure_empty_header_key(
+    overridden_get_db: AsyncSession
+):
     """
         #TODO add comment
     """

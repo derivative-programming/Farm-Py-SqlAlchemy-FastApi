@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import Role
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import RoleSchema
+import pytest
+import pytz
+from models import Role
 from models.factory import RoleFactory
+from models.serialization_schema import RoleSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -48,7 +48,7 @@ class TestRoleSchema:
         "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 # endset  # noqa: E122
     }
-    def test_role_serialization(self, role: Role, session):
+    def test_role_serialization(self, role: Role):
         """
             #TODO add comment
         """
@@ -83,7 +83,7 @@ class TestRoleSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(role.pac_code_peek))
 # endset
-    def test_role_deserialization(self, role: Role, session):
+    def test_role_deserialization(self, role: Role):
         """
             #TODO add comment
         """
@@ -148,7 +148,7 @@ class TestRoleSchema:
         assert new_role.pac_code_peek == (  # PacID
             role.pac_code_peek)
 # endset
-    def test_from_json(self, role: Role, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -192,7 +192,7 @@ class TestRoleSchema:
             self.sample_data['last_update_utc_date_time'])
         new_role = Role(**deserialized_data)
         assert isinstance(new_role, Role)
-    def test_to_json(self, role: Role, session):
+    def test_to_json(self, role: Role):
         """
             #TODO add comment
         """

@@ -403,11 +403,11 @@ class TestDateGreaterThanFilterManager:
         # Update date_greater_than_filters
         updates = [
             {
-                "date_greater_than_filter_id": 1,
+                "date_greater_than_filter_id": date_greater_than_filter1.date_greater_than_filter_id,
                 "code": code_updated1
             },
             {
-                "date_greater_than_filter_id": 2,
+                "date_greater_than_filter_id": date_greater_than_filter2.date_greater_than_filter_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestDateGreaterThanFilterManager:
         # No date_greater_than_filters to update since date_greater_than_filter_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_date_greater_than_filters = await date_greater_than_filter_manager.update_bulk(updates)
+            await date_greater_than_filter_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_date_greater_than_filter_not_found(
@@ -474,7 +474,7 @@ class TestDateGreaterThanFilterManager:
         """
         updates = [{"date_greater_than_filter_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_date_greater_than_filters = await date_greater_than_filter_manager.update_bulk(updates)
+            await date_greater_than_filter_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestDateGreaterThanFilterManager:
         # Delete date_greater_than_filters
         date_greater_than_filter_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
+            await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestDateGreaterThanFilterManager:
         """
         date_greater_than_filter_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
+            await date_greater_than_filter_manager.delete_bulk(date_greater_than_filter_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

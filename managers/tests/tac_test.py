@@ -403,11 +403,11 @@ class TestTacManager:
         # Update tacs
         updates = [
             {
-                "tac_id": 1,
+                "tac_id": tac1.tac_id,
                 "code": code_updated1
             },
             {
-                "tac_id": 2,
+                "tac_id": tac2.tac_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestTacManager:
         # No tacs to update since tac_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_tacs = await tac_manager.update_bulk(updates)
+            await tac_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_tac_not_found(
@@ -474,7 +474,7 @@ class TestTacManager:
         """
         updates = [{"tac_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_tacs = await tac_manager.update_bulk(updates)
+            await tac_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestTacManager:
         # Delete tacs
         tac_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await tac_manager.delete_bulk(tac_ids)
+            await tac_manager.delete_bulk(tac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestTacManager:
         """
         tac_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await tac_manager.delete_bulk(tac_ids)
+            await tac_manager.delete_bulk(tac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

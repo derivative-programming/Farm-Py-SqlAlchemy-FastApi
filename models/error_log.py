@@ -1,16 +1,18 @@
 # models/error_log.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.error_log as error_log_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 class ErrorLog(Base):
     """
     #TODO add comment
@@ -45,19 +47,28 @@ class ErrorLog(Base):
         'browser_code',
         UUIDType(binary=False),
         default=uuid.uuid4,
-        index=error_log_constants.browser_code_calculatedIsDBColumnIndexed,
+        index=(
+            error_log_constants.
+            browser_code_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     _context_code = Column(
         'context_code',
         UUIDType(binary=False),
         default=uuid.uuid4,
-        index=error_log_constants.context_code_calculatedIsDBColumnIndexed,
+        index=(
+            error_log_constants.
+            context_code_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     created_utc_date_time = Column(
         'created_utc_date_time',
         DateTime,
         default=datetime(1753, 1, 1),
-        index=error_log_constants.created_utc_date_time_calculatedIsDBColumnIndexed,
+        index=(
+            error_log_constants.
+            created_utc_date_time_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     description = Column(
         'description',
@@ -65,32 +76,48 @@ class ErrorLog(Base):
         String,
 
         default="",
-        index=error_log_constants.description_calculatedIsDBColumnIndexed,
+        index=(
+            error_log_constants.
+            description_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_client_side_error = Column(
         'is_client_side_error',
         Boolean,
         default=False,
-        index=error_log_constants.is_client_side_error_calculatedIsDBColumnIndexed,
+        index=(
+            error_log_constants.
+            is_client_side_error_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_resolved = Column(
         'is_resolved',
         Boolean,
         default=False,
-        index=error_log_constants.is_resolved_calculatedIsDBColumnIndexed,
+        index=(
+            error_log_constants.
+            is_resolved_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
-    pac_id = Column('pac_id',
-                     Integer,
-                     ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
-                     index=error_log_constants.pac_id_calculatedIsDBColumnIndexed,
-                     nullable=True)
+    pac_id = Column(
+        'pac_id',
+        Integer,
+        ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
+        index=(
+            error_log_constants.
+            pac_id_calculatedIsDBColumnIndexed
+        ),
+        nullable=True)
     url = Column(
         'url',
 
         String,
 
         default="",
-        index=error_log_constants.url_calculatedIsDBColumnIndexed,
+        index=(
+            error_log_constants.
+            url_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     pac_code_peek = uuid.UUID  # PacID
     insert_utc_date_time = Column(
@@ -101,7 +128,8 @@ class ErrorLog(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     # pac = relationship('Pac', back_populates=snake_case('Pac'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
@@ -186,35 +214,65 @@ class ErrorLog(Base):
     @property
     def browser_code(self):
         """
-            #TODO add comment
+        Returns the unique identifier as a UUID object.
+        Returns:
+            uuid.UUID: The unique identifier value.
         """
         return uuid.UUID(str(self._browser_code))
-    @code.setter
+    @browser_code.setter
     def browser_code(self, value):
         """
-            #TODO add comment
+        Sets the unique identifier value. The input
+        can be either a uuid.UUID object or a string
+        that can be converted to a uuid.UUID object.
+        Updates the last_update_utc_date_time to the
+        current naive UTC datetime.
+        Args:
+            value (uuid.UUID or str): The unique identifier
+            value to set.
+        Raises:
+            ValueError: If the provided value cannot be
+            converted to a uuid.UUID.
         """
         if isinstance(value, uuid.UUID):
             self._browser_code = value
         else:
-            self._browser_code = uuid.UUID(value)
+            try:
+                self._browser_code = uuid.UUID(value)
+            except ValueError as e:
+                raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.utcnow()
     # contextCode,
     @property
     def context_code(self):
         """
-            #TODO add comment
+        Returns the unique identifier as a UUID object.
+        Returns:
+            uuid.UUID: The unique identifier value.
         """
         return uuid.UUID(str(self._context_code))
-    @code.setter
+    @context_code.setter
     def context_code(self, value):
         """
-            #TODO add comment
+        Sets the unique identifier value. The input
+        can be either a uuid.UUID object or a string
+        that can be converted to a uuid.UUID object.
+        Updates the last_update_utc_date_time to the
+        current naive UTC datetime.
+        Args:
+            value (uuid.UUID or str): The unique identifier
+            value to set.
+        Raises:
+            ValueError: If the provided value cannot be
+            converted to a uuid.UUID.
         """
         if isinstance(value, uuid.UUID):
             self._context_code = value
         else:
-            self._context_code = uuid.UUID(value)
+            try:
+                self._context_code = uuid.UUID(value)
+            except ValueError as e:
+                raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.utcnow()
     # createdUTCDateTime
     # description,
@@ -237,22 +295,27 @@ class ErrorLog(Base):
             "is_resolved",
             "pac_id",
             "url",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-# Define the index separately from the column
-# Index('index_code', ErrorLog.code)
-# Index('farm_error_log_index_pac_id', ErrorLog.pac_id)  # PacID
 @event.listens_for(ErrorLog, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(ErrorLog, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """

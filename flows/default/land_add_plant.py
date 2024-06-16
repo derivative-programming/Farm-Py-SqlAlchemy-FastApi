@@ -44,7 +44,7 @@ class FlowLandAddPlantResult():
     def __init__(self):
         """
             #TODO add comment
-        """ 
+        """
 
     def to_json(self):
         """
@@ -73,7 +73,7 @@ class FlowLandAddPlantResult():
             'output_some_text_val': self.output_some_text_val,
             'output_some_phone_number': self.output_some_phone_number,
             'output_some_email_address': self.output_some_email_address
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -112,8 +112,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         request_some_phone_number: str = "",
         request_some_email_address: str = "",
         request_sample_image_upload_file: str = "",
-# endset
-        ) -> FlowLandAddPlantResult:
+# endset  # noqa: E122
+    ) -> FlowLandAddPlantResult:
         """
             #TODO add comment
         """
@@ -141,7 +141,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
             request_some_phone_number,
             request_some_email_address,
             request_sample_image_upload_file,
-# endset
+# endset  # noqa: E122
         )
 
         super()._throw_queued_validation_errors()

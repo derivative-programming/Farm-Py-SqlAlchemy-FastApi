@@ -37,7 +37,9 @@ class LandBusObj(BaseBusObj):
         :return: The land ID.
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.land_id
     # @land_id.setter
     # def land_id(self, value: int):
@@ -54,7 +56,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
@@ -62,7 +66,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.land.code = value
@@ -73,7 +79,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
@@ -81,7 +89,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.land.last_change_code = value
@@ -92,7 +102,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
@@ -100,7 +112,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.land.insert_user_id = value
@@ -119,7 +133,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
@@ -127,7 +143,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.land.last_update_user_id = value
@@ -145,7 +163,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if self.land.description is None:
             return ""
         return self.land.description
@@ -155,7 +175,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         assert isinstance(value, str), "description must be a string"
         self.land.description = value
     # def set_prop_description(self, value):
@@ -171,7 +193,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.display_order
     @display_order.setter
     def display_order(self, value):
@@ -179,7 +203,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.land.display_order = value
@@ -196,7 +222,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.is_active
     @is_active.setter
     def is_active(self, value: bool):
@@ -204,7 +232,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.land.is_active = value
@@ -221,7 +251,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if self.land.lookup_enum_name is None:
             return ""
         return self.land.lookup_enum_name
@@ -231,7 +263,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.land.lookup_enum_name = value
     # def set_prop_lookup_enum_name(self, value):
@@ -247,7 +281,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if self.land.name is None:
             return ""
         return self.land.name
@@ -257,7 +293,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         assert isinstance(value, str), "name must be a string"
         self.land.name = value
     # def set_prop_name(self, value):
@@ -280,7 +318,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.pac_id
     @pac_id.setter
     def pac_id(self, value):
@@ -288,7 +328,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.land.pac_id = value
@@ -304,7 +346,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
@@ -319,7 +363,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
@@ -327,7 +373,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.land.insert_utc_date_time = value
@@ -338,7 +386,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
@@ -346,7 +396,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.land.last_update_utc_date_time = value
@@ -357,7 +409,8 @@ class LandBusObj(BaseBusObj):
         """
         Load land data from JSON string.
         :param json_data: JSON string containing land data.
-        :raises ValueError: If json_data is not a string or if no land data is found.
+        :raises ValueError: If json_data is not a string
+            or if no land data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -386,7 +439,8 @@ class LandBusObj(BaseBusObj):
         """
         Load land data from land ID.
         :param land_id: Integer ID for loading a specific land.
-        :raises ValueError: If land_id is not an integer or if no land data is found.
+        :raises ValueError: If land_id is not an integer or
+            if no land data is found.
         """
         if not isinstance(land_id, int):
             raise ValueError("land_id must be an integer")
@@ -419,7 +473,8 @@ class LandBusObj(BaseBusObj):
         """
         Load land data from dictionary.
         :param land_dict: Dictionary containing land data.
-        :raises ValueError: If land_dict is not a dictionary or if no land data is found.
+        :raises ValueError: If land_dict is not a
+            dictionary or if no land data is found.
         """
         if not isinstance(land_dict, dict):
             raise ValueError("land_dict must be a dictionary")
@@ -429,6 +484,9 @@ class LandBusObj(BaseBusObj):
 
     @property
     def lookup_enum(self) -> managers_and_enums.LandEnum:
+        """
+        #TODO add comment
+        """
         return managers_and_enums.LandEnum[self.land.lookup_enum_name]
     async def load_from_enum(
         self,
@@ -440,10 +498,18 @@ class LandBusObj(BaseBusObj):
         :param plant_dict: Dictionary containing plant data.
         :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
         """
-        if not isinstance(land_enum, managers_and_enums.LandEnum):
+        if not isinstance(
+            land_enum,
+            managers_and_enums.LandEnum
+        ):
             raise ValueError("land_enum must be a enum")
-        land_manager = LandManager(self._session_context)
-        self.land = await land_manager.from_enum(land_enum)
+        land_manager = LandManager(
+            self._session_context
+        )
+        self.land = await (
+            land_manager.
+            from_enum(land_enum)
+        )
 
     def get_session_context(self):
         """
@@ -492,7 +558,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         if self.land.land_id > 0:
             land_manager = LandManager(self._session_context)
             await land_manager.delete(self.land.land_id)
@@ -502,7 +570,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         self.land.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.display_order = random.randint(0, 100)
@@ -519,7 +589,9 @@ class LandBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.land:
-            raise AttributeError("Land object is not initialized")
+            raise AttributeError(
+                "Land object is not initialized"
+            )
         return self.land
     def is_equal(self, land: Land) -> bool:
         """

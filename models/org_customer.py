@@ -1,16 +1,18 @@
 # models/org_customer.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.org_customer as org_customer_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 class OrgCustomer(Base):
     """
     #TODO add comment
@@ -45,7 +47,10 @@ class OrgCustomer(Base):
         'customer_id',
         Integer,
         ForeignKey('farm_' + snake_case('Customer') + '.customer_id'),
-        index=org_customer_constants.customer_id_calculatedIsDBColumnIndexed,
+        index=(
+            org_customer_constants.
+            customer_id_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     email = Column(
         'email',
@@ -53,13 +58,20 @@ class OrgCustomer(Base):
         String,
 
         default="",
-        index=org_customer_constants.email_calculatedIsDBColumnIndexed,
+        index=(
+            org_customer_constants.
+            email_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
-    organization_id = Column('organization_id',
-                     Integer,
-                     ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
-                     index=org_customer_constants.organization_id_calculatedIsDBColumnIndexed,
-                     nullable=True)
+    organization_id = Column(
+        'organization_id',
+        Integer,
+        ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
+        index=(
+            org_customer_constants.
+            organization_id_calculatedIsDBColumnIndexed
+        ),
+        nullable=True)
     customer_code_peek = uuid.UUID  # CustomerID
     organization_code_peek = uuid.UUID  # OrganizationID
     insert_utc_date_time = Column(
@@ -70,7 +82,8 @@ class OrgCustomer(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     # organization = relationship('Organization', back_populates=snake_case('Organization'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
@@ -156,23 +169,27 @@ class OrgCustomer(Base):
             "customer_id",
             "email",
             "organization_id",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-# Define the index separately from the column
-# Index('index_code', OrgCustomer.code)
-# Index('farm_org_customer_index_customer_id', OrgCustomer.customer_id)  # CustomerID
-# Index('farm_org_customer_index_organization_id', OrgCustomer.organization_id)  # OrganizationID
 @event.listens_for(OrgCustomer, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(OrgCustomer, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """

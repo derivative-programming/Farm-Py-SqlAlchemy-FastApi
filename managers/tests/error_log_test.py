@@ -403,11 +403,11 @@ class TestErrorLogManager:
         # Update error_logs
         updates = [
             {
-                "error_log_id": 1,
+                "error_log_id": error_log1.error_log_id,
                 "code": code_updated1
             },
             {
-                "error_log_id": 2,
+                "error_log_id": error_log2.error_log_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestErrorLogManager:
         # No error_logs to update since error_log_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_error_logs = await error_log_manager.update_bulk(updates)
+            await error_log_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_error_log_not_found(
@@ -474,7 +474,7 @@ class TestErrorLogManager:
         """
         updates = [{"error_log_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_error_logs = await error_log_manager.update_bulk(updates)
+            await error_log_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestErrorLogManager:
         # Delete error_logs
         error_log_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await error_log_manager.delete_bulk(error_log_ids)
+            await error_log_manager.delete_bulk(error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestErrorLogManager:
         """
         error_log_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await error_log_manager.delete_bulk(error_log_ids)
+            await error_log_manager.delete_bulk(error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

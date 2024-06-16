@@ -30,7 +30,7 @@ class FlowCustomerUserLogOutResult():
         data = {
             'context_object_code': str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
         self,
         customer_bus_obj: CustomerBusObj,
 
-# endset
-        ) -> FlowCustomerUserLogOutResult:
+# endset  # noqa: E122
+    ) -> FlowCustomerUserLogOutResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
         await super()._process_validation_rules(
             customer_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 

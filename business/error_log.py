@@ -35,7 +35,9 @@ class ErrorLogBusObj(BaseBusObj):
         :return: The error_log ID.
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.error_log_id
     # @error_log_id.setter
     # def error_log_id(self, value: int):
@@ -52,7 +54,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
@@ -60,7 +64,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.error_log.code = value
@@ -71,7 +77,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
@@ -79,7 +87,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.error_log.last_change_code = value
@@ -90,7 +100,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
@@ -98,7 +110,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.error_log.insert_user_id = value
@@ -117,7 +131,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
@@ -125,7 +141,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.error_log.last_update_user_id = value
@@ -143,7 +161,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.browser_code
     @browser_code.setter
     def browser_code(self, value):
@@ -151,7 +171,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, uuid.UUID), (
             "browser_code must be a UUID")
         self.error_log.browser_code = value
@@ -168,7 +190,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.context_code
     @context_code.setter
     def context_code(self, value):
@@ -176,7 +200,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, uuid.UUID), (
             "context_code must be a UUID")
         self.error_log.context_code = value
@@ -193,7 +219,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.created_utc_date_time
     @created_utc_date_time.setter
     def created_utc_date_time(self, value):
@@ -201,7 +229,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, datetime), (
             "created_utc_date_time must be a datetime object")
         self.error_log.created_utc_date_time = value
@@ -218,7 +248,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if self.error_log.description is None:
             return ""
         return self.error_log.description
@@ -228,7 +260,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, str), "description must be a string"
         self.error_log.description = value
     # def set_prop_description(self, value):
@@ -244,7 +278,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.is_client_side_error
     @is_client_side_error.setter
     def is_client_side_error(self, value: bool):
@@ -252,7 +288,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_client_side_error must be a boolean.")
         self.error_log.is_client_side_error = value
@@ -269,7 +307,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.is_resolved
     @is_resolved.setter
     def is_resolved(self, value: bool):
@@ -277,7 +317,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_resolved must be a boolean.")
         self.error_log.is_resolved = value
@@ -295,7 +337,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if self.error_log.url is None:
             return ""
         return self.error_log.url
@@ -305,7 +349,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, str), "url must be a string"
         self.error_log.url = value
     # def set_prop_url(self, value):
@@ -328,7 +374,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.pac_id
     @pac_id.setter
     def pac_id(self, value):
@@ -336,7 +384,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.error_log.pac_id = value
@@ -352,7 +402,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
@@ -368,7 +420,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
@@ -376,7 +430,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.error_log.insert_utc_date_time = value
@@ -387,7 +443,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
@@ -395,7 +453,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.error_log.last_update_utc_date_time = value
@@ -406,7 +466,8 @@ class ErrorLogBusObj(BaseBusObj):
         """
         Load error_log data from JSON string.
         :param json_data: JSON string containing error_log data.
-        :raises ValueError: If json_data is not a string or if no error_log data is found.
+        :raises ValueError: If json_data is not a string
+            or if no error_log data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -435,7 +496,8 @@ class ErrorLogBusObj(BaseBusObj):
         """
         Load error_log data from error_log ID.
         :param error_log_id: Integer ID for loading a specific error_log.
-        :raises ValueError: If error_log_id is not an integer or if no error_log data is found.
+        :raises ValueError: If error_log_id is not an integer or
+            if no error_log data is found.
         """
         if not isinstance(error_log_id, int):
             raise ValueError("error_log_id must be an integer")
@@ -468,7 +530,8 @@ class ErrorLogBusObj(BaseBusObj):
         """
         Load error_log data from dictionary.
         :param error_log_dict: Dictionary containing error_log data.
-        :raises ValueError: If error_log_dict is not a dictionary or if no error_log data is found.
+        :raises ValueError: If error_log_dict is not a
+            dictionary or if no error_log data is found.
         """
         if not isinstance(error_log_dict, dict):
             raise ValueError("error_log_dict must be a dictionary")
@@ -523,7 +586,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         if self.error_log.error_log_id > 0:
             error_log_manager = ErrorLogManager(self._session_context)
             await error_log_manager.delete(self.error_log.error_log_id)
@@ -533,7 +598,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         self.error_log.browser_code = uuid.uuid4()
         self.error_log.context_code = uuid.uuid4()
         self.error_log.created_utc_date_time = datetime(
@@ -554,7 +621,9 @@ class ErrorLogBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.error_log:
-            raise AttributeError("ErrorLog object is not initialized")
+            raise AttributeError(
+                "ErrorLog object is not initialized"
+            )
         return self.error_log
     def is_equal(self, error_log: ErrorLog) -> bool:
         """

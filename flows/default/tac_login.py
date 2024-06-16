@@ -40,7 +40,7 @@ class FlowTacLoginResult():
             'utc_offset_in_minutes': self.utc_offset_in_minutes,
             'role_name_csv_list': self.role_name_csv_list,
             'api_key': self.api_key,
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -58,8 +58,8 @@ class FlowTacLogin(BaseFlowTacLogin):
         tac_bus_obj: TacBusObj,
         email: str = "",
         password: str = "",
-# endset
-        ) -> FlowTacLoginResult:
+# endset  # noqa: E122
+    ) -> FlowTacLoginResult:
         """
             #TODO add comment
         """
@@ -69,7 +69,7 @@ class FlowTacLogin(BaseFlowTacLogin):
             tac_bus_obj,
             email,
             password,
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         customer_code_output: uuid.UUID = uuid.UUID(int=0)

@@ -403,11 +403,11 @@ class TestLandManager:
         # Update lands
         updates = [
             {
-                "land_id": 1,
+                "land_id": land1.land_id,
                 "code": code_updated1
             },
             {
-                "land_id": 2,
+                "land_id": land2.land_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestLandManager:
         # No lands to update since land_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_lands = await land_manager.update_bulk(updates)
+            await land_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_land_not_found(
@@ -474,7 +474,7 @@ class TestLandManager:
         """
         updates = [{"land_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_lands = await land_manager.update_bulk(updates)
+            await land_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestLandManager:
         # Delete lands
         land_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await land_manager.delete_bulk(land_ids)
+            await land_manager.delete_bulk(land_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestLandManager:
         """
         land_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await land_manager.delete_bulk(land_ids)
+            await land_manager.delete_bulk(land_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

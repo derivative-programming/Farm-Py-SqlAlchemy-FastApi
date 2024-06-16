@@ -1,17 +1,19 @@
 # models/plant.py
+# pylint: disable=unused-import
 
 """
     #TODO add comment
 """
 import uuid
-from datetime import date, datetime, timezone
+from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.plant as plant_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 
 
 class Plant(Base):
@@ -49,25 +51,38 @@ class Plant(Base):
         'flvr_foreign_key_id',
         Integer,
         ForeignKey('farm_' + snake_case('Flavor') + '.flavor_id'),
-        index=plant_constants.flvr_foreign_key_id_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            flvr_foreign_key_id_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_delete_allowed = Column(
         'is_delete_allowed',
         Boolean,
         default=False,
-        index=plant_constants.is_delete_allowed_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            is_delete_allowed_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_edit_allowed = Column(
         'is_edit_allowed',
         Boolean,
         default=False,
-        index=plant_constants.is_edit_allowed_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            is_edit_allowed_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
-    land_id = Column('land_id',
-                     Integer,
-                     ForeignKey('farm_' + snake_case('Land') + '.land_id'),
-                     index=plant_constants.land_id_calculatedIsDBColumnIndexed,
-                     nullable=True)
+    land_id = Column(
+        'land_id',
+        Integer,
+        ForeignKey('farm_' + snake_case('Land') + '.land_id'),
+        index=(
+            plant_constants.
+            land_id_calculatedIsDBColumnIndexed
+        ),
+        nullable=True)
     other_flavor = Column(
         'other_flavor',
         ##GENIF[isEncrypted=false]Start
@@ -77,31 +92,46 @@ class Plant(Base):
         ##GENREMOVECOMMENTEncryptedType(),
         ##GENIF[isEncrypted=true]End
         default="",
-        index=plant_constants.other_flavor_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            other_flavor_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_big_int_val = Column(
         'some_big_int_val',
         BigInteger,
         default=0,
-        index=plant_constants.some_big_int_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_big_int_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_bit_val = Column(
         'some_bit_val',
         Boolean,
         default=False,
-        index=plant_constants.some_bit_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_bit_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_date_val = Column(
         'some_date_val',
         Date,
         default=date(1753, 1, 1),
-        index=plant_constants.some_date_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_date_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_decimal_val = Column(
         'some_decimal_val',
         Numeric(precision=18, scale=6),
         default=0,
-        index=plant_constants.some_decimal_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_decimal_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_email_address = Column(
         'some_email_address',
@@ -112,25 +142,37 @@ class Plant(Base):
         ##GENREMOVECOMMENTEncryptedType(),
         ##GENIF[isEncrypted=true]End
         default="",
-        index=plant_constants.some_email_address_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_email_address_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_float_val = Column(
         'some_float_val',
         Float,
         default=0.0,
-        index=plant_constants.some_float_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_float_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_int_val = Column(
         'some_int_val',
         Integer,
         default=0,
-        index=plant_constants.some_int_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_int_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_money_val = Column(
         'some_money_val',
         Numeric(precision=18, scale=2),
         default=0,
-        index=plant_constants.some_money_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_money_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_n_var_char_val = Column(
         'some_n_var_char_val',
@@ -141,7 +183,10 @@ class Plant(Base):
         ##GENREMOVECOMMENTEncryptedType(),
         ##GENIF[isEncrypted=true]End
         default="",
-        index=plant_constants.some_n_var_char_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_n_var_char_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_phone_number = Column(
         'some_phone_number',
@@ -152,25 +197,37 @@ class Plant(Base):
         ##GENREMOVECOMMENTEncryptedType(),
         ##GENIF[isEncrypted=true]End
         default="",
-        index=plant_constants.some_phone_number_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_phone_number_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_text_val = Column(
         'some_text_val',
         String,
         default="",
-        index=plant_constants.some_text_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_text_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     _some_uniqueidentifier_val = Column(
         'some_uniqueidentifier_val',
         UUIDType(binary=False),
         default=uuid.uuid4,
-        index=plant_constants.some_uniqueidentifier_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_uniqueidentifier_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_utc_date_time_val = Column(
         'some_utc_date_time_val',
         DateTime,
         default=datetime(1753, 1, 1),
-        index=plant_constants.some_utc_date_time_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_utc_date_time_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     some_var_char_val = Column(
         'some_var_char_val',
@@ -181,7 +238,10 @@ class Plant(Base):
         ##GENREMOVECOMMENTEncryptedType(),
         ##GENIF[isEncrypted=true]End
         default="",
-        index=plant_constants.some_var_char_val_calculatedIsDBColumnIndexed,
+        index=(
+            plant_constants.
+            some_var_char_val_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     flvr_foreign_key_code_peek = uuid.UUID  # FlvrForeignKeyID
     land_code_peek = uuid.UUID  # LandID
@@ -194,7 +254,8 @@ class Plant(Base):
         DateTime,
         nullable=True)
 
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     # land = relationship('Land', back_populates=snake_case('Land'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
 
@@ -334,21 +395,39 @@ class Plant(Base):
     @property
     def some_uniqueidentifier_val(self):
         """
-            #TODO add comment
+        Returns the unique identifier as a UUID object.
+
+        Returns:
+            uuid.UUID: The unique identifier value.
         """
 
         return uuid.UUID(str(self._some_uniqueidentifier_val))
 
-    @code.setter
+    @some_uniqueidentifier_val.setter
     def some_uniqueidentifier_val(self, value):
         """
-            #TODO add comment
+        Sets the unique identifier value. The input
+        can be either a uuid.UUID object or a string
+        that can be converted to a uuid.UUID object.
+        Updates the last_update_utc_date_time to the
+        current naive UTC datetime.
+
+        Args:
+            value (uuid.UUID or str): The unique identifier
+            value to set.
+
+        Raises:
+            ValueError: If the provided value cannot be
+            converted to a uuid.UUID.
         """
 
         if isinstance(value, uuid.UUID):
             self._some_uniqueidentifier_val = value
         else:
-            self._some_uniqueidentifier_val = uuid.UUID(value)
+            try:
+                self._some_uniqueidentifier_val = uuid.UUID(value)
+            except ValueError as e:
+                raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.utcnow()
     # someTextVal,
 
@@ -380,31 +459,32 @@ class Plant(Base):
             "some_uniqueidentifier_val",
             "some_utc_date_time_val",
             "some_var_char_val",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-
-# Define the index separately from the column
-# Index('index_code', Plant.code)
-# Index('farm_plant_index_land_id', Plant.land_id)  # LandID
-# Index('farm_plant_index_flvr_foreign_key_id', Plant.flvr_foreign_key_id)  # FlvrForeignKeyID
 
 
 @event.listens_for(Plant, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
-
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 
 
 @event.listens_for(Plant, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
-
-    target.last_update_utc_date_time = datetime.now(timezone.utc)
+    target.last_update_utc_date_time = datetime.utcnow()

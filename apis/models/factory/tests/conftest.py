@@ -1,4 +1,5 @@
 # apis/models/factory/tests/conftest.py
+# pylint: disable=unused-argument
 
 """
     #TODO add comment
@@ -47,7 +48,10 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
     """
 
     @event.listens_for(engine.sync_engine, "connect")
-    def set_sqlite_pragma(dbapi_connection, connection_record):
+    def set_sqlite_pragma(
+        dbapi_connection,
+        connection_record
+    ):  
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.close()

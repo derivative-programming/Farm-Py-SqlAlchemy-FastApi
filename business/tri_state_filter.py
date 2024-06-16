@@ -35,7 +35,9 @@ class TriStateFilterBusObj(BaseBusObj):
         :return: The tri_state_filter ID.
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.tri_state_filter_id
     # @tri_state_filter_id.setter
     # def tri_state_filter_id(self, value: int):
@@ -52,7 +54,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
@@ -60,7 +64,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.tri_state_filter.code = value
@@ -71,7 +77,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
@@ -79,7 +87,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.tri_state_filter.last_change_code = value
@@ -90,7 +100,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
@@ -98,7 +110,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.tri_state_filter.insert_user_id = value
@@ -117,7 +131,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
@@ -125,7 +141,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.tri_state_filter.last_update_user_id = value
@@ -143,7 +161,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if self.tri_state_filter.description is None:
             return ""
         return self.tri_state_filter.description
@@ -153,7 +173,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, str), "description must be a string"
         self.tri_state_filter.description = value
     # def set_prop_description(self, value):
@@ -169,7 +191,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.display_order
     @display_order.setter
     def display_order(self, value):
@@ -177,7 +201,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.tri_state_filter.display_order = value
@@ -194,7 +220,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.is_active
     @is_active.setter
     def is_active(self, value: bool):
@@ -202,7 +230,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.tri_state_filter.is_active = value
@@ -219,7 +249,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if self.tri_state_filter.lookup_enum_name is None:
             return ""
         return self.tri_state_filter.lookup_enum_name
@@ -229,7 +261,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.tri_state_filter.lookup_enum_name = value
     # def set_prop_lookup_enum_name(self, value):
@@ -245,7 +279,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if self.tri_state_filter.name is None:
             return ""
         return self.tri_state_filter.name
@@ -255,7 +291,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, str), "name must be a string"
         self.tri_state_filter.name = value
     # def set_prop_name(self, value):
@@ -272,7 +310,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.state_int_value
     @state_int_value.setter
     def state_int_value(self, value):
@@ -280,7 +320,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, int), (
             "state_int_value must be an integer")
         self.tri_state_filter.state_int_value = value
@@ -303,7 +345,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.pac_id
     @pac_id.setter
     def pac_id(self, value):
@@ -311,7 +355,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.tri_state_filter.pac_id = value
@@ -327,7 +373,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.pac_code_peek
     # @pac_code_peek.setter
     # def pac_code_peek(self, value):
@@ -343,7 +391,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
@@ -351,7 +401,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.tri_state_filter.insert_utc_date_time = value
@@ -362,7 +414,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
@@ -370,7 +424,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.tri_state_filter.last_update_utc_date_time = value
@@ -381,7 +437,8 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         Load tri_state_filter data from JSON string.
         :param json_data: JSON string containing tri_state_filter data.
-        :raises ValueError: If json_data is not a string or if no tri_state_filter data is found.
+        :raises ValueError: If json_data is not a string
+            or if no tri_state_filter data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -410,7 +467,8 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         Load tri_state_filter data from tri_state_filter ID.
         :param tri_state_filter_id: Integer ID for loading a specific tri_state_filter.
-        :raises ValueError: If tri_state_filter_id is not an integer or if no tri_state_filter data is found.
+        :raises ValueError: If tri_state_filter_id is not an integer or
+            if no tri_state_filter data is found.
         """
         if not isinstance(tri_state_filter_id, int):
             raise ValueError("tri_state_filter_id must be an integer")
@@ -443,7 +501,8 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         Load tri_state_filter data from dictionary.
         :param tri_state_filter_dict: Dictionary containing tri_state_filter data.
-        :raises ValueError: If tri_state_filter_dict is not a dictionary or if no tri_state_filter data is found.
+        :raises ValueError: If tri_state_filter_dict is not a
+            dictionary or if no tri_state_filter data is found.
         """
         if not isinstance(tri_state_filter_dict, dict):
             raise ValueError("tri_state_filter_dict must be a dictionary")
@@ -453,6 +512,9 @@ class TriStateFilterBusObj(BaseBusObj):
 
     @property
     def lookup_enum(self) -> managers_and_enums.TriStateFilterEnum:
+        """
+        #TODO add comment
+        """
         return managers_and_enums.TriStateFilterEnum[self.tri_state_filter.lookup_enum_name]
     async def load_from_enum(
         self,
@@ -464,10 +526,18 @@ class TriStateFilterBusObj(BaseBusObj):
         :param plant_dict: Dictionary containing plant data.
         :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
         """
-        if not isinstance(tri_state_filter_enum, managers_and_enums.TriStateFilterEnum):
+        if not isinstance(
+            tri_state_filter_enum,
+            managers_and_enums.TriStateFilterEnum
+        ):
             raise ValueError("tri_state_filter_enum must be a enum")
-        tri_state_filter_manager = TriStateFilterManager(self._session_context)
-        self.tri_state_filter = await tri_state_filter_manager.from_enum(tri_state_filter_enum)
+        tri_state_filter_manager = TriStateFilterManager(
+            self._session_context
+        )
+        self.tri_state_filter = await (
+            tri_state_filter_manager.
+            from_enum(tri_state_filter_enum)
+        )
 
     def get_session_context(self):
         """
@@ -516,7 +586,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         if self.tri_state_filter.tri_state_filter_id > 0:
             tri_state_filter_manager = TriStateFilterManager(self._session_context)
             await tri_state_filter_manager.delete(self.tri_state_filter.tri_state_filter_id)
@@ -526,7 +598,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         self.tri_state_filter.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tri_state_filter.display_order = random.randint(0, 100)
@@ -544,7 +618,9 @@ class TriStateFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.tri_state_filter:
-            raise AttributeError("TriStateFilter object is not initialized")
+            raise AttributeError(
+                "TriStateFilter object is not initialized"
+            )
         return self.tri_state_filter
     def is_equal(self, tri_state_filter: TriStateFilter) -> bool:
         """

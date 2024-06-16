@@ -2,23 +2,25 @@
 """
     #TODO add comment
 """
-from decimal import Decimal
 import uuid
-import pytest
+from datetime import date, datetime
 from decimal import Decimal
-from datetime import datetime, date
+import pytest
+import flows.constants.pac_user_tac_list_init_report as FlowConstants
 from flows.base.pac_user_tac_list_init_report import BaseFlowPacUserTacListInitReport
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.flavor import FlavorFactory
 from models.factory.pac import PacFactory
-import flows.constants.pac_user_tac_list_init_report as FlowConstants
 class TestBaseFlowPacUserTacListInitReport():
     """
     #TODO add comment
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         flow = BaseFlowPacUserTacListInitReport(session_context)
         pac = await PacFactory.create_async(session)
@@ -37,6 +39,9 @@ class TestBaseFlowPacUserTacListInitReport():
 
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         pac = await PacFactory.create_async(session)
         flow = BaseFlowPacUserTacListInitReport(session_context)

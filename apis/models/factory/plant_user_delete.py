@@ -24,10 +24,12 @@ class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
 
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> PlantUserDeletePostModelRequest:
+    def _build(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> PlantUserDeletePostModelRequest:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
 # endset
 
@@ -37,7 +39,9 @@ class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> PlantUserDeletePostModelRequest:
+    def _create(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> PlantUserDeletePostModelRequest:
 
 # endset
 
@@ -47,7 +51,9 @@ class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
 # endset
         return obj
     @classmethod
-    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> PlantUserDeletePostModelRequest:
+    async def create_async(
+        cls, session: AsyncSession, *args, **kwargs
+    ) -> PlantUserDeletePostModelRequest:
         """
             #TODO add comment
         """
@@ -55,7 +61,9 @@ class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
 # endset
 
 # endset
-        obj = PlantUserDeletePostModelRequestFactory.build(session=None, *args, **kwargs)
+        obj = PlantUserDeletePostModelRequestFactory.build(
+            session=None, *args, **kwargs
+        )
 
 # endset
         return obj

@@ -1,18 +1,22 @@
 """
     #TODO add comment
 """
-import logging
 from datetime import datetime
 import uuid
 import factory
-from factory import Faker, SubFactory
-import pytz
+from factory import Faker
 from models import Pac
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
 class PacFactory(factory.Factory):
+    """
+    #TODO add comment
+    """
     class Meta:
+        """
+        #TODO add comment
+        """
         model = Pac
     # pac_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
@@ -24,12 +28,14 @@ class PacFactory(factory.Factory):
     is_active = Faker('boolean')
     lookup_enum_name = Faker('sentence', nb_words=4)
     name = Faker('sentence', nb_words=4)
-    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    # endset
+# endset
 
+# endset
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Pac:
+        """
+        #TODO add comment
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -44,11 +50,14 @@ class PacFactory(factory.Factory):
 # endset
 
 # endset
-        # session.add(obj)
+        session.add(obj)
         # session.commit()
         return obj
     @classmethod
     def _create(cls, model_class, session=None, *args, **kwargs) -> Pac:
+        """
+        #TODO add comment
+        """
         logger.info("factory create")
 
 # endset
@@ -99,6 +108,6 @@ class PacFactory(factory.Factory):
 # endset
 
 # endset
-        # session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

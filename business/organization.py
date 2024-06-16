@@ -39,7 +39,9 @@ class OrganizationBusObj(BaseBusObj):
         :return: The organization ID.
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.organization_id
     # @organization_id.setter
     # def organization_id(self, value: int):
@@ -56,7 +58,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
@@ -64,7 +68,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.organization.code = value
@@ -75,7 +81,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
@@ -83,7 +91,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.organization.last_change_code = value
@@ -94,7 +104,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
@@ -102,7 +114,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.organization.insert_user_id = value
@@ -121,7 +135,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
@@ -129,7 +145,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.organization.last_update_user_id = value
@@ -147,7 +165,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         if self.organization.name is None:
             return ""
         return self.organization.name
@@ -157,7 +177,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         assert isinstance(value, str), "name must be a string"
         self.organization.name = value
     # def set_prop_name(self, value):
@@ -176,7 +198,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.tac_id
     @tac_id.setter
     def tac_id(self, value):
@@ -184,7 +208,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "tac_id must be an integer or None")
         self.organization.tac_id = value
@@ -200,7 +226,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.tac_code_peek
     # @tac_code_peek.setter
     # def tac_code_peek(self, value):
@@ -215,7 +243,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
@@ -223,7 +253,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.organization.insert_utc_date_time = value
@@ -234,7 +266,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
@@ -242,7 +276,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.organization.last_update_utc_date_time = value
@@ -253,7 +289,8 @@ class OrganizationBusObj(BaseBusObj):
         """
         Load organization data from JSON string.
         :param json_data: JSON string containing organization data.
-        :raises ValueError: If json_data is not a string or if no organization data is found.
+        :raises ValueError: If json_data is not a string
+            or if no organization data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -282,7 +319,8 @@ class OrganizationBusObj(BaseBusObj):
         """
         Load organization data from organization ID.
         :param organization_id: Integer ID for loading a specific organization.
-        :raises ValueError: If organization_id is not an integer or if no organization data is found.
+        :raises ValueError: If organization_id is not an integer or
+            if no organization data is found.
         """
         if not isinstance(organization_id, int):
             raise ValueError("organization_id must be an integer")
@@ -315,7 +353,8 @@ class OrganizationBusObj(BaseBusObj):
         """
         Load organization data from dictionary.
         :param organization_dict: Dictionary containing organization data.
-        :raises ValueError: If organization_dict is not a dictionary or if no organization data is found.
+        :raises ValueError: If organization_dict is not a
+            dictionary or if no organization data is found.
         """
         if not isinstance(organization_dict, dict):
             raise ValueError("organization_dict must be a dictionary")
@@ -370,7 +409,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         if self.organization.organization_id > 0:
             organization_manager = OrganizationManager(self._session_context)
             await organization_manager.delete(self.organization.organization_id)
@@ -380,7 +421,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         self.organization.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.organization.tac_id = random.randint(0, 100)
@@ -391,7 +434,9 @@ class OrganizationBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.organization:
-            raise AttributeError("Organization object is not initialized")
+            raise AttributeError(
+                "Organization object is not initialized"
+            )
         return self.organization
     def is_equal(self, organization: Organization) -> bool:
         """

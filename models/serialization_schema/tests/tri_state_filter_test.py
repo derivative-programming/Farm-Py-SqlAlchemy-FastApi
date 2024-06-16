@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import TriStateFilter
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import TriStateFilterSchema
+import pytest
+import pytz
+from models import TriStateFilter
 from models.factory import TriStateFilterFactory
+from models.serialization_schema import TriStateFilterSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -49,7 +49,7 @@ class TestTriStateFilterSchema:
         "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 # endset  # noqa: E122
     }
-    def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter, session):
+    def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter):
         """
             #TODO add comment
         """
@@ -86,7 +86,7 @@ class TestTriStateFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tri_state_filter.pac_code_peek))
 # endset
-    def test_tri_state_filter_deserialization(self, tri_state_filter: TriStateFilter, session):
+    def test_tri_state_filter_deserialization(self, tri_state_filter: TriStateFilter):
         """
             #TODO add comment
         """
@@ -155,7 +155,7 @@ class TestTriStateFilterSchema:
         assert new_tri_state_filter.pac_code_peek == (  # PacID
             tri_state_filter.pac_code_peek)
 # endset
-    def test_from_json(self, tri_state_filter: TriStateFilter, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -201,7 +201,7 @@ class TestTriStateFilterSchema:
             self.sample_data['last_update_utc_date_time'])
         new_tri_state_filter = TriStateFilter(**deserialized_data)
         assert isinstance(new_tri_state_filter, TriStateFilter)
-    def test_to_json(self, tri_state_filter: TriStateFilter, session):
+    def test_to_json(self, tri_state_filter: TriStateFilter):
         """
             #TODO add comment
         """

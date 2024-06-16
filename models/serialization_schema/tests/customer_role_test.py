@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import CustomerRole
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import CustomerRoleSchema
+import pytest
+import pytz
+from models import CustomerRole
 from models.factory import CustomerRoleFactory
+from models.serialization_schema import CustomerRoleSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -47,7 +47,7 @@ class TestCustomerRoleSchema:
         "role_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # RoleID
 # endset  # noqa: E122
     }
-    def test_customer_role_serialization(self, customer_role: CustomerRole, session):
+    def test_customer_role_serialization(self, customer_role: CustomerRole):
         """
             #TODO add comment
         """
@@ -80,7 +80,7 @@ class TestCustomerRoleSchema:
         assert result['role_code_peek'] == (  # RoleID
             str(customer_role.role_code_peek))
 # endset
-    def test_customer_role_deserialization(self, customer_role: CustomerRole, session):
+    def test_customer_role_deserialization(self, customer_role: CustomerRole):
         """
             #TODO add comment
         """
@@ -141,7 +141,7 @@ class TestCustomerRoleSchema:
         assert new_customer_role.role_code_peek == (  # RoleID
             customer_role.role_code_peek)
 # endset
-    def test_from_json(self, customer_role: CustomerRole, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -183,7 +183,7 @@ class TestCustomerRoleSchema:
             self.sample_data['last_update_utc_date_time'])
         new_customer_role = CustomerRole(**deserialized_data)
         assert isinstance(new_customer_role, CustomerRole)
-    def test_to_json(self, customer_role: CustomerRole, session):
+    def test_to_json(self, customer_role: CustomerRole):
         """
             #TODO add comment
         """

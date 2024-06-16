@@ -24,10 +24,12 @@ class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Fac
     plant_code_list_csv: str = ""
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> LandUserPlantMultiSelectToEditablePostModelRequest:
+    def _build(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> LandUserPlantMultiSelectToEditablePostModelRequest:
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
 # endset
 
@@ -37,7 +39,9 @@ class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Fac
 # endset
         return obj
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> LandUserPlantMultiSelectToEditablePostModelRequest:
+    def _create(
+        cls, model_class, session=None, *args, **kwargs
+    ) -> LandUserPlantMultiSelectToEditablePostModelRequest:
 
 # endset
 
@@ -47,7 +51,9 @@ class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Fac
 # endset
         return obj
     @classmethod
-    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> LandUserPlantMultiSelectToEditablePostModelRequest:
+    async def create_async(
+        cls, session: AsyncSession, *args, **kwargs
+    ) -> LandUserPlantMultiSelectToEditablePostModelRequest:
         """
             #TODO add comment
         """
@@ -55,7 +61,9 @@ class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Fac
 # endset
 
 # endset
-        obj = LandUserPlantMultiSelectToEditablePostModelRequestFactory.build(session=None, *args, **kwargs)
+        obj = LandUserPlantMultiSelectToEditablePostModelRequestFactory.build(
+            session=None, *args, **kwargs
+        )
 
 # endset
         return obj

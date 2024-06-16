@@ -1,16 +1,18 @@
 # models/tac.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.tac as tac_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 class Tac(Base):
     """
     #TODO add comment
@@ -47,19 +49,28 @@ class Tac(Base):
         String,
 
         default="",
-        index=tac_constants.description_calculatedIsDBColumnIndexed,
+        index=(
+            tac_constants.
+            description_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     display_order = Column(
         'display_order',
         Integer,
         default=0,
-        index=tac_constants.display_order_calculatedIsDBColumnIndexed,
+        index=(
+            tac_constants.
+            display_order_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_active = Column(
         'is_active',
         Boolean,
         default=False,
-        index=tac_constants.is_active_calculatedIsDBColumnIndexed,
+        index=(
+            tac_constants.
+            is_active_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     lookup_enum_name = Column(
         'lookup_enum_name',
@@ -67,7 +78,10 @@ class Tac(Base):
         String,
 
         default="",
-        index=tac_constants.lookup_enum_name_calculatedIsDBColumnIndexed,
+        index=(
+            tac_constants.
+            lookup_enum_name_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     name = Column(
         'name',
@@ -75,13 +89,20 @@ class Tac(Base):
         String,
 
         default="",
-        index=tac_constants.name_calculatedIsDBColumnIndexed,
+        index=(
+            tac_constants.
+            name_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
-    pac_id = Column('pac_id',
-                     Integer,
-                     ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
-                     index=tac_constants.pac_id_calculatedIsDBColumnIndexed,
-                     nullable=True)
+    pac_id = Column(
+        'pac_id',
+        Integer,
+        ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
+        index=(
+            tac_constants.
+            pac_id_calculatedIsDBColumnIndexed
+        ),
+        nullable=True)
     pac_code_peek = uuid.UUID  # PacID
     insert_utc_date_time = Column(
         'insert_utc_date_time',
@@ -91,7 +112,8 @@ class Tac(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     # pac = relationship('Pac', back_populates=snake_case('Pac'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
@@ -187,22 +209,27 @@ class Tac(Base):
             "lookup_enum_name",
             "name",
             "pac_id",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-# Define the index separately from the column
-# Index('index_code', Tac.code)
-# Index('farm_tac_index_pac_id', Tac.pac_id)  # PacID
 @event.listens_for(Tac, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(Tac, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """

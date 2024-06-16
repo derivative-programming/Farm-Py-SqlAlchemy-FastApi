@@ -1,11 +1,12 @@
 # models/managers/org_api_key.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import json
 import logging
 import uuid
-from enum import Enum  # pylint: disable=unused-import
+from enum import Enum  # noqa: F401
 from typing import List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select

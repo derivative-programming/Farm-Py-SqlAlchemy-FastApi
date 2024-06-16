@@ -1,19 +1,23 @@
 """
     #TODO add comment
 """
-import logging
 from datetime import datetime
 import uuid
 import factory
-from factory import Faker, SubFactory
-import pytz
+from factory import Faker
 from models import CustomerRole
 from services.logging_config import get_logger
 from .customer import CustomerFactory  # customer_id
 from .role import RoleFactory  # role_id
 logger = get_logger(__name__)
 class CustomerRoleFactory(factory.Factory):
+    """
+    #TODO add comment
+    """
     class Meta:
+        """
+        #TODO add comment
+        """
         model = CustomerRole
     # customer_role_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
@@ -24,13 +28,19 @@ class CustomerRoleFactory(factory.Factory):
     is_placeholder = Faker('boolean')
     placeholder = Faker('boolean')
     # role_id = 0 #factory.LazyAttribute(lambda obj: obj.role.role_id)
-    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    # endset
-    customer_code_peek = factory.LazyFunction(uuid.uuid4)  # CustomerID
-    role_code_peek = factory.LazyFunction(uuid.uuid4)  # RoleID
+# endset
+    customer_code_peek = factory.LazyFunction(  # CustomerID
+        uuid.uuid4
+    )
+    role_code_peek = factory.LazyFunction(  # RoleID
+        uuid.uuid4
+    )
+# endset
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
+        """
+        #TODO add comment
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -50,11 +60,14 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = role_id_role_instance.code  # RoleID
 # endset
-        # session.add(obj)
+        session.add(obj)
         # session.commit()
         return obj
     @classmethod
     def _create(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
+        """
+        #TODO add comment
+        """
         logger.info("factory create")
         customer_id_customer_instance = CustomerFactory.create(session=session)  # CustomerID
         role_id_role_instance = RoleFactory.create(session=session)  # RoleID
@@ -120,6 +133,6 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = role_id_role_instance.code  # RoleID
 # endset
-        # session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

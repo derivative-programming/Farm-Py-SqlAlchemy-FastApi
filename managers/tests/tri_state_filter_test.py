@@ -403,11 +403,11 @@ class TestTriStateFilterManager:
         # Update tri_state_filters
         updates = [
             {
-                "tri_state_filter_id": 1,
+                "tri_state_filter_id": tri_state_filter1.tri_state_filter_id,
                 "code": code_updated1
             },
             {
-                "tri_state_filter_id": 2,
+                "tri_state_filter_id": tri_state_filter2.tri_state_filter_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestTriStateFilterManager:
         # No tri_state_filters to update since tri_state_filter_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_tri_state_filters = await tri_state_filter_manager.update_bulk(updates)
+            await tri_state_filter_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_tri_state_filter_not_found(
@@ -474,7 +474,7 @@ class TestTriStateFilterManager:
         """
         updates = [{"tri_state_filter_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_tri_state_filters = await tri_state_filter_manager.update_bulk(updates)
+            await tri_state_filter_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestTriStateFilterManager:
         # Delete tri_state_filters
         tri_state_filter_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await tri_state_filter_manager.delete_bulk(tri_state_filter_ids)
+            await tri_state_filter_manager.delete_bulk(tri_state_filter_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestTriStateFilterManager:
         """
         tri_state_filter_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await tri_state_filter_manager.delete_bulk(tri_state_filter_ids)
+            await tri_state_filter_manager.delete_bulk(tri_state_filter_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

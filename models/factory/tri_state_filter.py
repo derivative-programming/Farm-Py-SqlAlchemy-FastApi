@@ -1,18 +1,22 @@
 """
     #TODO add comment
 """
-import logging
 from datetime import datetime
 import uuid
 import factory
-from factory import Faker, SubFactory
-import pytz
+from factory import Faker
 from models import TriStateFilter
 from services.logging_config import get_logger
 from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class TriStateFilterFactory(factory.Factory):
+    """
+    #TODO add comment
+    """
     class Meta:
+        """
+        #TODO add comment
+        """
         model = TriStateFilter
     # tri_state_filter_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
@@ -26,12 +30,16 @@ class TriStateFilterFactory(factory.Factory):
     name = Faker('sentence', nb_words=4)
     # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
     state_int_value = Faker('random_int')
-    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    # endset
-    pac_code_peek = factory.LazyFunction(uuid.uuid4)  # PacID
+# endset
+    pac_code_peek = factory.LazyFunction(  # PacID
+        uuid.uuid4
+    )
+# endset
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> TriStateFilter:
+        """
+        #TODO add comment
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -46,11 +54,14 @@ class TriStateFilterFactory(factory.Factory):
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset
-        # session.add(obj)
+        session.add(obj)
         # session.commit()
         return obj
     @classmethod
     def _create(cls, model_class, session=None, *args, **kwargs) -> TriStateFilter:
+        """
+        #TODO add comment
+        """
         logger.info("factory create")
         pac_id_pac_instance = PacFactory.create(session=session)  # PacID
 # endset
@@ -101,6 +112,6 @@ class TriStateFilterFactory(factory.Factory):
 # endset
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
 # endset
-        # session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

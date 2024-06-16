@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import Land
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import LandSchema
+import pytest
+import pytz
+from models import Land
 from models.factory import LandFactory
+from models.serialization_schema import LandSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -48,7 +48,7 @@ class TestLandSchema:
         "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 # endset  # noqa: E122
     }
-    def test_land_serialization(self, land: Land, session):
+    def test_land_serialization(self, land: Land):
         """
             #TODO add comment
         """
@@ -83,7 +83,7 @@ class TestLandSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(land.pac_code_peek))
 # endset
-    def test_land_deserialization(self, land: Land, session):
+    def test_land_deserialization(self, land: Land):
         """
             #TODO add comment
         """
@@ -148,7 +148,7 @@ class TestLandSchema:
         assert new_land.pac_code_peek == (  # PacID
             land.pac_code_peek)
 # endset
-    def test_from_json(self, land: Land, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -192,7 +192,7 @@ class TestLandSchema:
             self.sample_data['last_update_utc_date_time'])
         new_land = Land(**deserialized_data)
         assert isinstance(new_land, Land)
-    def test_to_json(self, land: Land, session):
+    def test_to_json(self, land: Land):
         """
             #TODO add comment
         """

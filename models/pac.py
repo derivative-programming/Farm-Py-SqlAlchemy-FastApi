@@ -1,16 +1,18 @@
 # models/pac.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.pac as pac_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 class Pac(Base):
     """
     #TODO add comment
@@ -47,19 +49,28 @@ class Pac(Base):
         String,
 
         default="",
-        index=pac_constants.description_calculatedIsDBColumnIndexed,
+        index=(
+            pac_constants.
+            description_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     display_order = Column(
         'display_order',
         Integer,
         default=0,
-        index=pac_constants.display_order_calculatedIsDBColumnIndexed,
+        index=(
+            pac_constants.
+            display_order_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_active = Column(
         'is_active',
         Boolean,
         default=False,
-        index=pac_constants.is_active_calculatedIsDBColumnIndexed,
+        index=(
+            pac_constants.
+            is_active_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     lookup_enum_name = Column(
         'lookup_enum_name',
@@ -67,7 +78,10 @@ class Pac(Base):
         String,
 
         default="",
-        index=pac_constants.lookup_enum_name_calculatedIsDBColumnIndexed,
+        index=(
+            pac_constants.
+            lookup_enum_name_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     name = Column(
         'name',
@@ -75,7 +89,10 @@ class Pac(Base):
         String,
 
         default="",
-        index=pac_constants.name_calculatedIsDBColumnIndexed,
+        index=(
+            pac_constants.
+            name_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
 
     insert_utc_date_time = Column(
@@ -86,13 +103,15 @@ class Pac(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     #  = relationship('', back_populates=snake_case(''))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': last_change_code
     }
     def __init__(self, **kwargs):
+        print("Pac init")
         super().__init__(**kwargs)
         self.code = kwargs.get('code', uuid.uuid4())
         self.last_change_code = kwargs.get(
@@ -177,22 +196,25 @@ class Pac(Base):
             "is_active",
             "lookup_enum_name",
             "name",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-# Define the index separately from the column
-# Index('index_code', Pac.code)
 
 @event.listens_for(Pac, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(mapper, connection, target):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
+
 @event.listens_for(Pac, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """

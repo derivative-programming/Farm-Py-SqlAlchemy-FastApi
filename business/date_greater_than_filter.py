@@ -1,11 +1,13 @@
 # business/date_greater_than_filter.py
+# pylint: disable=unused-import
+
 """
     #TODO add comment
 """
 import random
 import uuid
 from typing import List
-from datetime import datetime, date
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import DateGreaterThanFilterManager
 from models import DateGreaterThanFilter
@@ -39,7 +41,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         :return: The date_greater_than_filter ID.
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.date_greater_than_filter_id
 
     @date_greater_than_filter_id.setter
@@ -58,7 +62,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.code
 
     @code.setter
@@ -67,7 +73,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.date_greater_than_filter.code = value
@@ -79,7 +87,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.last_change_code
 
     @last_change_code.setter
@@ -88,7 +98,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.date_greater_than_filter.last_change_code = value
@@ -100,7 +112,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.insert_user_id
 
     @insert_user_id.setter
@@ -109,7 +123,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.date_greater_than_filter.insert_user_id = value
@@ -119,7 +135,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     #     #TODO add comment
     #     """
     #     if not self.date_greater_than_filter:
-    #         raise AttributeError("DateGreaterThanFilter object is not initialized")
+    #         raise AttributeError(
+    #             "DateGreaterThanFilter object is not initialized"
+    #         )
     #     self.insert_user_id = value
     #     return self
 
@@ -130,7 +148,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.last_update_user_id
 
     @last_update_user_id.setter
@@ -139,7 +159,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.date_greater_than_filter.last_update_user_id = value
@@ -159,7 +181,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.day_count
 
     @day_count.setter
@@ -168,7 +192,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, int), (
             "day_count must be an integer")
         self.date_greater_than_filter.day_count = value
@@ -187,7 +213,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if self.date_greater_than_filter.description is None:
             return ""
         return self.date_greater_than_filter.description
@@ -198,7 +226,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, str), "description must be a string"
         self.date_greater_than_filter.description = value
 
@@ -216,7 +246,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.display_order
 
     @display_order.setter
@@ -225,7 +257,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.date_greater_than_filter.display_order = value
@@ -244,7 +278,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.is_active
 
     @is_active.setter
@@ -253,7 +289,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.date_greater_than_filter.is_active = value
@@ -272,7 +310,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if self.date_greater_than_filter.lookup_enum_name is None:
             return ""
         return self.date_greater_than_filter.lookup_enum_name
@@ -283,7 +323,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, str), "lookup_enum_name must be a string"
         self.date_greater_than_filter.lookup_enum_name = value
 
@@ -301,7 +343,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if self.date_greater_than_filter.name is None:
             return ""
         return self.date_greater_than_filter.name
@@ -312,7 +356,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, str), "name must be a string"
         self.date_greater_than_filter.name = value
 
@@ -339,7 +385,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.pac_id
 
     @pac_id.setter
@@ -348,7 +396,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "pac_id must be an integer or None")
         self.date_greater_than_filter.pac_id = value
@@ -366,7 +416,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.pac_code_peek
 
     # @pac_code_peek.setter
@@ -384,7 +436,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.insert_utc_date_time
 
     @insert_utc_date_time.setter
@@ -393,7 +447,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.date_greater_than_filter.insert_utc_date_time = value
@@ -405,7 +461,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter.last_update_utc_date_time
 
     @last_update_utc_date_time.setter
@@ -414,7 +472,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.date_greater_than_filter.last_update_utc_date_time = value
@@ -425,8 +485,10 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     ):
         """
         Load date_greater_than_filter data from JSON string.
-        :param json_data: JSON string containing date_greater_than_filter data.
-        :raises ValueError: If json_data is not a string or if no date_greater_than_filter data is found.
+        :param json_data: JSON string containing
+            date_greater_than_filter data.
+        :raises ValueError: If json_data is not a string
+            or if no date_greater_than_filter data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -440,8 +502,10 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     ):
         """
         Load date_greater_than_filter data from UUID code.
-        :param code: UUID code for loading a specific date_greater_than_filter.
-        :raises ValueError: If code is not a UUID or if no date_greater_than_filter data is found.
+        :param code: UUID code for loading a specific
+            date_greater_than_filter.
+        :raises ValueError: If code is not a UUID or
+            if no date_greater_than_filter data is found.
         """
         if not isinstance(code, uuid.UUID):
             raise ValueError("code must be a UUID")
@@ -456,8 +520,11 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     ):
         """
         Load date_greater_than_filter data from date_greater_than_filter ID.
-        :param date_greater_than_filter_id: Integer ID for loading a specific date_greater_than_filter.
-        :raises ValueError: If date_greater_than_filter_id is not an integer or if no date_greater_than_filter data is found.
+        :param date_greater_than_filter_id: Integer ID
+            for loading a specific date_greater_than_filter.
+        :raises ValueError: If date_greater_than_filter_id
+            is not an integer or if no date_greater_than_filter
+            data is found.
         """
         if not isinstance(date_greater_than_filter_id, int):
             raise ValueError("date_greater_than_filter_id must be an integer")
@@ -472,8 +539,10 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     ):
         """
         Use the provided DateGreaterThanFilter instance.
-        :param date_greater_than_filter_obj_instance: Instance of the DateGreaterThanFilter class.
-        :raises ValueError: If date_greater_than_filter_obj_instance is not an instance of DateGreaterThanFilter.
+        :param date_greater_than_filter_obj_instance:Instance
+            of the DateGreaterThanFilter class.
+        :raises ValueError: If date_greater_than_filter_obj_instance
+            is not an instance of DateGreaterThanFilter.
         """
         if not isinstance(date_greater_than_filter_obj_instance, DateGreaterThanFilter):
             raise ValueError("date_greater_than_filter_obj_instance must be an instance of DateGreaterThanFilter")
@@ -505,6 +574,10 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
 
     @property
     def lookup_enum(self) -> managers_and_enums.DateGreaterThanFilterEnum:
+        """
+        #TODO add comment
+        """
+
         return managers_and_enums.DateGreaterThanFilterEnum[self.date_greater_than_filter.lookup_enum_name]
 
     async def load_from_enum(
@@ -518,11 +591,19 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         :param plant_dict: Dictionary containing plant data.
         :raises ValueError: If plant_dict is not a dictionary or if no plant data is found.
         """
-        if not isinstance(date_greater_than_filter_enum, managers_and_enums.DateGreaterThanFilterEnum):
+        if not isinstance(
+            date_greater_than_filter_enum,
+            managers_and_enums.DateGreaterThanFilterEnum
+        ):
             raise ValueError("date_greater_than_filter_enum must be a enum")
 
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        self.date_greater_than_filter = await date_greater_than_filter_manager.from_enum(date_greater_than_filter_enum)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        self.date_greater_than_filter = await (
+            date_greater_than_filter_manager.
+            from_enum(date_greater_than_filter_enum)
+        )
 
 ##GENLearn[isLookup=true]End
 ##GENTrainingBlock[caseLookupEnums]End
@@ -531,8 +612,13 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        self.date_greater_than_filter = await date_greater_than_filter_manager.refresh(self.date_greater_than_filter)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        self.date_greater_than_filter = await (
+            date_greater_than_filter_manager.
+            refresh(self.date_greater_than_filter)
+        )
         return self
 
     def is_valid(self):
@@ -545,22 +631,32 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        return date_greater_than_filter_manager.to_dict(self.date_greater_than_filter)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        return date_greater_than_filter_manager.to_dict(
+            self.date_greater_than_filter
+        )
 
     def to_json(self):
         """
         #TODO add comment
         """
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-        return date_greater_than_filter_manager.to_json(self.date_greater_than_filter)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
+        return date_greater_than_filter_manager.to_json(
+            self.date_greater_than_filter
+        )
 
     async def save(self):
         """
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if self.date_greater_than_filter.date_greater_than_filter_id is not None and self.date_greater_than_filter.date_greater_than_filter_id > 0:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
             self.date_greater_than_filter = await date_greater_than_filter_manager.update(self.date_greater_than_filter)
@@ -574,10 +670,16 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         if self.date_greater_than_filter.date_greater_than_filter_id > 0:
-            date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
-            await date_greater_than_filter_manager.delete(self.date_greater_than_filter.date_greater_than_filter_id)
+            date_greater_than_filter_manager = DateGreaterThanFilterManager(
+                self._session_context
+            )
+            await date_greater_than_filter_manager.delete(
+                self.date_greater_than_filter.date_greater_than_filter_id
+            )
             self.date_greater_than_filter = None
 
     async def randomize_properties(self):
@@ -585,7 +687,9 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         self.date_greater_than_filter.day_count = random.randint(0, 100)
         self.date_greater_than_filter.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
@@ -604,16 +708,23 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.date_greater_than_filter:
-            raise AttributeError("DateGreaterThanFilter object is not initialized")
+            raise AttributeError(
+                "DateGreaterThanFilter object is not initialized"
+            )
         return self.date_greater_than_filter
 
     def is_equal(self, date_greater_than_filter: DateGreaterThanFilter) -> bool:
         """
         #TODO add comment
         """
-        date_greater_than_filter_manager = DateGreaterThanFilterManager(self._session_context)
+        date_greater_than_filter_manager = DateGreaterThanFilterManager(
+            self._session_context
+        )
         my_date_greater_than_filter = self.get_date_greater_than_filter_obj()
-        return date_greater_than_filter_manager.is_equal(date_greater_than_filter, my_date_greater_than_filter)
+        return date_greater_than_filter_manager.is_equal(
+            date_greater_than_filter,
+            my_date_greater_than_filter
+        )
 
 # endset
     # dayCount,

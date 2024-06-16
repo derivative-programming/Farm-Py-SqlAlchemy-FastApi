@@ -3,21 +3,26 @@
     #TODO add comment
 """
 import uuid
-from business.customer import CustomerBusObj
-from business.tac import TacBusObj
-from managers.org_customer import OrgCustomerManager
-from models import Tac
-from .base_flow import BaseFlow
-from flows.base import LogSeverity
-from helpers import SessionContext
-from decimal import Decimal
 from datetime import date, datetime
-from helpers import TypeConversion
+from decimal import Decimal
 import flows.constants.tac_farm_dashboard_init_report as FlowConstants
-import models as farm_models
+from business.customer import CustomerBusObj
+# import models as farm_models
 from business.factory import BusObjFactory
+from business.tac import TacBusObj
+from flows.base import LogSeverity
+from helpers import SessionContext, TypeConversion
+from managers.org_customer import OrgCustomerManager
+# from models import Tac
+from .base_flow import BaseFlow
 class BaseFlowTacFarmDashboardInitReport(BaseFlow):
+    """
+    #TODO add comment
+    """
     def __init__(self, session_context: SessionContext):
+        """
+        #TODO add comment
+        """
         super(BaseFlowTacFarmDashboardInitReport, self).__init__(
             "TacFarmDashboardInitReport",
             session_context,
@@ -27,6 +32,9 @@ class BaseFlowTacFarmDashboardInitReport(BaseFlow):
         tac_bus_obj: TacBusObj,
 
     ):
+        """
+        #TODO add comment
+        """
         super()._log_message_and_severity(LogSeverity.information_high_detail, "Validating...")
 
 # end set

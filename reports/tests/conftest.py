@@ -1,17 +1,20 @@
 # conftest.py
+# pylint: disable=unused-argument
 
 """
     #TODO add comment
 """
 
-import pytest
 import asyncio
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-from models import Base
-import pytest_asyncio
 from typing import AsyncGenerator
+
+import pytest
+import pytest_asyncio
 from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+
+from models import Base
 
 # Define your in-memory SQLite test database URL
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"

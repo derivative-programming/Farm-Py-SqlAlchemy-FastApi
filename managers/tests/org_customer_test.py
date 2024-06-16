@@ -403,11 +403,11 @@ class TestOrgCustomerManager:
         # Update org_customers
         updates = [
             {
-                "org_customer_id": 1,
+                "org_customer_id": org_customer1.org_customer_id,
                 "code": code_updated1
             },
             {
-                "org_customer_id": 2,
+                "org_customer_id": org_customer2.org_customer_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestOrgCustomerManager:
         # No org_customers to update since org_customer_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_org_customers = await org_customer_manager.update_bulk(updates)
+            await org_customer_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_org_customer_not_found(
@@ -474,7 +474,7 @@ class TestOrgCustomerManager:
         """
         updates = [{"org_customer_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_org_customers = await org_customer_manager.update_bulk(updates)
+            await org_customer_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestOrgCustomerManager:
         # Delete org_customers
         org_customer_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await org_customer_manager.delete_bulk(org_customer_ids)
+            await org_customer_manager.delete_bulk(org_customer_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestOrgCustomerManager:
         """
         org_customer_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await org_customer_manager.delete_bulk(org_customer_ids)
+            await org_customer_manager.delete_bulk(org_customer_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

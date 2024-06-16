@@ -2,23 +2,25 @@
 """
     #TODO add comment
 """
-from decimal import Decimal
 import uuid
-import pytest
+from datetime import date, datetime
 from decimal import Decimal
-from datetime import datetime, date
+import pytest
+import flows.constants.tac_register as FlowConstants
 from flows.base.tac_register import BaseFlowTacRegister
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.flavor import FlavorFactory
 from models.factory.tac import TacFactory
-import flows.constants.tac_register as FlowConstants
 class TestBaseFlowTacRegister():
     """
     #TODO add comment
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         flow = BaseFlowTacRegister(session_context)
         tac = await TacFactory.create_async(session)
@@ -54,6 +56,9 @@ class TestBaseFlowTacRegister():
             assert 'lastName' in flow.queued_validation_errors and flow.queued_validation_errors['lastName'] == 'Please enter a Last Name'
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
+        """
+        #TODO add comment
+        """
         session_context = SessionContext(dict(), session)
         tac = await TacFactory.create_async(session)
         flow = BaseFlowTacRegister(session_context)

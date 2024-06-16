@@ -40,7 +40,7 @@ class FlowTacRegisterResult():
             'utc_offset_in_minutes': self.utc_offset_in_minutes,
             'role_name_csv_list': self.role_name_csv_list,
             'api_key': self.api_key,
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -61,8 +61,8 @@ class FlowTacRegister(BaseFlowTacRegister):
         confirm_password: str = "",
         first_name: str = "",
         last_name: str = "",
-# endset
-        ) -> FlowTacRegisterResult:
+# endset  # noqa: E122
+    ) -> FlowTacRegisterResult:
         """
             #TODO add comment
         """
@@ -75,7 +75,7 @@ class FlowTacRegister(BaseFlowTacRegister):
             confirm_password,
             first_name,
             last_name,
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         customer_code_output: uuid.UUID = uuid.UUID(int=0)

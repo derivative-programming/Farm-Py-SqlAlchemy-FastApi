@@ -1,16 +1,18 @@
 # models/org_api_key.py
+# pylint: disable=unused-import
 """
     #TODO add comment
 """
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
-from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime, Float,
+from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
+                        Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
 import models.constants.org_api_key as org_api_key_constants
 from utils.common_functions import snake_case
-from .base import Base, EncryptedType
+from .base import Base, EncryptedType  # noqa: F401
 class OrgApiKey(Base):
     """
     #TODO add comment
@@ -47,7 +49,10 @@ class OrgApiKey(Base):
         String,
 
         default="",
-        index=org_api_key_constants.api_key_value_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            api_key_value_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     created_by = Column(
         'created_by',
@@ -55,31 +60,46 @@ class OrgApiKey(Base):
         String,
 
         default="",
-        index=org_api_key_constants.created_by_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            created_by_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     created_utc_date_time = Column(
         'created_utc_date_time',
         DateTime,
         default=datetime(1753, 1, 1),
-        index=org_api_key_constants.created_utc_date_time_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            created_utc_date_time_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     expiration_utc_date_time = Column(
         'expiration_utc_date_time',
         DateTime,
         default=datetime(1753, 1, 1),
-        index=org_api_key_constants.expiration_utc_date_time_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            expiration_utc_date_time_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_active = Column(
         'is_active',
         Boolean,
         default=False,
-        index=org_api_key_constants.is_active_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            is_active_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     is_temp_user_key = Column(
         'is_temp_user_key',
         Boolean,
         default=False,
-        index=org_api_key_constants.is_temp_user_key_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            is_temp_user_key_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     name = Column(
         'name',
@@ -87,18 +107,28 @@ class OrgApiKey(Base):
         String,
 
         default="",
-        index=org_api_key_constants.name_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            name_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
-    organization_id = Column('organization_id',
-                     Integer,
-                     ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
-                     index=org_api_key_constants.organization_id_calculatedIsDBColumnIndexed,
-                     nullable=True)
+    organization_id = Column(
+        'organization_id',
+        Integer,
+        ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
+        index=(
+            org_api_key_constants.
+            organization_id_calculatedIsDBColumnIndexed
+        ),
+        nullable=True)
     org_customer_id = Column(
         'org_customer_id',
         Integer,
         ForeignKey('farm_' + snake_case('OrgCustomer') + '.org_customer_id'),
-        index=org_api_key_constants.org_customer_id_calculatedIsDBColumnIndexed,
+        index=(
+            org_api_key_constants.
+            org_customer_id_calculatedIsDBColumnIndexed
+        ),
         nullable=True)
     organization_code_peek = uuid.UUID  # OrganizationID
     org_customer_code_peek = uuid.UUID  # OrgCustomerID
@@ -110,7 +140,8 @@ class OrgApiKey(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    #no relationsip properties. they are not updated immediately if the id prop is updated directly
+    # no relationsip properties.
+    # they are not updated immediately if the id prop is updated directly
     # organization = relationship('Organization', back_populates=snake_case('Organization'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
@@ -220,23 +251,27 @@ class OrgApiKey(Base):
             "name",
             "organization_id",
             "org_customer_id",
-# endset
+# endset  # noqa: E122
             "code"
-            ]
+        ]
         return result
-# Define the index separately from the column
-# Index('index_code', OrgApiKey.code)
-# Index('farm_org_api_key_index_organization_id', OrgApiKey.organization_id)  # OrganizationID
-# Index('farm_org_api_key_index_org_customer_id', OrgApiKey.org_customer_id)  # OrgCustomerID
 @event.listens_for(OrgApiKey, 'before_insert')
-def set_created_on(mapper, connection, target):
+def set_created_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
 @event.listens_for(OrgApiKey, 'before_update')
-def set_updated_on(mapper, connection, target):
+def set_updated_on(
+    mapper,
+    connection,
+    target
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """

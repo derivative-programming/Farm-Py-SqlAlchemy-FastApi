@@ -1,19 +1,23 @@
 """
     #TODO add comment
 """
-import logging
 from datetime import datetime
 import uuid
 import factory
-from factory import Faker, SubFactory
-import pytz
+from factory import Faker
 from models import OrgCustomer
 from services.logging_config import get_logger
 from .customer import CustomerFactory  # customer_id
 from .organization import OrganizationFactory  # organization_id
 logger = get_logger(__name__)
 class OrgCustomerFactory(factory.Factory):
+    """
+    #TODO add comment
+    """
     class Meta:
+        """
+        #TODO add comment
+        """
         model = OrgCustomer
     # org_customer_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
@@ -23,13 +27,19 @@ class OrgCustomerFactory(factory.Factory):
     # customer_id = 0 #factory.LazyAttribute(lambda obj: obj.customer.customer_id)
     email = Faker('email')
     # organization_id = 0 #factory.LazyAttribute(lambda obj: obj.organization.organization_id)
-    insert_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    last_update_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    # endset
-    customer_code_peek = factory.LazyFunction(uuid.uuid4)  # CustomerID
-    organization_code_peek = factory.LazyFunction(uuid.uuid4)  # OrganizationID
+# endset
+    customer_code_peek = factory.LazyFunction(  # CustomerID
+        uuid.uuid4
+    )
+    organization_code_peek = factory.LazyFunction(  # OrganizationID
+        uuid.uuid4
+    )
+# endset
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
+        """
+        #TODO add comment
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -49,11 +59,14 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
 # endset
-        # session.add(obj)
+        session.add(obj)
         # session.commit()
         return obj
     @classmethod
     def _create(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
+        """
+        #TODO add comment
+        """
         logger.info("factory create")
         customer_id_customer_instance = CustomerFactory.create(session=session)  # CustomerID
         organization_id_organization_instance = OrganizationFactory.create(session=session)  # OrganizationID
@@ -119,6 +132,6 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
 # endset
-        # session.add(obj)
+        session.add(obj)
         # await session.flush()
         return obj

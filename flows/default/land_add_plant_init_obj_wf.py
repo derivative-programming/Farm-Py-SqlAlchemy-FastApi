@@ -66,7 +66,7 @@ class FlowLandAddPlantInitObjWFResult():
             'request_some_email_address': self.request_some_email_address,
             'land_name': self.land_name,
             'tac_code': str(self.tac_code),
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -83,8 +83,8 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
         self,
         land_bus_obj: LandBusObj,
 
-# endset
-        ) -> FlowLandAddPlantInitObjWFResult:
+# endset  # noqa: E122
+    ) -> FlowLandAddPlantInitObjWFResult:
         """
             #TODO add comment
         """
@@ -93,7 +93,7 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
         await super()._process_validation_rules(
             land_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         request_flavor_code_output: uuid.UUID = uuid.UUID(int=0)

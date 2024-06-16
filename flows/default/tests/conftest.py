@@ -1,16 +1,19 @@
 # flows/default/tests/conftest.py
+# pylint: disable=unused-argument
 
 """
     #TODO add comment
 """
 
 import asyncio
+from typing import AsyncGenerator
+
 import pytest
 import pytest_asyncio
-from typing import AsyncGenerator
 from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+
 from models import Base
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"

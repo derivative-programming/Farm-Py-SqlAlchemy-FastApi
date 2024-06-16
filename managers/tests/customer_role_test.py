@@ -403,11 +403,11 @@ class TestCustomerRoleManager:
         # Update customer_roles
         updates = [
             {
-                "customer_role_id": 1,
+                "customer_role_id": customer_role1.customer_role_id,
                 "code": code_updated1
             },
             {
-                "customer_role_id": 2,
+                "customer_role_id": customer_role2.customer_role_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestCustomerRoleManager:
         # No customer_roles to update since customer_role_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_customer_roles = await customer_role_manager.update_bulk(updates)
+            await customer_role_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_customer_role_not_found(
@@ -474,7 +474,7 @@ class TestCustomerRoleManager:
         """
         updates = [{"customer_role_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_customer_roles = await customer_role_manager.update_bulk(updates)
+            await customer_role_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestCustomerRoleManager:
         # Delete customer_roles
         customer_role_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await customer_role_manager.delete_bulk(customer_role_ids)
+            await customer_role_manager.delete_bulk(customer_role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestCustomerRoleManager:
         """
         customer_role_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await customer_role_manager.delete_bulk(customer_role_ids)
+            await customer_role_manager.delete_bulk(customer_role_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

@@ -523,11 +523,11 @@ class TestPlantManager:
         # Update plants
         updates = [
             {
-                "plant_id": 1,
+                "plant_id": plant1.plant_id,
                 "code": code_updated1
             },
             {
-                "plant_id": 2,
+                "plant_id": plant2.plant_id,
                 "code": code_updated2
             }
         ]
@@ -580,7 +580,7 @@ class TestPlantManager:
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            updated_plants = await plant_manager.update_bulk(updates)
+            await plant_manager.update_bulk(updates)
 
         await session.rollback()
 
@@ -615,7 +615,7 @@ class TestPlantManager:
         updates = [{"plant_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            updated_plants = await plant_manager.update_bulk(updates)
+            await plant_manager.update_bulk(updates)
 
         await session.rollback()
 
@@ -662,7 +662,7 @@ class TestPlantManager:
         plant_ids = [1, 2]
 
         with pytest.raises(Exception):
-            result = await plant_manager.delete_bulk(plant_ids)
+            await plant_manager.delete_bulk(plant_ids)
 
         await session.rollback()
 
@@ -695,7 +695,7 @@ class TestPlantManager:
         plant_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            result = await plant_manager.delete_bulk(plant_ids)
+            await plant_manager.delete_bulk(plant_ids)
 
         await session.rollback()
 

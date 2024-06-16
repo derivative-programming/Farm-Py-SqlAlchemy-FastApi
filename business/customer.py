@@ -37,7 +37,9 @@ class CustomerBusObj(BaseBusObj):
         :return: The customer ID.
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.customer_id
     # @customer_id.setter
     # def customer_id(self, value: int):
@@ -54,7 +56,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.code
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
@@ -62,7 +66,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("code must be a UUID.")
         self.customer.code = value
@@ -73,7 +79,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.last_change_code
     @last_change_code.setter
     def last_change_code(self, value: int):
@@ -81,7 +89,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, int):
             raise ValueError("last_change_code must be an integer.")
         self.customer.last_change_code = value
@@ -92,7 +102,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.insert_user_id
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
@@ -100,7 +112,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.customer.insert_user_id = value
@@ -119,7 +133,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.last_update_user_id
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
@@ -127,7 +143,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.customer.last_update_user_id = value
@@ -145,7 +163,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.active_organization_id
     @active_organization_id.setter
     def active_organization_id(self, value):
@@ -153,7 +173,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, int), (
             "active_organization_id must be an integer")
         self.customer.active_organization_id = value
@@ -170,7 +192,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.email is None:
             return ""
         return self.customer.email
@@ -180,7 +204,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), (
             "email must be a string")
         self.customer.email = value
@@ -197,7 +223,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.email_confirmed_utc_date_time
     @email_confirmed_utc_date_time.setter
     def email_confirmed_utc_date_time(self, value):
@@ -205,7 +233,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, datetime), (
             "email_confirmed_utc_date_time must be a datetime object")
         self.customer.email_confirmed_utc_date_time = value
@@ -222,7 +252,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.first_name is None:
             return ""
         return self.customer.first_name
@@ -232,7 +264,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), "first_name must be a string"
         self.customer.first_name = value
     # def set_prop_first_name(self, value):
@@ -248,7 +282,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.forgot_password_key_expiration_utc_date_time
     @forgot_password_key_expiration_utc_date_time.setter
     def forgot_password_key_expiration_utc_date_time(self, value):
@@ -256,7 +292,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, datetime), (
             "forgot_password_key_expiration_utc_date_time must be a datetime object")
         self.customer.forgot_password_key_expiration_utc_date_time = value
@@ -273,7 +311,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.forgot_password_key_value is None:
             return ""
         return self.customer.forgot_password_key_value
@@ -283,7 +323,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), "forgot_password_key_value must be a string"
         self.customer.forgot_password_key_value = value
     # def set_prop_forgot_password_key_value(self, value):
@@ -299,7 +341,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.fs_user_code_value
     @fs_user_code_value.setter
     def fs_user_code_value(self, value):
@@ -307,7 +351,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, uuid.UUID), (
             "fs_user_code_value must be a UUID")
         self.customer.fs_user_code_value = value
@@ -324,7 +370,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.is_active
     @is_active.setter
     def is_active(self, value: bool):
@@ -332,7 +380,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.customer.is_active = value
@@ -349,7 +399,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.is_email_allowed
     @is_email_allowed.setter
     def is_email_allowed(self, value: bool):
@@ -357,7 +409,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_email_allowed must be a boolean.")
         self.customer.is_email_allowed = value
@@ -374,7 +428,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.is_email_confirmed
     @is_email_confirmed.setter
     def is_email_confirmed(self, value: bool):
@@ -382,7 +438,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_email_confirmed must be a boolean.")
         self.customer.is_email_confirmed = value
@@ -399,7 +457,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.is_email_marketing_allowed
     @is_email_marketing_allowed.setter
     def is_email_marketing_allowed(self, value: bool):
@@ -407,7 +467,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_email_marketing_allowed must be a boolean.")
         self.customer.is_email_marketing_allowed = value
@@ -424,7 +486,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.is_locked
     @is_locked.setter
     def is_locked(self, value: bool):
@@ -432,7 +496,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_locked must be a boolean.")
         self.customer.is_locked = value
@@ -449,7 +515,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.is_multiple_organizations_allowed
     @is_multiple_organizations_allowed.setter
     def is_multiple_organizations_allowed(self, value: bool):
@@ -457,7 +525,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_multiple_organizations_allowed must be a boolean.")
         self.customer.is_multiple_organizations_allowed = value
@@ -474,7 +544,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.is_verbose_logging_forced
     @is_verbose_logging_forced.setter
     def is_verbose_logging_forced(self, value: bool):
@@ -482,7 +554,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if not isinstance(value, bool):
             raise ValueError("is_verbose_logging_forced must be a boolean.")
         self.customer.is_verbose_logging_forced = value
@@ -499,7 +573,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.last_login_utc_date_time
     @last_login_utc_date_time.setter
     def last_login_utc_date_time(self, value):
@@ -507,7 +583,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, datetime), (
             "last_login_utc_date_time must be a datetime object")
         self.customer.last_login_utc_date_time = value
@@ -524,7 +602,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.last_name is None:
             return ""
         return self.customer.last_name
@@ -534,7 +614,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), "last_name must be a string"
         self.customer.last_name = value
     # def set_prop_last_name(self, value):
@@ -550,7 +632,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.password is None:
             return ""
         return self.customer.password
@@ -560,7 +644,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), "password must be a string"
         self.customer.password = value
     # def set_prop_password(self, value):
@@ -576,7 +662,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.phone is None:
             return ""
         return self.customer.phone
@@ -586,7 +674,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), (
             "phone must be a string")
         self.customer.phone = value
@@ -603,7 +693,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.province is None:
             return ""
         return self.customer.province
@@ -613,7 +705,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), "province must be a string"
         self.customer.province = value
     # def set_prop_province(self, value):
@@ -629,7 +723,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.registration_utc_date_time
     @registration_utc_date_time.setter
     def registration_utc_date_time(self, value):
@@ -637,7 +733,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, datetime), (
             "registration_utc_date_time must be a datetime object")
         self.customer.registration_utc_date_time = value
@@ -655,7 +753,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.utc_offset_in_minutes
     @utc_offset_in_minutes.setter
     def utc_offset_in_minutes(self, value):
@@ -663,7 +763,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, int), (
             "utc_offset_in_minutes must be an integer")
         self.customer.utc_offset_in_minutes = value
@@ -680,7 +782,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.zip is None:
             return ""
         return self.customer.zip
@@ -690,7 +794,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, str), "zip must be a string"
         self.customer.zip = value
     # def set_prop_zip(self, value):
@@ -727,7 +833,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.tac_id
     @tac_id.setter
     def tac_id(self, value):
@@ -735,7 +843,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, int) or value is None, (
             "tac_id must be an integer or None")
         self.customer.tac_id = value
@@ -751,7 +861,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.tac_code_peek
     # @tac_code_peek.setter
     # def tac_code_peek(self, value):
@@ -768,7 +880,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.insert_utc_date_time
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
@@ -776,7 +890,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "insert_utc_date_time must be a datetime object or None")
         self.customer.insert_utc_date_time = value
@@ -787,7 +903,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer.last_update_utc_date_time
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
@@ -795,7 +913,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         assert isinstance(value, datetime) or value is None, (
             "last_update_utc_date_time must be a datetime object or None")
         self.customer.last_update_utc_date_time = value
@@ -806,7 +926,8 @@ class CustomerBusObj(BaseBusObj):
         """
         Load customer data from JSON string.
         :param json_data: JSON string containing customer data.
-        :raises ValueError: If json_data is not a string or if no customer data is found.
+        :raises ValueError: If json_data is not a string
+            or if no customer data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
@@ -835,7 +956,8 @@ class CustomerBusObj(BaseBusObj):
         """
         Load customer data from customer ID.
         :param customer_id: Integer ID for loading a specific customer.
-        :raises ValueError: If customer_id is not an integer or if no customer data is found.
+        :raises ValueError: If customer_id is not an integer or
+            if no customer data is found.
         """
         if not isinstance(customer_id, int):
             raise ValueError("customer_id must be an integer")
@@ -868,7 +990,8 @@ class CustomerBusObj(BaseBusObj):
         """
         Load customer data from dictionary.
         :param customer_dict: Dictionary containing customer data.
-        :raises ValueError: If customer_dict is not a dictionary or if no customer data is found.
+        :raises ValueError: If customer_dict is not a
+            dictionary or if no customer data is found.
         """
         if not isinstance(customer_dict, dict):
             raise ValueError("customer_dict must be a dictionary")
@@ -923,7 +1046,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         if self.customer.customer_id > 0:
             customer_manager = CustomerManager(self._session_context)
             await customer_manager.delete(self.customer.customer_id)
@@ -933,7 +1058,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         self.customer.active_organization_id = random.randint(0, 100)
         self.customer.email = f"user{random.randint(1, 100)}@abc.com"
         self.customer.email_confirmed_utc_date_time = datetime(
@@ -983,7 +1110,9 @@ class CustomerBusObj(BaseBusObj):
         #TODO add comment
         """
         if not self.customer:
-            raise AttributeError("Customer object is not initialized")
+            raise AttributeError(
+                "Customer object is not initialized"
+            )
         return self.customer
     def is_equal(self, customer: Customer) -> bool:
         """

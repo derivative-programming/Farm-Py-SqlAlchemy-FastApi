@@ -30,7 +30,7 @@ class FlowTacFarmDashboardInitReportResult():
         data = {
             'context_object_code': str(self.context_object_code),
             'customer_code': str(self.customer_code),
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
         self,
         tac_bus_obj: TacBusObj,
 
-# endset
-        ) -> FlowTacFarmDashboardInitReportResult:
+# endset  # noqa: E122
+    ) -> FlowTacFarmDashboardInitReportResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
         await super()._process_validation_rules(
             tac_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         customer_code_output: uuid.UUID = uuid.UUID(int=0)

@@ -233,7 +233,7 @@ class TestLandFactoryAsync:
             await session.commit()
         await session.rollback()
     @pytest.mark.asyncio
-    async def test_fields_default(self, session):
+    async def test_fields_default(self):
         """
         #TODO add comment
         """

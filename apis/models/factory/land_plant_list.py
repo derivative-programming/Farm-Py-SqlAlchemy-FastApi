@@ -36,18 +36,21 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
     is_edit_allowed: bool = Faker('boolean')
     is_delete_allowed: bool = Faker('boolean')
     some_decimal_val: Decimal = Faker(
-         'pydecimal',
-         left_digits=5,
-         right_digits=2,
-         positive=True)
+        'pydecimal',
+        left_digits=5,
+        right_digits=2,
+        positive=True
+    )
     some_min_utc_date_time_val: datetime = factory.LazyFunction(
-         datetime.utcnow)
+        datetime.utcnow
+    )
     some_min_date_val: date = Faker('date_object')
     some_money_val: Decimal = Faker(
-         'pydecimal',
-         left_digits=5,
-         right_digits=2,
-         positive=True)
+        'pydecimal',
+        left_digits=5,
+        right_digits=2,
+        positive=True
+    )
     some_n_var_char_val: str = Faker('sentence', nb_words=4)
     some_var_char_val: str = Faker('sentence', nb_words=4)
     some_text_val: str = Faker('text')
@@ -61,11 +64,16 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
 # endset
 
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> LandPlantListGetModelRequest:
+    def _build(
+        cls,
+        model_class,
+        session=None,
+        *args, **kwargs
+    ) -> LandPlantListGetModelRequest:
 
         if session is None:
-                obj2 = model_class(*args, **kwargs)
-                return obj2
+            obj2 = model_class(*args, **kwargs)
+            return obj2
 
         flavor_code_instance = FlavorFactory.create(session=session)  # FlavorCode
 # endset
@@ -81,9 +89,15 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, session=None, *args, **kwargs) -> LandPlantListGetModelRequest:
+    def _create(
+        cls,
+        model_class,
+        session=None,
+        *args, **kwargs
+    ) -> LandPlantListGetModelRequest:
 
         flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
+        
 # endset
 
         kwargs["flavor_code"] = flavor_code_instance.code  # requestFlavorCode
@@ -97,18 +111,25 @@ class LandPlantListGetModelRequestFactory(factory.base.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session: AsyncSession, *args, **kwargs) -> LandPlantListGetModelRequest:
+    async def create_async(
+        cls,
+        session: AsyncSession,
+        *args, **kwargs
+    ) -> LandPlantListGetModelRequest:
         """
             #TODO add comment
         """
 
-        flavor_code_instance = await FlavorFactory.create_async(session=session)  # requestFlavorCode
+        flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
 # endset
 
         kwargs["flavor_code"] = flavor_code_instance.code  # requestFlavorCode
 # endset
 
-        obj = LandPlantListGetModelRequestFactory.build(session = None, *args, **kwargs)
+        obj = LandPlantListGetModelRequestFactory.build(
+            session=None,
+            *args, **kwargs
+        )
 
         obj.flavor_code = flavor_code_instance.code  # requestFlavorCode
 # endset

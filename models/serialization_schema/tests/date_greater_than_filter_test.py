@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import DateGreaterThanFilter
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import DateGreaterThanFilterSchema
+import pytest
+import pytz
+from models import DateGreaterThanFilter
 from models.factory import DateGreaterThanFilterFactory
+from models.serialization_schema import DateGreaterThanFilterSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -49,7 +49,7 @@ class TestDateGreaterThanFilterSchema:
         "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
 # endset  # noqa: E122
     }
-    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
+    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter):
         """
             #TODO add comment
         """
@@ -86,7 +86,7 @@ class TestDateGreaterThanFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(date_greater_than_filter.pac_code_peek))
 # endset
-    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter: DateGreaterThanFilter, session):
+    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter: DateGreaterThanFilter):
         """
             #TODO add comment
         """
@@ -155,7 +155,7 @@ class TestDateGreaterThanFilterSchema:
         assert new_date_greater_than_filter.pac_code_peek == (  # PacID
             date_greater_than_filter.pac_code_peek)
 # endset
-    def test_from_json(self, date_greater_than_filter: DateGreaterThanFilter, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -201,7 +201,7 @@ class TestDateGreaterThanFilterSchema:
             self.sample_data['last_update_utc_date_time'])
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
-    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter, session):
+    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter):
         """
             #TODO add comment
         """

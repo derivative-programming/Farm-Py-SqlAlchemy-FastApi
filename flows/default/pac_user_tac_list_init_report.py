@@ -30,7 +30,7 @@ class FlowPacUserTacListInitReportResult():
         data = {
             'context_object_code': str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
@@ -47,8 +47,8 @@ class FlowPacUserTacListInitReport(BaseFlowPacUserTacListInitReport):
         self,
         pac_bus_obj: PacBusObj,
 
-# endset
-        ) -> FlowPacUserTacListInitReportResult:
+# endset  # noqa: E122
+    ) -> FlowPacUserTacListInitReportResult:
         """
             #TODO add comment
         """
@@ -57,7 +57,7 @@ class FlowPacUserTacListInitReport(BaseFlowPacUserTacListInitReport):
         await super()._process_validation_rules(
             pac_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 

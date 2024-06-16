@@ -3,14 +3,14 @@
     #TODO add comment
 """
 import json
-import pytest
-import pytz
 import logging
-from models import Organization
 from datetime import datetime
 from decimal import Decimal
-from models.serialization_schema import OrganizationSchema
+import pytest
+import pytz
+from models import Organization
 from models.factory import OrganizationFactory
+from models.serialization_schema import OrganizationSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
@@ -44,7 +44,7 @@ class TestOrganizationSchema:
         "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
 # endset  # noqa: E122
     }
-    def test_organization_serialization(self, organization: Organization, session):
+    def test_organization_serialization(self, organization: Organization):
         """
             #TODO add comment
         """
@@ -71,7 +71,7 @@ class TestOrganizationSchema:
         assert result['tac_code_peek'] == (  # TacID
             str(organization.tac_code_peek))
 # endset
-    def test_organization_deserialization(self, organization: Organization, session):
+    def test_organization_deserialization(self, organization: Organization):
         """
             #TODO add comment
         """
@@ -120,7 +120,7 @@ class TestOrganizationSchema:
         assert new_organization.tac_code_peek == (  # TacID
             organization.tac_code_peek)
 # endset
-    def test_from_json(self, organization: Organization, session):
+    def test_from_json(self):
         """
             #TODO add comment
         """
@@ -156,7 +156,7 @@ class TestOrganizationSchema:
             self.sample_data['last_update_utc_date_time'])
         new_organization = Organization(**deserialized_data)
         assert isinstance(new_organization, Organization)
-    def test_to_json(self, organization: Organization, session):
+    def test_to_json(self, organization: Organization):
         """
             #TODO add comment
         """

@@ -403,11 +403,11 @@ class TestCustomerManager:
         # Update customers
         updates = [
             {
-                "customer_id": 1,
+                "customer_id": customer1.customer_id,
                 "code": code_updated1
             },
             {
-                "customer_id": 2,
+                "customer_id": customer2.customer_id,
                 "code": code_updated2
             }
         ]
@@ -447,7 +447,7 @@ class TestCustomerManager:
         # No customers to update since customer_id is missing
         updates = [{"name": "Red Rose"}]
         with pytest.raises(Exception):
-            updated_customers = await customer_manager.update_bulk(updates)
+            await customer_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_customer_not_found(
@@ -474,7 +474,7 @@ class TestCustomerManager:
         """
         updates = [{"customer_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_customers = await customer_manager.update_bulk(updates)
+            await customer_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
@@ -509,7 +509,7 @@ class TestCustomerManager:
         # Delete customers
         customer_ids = [1, 2]
         with pytest.raises(Exception):
-            result = await customer_manager.delete_bulk(customer_ids)
+            await customer_manager.delete_bulk(customer_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -535,7 +535,7 @@ class TestCustomerManager:
         """
         customer_ids = ["1", 2]
         with pytest.raises(Exception):
-            result = await customer_manager.delete_bulk(customer_ids)
+            await customer_manager.delete_bulk(customer_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(

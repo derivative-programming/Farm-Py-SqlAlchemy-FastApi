@@ -167,8 +167,9 @@ class DateGreaterThanFilterManager:
         logging.info("DateGreaterThanFilterManager.add")
         date_greater_than_filter.insert_user_id = (
             self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+                self._session_context.customer_code
             )
+        )
         date_greater_than_filter.last_update_user_id = (
             self.convert_uuid_to_model_uuid(
                 self._session_context.customer_code)
