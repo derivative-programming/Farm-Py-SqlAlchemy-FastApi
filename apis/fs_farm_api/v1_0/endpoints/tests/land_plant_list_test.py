@@ -21,7 +21,8 @@ from apis import models as apis_models
 from database import get_db
 from main import app
 
-from .....models import factory as request_factory
+from .....models import (  # pylint: disable=reimported
+    factory as request_factory)
 from ..land_plant_list import LandPlantListRouterConfig
 
 ##GENTrainingBlock[caseisGetInitAvailable]Start

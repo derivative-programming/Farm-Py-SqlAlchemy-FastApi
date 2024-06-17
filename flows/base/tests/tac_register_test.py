@@ -47,31 +47,31 @@ class TestBaseFlowTacRegister():
         # - calculatedIsRowLevelCustomerSecurityUsed
         # - calculatedIsRowLevelOrgCustomerSecurityUsed
         # - calculatedIsRowLevelOrganizationSecurityUsed
-        if FlowConstants.param_email_isRequired \
+        if FlowConstants.PARAM_EMAIL_IS_REQUIRED \
                 is True:
             assert 'email' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'email'] == (
                 'Please enter a Email')
-        if FlowConstants.param_password_isRequired \
+        if FlowConstants.PARAM_PASSWORD_IS_REQUIRED \
                 is True:
             assert 'password' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'password'] == (
                 'Please enter a Password')
-        if FlowConstants.param_confirm_password_isRequired \
+        if FlowConstants.PARAM_CONFIRM_PASSWORD_IS_REQUIRED \
                 is True:
             assert 'confirmPassword' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'confirmPassword'] == (
                 'Please enter a ')
-        if FlowConstants.param_first_name_isRequired \
+        if FlowConstants.PARAM_FIRST_NAME_IS_REQUIRED \
                 is True:
             assert 'firstName' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'firstName'] == (
                 'Please enter a First Name')
-        if FlowConstants.param_last_name_isRequired \
+        if FlowConstants.PARAM_LAST_NAME_IS_REQUIRED \
                 is True:
             assert 'lastName' in flow.queued_validation_errors
             assert flow.queued_validation_errors[

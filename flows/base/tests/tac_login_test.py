@@ -41,13 +41,13 @@ class TestBaseFlowTacLogin():
         # - calculatedIsRowLevelCustomerSecurityUsed
         # - calculatedIsRowLevelOrgCustomerSecurityUsed
         # - calculatedIsRowLevelOrganizationSecurityUsed
-        if FlowConstants.param_email_isRequired \
+        if FlowConstants.PARAM_EMAIL_IS_REQUIRED \
                 is True:
             assert 'email' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'email'] == (
                 'Please enter a Email')
-        if FlowConstants.param_password_isRequired \
+        if FlowConstants.PARAM_PASSWORD_IS_REQUIRED \
                 is True:
             assert 'password' in flow.queued_validation_errors
             assert flow.queued_validation_errors[

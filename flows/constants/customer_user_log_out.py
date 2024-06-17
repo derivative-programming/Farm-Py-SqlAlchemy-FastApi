@@ -3,6 +3,6 @@
     configuration constants
 """
 
-calculatedIsRowLevelCustomerSecurityUsed = True
-calculatedIsRowLevelOrgCustomerSecurityUsed = False
-calculatedIsRowLevelOrganizationSecurityUsed = False
+CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = True
+CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED = False
+CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED = False

@@ -56,11 +56,14 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
                 self._add_validation_error(
                     "Unautorized access. " + role_required + " role not found."
                 )
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
         if len(self.queued_validation_errors) > 0:
             return
@@ -72,7 +75,7 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
             if item.get_object_name() == "pac":  # type: ignore
                 val = False
 
-            if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed \
+            if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "customer":  # type: ignore
                     if item.code != self._session_context.customer_code:  # type: ignore

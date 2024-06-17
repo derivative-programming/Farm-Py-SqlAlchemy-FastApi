@@ -39,7 +39,7 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
         # - calculatedIsRowLevelCustomerSecurityUsed
         # - calculatedIsRowLevelOrgCustomerSecurityUsed
         # - calculatedIsRowLevelOrganizationSecurityUsed
-        if FlowConstants.param_plant_code_list_csv_isRequired \
+        if FlowConstants.PARAM_PLANT_CODE_LIST_CSV_IS_REQUIRED \
                 is True:
             assert 'plantCodeListCsv' in flow.queued_validation_errors
             assert flow.queued_validation_errors[

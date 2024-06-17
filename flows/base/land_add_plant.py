@@ -69,7 +69,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             "Validating...")
 
         if request_flavor_code == uuid.UUID(int=0) and \
-                FlowConstants.param_request_flavor_code_isRequired \
+                FlowConstants.PARAM_REQUEST_FLAVOR_CODE_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestFlavorCode",
@@ -77,7 +77,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_other_flavor == "" and \
-                FlowConstants.param_request_other_flavor_isRequired \
+                FlowConstants.PARAM_REQUEST_OTHER_FLAVOR_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestOtherFlavor",
@@ -85,7 +85,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_int_val == 0 and \
-                FlowConstants.param_request_some_int_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_INT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeIntVal",
@@ -93,7 +93,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_big_int_val == 0 and \
-                FlowConstants.param_request_some_big_int_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_BIG_INT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeBigIntVal",
@@ -101,7 +101,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_bit_val is None and \
-                FlowConstants.param_request_some_bit_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeBitVal",
@@ -109,7 +109,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_is_edit_allowed is None and \
-                FlowConstants.param_request_is_edit_allowed_isRequired \
+                FlowConstants.PARAM_REQUEST_IS_EDIT_ALLOWED_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestIsEditAllowed",
@@ -117,7 +117,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_is_delete_allowed is None and \
-                FlowConstants.param_request_is_delete_allowed_isRequired \
+                FlowConstants.PARAM_REQUEST_IS_DELETE_ALLOWED_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestIsDeleteAllowed",
@@ -125,7 +125,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_float_val == 0 and \
-                FlowConstants.param_request_some_float_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_FLOAT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeFloatVal",
@@ -133,7 +133,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_decimal_val == 0 and \
-                FlowConstants.param_request_some_decimal_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_DECIMAL_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeDecimalVal",
@@ -142,7 +142,7 @@ class BaseFlowLandAddPlant(BaseFlow):
 
         if request_some_utc_date_time_val == \
                 TypeConversion.get_default_date_time() and \
-                FlowConstants.param_request_some_utc_date_time_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_UTC_DATE_TIME_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeUTCDateTimeVal",
@@ -150,7 +150,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_date_val == TypeConversion.get_default_date() and \
-                FlowConstants.param_request_some_date_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_DATE_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeDateVal",
@@ -158,7 +158,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_money_val == 0 and \
-                FlowConstants.param_request_some_money_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_MONEY_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeMoneyVal",
@@ -166,7 +166,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_n_var_char_val == "" and \
-                FlowConstants.param_request_some_n_var_char_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_N_VAR_CHAR_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeNVarCharVal",
@@ -174,7 +174,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_var_char_val == "" and \
-                FlowConstants.param_request_some_var_char_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_VAR_CHAR_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeVarCharVal",
@@ -182,7 +182,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_text_val == "" and \
-                FlowConstants.param_request_some_text_val_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_TEXT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeTextVal",
@@ -190,7 +190,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_phone_number == "" and \
-                FlowConstants.param_request_some_phone_number_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_PHONE_NUMBER_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomePhoneNumber",
@@ -198,7 +198,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_email_address == "" and \
-                FlowConstants.param_request_some_email_address_isRequired \
+                FlowConstants.PARAM_REQUEST_SOME_EMAIL_ADDRESS_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeEmailAddress",
@@ -206,7 +206,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_sample_image_upload_file == "" and \
-                FlowConstants.param_request_sample_image_upload_file_isRequired \
+                FlowConstants.PARAM_REQUEST_SAMPLE_IMAGE_UPLOAD_FILE_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSampleImageUploadFile",
@@ -236,11 +236,14 @@ class BaseFlowLandAddPlant(BaseFlow):
                     "Unautorized access. " + role_required + " role not found."
                 )
 
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
 
         if len(self.queued_validation_errors) > 0:
@@ -259,7 +262,7 @@ class BaseFlowLandAddPlant(BaseFlow):
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrgCustomerSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start
-            if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed \
+            if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "org_customer":  # type: ignore
                     item = item.get_customer_id_rel_obj()  # type: ignore
@@ -268,7 +271,7 @@ class BaseFlowLandAddPlant(BaseFlow):
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelCustomerSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]Start
-            if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed \
+            if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "customer":  # type: ignore
                     if item.code != self._session_context.customer_code:  # type: ignore
@@ -279,7 +282,7 @@ class BaseFlowLandAddPlant(BaseFlow):
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
-            if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed \
+            if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "organization":  # type: ignore
                     organization_id = item.get_id()  # type: ignore

@@ -116,7 +116,6 @@ class BusObjFactory:
         else:
             raise ValueError(f"Unknown object type: {name}")
 
-
     @staticmethod
     async def create_from_id(
         session_context: SessionContext,

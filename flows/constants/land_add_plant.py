@@ -4,25 +4,24 @@
     configuration constants
 """
 
-
-param_request_flavor_code_isRequired = True
-param_request_other_flavor_isRequired = False
-param_request_some_int_val_isRequired = True
-param_request_some_big_int_val_isRequired = True
-param_request_some_bit_val_isRequired = True
-param_request_is_edit_allowed_isRequired = False
-param_request_is_delete_allowed_isRequired = False
-param_request_some_float_val_isRequired = True
-param_request_some_decimal_val_isRequired = True
-param_request_some_utc_date_time_val_isRequired = True
-param_request_some_date_val_isRequired = True
-param_request_some_money_val_isRequired = True
-param_request_some_n_var_char_val_isRequired = True
-param_request_some_var_char_val_isRequired = True
-param_request_some_text_val_isRequired = True
-param_request_some_phone_number_isRequired = True
-param_request_some_email_address_isRequired = True
-param_request_sample_image_upload_file_isRequired = False
-calculatedIsRowLevelCustomerSecurityUsed = False
-calculatedIsRowLevelOrgCustomerSecurityUsed = False
-calculatedIsRowLevelOrganizationSecurityUsed = False
+PARAM_REQUEST_FLAVOR_CODE_IS_REQUIRED = True
+PARAM_REQUEST_OTHER_FLAVOR_IS_REQUIRED = False
+PARAM_REQUEST_SOME_INT_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_BIG_INT_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED = True
+PARAM_REQUEST_IS_EDIT_ALLOWED_IS_REQUIRED = False
+PARAM_REQUEST_IS_DELETE_ALLOWED_IS_REQUIRED = False
+PARAM_REQUEST_SOME_FLOAT_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_DECIMAL_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_UTC_DATE_TIME_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_DATE_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_MONEY_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_N_VAR_CHAR_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_VAR_CHAR_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_TEXT_VAL_IS_REQUIRED = True
+PARAM_REQUEST_SOME_PHONE_NUMBER_IS_REQUIRED = True
+PARAM_REQUEST_SOME_EMAIL_ADDRESS_IS_REQUIRED = True
+PARAM_REQUEST_SAMPLE_IMAGE_UPLOAD_FILE_IS_REQUIRED = False
+CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False
+CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED = False
+CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED = False

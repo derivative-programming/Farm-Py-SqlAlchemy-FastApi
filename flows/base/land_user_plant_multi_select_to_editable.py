@@ -39,7 +39,7 @@ class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
         if plant_code_list_csv == "" and \
-                FlowConstants.param_plant_code_list_csv_isRequired \
+                FlowConstants.PARAM_PLANT_CODE_LIST_CSV_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "plantCodeListCsv",
@@ -62,11 +62,14 @@ class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
                 self._add_validation_error(
                     "Unautorized access. " + role_required + " role not found."
                 )
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
         if len(self.queued_validation_errors) > 0:
             return

@@ -43,35 +43,35 @@ class BaseFlowTacRegister(BaseFlow):
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
         if email == "" and \
-                FlowConstants.param_email_isRequired \
+                FlowConstants.PARAM_EMAIL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "email",
                 "Please enter a Email"
             )
         if password == "" and \
-                FlowConstants.param_password_isRequired \
+                FlowConstants.PARAM_PASSWORD_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "password",
                 "Please enter a Password"
             )
         if confirm_password == "" and \
-                FlowConstants.param_confirm_password_isRequired \
+                FlowConstants.PARAM_CONFIRM_PASSWORD_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "confirmPassword",
                 "Please enter a "
             )
         if first_name == "" and \
-                FlowConstants.param_first_name_isRequired \
+                FlowConstants.PARAM_FIRST_NAME_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "firstName",
                 "Please enter a First Name"
             )
         if last_name == "" and \
-                FlowConstants.param_last_name_isRequired \
+                FlowConstants.PARAM_LAST_NAME_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "lastName",
@@ -94,11 +94,14 @@ class BaseFlowTacRegister(BaseFlow):
                 self._add_validation_error(
                     "Unautorized access. " + role_required + " role not found."
                 )
-        if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
         if len(self.queued_validation_errors) > 0:
             return
