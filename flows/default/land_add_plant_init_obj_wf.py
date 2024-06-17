@@ -94,13 +94,19 @@ class FlowLandAddPlantInitObjWFResult():
         return json.dumps(data)
 class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
     """
-    #TODO add comment
+    FlowLandAddPlantInitObjWF handles the addition of a plant to
+    a specific land in the flow process.
+    This class extends the BaseFlowLandAddPlantInitObjWF class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowLandAddPlantInitObjWF with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowLandAddPlantInitObjWF, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         land_bus_obj: LandBusObj,

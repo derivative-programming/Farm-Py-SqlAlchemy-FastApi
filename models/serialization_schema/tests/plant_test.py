@@ -22,10 +22,10 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def plant(session):
+def plant(session) -> Plant:
     """
     Fixture to create and return a Plant instance using the PlantFactory.
-    
+
     Args:
         session: The database session.
 
@@ -44,12 +44,12 @@ class TestPlantSchema:
     # Sample data for a Plant instance
     sample_data = {
         "plant_id": 1,
-        "code": 
+        "code":
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": 
+        "insert_user_id":
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": 
+        "last_update_user_id":
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "flvr_foreign_key_id": 1,
@@ -68,7 +68,7 @@ class TestPlantSchema:
         "some_n_var_char_val": "Hello",
         "some_phone_number": "123-456-7890",
         "some_text_val": "Lorem ipsum",
-        "some_uniqueidentifier_val": 
+        "some_uniqueidentifier_val":
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "some_utc_date_time_val": datetime(
             2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
@@ -88,10 +88,10 @@ class TestPlantSchema:
 # endset  # noqa: E122
     }
 
-    def test_plant_serialization(self, plant: Plant):
+    def test_plant_serialization(self, plant: Plant):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a Plant instance using PlantSchema.
-        
+
         Args:
             plant (Plant): A Plant instance to serialize.
         """
@@ -158,7 +158,7 @@ class TestPlantSchema:
             str(plant.land_code_peek))
 # endset
 
-    def test_plant_deserialization(self, plant: Plant):
+    def test_plant_deserialization(self, plant):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -369,7 +369,7 @@ class TestPlantSchema:
 
         assert isinstance(new_plant, Plant)
 
-    def test_to_json(self, plant: Plant):
+    def test_to_json(self, plant: Plant):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

@@ -15,7 +15,7 @@ from models.serialization_schema import OrganizationSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def organization(session):
+def organization(session) -> Organization:
     """
     Fixture to create and return a Organization instance using the OrganizationFactory.
     Args:
@@ -52,7 +52,7 @@ class TestOrganizationSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_organization_serialization(self, organization: Organization):
+    def test_organization_serialization(self, organization: Organization):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a Organization instance using OrganizationSchema.
         Args:
@@ -81,7 +81,7 @@ class TestOrganizationSchema:
         assert result['tac_code_peek'] == (  # TacID
             str(organization.tac_code_peek))
 # endset
-    def test_organization_deserialization(self, organization: Organization):
+    def test_organization_deserialization(self, organization):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -166,7 +166,7 @@ class TestOrganizationSchema:
             self.sample_data['last_update_utc_date_time'])
         new_organization = Organization(**deserialized_data)
         assert isinstance(new_organization, Organization)
-    def test_to_json(self, organization: Organization):
+    def test_to_json(self, organization: Organization):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

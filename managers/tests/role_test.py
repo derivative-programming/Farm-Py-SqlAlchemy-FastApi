@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestRoleManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await role_manager.build_async(**mock_data)
+            await role_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_role_to_database(
@@ -228,14 +229,18 @@ class TestRoleManager:
         assert test_role.role_id == fetched_role.role_id
         assert new_code == fetched_role.code
     @pytest.mark.asyncio
-    async def test_update_invalid_role(self, role_manager: RoleManager):
+    async def test_update_invalid_role(
+        self,
+        role_manager: RoleManager
+    ):
         """
             #TODO add comment
         """
         # None role
         role = None
         new_code = uuid.uuid4()
-        updated_role = await role_manager.update(role, code=new_code)
+        updated_role = await (
+            role_manager.update(role, code=new_code))  # type: ignore
         # Assertions
         assert updated_role is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestRoleManager:
         assert len(roles) == 0
         roles_data = (
             [await RoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(roles_data, List)
         roles = await role_manager.get_list()
         assert len(roles) == 5
         assert all(isinstance(role, Role) for role in roles)
@@ -564,6 +570,7 @@ class TestRoleManager:
         """
         roles_data = (
             [await RoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(roles_data, List)
         count = await role_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestRoleManager:
         # Add roles
         roles_data = (
             [await RoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(roles_data, List)
         sorted_roles = await role_manager.get_sorted_list(
             sort_by="_role_id")
         assert [role.role_id for role in sorted_roles] == (
@@ -604,6 +612,7 @@ class TestRoleManager:
         # Add roles
         roles_data = (
             [await RoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(roles_data, List)
         sorted_roles = await role_manager.get_sorted_list(
             sort_by="role_id", order="desc")
         assert [role.role_id for role in sorted_roles] == (

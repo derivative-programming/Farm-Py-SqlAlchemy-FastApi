@@ -73,7 +73,7 @@ class TestBaseFlowLandAddPlant():
             request_sample_image_upload_file,
 # endset  # noqa: E122
         )
-        #TODO add validation checks 
+        #TODO add validation checks
         # - is email
         # - is phone
         # - calculatedIsRowLevelCustomerSecurityUsed

@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestPacManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await pac_manager.build_async(**mock_data)
+            await pac_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_pac_to_database(
@@ -228,14 +229,18 @@ class TestPacManager:
         assert test_pac.pac_id == fetched_pac.pac_id
         assert new_code == fetched_pac.code
     @pytest.mark.asyncio
-    async def test_update_invalid_pac(self, pac_manager: PacManager):
+    async def test_update_invalid_pac(
+        self,
+        pac_manager: PacManager
+    ):
         """
             #TODO add comment
         """
         # None pac
         pac = None
         new_code = uuid.uuid4()
-        updated_pac = await pac_manager.update(pac, code=new_code)
+        updated_pac = await (
+            pac_manager.update(pac, code=new_code))  # type: ignore
         # Assertions
         assert updated_pac is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestPacManager:
         assert len(pacs) == 0
         pacs_data = (
             [await PacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(pacs_data, List)
         pacs = await pac_manager.get_list()
         assert len(pacs) == 5
         assert all(isinstance(pac, Pac) for pac in pacs)
@@ -564,6 +570,7 @@ class TestPacManager:
         """
         pacs_data = (
             [await PacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(pacs_data, List)
         count = await pac_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestPacManager:
         # Add pacs
         pacs_data = (
             [await PacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(pacs_data, List)
         sorted_pacs = await pac_manager.get_sorted_list(
             sort_by="_pac_id")
         assert [pac.pac_id for pac in sorted_pacs] == (
@@ -604,6 +612,7 @@ class TestPacManager:
         # Add pacs
         pacs_data = (
             [await PacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(pacs_data, List)
         sorted_pacs = await pac_manager.get_sorted_list(
             sort_by="pac_id", order="desc")
         assert [pac.pac_id for pac in sorted_pacs] == (

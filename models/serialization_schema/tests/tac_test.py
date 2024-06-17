@@ -15,7 +15,7 @@ from models.serialization_schema import TacSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def tac(session):
+def tac(session) -> Tac:
     """
     Fixture to create and return a Tac instance using the TacFactory.
     Args:
@@ -56,7 +56,7 @@ class TestTacSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_tac_serialization(self, tac: Tac):
+    def test_tac_serialization(self, tac: Tac):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a Tac instance using TacSchema.
         Args:
@@ -93,7 +93,7 @@ class TestTacSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tac.pac_code_peek))
 # endset
-    def test_tac_deserialization(self, tac: Tac):
+    def test_tac_deserialization(self, tac):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -202,7 +202,7 @@ class TestTacSchema:
             self.sample_data['last_update_utc_date_time'])
         new_tac = Tac(**deserialized_data)
         assert isinstance(new_tac, Tac)
-    def test_to_json(self, tac: Tac):
+    def test_to_json(self, tac: Tac):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

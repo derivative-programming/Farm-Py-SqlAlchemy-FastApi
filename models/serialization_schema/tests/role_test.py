@@ -15,7 +15,7 @@ from models.serialization_schema import RoleSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def role(session):
+def role(session) -> Role:
     """
     Fixture to create and return a Role instance using the RoleFactory.
     Args:
@@ -56,7 +56,7 @@ class TestRoleSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_role_serialization(self, role: Role):
+    def test_role_serialization(self, role: Role):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a Role instance using RoleSchema.
         Args:
@@ -93,7 +93,7 @@ class TestRoleSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(role.pac_code_peek))
 # endset
-    def test_role_deserialization(self, role: Role):
+    def test_role_deserialization(self, role):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -202,7 +202,7 @@ class TestRoleSchema:
             self.sample_data['last_update_utc_date_time'])
         new_role = Role(**deserialized_data)
         assert isinstance(new_role, Role)
-    def test_to_json(self, role: Role):
+    def test_to_json(self, role: Role):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

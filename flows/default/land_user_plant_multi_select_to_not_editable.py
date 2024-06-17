@@ -37,13 +37,19 @@ class FlowLandUserPlantMultiSelectToNotEditableResult():
         return json.dumps(data)
 class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelectToNotEditable):
     """
-    #TODO add comment
+    FlowLandUserPlantMultiSelectToNotEditable handles the addition of a  to
+    a specific land in the flow process.
+    This class extends the BaseFlowLandUserPlantMultiSelectToNotEditable class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowLandUserPlantMultiSelectToNotEditable with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowLandUserPlantMultiSelectToNotEditable, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         land_bus_obj: LandBusObj,

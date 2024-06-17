@@ -15,7 +15,7 @@ from models.serialization_schema import PacSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def pac(session):
+def pac(session) -> Pac:
     """
     Fixture to create and return a Pac instance using the PacFactory.
     Args:
@@ -54,7 +54,7 @@ class TestPacSchema:
 
 # endset  # noqa: E122
     }
-    def test_pac_serialization(self, pac: Pac):
+    def test_pac_serialization(self, pac: Pac):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a Pac instance using PacSchema.
         Args:
@@ -88,7 +88,7 @@ class TestPacSchema:
 # endset
 
 # endset
-    def test_pac_deserialization(self, pac: Pac):
+    def test_pac_deserialization(self, pac):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -188,7 +188,7 @@ class TestPacSchema:
             self.sample_data['last_update_utc_date_time'])
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
-    def test_to_json(self, pac: Pac):
+    def test_to_json(self, pac: Pac):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

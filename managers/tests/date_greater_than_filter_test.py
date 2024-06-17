@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestDateGreaterThanFilterManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.build_async(**mock_data)
+            await date_greater_than_filter_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_date_greater_than_filter_to_database(
@@ -228,14 +229,18 @@ class TestDateGreaterThanFilterManager:
         assert test_date_greater_than_filter.date_greater_than_filter_id == fetched_date_greater_than_filter.date_greater_than_filter_id
         assert new_code == fetched_date_greater_than_filter.code
     @pytest.mark.asyncio
-    async def test_update_invalid_date_greater_than_filter(self, date_greater_than_filter_manager: DateGreaterThanFilterManager):
+    async def test_update_invalid_date_greater_than_filter(
+        self,
+        date_greater_than_filter_manager: DateGreaterThanFilterManager
+    ):
         """
             #TODO add comment
         """
         # None date_greater_than_filter
         date_greater_than_filter = None
         new_code = uuid.uuid4()
-        updated_date_greater_than_filter = await date_greater_than_filter_manager.update(date_greater_than_filter, code=new_code)
+        updated_date_greater_than_filter = await (
+            date_greater_than_filter_manager.update(date_greater_than_filter, code=new_code))  # type: ignore
         # Assertions
         assert updated_date_greater_than_filter is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestDateGreaterThanFilterManager:
         assert len(date_greater_than_filters) == 0
         date_greater_than_filters_data = (
             [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(date_greater_than_filters_data, List)
         date_greater_than_filters = await date_greater_than_filter_manager.get_list()
         assert len(date_greater_than_filters) == 5
         assert all(isinstance(date_greater_than_filter, DateGreaterThanFilter) for date_greater_than_filter in date_greater_than_filters)
@@ -564,6 +570,7 @@ class TestDateGreaterThanFilterManager:
         """
         date_greater_than_filters_data = (
             [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(date_greater_than_filters_data, List)
         count = await date_greater_than_filter_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestDateGreaterThanFilterManager:
         # Add date_greater_than_filters
         date_greater_than_filters_data = (
             [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(date_greater_than_filters_data, List)
         sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(
             sort_by="_date_greater_than_filter_id")
         assert [date_greater_than_filter.date_greater_than_filter_id for date_greater_than_filter in sorted_date_greater_than_filters] == (
@@ -604,6 +612,7 @@ class TestDateGreaterThanFilterManager:
         # Add date_greater_than_filters
         date_greater_than_filters_data = (
             [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(date_greater_than_filters_data, List)
         sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(
             sort_by="date_greater_than_filter_id", order="desc")
         assert [date_greater_than_filter.date_greater_than_filter_id for date_greater_than_filter in sorted_date_greater_than_filters] == (

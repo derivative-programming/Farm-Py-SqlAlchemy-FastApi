@@ -41,13 +41,19 @@ class FlowPlantUserDetailsInitReportResult():
         return json.dumps(data)
 class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
     """
-    #TODO add comment
+    FlowPlantUserDetailsInitReport handles the addition of a  to
+    a specific plant in the flow process.
+    This class extends the BaseFlowPlantUserDetailsInitReport class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowPlantUserDetailsInitReport with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowPlantUserDetailsInitReport, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         plant_bus_obj: PlantBusObj,

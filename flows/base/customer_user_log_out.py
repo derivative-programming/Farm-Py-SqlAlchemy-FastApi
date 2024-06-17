@@ -69,19 +69,20 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
         val = True
         item = customer_bus_obj
         while val:
-            if item.get_object_name() == "pac":
+            if item.get_object_name() == "pac":  # type: ignore
                 val = False
 
-            if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
-                if item.get_object_name() == "customer":
-                    if item.code != self._session_context.customer_code:
+            if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed \
+                    is True:
+                if item.get_object_name() == "customer":  # type: ignore
+                    if item.code != self._session_context.customer_code:  # type: ignore
                         self._add_validation_error(
                             "Unautorized access.  Invalid User.")
 
             if val is True:
                 # item = await item.get_parent_obj()
-                item = await BusObjFactory.create(
-                    item.get_session_context(),
-                    item.get_parent_name(),
-                    item.get_parent_code()
+                item = await BusObjFactory.create_from_code(
+                    item.get_session_context(),  # type: ignore
+                    item.get_parent_name(),  # type: ignore
+                    item.get_parent_code()  # type: ignore
                 )

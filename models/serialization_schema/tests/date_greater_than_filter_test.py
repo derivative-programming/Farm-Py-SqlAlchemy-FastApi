@@ -15,7 +15,7 @@ from models.serialization_schema import DateGreaterThanFilterSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def date_greater_than_filter(session):
+def date_greater_than_filter(session) -> DateGreaterThanFilter:
     """
     Fixture to create and return a DateGreaterThanFilter instance using the DateGreaterThanFilterFactory.
     Args:
@@ -57,7 +57,7 @@ class TestDateGreaterThanFilterSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter):
+    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a DateGreaterThanFilter instance using DateGreaterThanFilterSchema.
         Args:
@@ -96,7 +96,7 @@ class TestDateGreaterThanFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(date_greater_than_filter.pac_code_peek))
 # endset
-    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter: DateGreaterThanFilter):
+    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -211,7 +211,7 @@ class TestDateGreaterThanFilterSchema:
             self.sample_data['last_update_utc_date_time'])
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
-    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter):
+    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

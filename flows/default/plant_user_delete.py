@@ -37,13 +37,19 @@ class FlowPlantUserDeleteResult():
         return json.dumps(data)
 class FlowPlantUserDelete(BaseFlowPlantUserDelete):
     """
-    #TODO add comment
+    FlowPlantUserDelete handles the addition of a  to
+    a specific plant in the flow process.
+    This class extends the BaseFlowPlantUserDelete class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowPlantUserDelete with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowPlantUserDelete, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         plant_bus_obj: PlantBusObj,

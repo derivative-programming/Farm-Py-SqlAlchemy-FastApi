@@ -69,13 +69,13 @@ class BaseFlowPacUserTriStateFilterListInitReport(BaseFlow):
         val = True
         item = pac_bus_obj
         while val:
-            if item.get_object_name() == "pac":
+            if item.get_object_name() == "pac":  # type: ignore
                 val = False
 
             if val is True:
                 # item = await item.get_parent_obj()
-                item = await BusObjFactory.create(
-                    item.get_session_context(),
-                    item.get_parent_name(),
-                    item.get_parent_code()
+                item = await BusObjFactory.create_from_code(
+                    item.get_session_context(),  # type: ignore
+                    item.get_parent_name(),  # type: ignore
+                    item.get_parent_code()  # type: ignore
                 )

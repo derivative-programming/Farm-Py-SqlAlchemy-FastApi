@@ -15,7 +15,7 @@ from models.serialization_schema import CustomerSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def customer(session):
+def customer(session) -> Customer:
     """
     Fixture to create and return a Customer instance using the CustomerFactory.
     Args:
@@ -82,7 +82,7 @@ class TestCustomerSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_customer_serialization(self, customer: Customer):
+    def test_customer_serialization(self, customer: Customer):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a Customer instance using CustomerSchema.
         Args:
@@ -153,7 +153,7 @@ class TestCustomerSchema:
         assert result['tac_code_peek'] == (  # TacID
             str(customer.tac_code_peek))
 # endset
-    def test_customer_deserialization(self, customer: Customer):
+    def test_customer_deserialization(self, customer):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -364,7 +364,7 @@ class TestCustomerSchema:
             self.sample_data['last_update_utc_date_time'])
         new_customer = Customer(**deserialized_data)
         assert isinstance(new_customer, Customer)
-    def test_to_json(self, customer: Customer):
+    def test_to_json(self, customer: Customer):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

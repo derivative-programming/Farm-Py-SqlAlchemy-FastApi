@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestTacManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await tac_manager.build_async(**mock_data)
+            await tac_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_tac_to_database(
@@ -228,14 +229,18 @@ class TestTacManager:
         assert test_tac.tac_id == fetched_tac.tac_id
         assert new_code == fetched_tac.code
     @pytest.mark.asyncio
-    async def test_update_invalid_tac(self, tac_manager: TacManager):
+    async def test_update_invalid_tac(
+        self,
+        tac_manager: TacManager
+    ):
         """
             #TODO add comment
         """
         # None tac
         tac = None
         new_code = uuid.uuid4()
-        updated_tac = await tac_manager.update(tac, code=new_code)
+        updated_tac = await (
+            tac_manager.update(tac, code=new_code))  # type: ignore
         # Assertions
         assert updated_tac is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestTacManager:
         assert len(tacs) == 0
         tacs_data = (
             [await TacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tacs_data, List)
         tacs = await tac_manager.get_list()
         assert len(tacs) == 5
         assert all(isinstance(tac, Tac) for tac in tacs)
@@ -564,6 +570,7 @@ class TestTacManager:
         """
         tacs_data = (
             [await TacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tacs_data, List)
         count = await tac_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestTacManager:
         # Add tacs
         tacs_data = (
             [await TacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tacs_data, List)
         sorted_tacs = await tac_manager.get_sorted_list(
             sort_by="_tac_id")
         assert [tac.tac_id for tac in sorted_tacs] == (
@@ -604,6 +612,7 @@ class TestTacManager:
         # Add tacs
         tacs_data = (
             [await TacFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tacs_data, List)
         sorted_tacs = await tac_manager.get_sorted_list(
             sort_by="tac_id", order="desc")
         assert [tac.tac_id for tac in sorted_tacs] == (

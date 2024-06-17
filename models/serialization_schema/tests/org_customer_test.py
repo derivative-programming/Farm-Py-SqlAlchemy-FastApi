@@ -15,7 +15,7 @@ from models.serialization_schema import OrgCustomerSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def org_customer(session):
+def org_customer(session) -> OrgCustomer:
     """
     Fixture to create and return a OrgCustomer instance using the OrgCustomerFactory.
     Args:
@@ -55,7 +55,7 @@ class TestOrgCustomerSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_org_customer_serialization(self, org_customer: OrgCustomer):
+    def test_org_customer_serialization(self, org_customer: OrgCustomer):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a OrgCustomer instance using OrgCustomerSchema.
         Args:
@@ -88,7 +88,7 @@ class TestOrgCustomerSchema:
         assert result['organization_code_peek'] == (  # OrganizationID
             str(org_customer.organization_code_peek))
 # endset
-    def test_org_customer_deserialization(self, org_customer: OrgCustomer):
+    def test_org_customer_deserialization(self, org_customer):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -185,7 +185,7 @@ class TestOrgCustomerSchema:
             self.sample_data['last_update_utc_date_time'])
         new_org_customer = OrgCustomer(**deserialized_data)
         assert isinstance(new_org_customer, OrgCustomer)
-    def test_to_json(self, org_customer: OrgCustomer):
+    def test_to_json(self, org_customer: OrgCustomer):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

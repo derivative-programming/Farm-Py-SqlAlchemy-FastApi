@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestCustomerManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await customer_manager.build_async(**mock_data)
+            await customer_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_customer_to_database(
@@ -228,14 +229,18 @@ class TestCustomerManager:
         assert test_customer.customer_id == fetched_customer.customer_id
         assert new_code == fetched_customer.code
     @pytest.mark.asyncio
-    async def test_update_invalid_customer(self, customer_manager: CustomerManager):
+    async def test_update_invalid_customer(
+        self,
+        customer_manager: CustomerManager
+    ):
         """
             #TODO add comment
         """
         # None customer
         customer = None
         new_code = uuid.uuid4()
-        updated_customer = await customer_manager.update(customer, code=new_code)
+        updated_customer = await (
+            customer_manager.update(customer, code=new_code))  # type: ignore
         # Assertions
         assert updated_customer is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestCustomerManager:
         assert len(customers) == 0
         customers_data = (
             [await CustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customers_data, List)
         customers = await customer_manager.get_list()
         assert len(customers) == 5
         assert all(isinstance(customer, Customer) for customer in customers)
@@ -564,6 +570,7 @@ class TestCustomerManager:
         """
         customers_data = (
             [await CustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customers_data, List)
         count = await customer_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestCustomerManager:
         # Add customers
         customers_data = (
             [await CustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customers_data, List)
         sorted_customers = await customer_manager.get_sorted_list(
             sort_by="_customer_id")
         assert [customer.customer_id for customer in sorted_customers] == (
@@ -604,6 +612,7 @@ class TestCustomerManager:
         # Add customers
         customers_data = (
             [await CustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customers_data, List)
         sorted_customers = await customer_manager.get_sorted_list(
             sort_by="customer_id", order="desc")
         assert [customer.customer_id for customer in sorted_customers] == (

@@ -16,13 +16,13 @@ from models import Base
 from apis.fs_farm_api.v1_0.routers import fs_farm_api_v1_0_router
 
 # Define a proper date format string
-date_format = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 # Configure the logging with a proper date format
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    datefmt=date_format
+    datefmt=DATE_FORMAT
 )
 
 

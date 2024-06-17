@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestTriStateFilterManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await tri_state_filter_manager.build_async(**mock_data)
+            await tri_state_filter_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_tri_state_filter_to_database(
@@ -228,14 +229,18 @@ class TestTriStateFilterManager:
         assert test_tri_state_filter.tri_state_filter_id == fetched_tri_state_filter.tri_state_filter_id
         assert new_code == fetched_tri_state_filter.code
     @pytest.mark.asyncio
-    async def test_update_invalid_tri_state_filter(self, tri_state_filter_manager: TriStateFilterManager):
+    async def test_update_invalid_tri_state_filter(
+        self,
+        tri_state_filter_manager: TriStateFilterManager
+    ):
         """
             #TODO add comment
         """
         # None tri_state_filter
         tri_state_filter = None
         new_code = uuid.uuid4()
-        updated_tri_state_filter = await tri_state_filter_manager.update(tri_state_filter, code=new_code)
+        updated_tri_state_filter = await (
+            tri_state_filter_manager.update(tri_state_filter, code=new_code))  # type: ignore
         # Assertions
         assert updated_tri_state_filter is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestTriStateFilterManager:
         assert len(tri_state_filters) == 0
         tri_state_filters_data = (
             [await TriStateFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tri_state_filters_data, List)
         tri_state_filters = await tri_state_filter_manager.get_list()
         assert len(tri_state_filters) == 5
         assert all(isinstance(tri_state_filter, TriStateFilter) for tri_state_filter in tri_state_filters)
@@ -564,6 +570,7 @@ class TestTriStateFilterManager:
         """
         tri_state_filters_data = (
             [await TriStateFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tri_state_filters_data, List)
         count = await tri_state_filter_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestTriStateFilterManager:
         # Add tri_state_filters
         tri_state_filters_data = (
             [await TriStateFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tri_state_filters_data, List)
         sorted_tri_state_filters = await tri_state_filter_manager.get_sorted_list(
             sort_by="_tri_state_filter_id")
         assert [tri_state_filter.tri_state_filter_id for tri_state_filter in sorted_tri_state_filters] == (
@@ -604,6 +612,7 @@ class TestTriStateFilterManager:
         # Add tri_state_filters
         tri_state_filters_data = (
             [await TriStateFilterFactory.create_async(session) for _ in range(5)])
+        assert isinstance(tri_state_filters_data, List)
         sorted_tri_state_filters = await tri_state_filter_manager.get_sorted_list(
             sort_by="tri_state_filter_id", order="desc")
         assert [tri_state_filter.tri_state_filter_id for tri_state_filter in sorted_tri_state_filters] == (

@@ -1,5 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/conftest.py
-
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """

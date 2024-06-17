@@ -15,7 +15,7 @@ from models.serialization_schema import CustomerRoleSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def customer_role(session):
+def customer_role(session) -> CustomerRole:
     """
     Fixture to create and return a CustomerRole instance using the CustomerRoleFactory.
     Args:
@@ -56,7 +56,7 @@ class TestCustomerRoleSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_customer_role_serialization(self, customer_role: CustomerRole):
+    def test_customer_role_serialization(self, customer_role: CustomerRole):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a CustomerRole instance using CustomerRoleSchema.
         Args:
@@ -91,7 +91,7 @@ class TestCustomerRoleSchema:
         assert result['role_code_peek'] == (  # RoleID
             str(customer_role.role_code_peek))
 # endset
-    def test_customer_role_deserialization(self, customer_role: CustomerRole):
+    def test_customer_role_deserialization(self, customer_role):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -194,7 +194,7 @@ class TestCustomerRoleSchema:
             self.sample_data['last_update_utc_date_time'])
         new_customer_role = CustomerRole(**deserialized_data)
         assert isinstance(new_customer_role, CustomerRole)
-    def test_to_json(self, customer_role: CustomerRole):
+    def test_to_json(self, customer_role: CustomerRole):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

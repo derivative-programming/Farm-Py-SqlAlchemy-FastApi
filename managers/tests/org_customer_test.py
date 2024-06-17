@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestOrgCustomerManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await org_customer_manager.build_async(**mock_data)
+            await org_customer_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_org_customer_to_database(
@@ -228,14 +229,18 @@ class TestOrgCustomerManager:
         assert test_org_customer.org_customer_id == fetched_org_customer.org_customer_id
         assert new_code == fetched_org_customer.code
     @pytest.mark.asyncio
-    async def test_update_invalid_org_customer(self, org_customer_manager: OrgCustomerManager):
+    async def test_update_invalid_org_customer(
+        self,
+        org_customer_manager: OrgCustomerManager
+    ):
         """
             #TODO add comment
         """
         # None org_customer
         org_customer = None
         new_code = uuid.uuid4()
-        updated_org_customer = await org_customer_manager.update(org_customer, code=new_code)
+        updated_org_customer = await (
+            org_customer_manager.update(org_customer, code=new_code))  # type: ignore
         # Assertions
         assert updated_org_customer is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestOrgCustomerManager:
         assert len(org_customers) == 0
         org_customers_data = (
             [await OrgCustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_customers_data, List)
         org_customers = await org_customer_manager.get_list()
         assert len(org_customers) == 5
         assert all(isinstance(org_customer, OrgCustomer) for org_customer in org_customers)
@@ -564,6 +570,7 @@ class TestOrgCustomerManager:
         """
         org_customers_data = (
             [await OrgCustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_customers_data, List)
         count = await org_customer_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestOrgCustomerManager:
         # Add org_customers
         org_customers_data = (
             [await OrgCustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_customers_data, List)
         sorted_org_customers = await org_customer_manager.get_sorted_list(
             sort_by="_org_customer_id")
         assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == (
@@ -604,6 +612,7 @@ class TestOrgCustomerManager:
         # Add org_customers
         org_customers_data = (
             [await OrgCustomerFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_customers_data, List)
         sorted_org_customers = await org_customer_manager.get_sorted_list(
             sort_by="org_customer_id", order="desc")
         assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == (

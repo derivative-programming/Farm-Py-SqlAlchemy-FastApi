@@ -858,7 +858,7 @@ class CustomerBusObj(BaseBusObj):
         self.tac_id = value
         return self
     @property
-    def tac_code_peek(self):
+    def tac_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """

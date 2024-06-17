@@ -500,7 +500,7 @@ class PlantManager:
     ##GENIF[isFK=false,forceDBColumnIndex=true]Start
 
     ##GENREMOVECOMMENTasync def get_by_GENVALSnakeName_prop(
-    ##GENREMOVECOMMENT    self, 
+    ##GENREMOVECOMMENT    self,
     ##GENREMOVECOMMENT    GENVALSnakeName
     ##GENREMOVECOMMENT) -> List[GENVALPascalObjectName]:
     ##GENREMOVECOMMENT    logging.info(

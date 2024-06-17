@@ -43,7 +43,7 @@ class BaseFlow():
         self._throw_field_validation_error("", message)
 
     def _throw_field_validation_error(self, field_name: str, message: str):
-        raise FlowValidationError(field_name, message, None)
+        raise FlowValidationError(field_name, message)
 
     def _throw_queued_validation_errors(self):
         if len(self.queued_validation_errors) > 0:

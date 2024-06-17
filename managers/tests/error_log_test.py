@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestErrorLogManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await error_log_manager.build_async(**mock_data)
+            await error_log_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_error_log_to_database(
@@ -228,14 +229,18 @@ class TestErrorLogManager:
         assert test_error_log.error_log_id == fetched_error_log.error_log_id
         assert new_code == fetched_error_log.code
     @pytest.mark.asyncio
-    async def test_update_invalid_error_log(self, error_log_manager: ErrorLogManager):
+    async def test_update_invalid_error_log(
+        self,
+        error_log_manager: ErrorLogManager
+    ):
         """
             #TODO add comment
         """
         # None error_log
         error_log = None
         new_code = uuid.uuid4()
-        updated_error_log = await error_log_manager.update(error_log, code=new_code)
+        updated_error_log = await (
+            error_log_manager.update(error_log, code=new_code))  # type: ignore
         # Assertions
         assert updated_error_log is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestErrorLogManager:
         assert len(error_logs) == 0
         error_logs_data = (
             [await ErrorLogFactory.create_async(session) for _ in range(5)])
+        assert isinstance(error_logs_data, List)
         error_logs = await error_log_manager.get_list()
         assert len(error_logs) == 5
         assert all(isinstance(error_log, ErrorLog) for error_log in error_logs)
@@ -564,6 +570,7 @@ class TestErrorLogManager:
         """
         error_logs_data = (
             [await ErrorLogFactory.create_async(session) for _ in range(5)])
+        assert isinstance(error_logs_data, List)
         count = await error_log_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestErrorLogManager:
         # Add error_logs
         error_logs_data = (
             [await ErrorLogFactory.create_async(session) for _ in range(5)])
+        assert isinstance(error_logs_data, List)
         sorted_error_logs = await error_log_manager.get_sorted_list(
             sort_by="_error_log_id")
         assert [error_log.error_log_id for error_log in sorted_error_logs] == (
@@ -604,6 +612,7 @@ class TestErrorLogManager:
         # Add error_logs
         error_logs_data = (
             [await ErrorLogFactory.create_async(session) for _ in range(5)])
+        assert isinstance(error_logs_data, List)
         sorted_error_logs = await error_log_manager.get_sorted_list(
             sort_by="error_log_id", order="desc")
         assert [error_log.error_log_id for error_log in sorted_error_logs] == (

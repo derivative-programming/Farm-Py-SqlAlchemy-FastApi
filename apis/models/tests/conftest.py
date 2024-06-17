@@ -1,25 +1,36 @@
 # apis/models/tests/conftest.py
+# pylint: disable=redefined-outer-name
 
 """
     #TODO add comment
 """
 
 import asyncio
+from typing import AsyncGenerator
+from typing import Generator
+
 import pytest
 import pytest_asyncio
-from typing import AsyncGenerator
 from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+
 from models import Base
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
 @pytest.fixture(scope="function")
-def event_loop() -> asyncio.AbstractEventLoop:
+def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
     """
-    #TODO add comment
+    Fixture to provide a new event loop for each test function.
+
+    This fixture ensures that each test function runs in its own event loop,
+    providing isolation and avoiding potential issues with shared state.
+
+    Yields:
+        asyncio.AbstractEventLoop: The event loop for the
+        current test function.
     """
 
     loop = asyncio.get_event_loop_policy().new_event_loop()

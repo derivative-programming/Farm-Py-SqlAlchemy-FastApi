@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestOrgApiKeyManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await org_api_key_manager.build_async(**mock_data)
+            await org_api_key_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_org_api_key_to_database(
@@ -228,14 +229,18 @@ class TestOrgApiKeyManager:
         assert test_org_api_key.org_api_key_id == fetched_org_api_key.org_api_key_id
         assert new_code == fetched_org_api_key.code
     @pytest.mark.asyncio
-    async def test_update_invalid_org_api_key(self, org_api_key_manager: OrgApiKeyManager):
+    async def test_update_invalid_org_api_key(
+        self,
+        org_api_key_manager: OrgApiKeyManager
+    ):
         """
             #TODO add comment
         """
         # None org_api_key
         org_api_key = None
         new_code = uuid.uuid4()
-        updated_org_api_key = await org_api_key_manager.update(org_api_key, code=new_code)
+        updated_org_api_key = await (
+            org_api_key_manager.update(org_api_key, code=new_code))  # type: ignore
         # Assertions
         assert updated_org_api_key is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestOrgApiKeyManager:
         assert len(org_api_keys) == 0
         org_api_keys_data = (
             [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_api_keys_data, List)
         org_api_keys = await org_api_key_manager.get_list()
         assert len(org_api_keys) == 5
         assert all(isinstance(org_api_key, OrgApiKey) for org_api_key in org_api_keys)
@@ -564,6 +570,7 @@ class TestOrgApiKeyManager:
         """
         org_api_keys_data = (
             [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_api_keys_data, List)
         count = await org_api_key_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestOrgApiKeyManager:
         # Add org_api_keys
         org_api_keys_data = (
             [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_api_keys_data, List)
         sorted_org_api_keys = await org_api_key_manager.get_sorted_list(
             sort_by="_org_api_key_id")
         assert [org_api_key.org_api_key_id for org_api_key in sorted_org_api_keys] == (
@@ -604,6 +612,7 @@ class TestOrgApiKeyManager:
         # Add org_api_keys
         org_api_keys_data = (
             [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
+        assert isinstance(org_api_keys_data, List)
         sorted_org_api_keys = await org_api_key_manager.get_sorted_list(
             sort_by="org_api_key_id", order="desc")
         assert [org_api_key.org_api_key_id for org_api_key in sorted_org_api_keys] == (

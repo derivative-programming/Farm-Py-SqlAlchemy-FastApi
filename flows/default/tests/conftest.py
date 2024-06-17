@@ -1,5 +1,6 @@
 # flows/default/tests/conftest.py
 # pylint: disable=unused-argument
+# pylint: disable=redefined-outer-name
 
 """
     #TODO add comment
@@ -7,6 +8,7 @@
 
 import asyncio
 from typing import AsyncGenerator
+from typing import Generator
 
 import pytest
 import pytest_asyncio
@@ -20,9 +22,16 @@ DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
 @pytest.fixture(scope="function")
-def event_loop() -> asyncio.AbstractEventLoop:
+def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
     """
-        #TODO add comment
+    Fixture to provide a new event loop for each test function.
+
+    This fixture ensures that each test function runs in its own event loop,
+    providing isolation and avoiding potential issues with shared state.
+
+    Yields:
+        asyncio.AbstractEventLoop: The event loop for the
+        current test function.
     """
 
     loop = asyncio.get_event_loop_policy().new_event_loop()
@@ -72,9 +81,9 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session:
+        async with TestingSessionLocal(bind=connection) as session_obj:
             @event.listens_for(
-                session.sync_session, "after_transaction_end"
+                session_obj.sync_session, "after_transaction_end"
             )
             def end_savepoint(session, transaction):
                 if connection.closed:
@@ -82,6 +91,6 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
 
                 if not connection.in_nested_transaction():
                     connection.sync_connection.begin_nested()
-            yield session
-            await session.flush()
-            await session.rollback()
+            yield session_obj  # type: ignore
+            await session_obj.flush()
+            await session_obj.rollback()

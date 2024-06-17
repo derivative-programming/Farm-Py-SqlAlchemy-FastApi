@@ -38,13 +38,19 @@ class FlowCustomerUserLogOutInitObjWFResult():
         return json.dumps(data)
 class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
     """
-    #TODO add comment
+    FlowCustomerUserLogOutInitObjWF handles the addition of a  to
+    a specific customer in the flow process.
+    This class extends the BaseFlowCustomerUserLogOutInitObjWF class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowCustomerUserLogOutInitObjWF with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowCustomerUserLogOutInitObjWF, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         customer_bus_obj: CustomerBusObj,

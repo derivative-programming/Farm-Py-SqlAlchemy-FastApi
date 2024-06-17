@@ -6,6 +6,7 @@
 """
 
 import logging
+from typing import List
 import uuid
 
 import pytest
@@ -74,7 +75,7 @@ class TestPlantManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await plant_manager.build_async(**mock_data)
+            await plant_manager.build(**mock_data)
 
         await session.rollback()
 
@@ -294,7 +295,10 @@ class TestPlantManager:
         assert new_code == fetched_plant.code
 
     @pytest.mark.asyncio
-    async def test_update_invalid_plant(self, plant_manager: PlantManager):
+    async def test_update_invalid_plant(
+        self,
+        plant_manager: PlantManager
+    ):
         """
             #TODO add comment
         """
@@ -304,7 +308,8 @@ class TestPlantManager:
 
         new_code = uuid.uuid4()
 
-        updated_plant = await plant_manager.update(plant, code=new_code)
+        updated_plant = await (
+            plant_manager.update(plant, code=new_code))  # type: ignore
 
         # Assertions
         assert updated_plant is None
@@ -404,6 +409,8 @@ class TestPlantManager:
 
         plants_data = (
             [await PlantFactory.create_async(session) for _ in range(5)])
+
+        assert isinstance(plants_data, List)
 
         plants = await plant_manager.get_list()
 
@@ -727,6 +734,8 @@ class TestPlantManager:
         plants_data = (
             [await PlantFactory.create_async(session) for _ in range(5)])
 
+        assert isinstance(plants_data, List)
+
         count = await plant_manager.count()
 
         assert count == 5
@@ -757,6 +766,8 @@ class TestPlantManager:
         plants_data = (
             [await PlantFactory.create_async(session) for _ in range(5)])
 
+        assert isinstance(plants_data, List)
+
         sorted_plants = await plant_manager.get_sorted_list(
             sort_by="_plant_id")
 
@@ -775,6 +786,8 @@ class TestPlantManager:
         # Add plants
         plants_data = (
             [await PlantFactory.create_async(session) for _ in range(5)])
+
+        assert isinstance(plants_data, List)
 
         sorted_plants = await plant_manager.get_sorted_list(
             sort_by="plant_id", order="desc")

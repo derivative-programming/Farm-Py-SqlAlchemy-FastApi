@@ -38,13 +38,19 @@ class FlowCustomerBuildTempApiKeyResult():
         return json.dumps(data)
 class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
     """
-    #TODO add comment
+    FlowCustomerBuildTempApiKey handles the addition of a  to
+    a specific customer in the flow process.
+    This class extends the BaseFlowCustomerBuildTempApiKey class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowCustomerBuildTempApiKey with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowCustomerBuildTempApiKey, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         customer_bus_obj: CustomerBusObj,

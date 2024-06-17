@@ -247,7 +247,7 @@ class CustomerRoleBusObj(BaseBusObj):
         self.customer_id = value
         return self
     @property
-    def customer_code_peek(self):
+    def customer_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """
@@ -293,7 +293,7 @@ class CustomerRoleBusObj(BaseBusObj):
         self.role_id = value
         return self
     @property
-    def role_code_peek(self):
+    def role_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """

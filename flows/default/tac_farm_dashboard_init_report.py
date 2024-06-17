@@ -38,13 +38,19 @@ class FlowTacFarmDashboardInitReportResult():
         return json.dumps(data)
 class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
     """
-    #TODO add comment
+    FlowTacFarmDashboardInitReport handles the addition of a  to
+    a specific tac in the flow process.
+    This class extends the BaseFlowTacFarmDashboardInitReport class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowTacFarmDashboardInitReport with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowTacFarmDashboardInitReport, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         tac_bus_obj: TacBusObj,

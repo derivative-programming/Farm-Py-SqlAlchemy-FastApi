@@ -15,7 +15,7 @@ from models.serialization_schema import TriStateFilterSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def tri_state_filter(session):
+def tri_state_filter(session) -> TriStateFilter:
     """
     Fixture to create and return a TriStateFilter instance using the TriStateFilterFactory.
     Args:
@@ -57,7 +57,7 @@ class TestTriStateFilterSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter):
+    def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter):  # pylint: disable=redefined-outer-name
         """
         Test the serialization of a TriStateFilter instance using TriStateFilterSchema.
         Args:
@@ -96,7 +96,7 @@ class TestTriStateFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tri_state_filter.pac_code_peek))
 # endset
-    def test_tri_state_filter_deserialization(self, tri_state_filter: TriStateFilter):
+    def test_tri_state_filter_deserialization(self, tri_state_filter):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """
@@ -211,7 +211,7 @@ class TestTriStateFilterSchema:
             self.sample_data['last_update_utc_date_time'])
         new_tri_state_filter = TriStateFilter(**deserialized_data)
         assert isinstance(new_tri_state_filter, TriStateFilter)
-    def test_to_json(self, tri_state_filter: TriStateFilter):
+    def test_to_json(self, tri_state_filter: TriStateFilter):  # pylint: disable=redefined-outer-name
         """
             #TODO add comment
         """

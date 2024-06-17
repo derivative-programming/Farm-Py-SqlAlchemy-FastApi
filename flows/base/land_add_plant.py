@@ -254,22 +254,24 @@ class BaseFlowLandAddPlant(BaseFlow):
         item = land_bus_obj
 
         while val:
-            if item.get_object_name() == "pac":
+            if item.get_object_name() == "pac":  # type: ignore
                 val = False
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrgCustomerSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start
-            if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
-                if item.get_object_name() == "org_customer":
-                    item = item.get_customer_id_rel_obj()
+            if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed \
+                    is True:
+                if item.get_object_name() == "org_customer":  # type: ignore
+                    item = item.get_customer_id_rel_obj()  # type: ignore
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrgCustomerSecurityUsed]End
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelCustomerSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]Start
-            if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
-                if item.get_object_name() == "customer":
-                    if item.code != self._session_context.customer_code:
+            if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed \
+                    is True:
+                if item.get_object_name() == "customer":  # type: ignore
+                    if item.code != self._session_context.customer_code:  # type: ignore
                         self._add_validation_error(
                             "Unautorized access.  Invalid User.")
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]End
@@ -279,8 +281,8 @@ class BaseFlowLandAddPlant(BaseFlow):
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
             if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed \
                     is True:
-                if item.get_object_name() == "organization":
-                    organization_id = item.get_id()
+                if item.get_object_name() == "organization":  # type: ignore
+                    organization_id = item.get_id()  # type: ignore
                     customer_bus_obj = CustomerBusObj(
                         land_bus_obj.get_session_context())
                     await customer_bus_obj.load_from_code(
@@ -290,8 +292,8 @@ class BaseFlowLandAddPlant(BaseFlow):
                     org_customers = org_customer_manager.get_by_customer_id(
                         customer_bus_obj.customer_id)
                     org_customers = filter(
-                        lambda x: x.organization_id == organization_id, org_customers)
-                    if len(org_customers) == 0:
+                        lambda x: x.organization_id == organization_id, org_customers)  # type: ignore
+                    if len(org_customers) == 0:  # type: ignore
                         self._add_validation_error(
                             "Unautorized access. Invalid user in organization."
                         )
@@ -299,8 +301,8 @@ class BaseFlowLandAddPlant(BaseFlow):
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End
             if val is True:
                 # item = await item.get_parent_obj()
-                item = await BusObjFactory.create(
-                    item.get_session_context(),
-                    item.get_parent_name(),
-                    item.get_parent_code()
+                item = await BusObjFactory.create_from_code(
+                    item.get_session_context(),  # type: ignore
+                    item.get_parent_name(),  # type: ignore
+                    item.get_parent_code()  # type: ignore
                 )

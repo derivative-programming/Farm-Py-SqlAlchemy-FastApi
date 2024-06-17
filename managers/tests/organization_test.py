@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestOrganizationManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await organization_manager.build_async(**mock_data)
+            await organization_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_organization_to_database(
@@ -228,14 +229,18 @@ class TestOrganizationManager:
         assert test_organization.organization_id == fetched_organization.organization_id
         assert new_code == fetched_organization.code
     @pytest.mark.asyncio
-    async def test_update_invalid_organization(self, organization_manager: OrganizationManager):
+    async def test_update_invalid_organization(
+        self,
+        organization_manager: OrganizationManager
+    ):
         """
             #TODO add comment
         """
         # None organization
         organization = None
         new_code = uuid.uuid4()
-        updated_organization = await organization_manager.update(organization, code=new_code)
+        updated_organization = await (
+            organization_manager.update(organization, code=new_code))  # type: ignore
         # Assertions
         assert updated_organization is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestOrganizationManager:
         assert len(organizations) == 0
         organizations_data = (
             [await OrganizationFactory.create_async(session) for _ in range(5)])
+        assert isinstance(organizations_data, List)
         organizations = await organization_manager.get_list()
         assert len(organizations) == 5
         assert all(isinstance(organization, Organization) for organization in organizations)
@@ -564,6 +570,7 @@ class TestOrganizationManager:
         """
         organizations_data = (
             [await OrganizationFactory.create_async(session) for _ in range(5)])
+        assert isinstance(organizations_data, List)
         count = await organization_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestOrganizationManager:
         # Add organizations
         organizations_data = (
             [await OrganizationFactory.create_async(session) for _ in range(5)])
+        assert isinstance(organizations_data, List)
         sorted_organizations = await organization_manager.get_sorted_list(
             sort_by="_organization_id")
         assert [organization.organization_id for organization in sorted_organizations] == (
@@ -604,6 +612,7 @@ class TestOrganizationManager:
         # Add organizations
         organizations_data = (
             [await OrganizationFactory.create_async(session) for _ in range(5)])
+        assert isinstance(organizations_data, List)
         sorted_organizations = await organization_manager.get_sorted_list(
             sort_by="organization_id", order="desc")
         assert [organization.organization_id for organization in sorted_organizations] == (

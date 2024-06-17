@@ -37,13 +37,19 @@ class FlowPacUserRoleListInitReportResult():
         return json.dumps(data)
 class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
     """
-    #TODO add comment
+    FlowPacUserRoleListInitReport handles the addition of a  to
+    a specific pac in the flow process.
+    This class extends the BaseFlowPacUserRoleListInitReport class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowPacUserRoleListInitReport with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowPacUserRoleListInitReport, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         pac_bus_obj: PacBusObj,

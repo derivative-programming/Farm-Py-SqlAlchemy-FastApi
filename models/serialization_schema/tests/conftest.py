@@ -1,4 +1,5 @@
 # conftest.py
+# pylint: disable=redefined-outer-name
 
 """
     #TODO add comment

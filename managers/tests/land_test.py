@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestLandManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await land_manager.build_async(**mock_data)
+            await land_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_land_to_database(
@@ -228,14 +229,18 @@ class TestLandManager:
         assert test_land.land_id == fetched_land.land_id
         assert new_code == fetched_land.code
     @pytest.mark.asyncio
-    async def test_update_invalid_land(self, land_manager: LandManager):
+    async def test_update_invalid_land(
+        self,
+        land_manager: LandManager
+    ):
         """
             #TODO add comment
         """
         # None land
         land = None
         new_code = uuid.uuid4()
-        updated_land = await land_manager.update(land, code=new_code)
+        updated_land = await (
+            land_manager.update(land, code=new_code))  # type: ignore
         # Assertions
         assert updated_land is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestLandManager:
         assert len(lands) == 0
         lands_data = (
             [await LandFactory.create_async(session) for _ in range(5)])
+        assert isinstance(lands_data, List)
         lands = await land_manager.get_list()
         assert len(lands) == 5
         assert all(isinstance(land, Land) for land in lands)
@@ -564,6 +570,7 @@ class TestLandManager:
         """
         lands_data = (
             [await LandFactory.create_async(session) for _ in range(5)])
+        assert isinstance(lands_data, List)
         count = await land_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestLandManager:
         # Add lands
         lands_data = (
             [await LandFactory.create_async(session) for _ in range(5)])
+        assert isinstance(lands_data, List)
         sorted_lands = await land_manager.get_sorted_list(
             sort_by="_land_id")
         assert [land.land_id for land in sorted_lands] == (
@@ -604,6 +612,7 @@ class TestLandManager:
         # Add lands
         lands_data = (
             [await LandFactory.create_async(session) for _ in range(5)])
+        assert isinstance(lands_data, List)
         sorted_lands = await land_manager.get_sorted_list(
             sort_by="land_id", order="desc")
         assert [land.land_id for land in sorted_lands] == (

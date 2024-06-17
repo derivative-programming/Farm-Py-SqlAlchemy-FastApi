@@ -370,7 +370,7 @@ class TriStateFilterBusObj(BaseBusObj):
         self.pac_id = value
         return self
     @property
-    def pac_code_peek(self):
+    def pac_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """

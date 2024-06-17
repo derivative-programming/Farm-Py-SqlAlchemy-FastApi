@@ -53,13 +53,19 @@ class FlowTacRegisterResult():
         return json.dumps(data)
 class FlowTacRegister(BaseFlowTacRegister):
     """
-    #TODO add comment
+    FlowTacRegister handles the addition of a customer to
+    a specific tac in the flow process.
+    This class extends the BaseFlowTacRegister class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowTacRegister with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowTacRegister, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         tac_bus_obj: TacBusObj,

@@ -50,13 +50,19 @@ class FlowTacRegisterInitObjWFResult():
         return json.dumps(data)
 class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
     """
-    #TODO add comment
+    FlowTacRegisterInitObjWF handles the addition of a  to
+    a specific tac in the flow process.
+    This class extends the BaseFlowTacRegisterInitObjWF class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowTacRegisterInitObjWF with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowTacRegisterInitObjWF, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         tac_bus_obj: TacBusObj,

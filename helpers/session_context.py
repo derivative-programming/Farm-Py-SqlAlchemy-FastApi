@@ -19,10 +19,13 @@ class SessionContext:
     api_key_dict: dict = dict()
     session_code: uuid.UUID = uuid.UUID(int=0)
     role_name_csv: str = ""
-    session: AsyncSession = None
+    session: AsyncSession = None  # type: ignore
 
     def __init__(
-            self, api_key_dict: dict, session: AsyncSession = None) -> None:
+        self,
+        api_key_dict: dict,
+        session: AsyncSession = None  # type: ignore
+    ) -> None:
         self.api_key_dict = api_key_dict
         self.session_code = uuid.uuid4()
         self.session = session

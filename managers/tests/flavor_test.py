@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestFlavorManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await flavor_manager.build_async(**mock_data)
+            await flavor_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_flavor_to_database(
@@ -228,14 +229,18 @@ class TestFlavorManager:
         assert test_flavor.flavor_id == fetched_flavor.flavor_id
         assert new_code == fetched_flavor.code
     @pytest.mark.asyncio
-    async def test_update_invalid_flavor(self, flavor_manager: FlavorManager):
+    async def test_update_invalid_flavor(
+        self,
+        flavor_manager: FlavorManager
+    ):
         """
             #TODO add comment
         """
         # None flavor
         flavor = None
         new_code = uuid.uuid4()
-        updated_flavor = await flavor_manager.update(flavor, code=new_code)
+        updated_flavor = await (
+            flavor_manager.update(flavor, code=new_code))  # type: ignore
         # Assertions
         assert updated_flavor is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestFlavorManager:
         assert len(flavors) == 0
         flavors_data = (
             [await FlavorFactory.create_async(session) for _ in range(5)])
+        assert isinstance(flavors_data, List)
         flavors = await flavor_manager.get_list()
         assert len(flavors) == 5
         assert all(isinstance(flavor, Flavor) for flavor in flavors)
@@ -564,6 +570,7 @@ class TestFlavorManager:
         """
         flavors_data = (
             [await FlavorFactory.create_async(session) for _ in range(5)])
+        assert isinstance(flavors_data, List)
         count = await flavor_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestFlavorManager:
         # Add flavors
         flavors_data = (
             [await FlavorFactory.create_async(session) for _ in range(5)])
+        assert isinstance(flavors_data, List)
         sorted_flavors = await flavor_manager.get_sorted_list(
             sort_by="_flavor_id")
         assert [flavor.flavor_id for flavor in sorted_flavors] == (
@@ -604,6 +612,7 @@ class TestFlavorManager:
         # Add flavors
         flavors_data = (
             [await FlavorFactory.create_async(session) for _ in range(5)])
+        assert isinstance(flavors_data, List)
         sorted_flavors = await flavor_manager.get_sorted_list(
             sort_by="flavor_id", order="desc")
         assert [flavor.flavor_id for flavor in sorted_flavors] == (

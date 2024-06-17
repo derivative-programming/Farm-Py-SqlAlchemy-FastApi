@@ -118,6 +118,7 @@ class TestPlantFactoryAsync:
         """
 
         plant: Plant = await PlantFactory.create_async(session=session)
+
         assert plant.last_change_code == 1
 
     @pytest.mark.asyncio

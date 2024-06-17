@@ -912,7 +912,7 @@ class PlantBusObj(BaseBusObj):
         return self
 
     @property
-    def flvr_foreign_key_code_peek(self):
+    def flvr_foreign_key_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """
@@ -970,7 +970,7 @@ class PlantBusObj(BaseBusObj):
         return self
 
     @property
-    def land_code_peek(self):
+    def land_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """

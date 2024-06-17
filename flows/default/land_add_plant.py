@@ -103,15 +103,23 @@ class FlowLandAddPlantResult():
 
 class FlowLandAddPlant(BaseFlowLandAddPlant):
     """
-    #TODO add comment
+    FlowLandAddPlant handles the addition of a plant to
+    a specific land in the flow process.
+
+    This class extends the BaseFlowLandAddPlant class and
+    initializes it with the provided session context.
     """
 
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowLandAddPlant with the provided session context.
+
+        Args:
+            session_context (SessionContext): The session 
+                context to be used for this flow.
         """
 
-        super(FlowLandAddPlant, self).__init__(session_context)
+        super().__init__(session_context)
 
     async def process(
         self,

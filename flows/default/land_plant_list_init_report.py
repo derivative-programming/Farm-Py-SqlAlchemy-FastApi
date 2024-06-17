@@ -94,13 +94,19 @@ class FlowLandPlantListInitReportResult():
         return json.dumps(data)
 class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
     """
-    #TODO add comment
+    FlowLandPlantListInitReport handles the addition of a  to
+    a specific land in the flow process.
+    This class extends the BaseFlowLandPlantListInitReport class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowLandPlantListInitReport with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowLandPlantListInitReport, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         land_bus_obj: LandBusObj,

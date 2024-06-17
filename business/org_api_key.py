@@ -402,7 +402,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.organization_id = value
         return self
     @property
-    def organization_code_peek(self):
+    def organization_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """
@@ -446,7 +446,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_customer_id = value
         return self
     @property
-    def org_customer_code_peek(self):
+    def org_customer_code_peek(self) -> uuid.UUID:
         """
         #TODO add comment
         """

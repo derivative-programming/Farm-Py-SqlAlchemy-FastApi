@@ -5,6 +5,7 @@
     #TODO file too big. split into separate test files
 """
 import logging
+from typing import List
 import uuid
 import pytest
 import pytest_asyncio
@@ -62,7 +63,7 @@ class TestCustomerRoleManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await customer_role_manager.build_async(**mock_data)
+            await customer_role_manager.build(**mock_data)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_add_correctly_adds_customer_role_to_database(
@@ -228,14 +229,18 @@ class TestCustomerRoleManager:
         assert test_customer_role.customer_role_id == fetched_customer_role.customer_role_id
         assert new_code == fetched_customer_role.code
     @pytest.mark.asyncio
-    async def test_update_invalid_customer_role(self, customer_role_manager: CustomerRoleManager):
+    async def test_update_invalid_customer_role(
+        self,
+        customer_role_manager: CustomerRoleManager
+    ):
         """
             #TODO add comment
         """
         # None customer_role
         customer_role = None
         new_code = uuid.uuid4()
-        updated_customer_role = await customer_role_manager.update(customer_role, code=new_code)
+        updated_customer_role = await (
+            customer_role_manager.update(customer_role, code=new_code))  # type: ignore
         # Assertions
         assert updated_customer_role is None
     @pytest.mark.asyncio
@@ -313,6 +318,7 @@ class TestCustomerRoleManager:
         assert len(customer_roles) == 0
         customer_roles_data = (
             [await CustomerRoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customer_roles_data, List)
         customer_roles = await customer_role_manager.get_list()
         assert len(customer_roles) == 5
         assert all(isinstance(customer_role, CustomerRole) for customer_role in customer_roles)
@@ -564,6 +570,7 @@ class TestCustomerRoleManager:
         """
         customer_roles_data = (
             [await CustomerRoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customer_roles_data, List)
         count = await customer_role_manager.count()
         assert count == 5
     @pytest.mark.asyncio
@@ -588,6 +595,7 @@ class TestCustomerRoleManager:
         # Add customer_roles
         customer_roles_data = (
             [await CustomerRoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customer_roles_data, List)
         sorted_customer_roles = await customer_role_manager.get_sorted_list(
             sort_by="_customer_role_id")
         assert [customer_role.customer_role_id for customer_role in sorted_customer_roles] == (
@@ -604,6 +612,7 @@ class TestCustomerRoleManager:
         # Add customer_roles
         customer_roles_data = (
             [await CustomerRoleFactory.create_async(session) for _ in range(5)])
+        assert isinstance(customer_roles_data, List)
         sorted_customer_roles = await customer_role_manager.get_sorted_list(
             sort_by="customer_role_id", order="desc")
         assert [customer_role.customer_role_id for customer_role in sorted_customer_roles] == (

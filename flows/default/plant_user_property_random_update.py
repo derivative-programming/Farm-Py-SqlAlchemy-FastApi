@@ -37,13 +37,19 @@ class FlowPlantUserPropertyRandomUpdateResult():
         return json.dumps(data)
 class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
     """
-    #TODO add comment
+    FlowPlantUserPropertyRandomUpdate handles the addition of a  to
+    a specific plant in the flow process.
+    This class extends the BaseFlowPlantUserPropertyRandomUpdate class and
+    initializes it with the provided session context.
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initialize FlowPlantUserPropertyRandomUpdate with the provided session context.
+        Args:
+            session_context (SessionContext): The session
+                context to be used for this flow.
         """
-        super(FlowPlantUserPropertyRandomUpdate, self).__init__(session_context)
+        super().__init__(session_context)
     async def process(
         self,
         plant_bus_obj: PlantBusObj,
