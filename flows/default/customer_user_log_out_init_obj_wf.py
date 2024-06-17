@@ -28,8 +28,10 @@ class FlowCustomerUserLogOutInitObjWFResult():
         """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'tac_code': str(self.tac_code),
+            'context_object_code':
+                str(self.context_object_code),
+            'tac_code':
+                str(self.tac_code),
 # endset  # noqa: E122
         }
         # Serialize the dictionary to JSON

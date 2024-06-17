@@ -558,7 +558,7 @@ class ErrorLogBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.error_log is not None)
+        return self.error_log is not None
     def to_dict(self):
         """
         #TODO add comment

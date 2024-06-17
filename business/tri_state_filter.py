@@ -563,7 +563,7 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.tri_state_filter is not None)
+        return self.tri_state_filter is not None
     def to_dict(self):
         """
         #TODO add comment

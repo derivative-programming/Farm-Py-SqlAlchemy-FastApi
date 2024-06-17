@@ -185,7 +185,8 @@ class TestPacFactoryAsync:
         await session.delete(pac)
         await session.commit()
         # Construct the select statement
-        stmt = select(Pac).where(Pac._pac_id == pac.pac_id)
+        stmt = select(Pac).where(
+            Pac._pac_id == pac.pac_id)  # pylint: disable=protected-access
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -263,14 +264,16 @@ class TestPacFactoryAsync:
         """
         pac = await PacFactory.create_async(session=session)
         original_last_change_code = pac.last_change_code
-        stmt = select(Pac).where(Pac._pac_id == pac.pac_id)
+        stmt = select(Pac).where(
+            Pac._pac_id == pac.pac_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         pac_1 = result.scalars().first()
         # pac_1 = await session.query(Pac).filter_by(
         # pac_id=pac.pac_id).first()
         pac_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(Pac).where(Pac._pac_id == pac.pac_id)
+        stmt = select(Pac).where(
+            Pac._pac_id == pac.pac_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         pac_2 = result.scalars().first()
         # pac_2 = await session.query(Pac).filter_by(

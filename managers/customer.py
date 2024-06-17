@@ -90,7 +90,7 @@ class CustomerManager:
 # endset
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Customer.tac_id == Tac._tac_id,
+            and_(Customer.tac_id == Tac._tac_id,  # pylint: disable=protected-access
                  Customer.tac_id != 0)
         )
 # endset
@@ -135,10 +135,10 @@ class CustomerManager:
             str(customer_id))
         if not isinstance(customer_id, int):
             raise TypeError(
-                f"The customer_id must be an integer, "
-                f"got %s instead.",
-                type(customer_id))
-        query_filter = Customer._customer_id == customer_id
+                "The customer_id must be an integer, "
+                f"got {type(customer_id)} instead.")
+        query_filter = (
+            Customer._customer_id == customer_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Customer]:
@@ -365,13 +365,25 @@ class CustomerManager:
         query_results = await self._run_query(query_filter)
         return query_results
 # endset
-    async def get_by_email_prop(self, email) -> List[Customer]:
-        logging.info("CustomerManager.get_by_email_prop")
-        query_filter = Customer._email == email
+    async def get_by_email_prop(
+        self,
+        email
+    ) -> List[Customer]:
+        logging.info(
+            "CustomerManager"
+            ".get_by_email_prop")
+        query_filter = (
+            Customer._email == email)
         query_results = await self._run_query(query_filter)
         return query_results
-    async def get_by_fs_user_code_value_prop(self, fs_user_code_value) -> List[Customer]:
-        logging.info("CustomerManager.get_by_fs_user_code_value_prop")
-        query_filter = Customer._fs_user_code_value == fs_user_code_value
+    async def get_by_fs_user_code_value_prop(
+        self,
+        fs_user_code_value
+    ) -> List[Customer]:
+        logging.info(
+            "CustomerManager"
+            ".get_by_fs_user_code_value_prop")
+        query_filter = (
+            Customer._fs_user_code_value == fs_user_code_value)
         query_results = await self._run_query(query_filter)
         return query_results

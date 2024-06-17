@@ -81,9 +81,9 @@ class TestLandAddPlantPostModelResponse:
         assert data["output_some_text_val"] == result.output_some_text_val
         assert data["output_some_phone_number"] == result.output_some_phone_number
         assert data["output_some_email_address"] == result.output_some_email_address
-# endset
+# endsets
 
-    #todo finish test
+    #TODO finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """

@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import Organization
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def organization(session):
     """
-    #TODO add comment
+    Fixture to create and return a Organization instance using the OrganizationFactory.
+    Args:
+        session: The database session.
+    Returns:
+        Organization: A newly created Organization instance.
     """
-    # Use the OrganizationFactory to create and return a organization instance
     return OrganizationFactory.create(session=session)
 class TestOrganizationSchema:
     """
-    #TODO add comment
+    Tests for the Organization serialization schema.
     """
     # Sample data for a Organization instance
     sample_data = {
@@ -46,10 +50,12 @@ class TestOrganizationSchema:
     }
     def test_organization_serialization(self, organization: Organization):
         """
-            #TODO add comment
+        Test the serialization of a Organization instance using OrganizationSchema.
+        Args:
+            organization (Organization): A Organization instance to serialize.
         """
         schema = OrganizationSchema()
-        result = schema.dump(organization)
+        result: Dict[str, Any] = schema.dump(organization)
         assert result['code'] == str(organization.code)
         assert result['last_change_code'] == (
             organization.last_change_code)

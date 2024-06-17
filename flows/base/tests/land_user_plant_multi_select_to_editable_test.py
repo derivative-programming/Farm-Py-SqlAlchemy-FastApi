@@ -39,7 +39,10 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
         #TODO add validation checks - calculatedIsRowLevelOrgCustomerSecurityUsed
         #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
         if FlowConstants.param_plant_code_list_csv_isRequired is True:
-            assert 'plantCodeListCsv' in flow.queued_validation_errors and flow.queued_validation_errors['plantCodeListCsv'] == 'Please enter a plant Code List Csv'
+            assert 'plantCodeListCsv' in flow.queued_validation_errors
+            assert flow.queued_validation_errors[
+                'plantCodeListCsv'] == (
+                'Please enter a plant Code List Csv')
 # endset
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
@@ -52,5 +55,7 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
         role_required = "User"
         if len(role_required) > 0:
             await flow._process_security_rules(land)
-            assert '' in flow.queued_validation_errors and flow.queued_validation_errors[''] == "Unautorized access. " + role_required + " role not found."
+            assert '' in flow.queued_validation_errors
+            assert flow.queued_validation_errors[''] == (
+                "Unautorized access. " + role_required + " role not found.")
             session_context.role_name_csv = role_required

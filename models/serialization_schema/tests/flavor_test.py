@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import Flavor
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def flavor(session):
     """
-    #TODO add comment
+    Fixture to create and return a Flavor instance using the FlavorFactory.
+    Args:
+        session: The database session.
+    Returns:
+        Flavor: A newly created Flavor instance.
     """
-    # Use the FlavorFactory to create and return a flavor instance
     return FlavorFactory.create(session=session)
 class TestFlavorSchema:
     """
-    #TODO add comment
+    Tests for the Flavor serialization schema.
     """
     # Sample data for a Flavor instance
     sample_data = {
@@ -50,10 +54,12 @@ class TestFlavorSchema:
     }
     def test_flavor_serialization(self, flavor: Flavor):
         """
-            #TODO add comment
+        Test the serialization of a Flavor instance using FlavorSchema.
+        Args:
+            flavor (Flavor): A Flavor instance to serialize.
         """
         schema = FlavorSchema()
-        result = schema.dump(flavor)
+        result: Dict[str, Any] = schema.dump(flavor)
         assert result['code'] == str(flavor.code)
         assert result['last_change_code'] == (
             flavor.last_change_code)

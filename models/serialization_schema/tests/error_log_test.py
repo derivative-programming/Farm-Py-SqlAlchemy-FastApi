@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import ErrorLog
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def error_log(session):
     """
-    #TODO add comment
+    Fixture to create and return a ErrorLog instance using the ErrorLogFactory.
+    Args:
+        session: The database session.
+    Returns:
+        ErrorLog: A newly created ErrorLog instance.
     """
-    # Use the ErrorLogFactory to create and return a error_log instance
     return ErrorLogFactory.create(session=session)
 class TestErrorLogSchema:
     """
-    #TODO add comment
+    Tests for the ErrorLog serialization schema.
     """
     # Sample data for a ErrorLog instance
     sample_data = {
@@ -54,10 +58,12 @@ class TestErrorLogSchema:
     }
     def test_error_log_serialization(self, error_log: ErrorLog):
         """
-            #TODO add comment
+        Test the serialization of a ErrorLog instance using ErrorLogSchema.
+        Args:
+            error_log (ErrorLog): A ErrorLog instance to serialize.
         """
         schema = ErrorLogSchema()
-        result = schema.dump(error_log)
+        result: Dict[str, Any] = schema.dump(error_log)
         assert result['code'] == str(error_log.code)
         assert result['last_change_code'] == (
             error_log.last_change_code)

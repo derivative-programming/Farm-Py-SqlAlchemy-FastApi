@@ -185,7 +185,8 @@ class TestOrgApiKeyFactoryAsync:
         await session.delete(org_api_key)
         await session.commit()
         # Construct the select statement
-        stmt = select(OrgApiKey).where(OrgApiKey._org_api_key_id == org_api_key.org_api_key_id)
+        stmt = select(OrgApiKey).where(
+            OrgApiKey._org_api_key_id == org_api_key.org_api_key_id)  # pylint: disable=protected-access
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -283,14 +284,16 @@ class TestOrgApiKeyFactoryAsync:
         """
         org_api_key = await OrgApiKeyFactory.create_async(session=session)
         original_last_change_code = org_api_key.last_change_code
-        stmt = select(OrgApiKey).where(OrgApiKey._org_api_key_id == org_api_key.org_api_key_id)
+        stmt = select(OrgApiKey).where(
+            OrgApiKey._org_api_key_id == org_api_key.org_api_key_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         org_api_key_1 = result.scalars().first()
         # org_api_key_1 = await session.query(OrgApiKey).filter_by(
         # org_api_key_id=org_api_key.org_api_key_id).first()
         org_api_key_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(OrgApiKey).where(OrgApiKey._org_api_key_id == org_api_key.org_api_key_id)
+        stmt = select(OrgApiKey).where(
+            OrgApiKey._org_api_key_id == org_api_key.org_api_key_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         org_api_key_2 = result.scalars().first()
         # org_api_key_2 = await session.query(OrgApiKey).filter_by(

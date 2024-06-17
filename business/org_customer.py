@@ -424,7 +424,7 @@ class OrgCustomerBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.org_customer is not None)
+        return self.org_customer is not None
     def to_dict(self):
         """
         #TODO add comment

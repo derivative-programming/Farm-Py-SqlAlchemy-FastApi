@@ -94,12 +94,12 @@ class CustomerRoleManager:
 # endset
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(CustomerRole.customer_id == Customer._customer_id,
+            and_(CustomerRole.customer_id == Customer._customer_id,  # pylint: disable=protected-access
                  CustomerRole.customer_id != 0)
         )
         query = query.outerjoin(  # role_id
             Role,
-            and_(CustomerRole.role_id == Role._role_id,
+            and_(CustomerRole.role_id == Role._role_id,  # pylint: disable=protected-access
                  CustomerRole.role_id != 0)
         )
 # endset
@@ -148,10 +148,10 @@ class CustomerRoleManager:
             str(customer_role_id))
         if not isinstance(customer_role_id, int):
             raise TypeError(
-                f"The customer_role_id must be an integer, "
-                f"got %s instead.",
-                type(customer_role_id))
-        query_filter = CustomerRole._customer_role_id == customer_role_id
+                "The customer_role_id must be an integer, "
+                f"got {type(customer_role_id)} instead.")
+        query_filter = (
+            CustomerRole._customer_role_id == customer_role_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:

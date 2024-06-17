@@ -4,7 +4,7 @@
     #TODO add comment
 """
 import uuid
-from datetime import datetime, date
+from datetime import datetime, date  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import pytest_asyncio

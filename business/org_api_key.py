@@ -605,7 +605,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.org_api_key is not None)
+        return self.org_api_key is not None
     def to_dict(self):
         """
         #TODO add comment

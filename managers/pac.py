@@ -164,10 +164,10 @@ class PacManager:
             str(pac_id))
         if not isinstance(pac_id, int):
             raise TypeError(
-                f"The pac_id must be an integer, "
-                f"got %s instead.",
-                type(pac_id))
-        query_filter = Pac._pac_id == pac_id
+                "The pac_id must be an integer, "
+                f"got {type(pac_id)} instead.")
+        query_filter = (
+            Pac._pac_id == pac_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Pac]:

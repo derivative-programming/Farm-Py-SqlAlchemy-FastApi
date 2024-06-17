@@ -145,7 +145,7 @@ async def test_init_endpoint_url_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    
+
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
     ) as ac:
@@ -169,7 +169,7 @@ async def test_init_endpoint_invalid_code_failure(
 
     land_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
-    
+
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
     ) as ac:
@@ -195,7 +195,7 @@ async def test_init_endpoint_method_failure(
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
-    
+
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
     ) as ac:

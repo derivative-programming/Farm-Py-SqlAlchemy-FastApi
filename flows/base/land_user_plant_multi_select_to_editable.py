@@ -38,7 +38,9 @@ class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
         super()._log_message_and_severity(
             LogSeverity.information_high_detail,
             "Validating...")
-        if plant_code_list_csv == "" and FlowConstants.param_plant_code_list_csv_isRequired is True:
+        if plant_code_list_csv == "" and \
+                FlowConstants.param_plant_code_list_csv_isRequired \
+                is True:
             self._add_field_validation_error(
                 "plantCodeListCsv",
                 "Please enter a plant Code List Csv"
@@ -79,7 +81,7 @@ class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
             if val is True:
                 # item = await item.get_parent_obj()
                 item = await BusObjFactory.create(
-                    item.session,
+                    item.get_session_context(),
                     item.get_parent_name(),
                     item.get_parent_code()
                 )

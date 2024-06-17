@@ -40,5 +40,5 @@ class BaseRouter():
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Unauthorized.")
-        logging.info("auth_dict:" + str(auth_dict))
+        logging.info("auth_dict: %s", str(auth_dict))
         return auth_dict

@@ -185,7 +185,8 @@ class TestFlavorFactoryAsync:
         await session.delete(flavor)
         await session.commit()
         # Construct the select statement
-        stmt = select(Flavor).where(Flavor._flavor_id == flavor.flavor_id)
+        stmt = select(Flavor).where(
+            Flavor._flavor_id == flavor.flavor_id)  # pylint: disable=protected-access
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -269,14 +270,16 @@ class TestFlavorFactoryAsync:
         """
         flavor = await FlavorFactory.create_async(session=session)
         original_last_change_code = flavor.last_change_code
-        stmt = select(Flavor).where(Flavor._flavor_id == flavor.flavor_id)
+        stmt = select(Flavor).where(
+            Flavor._flavor_id == flavor.flavor_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         flavor_1 = result.scalars().first()
         # flavor_1 = await session.query(Flavor).filter_by(
         # flavor_id=flavor.flavor_id).first()
         flavor_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(Flavor).where(Flavor._flavor_id == flavor.flavor_id)
+        stmt = select(Flavor).where(
+            Flavor._flavor_id == flavor.flavor_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         flavor_2 = result.scalars().first()
         # flavor_2 = await session.query(Flavor).filter_by(

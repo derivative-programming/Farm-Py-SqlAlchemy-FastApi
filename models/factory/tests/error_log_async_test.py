@@ -185,7 +185,8 @@ class TestErrorLogFactoryAsync:
         await session.delete(error_log)
         await session.commit()
         # Construct the select statement
-        stmt = select(ErrorLog).where(ErrorLog._error_log_id == error_log.error_log_id)
+        stmt = select(ErrorLog).where(
+            ErrorLog._error_log_id == error_log.error_log_id)  # pylint: disable=protected-access
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -277,14 +278,16 @@ class TestErrorLogFactoryAsync:
         """
         error_log = await ErrorLogFactory.create_async(session=session)
         original_last_change_code = error_log.last_change_code
-        stmt = select(ErrorLog).where(ErrorLog._error_log_id == error_log.error_log_id)
+        stmt = select(ErrorLog).where(
+            ErrorLog._error_log_id == error_log.error_log_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         error_log_1 = result.scalars().first()
         # error_log_1 = await session.query(ErrorLog).filter_by(
         # error_log_id=error_log.error_log_id).first()
         error_log_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(ErrorLog).where(ErrorLog._error_log_id == error_log.error_log_id)
+        stmt = select(ErrorLog).where(
+            ErrorLog._error_log_id == error_log.error_log_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         error_log_2 = result.scalars().first()
         # error_log_2 = await session.query(ErrorLog).filter_by(

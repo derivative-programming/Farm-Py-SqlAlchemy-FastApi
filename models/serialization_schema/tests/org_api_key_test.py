@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import OrgApiKey
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def org_api_key(session):
     """
-    #TODO add comment
+    Fixture to create and return a OrgApiKey instance using the OrgApiKeyFactory.
+    Args:
+        session: The database session.
+    Returns:
+        OrgApiKey: A newly created OrgApiKey instance.
     """
-    # Use the OrgApiKeyFactory to create and return a org_api_key instance
     return OrgApiKeyFactory.create(session=session)
 class TestOrgApiKeySchema:
     """
-    #TODO add comment
+    Tests for the OrgApiKey serialization schema.
     """
     # Sample data for a OrgApiKey instance
     sample_data = {
@@ -58,10 +62,12 @@ class TestOrgApiKeySchema:
     }
     def test_org_api_key_serialization(self, org_api_key: OrgApiKey):
         """
-            #TODO add comment
+        Test the serialization of a OrgApiKey instance using OrgApiKeySchema.
+        Args:
+            org_api_key (OrgApiKey): A OrgApiKey instance to serialize.
         """
         schema = OrgApiKeySchema()
-        result = schema.dump(org_api_key)
+        result: Dict[str, Any] = schema.dump(org_api_key)
         assert result['code'] == str(org_api_key.code)
         assert result['last_change_code'] == (
             org_api_key.last_change_code)

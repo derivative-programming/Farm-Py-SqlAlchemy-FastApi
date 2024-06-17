@@ -145,7 +145,7 @@ class FlavorManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Flavor.pac_id == Pac._pac_id,
+            and_(Flavor.pac_id == Pac._pac_id,  # pylint: disable=protected-access
                  Flavor.pac_id != 0)
         )
 # endset
@@ -190,10 +190,10 @@ class FlavorManager:
             str(flavor_id))
         if not isinstance(flavor_id, int):
             raise TypeError(
-                f"The flavor_id must be an integer, "
-                f"got %s instead.",
-                type(flavor_id))
-        query_filter = Flavor._flavor_id == flavor_id
+                "The flavor_id must be an integer, "
+                f"got {type(flavor_id)} instead.")
+        query_filter = (
+            Flavor._flavor_id == flavor_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Flavor]:

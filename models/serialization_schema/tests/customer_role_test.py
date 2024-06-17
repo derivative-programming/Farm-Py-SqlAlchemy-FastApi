@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import CustomerRole
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def customer_role(session):
     """
-    #TODO add comment
+    Fixture to create and return a CustomerRole instance using the CustomerRoleFactory.
+    Args:
+        session: The database session.
+    Returns:
+        CustomerRole: A newly created CustomerRole instance.
     """
-    # Use the CustomerRoleFactory to create and return a customer_role instance
     return CustomerRoleFactory.create(session=session)
 class TestCustomerRoleSchema:
     """
-    #TODO add comment
+    Tests for the CustomerRole serialization schema.
     """
     # Sample data for a CustomerRole instance
     sample_data = {
@@ -49,10 +53,12 @@ class TestCustomerRoleSchema:
     }
     def test_customer_role_serialization(self, customer_role: CustomerRole):
         """
-            #TODO add comment
+        Test the serialization of a CustomerRole instance using CustomerRoleSchema.
+        Args:
+            customer_role (CustomerRole): A CustomerRole instance to serialize.
         """
         schema = CustomerRoleSchema()
-        result = schema.dump(customer_role)
+        result: Dict[str, Any] = schema.dump(customer_role)
         assert result['code'] == str(customer_role.code)
         assert result['last_change_code'] == (
             customer_role.last_change_code)

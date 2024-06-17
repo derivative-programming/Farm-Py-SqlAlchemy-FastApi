@@ -53,26 +53,46 @@ class FlowLandAddPlantResult():
 
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'land_code': str(self.land_code),
-            'plant_code': str(self.plant_code),
-            'output_flavor_code': str(self.output_flavor_code),
-            'output_other_flavor': self.output_other_flavor,
-            'output_some_int_val': self.output_some_int_val,
-            'output_some_big_int_val': self.output_some_big_int_val,
-            'output_some_bit_val': self.output_some_bit_val,
-            'output_is_edit_allowed': self.output_is_edit_allowed,
-            'output_is_delete_allowed': self.output_is_delete_allowed,
-            'output_some_float_val': self.output_some_float_val,
-            'output_some_decimal_val': str(self.output_some_decimal_val),
-            'output_some_utc_date_time_val': self.output_some_utc_date_time_val.isoformat(),
-            'output_some_date_val': self.output_some_date_val.isoformat(),
-            'output_some_money_val': str(self.output_some_money_val),
-            'output_some_n_var_char_val': self.output_some_n_var_char_val,
-            'output_some_var_char_val': self.output_some_var_char_val,
-            'output_some_text_val': self.output_some_text_val,
-            'output_some_phone_number': self.output_some_phone_number,
-            'output_some_email_address': self.output_some_email_address
+            'context_object_code':
+                str(self.context_object_code),
+            'land_code':
+                str(self.land_code),
+            'plant_code':
+                str(self.plant_code),
+            'output_flavor_code':
+                str(self.output_flavor_code),
+            'output_other_flavor':
+                self.output_other_flavor,
+            'output_some_int_val':
+                self.output_some_int_val,
+            'output_some_big_int_val':
+                self.output_some_big_int_val,
+            'output_some_bit_val':
+                self.output_some_bit_val,
+            'output_is_edit_allowed':
+                self.output_is_edit_allowed,
+            'output_is_delete_allowed':
+                self.output_is_delete_allowed,
+            'output_some_float_val':
+                self.output_some_float_val,
+            'output_some_decimal_val':
+                str(self.output_some_decimal_val),
+            'output_some_utc_date_time_val':
+                self.output_some_utc_date_time_val.isoformat(),
+            'output_some_date_val':
+                self.output_some_date_val.isoformat(),
+            'output_some_money_val':
+                str(self.output_some_money_val),
+            'output_some_n_var_char_val':
+                self.output_some_n_var_char_val,
+            'output_some_var_char_val':
+                self.output_some_var_char_val,
+            'output_some_text_val':
+                self.output_some_text_val,
+            'output_some_phone_number':
+                self.output_some_phone_number,
+            'output_some_email_address':
+                self.output_some_email_address
 # endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
@@ -102,12 +122,12 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         request_is_edit_allowed: bool = False,
         request_is_delete_allowed: bool = False,
         request_some_float_val: float = 0,
-        request_some_decimal_val: Decimal = 0,
+        request_some_decimal_val: Decimal = Decimal(0),
         request_some_utc_date_time_val: datetime = (
             TypeConversion.get_default_date_time()),
         request_some_date_val: date = (
             TypeConversion.get_default_date()),
-        request_some_money_val: Decimal = 0,
+        request_some_money_val: Decimal = Decimal(0),
         request_some_n_var_char_val: str = "",
         request_some_var_char_val: str = "",
         request_some_text_val: str = "",

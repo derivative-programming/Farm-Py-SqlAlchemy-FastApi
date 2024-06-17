@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import Tac
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def tac(session):
     """
-    #TODO add comment
+    Fixture to create and return a Tac instance using the TacFactory.
+    Args:
+        session: The database session.
+    Returns:
+        Tac: A newly created Tac instance.
     """
-    # Use the TacFactory to create and return a tac instance
     return TacFactory.create(session=session)
 class TestTacSchema:
     """
-    #TODO add comment
+    Tests for the Tac serialization schema.
     """
     # Sample data for a Tac instance
     sample_data = {
@@ -50,10 +54,12 @@ class TestTacSchema:
     }
     def test_tac_serialization(self, tac: Tac):
         """
-            #TODO add comment
+        Test the serialization of a Tac instance using TacSchema.
+        Args:
+            tac (Tac): A Tac instance to serialize.
         """
         schema = TacSchema()
-        result = schema.dump(tac)
+        result: Dict[str, Any] = schema.dump(tac)
         assert result['code'] == str(tac.code)
         assert result['last_change_code'] == (
             tac.last_change_code)

@@ -92,15 +92,19 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
             obj2 = model_class(*args, **kwargs)
             return obj2
 
-        request_flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
+        request_flavor_code_instance = (  # requestFlavorCode
+            FlavorFactory.create(session=session))
+
 # endset
 
-        kwargs["request_flavor_code"] = request_flavor_code_instance.code  # requestFlavorCode
+        kwargs["request_flavor_code"] = (  # requestFlavorCode
+            request_flavor_code_instance.code)
 # endset
 
         obj = model_class(*args, **kwargs)
 
-        obj.request_flavor_code = request_flavor_code_instance.code  # requestFlavorCode
+        obj.request_flavor_code = (  # requestFlavorCode
+            request_flavor_code_instance.code)
 # endset
 
         return obj
@@ -124,17 +128,20 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
             An instance of LandAddPlantPostModelRequest.
         """
 
-        request_flavor_code_instance = FlavorFactory.create(session=session)  # requestFlavorCode
+        request_flavor_code_instance = (  # requestFlavorCode
+            FlavorFactory.create(session=session))
 # endset
 
-        kwargs["request_flavor_code"] = request_flavor_code_instance.code  # requestFlavorCode
+        kwargs["request_flavor_code"] = (  # requestFlavorCode
+            request_flavor_code_instance.code)
 # endset
 
         obj = model_class(*args, **kwargs)
 
-        obj.request_flavor_code = request_flavor_code_instance.code  # requestFlavorCode
+        obj.request_flavor_code = (  # requestFlavorCode
+            request_flavor_code_instance.code)
 # endset
-        
+
         return obj
 
     @classmethod
@@ -155,18 +162,21 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
             An instance of LandAddPlantPostModelRequest.
         """
 
-        request_flavor_code_instance = await FlavorFactory.create_async(  # requestFlavorCode
-            session=session)
+        request_flavor_code_instance = (  # requestFlavorCode
+            await FlavorFactory.create_async(session=session))
+
 # endset
 
-        kwargs["request_flavor_code"] = request_flavor_code_instance.code  # requestFlavorCode
+        kwargs["request_flavor_code"] = (  # requestFlavorCode
+            request_flavor_code_instance.code)
 # endset
 
         obj = LandAddPlantPostModelRequestFactory.build(
             session=None, *args, **kwargs
         )
 
-        obj.request_flavor_code = request_flavor_code_instance.code  # requestFlavorCode
+        obj.request_flavor_code = (  # requestFlavorCode
+            request_flavor_code_instance.code)
 # endset
 
         return obj

@@ -50,37 +50,39 @@ async def overridden_get_db():
     await engine.dispose()
 
 
-@pytest_asyncio.fixture(scope="function")
-async def old_api_key_fixture(overridden_get_db: AsyncSession):
-    """
-        Build a test api key for unit testing
-    """
+# @pytest_asyncio.fixture(scope="function")
+# async def old_api_key_fixture(overridden_get_db: AsyncSession):
+#     """
+#         Build a test api key for unit testing
+#     """
 
-    session_context = SessionContext(dict(), overridden_get_db)
+#     session_context = SessionContext(dict(), overridden_get_db)
 
-    await current_runtime.initialize(session_context)
+#     await current_runtime.initialize(session_context)
 
-    customer = await model_factorys.CustomerFactory.create_async(
-        overridden_get_db)
+#     customer = await model_factorys.CustomerFactory.create_async(
+#         overridden_get_db)
 
-    customer_bus_obj = business.CustomerBusObj(session_context)
+#     customer_bus_obj = business.CustomerBusObj(session_context)
 
-    await customer_bus_obj.load_from_obj_instance(customer)
+#     await customer_bus_obj.load_from_obj_instance(customer)
 
-    tac_bus_obj = business.TacBusObj(session_context)
+#     tac_bus_obj = business.TacBusObj(session_context)
 
-    await tac_bus_obj.load_from_id(customer_bus_obj.tac_id)
+#     await tac_bus_obj.load_from_id(customer_bus_obj.tac_id)
 
-    pac_bus_obj = business.PacBusObj(session_context)
+#     pac_bus_obj = business.PacBusObj(session_context)
 
-    await pac_bus_obj.load_from_id(tac_bus_obj.pac_id)
+#     assert tac_bus_obj.pac_id is not None
 
-    api_dict = {'CustomerCode': str(customer_bus_obj.code),
-                'TacCode': str(tac_bus_obj.code),
-                'PacCode': str(pac_bus_obj.code),
-                'UserName': customer.email}
-    test_api_key = ApiToken.create_token(api_dict, 1)
-    return test_api_key
+#     await pac_bus_obj.load_from_id(tac_bus_obj.pac_id)
+
+#     api_dict = {'CustomerCode': str(customer_bus_obj.code),
+#                 'TacCode': str(tac_bus_obj.code),
+#                 'PacCode': str(pac_bus_obj.code),
+#                 'UserName': customer.email}
+#     test_api_key = ApiToken.create_token(api_dict, 1)
+#     return test_api_key
 
 
 @pytest_asyncio.fixture(scope="function")

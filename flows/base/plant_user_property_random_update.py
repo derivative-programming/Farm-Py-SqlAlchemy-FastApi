@@ -75,7 +75,7 @@ class BaseFlowPlantUserPropertyRandomUpdate(BaseFlow):
             if val is True:
                 # item = await item.get_parent_obj()
                 item = await BusObjFactory.create(
-                    item.session,
+                    item.get_session_context(),
                     item.get_parent_name(),
                     item.get_parent_code()
                 )

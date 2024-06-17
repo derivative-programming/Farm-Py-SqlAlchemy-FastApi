@@ -32,12 +32,18 @@ class FlowTacRegisterInitObjWFResult():
         """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'email': self.email,
-            'password': self.password,
-            'confirm_password': self.confirm_password,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
+            'context_object_code':
+                str(self.context_object_code),
+            'email':
+                self.email,
+            'password':
+                self.password,
+            'confirm_password':
+                self.confirm_password,
+            'first_name':
+                self.first_name,
+            'last_name':
+                self.last_name,
 # endset  # noqa: E122
         }
         # Serialize the dictionary to JSON

@@ -145,7 +145,7 @@ class TriStateFilterManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(TriStateFilter.pac_id == Pac._pac_id,
+            and_(TriStateFilter.pac_id == Pac._pac_id,  # pylint: disable=protected-access
                  TriStateFilter.pac_id != 0)
         )
 # endset
@@ -190,10 +190,10 @@ class TriStateFilterManager:
             str(tri_state_filter_id))
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(
-                f"The tri_state_filter_id must be an integer, "
-                f"got %s instead.",
-                type(tri_state_filter_id))
-        query_filter = TriStateFilter._tri_state_filter_id == tri_state_filter_id
+                "The tri_state_filter_id must be an integer, "
+                f"got {type(tri_state_filter_id)} instead.")
+        query_filter = (
+            TriStateFilter._tri_state_filter_id == tri_state_filter_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[TriStateFilter]:

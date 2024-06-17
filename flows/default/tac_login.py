@@ -33,13 +33,20 @@ class FlowTacLoginResult():
         """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'customer_code': str(self.customer_code),
-            'email': self.email,
-            'user_code_value': str(self.user_code_value),
-            'utc_offset_in_minutes': self.utc_offset_in_minutes,
-            'role_name_csv_list': self.role_name_csv_list,
-            'api_key': self.api_key,
+            'context_object_code':
+                str(self.context_object_code),
+            'customer_code':
+                str(self.customer_code),
+            'email':
+                self.email,
+            'user_code_value':
+                str(self.user_code_value),
+            'utc_offset_in_minutes':
+                self.utc_offset_in_minutes,
+            'role_name_csv_list':
+                self.role_name_csv_list,
+            'api_key':
+                self.api_key,
 # endset  # noqa: E122
         }
         # Serialize the dictionary to JSON

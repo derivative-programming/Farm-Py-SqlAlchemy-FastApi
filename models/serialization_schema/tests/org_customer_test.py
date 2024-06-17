@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import OrgCustomer
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def org_customer(session):
     """
-    #TODO add comment
+    Fixture to create and return a OrgCustomer instance using the OrgCustomerFactory.
+    Args:
+        session: The database session.
+    Returns:
+        OrgCustomer: A newly created OrgCustomer instance.
     """
-    # Use the OrgCustomerFactory to create and return a org_customer instance
     return OrgCustomerFactory.create(session=session)
 class TestOrgCustomerSchema:
     """
-    #TODO add comment
+    Tests for the OrgCustomer serialization schema.
     """
     # Sample data for a OrgCustomer instance
     sample_data = {
@@ -48,10 +52,12 @@ class TestOrgCustomerSchema:
     }
     def test_org_customer_serialization(self, org_customer: OrgCustomer):
         """
-            #TODO add comment
+        Test the serialization of a OrgCustomer instance using OrgCustomerSchema.
+        Args:
+            org_customer (OrgCustomer): A OrgCustomer instance to serialize.
         """
         schema = OrgCustomerSchema()
-        result = schema.dump(org_customer)
+        result: Dict[str, Any] = schema.dump(org_customer)
         assert result['code'] == str(org_customer.code)
         assert result['last_change_code'] == (
             org_customer.last_change_code)

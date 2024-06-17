@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import TriStateFilter
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def tri_state_filter(session):
     """
-    #TODO add comment
+    Fixture to create and return a TriStateFilter instance using the TriStateFilterFactory.
+    Args:
+        session: The database session.
+    Returns:
+        TriStateFilter: A newly created TriStateFilter instance.
     """
-    # Use the TriStateFilterFactory to create and return a tri_state_filter instance
     return TriStateFilterFactory.create(session=session)
 class TestTriStateFilterSchema:
     """
-    #TODO add comment
+    Tests for the TriStateFilter serialization schema.
     """
     # Sample data for a TriStateFilter instance
     sample_data = {
@@ -51,10 +55,12 @@ class TestTriStateFilterSchema:
     }
     def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter):
         """
-            #TODO add comment
+        Test the serialization of a TriStateFilter instance using TriStateFilterSchema.
+        Args:
+            tri_state_filter (TriStateFilter): A TriStateFilter instance to serialize.
         """
         schema = TriStateFilterSchema()
-        result = schema.dump(tri_state_filter)
+        result: Dict[str, Any] = schema.dump(tri_state_filter)
         assert result['code'] == str(tri_state_filter.code)
         assert result['last_change_code'] == (
             tri_state_filter.last_change_code)

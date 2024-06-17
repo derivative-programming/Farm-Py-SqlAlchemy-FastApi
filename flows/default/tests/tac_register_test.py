@@ -44,8 +44,8 @@ class TestTacRegisterPostModelResponse:
         assert data["utc_offset_in_minutes"] == result.utc_offset_in_minutes
         assert data["role_name_csv_list"] == result.role_name_csv_list
         assert data["api_key"] == result.api_key
-# endset
-    #todo finish test
+# endsets
+    #TODO finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """

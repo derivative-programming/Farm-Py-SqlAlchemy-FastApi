@@ -113,12 +113,12 @@ class PlantManager:
 # endset
         query = query.outerjoin(  # flvr_foreign_key_id
             Flavor,
-            and_(Plant.flvr_foreign_key_id == Flavor._flavor_id,
+            and_(Plant.flvr_foreign_key_id == Flavor._flavor_id,  # pylint: disable=protected-access
                  Plant.flvr_foreign_key_id != 0)
         )
         query = query.outerjoin(  # land_id
             Land,
-            and_(Plant.land_id == Land._land_id,
+            and_(Plant.land_id == Land._land_id,  # pylint: disable=protected-access
                  Plant.land_id != 0)
         )
 # endset
@@ -178,11 +178,11 @@ class PlantManager:
             str(plant_id))
         if not isinstance(plant_id, int):
             raise TypeError(
-                f"The plant_id must be an integer, "
-                f"got %s instead.",
-                type(plant_id))
+                "The plant_id must be an integer, "
+                f"got {type(plant_id)} instead.")
 
-        query_filter = Plant._plant_id == plant_id
+        query_filter = (
+            Plant._plant_id == plant_id)  # pylint: disable=protected-access
 
         query_results = await self._run_query(query_filter)
 
@@ -492,9 +492,16 @@ class PlantManager:
 
     ##GENLOOPPropStart
     ##GENIF[isFK=false,forceDBColumnIndex=true]Start
-    ##GENREMOVECOMMENTasync def get_by_GENVALSnakeName_prop(self, GENVALSnakeName) -> List[GENVALPascalObjectName]:
-    ##GENREMOVECOMMENT    logging.info("GENVALPascalObjectNameManager.get_by_GENVALSnakeName_prop")
-    ##GENREMOVECOMMENT    query_filter = GENVALPascalObjectName._GENVALSnakeName == GENVALSnakeName
+
+    ##GENREMOVECOMMENTasync def get_by_GENVALSnakeName_prop(
+    ##GENREMOVECOMMENT    self, 
+    ##GENREMOVECOMMENT    GENVALSnakeName
+    ##GENREMOVECOMMENT) -> List[GENVALPascalObjectName]:
+    ##GENREMOVECOMMENT    logging.info(
+    ##GENREMOVECOMMENT        "GENVALPascalObjectNameManager"
+    ##GENREMOVECOMMENT        ".get_by_GENVALSnakeName_prop")
+    ##GENREMOVECOMMENT    query_filter = (
+    ##GENREMOVECOMMENT        GENVALPascalObjectName._GENVALSnakeName == GENVALSnakeName)
     ##GENREMOVECOMMENT    query_results = await self._run_query(query_filter)
     ##GENREMOVECOMMENT    return query_results
     ##GENIF[isFK=false,forceDBColumnIndex=true]End

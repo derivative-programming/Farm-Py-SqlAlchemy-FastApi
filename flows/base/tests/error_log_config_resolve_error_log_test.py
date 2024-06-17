@@ -51,5 +51,7 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         role_required = "Config"
         if len(role_required) > 0:
             await flow._process_security_rules(error_log)
-            assert '' in flow.queued_validation_errors and flow.queued_validation_errors[''] == "Unautorized access. " + role_required + " role not found."
+            assert '' in flow.queued_validation_errors
+            assert flow.queued_validation_errors[''] == (
+                "Unautorized access. " + role_required + " role not found.")
             session_context.role_name_csv = role_required

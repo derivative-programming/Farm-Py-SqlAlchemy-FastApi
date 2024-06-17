@@ -123,8 +123,9 @@ class LandPlantListGetModelRequestFactory(
             #TODO add comment
         """
 
-        flavor_code_instance = await FlavorFactory.create_async(  # requestFlavorCode
-            session=session)
+        flavor_code_instance = (  # requestFlavorCode
+            await FlavorFactory.create_async(session=session))
+
 # endset
 
         kwargs["flavor_code"] = flavor_code_instance.code  # requestFlavorCode

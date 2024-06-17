@@ -28,8 +28,10 @@ class FlowTacFarmDashboardInitReportResult():
         """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'customer_code': str(self.customer_code),
+            'context_object_code':
+                str(self.context_object_code),
+            'customer_code':
+                str(self.customer_code),
 # endset  # noqa: E122
         }
         # Serialize the dictionary to JSON

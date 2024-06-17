@@ -28,8 +28,10 @@ class FlowCustomerBuildTempApiKeyResult():
         """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'tmp_org_api_key_code': str(self.tmp_org_api_key_code),
+            'context_object_code':
+                str(self.context_object_code),
+            'tmp_org_api_key_code':
+                str(self.tmp_org_api_key_code),
 # endset  # noqa: E122
         }
         # Serialize the dictionary to JSON

@@ -135,7 +135,7 @@ class LandManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Land.pac_id == Pac._pac_id,
+            and_(Land.pac_id == Pac._pac_id,  # pylint: disable=protected-access
                  Land.pac_id != 0)
         )
 # endset
@@ -180,10 +180,10 @@ class LandManager:
             str(land_id))
         if not isinstance(land_id, int):
             raise TypeError(
-                f"The land_id must be an integer, "
-                f"got %s instead.",
-                type(land_id))
-        query_filter = Land._land_id == land_id
+                "The land_id must be an integer, "
+                f"got {type(land_id)} instead.")
+        query_filter = (
+            Land._land_id == land_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Land]:

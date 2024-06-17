@@ -537,7 +537,7 @@ class TacBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.tac is not None)
+        return self.tac is not None
     def to_dict(self):
         """
         #TODO add comment

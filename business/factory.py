@@ -42,7 +42,7 @@ class BusObjFactory:
         if code is not None:
             if name == '':
                 raise ValueError(f"Unknown object type: {name}")
-            
+
             elif name == 'Customer':
                 return await (
                     CustomerBusObj(session_context)

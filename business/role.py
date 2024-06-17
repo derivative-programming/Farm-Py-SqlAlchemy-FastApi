@@ -533,7 +533,7 @@ class RoleBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.role is not None)
+        return self.role is not None
     def to_dict(self):
         """
         #TODO add comment

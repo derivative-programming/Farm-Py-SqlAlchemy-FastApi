@@ -185,7 +185,8 @@ class TestCustomerRoleFactoryAsync:
         await session.delete(customer_role)
         await session.commit()
         # Construct the select statement
-        stmt = select(CustomerRole).where(CustomerRole._customer_role_id == customer_role.customer_role_id)
+        stmt = select(CustomerRole).where(
+            CustomerRole._customer_role_id == customer_role.customer_role_id)  # pylint: disable=protected-access
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -263,14 +264,16 @@ class TestCustomerRoleFactoryAsync:
         """
         customer_role = await CustomerRoleFactory.create_async(session=session)
         original_last_change_code = customer_role.last_change_code
-        stmt = select(CustomerRole).where(CustomerRole._customer_role_id == customer_role.customer_role_id)
+        stmt = select(CustomerRole).where(
+            CustomerRole._customer_role_id == customer_role.customer_role_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         customer_role_1 = result.scalars().first()
         # customer_role_1 = await session.query(CustomerRole).filter_by(
         # customer_role_id=customer_role.customer_role_id).first()
         customer_role_1.code = uuid.uuid4()
         await session.commit()
-        stmt = select(CustomerRole).where(CustomerRole._customer_role_id == customer_role.customer_role_id)
+        stmt = select(CustomerRole).where(
+            CustomerRole._customer_role_id == customer_role.customer_role_id)  # pylint: disable=protected-access
         result = await session.execute(stmt)
         customer_role_2 = result.scalars().first()
         # customer_role_2 = await session.query(CustomerRole).filter_by(

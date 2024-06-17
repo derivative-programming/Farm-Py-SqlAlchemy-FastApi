@@ -155,7 +155,7 @@ class RoleManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Role.pac_id == Pac._pac_id,
+            and_(Role.pac_id == Pac._pac_id,  # pylint: disable=protected-access
                  Role.pac_id != 0)
         )
 # endset
@@ -200,10 +200,10 @@ class RoleManager:
             str(role_id))
         if not isinstance(role_id, int):
             raise TypeError(
-                f"The role_id must be an integer, "
-                f"got %s instead.",
-                type(role_id))
-        query_filter = Role._role_id == role_id
+                "The role_id must be an integer, "
+                f"got {type(role_id)} instead.")
+        query_filter = (
+            Role._role_id == role_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Role]:

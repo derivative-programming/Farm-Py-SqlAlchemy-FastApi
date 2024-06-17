@@ -28,19 +28,6 @@ def engine():
     engine.dispose()
 
 
-# @pytest.fixture(scope="function")
-# def session(engine):
-#     """
-#         #TODO add comment
-#     """
-
-#     Base.metadata.create_all(engine)
-#     SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-#     session_instance = SessionLocal()
-#     yield session_instance
-#     session_instance.close()
-
-
 @pytest.fixture(scope="function")
 def session(engine):
     """
@@ -64,13 +51,13 @@ def session(engine):
     """
     # Create all tables in the database
     Base.metadata.create_all(engine)
-    
+
     # Create a configured "Session" class
     SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
-    
+
     # Instantiate a session
     session_instance = SessionLocal()
-    
+
     try:
         yield session_instance
     finally:

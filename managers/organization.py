@@ -90,7 +90,7 @@ class OrganizationManager:
 # endset
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Organization.tac_id == Tac._tac_id,
+            and_(Organization.tac_id == Tac._tac_id,  # pylint: disable=protected-access
                  Organization.tac_id != 0)
         )
 # endset
@@ -135,10 +135,10 @@ class OrganizationManager:
             str(organization_id))
         if not isinstance(organization_id, int):
             raise TypeError(
-                f"The organization_id must be an integer, "
-                f"got %s instead.",
-                type(organization_id))
-        query_filter = Organization._organization_id == organization_id
+                "The organization_id must be an integer, "
+                f"got {type(organization_id)} instead.")
+        query_filter = (
+            Organization._organization_id == organization_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Organization]:

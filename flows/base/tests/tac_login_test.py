@@ -41,9 +41,15 @@ class TestBaseFlowTacLogin():
         #TODO add validation checks - calculatedIsRowLevelOrgCustomerSecurityUsed
         #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
         if FlowConstants.param_email_isRequired is True:
-            assert 'email' in flow.queued_validation_errors and flow.queued_validation_errors['email'] == 'Please enter a Email'
+            assert 'email' in flow.queued_validation_errors
+            assert flow.queued_validation_errors[
+                'email'] == (
+                'Please enter a Email')
         if FlowConstants.param_password_isRequired is True:
-            assert 'password' in flow.queued_validation_errors and flow.queued_validation_errors['password'] == 'Please enter a '
+            assert 'password' in flow.queued_validation_errors
+            assert flow.queued_validation_errors[
+                'password'] == (
+                'Please enter a ')
 # endset
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
@@ -56,5 +62,7 @@ class TestBaseFlowTacLogin():
         role_required = ""
         if len(role_required) > 0:
             await flow._process_security_rules(tac)
-            assert '' in flow.queued_validation_errors and flow.queued_validation_errors[''] == "Unautorized access. " + role_required + " role not found."
+            assert '' in flow.queued_validation_errors
+            assert flow.queued_validation_errors[''] == (
+                "Unautorized access. " + role_required + " role not found.")
             session_context.role_name_csv = role_required

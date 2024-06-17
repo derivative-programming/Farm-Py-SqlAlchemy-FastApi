@@ -46,26 +46,46 @@ class FlowLandAddPlantInitObjWFResult():
         """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'request_flavor_code': str(self.request_flavor_code),
-            'request_other_flavor': self.request_other_flavor,
-            'request_some_int_val': self.request_some_int_val,
-            'request_some_big_int_val': self.request_some_big_int_val,
-            'request_some_bit_val': self.request_some_bit_val,
-            'request_is_delete_allowed': self.request_is_delete_allowed,
-            'request_is_edit_allowed': self.request_is_edit_allowed,
-            'request_some_float_val': self.request_some_float_val,
-            'request_some_decimal_val': str(self.request_some_decimal_val),
-            'request_some_utc_date_time_val': self.request_some_utc_date_time_val.isoformat(),
-            'request_some_date_val': self.request_some_date_val.isoformat(),
-            'request_some_money_val': str(self.request_some_money_val),
-            'request_some_n_var_char_val': self.request_some_n_var_char_val,
-            'request_some_var_char_val': self.request_some_var_char_val,
-            'request_some_text_val': self.request_some_text_val,
-            'request_some_phone_number': self.request_some_phone_number,
-            'request_some_email_address': self.request_some_email_address,
-            'land_name': self.land_name,
-            'tac_code': str(self.tac_code),
+            'context_object_code':
+                str(self.context_object_code),
+            'request_flavor_code':
+                str(self.request_flavor_code),
+            'request_other_flavor':
+                self.request_other_flavor,
+            'request_some_int_val':
+                self.request_some_int_val,
+            'request_some_big_int_val':
+                self.request_some_big_int_val,
+            'request_some_bit_val':
+                self.request_some_bit_val,
+            'request_is_delete_allowed':
+                self.request_is_delete_allowed,
+            'request_is_edit_allowed':
+                self.request_is_edit_allowed,
+            'request_some_float_val':
+                self.request_some_float_val,
+            'request_some_decimal_val':
+                str(self.request_some_decimal_val),
+            'request_some_utc_date_time_val':
+                self.request_some_utc_date_time_val.isoformat(),
+            'request_some_date_val':
+                self.request_some_date_val.isoformat(),
+            'request_some_money_val':
+                str(self.request_some_money_val),
+            'request_some_n_var_char_val':
+                self.request_some_n_var_char_val,
+            'request_some_var_char_val':
+                self.request_some_var_char_val,
+            'request_some_text_val':
+                self.request_some_text_val,
+            'request_some_phone_number':
+                self.request_some_phone_number,
+            'request_some_email_address':
+                self.request_some_email_address,
+            'land_name':
+                self.land_name,
+            'tac_code':
+                str(self.tac_code),
 # endset  # noqa: E122
         }
         # Serialize the dictionary to JSON

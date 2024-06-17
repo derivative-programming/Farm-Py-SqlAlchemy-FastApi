@@ -164,7 +164,7 @@ class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
     ) -> LandAddPlantInitObjWFGetInitModelResponse:
         """
             #TODO add comment
-        """ 
+        """
 
         try:
             logging.info(

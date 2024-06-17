@@ -28,7 +28,8 @@ class FlowPacUserDateGreaterThanFilterListInitReportResult():
         """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
+            'context_object_code':
+                str(self.context_object_code),
 
 # endset  # noqa: E122
         }

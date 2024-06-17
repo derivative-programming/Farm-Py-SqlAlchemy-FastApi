@@ -8,6 +8,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 
 import pytest
 import pytz
@@ -23,15 +24,21 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def plant(session):
     """
-    #TODO add comment
+    Fixture to create and return a Plant instance using the PlantFactory.
+    
+    Args:
+        session: The database session.
+
+    Returns:
+        Plant: A newly created Plant instance.
     """
-    # Use the PlantFactory to create and return a plant instance
+
     return PlantFactory.create(session=session)
 
 
 class TestPlantSchema:
     """
-    #TODO add comment
+    Tests for the Plant serialization schema.
     """
 
     # Sample data for a Plant instance
@@ -77,11 +84,14 @@ class TestPlantSchema:
 
     def test_plant_serialization(self, plant: Plant):
         """
-            #TODO add comment
+        Test the serialization of a Plant instance using PlantSchema.
+        
+        Args:
+            plant (Plant): A Plant instance to serialize.
         """
 
         schema = PlantSchema()
-        result = schema.dump(plant)
+        result: Dict[str, Any] = schema.dump(plant)
 
         assert result['code'] == str(plant.code)
         assert result['last_change_code'] == (

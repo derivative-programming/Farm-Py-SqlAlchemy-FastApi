@@ -42,27 +42,37 @@ class BaseFlowTacRegister(BaseFlow):
         super()._log_message_and_severity(
             LogSeverity.information_high_detail,
             "Validating...")
-        if email == "" and FlowConstants.param_email_isRequired is True:
+        if email == "" and \
+                FlowConstants.param_email_isRequired \
+                is True:
             self._add_field_validation_error(
                 "email",
                 "Please enter a Email"
             )
-        if password == "" and FlowConstants.param_password_isRequired is True:
+        if password == "" and \
+                FlowConstants.param_password_isRequired \
+                is True:
             self._add_field_validation_error(
                 "password",
                 "Please enter a Password"
             )
-        if confirm_password == "" and FlowConstants.param_confirm_password_isRequired is True:
+        if confirm_password == "" and \
+                FlowConstants.param_confirm_password_isRequired \
+                is True:
             self._add_field_validation_error(
                 "confirmPassword",
                 "Please enter a "
             )
-        if first_name == "" and FlowConstants.param_first_name_isRequired is True:
+        if first_name == "" and \
+                FlowConstants.param_first_name_isRequired \
+                is True:
             self._add_field_validation_error(
                 "firstName",
                 "Please enter a First Name"
             )
-        if last_name == "" and FlowConstants.param_last_name_isRequired is True:
+        if last_name == "" and \
+                FlowConstants.param_last_name_isRequired \
+                is True:
             self._add_field_validation_error(
                 "lastName",
                 "Please enter a Last Name"
@@ -103,7 +113,7 @@ class BaseFlowTacRegister(BaseFlow):
             if val is True:
                 # item = await item.get_parent_obj()
                 item = await BusObjFactory.create(
-                    item.session,
+                    item.get_session_context(),
                     item.get_parent_name(),
                     item.get_parent_code()
                 )

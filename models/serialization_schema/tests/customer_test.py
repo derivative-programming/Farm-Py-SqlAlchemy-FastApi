@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import Customer
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def customer(session):
     """
-    #TODO add comment
+    Fixture to create and return a Customer instance using the CustomerFactory.
+    Args:
+        session: The database session.
+    Returns:
+        Customer: A newly created Customer instance.
     """
-    # Use the CustomerFactory to create and return a customer instance
     return CustomerFactory.create(session=session)
 class TestCustomerSchema:
     """
-    #TODO add comment
+    Tests for the Customer serialization schema.
     """
     # Sample data for a Customer instance
     sample_data = {
@@ -75,10 +79,12 @@ class TestCustomerSchema:
     }
     def test_customer_serialization(self, customer: Customer):
         """
-            #TODO add comment
+        Test the serialization of a Customer instance using CustomerSchema.
+        Args:
+            customer (Customer): A Customer instance to serialize.
         """
         schema = CustomerSchema()
-        result = schema.dump(customer)
+        result: Dict[str, Any] = schema.dump(customer)
         assert result['code'] == str(customer.code)
         assert result['last_change_code'] == (
             customer.last_change_code)

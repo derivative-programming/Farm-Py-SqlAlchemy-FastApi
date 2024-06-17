@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import Pac
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def pac(session):
     """
-    #TODO add comment
+    Fixture to create and return a Pac instance using the PacFactory.
+    Args:
+        session: The database session.
+    Returns:
+        Pac: A newly created Pac instance.
     """
-    # Use the PacFactory to create and return a pac instance
     return PacFactory.create(session=session)
 class TestPacSchema:
     """
-    #TODO add comment
+    Tests for the Pac serialization schema.
     """
     # Sample data for a Pac instance
     sample_data = {
@@ -49,10 +53,12 @@ class TestPacSchema:
     }
     def test_pac_serialization(self, pac: Pac):
         """
-            #TODO add comment
+        Test the serialization of a Pac instance using PacSchema.
+        Args:
+            pac (Pac): A Pac instance to serialize.
         """
         schema = PacSchema()
-        result = schema.dump(pac)
+        result: Dict[str, Any] = schema.dump(pac)
         assert result['code'] == str(pac.code)
         assert result['last_change_code'] == (
             pac.last_change_code)

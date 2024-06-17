@@ -94,12 +94,12 @@ class OrgApiKeyManager:
 # endset
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgApiKey.organization_id == Organization._organization_id,
+            and_(OrgApiKey.organization_id == Organization._organization_id,  # pylint: disable=protected-access
                  OrgApiKey.organization_id != 0)
         )
         query = query.outerjoin(  # org_customer_id
             OrgCustomer,
-            and_(OrgApiKey.org_customer_id == OrgCustomer._org_customer_id,
+            and_(OrgApiKey.org_customer_id == OrgCustomer._org_customer_id,  # pylint: disable=protected-access
                  OrgApiKey.org_customer_id != 0)
         )
 # endset
@@ -148,10 +148,10 @@ class OrgApiKeyManager:
             str(org_api_key_id))
         if not isinstance(org_api_key_id, int):
             raise TypeError(
-                f"The org_api_key_id must be an integer, "
-                f"got %s instead.",
-                type(org_api_key_id))
-        query_filter = OrgApiKey._org_api_key_id == org_api_key_id
+                "The org_api_key_id must be an integer, "
+                f"got {type(org_api_key_id)} instead.")
+        query_filter = (
+            OrgApiKey._org_api_key_id == org_api_key_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgApiKey]:

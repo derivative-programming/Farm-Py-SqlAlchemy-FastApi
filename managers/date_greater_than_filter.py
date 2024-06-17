@@ -1,4 +1,5 @@
 # models/managers/date_greater_than_filter.py
+# pylint: disable=protected-access
 
 """
     #TODO add comment
@@ -249,7 +250,8 @@ class DateGreaterThanFilterManager:
 
         logging.info(
             "DateGreaterThanFilterManager.get_by_id "
-            "start date_greater_than_filter_id:" + str(date_greater_than_filter_id))
+            "start date_greater_than_filter_id: %s",
+            str(date_greater_than_filter_id))
         if not isinstance(date_greater_than_filter_id, int):
             raise TypeError(
                 "The date_greater_than_filter_id must be an integer, "
@@ -484,7 +486,7 @@ class DateGreaterThanFilterManager:
         Retrieve date_greater_than_filters sorted by a
         particular attribute.
         """
-        
+
         if sort_by == "date_greater_than_filter_id":
             sort_by = "_date_greater_than_filter_id"
 

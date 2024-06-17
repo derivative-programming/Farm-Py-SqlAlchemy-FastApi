@@ -90,7 +90,7 @@ class ErrorLogManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(ErrorLog.pac_id == Pac._pac_id,
+            and_(ErrorLog.pac_id == Pac._pac_id,  # pylint: disable=protected-access
                  ErrorLog.pac_id != 0)
         )
 # endset
@@ -135,10 +135,10 @@ class ErrorLogManager:
             str(error_log_id))
         if not isinstance(error_log_id, int):
             raise TypeError(
-                f"The error_log_id must be an integer, "
-                f"got %s instead.",
-                type(error_log_id))
-        query_filter = ErrorLog._error_log_id == error_log_id
+                "The error_log_id must be an integer, "
+                f"got {type(error_log_id)} instead.")
+        query_filter = (
+            ErrorLog._error_log_id == error_log_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[ErrorLog]:

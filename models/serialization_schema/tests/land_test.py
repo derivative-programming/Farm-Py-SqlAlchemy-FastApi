@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import Land
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def land(session):
     """
-    #TODO add comment
+    Fixture to create and return a Land instance using the LandFactory.
+    Args:
+        session: The database session.
+    Returns:
+        Land: A newly created Land instance.
     """
-    # Use the LandFactory to create and return a land instance
     return LandFactory.create(session=session)
 class TestLandSchema:
     """
-    #TODO add comment
+    Tests for the Land serialization schema.
     """
     # Sample data for a Land instance
     sample_data = {
@@ -50,10 +54,12 @@ class TestLandSchema:
     }
     def test_land_serialization(self, land: Land):
         """
-            #TODO add comment
+        Test the serialization of a Land instance using LandSchema.
+        Args:
+            land (Land): A Land instance to serialize.
         """
         schema = LandSchema()
-        result = schema.dump(land)
+        result: Dict[str, Any] = schema.dump(land)
         assert result['code'] == str(land.code)
         assert result['last_change_code'] == (
             land.last_change_code)

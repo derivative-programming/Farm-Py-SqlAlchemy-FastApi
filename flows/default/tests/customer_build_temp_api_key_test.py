@@ -34,8 +34,8 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         # Assert individual fields
         assert data["context_object_code"] == str(result.context_object_code)
         assert data["tmp_org_api_key_code"] == str(result.tmp_org_api_key_code)
-# endset
-    #todo finish test
+# endsets
+    #TODO finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """

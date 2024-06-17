@@ -1018,7 +1018,7 @@ class CustomerBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.customer is not None)
+        return self.customer is not None
     def to_dict(self):
         """
         #TODO add comment

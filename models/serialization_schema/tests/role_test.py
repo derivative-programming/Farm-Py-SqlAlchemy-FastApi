@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import Role
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def role(session):
     """
-    #TODO add comment
+    Fixture to create and return a Role instance using the RoleFactory.
+    Args:
+        session: The database session.
+    Returns:
+        Role: A newly created Role instance.
     """
-    # Use the RoleFactory to create and return a role instance
     return RoleFactory.create(session=session)
 class TestRoleSchema:
     """
-    #TODO add comment
+    Tests for the Role serialization schema.
     """
     # Sample data for a Role instance
     sample_data = {
@@ -50,10 +54,12 @@ class TestRoleSchema:
     }
     def test_role_serialization(self, role: Role):
         """
-            #TODO add comment
+        Test the serialization of a Role instance using RoleSchema.
+        Args:
+            role (Role): A Role instance to serialize.
         """
         schema = RoleSchema()
-        result = schema.dump(role)
+        result: Dict[str, Any] = schema.dump(role)
         assert result['code'] == str(role.code)
         assert result['last_change_code'] == (
             role.last_change_code)

@@ -1188,7 +1188,7 @@ class PlantBusObj(BaseBusObj):
         #TODO add comment
         """
 
-        return (self.plant is not None)
+        return self.plant is not None
 
     def to_dict(self):
         """
@@ -1217,6 +1217,7 @@ class PlantBusObj(BaseBusObj):
         if self.plant.plant_id > 0:
             plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.update(self.plant)
+
         if self.plant.plant_id == 0:
             plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.add(self.plant)

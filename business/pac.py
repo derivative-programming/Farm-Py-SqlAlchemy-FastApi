@@ -502,7 +502,7 @@ class PacBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.pac is not None)
+        return self.pac is not None
     def to_dict(self):
         """
         #TODO add comment

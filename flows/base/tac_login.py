@@ -39,12 +39,16 @@ class BaseFlowTacLogin(BaseFlow):
         super()._log_message_and_severity(
             LogSeverity.information_high_detail,
             "Validating...")
-        if email == "" and FlowConstants.param_email_isRequired is True:
+        if email == "" and \
+                FlowConstants.param_email_isRequired \
+                is True:
             self._add_field_validation_error(
                 "email",
                 "Please enter a Email"
             )
-        if password == "" and FlowConstants.param_password_isRequired is True:
+        if password == "" and \
+                FlowConstants.param_password_isRequired \
+                is True:
             self._add_field_validation_error(
                 "password",
                 "Please enter a "
@@ -85,7 +89,7 @@ class BaseFlowTacLogin(BaseFlow):
             if val is True:
                 # item = await item.get_parent_obj()
                 item = await BusObjFactory.create(
-                    item.session,
+                    item.get_session_context(),
                     item.get_parent_name(),
                     item.get_parent_code()
                 )

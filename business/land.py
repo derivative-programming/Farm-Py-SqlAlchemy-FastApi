@@ -535,7 +535,7 @@ class LandBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.land is not None)
+        return self.land is not None
     def to_dict(self):
         """
         #TODO add comment

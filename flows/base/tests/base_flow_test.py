@@ -5,12 +5,15 @@
     #TODO add comment
 """
 
-import pytest
-from flows.base import BaseFlow
-from flows.base import FlowValidationError
-from helpers import SessionContext
-from unittest.mock import Mock
 import logging
+from unittest.mock import Mock
+
+import pytest
+
+from flows.base import BaseFlow, FlowValidationError
+from helpers import SessionContext
+
+TEST_ERROR_MESSAGE = "Test error message"
 
 class TestBaseFlow():
     """
@@ -38,25 +41,30 @@ class TestBaseFlow():
         #TODO add comment
         """
 
-        base_flow._add_validation_error("Test error message")
-        assert base_flow.queued_validation_errors == {"": "Test error message"}
+        base_flow._add_validation_error(TEST_ERROR_MESSAGE)
+        assert base_flow.queued_validation_errors == {"": TEST_ERROR_MESSAGE}
 
     def test_add_field_validation_error(self, base_flow):
         """
         #TODO add comment
         """
 
-        base_flow._add_field_validation_error("field1", "Test error message")
-        assert base_flow.queued_validation_errors == {"field1": "Test error message"}
+        base_flow._add_field_validation_error(
+            "field1", TEST_ERROR_MESSAGE)
+        assert base_flow.queued_validation_errors == {
+            "field1": TEST_ERROR_MESSAGE}
 
     def test_add_field_validation_error_existing_field(self, base_flow):
         """
         #TODO add comment
         """
 
-        base_flow.queued_validation_errors = {"field1": "Existing error message"}
-        base_flow._add_field_validation_error("field1", "Test error message")
-        assert base_flow.queued_validation_errors == {"field1": "Existing error message,Test error message"}
+        base_flow.queued_validation_errors = {
+            "field1": "Existing error message"}
+        base_flow._add_field_validation_error(
+            "field1", TEST_ERROR_MESSAGE)
+        assert base_flow.queued_validation_errors == {
+            "field1": "Existing error message,Test error message"}
 
     def test_throw_validation_error(self, base_flow):
         """
@@ -64,8 +72,8 @@ class TestBaseFlow():
         """
 
         with pytest.raises(FlowValidationError) as exc_info:
-            base_flow._throw_validation_error("Test error message")
-        assert exc_info.value.error_dict == {"": "Test error message"}
+            base_flow._throw_validation_error(TEST_ERROR_MESSAGE)
+        assert exc_info.value.error_dict == {"": TEST_ERROR_MESSAGE}
 
     def test_throw_field_validation_error(self, base_flow):
         """
@@ -73,18 +81,24 @@ class TestBaseFlow():
         """
 
         with pytest.raises(FlowValidationError) as exc_info:
-            base_flow._throw_field_validation_error("field1", "Test error message")
-        assert exc_info.value.error_dict == {"field1": "Test error message"}
+            base_flow._throw_field_validation_error(
+                "field1",
+                TEST_ERROR_MESSAGE
+            )
+        assert exc_info.value.error_dict == {
+            "field1": TEST_ERROR_MESSAGE}
 
     def test_throw_queued_validation_errors(self, base_flow):
         """
         #TODO add comment
         """
 
-        base_flow.queued_validation_errors = {"field1": "Test error message"}
+        base_flow.queued_validation_errors = {
+            "field1": TEST_ERROR_MESSAGE}
         with pytest.raises(FlowValidationError) as exc_info:
             base_flow._throw_queued_validation_errors()
-        assert exc_info.value.error_dict == {"field1": "Test error message"}
+        assert exc_info.value.error_dict == {
+            "field1": TEST_ERROR_MESSAGE}
 
     def test_log_exception(self, monkeypatch, base_flow):
         """

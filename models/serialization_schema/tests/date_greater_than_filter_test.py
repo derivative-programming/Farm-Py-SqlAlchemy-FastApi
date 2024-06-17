@@ -6,6 +6,7 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Dict
 import pytest
 import pytz
 from models import DateGreaterThanFilter
@@ -16,13 +17,16 @@ logger = get_logger(__name__)
 @pytest.fixture(scope="function")
 def date_greater_than_filter(session):
     """
-    #TODO add comment
+    Fixture to create and return a DateGreaterThanFilter instance using the DateGreaterThanFilterFactory.
+    Args:
+        session: The database session.
+    Returns:
+        DateGreaterThanFilter: A newly created DateGreaterThanFilter instance.
     """
-    # Use the DateGreaterThanFilterFactory to create and return a date_greater_than_filter instance
     return DateGreaterThanFilterFactory.create(session=session)
 class TestDateGreaterThanFilterSchema:
     """
-    #TODO add comment
+    Tests for the DateGreaterThanFilter serialization schema.
     """
     # Sample data for a DateGreaterThanFilter instance
     sample_data = {
@@ -51,10 +55,12 @@ class TestDateGreaterThanFilterSchema:
     }
     def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter):
         """
-            #TODO add comment
+        Test the serialization of a DateGreaterThanFilter instance using DateGreaterThanFilterSchema.
+        Args:
+            date_greater_than_filter (DateGreaterThanFilter): A DateGreaterThanFilter instance to serialize.
         """
         schema = DateGreaterThanFilterSchema()
-        result = schema.dump(date_greater_than_filter)
+        result: Dict[str, Any] = schema.dump(date_greater_than_filter)
         assert result['code'] == str(date_greater_than_filter.code)
         assert result['last_change_code'] == (
             date_greater_than_filter.last_change_code)

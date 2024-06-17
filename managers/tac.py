@@ -135,7 +135,7 @@ class TacManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Tac.pac_id == Pac._pac_id,
+            and_(Tac.pac_id == Pac._pac_id,  # pylint: disable=protected-access
                  Tac.pac_id != 0)
         )
 # endset
@@ -180,10 +180,10 @@ class TacManager:
             str(tac_id))
         if not isinstance(tac_id, int):
             raise TypeError(
-                f"The tac_id must be an integer, "
-                f"got %s instead.",
-                type(tac_id))
-        query_filter = Tac._tac_id == tac_id
+                "The tac_id must be an integer, "
+                f"got {type(tac_id)} instead.")
+        query_filter = (
+            Tac._tac_id == tac_id)  # pylint: disable=protected-access
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
