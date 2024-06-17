@@ -20,7 +20,6 @@ class CustomerRoleInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class CustomerRoleBusObj(BaseBusObj):
     """
     This class represents the business object for a CustomerRole.

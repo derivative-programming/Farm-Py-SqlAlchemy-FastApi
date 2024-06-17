@@ -24,10 +24,10 @@ class CustomerRoleFactory(factory.Factory):
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    # customer_id = 0 #factory.LazyAttribute(lambda obj: obj.customer.customer_id)
+    # customer_id = 0
     is_placeholder = Faker('boolean')
     placeholder = Faker('boolean')
-    # role_id = 0 #factory.LazyAttribute(lambda obj: obj.role.role_id)
+    # role_id = 0
 # endset
     customer_code_peek = factory.LazyFunction(  # CustomerID
         uuid.uuid4
@@ -44,10 +44,10 @@ class CustomerRoleFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        customer_id_customer_instance = CustomerFactory.create(  # CustomerID
-            session=session)
-        role_id_role_instance = RoleFactory.create(  # RoleID
-            session=session)
+        customer_id_customer_instance = (  # CustomerID
+            CustomerFactory.create(session=session))
+        role_id_role_instance = (  # RoleID
+            RoleFactory.create(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -77,10 +77,10 @@ class CustomerRoleFactory(factory.Factory):
         #TODO add comment
         """
         logger.info("factory create")
-        customer_id_customer_instance = CustomerFactory.create(  # CustomerID
-            session=session)
-        role_id_role_instance = RoleFactory.create(  # RoleID
-            session=session)
+        customer_id_customer_instance = (  # CustomerID
+            CustomerFactory.create(session=session))
+        role_id_role_instance = (  # RoleID
+            RoleFactory.create(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -109,10 +109,10 @@ class CustomerRoleFactory(factory.Factory):
         """
             #TODO add comment
         """
-        customer_id_customer_instance = await CustomerFactory.create_async(  # CustomerID
-            session=session)
-        role_id_role_instance = await RoleFactory.create_async(  # RoleID
-            session=session)
+        customer_id_customer_instance = await (  # CustomerID
+            CustomerFactory.create_async(session=session))
+        role_id_role_instance = await (  # RoleID
+            RoleFactory.create_async(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -141,10 +141,10 @@ class CustomerRoleFactory(factory.Factory):
         """
             #TODO add comment
         """
-        customer_id_customer_instance = await CustomerFactory.create_async(  # CustomerID
-            session=session)
-        role_id_role_instance = await RoleFactory.create_async(  # RoleID
-            session=session)
+        customer_id_customer_instance = await (  # CustomerID
+            CustomerFactory.create_async(session=session))
+        role_id_role_instance = await (  # RoleID
+            RoleFactory.create_async(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)

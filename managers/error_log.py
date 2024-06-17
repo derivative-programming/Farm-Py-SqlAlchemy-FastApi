@@ -73,16 +73,6 @@ class ErrorLogManager:
             #TODO add comment
         """
         logging.info("ErrorLogManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Pac, and_(ErrorLog.pac_id == Pac.pac_id, ErrorLog.pac_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(ErrorLog
-#                         , Pac  # pac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(ErrorLog)
         query = select(
             ErrorLog,
             Pac,  # pac_id
@@ -121,11 +111,25 @@ class ErrorLogManager:
 # endset
             result.append(error_log)
         return result
-    def _first_or_none(self, error_log_list: List) -> ErrorLog:
+    def _first_or_none(
+        self,
+        error_log_list: List['ErrorLog']
+    ) -> Optional['ErrorLog']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            error_log_list (List[ErrorLog]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[ErrorLog]: The first element
+                of the list if it exists, otherwise None.
         """
-        return error_log_list[0] if error_log_list else None
+        return (
+            error_log_list[0]
+            if error_log_list
+            else None
+        )
     async def get_by_id(self, error_log_id: int) -> Optional[ErrorLog]:
         """
             #TODO add comment

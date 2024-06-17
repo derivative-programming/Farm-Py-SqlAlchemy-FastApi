@@ -31,10 +31,13 @@ class TestOrganizationSchema:
     # Sample data for a Organization instance
     sample_data = {
         "organization_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "name": "Vanilla",
         "tac_id": 2,
@@ -45,7 +48,8 @@ class TestOrganizationSchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
+        "tac_code_peek":  # TacID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
     def test_organization_serialization(self, organization: Organization):
@@ -174,7 +178,9 @@ class TestOrganizationSchema:
         # Convert the JSON strings back to dictionaries
         organization_dict_from_json = json.loads(organization_json)
         # sample_dict_from_json = json.loads(self.sample_data)
-        logging.info("organization_dict_from_json.keys() %s", organization_dict_from_json.keys())
+        logging.info(
+            "organization_dict_from_json.keys() %s",
+            organization_dict_from_json.keys())
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
         # Verify the keys in both dictionaries match
         assert set(organization_dict_from_json.keys()) == (

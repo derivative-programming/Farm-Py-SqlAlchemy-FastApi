@@ -24,7 +24,6 @@ class TacInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class TacBusObj(BaseBusObj):
     """
     This class represents the business object for a Tac.

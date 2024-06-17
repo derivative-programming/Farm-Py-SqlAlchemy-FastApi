@@ -13,9 +13,13 @@ def to_camel(string: str) -> str:
         #TODO add comment
     """
 
-    # Split the string into words and combine them capitalizing the first letter of each word
+    # Split the string into words and combine them
+    # capitalizing the first letter of each word
     # except for the first word.
-    return ''.join(word.capitalize() if i else word for i, word in enumerate(string.split('_')))
+    return ''.join(
+        word.capitalize() if i else word
+        for i, word in enumerate(string.split('_'))
+    )
 
 
 # CamelCase to snake_case converter

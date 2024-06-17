@@ -31,8 +31,8 @@ class OrgApiKeyFactory(factory.Factory):
     is_active = Faker('boolean')
     is_temp_user_key = Faker('boolean')
     name = Faker('sentence', nb_words=4)
-    # organization_id = 0 #factory.LazyAttribute(lambda obj: obj.organization.organization_id)
-    # org_customer_id = 0 #factory.LazyAttribute(lambda obj: obj.org_customer.org_customer_id)
+    # organization_id = 0
+    # org_customer_id = 0
 # endset
     organization_code_peek = factory.LazyFunction(  # OrganizationID
         uuid.uuid4
@@ -49,10 +49,10 @@ class OrgApiKeyFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        organization_id_organization_instance = OrganizationFactory.create(  # OrganizationID
-            session=session)
-        org_customer_id_org_customer_instance = OrgCustomerFactory.create(  # OrgCustomerID
-            session=session)
+        organization_id_organization_instance = (  # OrganizationID
+            OrganizationFactory.create(session=session))
+        org_customer_id_org_customer_instance = (  # OrgCustomerID
+            OrgCustomerFactory.create(session=session))
 # endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)
@@ -82,10 +82,10 @@ class OrgApiKeyFactory(factory.Factory):
         #TODO add comment
         """
         logger.info("factory create")
-        organization_id_organization_instance = OrganizationFactory.create(  # OrganizationID
-            session=session)
-        org_customer_id_org_customer_instance = OrgCustomerFactory.create(  # OrgCustomerID
-            session=session)
+        organization_id_organization_instance = (  # OrganizationID
+            OrganizationFactory.create(session=session))
+        org_customer_id_org_customer_instance = (  # OrgCustomerID
+            OrgCustomerFactory.create(session=session))
 # endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)
@@ -114,10 +114,10 @@ class OrgApiKeyFactory(factory.Factory):
         """
             #TODO add comment
         """
-        organization_id_organization_instance = await OrganizationFactory.create_async(  # OrganizationID
-            session=session)
-        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(  # OrgCustomerID
-            session=session)
+        organization_id_organization_instance = await (  # OrganizationID
+            OrganizationFactory.create_async(session=session))
+        org_customer_id_org_customer_instance = await (  # OrgCustomerID
+            OrgCustomerFactory.create_async(session=session))
 # endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)
@@ -146,10 +146,10 @@ class OrgApiKeyFactory(factory.Factory):
         """
             #TODO add comment
         """
-        organization_id_organization_instance = await OrganizationFactory.create_async(  # OrganizationID
-            session=session)
-        org_customer_id_org_customer_instance = await OrgCustomerFactory.create_async(  # OrgCustomerID
-            session=session)
+        organization_id_organization_instance = await (  # OrganizationID
+            OrganizationFactory.create_async(session=session))
+        org_customer_id_org_customer_instance = await (  # OrgCustomerID
+            OrgCustomerFactory.create_async(session=session))
 # endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)

@@ -61,26 +61,46 @@ class TestLandAddPlantPostModelResponse:
         data = json.loads(json_output)
 
         # Assert individual fields
-        assert data["context_object_code"] == str(result.context_object_code)
-        assert data["land_code"] == str(result.land_code)
-        assert data["plant_code"] == str(result.plant_code)
-        assert data["output_flavor_code"] == str(result.output_flavor_code)
-        assert data["output_other_flavor"] == result.output_other_flavor
-        assert data["output_some_int_val"] == result.output_some_int_val
-        assert data["output_some_big_int_val"] == result.output_some_big_int_val
-        assert data["output_some_bit_val"] == result.output_some_bit_val
-        assert data["output_is_edit_allowed"] == result.output_is_edit_allowed
-        assert data["output_is_delete_allowed"] == result.output_is_delete_allowed
-        assert data["output_some_float_val"] == result.output_some_float_val
-        assert data["output_some_decimal_val"] == str(result.output_some_decimal_val)
-        assert data["output_some_utc_date_time_val"] == result.output_some_utc_date_time_val.isoformat()
-        assert data["output_some_date_val"] == result.output_some_date_val.isoformat()
-        assert data["output_some_money_val"] == str(result.output_some_money_val)
-        assert data["output_some_n_var_char_val"] == result.output_some_n_var_char_val
-        assert data["output_some_var_char_val"] == result.output_some_var_char_val
-        assert data["output_some_text_val"] == result.output_some_text_val
-        assert data["output_some_phone_number"] == result.output_some_phone_number
-        assert data["output_some_email_address"] == result.output_some_email_address
+        assert data["context_object_code"] == (
+            str(result.context_object_code))
+        assert data["land_code"] == (
+            str(result.land_code))
+        assert data["plant_code"] == (
+            str(result.plant_code))
+        assert data["output_flavor_code"] == (
+            str(result.output_flavor_code))
+        assert data["output_other_flavor"] == (
+            result.output_other_flavor)
+        assert data["output_some_int_val"] == (
+            result.output_some_int_val)
+        assert data["output_some_big_int_val"] == (
+            result.output_some_big_int_val)
+        assert data["output_some_bit_val"] == (
+            result.output_some_bit_val)
+        assert data["output_is_edit_allowed"] == (
+            result.output_is_edit_allowed)
+        assert data["output_is_delete_allowed"] == (
+            result.output_is_delete_allowed)
+        assert data["output_some_float_val"] == (
+            result.output_some_float_val)
+        assert data["output_some_decimal_val"] == (
+            str(result.output_some_decimal_val))
+        assert data["output_some_utc_date_time_val"] == (
+            result.output_some_utc_date_time_val.isoformat())
+        assert data["output_some_date_val"] == (
+            result.output_some_date_val.isoformat())
+        assert data["output_some_money_val"] == (
+            str(result.output_some_money_val))
+        assert data["output_some_n_var_char_val"] == (
+            result.output_some_n_var_char_val)
+        assert data["output_some_var_char_val"] == (
+            result.output_some_var_char_val)
+        assert data["output_some_text_val"] == (
+            result.output_some_text_val)
+        assert data["output_some_phone_number"] == (
+            result.output_some_phone_number)
+        assert data["output_some_email_address"] == (
+            result.output_some_email_address)
 # endsets
 
     #TODO finish test
@@ -100,24 +120,26 @@ class TestLandAddPlantPostModelResponse:
 
         role_required = "User"
 
-        request_flavor_code: uuid.UUID = uuid.UUID(int=0),
-        request_other_flavor: str = "",
-        request_some_int_val: int = 0,
-        request_some_big_int_val: int = 0,
-        request_some_bit_val: bool = False,
-        request_is_edit_allowed: bool = False,
-        request_is_delete_allowed: bool = False,
-        request_some_float_val: float = 0,
-        request_some_decimal_val: Decimal = 0,
-        request_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time(),
-        request_some_date_val: date = TypeConversion.get_default_date(),
-        request_some_money_val: Decimal = 0,
-        request_some_n_var_char_val: str = "",
-        request_some_var_char_val: str = "",
-        request_some_text_val: str = "",
-        request_some_phone_number: str = "",
-        request_some_email_address: str = "",
-        request_sample_image_upload_file: str = "",
+        request_flavor_code: uuid.UUID = uuid.UUID(int=0)
+        request_other_flavor: str = ""
+        request_some_int_val: int = 0
+        request_some_big_int_val: int = 0
+        request_some_bit_val: bool = False
+        request_is_edit_allowed: bool = False
+        request_is_delete_allowed: bool = False
+        request_some_float_val: float = 0
+        request_some_decimal_val: Decimal = Decimal(0)
+        request_some_utc_date_time_val: datetime = (
+            TypeConversion.get_default_date_time())
+        request_some_date_val: date = (
+            TypeConversion.get_default_date())
+        request_some_money_val: Decimal = Decimal(0)
+        request_some_n_var_char_val: str = ""
+        request_some_var_char_val: str = ""
+        request_some_text_val: str = ""
+        request_some_phone_number: str = ""
+        request_some_email_address: str = ""
+        request_sample_image_upload_file: str = ""
 # endset
 
         if len(role_required) > 0:
@@ -147,15 +169,15 @@ class TestLandAddPlantPostModelResponse:
 
         session_context.role_name_csv = role_required
 
-        customerCodeMatchRequired = False
+        customer_code_match_required = False
         if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
 
-        if customerCodeMatchRequired is True:
+        if customer_code_match_required is True:
             with pytest.raises(FlowValidationError):
 
                 flow_result = await flow.process(

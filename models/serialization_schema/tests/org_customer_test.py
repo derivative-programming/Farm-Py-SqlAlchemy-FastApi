@@ -31,10 +31,13 @@ class TestOrgCustomerSchema:
     # Sample data for a OrgCustomer instance
     sample_data = {
         "org_customer_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "customer_id": 1,
         "email": "test@email.com",
@@ -46,8 +49,10 @@ class TestOrgCustomerSchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # CustomerID
-        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrganizationID
+        "customer_code_peek":  # CustomerID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "organization_code_peek":  # OrganizationID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
     def test_org_customer_serialization(self, org_customer: OrgCustomer):
@@ -192,7 +197,9 @@ class TestOrgCustomerSchema:
         # Convert the JSON strings back to dictionaries
         org_customer_dict_from_json = json.loads(org_customer_json)
         # sample_dict_from_json = json.loads(self.sample_data)
-        logging.info("org_customer_dict_from_json.keys() %s", org_customer_dict_from_json.keys())
+        logging.info(
+            "org_customer_dict_from_json.keys() %s",
+            org_customer_dict_from_json.keys())
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
         # Verify the keys in both dictionaries match
         assert set(org_customer_dict_from_json.keys()) == (

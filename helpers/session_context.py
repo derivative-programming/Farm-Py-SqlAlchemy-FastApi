@@ -21,20 +21,24 @@ class SessionContext:
     role_name_csv: str = ""
     session: AsyncSession = None
 
-    def __init__(self, api_key_dict: dict, session: AsyncSession = None) -> None:
+    def __init__(
+            self, api_key_dict: dict, session: AsyncSession = None) -> None:
         self.api_key_dict = api_key_dict
         self.session_code = uuid.uuid4()
         self.session = session
 
-    def check_context_code(self,
-                           context_code_name: str = "",
-                           context_code_value: uuid.UUID = uuid.UUID(int=0)) -> uuid.UUID:
+    def check_context_code(
+        self,
+        context_code_name: str = "",
+        context_code_value: uuid.UUID = uuid.UUID(int=0)
+    ) -> uuid.UUID:
         """
         #TODO add comment
         """
 
         # if code dne or unknown then use the one in the api token
-        if context_code_value == uuid.UUID(int=0) and self.api_key_dict[context_code_name] is not None:
+        if context_code_value == uuid.UUID(int=0) \
+                and self.api_key_dict[context_code_name] is not None:
             return self.api_key_dict[context_code_name]
 
         if 'CustomerCode' in self.api_key_dict:

@@ -103,7 +103,8 @@ class TestErrorLogManager:
         """
             #TODO add comment
         """
-        # Create a test error_log using the ErrorLogFactory without persisting it to the database
+        # Create a test error_log using the ErrorLogFactory
+        # without persisting it to the database
         test_error_log = await ErrorLogFactory.build_async(session)
         assert test_error_log.error_log_id == 0
         test_error_log.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestErrorLogManager:
         """
             #TODO add comment
         """
-        error_logs_data = [await ErrorLogFactory.build_async(session) for _ in range(5)]
+        error_logs_data = [
+            await ErrorLogFactory.build_async(session) for _ in range(5)]
         error_logs = await error_log_manager.add_bulk(error_logs_data)
         assert len(error_logs) == 5
         for updated_error_log in error_logs:
@@ -586,7 +588,8 @@ class TestErrorLogManager:
         # Add error_logs
         error_logs_data = (
             [await ErrorLogFactory.create_async(session) for _ in range(5)])
-        sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="_error_log_id")
+        sorted_error_logs = await error_log_manager.get_sorted_list(
+            sort_by="_error_log_id")
         assert [error_log.error_log_id for error_log in sorted_error_logs] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestErrorLogManager:
         """
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
-        result = await session.execute(select(ErrorLog).filter(ErrorLog._error_log_id == error_log1.error_log_id))
+        result = await session.execute(
+            select(ErrorLog).filter(ErrorLog._error_log_id == error_log1.error_log_id)
+        )
         error_log2 = result.scalars().first()
         assert error_log1.code == error_log2.code
         updated_code1 = uuid.uuid4()
         error_log1.code = updated_code1
         updated_error_log1 = await error_log_manager.update(error_log1)
+        assert isinstance(updated_error_log1, ErrorLog)
         assert updated_error_log1.code == updated_code1
         refreshed_error_log2 = await error_log_manager.refresh(error_log2)
         assert refreshed_error_log2.code == updated_code1

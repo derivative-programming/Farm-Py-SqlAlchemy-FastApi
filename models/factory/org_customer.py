@@ -24,9 +24,9 @@ class OrgCustomerFactory(factory.Factory):
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    # customer_id = 0 #factory.LazyAttribute(lambda obj: obj.customer.customer_id)
+    # customer_id = 0
     email = Faker('email')
-    # organization_id = 0 #factory.LazyAttribute(lambda obj: obj.organization.organization_id)
+    # organization_id = 0
 # endset
     customer_code_peek = factory.LazyFunction(  # CustomerID
         uuid.uuid4
@@ -43,10 +43,10 @@ class OrgCustomerFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        customer_id_customer_instance = CustomerFactory.create(  # CustomerID
-            session=session)
-        organization_id_organization_instance = OrganizationFactory.create(  # OrganizationID
-            session=session)
+        customer_id_customer_instance = (  # CustomerID
+            CustomerFactory.create(session=session))
+        organization_id_organization_instance = (  # OrganizationID
+            OrganizationFactory.create(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -76,10 +76,10 @@ class OrgCustomerFactory(factory.Factory):
         #TODO add comment
         """
         logger.info("factory create")
-        customer_id_customer_instance = CustomerFactory.create(  # CustomerID
-            session=session)
-        organization_id_organization_instance = OrganizationFactory.create(  # OrganizationID
-            session=session)
+        customer_id_customer_instance = (  # CustomerID
+            CustomerFactory.create(session=session))
+        organization_id_organization_instance = (  # OrganizationID
+            OrganizationFactory.create(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -108,10 +108,10 @@ class OrgCustomerFactory(factory.Factory):
         """
             #TODO add comment
         """
-        customer_id_customer_instance = await CustomerFactory.create_async(  # CustomerID
-            session=session)
-        organization_id_organization_instance = await OrganizationFactory.create_async(  # OrganizationID
-            session=session)
+        customer_id_customer_instance = await (  # CustomerID
+            CustomerFactory.create_async(session=session))
+        organization_id_organization_instance = await (  # OrganizationID
+            OrganizationFactory.create_async(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -140,10 +140,10 @@ class OrgCustomerFactory(factory.Factory):
         """
             #TODO add comment
         """
-        customer_id_customer_instance = await CustomerFactory.create_async(  # CustomerID
-            session=session)
-        organization_id_organization_instance = await OrganizationFactory.create_async(  # OrganizationID
-            session=session)
+        customer_id_customer_instance = await (  # CustomerID
+            CustomerFactory.create_async(session=session))
+        organization_id_organization_instance = await (  # OrganizationID
+            OrganizationFactory.create_async(session=session))
 # endset
         kwargs["customer_id"] = (  # CustomerID
             customer_id_customer_instance.customer_id)

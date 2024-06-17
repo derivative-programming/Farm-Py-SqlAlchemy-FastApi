@@ -210,6 +210,7 @@ class TestReportManagerLandPlantList:
             with pytest.raises(ReportRequestValidationError):
                 await report_generator.generate(
                     land_code,
+                    flavor_code,
                     some_int_val,
                     some_big_int_val,
                     some_bit_val,
@@ -225,7 +226,6 @@ class TestReportManagerLandPlantList:
                     some_text_val,
                     some_phone_number,
                     some_email_address,
-                    flavor_code,
 # endset  # noqa: E122
                     page_number,
                     0,
@@ -308,6 +308,7 @@ class TestReportManagerLandPlantList:
             with pytest.raises(ReportRequestValidationError):
                 await report_generator.generate(
                     land_code,
+                    flavor_code,
                     some_int_val,
                     some_big_int_val,
                     some_bit_val,
@@ -323,7 +324,6 @@ class TestReportManagerLandPlantList:
                     some_text_val,
                     some_phone_number,
                     some_email_address,
-                    flavor_code,
 # endset  # noqa: E122
                     0,
                     item_count_per_page,

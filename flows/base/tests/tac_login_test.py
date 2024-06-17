@@ -35,17 +35,20 @@ class TestBaseFlowTacLogin():
             password,
 # endset  # noqa: E122
         )
-        #TODO add validation checks - is email
-        #TODO add validation checks - is phone,
-        #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
-        #TODO add validation checks - calculatedIsRowLevelOrgCustomerSecurityUsed
-        #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
-        if FlowConstants.param_email_isRequired is True:
+        #TODO add validation checks
+        # - is email
+        # - is phone
+        # - calculatedIsRowLevelCustomerSecurityUsed
+        # - calculatedIsRowLevelOrgCustomerSecurityUsed
+        # - calculatedIsRowLevelOrganizationSecurityUsed
+        if FlowConstants.param_email_isRequired \
+                is True:
             assert 'email' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'email'] == (
                 'Please enter a Email')
-        if FlowConstants.param_password_isRequired is True:
+        if FlowConstants.param_password_isRequired \
+                is True:
             assert 'password' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'password'] == (

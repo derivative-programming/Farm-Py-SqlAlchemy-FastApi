@@ -103,7 +103,8 @@ class TestOrgCustomerManager:
         """
             #TODO add comment
         """
-        # Create a test org_customer using the OrgCustomerFactory without persisting it to the database
+        # Create a test org_customer using the OrgCustomerFactory
+        # without persisting it to the database
         test_org_customer = await OrgCustomerFactory.build_async(session)
         assert test_org_customer.org_customer_id == 0
         test_org_customer.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestOrgCustomerManager:
         """
             #TODO add comment
         """
-        org_customers_data = [await OrgCustomerFactory.build_async(session) for _ in range(5)]
+        org_customers_data = [
+            await OrgCustomerFactory.build_async(session) for _ in range(5)]
         org_customers = await org_customer_manager.add_bulk(org_customers_data)
         assert len(org_customers) == 5
         for updated_org_customer in org_customers:
@@ -586,7 +588,8 @@ class TestOrgCustomerManager:
         # Add org_customers
         org_customers_data = (
             [await OrgCustomerFactory.create_async(session) for _ in range(5)])
-        sorted_org_customers = await org_customer_manager.get_sorted_list(sort_by="_org_customer_id")
+        sorted_org_customers = await org_customer_manager.get_sorted_list(
+            sort_by="_org_customer_id")
         assert [org_customer.org_customer_id for org_customer in sorted_org_customers] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestOrgCustomerManager:
         """
         # Add a org_customer
         org_customer1 = await OrgCustomerFactory.create_async(session=session)
-        result = await session.execute(select(OrgCustomer).filter(OrgCustomer._org_customer_id == org_customer1.org_customer_id))
+        result = await session.execute(
+            select(OrgCustomer).filter(OrgCustomer._org_customer_id == org_customer1.org_customer_id)
+        )
         org_customer2 = result.scalars().first()
         assert org_customer1.code == org_customer2.code
         updated_code1 = uuid.uuid4()
         org_customer1.code = updated_code1
         updated_org_customer1 = await org_customer_manager.update(org_customer1)
+        assert isinstance(updated_org_customer1, OrgCustomer)
         assert updated_org_customer1.code == updated_code1
         refreshed_org_customer2 = await org_customer_manager.refresh(org_customer2)
         assert refreshed_org_customer2.code == updated_code1

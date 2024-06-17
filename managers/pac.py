@@ -62,7 +62,8 @@ class PacManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(PacEnum.Unknown) is None:
+        if await self.from_enum(PacEnum.Unknown) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
@@ -108,16 +109,6 @@ class PacManager:
             #TODO add comment
         """
         logging.info("PacManager._build_query")
-#         join_condition = None
-# # endset
-
-# # endset
-#         if join_condition is not None:
-#             query = select(Pac
-
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(Pac)
         query = select(
             Pac,
 
@@ -150,11 +141,25 @@ class PacManager:
 # endset
             result.append(pac)
         return result
-    def _first_or_none(self, pac_list: List) -> Pac:
+    def _first_or_none(
+        self,
+        pac_list: List['Pac']
+    ) -> Optional['Pac']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            pac_list (List[Pac]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[Pac]: The first element
+                of the list if it exists, otherwise None.
         """
-        return pac_list[0] if pac_list else None
+        return (
+            pac_list[0]
+            if pac_list
+            else None
+        )
     async def get_by_id(self, pac_id: int) -> Optional[Pac]:
         """
             #TODO add comment

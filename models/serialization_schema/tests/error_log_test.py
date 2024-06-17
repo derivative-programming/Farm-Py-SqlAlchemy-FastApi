@@ -31,13 +31,18 @@ class TestErrorLogSchema:
     # Sample data for a ErrorLog instance
     sample_data = {
         "error_log_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
-        "browser_code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "context_code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "browser_code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "context_code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "created_utc_date_time": datetime(
             2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
@@ -53,7 +58,8 @@ class TestErrorLogSchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
+        "pac_code_peek":  # PacID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
     def test_error_log_serialization(self, error_log: ErrorLog):
@@ -230,7 +236,9 @@ class TestErrorLogSchema:
         # Convert the JSON strings back to dictionaries
         error_log_dict_from_json = json.loads(error_log_json)
         # sample_dict_from_json = json.loads(self.sample_data)
-        logging.info("error_log_dict_from_json.keys() %s", error_log_dict_from_json.keys())
+        logging.info(
+            "error_log_dict_from_json.keys() %s",
+            error_log_dict_from_json.keys())
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
         # Verify the keys in both dictionaries match
         assert set(error_log_dict_from_json.keys()) == (

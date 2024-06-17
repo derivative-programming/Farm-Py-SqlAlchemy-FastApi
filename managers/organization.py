@@ -73,16 +73,6 @@ class OrganizationManager:
             #TODO add comment
         """
         logging.info("OrganizationManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Tac, and_(Organization.tac_id == Tac.tac_id, Organization.tac_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(Organization
-#                         , Tac  # tac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(Organization)
         query = select(
             Organization,
             Tac,  # tac_id
@@ -121,11 +111,25 @@ class OrganizationManager:
 # endset
             result.append(organization)
         return result
-    def _first_or_none(self, organization_list: List) -> Organization:
+    def _first_or_none(
+        self,
+        organization_list: List['Organization']
+    ) -> Optional['Organization']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            organization_list (List[Organization]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[Organization]: The first element
+                of the list if it exists, otherwise None.
         """
-        return organization_list[0] if organization_list else None
+        return (
+            organization_list[0]
+            if organization_list
+            else None
+        )
     async def get_by_id(self, organization_id: int) -> Optional[Organization]:
         """
             #TODO add comment

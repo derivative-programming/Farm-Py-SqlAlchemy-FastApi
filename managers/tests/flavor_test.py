@@ -103,7 +103,8 @@ class TestFlavorManager:
         """
             #TODO add comment
         """
-        # Create a test flavor using the FlavorFactory without persisting it to the database
+        # Create a test flavor using the FlavorFactory
+        # without persisting it to the database
         test_flavor = await FlavorFactory.build_async(session)
         assert test_flavor.flavor_id == 0
         test_flavor.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestFlavorManager:
         """
             #TODO add comment
         """
-        flavors_data = [await FlavorFactory.build_async(session) for _ in range(5)]
+        flavors_data = [
+            await FlavorFactory.build_async(session) for _ in range(5)]
         flavors = await flavor_manager.add_bulk(flavors_data)
         assert len(flavors) == 5
         for updated_flavor in flavors:
@@ -586,7 +588,8 @@ class TestFlavorManager:
         # Add flavors
         flavors_data = (
             [await FlavorFactory.create_async(session) for _ in range(5)])
-        sorted_flavors = await flavor_manager.get_sorted_list(sort_by="_flavor_id")
+        sorted_flavors = await flavor_manager.get_sorted_list(
+            sort_by="_flavor_id")
         assert [flavor.flavor_id for flavor in sorted_flavors] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestFlavorManager:
         """
         # Add a flavor
         flavor1 = await FlavorFactory.create_async(session=session)
-        result = await session.execute(select(Flavor).filter(Flavor._flavor_id == flavor1.flavor_id))
+        result = await session.execute(
+            select(Flavor).filter(Flavor._flavor_id == flavor1.flavor_id)
+        )
         flavor2 = result.scalars().first()
         assert flavor1.code == flavor2.code
         updated_code1 = uuid.uuid4()
         flavor1.code = updated_code1
         updated_flavor1 = await flavor_manager.update(flavor1)
+        assert isinstance(updated_flavor1, Flavor)
         assert updated_flavor1.code == updated_code1
         refreshed_flavor2 = await flavor_manager.refresh(flavor2)
         assert refreshed_flavor2.code == updated_code1

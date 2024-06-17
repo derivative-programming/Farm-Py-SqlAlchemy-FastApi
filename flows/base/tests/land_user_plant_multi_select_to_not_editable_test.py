@@ -33,12 +33,14 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
             plant_code_list_csv,
 # endset  # noqa: E122
         )
-        #TODO add validation checks - is email
-        #TODO add validation checks - is phone,
-        #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
-        #TODO add validation checks - calculatedIsRowLevelOrgCustomerSecurityUsed
-        #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
-        if FlowConstants.param_plant_code_list_csv_isRequired is True:
+        #TODO add validation checks
+        # - is email
+        # - is phone
+        # - calculatedIsRowLevelCustomerSecurityUsed
+        # - calculatedIsRowLevelOrgCustomerSecurityUsed
+        # - calculatedIsRowLevelOrganizationSecurityUsed
+        if FlowConstants.param_plant_code_list_csv_isRequired \
+                is True:
             assert 'plantCodeListCsv' in flow.queued_validation_errors
             assert flow.queued_validation_errors[
                 'plantCodeListCsv'] == (

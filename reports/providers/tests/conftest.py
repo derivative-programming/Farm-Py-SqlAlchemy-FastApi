@@ -39,7 +39,17 @@ def engine():
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
     """
-    #TODO add comment
+    Async fixture to provide a database session for testing.
+
+    This fixture ensures that the database schema is created
+    before each test and dropped afterwards.
+    It also ensures that SQLite foreign key constraints are enforced.
+
+    Args:
+        engine: The SQLAlchemy async engine.
+
+    Yields:
+        AsyncSession: A SQLAlchemy async session object.
     """
 
     @event.listens_for(engine.sync_engine, "connect")
@@ -51,7 +61,7 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
         await connection.begin_nested()
         await connection.run_sync(Base.metadata.drop_all)
         await connection.run_sync(Base.metadata.create_all)
-        TestingSessionLocal = sessionmaker(
+        TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
             expire_on_commit=False,
             class_=AsyncSession,
             bind=engine,

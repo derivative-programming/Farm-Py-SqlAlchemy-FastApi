@@ -31,10 +31,13 @@ class TestCustomerRoleSchema:
     # Sample data for a CustomerRole instance
     sample_data = {
         "customer_role_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "customer_id": 2,
         "is_placeholder": False,
@@ -47,8 +50,10 @@ class TestCustomerRoleSchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # CustomerID
-        "role_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # RoleID
+        "customer_code_peek":  # CustomerID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "role_code_peek":  # RoleID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
     def test_customer_role_serialization(self, customer_role: CustomerRole):
@@ -201,7 +206,9 @@ class TestCustomerRoleSchema:
         # Convert the JSON strings back to dictionaries
         customer_role_dict_from_json = json.loads(customer_role_json)
         # sample_dict_from_json = json.loads(self.sample_data)
-        logging.info("customer_role_dict_from_json.keys() %s", customer_role_dict_from_json.keys())
+        logging.info(
+            "customer_role_dict_from_json.keys() %s",
+            customer_role_dict_from_json.keys())
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
         # Verify the keys in both dictionaries match
         assert set(customer_role_dict_from_json.keys()) == (

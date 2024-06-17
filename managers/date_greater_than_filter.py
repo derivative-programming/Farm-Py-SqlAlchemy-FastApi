@@ -26,7 +26,6 @@ class DateGreaterThanFilterNotFoundError(Exception):
     """
         #TODO add comment
     """
-    pass
 
 
 ##GENTrainingBlock[caseLookupEnums]Start
@@ -77,7 +76,8 @@ class DateGreaterThanFilterManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(DateGreaterThanFilterEnum.Unknown) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Unknown) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
@@ -86,7 +86,8 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 1
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_24_Hours) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_24_Hours) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 24 Hours"
             item.lookup_enum_name = "Last_24_Hours"
@@ -95,7 +96,8 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 1
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_7_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_7_Days) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 7 Days"
             item.lookup_enum_name = "Last_7_Days"
@@ -104,7 +106,8 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 7
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_30_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_30_Days) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 30 Days"
             item.lookup_enum_name = "Last_30_Days"
@@ -113,7 +116,8 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 30
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_90_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_90_Days) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 90 Days"
             item.lookup_enum_name = "Last_90_Days"
@@ -122,7 +126,8 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 90
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_365_Days) is None:
+        if await self.from_enum(DateGreaterThanFilterEnum.Last_365_Days) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 365 Days"
             item.lookup_enum_name = "Last_365_Days"
@@ -181,22 +186,18 @@ class DateGreaterThanFilterManager:
 
     def _build_query(self):
         logging.info("DateGreaterThanFilterManager._build_query")
-#         join_condition = None
-#
-#         join_condition = outerjoin(join_condition, Pac, and_(DateGreaterThanFilter.pac_id == Pac.pac_id, DateGreaterThanFilter.pac_id != 0))
-#
-#         if join_condition is not None:
-#             query = select(DateGreaterThanFilter
-#                         , Pac  # pac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(DateGreaterThanFilter)
+
         query = select(
             DateGreaterThanFilter,
             Pac,  # pac_id
         )
 
-        query = query.outerjoin(Pac, and_(DateGreaterThanFilter.pac_id == Pac._pac_id, DateGreaterThanFilter.pac_id != 0))
+        query = query.outerjoin(
+            Pac,
+            and_(
+                DateGreaterThanFilter.pac_id == Pac._pac_id,
+                DateGreaterThanFilter.pac_id != 0
+            ))
 
         return query
 
@@ -225,20 +226,34 @@ class DateGreaterThanFilterManager:
             pac = query_result_row[i]  # pac_id
             i = i + 1
 
-            date_greater_than_filter.pac_code_peek = pac.code if pac else uuid.UUID(int=0)  # pac_id
+            date_greater_than_filter.pac_code_peek = (  # pac_id
+                pac.code if pac else uuid.UUID(int=0))
 
             result.append(date_greater_than_filter)
         return result
 
     def _first_or_none(
         self,
-        date_greater_than_filter_list: List
-    ) -> DateGreaterThanFilter:
+        date_greater_than_filter_list: List['DateGreaterThanFilter']
+    ) -> Optional['DateGreaterThanFilter']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+
+        Args:
+            date_greater_than_filter_list (List[DateGreaterThanFilter]):
+                The list to retrieve the first element from.
+
+        Returns:
+            Optional[DateGreaterThanFilter]: The first element
+                of the list if it exists, otherwise None.
         """
 
-        return date_greater_than_filter_list[0] if date_greater_than_filter_list else None
+        return (
+            date_greater_than_filter_list[0]
+            if date_greater_than_filter_list
+            else None
+        )
 
     async def get_by_id(
         self,
@@ -257,7 +272,8 @@ class DateGreaterThanFilterManager:
                 "The date_greater_than_filter_id must be an integer, "
                 f"got {type(date_greater_than_filter_id)} instead.")
         query_filter = (
-            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter_id)
+            DateGreaterThanFilter
+            ._date_greater_than_filter_id == date_greater_than_filter_id)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -313,7 +329,8 @@ class DateGreaterThanFilterManager:
             date_greater_than_filter_id)
         if not date_greater_than_filter:
             raise DateGreaterThanFilterNotFoundError(
-                f"DateGreaterThanFilter with ID {date_greater_than_filter_id} not found!")
+                "DateGreaterThanFilter with "
+                f"ID {date_greater_than_filter_id} not found!")
         await self._session_context.session.delete(date_greater_than_filter)
         await self._session_context.session.flush()
 
@@ -392,9 +409,15 @@ class DateGreaterThanFilterManager:
         """Add multiple date_greater_than_filters at once."""
         logging.info("DateGreaterThanFilterManager.add_bulk")
         for date_greater_than_filter in date_greater_than_filters:
-            if date_greater_than_filter.date_greater_than_filter_id is not None and date_greater_than_filter.date_greater_than_filter_id > 0:
+            if date_greater_than_filter.date_greater_than_filter_id \
+                    is not None and date_greater_than_filter. \
+                    date_greater_than_filter_id > 0:
+                obj_id_val = str(
+                    date_greater_than_filter.date_greater_than_filter_id)
                 raise ValueError(
-                    "DateGreaterThanFilter is already added: " + str(date_greater_than_filter.code) + " " + str(date_greater_than_filter.date_greater_than_filter_id))
+                    f"DateGreaterThanFilter is already "
+                    f"added: {str(date_greater_than_filter.code)}"
+                    f" {obj_id_val}")
             date_greater_than_filter.insert_user_id = (
                 self.convert_uuid_to_model_uuid(
                     self._session_context.customer_code)
@@ -449,7 +472,8 @@ class DateGreaterThanFilterManager:
         logging.info("DateGreaterThanFilterManager.update_bulk end")
         return updated_date_greater_than_filters
 
-    async def delete_bulk(self, date_greater_than_filter_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, date_greater_than_filter_ids: List[int]) -> bool:
         """Delete multiple date_greater_than_filters by their IDs."""
         logging.info("DateGreaterThanFilterManager.delete_bulk")
         for date_greater_than_filter_id in date_greater_than_filter_ids:

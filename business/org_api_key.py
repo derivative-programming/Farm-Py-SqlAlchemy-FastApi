@@ -20,7 +20,6 @@ class OrgApiKeyInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class OrgApiKeyBusObj(BaseBusObj):
     """
     This class represents the business object for a OrgApiKey.

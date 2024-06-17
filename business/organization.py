@@ -24,7 +24,6 @@ class OrganizationInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class OrganizationBusObj(BaseBusObj):
     """
     This class represents the business object for a Organization.

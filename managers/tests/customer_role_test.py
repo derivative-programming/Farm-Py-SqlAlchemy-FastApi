@@ -103,7 +103,8 @@ class TestCustomerRoleManager:
         """
             #TODO add comment
         """
-        # Create a test customer_role using the CustomerRoleFactory without persisting it to the database
+        # Create a test customer_role using the CustomerRoleFactory
+        # without persisting it to the database
         test_customer_role = await CustomerRoleFactory.build_async(session)
         assert test_customer_role.customer_role_id == 0
         test_customer_role.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestCustomerRoleManager:
         """
             #TODO add comment
         """
-        customer_roles_data = [await CustomerRoleFactory.build_async(session) for _ in range(5)]
+        customer_roles_data = [
+            await CustomerRoleFactory.build_async(session) for _ in range(5)]
         customer_roles = await customer_role_manager.add_bulk(customer_roles_data)
         assert len(customer_roles) == 5
         for updated_customer_role in customer_roles:
@@ -586,7 +588,8 @@ class TestCustomerRoleManager:
         # Add customer_roles
         customer_roles_data = (
             [await CustomerRoleFactory.create_async(session) for _ in range(5)])
-        sorted_customer_roles = await customer_role_manager.get_sorted_list(sort_by="_customer_role_id")
+        sorted_customer_roles = await customer_role_manager.get_sorted_list(
+            sort_by="_customer_role_id")
         assert [customer_role.customer_role_id for customer_role in sorted_customer_roles] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestCustomerRoleManager:
         """
         # Add a customer_role
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
-        result = await session.execute(select(CustomerRole).filter(CustomerRole._customer_role_id == customer_role1.customer_role_id))
+        result = await session.execute(
+            select(CustomerRole).filter(CustomerRole._customer_role_id == customer_role1.customer_role_id)
+        )
         customer_role2 = result.scalars().first()
         assert customer_role1.code == customer_role2.code
         updated_code1 = uuid.uuid4()
         customer_role1.code = updated_code1
         updated_customer_role1 = await customer_role_manager.update(customer_role1)
+        assert isinstance(updated_customer_role1, CustomerRole)
         assert updated_customer_role1.code == updated_code1
         refreshed_customer_role2 = await customer_role_manager.refresh(customer_role2)
         assert refreshed_customer_role2.code == updated_code1

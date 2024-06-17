@@ -20,7 +20,6 @@ class FlavorInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class FlavorBusObj(BaseBusObj):
     """
     This class represents the business object for a Flavor.

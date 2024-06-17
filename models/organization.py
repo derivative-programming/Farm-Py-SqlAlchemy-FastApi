@@ -107,7 +107,7 @@ class Organization(Base):
         """
         return uuid.UUID(str(self._code))
     @code.setter
-    def code(self, value):
+    def code(self, value: uuid.UUID):
         """
             #TODO add comment
         """

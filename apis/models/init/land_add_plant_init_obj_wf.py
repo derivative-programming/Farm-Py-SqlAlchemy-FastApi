@@ -155,7 +155,6 @@ class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
     #TODO add comment
     """
 
-
     async def process_request(
             self,
             session_context: SessionContext,

@@ -103,7 +103,8 @@ class TestOrganizationManager:
         """
             #TODO add comment
         """
-        # Create a test organization using the OrganizationFactory without persisting it to the database
+        # Create a test organization using the OrganizationFactory
+        # without persisting it to the database
         test_organization = await OrganizationFactory.build_async(session)
         assert test_organization.organization_id == 0
         test_organization.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestOrganizationManager:
         """
             #TODO add comment
         """
-        organizations_data = [await OrganizationFactory.build_async(session) for _ in range(5)]
+        organizations_data = [
+            await OrganizationFactory.build_async(session) for _ in range(5)]
         organizations = await organization_manager.add_bulk(organizations_data)
         assert len(organizations) == 5
         for updated_organization in organizations:
@@ -586,7 +588,8 @@ class TestOrganizationManager:
         # Add organizations
         organizations_data = (
             [await OrganizationFactory.create_async(session) for _ in range(5)])
-        sorted_organizations = await organization_manager.get_sorted_list(sort_by="_organization_id")
+        sorted_organizations = await organization_manager.get_sorted_list(
+            sort_by="_organization_id")
         assert [organization.organization_id for organization in sorted_organizations] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestOrganizationManager:
         """
         # Add a organization
         organization1 = await OrganizationFactory.create_async(session=session)
-        result = await session.execute(select(Organization).filter(Organization._organization_id == organization1.organization_id))
+        result = await session.execute(
+            select(Organization).filter(Organization._organization_id == organization1.organization_id)
+        )
         organization2 = result.scalars().first()
         assert organization1.code == organization2.code
         updated_code1 = uuid.uuid4()
         organization1.code = updated_code1
         updated_organization1 = await organization_manager.update(organization1)
+        assert isinstance(updated_organization1, Organization)
         assert updated_organization1.code == updated_code1
         refreshed_organization2 = await organization_manager.refresh(organization2)
         assert refreshed_organization2.code == updated_code1

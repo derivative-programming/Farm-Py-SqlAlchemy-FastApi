@@ -64,7 +64,8 @@ class TriStateFilterManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(TriStateFilterEnum.Unknown) is None:
+        if await self.from_enum(TriStateFilterEnum.Unknown) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
@@ -73,7 +74,8 @@ class TriStateFilterManager:
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)
-        if await self.from_enum(TriStateFilterEnum.Yes) is None:
+        if await self.from_enum(TriStateFilterEnum.Yes) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Yes"
             item.lookup_enum_name = "Yes"
@@ -82,7 +84,8 @@ class TriStateFilterManager:
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)
-        if await self.from_enum(TriStateFilterEnum.No) is None:
+        if await self.from_enum(TriStateFilterEnum.No) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "No"
             item.lookup_enum_name = "No"
@@ -128,16 +131,6 @@ class TriStateFilterManager:
             #TODO add comment
         """
         logging.info("TriStateFilterManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Pac, and_(TriStateFilter.pac_id == Pac.pac_id, TriStateFilter.pac_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(TriStateFilter
-#                         , Pac  # pac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(TriStateFilter)
         query = select(
             TriStateFilter,
             Pac,  # pac_id
@@ -176,11 +169,25 @@ class TriStateFilterManager:
 # endset
             result.append(tri_state_filter)
         return result
-    def _first_or_none(self, tri_state_filter_list: List) -> TriStateFilter:
+    def _first_or_none(
+        self,
+        tri_state_filter_list: List['TriStateFilter']
+    ) -> Optional['TriStateFilter']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            tri_state_filter_list (List[TriStateFilter]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[TriStateFilter]: The first element
+                of the list if it exists, otherwise None.
         """
-        return tri_state_filter_list[0] if tri_state_filter_list else None
+        return (
+            tri_state_filter_list[0]
+            if tri_state_filter_list
+            else None
+        )
     async def get_by_id(self, tri_state_filter_id: int) -> Optional[TriStateFilter]:
         """
             #TODO add comment

@@ -103,7 +103,8 @@ class TestOrgApiKeyManager:
         """
             #TODO add comment
         """
-        # Create a test org_api_key using the OrgApiKeyFactory without persisting it to the database
+        # Create a test org_api_key using the OrgApiKeyFactory
+        # without persisting it to the database
         test_org_api_key = await OrgApiKeyFactory.build_async(session)
         assert test_org_api_key.org_api_key_id == 0
         test_org_api_key.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestOrgApiKeyManager:
         """
             #TODO add comment
         """
-        org_api_keys_data = [await OrgApiKeyFactory.build_async(session) for _ in range(5)]
+        org_api_keys_data = [
+            await OrgApiKeyFactory.build_async(session) for _ in range(5)]
         org_api_keys = await org_api_key_manager.add_bulk(org_api_keys_data)
         assert len(org_api_keys) == 5
         for updated_org_api_key in org_api_keys:
@@ -586,7 +588,8 @@ class TestOrgApiKeyManager:
         # Add org_api_keys
         org_api_keys_data = (
             [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
-        sorted_org_api_keys = await org_api_key_manager.get_sorted_list(sort_by="_org_api_key_id")
+        sorted_org_api_keys = await org_api_key_manager.get_sorted_list(
+            sort_by="_org_api_key_id")
         assert [org_api_key.org_api_key_id for org_api_key in sorted_org_api_keys] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestOrgApiKeyManager:
         """
         # Add a org_api_key
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
-        result = await session.execute(select(OrgApiKey).filter(OrgApiKey._org_api_key_id == org_api_key1.org_api_key_id))
+        result = await session.execute(
+            select(OrgApiKey).filter(OrgApiKey._org_api_key_id == org_api_key1.org_api_key_id)
+        )
         org_api_key2 = result.scalars().first()
         assert org_api_key1.code == org_api_key2.code
         updated_code1 = uuid.uuid4()
         org_api_key1.code = updated_code1
         updated_org_api_key1 = await org_api_key_manager.update(org_api_key1)
+        assert isinstance(updated_org_api_key1, OrgApiKey)
         assert updated_org_api_key1.code == updated_code1
         refreshed_org_api_key2 = await org_api_key_manager.refresh(org_api_key2)
         assert refreshed_org_api_key2.code == updated_code1

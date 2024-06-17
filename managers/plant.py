@@ -93,18 +93,7 @@ class PlantManager:
             #TODO add comment
         """
         logging.info("PlantManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(Plant, Flavor, and_(Plant.flvr_foreign_key_id == Flavor.flavor_id, Plant.flvr_foreign_key_id != 0))
-#         join_condition = outerjoin(join_condition, Land, and_(Plant.land_id == Land.land_id, Plant.land_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(Plant
-#                         , Flavor  # flvr_foreign_key_id
-#                         , Land  # land_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(Plant)
+
         query = select(
             Plant,
             Flavor,  # flvr_foreign_key_id
@@ -163,11 +152,28 @@ class PlantManager:
 
         return result
 
-    def _first_or_none(self, plant_list: List) -> Plant:
+    def _first_or_none(
+        self,
+        plant_list: List['Plant']
+    ) -> Optional['Plant']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+
+        Args:
+            plant_list (List[Plant]):
+                The list to retrieve the first element from.
+
+        Returns:
+            Optional[Plant]: The first element
+                of the list if it exists, otherwise None.
         """
-        return plant_list[0] if plant_list else None
+
+        return (
+            plant_list[0]
+            if plant_list
+            else None
+        )
 
     async def get_by_id(self, plant_id: int) -> Optional[Plant]:
         """

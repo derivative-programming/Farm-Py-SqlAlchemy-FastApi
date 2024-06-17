@@ -34,7 +34,6 @@ class PacInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class PacBusObj(BaseBusObj):
     """
     This class represents the business object for a Pac.

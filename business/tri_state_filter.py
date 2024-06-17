@@ -20,7 +20,6 @@ class TriStateFilterInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class TriStateFilterBusObj(BaseBusObj):
     """
     This class represents the business object for a TriStateFilter.

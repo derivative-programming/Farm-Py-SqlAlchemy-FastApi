@@ -31,10 +31,13 @@ class TestOrgApiKeySchema:
     # Sample data for a OrgApiKey instance
     sample_data = {
         "org_api_key_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "api_key_value": "Vanilla",
         "created_by": "Vanilla",
@@ -56,8 +59,10 @@ class TestOrgApiKeySchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "organization_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrganizationID
-        "org_customer_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # OrgCustomerID
+        "organization_code_peek":  # OrganizationID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "org_customer_code_peek":  # OrgCustomerID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
     def test_org_api_key_serialization(self, org_api_key: OrgApiKey):
@@ -250,7 +255,9 @@ class TestOrgApiKeySchema:
         # Convert the JSON strings back to dictionaries
         org_api_key_dict_from_json = json.loads(org_api_key_json)
         # sample_dict_from_json = json.loads(self.sample_data)
-        logging.info("org_api_key_dict_from_json.keys() %s", org_api_key_dict_from_json.keys())
+        logging.info(
+            "org_api_key_dict_from_json.keys() %s",
+            org_api_key_dict_from_json.keys())
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
         # Verify the keys in both dictionaries match
         assert set(org_api_key_dict_from_json.keys()) == (

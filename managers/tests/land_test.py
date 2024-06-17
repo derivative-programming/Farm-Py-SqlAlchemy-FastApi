@@ -103,7 +103,8 @@ class TestLandManager:
         """
             #TODO add comment
         """
-        # Create a test land using the LandFactory without persisting it to the database
+        # Create a test land using the LandFactory
+        # without persisting it to the database
         test_land = await LandFactory.build_async(session)
         assert test_land.land_id == 0
         test_land.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestLandManager:
         """
             #TODO add comment
         """
-        lands_data = [await LandFactory.build_async(session) for _ in range(5)]
+        lands_data = [
+            await LandFactory.build_async(session) for _ in range(5)]
         lands = await land_manager.add_bulk(lands_data)
         assert len(lands) == 5
         for updated_land in lands:
@@ -586,7 +588,8 @@ class TestLandManager:
         # Add lands
         lands_data = (
             [await LandFactory.create_async(session) for _ in range(5)])
-        sorted_lands = await land_manager.get_sorted_list(sort_by="_land_id")
+        sorted_lands = await land_manager.get_sorted_list(
+            sort_by="_land_id")
         assert [land.land_id for land in sorted_lands] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestLandManager:
         """
         # Add a land
         land1 = await LandFactory.create_async(session=session)
-        result = await session.execute(select(Land).filter(Land._land_id == land1.land_id))
+        result = await session.execute(
+            select(Land).filter(Land._land_id == land1.land_id)
+        )
         land2 = result.scalars().first()
         assert land1.code == land2.code
         updated_code1 = uuid.uuid4()
         land1.code = updated_code1
         updated_land1 = await land_manager.update(land1)
+        assert isinstance(updated_land1, Land)
         assert updated_land1.code == updated_code1
         refreshed_land2 = await land_manager.refresh(land2)
         assert refreshed_land2.code == updated_code1

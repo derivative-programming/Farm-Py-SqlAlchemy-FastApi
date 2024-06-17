@@ -43,7 +43,7 @@ class CustomerFactory(factory.Factory):
     phone = Faker('phone_number')
     province = Faker('sentence', nb_words=4)
     registration_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    # tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
+    # tac_id = 0
     utc_offset_in_minutes = Faker('random_int')
     zip = Faker('sentence', nb_words=4)
 # endset
@@ -59,8 +59,8 @@ class CustomerFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        tac_id_tac_instance = TacFactory.create(  # TacID
-            session=session)
+        tac_id_tac_instance = (  # TacID
+            TacFactory.create(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
@@ -82,8 +82,8 @@ class CustomerFactory(factory.Factory):
         #TODO add comment
         """
         logger.info("factory create")
-        tac_id_tac_instance = TacFactory.create(  # TacID
-            session=session)
+        tac_id_tac_instance = (  # TacID
+            TacFactory.create(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
@@ -104,8 +104,8 @@ class CustomerFactory(factory.Factory):
         """
             #TODO add comment
         """
-        tac_id_tac_instance = await TacFactory.create_async(  # TacID
-            session=session)
+        tac_id_tac_instance = await (  # TacID
+            TacFactory.create_async(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
@@ -126,8 +126,8 @@ class CustomerFactory(factory.Factory):
         """
             #TODO add comment
         """
-        tac_id_tac_instance = await TacFactory.create_async(  # TacID
-            session=session)
+        tac_id_tac_instance = await (  # TacID
+            TacFactory.create_async(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)

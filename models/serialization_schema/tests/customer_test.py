@@ -31,10 +31,13 @@ class TestCustomerSchema:
     # Sample data for a Customer instance
     sample_data = {
         "customer_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "active_organization_id": 42,
         "email": "test@email.com",
@@ -46,7 +49,8 @@ class TestCustomerSchema:
             2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
         "forgot_password_key_value": "Vanilla",
-        "fs_user_code_value": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "fs_user_code_value":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "is_active": False,
         "is_email_allowed": False,
         "is_email_confirmed": False,
@@ -74,7 +78,8 @@ class TestCustomerSchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "tac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # TacID
+        "tac_code_peek":  # TacID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
     def test_customer_serialization(self, customer: Customer):
@@ -371,7 +376,9 @@ class TestCustomerSchema:
         # Convert the JSON strings back to dictionaries
         customer_dict_from_json = json.loads(customer_json)
         # sample_dict_from_json = json.loads(self.sample_data)
-        logging.info("customer_dict_from_json.keys() %s", customer_dict_from_json.keys())
+        logging.info(
+            "customer_dict_from_json.keys() %s",
+            customer_dict_from_json.keys())
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
         # Verify the keys in both dictionaries match
         assert set(customer_dict_from_json.keys()) == (

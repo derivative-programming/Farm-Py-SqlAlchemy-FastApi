@@ -32,7 +32,8 @@ class TestCustomerUserLogOutPostModelResponse:
         # Parse JSON output
         data = json.loads(json_output)
         # Assert individual fields
-        assert data["context_object_code"] == str(result.context_object_code)
+        assert data["context_object_code"] == (
+            str(result.context_object_code))
 
 # endsets
     #TODO finish test
@@ -57,14 +58,14 @@ class TestCustomerUserLogOutPostModelResponse:
 # endset  # noqa: E122
                 )
         session_context.role_name_csv = role_required
-        customerCodeMatchRequired = False
+        customer_code_match_required = False
         if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
-        if customerCodeMatchRequired is True:
+            customer_code_match_required = True
+        if customer_code_match_required is True:
             with pytest.raises(FlowValidationError):
                 flow_result = await flow.process(
                     customer_bus_obj,

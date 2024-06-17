@@ -22,7 +22,6 @@ class LandInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class LandBusObj(BaseBusObj):
     """
     This class represents the business object for a Land.

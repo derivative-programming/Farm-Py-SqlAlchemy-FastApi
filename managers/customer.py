@@ -73,16 +73,6 @@ class CustomerManager:
             #TODO add comment
         """
         logging.info("CustomerManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Tac, and_(Customer.tac_id == Tac.tac_id, Customer.tac_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(Customer
-#                         , Tac  # tac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(Customer)
         query = select(
             Customer,
             Tac,  # tac_id
@@ -121,11 +111,25 @@ class CustomerManager:
 # endset
             result.append(customer)
         return result
-    def _first_or_none(self, customer_list: List) -> Customer:
+    def _first_or_none(
+        self,
+        customer_list: List['Customer']
+    ) -> Optional['Customer']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            customer_list (List[Customer]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[Customer]: The first element
+                of the list if it exists, otherwise None.
         """
-        return customer_list[0] if customer_list else None
+        return (
+            customer_list[0]
+            if customer_list
+            else None
+        )
     async def get_by_id(self, customer_id: int) -> Optional[Customer]:
         """
             #TODO add comment

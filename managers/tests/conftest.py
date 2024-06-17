@@ -62,7 +62,7 @@ async def session(engine) -> AsyncSession:
         await connection.begin_nested()
         await connection.run_sync(Base.metadata.drop_all)
         await connection.run_sync(Base.metadata.create_all)
-        TestingSessionLocal = sessionmaker(
+        TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
             expire_on_commit=False,
             class_=AsyncSession,
             bind=engine,

@@ -47,7 +47,8 @@ class TestPlantFactory:
         """
 
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            bind=engine, expire_on_commit=False)
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()

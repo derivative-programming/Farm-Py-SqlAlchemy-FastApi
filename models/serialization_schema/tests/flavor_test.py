@@ -31,10 +31,13 @@ class TestFlavorSchema:
     # Sample data for a Flavor instance
     sample_data = {
         "flavor_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id":
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "description": "Vanilla",
         "display_order": 42,
@@ -49,7 +52,8 @@ class TestFlavorSchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "pac_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # PacID
+        "pac_code_peek":  # PacID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
     def test_flavor_serialization(self, flavor: Flavor):
@@ -210,7 +214,9 @@ class TestFlavorSchema:
         # Convert the JSON strings back to dictionaries
         flavor_dict_from_json = json.loads(flavor_json)
         # sample_dict_from_json = json.loads(self.sample_data)
-        logging.info("flavor_dict_from_json.keys() %s", flavor_dict_from_json.keys())
+        logging.info(
+            "flavor_dict_from_json.keys() %s",
+            flavor_dict_from_json.keys())
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
         # Verify the keys in both dictionaries match
         assert set(flavor_dict_from_json.keys()) == (

@@ -74,18 +74,6 @@ class CustomerRoleManager:
             #TODO add comment
         """
         logging.info("CustomerRoleManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Customer, and_(CustomerRole.customer_id == Customer.customer_id, CustomerRole.customer_id != 0))
-#         join_condition = outerjoin(CustomerRole, Role, and_(CustomerRole.role_id == Role.role_id, CustomerRole.role_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(CustomerRole
-#                         , Customer  # customer_id
-#                         , Role  # role_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(CustomerRole)
         query = select(
             CustomerRole,
             Customer,  # customer_id
@@ -134,11 +122,25 @@ class CustomerRoleManager:
 # endset
             result.append(customer_role)
         return result
-    def _first_or_none(self, customer_role_list: List) -> CustomerRole:
+    def _first_or_none(
+        self,
+        customer_role_list: List['CustomerRole']
+    ) -> Optional['CustomerRole']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            customer_role_list (List[CustomerRole]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[CustomerRole]: The first element
+                of the list if it exists, otherwise None.
         """
-        return customer_role_list[0] if customer_role_list else None
+        return (
+            customer_role_list[0]
+            if customer_role_list
+            else None
+        )
     async def get_by_id(self, customer_role_id: int) -> Optional[CustomerRole]:
         """
             #TODO add comment

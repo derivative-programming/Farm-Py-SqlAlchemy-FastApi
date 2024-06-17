@@ -31,8 +31,10 @@ class FlowLandAddPlantResult():
     output_is_delete_allowed: bool = False
     output_some_float_val: float = 0
     output_some_decimal_val: Decimal = Decimal(0)
-    output_some_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
-    output_some_date_val: date = TypeConversion.get_default_date()
+    output_some_utc_date_time_val: datetime = (
+        TypeConversion.get_default_date_time())
+    output_some_date_val: date = (
+        TypeConversion.get_default_date())
     output_some_money_val: Decimal = Decimal(0)
     output_some_n_var_char_val: str = ""
     output_some_var_char_val: str = ""
@@ -203,7 +205,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 
         # plant: PlantBusObj = land_bus_obj.build_plant()
         # plant.land_id = land_bus_obj.land_id
-        # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session_context.session,code=request_flavor_code).code
+        # plant.flvr_foreign_key_id = await FlavorBusObj.get(
+        #   land_bus_obj.session_context.session,code=request_flavor_code).code
         # plant.other_flavor = request_other_flavor
         # plant.some_int_val = request_some_int_val
         # plant.some_big_int_val = request_some_big_int_val

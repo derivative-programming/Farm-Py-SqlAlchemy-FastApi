@@ -33,11 +33,12 @@ class TestBaseFlowPacUserTacListInitReport():
 
 # endset  # noqa: E122
         )
-        #TODO add validation checks - is email
-        #TODO add validation checks - is phone,
-        #TODO add validation checks - calculatedIsRowLevelCustomerSecurityUsed
-        #TODO add validation checks - calculatedIsRowLevelOrgCustomerSecurityUsed
-        #TODO add validation checks - calculatedIsRowLevelOrganizationSecurityUsed
+        #TODO add validation checks
+        # - is email
+        # - is phone
+        # - calculatedIsRowLevelCustomerSecurityUsed
+        # - calculatedIsRowLevelOrgCustomerSecurityUsed
+        # - calculatedIsRowLevelOrganizationSecurityUsed
 
 # endset
     @pytest.mark.asyncio

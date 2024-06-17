@@ -103,7 +103,8 @@ class TestTriStateFilterManager:
         """
             #TODO add comment
         """
-        # Create a test tri_state_filter using the TriStateFilterFactory without persisting it to the database
+        # Create a test tri_state_filter using the TriStateFilterFactory
+        # without persisting it to the database
         test_tri_state_filter = await TriStateFilterFactory.build_async(session)
         assert test_tri_state_filter.tri_state_filter_id == 0
         test_tri_state_filter.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestTriStateFilterManager:
         """
             #TODO add comment
         """
-        tri_state_filters_data = [await TriStateFilterFactory.build_async(session) for _ in range(5)]
+        tri_state_filters_data = [
+            await TriStateFilterFactory.build_async(session) for _ in range(5)]
         tri_state_filters = await tri_state_filter_manager.add_bulk(tri_state_filters_data)
         assert len(tri_state_filters) == 5
         for updated_tri_state_filter in tri_state_filters:
@@ -586,7 +588,8 @@ class TestTriStateFilterManager:
         # Add tri_state_filters
         tri_state_filters_data = (
             [await TriStateFilterFactory.create_async(session) for _ in range(5)])
-        sorted_tri_state_filters = await tri_state_filter_manager.get_sorted_list(sort_by="_tri_state_filter_id")
+        sorted_tri_state_filters = await tri_state_filter_manager.get_sorted_list(
+            sort_by="_tri_state_filter_id")
         assert [tri_state_filter.tri_state_filter_id for tri_state_filter in sorted_tri_state_filters] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestTriStateFilterManager:
         """
         # Add a tri_state_filter
         tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
-        result = await session.execute(select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == tri_state_filter1.tri_state_filter_id))
+        result = await session.execute(
+            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == tri_state_filter1.tri_state_filter_id)
+        )
         tri_state_filter2 = result.scalars().first()
         assert tri_state_filter1.code == tri_state_filter2.code
         updated_code1 = uuid.uuid4()
         tri_state_filter1.code = updated_code1
         updated_tri_state_filter1 = await tri_state_filter_manager.update(tri_state_filter1)
+        assert isinstance(updated_tri_state_filter1, TriStateFilter)
         assert updated_tri_state_filter1.code == updated_code1
         refreshed_tri_state_filter2 = await tri_state_filter_manager.refresh(tri_state_filter2)
         assert refreshed_tri_state_filter2.code == updated_code1

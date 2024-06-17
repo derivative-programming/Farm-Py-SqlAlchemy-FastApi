@@ -226,7 +226,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             "Processing security rules..."
         )
 
-        customerCodeMatchRequired = False
+        customer_code_match_required = False
 
         role_required = "User"
 
@@ -237,16 +237,16 @@ class BaseFlowLandAddPlant(BaseFlow):
                 )
 
         if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
 
         if len(self.queued_validation_errors) > 0:
             return
 
-        if customerCodeMatchRequired is False:
+        if customer_code_match_required is False:
             return
 
         val = True
@@ -277,7 +277,8 @@ class BaseFlowLandAddPlant(BaseFlow):
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
-            if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
+            if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed \
+                    is True:
                 if item.get_object_name() == "organization":
                     organization_id = item.get_id()
                     customer_bus_obj = CustomerBusObj(

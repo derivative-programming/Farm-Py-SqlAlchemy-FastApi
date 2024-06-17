@@ -63,7 +63,7 @@ class BaseFlowTacLogin(BaseFlow):
             LogSeverity.information_high_detail,
             "Processing security rules..."
         )
-        customerCodeMatchRequired = False
+        customer_code_match_required = False
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -71,14 +71,14 @@ class BaseFlowTacLogin(BaseFlow):
                     "Unautorized access. " + role_required + " role not found."
                 )
         if FlowConstants.calculatedIsRowLevelCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrganizationSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if FlowConstants.calculatedIsRowLevelOrgCustomerSecurityUsed is True:
-            customerCodeMatchRequired = True
+            customer_code_match_required = True
         if len(self.queued_validation_errors) > 0:
             return
-        if customerCodeMatchRequired is False:
+        if customer_code_match_required is False:
             return
         val = True
         item = tac_bus_obj

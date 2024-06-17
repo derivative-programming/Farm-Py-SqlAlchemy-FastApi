@@ -37,15 +37,25 @@ def engine():
         #TODO add comment
     """
 
-    engine = create_async_engine(DATABASE_URL, echo=False)
-    yield engine
-    engine.sync_engine.dispose()
+    engine_obj = create_async_engine(DATABASE_URL, echo=False)
+    yield engine_obj
+    engine_obj.sync_engine.dispose()
 
 
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncGenerator[AsyncSession, None]:
     """
-        #TODO add comment
+    Async fixture to provide a database session for testing.
+
+    This fixture ensures that the database schema is created
+    before each test and dropped afterwards.
+    It also ensures that SQLite foreign key constraints are enforced.
+
+    Args:
+        engine: The SQLAlchemy async engine.
+
+    Yields:
+        AsyncSession: A SQLAlchemy async session object.
     """
 
     @event.listens_for(engine.sync_engine, "connect")
@@ -53,24 +63,26 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.close()
+
     async with engine.begin() as connection:
         await connection.begin_nested()
         await connection.run_sync(Base.metadata.drop_all)
         await connection.run_sync(Base.metadata.create_all)
-        TestingSessionLocal = sessionmaker(
+
+        TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
             expire_on_commit=False,
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session:
+        async with TestingSessionLocal(bind=connection) as session_obj:
             @event.listens_for(
-                session.sync_session, "after_transaction_end"
+                session_obj.sync_session, "after_transaction_end"
             )
-            def end_savepoint(session, transaction):
+            def end_savepoint(session_obj, transaction):
                 if connection.closed:
                     return
                 if not connection.in_nested_transaction():
                     connection.sync_connection.begin_nested()
-            yield session
-            await session.flush()
-            await session.rollback()
+            yield session_obj
+            await session_obj.flush()
+            await session_obj.rollback()

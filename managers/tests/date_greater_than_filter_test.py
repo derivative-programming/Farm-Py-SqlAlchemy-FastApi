@@ -103,7 +103,8 @@ class TestDateGreaterThanFilterManager:
         """
             #TODO add comment
         """
-        # Create a test date_greater_than_filter using the DateGreaterThanFilterFactory without persisting it to the database
+        # Create a test date_greater_than_filter using the DateGreaterThanFilterFactory
+        # without persisting it to the database
         test_date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(session)
         assert test_date_greater_than_filter.date_greater_than_filter_id == 0
         test_date_greater_than_filter.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestDateGreaterThanFilterManager:
         """
             #TODO add comment
         """
-        date_greater_than_filters_data = [await DateGreaterThanFilterFactory.build_async(session) for _ in range(5)]
+        date_greater_than_filters_data = [
+            await DateGreaterThanFilterFactory.build_async(session) for _ in range(5)]
         date_greater_than_filters = await date_greater_than_filter_manager.add_bulk(date_greater_than_filters_data)
         assert len(date_greater_than_filters) == 5
         for updated_date_greater_than_filter in date_greater_than_filters:
@@ -586,7 +588,8 @@ class TestDateGreaterThanFilterManager:
         # Add date_greater_than_filters
         date_greater_than_filters_data = (
             [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
-        sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(sort_by="_date_greater_than_filter_id")
+        sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(
+            sort_by="_date_greater_than_filter_id")
         assert [date_greater_than_filter.date_greater_than_filter_id for date_greater_than_filter in sorted_date_greater_than_filters] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestDateGreaterThanFilterManager:
         """
         # Add a date_greater_than_filter
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
-        result = await session.execute(select(DateGreaterThanFilter).filter(DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter1.date_greater_than_filter_id))
+        result = await session.execute(
+            select(DateGreaterThanFilter).filter(DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter1.date_greater_than_filter_id)
+        )
         date_greater_than_filter2 = result.scalars().first()
         assert date_greater_than_filter1.code == date_greater_than_filter2.code
         updated_code1 = uuid.uuid4()
         date_greater_than_filter1.code = updated_code1
         updated_date_greater_than_filter1 = await date_greater_than_filter_manager.update(date_greater_than_filter1)
+        assert isinstance(updated_date_greater_than_filter1, DateGreaterThanFilter)
         assert updated_date_greater_than_filter1.code == updated_code1
         refreshed_date_greater_than_filter2 = await date_greater_than_filter_manager.refresh(date_greater_than_filter2)
         assert refreshed_date_greater_than_filter2.code == updated_code1

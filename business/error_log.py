@@ -20,7 +20,6 @@ class ErrorLogInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class ErrorLogBusObj(BaseBusObj):
     """
     This class represents the business object for a ErrorLog.

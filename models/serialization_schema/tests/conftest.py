@@ -53,7 +53,8 @@ def session(engine):
     Base.metadata.create_all(engine)
 
     # Create a configured "Session" class
-    SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+    SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        bind=engine, expire_on_commit=False)
 
     # Instantiate a session
     session_instance = SessionLocal()

@@ -74,18 +74,6 @@ class OrgCustomerManager:
             #TODO add comment
         """
         logging.info("OrgCustomerManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(OrgCustomer, Customer, and_(OrgCustomer.customer_id == Customer.customer_id, OrgCustomer.customer_id != 0))
-#         join_condition = outerjoin(join_condition, Organization, and_(OrgCustomer.organization_id == Organization.organization_id, OrgCustomer.organization_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(OrgCustomer
-#                         , Customer  # customer_id
-#                         , Organization  # organization_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(OrgCustomer)
         query = select(
             OrgCustomer,
             Customer,  # customer_id
@@ -134,11 +122,25 @@ class OrgCustomerManager:
 # endset
             result.append(org_customer)
         return result
-    def _first_or_none(self, org_customer_list: List) -> OrgCustomer:
+    def _first_or_none(
+        self,
+        org_customer_list: List['OrgCustomer']
+    ) -> Optional['OrgCustomer']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            org_customer_list (List[OrgCustomer]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[OrgCustomer]: The first element
+                of the list if it exists, otherwise None.
         """
-        return org_customer_list[0] if org_customer_list else None
+        return (
+            org_customer_list[0]
+            if org_customer_list
+            else None
+        )
     async def get_by_id(self, org_customer_id: int) -> Optional[OrgCustomer]:
         """
             #TODO add comment

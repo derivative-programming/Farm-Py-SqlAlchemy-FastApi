@@ -103,7 +103,8 @@ class TestCustomerManager:
         """
             #TODO add comment
         """
-        # Create a test customer using the CustomerFactory without persisting it to the database
+        # Create a test customer using the CustomerFactory
+        # without persisting it to the database
         test_customer = await CustomerFactory.build_async(session)
         assert test_customer.customer_id == 0
         test_customer.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestCustomerManager:
         """
             #TODO add comment
         """
-        customers_data = [await CustomerFactory.build_async(session) for _ in range(5)]
+        customers_data = [
+            await CustomerFactory.build_async(session) for _ in range(5)]
         customers = await customer_manager.add_bulk(customers_data)
         assert len(customers) == 5
         for updated_customer in customers:
@@ -586,7 +588,8 @@ class TestCustomerManager:
         # Add customers
         customers_data = (
             [await CustomerFactory.create_async(session) for _ in range(5)])
-        sorted_customers = await customer_manager.get_sorted_list(sort_by="_customer_id")
+        sorted_customers = await customer_manager.get_sorted_list(
+            sort_by="_customer_id")
         assert [customer.customer_id for customer in sorted_customers] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestCustomerManager:
         """
         # Add a customer
         customer1 = await CustomerFactory.create_async(session=session)
-        result = await session.execute(select(Customer).filter(Customer._customer_id == customer1.customer_id))
+        result = await session.execute(
+            select(Customer).filter(Customer._customer_id == customer1.customer_id)
+        )
         customer2 = result.scalars().first()
         assert customer1.code == customer2.code
         updated_code1 = uuid.uuid4()
         customer1.code = updated_code1
         updated_customer1 = await customer_manager.update(customer1)
+        assert isinstance(updated_customer1, Customer)
         assert updated_customer1.code == updated_code1
         refreshed_customer2 = await customer_manager.refresh(customer2)
         assert refreshed_customer2.code == updated_code1

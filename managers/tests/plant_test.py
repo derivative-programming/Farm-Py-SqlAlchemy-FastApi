@@ -125,7 +125,8 @@ class TestPlantManager:
         """
             #TODO add comment
         """
-        # Create a test plant using the PlantFactory without persisting it to the database
+        # Create a test plant using the PlantFactory
+        # without persisting it to the database
         test_plant = await PlantFactory.build_async(session)
 
         assert test_plant.plant_id == 0
@@ -487,7 +488,8 @@ class TestPlantManager:
         """
             #TODO add comment
         """
-        plants_data = [await PlantFactory.build_async(session) for _ in range(5)]
+        plants_data = [
+            await PlantFactory.build_async(session) for _ in range(5)]
 
         plants = await plant_manager.add_bulk(plants_data)
 
@@ -755,7 +757,8 @@ class TestPlantManager:
         plants_data = (
             [await PlantFactory.create_async(session) for _ in range(5)])
 
-        sorted_plants = await plant_manager.get_sorted_list(sort_by="_plant_id")
+        sorted_plants = await plant_manager.get_sorted_list(
+            sort_by="_plant_id")
 
         assert [plant.plant_id for plant in sorted_plants] == (
             [(i + 1) for i in range(5)])
@@ -819,7 +822,9 @@ class TestPlantManager:
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
-        result = await session.execute(select(Plant).filter(Plant._plant_id == plant1.plant_id))
+        result = await session.execute(
+            select(Plant).filter(Plant._plant_id == plant1.plant_id)
+        )
         plant2 = result.scalars().first()
 
         assert plant1.code == plant2.code
@@ -827,6 +832,8 @@ class TestPlantManager:
         updated_code1 = uuid.uuid4()
         plant1.code = updated_code1
         updated_plant1 = await plant_manager.update(plant1)
+
+        assert isinstance(updated_plant1, Plant)
 
         assert updated_plant1.code == updated_code1
 

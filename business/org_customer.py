@@ -20,7 +20,6 @@ class OrgCustomerInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class OrgCustomerBusObj(BaseBusObj):
     """
     This class represents the business object for a OrgCustomer.

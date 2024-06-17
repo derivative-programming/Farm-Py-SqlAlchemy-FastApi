@@ -44,10 +44,13 @@ class TestPlantSchema:
     # Sample data for a Plant instance
     sample_data = {
         "plant_id": 1,
-        "code": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "code": 
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "last_change_code": 0,
-        "insert_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
-        "last_update_user_id": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "insert_user_id": 
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "last_update_user_id": 
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
         "flvr_foreign_key_id": 1,
         "is_delete_allowed": False,
@@ -65,7 +68,8 @@ class TestPlantSchema:
         "some_n_var_char_val": "Hello",
         "some_phone_number": "123-456-7890",
         "some_text_val": "Lorem ipsum",
-        "some_uniqueidentifier_val": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "some_uniqueidentifier_val": 
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
         "some_utc_date_time_val": datetime(
             2023, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
@@ -77,8 +81,10 @@ class TestPlantSchema:
             2025, 1, 1, 12, 0, 0, tzinfo=pytz.utc
         ).isoformat(),
 # endset  # noqa: E122
-        "flvr_foreign_key_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # FlvrForeignKeyID
-        "land_code_peek": "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",  # LandID
+        "flvr_foreign_key_code_peek":  # FlvrForeignKeyID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
+        "land_code_peek":  # LandID
+            "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
 
@@ -379,7 +385,9 @@ class TestPlantSchema:
         plant_dict_from_json = json.loads(plant_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
-        logging.info("plant_dict_from_json.keys() %s", plant_dict_from_json.keys())
+        logging.info(
+            "plant_dict_from_json.keys() %s",
+            plant_dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 

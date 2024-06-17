@@ -25,7 +25,6 @@ class PlantInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 
 
 class PlantBusObj(BaseBusObj):

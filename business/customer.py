@@ -22,7 +22,6 @@ class CustomerInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 class CustomerBusObj(BaseBusObj):
     """
     This class represents the business object for a Customer.

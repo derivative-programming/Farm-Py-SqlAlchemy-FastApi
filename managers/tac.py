@@ -63,7 +63,8 @@ class TacManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(TacEnum.Unknown) is None:
+        if await self.from_enum(TacEnum.Unknown) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
             item.lookup_enum_name = "Unknown"
@@ -72,7 +73,8 @@ class TacManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(TacEnum.Primary) is None:
+        if await self.from_enum(TacEnum.Primary) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Primary"
             item.lookup_enum_name = "Primary"
@@ -118,16 +120,6 @@ class TacManager:
             #TODO add comment
         """
         logging.info("TacManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Pac, and_(Tac.pac_id == Pac.pac_id, Tac.pac_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(Tac
-#                         , Pac  # pac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(Tac)
         query = select(
             Tac,
             Pac,  # pac_id
@@ -166,11 +158,25 @@ class TacManager:
 # endset
             result.append(tac)
         return result
-    def _first_or_none(self, tac_list: List) -> Tac:
+    def _first_or_none(
+        self,
+        tac_list: List['Tac']
+    ) -> Optional['Tac']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            tac_list (List[Tac]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[Tac]: The first element
+                of the list if it exists, otherwise None.
         """
-        return tac_list[0] if tac_list else None
+        return (
+            tac_list[0]
+            if tac_list
+            else None
+        )
     async def get_by_id(self, tac_id: int) -> Optional[Tac]:
         """
             #TODO add comment

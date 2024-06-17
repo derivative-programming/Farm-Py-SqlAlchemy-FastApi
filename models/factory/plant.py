@@ -31,10 +31,10 @@ class PlantFactory(factory.Factory):
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    # flvr_foreign_key_id = 0 #factory.LazyAttribute(lambda obj: obj.flavor.flavor_id)
+    # flvr_foreign_key_id = 0
     is_delete_allowed = Faker('boolean')
     is_edit_allowed = Faker('boolean')
-    # land_id = 0 #factory.LazyAttribute(lambda obj: obj.land.land_id)
+    # land_id = 0
     other_flavor = Faker('sentence', nb_words=4)
     some_big_int_val = Faker('random_int')
     some_bit_val = Faker('boolean')
@@ -82,10 +82,12 @@ class PlantFactory(factory.Factory):
             obj2 = model_class(*args, **kwargs)
             return obj2
 
-        land_id_land_instance = LandFactory.create(  # LandID
-            session=session)
-        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(  # FlvrForeignKeyID
-            session=session)
+        land_id_land_instance = (  # LandID
+            LandFactory.create(session=session))
+
+        flvr_foreign_key_id_flavor_instance = (  # FlvrForeignKeyID
+            FlavorFactory.create(session=session))
+            
 # endset
 
         kwargs["land_id"] = (  # LandID
@@ -122,10 +124,11 @@ class PlantFactory(factory.Factory):
         """
 
         logger.info("factory create")
-        land_id_land_instance = LandFactory.create(  # LandID
-            session=session)
-        flvr_foreign_key_id_flavor_instance = FlavorFactory.create(  # FlvrForeignKeyID
-            session=session)
+        land_id_land_instance = (  # LandID
+            LandFactory.create(session=session))
+
+        flvr_foreign_key_id_flavor_instance = (  # FlvrForeignKeyID
+            FlavorFactory.create(session=session))
 # endset
 
         kwargs["land_id"] = (  # LandID
@@ -161,10 +164,12 @@ class PlantFactory(factory.Factory):
             #TODO add comment
         """
 
-        land_id_land_instance = await LandFactory.create_async(  # LandID
-            session=session)
-        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(  # FlvrForeignKeyID
-            session=session)
+        land_id_land_instance = await (  # LandID
+            LandFactory.create_async(session=session))
+
+        flvr_foreign_key_id_flavor_instance = await (  # FlvrForeignKeyID
+            FlavorFactory.create_async(session=session))
+            
 # endset
 
         kwargs["land_id"] = (  # LandID
@@ -200,10 +205,11 @@ class PlantFactory(factory.Factory):
             #TODO add comment
         """
 
-        land_id_land_instance = await LandFactory.create_async(  # LandID
-            session=session)
-        flvr_foreign_key_id_flavor_instance = await FlavorFactory.create_async(  # FlvrForeignKeyID
-            session=session)
+        land_id_land_instance = await (  # LandID
+            LandFactory.create_async(session=session))
+
+        flvr_foreign_key_id_flavor_instance = await (  # FlvrForeignKeyID
+            FlavorFactory.create_async(session=session))
 # endset
 
         kwargs["land_id"] = (  # LandID

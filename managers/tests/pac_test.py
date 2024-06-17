@@ -103,7 +103,8 @@ class TestPacManager:
         """
             #TODO add comment
         """
-        # Create a test pac using the PacFactory without persisting it to the database
+        # Create a test pac using the PacFactory
+        # without persisting it to the database
         test_pac = await PacFactory.build_async(session)
         assert test_pac.pac_id == 0
         test_pac.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestPacManager:
         """
             #TODO add comment
         """
-        pacs_data = [await PacFactory.build_async(session) for _ in range(5)]
+        pacs_data = [
+            await PacFactory.build_async(session) for _ in range(5)]
         pacs = await pac_manager.add_bulk(pacs_data)
         assert len(pacs) == 5
         for updated_pac in pacs:
@@ -586,7 +588,8 @@ class TestPacManager:
         # Add pacs
         pacs_data = (
             [await PacFactory.create_async(session) for _ in range(5)])
-        sorted_pacs = await pac_manager.get_sorted_list(sort_by="_pac_id")
+        sorted_pacs = await pac_manager.get_sorted_list(
+            sort_by="_pac_id")
         assert [pac.pac_id for pac in sorted_pacs] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestPacManager:
         """
         # Add a pac
         pac1 = await PacFactory.create_async(session=session)
-        result = await session.execute(select(Pac).filter(Pac._pac_id == pac1.pac_id))
+        result = await session.execute(
+            select(Pac).filter(Pac._pac_id == pac1.pac_id)
+        )
         pac2 = result.scalars().first()
         assert pac1.code == pac2.code
         updated_code1 = uuid.uuid4()
         pac1.code = updated_code1
         updated_pac1 = await pac_manager.update(pac1)
+        assert isinstance(updated_pac1, Pac)
         assert updated_pac1.code == updated_code1
         refreshed_pac2 = await pac_manager.refresh(pac2)
         assert refreshed_pac2.code == updated_code1

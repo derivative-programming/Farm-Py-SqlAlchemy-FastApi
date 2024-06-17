@@ -24,7 +24,7 @@ class OrganizationFactory(factory.Factory):
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
     name = Faker('sentence', nb_words=4)
-    # tac_id = 0 #factory.LazyAttribute(lambda obj: obj.tac.tac_id)
+    # tac_id = 0
 # endset
     tac_code_peek = factory.LazyFunction(  # TacID
         uuid.uuid4
@@ -38,8 +38,8 @@ class OrganizationFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        tac_id_tac_instance = TacFactory.create(  # TacID
-            session=session)
+        tac_id_tac_instance = (  # TacID
+            TacFactory.create(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
@@ -61,8 +61,8 @@ class OrganizationFactory(factory.Factory):
         #TODO add comment
         """
         logger.info("factory create")
-        tac_id_tac_instance = TacFactory.create(  # TacID
-            session=session)
+        tac_id_tac_instance = (  # TacID
+            TacFactory.create(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
@@ -83,8 +83,8 @@ class OrganizationFactory(factory.Factory):
         """
             #TODO add comment
         """
-        tac_id_tac_instance = await TacFactory.create_async(  # TacID
-            session=session)
+        tac_id_tac_instance = await (  # TacID
+            TacFactory.create_async(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
@@ -105,8 +105,8 @@ class OrganizationFactory(factory.Factory):
         """
             #TODO add comment
         """
-        tac_id_tac_instance = await TacFactory.create_async(  # TacID
-            session=session)
+        tac_id_tac_instance = await (  # TacID
+            TacFactory.create_async(session=session))
 # endset
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)

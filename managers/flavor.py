@@ -64,7 +64,8 @@ class FlavorManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(FlavorEnum.Unknown) is None:
+        if await self.from_enum(FlavorEnum.Unknown) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
@@ -73,7 +74,8 @@ class FlavorManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(FlavorEnum.Sweet) is None:
+        if await self.from_enum(FlavorEnum.Sweet) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Sweet"
             item.lookup_enum_name = "Sweet"
@@ -82,7 +84,8 @@ class FlavorManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(FlavorEnum.Sour) is None:
+        if await self.from_enum(FlavorEnum.Sour) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Sour"
             item.lookup_enum_name = "Sour"
@@ -128,16 +131,6 @@ class FlavorManager:
             #TODO add comment
         """
         logging.info("FlavorManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Pac, and_(Flavor.pac_id == Pac.pac_id, Flavor.pac_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(Flavor
-#                         , Pac  # pac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(Flavor)
         query = select(
             Flavor,
             Pac,  # pac_id
@@ -176,11 +169,25 @@ class FlavorManager:
 # endset
             result.append(flavor)
         return result
-    def _first_or_none(self, flavor_list: List) -> Flavor:
+    def _first_or_none(
+        self,
+        flavor_list: List['Flavor']
+    ) -> Optional['Flavor']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            flavor_list (List[Flavor]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[Flavor]: The first element
+                of the list if it exists, otherwise None.
         """
-        return flavor_list[0] if flavor_list else None
+        return (
+            flavor_list[0]
+            if flavor_list
+            else None
+        )
     async def get_by_id(self, flavor_id: int) -> Optional[Flavor]:
         """
             #TODO add comment

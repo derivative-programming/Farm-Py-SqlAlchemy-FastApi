@@ -103,7 +103,8 @@ class TestTacManager:
         """
             #TODO add comment
         """
-        # Create a test tac using the TacFactory without persisting it to the database
+        # Create a test tac using the TacFactory
+        # without persisting it to the database
         test_tac = await TacFactory.build_async(session)
         assert test_tac.tac_id == 0
         test_tac.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestTacManager:
         """
             #TODO add comment
         """
-        tacs_data = [await TacFactory.build_async(session) for _ in range(5)]
+        tacs_data = [
+            await TacFactory.build_async(session) for _ in range(5)]
         tacs = await tac_manager.add_bulk(tacs_data)
         assert len(tacs) == 5
         for updated_tac in tacs:
@@ -586,7 +588,8 @@ class TestTacManager:
         # Add tacs
         tacs_data = (
             [await TacFactory.create_async(session) for _ in range(5)])
-        sorted_tacs = await tac_manager.get_sorted_list(sort_by="_tac_id")
+        sorted_tacs = await tac_manager.get_sorted_list(
+            sort_by="_tac_id")
         assert [tac.tac_id for tac in sorted_tacs] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestTacManager:
         """
         # Add a tac
         tac1 = await TacFactory.create_async(session=session)
-        result = await session.execute(select(Tac).filter(Tac._tac_id == tac1.tac_id))
+        result = await session.execute(
+            select(Tac).filter(Tac._tac_id == tac1.tac_id)
+        )
         tac2 = result.scalars().first()
         assert tac1.code == tac2.code
         updated_code1 = uuid.uuid4()
         tac1.code = updated_code1
         updated_tac1 = await tac_manager.update(tac1)
+        assert isinstance(updated_tac1, Tac)
         assert updated_tac1.code == updated_code1
         refreshed_tac2 = await tac_manager.refresh(tac2)
         assert refreshed_tac2.code == updated_code1

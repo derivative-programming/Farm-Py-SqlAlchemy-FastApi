@@ -29,7 +29,7 @@ class ErrorLogFactory(factory.Factory):
     description = Faker('sentence', nb_words=4)
     is_client_side_error = Faker('boolean')
     is_resolved = Faker('boolean')
-    # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
+    # pac_id = 0
     url = Faker('sentence', nb_words=4)
 # endset
     pac_code_peek = factory.LazyFunction(  # PacID
@@ -44,8 +44,8 @@ class ErrorLogFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        pac_id_pac_instance = PacFactory.create(  # PacID
-            session=session)
+        pac_id_pac_instance = (  # PacID
+            PacFactory.create(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
@@ -67,8 +67,8 @@ class ErrorLogFactory(factory.Factory):
         #TODO add comment
         """
         logger.info("factory create")
-        pac_id_pac_instance = PacFactory.create(  # PacID
-            session=session)
+        pac_id_pac_instance = (  # PacID
+            PacFactory.create(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
@@ -89,8 +89,8 @@ class ErrorLogFactory(factory.Factory):
         """
             #TODO add comment
         """
-        pac_id_pac_instance = await PacFactory.create_async(  # PacID
-            session=session)
+        pac_id_pac_instance = await (  # PacID
+            PacFactory.create_async(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
@@ -111,8 +111,8 @@ class ErrorLogFactory(factory.Factory):
         """
             #TODO add comment
         """
-        pac_id_pac_instance = await PacFactory.create_async(  # PacID
-            session=session)
+        pac_id_pac_instance = await (  # PacID
+            PacFactory.create_async(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)

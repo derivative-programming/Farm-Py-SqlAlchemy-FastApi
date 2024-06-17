@@ -74,18 +74,6 @@ class OrgApiKeyManager:
             #TODO add comment
         """
         logging.info("OrgApiKeyManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Organization, and_(OrgApiKey.organization_id == Organization.organization_id, OrgApiKey.organization_id != 0))
-#         join_condition = outerjoin(OrgApiKey, OrgCustomer, and_(OrgApiKey.org_customer_id == OrgCustomer.org_customer_id, OrgApiKey.org_customer_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(OrgApiKey
-#                         , Organization  # organization_id
-#                         , OrgCustomer  # org_customer_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(OrgApiKey)
         query = select(
             OrgApiKey,
             Organization,  # organization_id
@@ -134,11 +122,25 @@ class OrgApiKeyManager:
 # endset
             result.append(org_api_key)
         return result
-    def _first_or_none(self, org_api_key_list: List) -> OrgApiKey:
+    def _first_or_none(
+        self,
+        org_api_key_list: List['OrgApiKey']
+    ) -> Optional['OrgApiKey']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            org_api_key_list (List[OrgApiKey]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[OrgApiKey]: The first element
+                of the list if it exists, otherwise None.
         """
-        return org_api_key_list[0] if org_api_key_list else None
+        return (
+            org_api_key_list[0]
+            if org_api_key_list
+            else None
+        )
     async def get_by_id(self, org_api_key_id: int) -> Optional[OrgApiKey]:
         """
             #TODO add comment

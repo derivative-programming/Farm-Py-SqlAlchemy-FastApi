@@ -63,7 +63,8 @@ class LandManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(LandEnum.Unknown) is None:
+        if await self.from_enum(LandEnum.Unknown) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
             item.lookup_enum_name = "Unknown"
@@ -72,7 +73,8 @@ class LandManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(LandEnum.Field_One) is None:
+        if await self.from_enum(LandEnum.Field_One) \
+                is None:
             item = await self._build_lookup_item(pac)
             item.name = "Field One"
             item.lookup_enum_name = "Field_One"
@@ -118,16 +120,6 @@ class LandManager:
             #TODO add comment
         """
         logging.info("LandManager._build_query")
-#         join_condition = None
-# # endset
-#         join_condition = outerjoin(join_condition, Pac, and_(Land.pac_id == Pac.pac_id, Land.pac_id != 0))
-# # endset
-#         if join_condition is not None:
-#             query = select(Land
-#                         , Pac  # pac_id
-#                         ).select_from(join_condition)
-#         else:
-#             query = select(Land)
         query = select(
             Land,
             Pac,  # pac_id
@@ -166,11 +158,25 @@ class LandManager:
 # endset
             result.append(land)
         return result
-    def _first_or_none(self, land_list: List) -> Land:
+    def _first_or_none(
+        self,
+        land_list: List['Land']
+    ) -> Optional['Land']:
         """
-            #TODO add comment
+        Return the first element of the list if it exists,
+        otherwise return None.
+        Args:
+            land_list (List[Land]):
+                The list to retrieve the first element from.
+        Returns:
+            Optional[Land]: The first element
+                of the list if it exists, otherwise None.
         """
-        return land_list[0] if land_list else None
+        return (
+            land_list[0]
+            if land_list
+            else None
+        )
     async def get_by_id(self, land_id: int) -> Optional[Land]:
         """
             #TODO add comment

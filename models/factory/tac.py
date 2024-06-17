@@ -28,7 +28,7 @@ class TacFactory(factory.Factory):
     is_active = Faker('boolean')
     lookup_enum_name = Faker('sentence', nb_words=4)
     name = Faker('sentence', nb_words=4)
-    # pac_id = 0 #factory.LazyAttribute(lambda obj: obj.pac.pac_id)
+    # pac_id = 0
 # endset
     pac_code_peek = factory.LazyFunction(  # PacID
         uuid.uuid4
@@ -42,8 +42,8 @@ class TacFactory(factory.Factory):
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-        pac_id_pac_instance = PacFactory.create(  # PacID
-            session=session)
+        pac_id_pac_instance = (  # PacID
+            PacFactory.create(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
@@ -65,8 +65,8 @@ class TacFactory(factory.Factory):
         #TODO add comment
         """
         logger.info("factory create")
-        pac_id_pac_instance = PacFactory.create(  # PacID
-            session=session)
+        pac_id_pac_instance = (  # PacID
+            PacFactory.create(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
@@ -87,8 +87,8 @@ class TacFactory(factory.Factory):
         """
             #TODO add comment
         """
-        pac_id_pac_instance = await PacFactory.create_async(  # PacID
-            session=session)
+        pac_id_pac_instance = await (  # PacID
+            PacFactory.create_async(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
@@ -109,8 +109,8 @@ class TacFactory(factory.Factory):
         """
             #TODO add comment
         """
-        pac_id_pac_instance = await PacFactory.create_async(  # PacID
-            session=session)
+        pac_id_pac_instance = await (  # PacID
+            PacFactory.create_async(session=session))
 # endset
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)

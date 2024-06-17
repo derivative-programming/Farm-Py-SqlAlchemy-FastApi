@@ -103,7 +103,8 @@ class TestRoleManager:
         """
             #TODO add comment
         """
-        # Create a test role using the RoleFactory without persisting it to the database
+        # Create a test role using the RoleFactory
+        # without persisting it to the database
         test_role = await RoleFactory.build_async(session)
         assert test_role.role_id == 0
         test_role.code = uuid.uuid4()
@@ -377,7 +378,8 @@ class TestRoleManager:
         """
             #TODO add comment
         """
-        roles_data = [await RoleFactory.build_async(session) for _ in range(5)]
+        roles_data = [
+            await RoleFactory.build_async(session) for _ in range(5)]
         roles = await role_manager.add_bulk(roles_data)
         assert len(roles) == 5
         for updated_role in roles:
@@ -586,7 +588,8 @@ class TestRoleManager:
         # Add roles
         roles_data = (
             [await RoleFactory.create_async(session) for _ in range(5)])
-        sorted_roles = await role_manager.get_sorted_list(sort_by="_role_id")
+        sorted_roles = await role_manager.get_sorted_list(
+            sort_by="_role_id")
         assert [role.role_id for role in sorted_roles] == (
             [(i + 1) for i in range(5)])
     @pytest.mark.asyncio
@@ -638,12 +641,15 @@ class TestRoleManager:
         """
         # Add a role
         role1 = await RoleFactory.create_async(session=session)
-        result = await session.execute(select(Role).filter(Role._role_id == role1.role_id))
+        result = await session.execute(
+            select(Role).filter(Role._role_id == role1.role_id)
+        )
         role2 = result.scalars().first()
         assert role1.code == role2.code
         updated_code1 = uuid.uuid4()
         role1.code = updated_code1
         updated_role1 = await role_manager.update(role1)
+        assert isinstance(updated_role1, Role)
         assert updated_role1.code == updated_code1
         refreshed_role2 = await role_manager.refresh(role2)
         assert refreshed_role2.code == updated_code1
