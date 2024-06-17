@@ -54,11 +54,11 @@ class FlowPacUserLandListInitReport(BaseFlowPacUserLandListInitReport):
             #TODO add comment
         """
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Start"
         )
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(pac_bus_obj.code)
         )
         await super()._process_validation_rules(
@@ -72,16 +72,16 @@ class FlowPacUserLandListInitReport(BaseFlowPacUserLandListInitReport):
         # TODO: add flow logic
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowPacUserLandListInitReportResult()
         result.context_object_code = pac_bus_obj.code
 
 # endset
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
         return result

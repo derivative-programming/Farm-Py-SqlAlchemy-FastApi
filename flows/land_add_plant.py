@@ -117,8 +117,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 # endset
         ) -> FlowLandAddPlantResult:
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land_bus_obj.code))
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(land_bus_obj.code))
 
         await super()._process_validation_rules(
             land_bus_obj,
@@ -206,7 +206,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         output_some_text_val_output = plant.some_text_val
         output_some_phone_number_output = plant.some_phone_number
         output_some_email_address_output = plant.some_email_address
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
         result = FlowLandAddPlantResult()
 
         result.context_object_code = land_bus_obj.code
@@ -231,8 +231,8 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         result.output_some_email_address = output_some_email_address_output
 # endset
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
 
         return result

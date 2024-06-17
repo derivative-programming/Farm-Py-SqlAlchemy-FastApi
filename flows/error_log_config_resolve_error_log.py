@@ -58,8 +58,8 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
             #TODO add comment
         """
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(error_log_bus_obj.code))
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(error_log_bus_obj.code))
         await super()._process_validation_rules(
             error_log_bus_obj,
 
@@ -74,11 +74,11 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
             .set_prop_last_update_user_id(self._session_context.customer_code)
         )
         await error_log_bus_obj.save()
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
         result = FlowErrorLogConfigResolveErrorLogResult()
         result.context_object_code = error_log_bus_obj.code
 
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
         return result

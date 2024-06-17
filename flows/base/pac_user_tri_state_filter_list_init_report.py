@@ -36,7 +36,7 @@ class BaseFlowPacUserTriStateFilterListInitReport(BaseFlow):
         #TODO add comment
         """
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
 
 # end set
@@ -46,7 +46,7 @@ class BaseFlowPacUserTriStateFilterListInitReport(BaseFlow):
         pac_bus_obj: PacBusObj,
     ):
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Processing security rules..."
         )
         customer_code_match_required = False

@@ -74,11 +74,11 @@ class FlowTacRegister(BaseFlowTacRegister):
             #TODO add comment
         """
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Start"
         )
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(tac_bus_obj.code)
         )
         await super()._process_validation_rules(
@@ -101,7 +101,7 @@ class FlowTacRegister(BaseFlowTacRegister):
         # TODO: add flow logic
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowTacRegisterResult()
         result.context_object_code = tac_bus_obj.code
@@ -119,9 +119,9 @@ class FlowTacRegister(BaseFlowTacRegister):
             api_key_output)
 # endset
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
         return result

@@ -55,11 +55,11 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
             #TODO add comment
         """
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Start"
         )
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(customer_bus_obj.code)
         )
         await super()._process_validation_rules(
@@ -73,7 +73,7 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
         # TODO: add flow logic
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowCustomerBuildTempApiKeyResult()
         result.context_object_code = customer_bus_obj.code
@@ -81,9 +81,9 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
             tmp_org_api_key_code_output)
 # endset
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
         return result

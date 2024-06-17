@@ -37,7 +37,7 @@ class BaseFlowTacLogin(BaseFlow):
         #TODO add comment
         """
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
         if email == "" and \
                 FlowConstants.param_email_isRequired \
@@ -60,7 +60,7 @@ class BaseFlowTacLogin(BaseFlow):
         tac_bus_obj: TacBusObj,
     ):
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Processing security rules..."
         )
         customer_code_match_required = False

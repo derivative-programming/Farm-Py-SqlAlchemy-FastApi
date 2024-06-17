@@ -52,8 +52,8 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
         plant_code_list_csv: str = "",
 # endset
         ) -> FlowLandUserPlantMultiSelectToNotEditableResult:
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(land_bus_obj.code))
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(land_bus_obj.code))
         await super()._process_validation_rules(
             land_bus_obj,
             plant_code_list_csv,
@@ -70,13 +70,13 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
             plant_bus_obj.is_edit_allowed = False
             await plant_bus_obj.save()
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
         result = FlowLandUserPlantMultiSelectToNotEditableResult()
         result.context_object_code = land_bus_obj.code
 
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
         return result
  
     def _is_valid_guid(self,guid):

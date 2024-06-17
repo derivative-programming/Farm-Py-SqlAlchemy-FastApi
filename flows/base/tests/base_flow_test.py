@@ -15,6 +15,7 @@ from helpers import SessionContext
 
 TEST_ERROR_MESSAGE = "Test error message"
 
+
 class TestBaseFlow():
     """
     #TODO add comment

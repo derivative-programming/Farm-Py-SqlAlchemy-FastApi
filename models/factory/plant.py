@@ -87,7 +87,7 @@ class PlantFactory(factory.Factory):
 
         flvr_foreign_key_id_flavor_instance = (  # FlvrForeignKeyID
             FlavorFactory.create(session=session))
-            
+
 # endset
 
         kwargs["land_id"] = (  # LandID
@@ -169,7 +169,7 @@ class PlantFactory(factory.Factory):
 
         flvr_foreign_key_id_flavor_instance = await (  # FlvrForeignKeyID
             FlavorFactory.create_async(session=session))
-            
+
 # endset
 
         kwargs["land_id"] = (  # LandID

@@ -63,8 +63,8 @@ class FlowTacLogin(BaseFlowTacLogin):
         password: str = "",
 # endset
         ) -> FlowTacLoginResult:
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(tac_bus_obj.code))
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(tac_bus_obj.code))
         await super()._process_validation_rules(
             tac_bus_obj,
             email,
@@ -124,7 +124,7 @@ class FlowTacLogin(BaseFlowTacLogin):
 
         api_key_output = api_key.api_key_value
 
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
         result = FlowTacLoginResult()
         result.context_object_code = tac_bus_obj.code
         result.customer_code = customer_code_output
@@ -134,6 +134,6 @@ class FlowTacLogin(BaseFlowTacLogin):
         result.role_name_csv_list = role_name_csv_list_output
         result.api_key = api_key_output
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
         return result

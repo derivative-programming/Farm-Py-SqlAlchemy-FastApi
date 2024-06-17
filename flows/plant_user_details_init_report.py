@@ -54,8 +54,8 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
 
 # endset
         ) -> FlowPlantUserDetailsInitReportResult:
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Start")
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Code::" + str(plant_bus_obj.code))
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(plant_bus_obj.code))
         await super()._process_validation_rules(
             plant_bus_obj,
 
@@ -67,12 +67,12 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
 # endset
         land_code_output = plant_bus_obj.land_code_peek
         tac_code_output = self._session_context.tac_code
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Building result")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
         result = FlowPlantUserDetailsInitReportResult()
         result.context_object_code = plant_bus_obj.code
         result.land_code = land_code_output
         result.tac_code = tac_code_output
 # endset
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.information_high_detail, "End")
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
+        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
         return result

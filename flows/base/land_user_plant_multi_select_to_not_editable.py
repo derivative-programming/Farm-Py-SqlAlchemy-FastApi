@@ -36,7 +36,7 @@ class BaseFlowLandUserPlantMultiSelectToNotEditable(BaseFlow):
         #TODO add comment
         """
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
         if plant_code_list_csv == "" and \
                 FlowConstants.param_plant_code_list_csv_isRequired \
@@ -52,7 +52,7 @@ class BaseFlowLandUserPlantMultiSelectToNotEditable(BaseFlow):
         land_bus_obj: LandBusObj,
     ):
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Processing security rules..."
         )
         customer_code_match_required = False

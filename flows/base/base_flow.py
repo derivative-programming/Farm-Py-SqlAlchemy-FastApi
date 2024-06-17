@@ -51,7 +51,7 @@ class BaseFlow():
 
     def _log_exception(self, ex: Exception):
         self._log_message_and_severity(
-            LogSeverity.error_occurred,
+            LogSeverity.ERROR_OCCURRED,
             str(ex))
 
     def _log_message_and_severity(
@@ -63,19 +63,19 @@ class BaseFlow():
         log_message = self.__flow_name + " " + message
 
         match log_severity:
-            case LogSeverity.error_occurred:
+            case LogSeverity.ERROR_OCCURRED:
                 logging.error(log_message)
-            case LogSeverity.warning:
+            case LogSeverity.WARNING:
                 logging.critical(log_message)
-            case LogSeverity.information_low_detail:
+            case LogSeverity.INFORMATION_LOW_DETAIL:
                 logging.info(log_message)
-            case LogSeverity.information_mid_detail:
+            case LogSeverity.INFORMATION_MID_DETAIL:
                 logging.info(log_message)
-            case LogSeverity.information_high_detail:
+            case LogSeverity.INFORMATION_HIGH_DETAIL:
                 logging.debug(log_message)
 
     def _log_message(self, message: str):
         self._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             message
         )

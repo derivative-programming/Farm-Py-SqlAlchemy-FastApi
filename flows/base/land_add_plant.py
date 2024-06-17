@@ -65,7 +65,7 @@ class BaseFlowLandAddPlant(BaseFlow):
         """
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
 
         if request_flavor_code == uuid.UUID(int=0) and \
@@ -222,7 +222,7 @@ class BaseFlowLandAddPlant(BaseFlow):
         land_bus_obj: LandBusObj,
     ):
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Processing security rules..."
         )
 

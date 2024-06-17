@@ -143,11 +143,11 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
         """
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Start"
         )
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(land_bus_obj.code)
         )
 
@@ -252,7 +252,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 ##GENTrainingBlock[caseFlowLogic]End
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowLandAddPlantResult()
 
@@ -298,11 +298,11 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 # endset
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
 
         return result

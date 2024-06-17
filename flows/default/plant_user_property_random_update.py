@@ -54,11 +54,11 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
             #TODO add comment
         """
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Start"
         )
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(plant_bus_obj.code)
         )
         await super()._process_validation_rules(
@@ -72,16 +72,16 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
         # TODO: add flow logic
 
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowPlantUserPropertyRandomUpdateResult()
         result.context_object_code = plant_bus_obj.code
 
 # endset
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
         super()._log_message_and_severity(
-            LogSeverity.information_high_detail,
+            LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
         return result
