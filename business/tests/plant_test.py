@@ -5,6 +5,7 @@
     #TODO add comment
 """
 
+from decimal import Decimal
 import uuid
 from datetime import datetime, date  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -81,11 +82,11 @@ class TestPlantBusObj:
         assert isinstance(plant_bus_obj.some_big_int_val, int)
         assert isinstance(plant_bus_obj.some_bit_val, bool)
         assert isinstance(plant_bus_obj.some_date_val, date)
-        assert isinstance(plant_bus_obj.some_decimal_val, int or float)
+        assert isinstance(plant_bus_obj.some_decimal_val, Decimal)
         assert isinstance(plant_bus_obj.some_email_address, str)
         assert isinstance(plant_bus_obj.some_float_val, float)
         assert isinstance(plant_bus_obj.some_int_val, int)
-        assert isinstance(plant_bus_obj.some_money_val, int or float)
+        assert isinstance(plant_bus_obj.some_money_val, Decimal)
         assert isinstance(plant_bus_obj.some_n_var_char_val, str)
         assert isinstance(plant_bus_obj.some_phone_number, str)
         assert isinstance(plant_bus_obj.some_text_val, str)

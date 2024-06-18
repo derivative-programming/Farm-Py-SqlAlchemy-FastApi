@@ -20,6 +20,8 @@ class RoleSchema(SQLAlchemyAutoSchema):
             "_insert_user_id",
             "_last_update_user_id",
             "_last_change_code",
+            "_insert_utc_date_time",
+            "_last_update_utc_date_time",
             "_description",  # description
             "_display_order",  # displayOrder
             "_is_active",  # isActive

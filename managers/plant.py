@@ -200,7 +200,7 @@ class PlantManager:
         """
         logging.info("PlantManager.get_by_code %s", code)
 
-        query_filter = Plant._code == str(code)  # pylint: disable=protected-access
+        query_filter = Plant._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
         query_results = await self._run_query(query_filter)
 

@@ -3,6 +3,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import uuid
 from datetime import datetime, date  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession

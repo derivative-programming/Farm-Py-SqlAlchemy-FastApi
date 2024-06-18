@@ -20,10 +20,12 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
             "_insert_user_id",
             "_last_update_user_id",
             "_last_change_code",
+            "_insert_utc_date_time",
+            "_last_update_utc_date_time",
             "_api_key_value",  # apiKeyValue
             "_created_by",  # createdBy
-            # createdUTCDateTime
-            # expirationUTCDateTime
+            "_created_utc_date_time",  # createdUTCDateTime
+            "_expiration_utc_date_time",  # expirationUTCDateTime
             "_is_active",  # isActive
             "_is_temp_user_key",  # isTempUserKey
             "_name",  # name

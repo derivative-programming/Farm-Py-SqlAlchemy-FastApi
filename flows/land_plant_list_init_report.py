@@ -103,9 +103,10 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         is_delete_allowed_output: bool = False
         some_float_val_output: float = 0
         some_decimal_val_output: Decimal = Decimal(0)
-        some_min_utc_date_time_val_output: datetime = TypeConversion.get_default_date_time()
+        some_min_utc_date_time_val_output: datetime = (
+            TypeConversion.get_default_date_time())
         some_min_date_val_output: date = TypeConversion.get_default_date()
-        some_money_val_output: Decimal = 0
+        some_money_val_output: Decimal = Decimal(0)
         some_n_var_char_val_output: str = ""
         some_var_char_val_output: str = ""
         some_text_val_output: str = ""
@@ -116,8 +117,10 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         tac_code_output: uuid.UUID = uuid.UUID(int=0)
         land_name_output: str = ""
 # endset
-        flavor_bus_obj = business.FlavorBusObj(land_bus_obj.get_session_context())
-        await flavor_bus_obj.load_from_enum(flavor_enum=farm_managers.FlavorEnum.UNKNOWN)
+        flavor_bus_obj = business.FlavorBusObj(
+            land_bus_obj.get_session_context())
+        await flavor_bus_obj.load_from_enum(
+            flavor_enum=farm_managers.FlavorEnum.UNKNOWN)
         flavor_code_output = flavor_bus_obj.code
 
         land_code_output = land_bus_obj.code
@@ -125,7 +128,9 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         tac_code_output = self._session_context.tac_code
 
 
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Building result")
         result = FlowLandPlantListInitReportResult()
         result.context_object_code = land_bus_obj.code
         result.some_int_val = some_int_val_output
@@ -148,6 +153,10 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         result.tac_code = tac_code_output
         result.land_name = land_name_output
 # endset
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Result:" + result.to_json())
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "End")
         return result

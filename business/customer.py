@@ -1063,8 +1063,10 @@ class CustomerBusObj(BaseBusObj):
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
-        self.customer.active_organization_id = random.randint(0, 100)
-        self.customer.email = f"user{random.randint(1, 100)}@abc.com"
+        self.customer.active_organization_id = (
+            random.randint(0, 100))
+        self.customer.email = (
+             f"user{random.randint(1, 100)}@abc.com")
         self.customer.email_confirmed_utc_date_time = datetime(
             random.randint(2000, 2023),
             random.randint(1, 12),
@@ -1078,13 +1080,20 @@ class CustomerBusObj(BaseBusObj):
         self.customer.forgot_password_key_value = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.customer.fs_user_code_value = uuid.uuid4()
-        self.customer.is_active = random.choice([True, False])
-        self.customer.is_email_allowed = random.choice([True, False])
-        self.customer.is_email_confirmed = random.choice([True, False])
-        self.customer.is_email_marketing_allowed = random.choice([True, False])
-        self.customer.is_locked = random.choice([True, False])
-        self.customer.is_multiple_organizations_allowed = random.choice([True, False])
-        self.customer.is_verbose_logging_forced = random.choice([True, False])
+        self.customer.is_active = (
+            random.choice([True, False]))
+        self.customer.is_email_allowed = (
+            random.choice([True, False]))
+        self.customer.is_email_confirmed = (
+            random.choice([True, False]))
+        self.customer.is_email_marketing_allowed = (
+            random.choice([True, False]))
+        self.customer.is_locked = (
+            random.choice([True, False]))
+        self.customer.is_multiple_organizations_allowed = (
+            random.choice([True, False]))
+        self.customer.is_verbose_logging_forced = (
+            random.choice([True, False]))
         self.customer.last_login_utc_date_time = datetime(
             random.randint(2000, 2023),
             random.randint(1, 12),
@@ -1102,7 +1111,8 @@ class CustomerBusObj(BaseBusObj):
             random.randint(1, 12),
             random.randint(1, 28))
         # self.customer.tac_id = random.randint(0, 100)
-        self.customer.utc_offset_in_minutes = random.randint(0, 100)
+        self.customer.utc_offset_in_minutes = (
+            random.randint(0, 100))
         self.customer.zip = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
 # endset

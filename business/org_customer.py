@@ -472,7 +472,8 @@ class OrgCustomerBusObj(BaseBusObj):
         self.org_customer.customer_id = random.choice(
             await managers_and_enums.CustomerManager(
                 self._session_context).get_list()).customer_id
-        self.org_customer.email = f"user{random.randint(1, 100)}@abc.com"
+        self.org_customer.email = (
+             f"user{random.randint(1, 100)}@abc.com")
         # self.org_customer.organization_id = random.randint(0, 100)
 # endset
         return self

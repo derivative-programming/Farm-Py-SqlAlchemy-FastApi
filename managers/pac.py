@@ -82,7 +82,8 @@ class PacManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Pac._lookup_enum_name == enum_val.value
+        query_filter = (
+            Pac._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -180,7 +181,7 @@ class PacManager:
             #TODO add comment
         """
         logging.info("PacManager.get_by_code %s", code)
-        query_filter = Pac._code == str(code)  # pylint: disable=protected-access
+        query_filter = Pac._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, pac: Pac, **kwargs) -> Optional[Pac]:

@@ -82,13 +82,13 @@ class OrgCustomerManager:
 # endset
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(OrgCustomer._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501
-                 OrgCustomer._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(OrgCustomer._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 OrgCustomer._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgCustomer._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501
-                 OrgCustomer._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(OrgCustomer._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 OrgCustomer._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
         return query
@@ -161,7 +161,7 @@ class OrgCustomerManager:
             #TODO add comment
         """
         logging.info("OrgCustomerManager.get_by_code %s", code)
-        query_filter = OrgCustomer._code == str(code)  # pylint: disable=protected-access
+        query_filter = OrgCustomer._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, org_customer: OrgCustomer, **kwargs) -> Optional[OrgCustomer]:

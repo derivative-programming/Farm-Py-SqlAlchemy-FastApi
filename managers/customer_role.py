@@ -82,13 +82,13 @@ class CustomerRoleManager:
 # endset
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(CustomerRole._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501
-                 CustomerRole._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(CustomerRole._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 CustomerRole._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
         query = query.outerjoin(  # role_id
             Role,
-            and_(CustomerRole._role_id == Role._role_id,  # pylint: disable=protected-access  # noqa: E501
-                 CustomerRole._role_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(CustomerRole._role_id == Role._role_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 CustomerRole._role_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
         return query
@@ -161,7 +161,7 @@ class CustomerRoleManager:
             #TODO add comment
         """
         logging.info("CustomerRoleManager.get_by_code %s", code)
-        query_filter = CustomerRole._code == str(code)  # pylint: disable=protected-access
+        query_filter = CustomerRole._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, customer_role: CustomerRole, **kwargs) -> Optional[CustomerRole]:

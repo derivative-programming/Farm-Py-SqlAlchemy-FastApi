@@ -662,8 +662,10 @@ class OrgApiKeyBusObj(BaseBusObj):
             random.randint(2000, 2023),
             random.randint(1, 12),
             random.randint(1, 28))
-        self.org_api_key.is_active = random.choice([True, False])
-        self.org_api_key.is_temp_user_key = random.choice([True, False])
+        self.org_api_key.is_active = (
+            random.choice([True, False]))
+        self.org_api_key.is_temp_user_key = (
+            random.choice([True, False]))
         self.org_api_key.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.org_api_key.organization_id = random.randint(0, 100)

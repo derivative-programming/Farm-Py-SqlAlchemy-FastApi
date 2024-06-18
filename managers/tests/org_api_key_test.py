@@ -308,7 +308,7 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await org_api_key_manager.delete("999")
+            await org_api_key_manager.delete("999") # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -752,7 +752,7 @@ class TestOrgApiKeyManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_api_key_manager.exists(invalid_id)
+            await org_api_key_manager.exists(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset
     # apiKeyValue,
@@ -801,7 +801,7 @@ class TestOrgApiKeyManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_api_key_manager.get_by_organization_id(invalid_id)
+            await org_api_key_manager.get_by_organization_id(invalid_id) # type: ignore
         await session.rollback()
     # OrgCustomerID
     @pytest.mark.asyncio
@@ -822,7 +822,7 @@ class TestOrgApiKeyManager:
         assert isinstance(fetched_org_api_keys[0], OrgApiKey)
         assert fetched_org_api_keys[0].code == org_api_key1.code
         stmt = select(models.OrgCustomer).where(
-            models.OrgCustomer._org_customer_id == org_api_key1.org_customer_id)
+            models.OrgCustomer._org_customer_id == org_api_key1.org_customer_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         org_customer = result.scalars().first()
         assert fetched_org_api_keys[0].org_customer_code_peek == org_customer.code
@@ -849,6 +849,6 @@ class TestOrgApiKeyManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_api_key_manager.get_by_org_customer_id(invalid_id)
+            await org_api_key_manager.get_by_org_customer_id(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset

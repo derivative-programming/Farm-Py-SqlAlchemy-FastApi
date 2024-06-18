@@ -26,19 +26,21 @@ class PlantSchema(SQLAlchemyAutoSchema):
             "_insert_user_id",
             "_last_update_user_id",
             "_last_change_code",
+            "_insert_utc_date_time",
+            "_last_update_utc_date_time",
             "_is_delete_allowed",  # isDeleteAllowed
             "_is_edit_allowed",  # isEditAllowed
             "_other_flavor",  # otherFlavor
             "_some_big_int_val",  # someBigIntVal
             "_some_bit_val",  # someBitVal
-            # someDecimalVal,
+            "_some_decimal_val",  # someDecimalVal,
             "_some_email_address",  # someEmailAddress
-            # someFloatVal,
+            "_some_float_val",  # someFloatVal,
             "_some_int_val",  # someIntVal
-            # someMoneyVal,
+            "_some_money_val",  # someMoneyVal,
             "_some_var_char_val",  # someVarCharVal
-            # someDateVal
-            # someUTCDateTimeVal
+            "_some_date_val",  # someDateVal
+            "_some_utc_date_time_val",  # someUTCDateTimeVal
             "_flvr_foreign_key_id",  # flvrForeignKeyID
             "_land_id",  # LandID
             "_some_n_var_char_val",  # someNVarCharVal

@@ -308,7 +308,7 @@ class TestCustomerManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await customer_manager.delete("999")
+            await customer_manager.delete("999") # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -752,7 +752,7 @@ class TestCustomerManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await customer_manager.exists(invalid_id)
+            await customer_manager.exists(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset
     # activeOrganizationID,
@@ -814,7 +814,7 @@ class TestCustomerManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await customer_manager.get_by_tac_id(invalid_id)
+            await customer_manager.get_by_tac_id(invalid_id) # type: ignore
         await session.rollback()
     # uTCOffsetInMinutes,
     # zip,

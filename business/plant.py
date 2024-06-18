@@ -458,7 +458,7 @@ class PlantBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, (int, float)), (
+        assert isinstance(value, Decimal), (
             "some_decimal_val must be a number"
         )
         self.plant.some_decimal_val = value
@@ -610,7 +610,7 @@ class PlantBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, (int, float)), (
+        assert isinstance(value, Decimal), (
             "some_money_val must be a number")
         self.plant.some_money_val = value
 
@@ -1251,22 +1251,31 @@ class PlantBusObj(BaseBusObj):
         self.plant.flvr_foreign_key_id = random.choice(
             await managers_and_enums.FlavorManager(
                 self._session_context).get_list()).flavor_id
-        self.plant.is_delete_allowed = random.choice([True, False])
-        self.plant.is_edit_allowed = random.choice([True, False])
+        self.plant.is_delete_allowed = (
+            random.choice([True, False]))
+        self.plant.is_edit_allowed = (
+            random.choice([True, False]))
         # self.plant.land_id = random.randint(0, 100)
         self.plant.other_flavor = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.plant.some_big_int_val = random.randint(0, 1000000)
-        self.plant.some_bit_val = random.choice([True, False])
+        self.plant.some_big_int_val = (
+            random.randint(0, 1000000))
+        self.plant.some_bit_val = (
+            random.choice([True, False]))
         self.plant.some_date_val = date(
             random.randint(2000, 2023),
             random.randint(1, 12),
             random.randint(1, 28))
-        self.plant.some_decimal_val = round(random.uniform(0, 100), 2)
-        self.plant.some_email_address = f"user{random.randint(1, 100)}@abc.com"
-        self.plant.some_float_val = random.uniform(0, 100)
-        self.plant.some_int_val = random.randint(0, 100)
-        self.plant.some_money_val = round(random.uniform(0, 10000), 2)
+        self.plant.some_decimal_val = (
+            Decimal(str(round(random.uniform(0, 100), 2))))
+        self.plant.some_email_address = (
+             f"user{random.randint(1, 100)}@abc.com")
+        self.plant.some_float_val = (
+            random.uniform(0, 100))
+        self.plant.some_int_val = (
+            random.randint(0, 100))
+        self.plant.some_money_val = (
+            Decimal(str(round(random.uniform(0, 100), 2))))
         self.plant.some_n_var_char_val = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.plant.some_phone_number = (

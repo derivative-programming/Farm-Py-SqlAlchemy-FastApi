@@ -3,6 +3,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
@@ -63,7 +64,7 @@ class Customer(Base):
             email_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    email_confirmed_utc_date_time = Column(
+    _email_confirmed_utc_date_time = Column(
         'email_confirmed_utc_date_time',
         DateTime,
         default=datetime(1753, 1, 1),
@@ -83,7 +84,7 @@ class Customer(Base):
             first_name_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    forgot_password_key_expiration_utc_date_time = Column(
+    _forgot_password_key_expiration_utc_date_time = Column(
         'forgot_password_key_expiration_utc_date_time',
         DateTime,
         default=datetime(1753, 1, 1),
@@ -175,7 +176,7 @@ class Customer(Base):
             is_verbose_logging_forced_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    last_login_utc_date_time = Column(
+    _last_login_utc_date_time = Column(
         'last_login_utc_date_time',
         DateTime,
         default=datetime(1753, 1, 1),
@@ -228,7 +229,7 @@ class Customer(Base):
             province_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    registration_utc_date_time = Column(
+    _registration_utc_date_time = Column(
         'registration_utc_date_time',
         DateTime,
         default=datetime(1753, 1, 1),
@@ -267,11 +268,11 @@ class Customer(Base):
         ),
         nullable=True)
     tac_code_peek = uuid.UUID  # TacID
-    insert_utc_date_time = Column(
+    _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
         nullable=True)
-    last_update_utc_date_time = Column(
+    _last_update_utc_date_time = Column(
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
@@ -411,6 +412,38 @@ class Customer(Base):
         else:
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def insert_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_insert_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @insert_utc_date_time.setter
+    def insert_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the insert_utc_date_time.
+        """
+        self._insert_utc_date_time = value
+    @property
+    def last_update_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_last_update_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @last_update_utc_date_time.setter
+    def last_update_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the last_update_utc_date_time.
+        """
+        self._last_update_utc_date_time = value
     # activeOrganizationID,
     @property
     def active_organization_id(self) -> int:
@@ -438,6 +471,22 @@ class Customer(Base):
         """
         self._email = value
     # emailConfirmedUTCDateTime
+    @property
+    def email_confirmed_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_email_confirmed_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @email_confirmed_utc_date_time.setter
+    def email_confirmed_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the email_confirmed_utc_date_time.
+        """
+        self._email_confirmed_utc_date_time = value
     # firstName,
     @property
     def first_name(self) -> str:
@@ -452,6 +501,22 @@ class Customer(Base):
         """
         self._first_name = value
     # forgotPasswordKeyExpirationUTCDateTime
+    @property
+    def forgot_password_key_expiration_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_forgot_password_key_expiration_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @forgot_password_key_expiration_utc_date_time.setter
+    def forgot_password_key_expiration_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the forgot_password_key_expiration_utc_date_time.
+        """
+        self._forgot_password_key_expiration_utc_date_time = value
     # forgotPasswordKeyValue,
     @property
     def forgot_password_key_value(self) -> str:
@@ -589,6 +654,22 @@ class Customer(Base):
         """
         self._is_verbose_logging_forced = value
     # lastLoginUTCDateTime
+    @property
+    def last_login_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_last_login_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @last_login_utc_date_time.setter
+    def last_login_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the last_login_utc_date_time.
+        """
+        self._last_login_utc_date_time = value
     # lastName,
     @property
     def last_name(self) -> str:
@@ -642,6 +723,22 @@ class Customer(Base):
         """
         self._province = value
     # registrationUTCDateTime
+    @property
+    def registration_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_registration_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @registration_utc_date_time.setter
+    def registration_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the registration_utc_date_time.
+        """
+        self._registration_utc_date_time = value
     # TacID
     @property
     def tac_id(self) -> int:

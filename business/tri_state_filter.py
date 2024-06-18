@@ -612,14 +612,17 @@ class TriStateFilterBusObj(BaseBusObj):
             )
         self.tri_state_filter.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.tri_state_filter.display_order = random.randint(0, 100)
-        self.tri_state_filter.is_active = random.choice([True, False])
+        self.tri_state_filter.display_order = (
+            random.randint(0, 100))
+        self.tri_state_filter.is_active = (
+            random.choice([True, False]))
         self.tri_state_filter.lookup_enum_name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tri_state_filter.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         # self.tri_state_filter.pac_id = random.randint(0, 100)
-        self.tri_state_filter.state_int_value = random.randint(0, 100)
+        self.tri_state_filter.state_int_value = (
+            random.randint(0, 100))
 # endset
         return self
     def get_tri_state_filter_obj(self) -> TriStateFilter:

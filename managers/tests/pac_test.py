@@ -308,7 +308,7 @@ class TestPacManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await pac_manager.delete("999")
+            await pac_manager.delete("999") # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -752,7 +752,7 @@ class TestPacManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await pac_manager.exists(invalid_id)
+            await pac_manager.exists(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset
     # description,

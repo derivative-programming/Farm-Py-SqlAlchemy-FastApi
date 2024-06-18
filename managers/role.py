@@ -115,7 +115,8 @@ class RoleManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Role._lookup_enum_name == enum_val.value
+        query_filter = (
+            Role._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -149,8 +150,8 @@ class RoleManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Role._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
-                 Role._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(Role._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 Role._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
         return query
@@ -219,7 +220,7 @@ class RoleManager:
             #TODO add comment
         """
         logging.info("RoleManager.get_by_code %s", code)
-        query_filter = Role._code == str(code)  # pylint: disable=protected-access
+        query_filter = Role._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, role: Role, **kwargs) -> Optional[Role]:

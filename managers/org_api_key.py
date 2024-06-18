@@ -82,13 +82,13 @@ class OrgApiKeyManager:
 # endset
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgApiKey._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501
-                 OrgApiKey._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(OrgApiKey._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 OrgApiKey._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
         query = query.outerjoin(  # org_customer_id
             OrgCustomer,
-            and_(OrgApiKey._org_customer_id == OrgCustomer._org_customer_id,  # pylint: disable=protected-access  # noqa: E501
-                 OrgApiKey._org_customer_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(OrgApiKey._org_customer_id == OrgCustomer._org_customer_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 OrgApiKey._org_customer_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
         return query
@@ -161,7 +161,7 @@ class OrgApiKeyManager:
             #TODO add comment
         """
         logging.info("OrgApiKeyManager.get_by_code %s", code)
-        query_filter = OrgApiKey._code == str(code)  # pylint: disable=protected-access
+        query_filter = OrgApiKey._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, org_api_key: OrgApiKey, **kwargs) -> Optional[OrgApiKey]:

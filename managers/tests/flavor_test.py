@@ -308,7 +308,7 @@ class TestFlavorManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await flavor_manager.delete("999")
+            await flavor_manager.delete("999") # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -752,7 +752,7 @@ class TestFlavorManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await flavor_manager.exists(invalid_id)
+            await flavor_manager.exists(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset
     # description,
@@ -799,6 +799,6 @@ class TestFlavorManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await flavor_manager.get_by_pac_id(invalid_id)
+            await flavor_manager.get_by_pac_id(invalid_id) # type: ignore
         await session.rollback()
 # endset

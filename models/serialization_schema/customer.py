@@ -20,11 +20,13 @@ class CustomerSchema(SQLAlchemyAutoSchema):
             "_insert_user_id",
             "_last_update_user_id",
             "_last_change_code",
+            "_insert_utc_date_time",
+            "_last_update_utc_date_time",
             "_active_organization_id",  # activeOrganizationID
             "_email",  # email
-            # emailConfirmedUTCDateTime
+            "_email_confirmed_utc_date_time",  # emailConfirmedUTCDateTime
             "_first_name",  # firstName
-            # forgotPasswordKeyExpirationUTCDateTime
+            "_forgot_password_key_expiration_utc_date_time",  # forgotPasswordKeyExpirationUTCDateTime
             "_forgot_password_key_value",  # forgotPasswordKeyValue
             "_fs_user_code_value",  # fSUserCodeValue
             "_is_active",  # isActive
@@ -34,12 +36,12 @@ class CustomerSchema(SQLAlchemyAutoSchema):
             "_is_locked",  # isLocked
             "_is_multiple_organizations_allowed",  # isMultipleOrganizationsAllowed
             "_is_verbose_logging_forced",  # isVerboseLoggingForced
-            # lastLoginUTCDateTime
+            "_last_login_utc_date_time",  # lastLoginUTCDateTime
             "_last_name",  # lastName
             "_password",  # password
             "_phone",  # phone
             "_province",  # province
-            # registrationUTCDateTime
+            "_registration_utc_date_time",  # registrationUTCDateTime
             "_tac_id",  # TacID
             "_utc_offset_in_minutes",  # uTCOffsetInMinutes
             "_zip",  # zip

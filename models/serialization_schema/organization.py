@@ -20,6 +20,8 @@ class OrganizationSchema(SQLAlchemyAutoSchema):
             "_insert_user_id",
             "_last_update_user_id",
             "_last_change_code",
+            "_insert_utc_date_time",
+            "_last_update_utc_date_time",
             "_name",  # name
             "_tac_id",  # TacID
 # endset  # noqa E122

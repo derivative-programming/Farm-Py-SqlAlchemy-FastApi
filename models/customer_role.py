@@ -3,6 +3,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
@@ -81,11 +82,11 @@ class CustomerRole(Base):
         nullable=True)
     customer_code_peek = uuid.UUID  # CustomerID
     role_code_peek = uuid.UUID  # RoleID
-    insert_utc_date_time = Column(
+    _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
         nullable=True)
-    last_update_utc_date_time = Column(
+    _last_update_utc_date_time = Column(
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
@@ -189,6 +190,38 @@ class CustomerRole(Base):
         else:
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+    @property
+    def insert_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_insert_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @insert_utc_date_time.setter
+    def insert_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the insert_utc_date_time.
+        """
+        self._insert_utc_date_time = value
+    @property
+    def last_update_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+        return getattr(
+            self,
+            '_last_update_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+    @last_update_utc_date_time.setter
+    def last_update_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the last_update_utc_date_time.
+        """
+        self._last_update_utc_date_time = value
     # CustomerID
     @property
     def customer_id(self) -> int:

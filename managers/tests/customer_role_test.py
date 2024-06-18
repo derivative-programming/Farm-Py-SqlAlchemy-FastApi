@@ -308,7 +308,7 @@ class TestCustomerRoleManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await customer_role_manager.delete("999")
+            await customer_role_manager.delete("999") # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -752,7 +752,7 @@ class TestCustomerRoleManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await customer_role_manager.exists(invalid_id)
+            await customer_role_manager.exists(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset
     # CustomerID
@@ -794,7 +794,7 @@ class TestCustomerRoleManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await customer_role_manager.get_by_customer_id(invalid_id)
+            await customer_role_manager.get_by_customer_id(invalid_id) # type: ignore
         await session.rollback()
     # isPlaceholder,
     # placeholder,
@@ -817,7 +817,7 @@ class TestCustomerRoleManager:
         assert isinstance(fetched_customer_roles[0], CustomerRole)
         assert fetched_customer_roles[0].code == customer_role1.code
         stmt = select(models.Role).where(
-            models.Role._role_id == customer_role1.role_id)
+            models.Role._role_id == customer_role1.role_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         role = result.scalars().first()
         assert fetched_customer_roles[0].role_code_peek == role.code
@@ -844,6 +844,6 @@ class TestCustomerRoleManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await customer_role_manager.get_by_role_id(invalid_id)
+            await customer_role_manager.get_by_role_id(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset

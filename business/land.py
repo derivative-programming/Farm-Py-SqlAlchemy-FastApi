@@ -584,8 +584,10 @@ class LandBusObj(BaseBusObj):
             )
         self.land.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.land.display_order = random.randint(0, 100)
-        self.land.is_active = random.choice([True, False])
+        self.land.display_order = (
+            random.randint(0, 100))
+        self.land.is_active = (
+            random.choice([True, False]))
         self.land.lookup_enum_name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.name = "".join(

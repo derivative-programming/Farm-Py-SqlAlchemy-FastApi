@@ -551,8 +551,10 @@ class PacBusObj(BaseBusObj):
             )
         self.pac.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.pac.display_order = random.randint(0, 100)
-        self.pac.is_active = random.choice([True, False])
+        self.pac.display_order = (
+            random.randint(0, 100))
+        self.pac.is_active = (
+            random.choice([True, False]))
         self.pac.lookup_enum_name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.pac.name = "".join(

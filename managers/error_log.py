@@ -80,8 +80,8 @@ class ErrorLogManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(ErrorLog._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
-                 ErrorLog._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(ErrorLog._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 ErrorLog._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
         return query
@@ -150,7 +150,7 @@ class ErrorLogManager:
             #TODO add comment
         """
         logging.info("ErrorLogManager.get_by_code %s", code)
-        query_filter = ErrorLog._code == str(code)  # pylint: disable=protected-access
+        query_filter = ErrorLog._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, error_log: ErrorLog, **kwargs) -> Optional[ErrorLog]:

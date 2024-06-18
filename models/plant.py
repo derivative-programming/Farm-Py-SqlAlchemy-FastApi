@@ -4,6 +4,7 @@
 """
     #TODO add comment
 """
+from decimal import Decimal
 import uuid
 from datetime import date, datetime
 from sqlalchemy_utils import UUIDType
@@ -115,7 +116,7 @@ class Plant(Base):
             some_bit_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_date_val = Column(
+    _some_date_val = Column(
         'some_date_val',
         Date,
         default=date(1753, 1, 1),
@@ -124,7 +125,7 @@ class Plant(Base):
             some_date_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_decimal_val = Column(
+    _some_decimal_val = Column(
         'some_decimal_val',
         Numeric(precision=18, scale=6),
         default=0,
@@ -147,7 +148,7 @@ class Plant(Base):
             some_email_address_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_float_val = Column(
+    _some_float_val = Column(
         'some_float_val',
         Float,
         default=0.0,
@@ -165,7 +166,7 @@ class Plant(Base):
             some_int_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_money_val = Column(
+    _some_money_val = Column(
         'some_money_val',
         Numeric(precision=18, scale=2),
         default=0,
@@ -220,7 +221,7 @@ class Plant(Base):
             some_uniqueidentifier_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_utc_date_time_val = Column(
+    _some_utc_date_time_val = Column(
         'some_utc_date_time_val',
         DateTime,
         default=datetime(1753, 1, 1),
@@ -245,11 +246,11 @@ class Plant(Base):
         nullable=True)
     flvr_foreign_key_code_peek = uuid.UUID  # FlvrForeignKeyID
     land_code_peek = uuid.UUID  # LandID
-    insert_utc_date_time = Column(
+    _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,
         nullable=True)
-    last_update_utc_date_time = Column(
+    _last_update_utc_date_time = Column(
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
@@ -406,6 +407,46 @@ class Plant(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
 
+    @property
+    def insert_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+
+        return getattr(
+            self,
+            '_insert_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+
+    @insert_utc_date_time.setter
+    def insert_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the insert_utc_date_time.
+        """
+
+        self._insert_utc_date_time = value
+
+    @property
+    def last_update_utc_date_time(self) -> datetime:
+        """
+            #TODO add comment
+        """
+
+        return getattr(
+            self,
+            '_last_update_utc_date_time',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+
+    @last_update_utc_date_time.setter
+    def last_update_utc_date_time(self, value: datetime) -> None:
+        """
+        Set the last_update_utc_date_time.
+        """
+
+        self._last_update_utc_date_time = value
+
     # isDeleteAllowed,
 
     @property
@@ -492,6 +533,22 @@ class Plant(Base):
 
         self._some_bit_val = value
     # someDecimalVal,
+
+    @property
+    def some_decimal_val(self) -> Decimal:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_decimal_val', Decimal(0)) or Decimal(0)
+
+    @some_decimal_val.setter
+    def some_decimal_val(self, value: Decimal) -> None:
+        """
+        Set the some_decimal_val.
+        """
+
+        self._some_decimal_val = value
     # someEmailAddress,
 
     @property
@@ -510,6 +567,22 @@ class Plant(Base):
 
         self._some_email_address = value
     # someFloatVal,
+
+    @property
+    def some_float_val(self) -> float:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_float_val', float(0)) or float(0)
+
+    @some_float_val.setter
+    def some_float_val(self, value: float) -> None:
+        """
+        Set the some_float_val.
+        """
+
+        self._some_float_val = value
     # someIntVal,
 
     @property
@@ -528,6 +601,22 @@ class Plant(Base):
 
         self._some_int_val = value
     # someMoneyVal,
+
+    @property
+    def some_money_val(self) -> Decimal:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_money_val', Decimal(0)) or Decimal(0)
+
+    @some_money_val.setter
+    def some_money_val(self, value: Decimal) -> None:
+        """
+        Set the some_money_val.
+        """
+
+        self._some_money_val = value
     # someVarCharVal,
 
     @property
@@ -546,7 +635,47 @@ class Plant(Base):
 
         self._some_var_char_val = value
     # someDateVal
+
+    @property
+    def some_date_val(self) -> date:
+        """
+            #TODO add comment
+        """
+
+        return getattr(
+            self,
+            '_some_date_val',
+            date(1753, 1, 1)
+        ) or date(1753, 1, 1)
+
+    @some_date_val.setter
+    def some_date_val(self, value: date) -> None:
+        """
+        Set the some_date_val.
+        """
+
+        self._some_date_val = value
     # someUTCDateTimeVal
+
+    @property
+    def some_utc_date_time_val(self) -> datetime:
+        """
+            #TODO add comment
+        """
+
+        return getattr(
+            self,
+            '_some_utc_date_time_val',
+            datetime(1753, 1, 1)
+        ) or datetime(1753, 1, 1)
+
+    @some_utc_date_time_val.setter
+    def some_utc_date_time_val(self, value: datetime) -> None:
+        """
+        Set the some_utc_date_time_val.
+        """
+
+        self._some_utc_date_time_val = value
     # flvrForeignKeyID
 
     @property

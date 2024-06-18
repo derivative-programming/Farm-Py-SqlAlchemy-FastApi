@@ -148,7 +148,8 @@ class DateGreaterThanFilterManager:
         """
 
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = DateGreaterThanFilter._lookup_enum_name == enum_val.value
+        query_filter = (
+            DateGreaterThanFilter._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 ##GENLearn[isLookup=true]End
@@ -286,7 +287,7 @@ class DateGreaterThanFilterManager:
         """
 
         logging.info("DateGreaterThanFilterManager.get_by_code {code}")
-        query_filter = DateGreaterThanFilter._code == str(code)  # pylint: disable=protected-access
+        query_filter = DateGreaterThanFilter._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 

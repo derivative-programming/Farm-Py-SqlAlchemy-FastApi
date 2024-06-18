@@ -498,8 +498,10 @@ class CustomerRoleBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         # self.customer_role.customer_id = random.randint(0, 100)
-        self.customer_role.is_placeholder = random.choice([True, False])
-        self.customer_role.placeholder = random.choice([True, False])
+        self.customer_role.is_placeholder = (
+            random.choice([True, False]))
+        self.customer_role.placeholder = (
+            random.choice([True, False]))
         self.customer_role.role_id = random.choice(
             await managers_and_enums.RoleManager(
                 self._session_context).get_list()).role_id

@@ -20,9 +20,11 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
             "_insert_user_id",
             "_last_update_user_id",
             "_last_change_code",
+            "_insert_utc_date_time",
+            "_last_update_utc_date_time",
             "_browser_code",  # browserCode
             "_context_code",  # contextCode
-            # createdUTCDateTime
+            "_created_utc_date_time",  # createdUTCDateTime
             "_description",  # description
             "_is_client_side_error",  # isClientSideError
             "_is_resolved",  # isResolved

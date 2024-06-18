@@ -611,8 +611,10 @@ class ErrorLogBusObj(BaseBusObj):
             random.randint(1, 28))
         self.error_log.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.error_log.is_client_side_error = random.choice([True, False])
-        self.error_log.is_resolved = random.choice([True, False])
+        self.error_log.is_client_side_error = (
+            random.choice([True, False]))
+        self.error_log.is_resolved = (
+            random.choice([True, False]))
         # self.error_log.pac_id = random.randint(0, 100)
         self.error_log.url = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))

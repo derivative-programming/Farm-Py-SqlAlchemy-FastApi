@@ -104,7 +104,8 @@ class TriStateFilterManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = TriStateFilter._lookup_enum_name == enum_val.value
+        query_filter = (
+            TriStateFilter._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -138,8 +139,8 @@ class TriStateFilterManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(TriStateFilter._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
-                 TriStateFilter._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(TriStateFilter._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 TriStateFilter._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
         return query
@@ -208,7 +209,7 @@ class TriStateFilterManager:
             #TODO add comment
         """
         logging.info("TriStateFilterManager.get_by_code %s", code)
-        query_filter = TriStateFilter._code == str(code)  # pylint: disable=protected-access
+        query_filter = TriStateFilter._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, tri_state_filter: TriStateFilter, **kwargs) -> Optional[TriStateFilter]:

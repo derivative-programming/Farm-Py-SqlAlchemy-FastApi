@@ -582,8 +582,10 @@ class FlavorBusObj(BaseBusObj):
             )
         self.flavor.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.flavor.display_order = random.randint(0, 100)
-        self.flavor.is_active = random.choice([True, False])
+        self.flavor.display_order = (
+            random.randint(0, 100))
+        self.flavor.is_active = (
+            random.choice([True, False]))
         self.flavor.lookup_enum_name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.flavor.name = "".join(

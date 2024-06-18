@@ -582,8 +582,10 @@ class RoleBusObj(BaseBusObj):
             )
         self.role.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.role.display_order = random.randint(0, 100)
-        self.role.is_active = random.choice([True, False])
+        self.role.display_order = (
+            random.randint(0, 100))
+        self.role.is_active = (
+            random.choice([True, False]))
         self.role.lookup_enum_name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.role.name = "".join(

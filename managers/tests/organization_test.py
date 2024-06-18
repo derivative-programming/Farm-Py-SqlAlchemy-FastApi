@@ -308,7 +308,7 @@ class TestOrganizationManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await organization_manager.delete("999")
+            await organization_manager.delete("999") # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -752,7 +752,7 @@ class TestOrganizationManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await organization_manager.exists(invalid_id)
+            await organization_manager.exists(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset
     # name,
@@ -795,6 +795,6 @@ class TestOrganizationManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await organization_manager.get_by_tac_id(invalid_id)
+            await organization_manager.get_by_tac_id(invalid_id) # type: ignore
         await session.rollback()
 # endset

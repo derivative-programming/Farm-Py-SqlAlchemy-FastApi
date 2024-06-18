@@ -23,7 +23,6 @@ class DateGreaterThanFilterInvalidInitError(Exception):
     """
     #TODO add comment
     """
-    pass
 
 
 class DateGreaterThanFilterBusObj(BaseBusObj):

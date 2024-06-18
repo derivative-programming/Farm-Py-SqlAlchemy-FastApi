@@ -308,7 +308,7 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await org_customer_manager.delete("999")
+            await org_customer_manager.delete("999") # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -752,7 +752,7 @@ class TestOrgCustomerManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_customer_manager.exists(invalid_id)
+            await org_customer_manager.exists(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
 # endset
     # CustomerID
@@ -774,7 +774,7 @@ class TestOrgCustomerManager:
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
         stmt = select(models.Customer).where(
-            models.Customer._customer_id == org_customer1.customer_id)
+            models.Customer._customer_id == org_customer1.customer_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         customer = result.scalars().first()
         assert fetched_org_customers[0].customer_code_peek == customer.code
@@ -801,7 +801,7 @@ class TestOrgCustomerManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_customer_manager.get_by_customer_id(invalid_id)
+            await org_customer_manager.get_by_customer_id(invalid_id)  # type: ignore  # noqa: E501
         await session.rollback()
     # email,
     # OrganizationID
@@ -843,6 +843,6 @@ class TestOrgCustomerManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_customer_manager.get_by_organization_id(invalid_id)
+            await org_customer_manager.get_by_organization_id(invalid_id) # type: ignore
         await session.rollback()
 # endset

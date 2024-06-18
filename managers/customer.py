@@ -80,8 +80,8 @@ class CustomerManager:
 # endset
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Customer._tac_id == Tac._tac_id,  # pylint: disable=protected-access  # noqa: E501
-                 Customer._tac_id != 0)  # pylint: disable=protected-access  # noqa: E501
+            and_(Customer._tac_id == Tac._tac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 Customer._tac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
         return query
@@ -150,7 +150,7 @@ class CustomerManager:
             #TODO add comment
         """
         logging.info("CustomerManager.get_by_code %s", code)
-        query_filter = Customer._code == str(code)  # pylint: disable=protected-access
+        query_filter = Customer._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
     async def update(self, customer: Customer, **kwargs) -> Optional[Customer]:

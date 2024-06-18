@@ -586,8 +586,10 @@ class TacBusObj(BaseBusObj):
             )
         self.tac.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        self.tac.display_order = random.randint(0, 100)
-        self.tac.is_active = random.choice([True, False])
+        self.tac.display_order = (
+            random.randint(0, 100))
+        self.tac.is_active = (
+            random.choice([True, False]))
         self.tac.lookup_enum_name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tac.name = "".join(
