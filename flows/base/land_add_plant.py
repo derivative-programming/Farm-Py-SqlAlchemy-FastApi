@@ -10,7 +10,6 @@ from decimal import Decimal
 
 import flows.constants.land_add_plant as FlowConstants
 from business.customer import CustomerBusObj
-# import models as farm_models
 from business.factory import BusObjFactory
 from business.land import LandBusObj
 from flows.base import LogSeverity
@@ -69,7 +68,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             "Validating...")
 
         if request_flavor_code == uuid.UUID(int=0) and \
-                FlowConstants.PARAM_REQUEST_FLAVOR_CODE_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_FLAVOR_CODE_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestFlavorCode",
@@ -77,7 +76,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_other_flavor == "" and \
-                FlowConstants.PARAM_REQUEST_OTHER_FLAVOR_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_OTHER_FLAVOR_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestOtherFlavor",
@@ -85,7 +84,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_int_val == 0 and \
-                FlowConstants.PARAM_REQUEST_SOME_INT_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_INT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeIntVal",
@@ -93,7 +92,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_big_int_val == 0 and \
-                FlowConstants.PARAM_REQUEST_SOME_BIG_INT_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_BIG_INT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeBigIntVal",
@@ -101,7 +100,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_bit_val is None and \
-                FlowConstants.PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeBitVal",
@@ -109,7 +108,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_is_edit_allowed is None and \
-                FlowConstants.PARAM_REQUEST_IS_EDIT_ALLOWED_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_IS_EDIT_ALLOWED_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestIsEditAllowed",
@@ -117,7 +116,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_is_delete_allowed is None and \
-                FlowConstants.PARAM_REQUEST_IS_DELETE_ALLOWED_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_IS_DELETE_ALLOWED_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestIsDeleteAllowed",
@@ -125,7 +124,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_float_val == 0 and \
-                FlowConstants.PARAM_REQUEST_SOME_FLOAT_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_FLOAT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeFloatVal",
@@ -133,7 +132,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_decimal_val == 0 and \
-                FlowConstants.PARAM_REQUEST_SOME_DECIMAL_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_DECIMAL_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeDecimalVal",
@@ -141,8 +140,8 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_utc_date_time_val == \
-                TypeConversion.get_default_date_time() and \
-                FlowConstants.PARAM_REQUEST_SOME_UTC_DATE_TIME_VAL_IS_REQUIRED \
+            TypeConversion.get_default_date_time() and \
+            FlowConstants.PARAM_REQUEST_SOME_UTC_DATE_TIME_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeUTCDateTimeVal",
@@ -150,7 +149,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_date_val == TypeConversion.get_default_date() and \
-                FlowConstants.PARAM_REQUEST_SOME_DATE_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_DATE_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeDateVal",
@@ -158,7 +157,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_money_val == 0 and \
-                FlowConstants.PARAM_REQUEST_SOME_MONEY_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_MONEY_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeMoneyVal",
@@ -166,7 +165,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_n_var_char_val == "" and \
-                FlowConstants.PARAM_REQUEST_SOME_N_VAR_CHAR_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_N_VAR_CHAR_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeNVarCharVal",
@@ -174,7 +173,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_var_char_val == "" and \
-                FlowConstants.PARAM_REQUEST_SOME_VAR_CHAR_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_VAR_CHAR_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeVarCharVal",
@@ -182,7 +181,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_text_val == "" and \
-                FlowConstants.PARAM_REQUEST_SOME_TEXT_VAL_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_TEXT_VAL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeTextVal",
@@ -190,7 +189,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_phone_number == "" and \
-                FlowConstants.PARAM_REQUEST_SOME_PHONE_NUMBER_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_PHONE_NUMBER_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomePhoneNumber",
@@ -198,7 +197,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_some_email_address == "" and \
-                FlowConstants.PARAM_REQUEST_SOME_EMAIL_ADDRESS_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SOME_EMAIL_ADDRESS_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSomeEmailAddress",
@@ -206,7 +205,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             )
 
         if request_sample_image_upload_file == "" and \
-                FlowConstants.PARAM_REQUEST_SAMPLE_IMAGE_UPLOAD_FILE_IS_REQUIRED \
+            FlowConstants.PARAM_REQUEST_SAMPLE_IMAGE_UPLOAD_FILE_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "requestSampleImageUploadFile",

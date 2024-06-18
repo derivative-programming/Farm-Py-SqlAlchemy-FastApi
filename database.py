@@ -26,5 +26,5 @@ async def get_db():
     """
         #TODO add comment
     """
-    async with AsyncSessionLocal() as db:
+    async with AsyncSessionLocal() as db:  # type: ignore # noqa: E501
         yield db

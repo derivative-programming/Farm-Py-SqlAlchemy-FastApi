@@ -1,5 +1,6 @@
 # models/managers/tests/plant_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -107,7 +108,7 @@ class TestPlantManager:
         # Fetch the plant from the database directly
         result = await session.execute(
             select(Plant).filter(
-                Plant._plant_id == added_plant.plant_id
+                Plant._plant_id == added_plant.plant_id  # type: ignore
             )
         )
         fetched_plant = result.scalars().first()
@@ -243,7 +244,7 @@ class TestPlantManager:
 
         result = await session.execute(
             select(Plant).filter(
-                Plant._plant_id == test_plant.plant_id)
+                Plant._plant_id == test_plant.plant_id)  # type: ignore
         )
 
         fetched_plant = result.scalars().first()
@@ -283,7 +284,7 @@ class TestPlantManager:
 
         result = await session.execute(
             select(Plant).filter(
-                Plant._plant_id == test_plant.plant_id)
+                Plant._plant_id == test_plant.plant_id)  # type: ignore
         )
 
         fetched_plant = result.scalars().first()
@@ -347,18 +348,22 @@ class TestPlantManager:
         plant_data = await PlantFactory.create_async(session)
 
         result = await session.execute(
-            select(Plant).filter(Plant._plant_id == plant_data.plant_id))
+            select(Plant).filter(
+                Plant._plant_id == plant_data.plant_id)  # type: ignore
+        )
         fetched_plant = result.scalars().first()
 
         assert isinstance(fetched_plant, Plant)
 
         assert fetched_plant.plant_id == plant_data.plant_id
 
-        deleted_plant = await plant_manager.delete(
+        await plant_manager.delete(
             plant_id=plant_data.plant_id)
 
         result = await session.execute(
-            select(Plant).filter(Plant._plant_id == plant_data.plant_id))
+            select(Plant).filter(
+                Plant._plant_id == plant_data.plant_id)  # type: ignore
+        )
         fetched_plant = result.scalars().first()
 
         assert fetched_plant is None
@@ -505,7 +510,7 @@ class TestPlantManager:
         for updated_plant in plants:
             result = await session.execute(
                 select(Plant).filter(
-                    Plant._plant_id == updated_plant.plant_id
+                    Plant._plant_id == updated_plant.plant_id  # type: ignore
                 )
             )
             fetched_plant = result.scalars().first()
@@ -572,7 +577,7 @@ class TestPlantManager:
             str(plant_manager._session_context.customer_code))
 
         result = await session.execute(
-            select(Plant).filter(Plant._plant_id == 1)
+            select(Plant).filter(Plant._plant_id == 1)  # type: ignore
         )
         fetched_plant = result.scalars().first()
 
@@ -581,7 +586,7 @@ class TestPlantManager:
         assert fetched_plant.code == code_updated1
 
         result = await session.execute(
-            select(Plant).filter(Plant._plant_id == 2)
+            select(Plant).filter(Plant._plant_id == 2)  # type: ignore
         )
         fetched_plant = result.scalars().first()
 
@@ -620,7 +625,7 @@ class TestPlantManager:
         updates = [{"plant_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            updated_plants = await plant_manager.update_bulk(updates)
+            await plant_manager.update_bulk(updates)
 
         await session.rollback()
 
@@ -663,7 +668,9 @@ class TestPlantManager:
 
         for plant_id in plant_ids:
             execute_result = await session.execute(
-                select(Plant).filter(Plant._plant_id == plant_id))
+                select(Plant).filter(
+                    Plant._plant_id == plant_id)  # type: ignore
+            )
             fetched_plant = execute_result.scalars().first()
 
             assert fetched_plant is None
@@ -679,6 +686,8 @@ class TestPlantManager:
         """
 
         plant1 = await PlantFactory.create_async(session=session)
+
+        assert isinstance(plant1, Plant)
 
         # Delete plants
         plant_ids = [1, 2]
@@ -830,27 +839,46 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a plant instance.
+
+        This test performs the following steps:
+        1. Creates a plant instance using the PlantFactory.
+        2. Retrieves the plant from the database to ensure it was added correctly.
+        3. Updates the plant's code and verifies the update.
+        4. Refreshes the original plant instance and checks if it reflects the updated code.
+
+        Args:
+            plant_manager (PlantManager): The manager responsible for plant operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
+        # Retrieve the plant from the database
         result = await session.execute(
-            select(Plant).filter(Plant._plant_id == plant1.plant_id)
-        )
+            select(Plant).filter(
+                Plant._plant_id == plant1.plant_id)  # type: ignore
+        )  # type: ignore
         plant2 = result.scalars().first()
 
+        # Verify that the retrieved plant matches the added plant
         assert plant1.code == plant2.code
 
+        # Update the plant's code
         updated_code1 = uuid.uuid4()
         plant1.code = updated_code1
         updated_plant1 = await plant_manager.update(plant1)
 
+        # Verify that the updated plant is of type Plant and has the updated code
         assert isinstance(updated_plant1, Plant)
 
         assert updated_plant1.code == updated_code1
 
+
+    # Step 4: Refresh the original plant instance
         refreshed_plant2 = await plant_manager.refresh(plant2)
+
+        # Verify that the refreshed plant reflects the updated code
         assert refreshed_plant2.code == updated_code1
 
     @pytest.mark.asyncio

@@ -637,11 +637,13 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             managers_and_enums.DateGreaterThanFilterEnum
     ):
         """
-        Load plant data from dictionary.
+        Load date_greater_than_filter data from dictionary.
 
-        :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or
-            if no plant data is found.
+        :param date_greater_than_filter_dict: Dictionary 
+            containing date_greater_than_filter data.
+        :raises ValueError: If date_greater_than_filter_dict
+            is not a dictionary or if no
+            date_greater_than_filter data is found.
         """
         if not isinstance(
             date_greater_than_filter_enum,

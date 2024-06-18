@@ -8,9 +8,7 @@ import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-# import business
 import current_runtime
-# import models.factory as model_factorys
 from helpers.api_token import ApiToken
 from helpers.session_context import SessionContext
 from models import Base
@@ -39,7 +37,7 @@ async def overridden_get_db():
     )
 
     # Create a new session for the test
-    async with AsyncSessionLocal() as session:
+    async with AsyncSessionLocal() as session:  # type: ignore
         yield session
 
     # After the test is done, drop all the tables

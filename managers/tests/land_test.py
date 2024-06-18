@@ -1,5 +1,6 @@
 # models/managers/tests/land_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestLandManager:
         # Fetch the land from the database directly
         result = await session.execute(
             select(Land).filter(
-                Land._land_id == added_land.land_id
+                Land._land_id == added_land.land_id  # type: ignore
             )
         )
         fetched_land = result.scalars().first()
@@ -191,7 +192,7 @@ class TestLandManager:
         assert updated_land.code == test_land.code
         result = await session.execute(
             select(Land).filter(
-                Land._land_id == test_land.land_id)
+                Land._land_id == test_land.land_id)  # type: ignore
         )
         fetched_land = result.scalars().first()
         assert updated_land.land_id == fetched_land.land_id
@@ -221,7 +222,7 @@ class TestLandManager:
         assert updated_land.code == new_code
         result = await session.execute(
             select(Land).filter(
-                Land._land_id == test_land.land_id)
+                Land._land_id == test_land.land_id)  # type: ignore
         )
         fetched_land = result.scalars().first()
         assert updated_land.land_id == fetched_land.land_id
@@ -271,14 +272,18 @@ class TestLandManager:
         """
         land_data = await LandFactory.create_async(session)
         result = await session.execute(
-            select(Land).filter(Land._land_id == land_data.land_id))
+            select(Land).filter(
+                Land._land_id == land_data.land_id)  # type: ignore
+        )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.land_id == land_data.land_id
-        deleted_land = await land_manager.delete(
+        await land_manager.delete(
             land_id=land_data.land_id)
         result = await session.execute(
-            select(Land).filter(Land._land_id == land_data.land_id))
+            select(Land).filter(
+                Land._land_id == land_data.land_id)  # type: ignore
+        )
         fetched_land = result.scalars().first()
         assert fetched_land is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestLandManager:
         for updated_land in lands:
             result = await session.execute(
                 select(Land).filter(
-                    Land._land_id == updated_land.land_id
+                    Land._land_id == updated_land.land_id  # type: ignore
                 )
             )
             fetched_land = result.scalars().first()
@@ -446,13 +451,13 @@ class TestLandManager:
         assert str(updated_lands[1].last_update_user_id) == (
             str(land_manager._session_context.customer_code))
         result = await session.execute(
-            select(Land).filter(Land._land_id == 1)
+            select(Land).filter(Land._land_id == 1)  # type: ignore
         )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.code == code_updated1
         result = await session.execute(
-            select(Land).filter(Land._land_id == 2)
+            select(Land).filter(Land._land_id == 2)  # type: ignore
         )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
@@ -483,7 +488,7 @@ class TestLandManager:
         # Update lands
         updates = [{"land_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_lands = await land_manager.update_bulk(updates)
+            await land_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestLandManager:
         assert result is True
         for land_id in land_ids:
             execute_result = await session.execute(
-                select(Land).filter(Land._land_id == land_id))
+                select(Land).filter(
+                    Land._land_id == land_id)  # type: ignore
+            )
             fetched_land = execute_result.scalars().first()
             assert fetched_land is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestLandManager:
             #TODO add comment
         """
         land1 = await LandFactory.create_async(session=session)
+        assert isinstance(land1, Land)
         # Delete lands
         land_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a land instance.
+        This test performs the following steps:
+        1. Creates a land instance using the LandFactory.
+        2. Retrieves the land from the database to ensure it was added correctly.
+        3. Updates the land's code and verifies the update.
+        4. Refreshes the original land instance and checks if it reflects the updated code.
+        Args:
+            land_manager (LandManager): The manager responsible for land operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a land
         land1 = await LandFactory.create_async(session=session)
+        # Retrieve the land from the database
         result = await session.execute(
-            select(Land).filter(Land._land_id == land1.land_id)
-        )
+            select(Land).filter(
+                Land._land_id == land1.land_id)  # type: ignore
+        )  # type: ignore
         land2 = result.scalars().first()
+        # Verify that the retrieved land matches the added land
         assert land1.code == land2.code
+        # Update the land's code
         updated_code1 = uuid.uuid4()
         land1.code = updated_code1
         updated_land1 = await land_manager.update(land1)
+        # Verify that the updated land is of type Land and has the updated code
         assert isinstance(updated_land1, Land)
         assert updated_land1.code == updated_code1
+    # Step 4: Refresh the original land instance
         refreshed_land2 = await land_manager.refresh(land2)
+        # Verify that the refreshed land reflects the updated code
         assert refreshed_land2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_land(

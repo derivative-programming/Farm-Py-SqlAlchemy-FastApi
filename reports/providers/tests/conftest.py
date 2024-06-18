@@ -1,5 +1,6 @@
 # reports/providers/tests/conftest.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-argument
 
 """
     #TODO add comment
@@ -78,7 +79,7 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session_obj:
+        async with TestingSessionLocal(bind=connection) as session_obj:  # type: ignore # noqa: E501
             @event.listens_for(
                 session_obj.sync_session, "after_transaction_end"
             )

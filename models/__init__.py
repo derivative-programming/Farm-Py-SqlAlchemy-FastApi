@@ -2,33 +2,18 @@
 """
     #TODO add comment
 """
-
 from .base import Base  # noqa: F401
-from .customer import (  # noqa: F401
-    Customer)
-from .customer_role import (  # noqa: F401
-    CustomerRole)
-from .date_greater_than_filter import (  # noqa: F401
-    DateGreaterThanFilter)
-from .error_log import (  # noqa: F401
-    ErrorLog)
-from .flavor import (  # noqa: F401
-    Flavor)
-from .land import (  # noqa: F401
-    Land)
-from .organization import (  # noqa: F401
-    Organization)
-from .org_api_key import (  # noqa: F401
-    OrgApiKey)
-from .org_customer import (  # noqa: F401
-    OrgCustomer)
-from .pac import (  # noqa: F401
-    Pac)
-from .plant import (  # noqa: F401
-    Plant)
-from .role import (  # noqa: F401
-    Role)
-from .tac import (  # noqa: F401
-    Tac)
-from .tri_state_filter import (  # noqa: F401
-    TriStateFilter)
+from .customer import Customer  # noqa: F401
+from .customer_role import CustomerRole  # noqa: F401
+from .date_greater_than_filter import DateGreaterThanFilter  # noqa: F401
+from .error_log import ErrorLog  # noqa: F401
+from .flavor import Flavor  # noqa: F401
+from .land import Land  # noqa: F401
+from .organization import Organization  # noqa: F401
+from .org_api_key import OrgApiKey  # noqa: F401
+from .org_customer import OrgCustomer  # noqa: F401
+from .pac import Pac  # noqa: F401
+from .plant import Plant  # noqa: F401
+from .role import Role  # noqa: F401
+from .tac import Tac  # noqa: F401
+from .tri_state_filter import TriStateFilter  # noqa: F401

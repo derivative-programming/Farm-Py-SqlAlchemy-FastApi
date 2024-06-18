@@ -1,5 +1,6 @@
 # models/managers/tests/error_log_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestErrorLogManager:
         # Fetch the error_log from the database directly
         result = await session.execute(
             select(ErrorLog).filter(
-                ErrorLog._error_log_id == added_error_log.error_log_id
+                ErrorLog._error_log_id == added_error_log.error_log_id  # type: ignore
             )
         )
         fetched_error_log = result.scalars().first()
@@ -191,7 +192,7 @@ class TestErrorLogManager:
         assert updated_error_log.code == test_error_log.code
         result = await session.execute(
             select(ErrorLog).filter(
-                ErrorLog._error_log_id == test_error_log.error_log_id)
+                ErrorLog._error_log_id == test_error_log.error_log_id)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
         assert updated_error_log.error_log_id == fetched_error_log.error_log_id
@@ -221,7 +222,7 @@ class TestErrorLogManager:
         assert updated_error_log.code == new_code
         result = await session.execute(
             select(ErrorLog).filter(
-                ErrorLog._error_log_id == test_error_log.error_log_id)
+                ErrorLog._error_log_id == test_error_log.error_log_id)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
         assert updated_error_log.error_log_id == fetched_error_log.error_log_id
@@ -271,14 +272,18 @@ class TestErrorLogManager:
         """
         error_log_data = await ErrorLogFactory.create_async(session)
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog._error_log_id == error_log_data.error_log_id))
+            select(ErrorLog).filter(
+                ErrorLog._error_log_id == error_log_data.error_log_id)  # type: ignore
+        )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.error_log_id == error_log_data.error_log_id
-        deleted_error_log = await error_log_manager.delete(
+        await error_log_manager.delete(
             error_log_id=error_log_data.error_log_id)
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog._error_log_id == error_log_data.error_log_id))
+            select(ErrorLog).filter(
+                ErrorLog._error_log_id == error_log_data.error_log_id)  # type: ignore
+        )
         fetched_error_log = result.scalars().first()
         assert fetched_error_log is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestErrorLogManager:
         for updated_error_log in error_logs:
             result = await session.execute(
                 select(ErrorLog).filter(
-                    ErrorLog._error_log_id == updated_error_log.error_log_id
+                    ErrorLog._error_log_id == updated_error_log.error_log_id  # type: ignore
                 )
             )
             fetched_error_log = result.scalars().first()
@@ -446,13 +451,13 @@ class TestErrorLogManager:
         assert str(updated_error_logs[1].last_update_user_id) == (
             str(error_log_manager._session_context.customer_code))
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog._error_log_id == 1)
+            select(ErrorLog).filter(ErrorLog._error_log_id == 1)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.code == code_updated1
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog._error_log_id == 2)
+            select(ErrorLog).filter(ErrorLog._error_log_id == 2)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
@@ -483,7 +488,7 @@ class TestErrorLogManager:
         # Update error_logs
         updates = [{"error_log_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_error_logs = await error_log_manager.update_bulk(updates)
+            await error_log_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestErrorLogManager:
         assert result is True
         for error_log_id in error_log_ids:
             execute_result = await session.execute(
-                select(ErrorLog).filter(ErrorLog._error_log_id == error_log_id))
+                select(ErrorLog).filter(
+                    ErrorLog._error_log_id == error_log_id)  # type: ignore
+            )
             fetched_error_log = execute_result.scalars().first()
             assert fetched_error_log is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestErrorLogManager:
             #TODO add comment
         """
         error_log1 = await ErrorLogFactory.create_async(session=session)
+        assert isinstance(error_log1, ErrorLog)
         # Delete error_logs
         error_log_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a error_log instance.
+        This test performs the following steps:
+        1. Creates a error_log instance using the ErrorLogFactory.
+        2. Retrieves the error_log from the database to ensure it was added correctly.
+        3. Updates the error_log's code and verifies the update.
+        4. Refreshes the original error_log instance and checks if it reflects the updated code.
+        Args:
+            error_log_manager (ErrorLogManager): The manager responsible for error_log operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
+        # Retrieve the error_log from the database
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog._error_log_id == error_log1.error_log_id)
-        )
+            select(ErrorLog).filter(
+                ErrorLog._error_log_id == error_log1.error_log_id)  # type: ignore
+        )  # type: ignore
         error_log2 = result.scalars().first()
+        # Verify that the retrieved error_log matches the added error_log
         assert error_log1.code == error_log2.code
+        # Update the error_log's code
         updated_code1 = uuid.uuid4()
         error_log1.code = updated_code1
         updated_error_log1 = await error_log_manager.update(error_log1)
+        # Verify that the updated error_log is of type ErrorLog and has the updated code
         assert isinstance(updated_error_log1, ErrorLog)
         assert updated_error_log1.code == updated_code1
+    # Step 4: Refresh the original error_log instance
         refreshed_error_log2 = await error_log_manager.refresh(error_log2)
+        # Verify that the refreshed error_log reflects the updated code
         assert refreshed_error_log2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_error_log(

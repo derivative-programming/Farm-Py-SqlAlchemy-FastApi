@@ -7,14 +7,17 @@
 """
 
 import asyncio
+from typing import Generator
+
 import pytest
 import pytest_asyncio
-from typing import Generator
 from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+
 from models import Base
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -70,7 +73,7 @@ async def session(engine) -> AsyncSession:
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session_obj:
+        async with TestingSessionLocal(bind=connection) as session_obj:  # type: ignore # noqa: E501
             @event.listens_for(
                 session_obj.sync_session, "after_transaction_end"
             )

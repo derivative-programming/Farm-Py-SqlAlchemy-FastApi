@@ -1,5 +1,6 @@
 # models/managers/tests/customer_role_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestCustomerRoleManager:
         # Fetch the customer_role from the database directly
         result = await session.execute(
             select(CustomerRole).filter(
-                CustomerRole._customer_role_id == added_customer_role.customer_role_id
+                CustomerRole._customer_role_id == added_customer_role.customer_role_id  # type: ignore
             )
         )
         fetched_customer_role = result.scalars().first()
@@ -191,7 +192,7 @@ class TestCustomerRoleManager:
         assert updated_customer_role.code == test_customer_role.code
         result = await session.execute(
             select(CustomerRole).filter(
-                CustomerRole._customer_role_id == test_customer_role.customer_role_id)
+                CustomerRole._customer_role_id == test_customer_role.customer_role_id)  # type: ignore
         )
         fetched_customer_role = result.scalars().first()
         assert updated_customer_role.customer_role_id == fetched_customer_role.customer_role_id
@@ -221,7 +222,7 @@ class TestCustomerRoleManager:
         assert updated_customer_role.code == new_code
         result = await session.execute(
             select(CustomerRole).filter(
-                CustomerRole._customer_role_id == test_customer_role.customer_role_id)
+                CustomerRole._customer_role_id == test_customer_role.customer_role_id)  # type: ignore
         )
         fetched_customer_role = result.scalars().first()
         assert updated_customer_role.customer_role_id == fetched_customer_role.customer_role_id
@@ -271,14 +272,18 @@ class TestCustomerRoleManager:
         """
         customer_role_data = await CustomerRoleFactory.create_async(session)
         result = await session.execute(
-            select(CustomerRole).filter(CustomerRole._customer_role_id == customer_role_data.customer_role_id))
+            select(CustomerRole).filter(
+                CustomerRole._customer_role_id == customer_role_data.customer_role_id)  # type: ignore
+        )
         fetched_customer_role = result.scalars().first()
         assert isinstance(fetched_customer_role, CustomerRole)
         assert fetched_customer_role.customer_role_id == customer_role_data.customer_role_id
-        deleted_customer_role = await customer_role_manager.delete(
+        await customer_role_manager.delete(
             customer_role_id=customer_role_data.customer_role_id)
         result = await session.execute(
-            select(CustomerRole).filter(CustomerRole._customer_role_id == customer_role_data.customer_role_id))
+            select(CustomerRole).filter(
+                CustomerRole._customer_role_id == customer_role_data.customer_role_id)  # type: ignore
+        )
         fetched_customer_role = result.scalars().first()
         assert fetched_customer_role is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestCustomerRoleManager:
         for updated_customer_role in customer_roles:
             result = await session.execute(
                 select(CustomerRole).filter(
-                    CustomerRole._customer_role_id == updated_customer_role.customer_role_id
+                    CustomerRole._customer_role_id == updated_customer_role.customer_role_id  # type: ignore
                 )
             )
             fetched_customer_role = result.scalars().first()
@@ -446,13 +451,13 @@ class TestCustomerRoleManager:
         assert str(updated_customer_roles[1].last_update_user_id) == (
             str(customer_role_manager._session_context.customer_code))
         result = await session.execute(
-            select(CustomerRole).filter(CustomerRole._customer_role_id == 1)
+            select(CustomerRole).filter(CustomerRole._customer_role_id == 1)  # type: ignore
         )
         fetched_customer_role = result.scalars().first()
         assert isinstance(fetched_customer_role, CustomerRole)
         assert fetched_customer_role.code == code_updated1
         result = await session.execute(
-            select(CustomerRole).filter(CustomerRole._customer_role_id == 2)
+            select(CustomerRole).filter(CustomerRole._customer_role_id == 2)  # type: ignore
         )
         fetched_customer_role = result.scalars().first()
         assert isinstance(fetched_customer_role, CustomerRole)
@@ -483,7 +488,7 @@ class TestCustomerRoleManager:
         # Update customer_roles
         updates = [{"customer_role_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_customer_roles = await customer_role_manager.update_bulk(updates)
+            await customer_role_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestCustomerRoleManager:
         assert result is True
         for customer_role_id in customer_role_ids:
             execute_result = await session.execute(
-                select(CustomerRole).filter(CustomerRole._customer_role_id == customer_role_id))
+                select(CustomerRole).filter(
+                    CustomerRole._customer_role_id == customer_role_id)  # type: ignore
+            )
             fetched_customer_role = execute_result.scalars().first()
             assert fetched_customer_role is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestCustomerRoleManager:
             #TODO add comment
         """
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
+        assert isinstance(customer_role1, CustomerRole)
         # Delete customer_roles
         customer_role_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a customer_role instance.
+        This test performs the following steps:
+        1. Creates a customer_role instance using the CustomerRoleFactory.
+        2. Retrieves the customer_role from the database to ensure it was added correctly.
+        3. Updates the customer_role's code and verifies the update.
+        4. Refreshes the original customer_role instance and checks if it reflects the updated code.
+        Args:
+            customer_role_manager (CustomerRoleManager): The manager responsible for customer_role operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a customer_role
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
+        # Retrieve the customer_role from the database
         result = await session.execute(
-            select(CustomerRole).filter(CustomerRole._customer_role_id == customer_role1.customer_role_id)
-        )
+            select(CustomerRole).filter(
+                CustomerRole._customer_role_id == customer_role1.customer_role_id)  # type: ignore
+        )  # type: ignore
         customer_role2 = result.scalars().first()
+        # Verify that the retrieved customer_role matches the added customer_role
         assert customer_role1.code == customer_role2.code
+        # Update the customer_role's code
         updated_code1 = uuid.uuid4()
         customer_role1.code = updated_code1
         updated_customer_role1 = await customer_role_manager.update(customer_role1)
+        # Verify that the updated customer_role is of type CustomerRole and has the updated code
         assert isinstance(updated_customer_role1, CustomerRole)
         assert updated_customer_role1.code == updated_code1
+    # Step 4: Refresh the original customer_role instance
         refreshed_customer_role2 = await customer_role_manager.refresh(customer_role2)
+        # Verify that the refreshed customer_role reflects the updated code
         assert refreshed_customer_role2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_customer_role(

@@ -61,7 +61,7 @@ class RoleManager:
         """
             #TODO add comment
         """
-        logging.info("PlantManager.Initialize start")
+        logging.info("RoleManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
@@ -106,7 +106,7 @@ class RoleManager:
             # item. = 1
             await self.add(item)
 # endset
-        logging.info("PlantMaanger.Initialize end")
+        logging.info("RoleManager.Initialize end")
     async def from_enum(
         self,
         enum_val: RoleEnum

@@ -1,5 +1,6 @@
 # models/managers/tests/tac_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestTacManager:
         # Fetch the tac from the database directly
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == added_tac.tac_id
+                Tac._tac_id == added_tac.tac_id  # type: ignore
             )
         )
         fetched_tac = result.scalars().first()
@@ -191,7 +192,7 @@ class TestTacManager:
         assert updated_tac.code == test_tac.code
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == test_tac.tac_id)
+                Tac._tac_id == test_tac.tac_id)  # type: ignore
         )
         fetched_tac = result.scalars().first()
         assert updated_tac.tac_id == fetched_tac.tac_id
@@ -221,7 +222,7 @@ class TestTacManager:
         assert updated_tac.code == new_code
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == test_tac.tac_id)
+                Tac._tac_id == test_tac.tac_id)  # type: ignore
         )
         fetched_tac = result.scalars().first()
         assert updated_tac.tac_id == fetched_tac.tac_id
@@ -271,14 +272,18 @@ class TestTacManager:
         """
         tac_data = await TacFactory.create_async(session)
         result = await session.execute(
-            select(Tac).filter(Tac._tac_id == tac_data.tac_id))
+            select(Tac).filter(
+                Tac._tac_id == tac_data.tac_id)  # type: ignore
+        )
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
         assert fetched_tac.tac_id == tac_data.tac_id
-        deleted_tac = await tac_manager.delete(
+        await tac_manager.delete(
             tac_id=tac_data.tac_id)
         result = await session.execute(
-            select(Tac).filter(Tac._tac_id == tac_data.tac_id))
+            select(Tac).filter(
+                Tac._tac_id == tac_data.tac_id)  # type: ignore
+        )
         fetched_tac = result.scalars().first()
         assert fetched_tac is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestTacManager:
         for updated_tac in tacs:
             result = await session.execute(
                 select(Tac).filter(
-                    Tac._tac_id == updated_tac.tac_id
+                    Tac._tac_id == updated_tac.tac_id  # type: ignore
                 )
             )
             fetched_tac = result.scalars().first()
@@ -446,13 +451,13 @@ class TestTacManager:
         assert str(updated_tacs[1].last_update_user_id) == (
             str(tac_manager._session_context.customer_code))
         result = await session.execute(
-            select(Tac).filter(Tac._tac_id == 1)
+            select(Tac).filter(Tac._tac_id == 1)  # type: ignore
         )
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
         assert fetched_tac.code == code_updated1
         result = await session.execute(
-            select(Tac).filter(Tac._tac_id == 2)
+            select(Tac).filter(Tac._tac_id == 2)  # type: ignore
         )
         fetched_tac = result.scalars().first()
         assert isinstance(fetched_tac, Tac)
@@ -483,7 +488,7 @@ class TestTacManager:
         # Update tacs
         updates = [{"tac_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_tacs = await tac_manager.update_bulk(updates)
+            await tac_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestTacManager:
         assert result is True
         for tac_id in tac_ids:
             execute_result = await session.execute(
-                select(Tac).filter(Tac._tac_id == tac_id))
+                select(Tac).filter(
+                    Tac._tac_id == tac_id)  # type: ignore
+            )
             fetched_tac = execute_result.scalars().first()
             assert fetched_tac is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestTacManager:
             #TODO add comment
         """
         tac1 = await TacFactory.create_async(session=session)
+        assert isinstance(tac1, Tac)
         # Delete tacs
         tac_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a tac instance.
+        This test performs the following steps:
+        1. Creates a tac instance using the TacFactory.
+        2. Retrieves the tac from the database to ensure it was added correctly.
+        3. Updates the tac's code and verifies the update.
+        4. Refreshes the original tac instance and checks if it reflects the updated code.
+        Args:
+            tac_manager (TacManager): The manager responsible for tac operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a tac
         tac1 = await TacFactory.create_async(session=session)
+        # Retrieve the tac from the database
         result = await session.execute(
-            select(Tac).filter(Tac._tac_id == tac1.tac_id)
-        )
+            select(Tac).filter(
+                Tac._tac_id == tac1.tac_id)  # type: ignore
+        )  # type: ignore
         tac2 = result.scalars().first()
+        # Verify that the retrieved tac matches the added tac
         assert tac1.code == tac2.code
+        # Update the tac's code
         updated_code1 = uuid.uuid4()
         tac1.code = updated_code1
         updated_tac1 = await tac_manager.update(tac1)
+        # Verify that the updated tac is of type Tac and has the updated code
         assert isinstance(updated_tac1, Tac)
         assert updated_tac1.code == updated_code1
+    # Step 4: Refresh the original tac instance
         refreshed_tac2 = await tac_manager.refresh(tac2)
+        # Verify that the refreshed tac reflects the updated code
         assert refreshed_tac2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_tac(

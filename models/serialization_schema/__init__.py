@@ -2,32 +2,17 @@
 """
     #TODO add comment
 """
-
-from .customer import (  # noqa: F401
-    CustomerSchema)
-from .customer_role import (  # noqa: F401
-    CustomerRoleSchema)
-from .date_greater_than_filter import (  # noqa: F401
-    DateGreaterThanFilterSchema)
-from .error_log import (  # noqa: F401
-    ErrorLogSchema)
-from .flavor import (  # noqa: F401
-    FlavorSchema)
-from .land import (  # noqa: F401
-    LandSchema)
-from .organization import (  # noqa: F401
-    OrganizationSchema)
-from .org_api_key import (  # noqa: F401
-    OrgApiKeySchema)
-from .org_customer import (  # noqa: F401
-    OrgCustomerSchema)
-from .pac import (  # noqa: F401
-    PacSchema)
-from .plant import (  # noqa: F401
-    PlantSchema)
-from .role import (  # noqa: F401
-    RoleSchema)
-from .tac import (  # noqa: F401
-    TacSchema)
-from .tri_state_filter import (  # noqa: F401
-    TriStateFilterSchema)
+from .customer import CustomerSchema  # noqa: F401
+from .customer_role import CustomerRoleSchema  # noqa: F401
+from .date_greater_than_filter import DateGreaterThanFilterSchema  # noqa: F401
+from .error_log import ErrorLogSchema  # noqa: F401
+from .flavor import FlavorSchema  # noqa: F401
+from .land import LandSchema  # noqa: F401
+from .organization import OrganizationSchema  # noqa: F401
+from .org_api_key import OrgApiKeySchema  # noqa: F401
+from .org_customer import OrgCustomerSchema  # noqa: F401
+from .pac import PacSchema  # noqa: F401
+from .plant import PlantSchema  # noqa: F401
+from .role import RoleSchema  # noqa: F401
+from .tac import TacSchema  # noqa: F401
+from .tri_state_filter import TriStateFilterSchema  # noqa: F401

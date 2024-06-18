@@ -7,7 +7,6 @@ from datetime import date, datetime
 from decimal import Decimal
 import flows.constants.land_user_plant_multi_select_to_not_editable as FlowConstants
 from business.customer import CustomerBusObj
-# import models as farm_models
 from business.factory import BusObjFactory
 from business.land import LandBusObj
 from flows.base import LogSeverity
@@ -39,7 +38,7 @@ class BaseFlowLandUserPlantMultiSelectToNotEditable(BaseFlow):
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
         if plant_code_list_csv == "" and \
-                FlowConstants.PARAM_PLANT_CODE_LIST_CSV_IS_REQUIRED \
+            FlowConstants.PARAM_PLANT_CODE_LIST_CSV_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "plantCodeListCsv",

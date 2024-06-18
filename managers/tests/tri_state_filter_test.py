@@ -1,5 +1,6 @@
 # models/managers/tests/tri_state_filter_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestTriStateFilterManager:
         # Fetch the tri_state_filter from the database directly
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == added_tri_state_filter.tri_state_filter_id
+                TriStateFilter._tri_state_filter_id == added_tri_state_filter.tri_state_filter_id  # type: ignore
             )
         )
         fetched_tri_state_filter = result.scalars().first()
@@ -191,7 +192,7 @@ class TestTriStateFilterManager:
         assert updated_tri_state_filter.code == test_tri_state_filter.code
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == test_tri_state_filter.tri_state_filter_id)
+                TriStateFilter._tri_state_filter_id == test_tri_state_filter.tri_state_filter_id)  # type: ignore
         )
         fetched_tri_state_filter = result.scalars().first()
         assert updated_tri_state_filter.tri_state_filter_id == fetched_tri_state_filter.tri_state_filter_id
@@ -221,7 +222,7 @@ class TestTriStateFilterManager:
         assert updated_tri_state_filter.code == new_code
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == test_tri_state_filter.tri_state_filter_id)
+                TriStateFilter._tri_state_filter_id == test_tri_state_filter.tri_state_filter_id)  # type: ignore
         )
         fetched_tri_state_filter = result.scalars().first()
         assert updated_tri_state_filter.tri_state_filter_id == fetched_tri_state_filter.tri_state_filter_id
@@ -271,14 +272,18 @@ class TestTriStateFilterManager:
         """
         tri_state_filter_data = await TriStateFilterFactory.create_async(session)
         result = await session.execute(
-            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == tri_state_filter_data.tri_state_filter_id))
+            select(TriStateFilter).filter(
+                TriStateFilter._tri_state_filter_id == tri_state_filter_data.tri_state_filter_id)  # type: ignore
+        )
         fetched_tri_state_filter = result.scalars().first()
         assert isinstance(fetched_tri_state_filter, TriStateFilter)
         assert fetched_tri_state_filter.tri_state_filter_id == tri_state_filter_data.tri_state_filter_id
-        deleted_tri_state_filter = await tri_state_filter_manager.delete(
+        await tri_state_filter_manager.delete(
             tri_state_filter_id=tri_state_filter_data.tri_state_filter_id)
         result = await session.execute(
-            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == tri_state_filter_data.tri_state_filter_id))
+            select(TriStateFilter).filter(
+                TriStateFilter._tri_state_filter_id == tri_state_filter_data.tri_state_filter_id)  # type: ignore
+        )
         fetched_tri_state_filter = result.scalars().first()
         assert fetched_tri_state_filter is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestTriStateFilterManager:
         for updated_tri_state_filter in tri_state_filters:
             result = await session.execute(
                 select(TriStateFilter).filter(
-                    TriStateFilter._tri_state_filter_id == updated_tri_state_filter.tri_state_filter_id
+                    TriStateFilter._tri_state_filter_id == updated_tri_state_filter.tri_state_filter_id  # type: ignore
                 )
             )
             fetched_tri_state_filter = result.scalars().first()
@@ -446,13 +451,13 @@ class TestTriStateFilterManager:
         assert str(updated_tri_state_filters[1].last_update_user_id) == (
             str(tri_state_filter_manager._session_context.customer_code))
         result = await session.execute(
-            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == 1)
+            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == 1)  # type: ignore
         )
         fetched_tri_state_filter = result.scalars().first()
         assert isinstance(fetched_tri_state_filter, TriStateFilter)
         assert fetched_tri_state_filter.code == code_updated1
         result = await session.execute(
-            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == 2)
+            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == 2)  # type: ignore
         )
         fetched_tri_state_filter = result.scalars().first()
         assert isinstance(fetched_tri_state_filter, TriStateFilter)
@@ -483,7 +488,7 @@ class TestTriStateFilterManager:
         # Update tri_state_filters
         updates = [{"tri_state_filter_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_tri_state_filters = await tri_state_filter_manager.update_bulk(updates)
+            await tri_state_filter_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestTriStateFilterManager:
         assert result is True
         for tri_state_filter_id in tri_state_filter_ids:
             execute_result = await session.execute(
-                select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == tri_state_filter_id))
+                select(TriStateFilter).filter(
+                    TriStateFilter._tri_state_filter_id == tri_state_filter_id)  # type: ignore
+            )
             fetched_tri_state_filter = execute_result.scalars().first()
             assert fetched_tri_state_filter is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestTriStateFilterManager:
             #TODO add comment
         """
         tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
+        assert isinstance(tri_state_filter1, TriStateFilter)
         # Delete tri_state_filters
         tri_state_filter_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a tri_state_filter instance.
+        This test performs the following steps:
+        1. Creates a tri_state_filter instance using the TriStateFilterFactory.
+        2. Retrieves the tri_state_filter from the database to ensure it was added correctly.
+        3. Updates the tri_state_filter's code and verifies the update.
+        4. Refreshes the original tri_state_filter instance and checks if it reflects the updated code.
+        Args:
+            tri_state_filter_manager (TriStateFilterManager): The manager responsible for tri_state_filter operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a tri_state_filter
         tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
+        # Retrieve the tri_state_filter from the database
         result = await session.execute(
-            select(TriStateFilter).filter(TriStateFilter._tri_state_filter_id == tri_state_filter1.tri_state_filter_id)
-        )
+            select(TriStateFilter).filter(
+                TriStateFilter._tri_state_filter_id == tri_state_filter1.tri_state_filter_id)  # type: ignore
+        )  # type: ignore
         tri_state_filter2 = result.scalars().first()
+        # Verify that the retrieved tri_state_filter matches the added tri_state_filter
         assert tri_state_filter1.code == tri_state_filter2.code
+        # Update the tri_state_filter's code
         updated_code1 = uuid.uuid4()
         tri_state_filter1.code = updated_code1
         updated_tri_state_filter1 = await tri_state_filter_manager.update(tri_state_filter1)
+        # Verify that the updated tri_state_filter is of type TriStateFilter and has the updated code
         assert isinstance(updated_tri_state_filter1, TriStateFilter)
         assert updated_tri_state_filter1.code == updated_code1
+    # Step 4: Refresh the original tri_state_filter instance
         refreshed_tri_state_filter2 = await tri_state_filter_manager.refresh(tri_state_filter2)
+        # Verify that the refreshed tri_state_filter reflects the updated code
         assert refreshed_tri_state_filter2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_tri_state_filter(

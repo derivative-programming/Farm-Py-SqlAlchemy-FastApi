@@ -7,7 +7,6 @@ from datetime import date, datetime
 from decimal import Decimal
 import flows.constants.land_plant_list_init_report as FlowConstants
 from business.customer import CustomerBusObj
-# import models as farm_models
 from business.factory import BusObjFactory
 from business.land import LandBusObj
 from flows.base import LogSeverity

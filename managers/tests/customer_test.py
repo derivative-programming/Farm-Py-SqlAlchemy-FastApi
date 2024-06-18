@@ -1,5 +1,6 @@
 # models/managers/tests/customer_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestCustomerManager:
         # Fetch the customer from the database directly
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == added_customer.customer_id
+                Customer._customer_id == added_customer.customer_id  # type: ignore
             )
         )
         fetched_customer = result.scalars().first()
@@ -191,7 +192,7 @@ class TestCustomerManager:
         assert updated_customer.code == test_customer.code
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == test_customer.customer_id)
+                Customer._customer_id == test_customer.customer_id)  # type: ignore
         )
         fetched_customer = result.scalars().first()
         assert updated_customer.customer_id == fetched_customer.customer_id
@@ -221,7 +222,7 @@ class TestCustomerManager:
         assert updated_customer.code == new_code
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == test_customer.customer_id)
+                Customer._customer_id == test_customer.customer_id)  # type: ignore
         )
         fetched_customer = result.scalars().first()
         assert updated_customer.customer_id == fetched_customer.customer_id
@@ -271,14 +272,18 @@ class TestCustomerManager:
         """
         customer_data = await CustomerFactory.create_async(session)
         result = await session.execute(
-            select(Customer).filter(Customer._customer_id == customer_data.customer_id))
+            select(Customer).filter(
+                Customer._customer_id == customer_data.customer_id)  # type: ignore
+        )
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)
         assert fetched_customer.customer_id == customer_data.customer_id
-        deleted_customer = await customer_manager.delete(
+        await customer_manager.delete(
             customer_id=customer_data.customer_id)
         result = await session.execute(
-            select(Customer).filter(Customer._customer_id == customer_data.customer_id))
+            select(Customer).filter(
+                Customer._customer_id == customer_data.customer_id)  # type: ignore
+        )
         fetched_customer = result.scalars().first()
         assert fetched_customer is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestCustomerManager:
         for updated_customer in customers:
             result = await session.execute(
                 select(Customer).filter(
-                    Customer._customer_id == updated_customer.customer_id
+                    Customer._customer_id == updated_customer.customer_id  # type: ignore
                 )
             )
             fetched_customer = result.scalars().first()
@@ -446,13 +451,13 @@ class TestCustomerManager:
         assert str(updated_customers[1].last_update_user_id) == (
             str(customer_manager._session_context.customer_code))
         result = await session.execute(
-            select(Customer).filter(Customer._customer_id == 1)
+            select(Customer).filter(Customer._customer_id == 1)  # type: ignore
         )
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)
         assert fetched_customer.code == code_updated1
         result = await session.execute(
-            select(Customer).filter(Customer._customer_id == 2)
+            select(Customer).filter(Customer._customer_id == 2)  # type: ignore
         )
         fetched_customer = result.scalars().first()
         assert isinstance(fetched_customer, Customer)
@@ -483,7 +488,7 @@ class TestCustomerManager:
         # Update customers
         updates = [{"customer_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_customers = await customer_manager.update_bulk(updates)
+            await customer_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestCustomerManager:
         assert result is True
         for customer_id in customer_ids:
             execute_result = await session.execute(
-                select(Customer).filter(Customer._customer_id == customer_id))
+                select(Customer).filter(
+                    Customer._customer_id == customer_id)  # type: ignore
+            )
             fetched_customer = execute_result.scalars().first()
             assert fetched_customer is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestCustomerManager:
             #TODO add comment
         """
         customer1 = await CustomerFactory.create_async(session=session)
+        assert isinstance(customer1, Customer)
         # Delete customers
         customer_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a customer instance.
+        This test performs the following steps:
+        1. Creates a customer instance using the CustomerFactory.
+        2. Retrieves the customer from the database to ensure it was added correctly.
+        3. Updates the customer's code and verifies the update.
+        4. Refreshes the original customer instance and checks if it reflects the updated code.
+        Args:
+            customer_manager (CustomerManager): The manager responsible for customer operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a customer
         customer1 = await CustomerFactory.create_async(session=session)
+        # Retrieve the customer from the database
         result = await session.execute(
-            select(Customer).filter(Customer._customer_id == customer1.customer_id)
-        )
+            select(Customer).filter(
+                Customer._customer_id == customer1.customer_id)  # type: ignore
+        )  # type: ignore
         customer2 = result.scalars().first()
+        # Verify that the retrieved customer matches the added customer
         assert customer1.code == customer2.code
+        # Update the customer's code
         updated_code1 = uuid.uuid4()
         customer1.code = updated_code1
         updated_customer1 = await customer_manager.update(customer1)
+        # Verify that the updated customer is of type Customer and has the updated code
         assert isinstance(updated_customer1, Customer)
         assert updated_customer1.code == updated_code1
+    # Step 4: Refresh the original customer instance
         refreshed_customer2 = await customer_manager.refresh(customer2)
+        # Verify that the refreshed customer reflects the updated code
         assert refreshed_customer2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_customer(

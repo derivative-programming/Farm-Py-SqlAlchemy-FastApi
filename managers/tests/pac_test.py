@@ -1,5 +1,6 @@
 # models/managers/tests/pac_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestPacManager:
         # Fetch the pac from the database directly
         result = await session.execute(
             select(Pac).filter(
-                Pac._pac_id == added_pac.pac_id
+                Pac._pac_id == added_pac.pac_id  # type: ignore
             )
         )
         fetched_pac = result.scalars().first()
@@ -191,7 +192,7 @@ class TestPacManager:
         assert updated_pac.code == test_pac.code
         result = await session.execute(
             select(Pac).filter(
-                Pac._pac_id == test_pac.pac_id)
+                Pac._pac_id == test_pac.pac_id)  # type: ignore
         )
         fetched_pac = result.scalars().first()
         assert updated_pac.pac_id == fetched_pac.pac_id
@@ -221,7 +222,7 @@ class TestPacManager:
         assert updated_pac.code == new_code
         result = await session.execute(
             select(Pac).filter(
-                Pac._pac_id == test_pac.pac_id)
+                Pac._pac_id == test_pac.pac_id)  # type: ignore
         )
         fetched_pac = result.scalars().first()
         assert updated_pac.pac_id == fetched_pac.pac_id
@@ -271,14 +272,18 @@ class TestPacManager:
         """
         pac_data = await PacFactory.create_async(session)
         result = await session.execute(
-            select(Pac).filter(Pac._pac_id == pac_data.pac_id))
+            select(Pac).filter(
+                Pac._pac_id == pac_data.pac_id)  # type: ignore
+        )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
         assert fetched_pac.pac_id == pac_data.pac_id
-        deleted_pac = await pac_manager.delete(
+        await pac_manager.delete(
             pac_id=pac_data.pac_id)
         result = await session.execute(
-            select(Pac).filter(Pac._pac_id == pac_data.pac_id))
+            select(Pac).filter(
+                Pac._pac_id == pac_data.pac_id)  # type: ignore
+        )
         fetched_pac = result.scalars().first()
         assert fetched_pac is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestPacManager:
         for updated_pac in pacs:
             result = await session.execute(
                 select(Pac).filter(
-                    Pac._pac_id == updated_pac.pac_id
+                    Pac._pac_id == updated_pac.pac_id  # type: ignore
                 )
             )
             fetched_pac = result.scalars().first()
@@ -446,13 +451,13 @@ class TestPacManager:
         assert str(updated_pacs[1].last_update_user_id) == (
             str(pac_manager._session_context.customer_code))
         result = await session.execute(
-            select(Pac).filter(Pac._pac_id == 1)
+            select(Pac).filter(Pac._pac_id == 1)  # type: ignore
         )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
         assert fetched_pac.code == code_updated1
         result = await session.execute(
-            select(Pac).filter(Pac._pac_id == 2)
+            select(Pac).filter(Pac._pac_id == 2)  # type: ignore
         )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
@@ -483,7 +488,7 @@ class TestPacManager:
         # Update pacs
         updates = [{"pac_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_pacs = await pac_manager.update_bulk(updates)
+            await pac_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestPacManager:
         assert result is True
         for pac_id in pac_ids:
             execute_result = await session.execute(
-                select(Pac).filter(Pac._pac_id == pac_id))
+                select(Pac).filter(
+                    Pac._pac_id == pac_id)  # type: ignore
+            )
             fetched_pac = execute_result.scalars().first()
             assert fetched_pac is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestPacManager:
             #TODO add comment
         """
         pac1 = await PacFactory.create_async(session=session)
+        assert isinstance(pac1, Pac)
         # Delete pacs
         pac_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a pac instance.
+        This test performs the following steps:
+        1. Creates a pac instance using the PacFactory.
+        2. Retrieves the pac from the database to ensure it was added correctly.
+        3. Updates the pac's code and verifies the update.
+        4. Refreshes the original pac instance and checks if it reflects the updated code.
+        Args:
+            pac_manager (PacManager): The manager responsible for pac operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a pac
         pac1 = await PacFactory.create_async(session=session)
+        # Retrieve the pac from the database
         result = await session.execute(
-            select(Pac).filter(Pac._pac_id == pac1.pac_id)
-        )
+            select(Pac).filter(
+                Pac._pac_id == pac1.pac_id)  # type: ignore
+        )  # type: ignore
         pac2 = result.scalars().first()
+        # Verify that the retrieved pac matches the added pac
         assert pac1.code == pac2.code
+        # Update the pac's code
         updated_code1 = uuid.uuid4()
         pac1.code = updated_code1
         updated_pac1 = await pac_manager.update(pac1)
+        # Verify that the updated pac is of type Pac and has the updated code
         assert isinstance(updated_pac1, Pac)
         assert updated_pac1.code == updated_code1
+    # Step 4: Refresh the original pac instance
         refreshed_pac2 = await pac_manager.refresh(pac2)
+        # Verify that the refreshed pac reflects the updated code
         assert refreshed_pac2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_pac(

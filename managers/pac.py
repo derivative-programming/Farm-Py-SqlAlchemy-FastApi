@@ -58,7 +58,7 @@ class PacManager:
         """
             #TODO add comment
         """
-        logging.info("PlantManager.Initialize start")
+        logging.info("PacManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
@@ -73,7 +73,7 @@ class PacManager:
             # item. = 1
             await self.add(item)
 # endset
-        logging.info("PlantMaanger.Initialize end")
+        logging.info("PacManager.Initialize end")
     async def from_enum(
         self,
         enum_val: PacEnum

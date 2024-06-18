@@ -72,7 +72,7 @@ class DateGreaterThanFilterManager:
             #TODO add comment
         """
 
-        logging.info("PlantManager.Initialize start")
+        logging.info("DateGreaterThanFilterManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
@@ -137,7 +137,7 @@ class DateGreaterThanFilterManager:
             # item.day_count = 365
             await self.add(item)
 # endset
-        logging.info("PlantMaanger.Initialize end")
+        logging.info("DateGreaterThanFilterManager.Initialize end")
 
     async def from_enum(
         self,

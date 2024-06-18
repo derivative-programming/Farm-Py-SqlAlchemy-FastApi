@@ -1,5 +1,6 @@
 # models/managers/tests/role_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestRoleManager:
         # Fetch the role from the database directly
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == added_role.role_id
+                Role._role_id == added_role.role_id  # type: ignore
             )
         )
         fetched_role = result.scalars().first()
@@ -191,7 +192,7 @@ class TestRoleManager:
         assert updated_role.code == test_role.code
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == test_role.role_id)
+                Role._role_id == test_role.role_id)  # type: ignore
         )
         fetched_role = result.scalars().first()
         assert updated_role.role_id == fetched_role.role_id
@@ -221,7 +222,7 @@ class TestRoleManager:
         assert updated_role.code == new_code
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == test_role.role_id)
+                Role._role_id == test_role.role_id)  # type: ignore
         )
         fetched_role = result.scalars().first()
         assert updated_role.role_id == fetched_role.role_id
@@ -271,14 +272,18 @@ class TestRoleManager:
         """
         role_data = await RoleFactory.create_async(session)
         result = await session.execute(
-            select(Role).filter(Role._role_id == role_data.role_id))
+            select(Role).filter(
+                Role._role_id == role_data.role_id)  # type: ignore
+        )
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
         assert fetched_role.role_id == role_data.role_id
-        deleted_role = await role_manager.delete(
+        await role_manager.delete(
             role_id=role_data.role_id)
         result = await session.execute(
-            select(Role).filter(Role._role_id == role_data.role_id))
+            select(Role).filter(
+                Role._role_id == role_data.role_id)  # type: ignore
+        )
         fetched_role = result.scalars().first()
         assert fetched_role is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestRoleManager:
         for updated_role in roles:
             result = await session.execute(
                 select(Role).filter(
-                    Role._role_id == updated_role.role_id
+                    Role._role_id == updated_role.role_id  # type: ignore
                 )
             )
             fetched_role = result.scalars().first()
@@ -446,13 +451,13 @@ class TestRoleManager:
         assert str(updated_roles[1].last_update_user_id) == (
             str(role_manager._session_context.customer_code))
         result = await session.execute(
-            select(Role).filter(Role._role_id == 1)
+            select(Role).filter(Role._role_id == 1)  # type: ignore
         )
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
         assert fetched_role.code == code_updated1
         result = await session.execute(
-            select(Role).filter(Role._role_id == 2)
+            select(Role).filter(Role._role_id == 2)  # type: ignore
         )
         fetched_role = result.scalars().first()
         assert isinstance(fetched_role, Role)
@@ -483,7 +488,7 @@ class TestRoleManager:
         # Update roles
         updates = [{"role_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_roles = await role_manager.update_bulk(updates)
+            await role_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestRoleManager:
         assert result is True
         for role_id in role_ids:
             execute_result = await session.execute(
-                select(Role).filter(Role._role_id == role_id))
+                select(Role).filter(
+                    Role._role_id == role_id)  # type: ignore
+            )
             fetched_role = execute_result.scalars().first()
             assert fetched_role is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestRoleManager:
             #TODO add comment
         """
         role1 = await RoleFactory.create_async(session=session)
+        assert isinstance(role1, Role)
         # Delete roles
         role_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a role instance.
+        This test performs the following steps:
+        1. Creates a role instance using the RoleFactory.
+        2. Retrieves the role from the database to ensure it was added correctly.
+        3. Updates the role's code and verifies the update.
+        4. Refreshes the original role instance and checks if it reflects the updated code.
+        Args:
+            role_manager (RoleManager): The manager responsible for role operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a role
         role1 = await RoleFactory.create_async(session=session)
+        # Retrieve the role from the database
         result = await session.execute(
-            select(Role).filter(Role._role_id == role1.role_id)
-        )
+            select(Role).filter(
+                Role._role_id == role1.role_id)  # type: ignore
+        )  # type: ignore
         role2 = result.scalars().first()
+        # Verify that the retrieved role matches the added role
         assert role1.code == role2.code
+        # Update the role's code
         updated_code1 = uuid.uuid4()
         role1.code = updated_code1
         updated_role1 = await role_manager.update(role1)
+        # Verify that the updated role is of type Role and has the updated code
         assert isinstance(updated_role1, Role)
         assert updated_role1.code == updated_code1
+    # Step 4: Refresh the original role instance
         refreshed_role2 = await role_manager.refresh(role2)
+        # Verify that the refreshed role reflects the updated code
         assert refreshed_role2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_role(

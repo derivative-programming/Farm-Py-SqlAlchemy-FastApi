@@ -170,11 +170,14 @@ class TestLandAddPlantPostModelResponse:
         session_context.role_name_csv = role_required
 
         customer_code_match_required = False
-        if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
+                is True:
             customer_code_match_required = True
-        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED is True:
+        if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
+                is True:
             customer_code_match_required = True
 
         if customer_code_match_required is True:

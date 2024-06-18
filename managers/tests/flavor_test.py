@@ -1,5 +1,6 @@
 # models/managers/tests/flavor_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestFlavorManager:
         # Fetch the flavor from the database directly
         result = await session.execute(
             select(Flavor).filter(
-                Flavor._flavor_id == added_flavor.flavor_id
+                Flavor._flavor_id == added_flavor.flavor_id  # type: ignore
             )
         )
         fetched_flavor = result.scalars().first()
@@ -191,7 +192,7 @@ class TestFlavorManager:
         assert updated_flavor.code == test_flavor.code
         result = await session.execute(
             select(Flavor).filter(
-                Flavor._flavor_id == test_flavor.flavor_id)
+                Flavor._flavor_id == test_flavor.flavor_id)  # type: ignore
         )
         fetched_flavor = result.scalars().first()
         assert updated_flavor.flavor_id == fetched_flavor.flavor_id
@@ -221,7 +222,7 @@ class TestFlavorManager:
         assert updated_flavor.code == new_code
         result = await session.execute(
             select(Flavor).filter(
-                Flavor._flavor_id == test_flavor.flavor_id)
+                Flavor._flavor_id == test_flavor.flavor_id)  # type: ignore
         )
         fetched_flavor = result.scalars().first()
         assert updated_flavor.flavor_id == fetched_flavor.flavor_id
@@ -271,14 +272,18 @@ class TestFlavorManager:
         """
         flavor_data = await FlavorFactory.create_async(session)
         result = await session.execute(
-            select(Flavor).filter(Flavor._flavor_id == flavor_data.flavor_id))
+            select(Flavor).filter(
+                Flavor._flavor_id == flavor_data.flavor_id)  # type: ignore
+        )
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.flavor_id == flavor_data.flavor_id
-        deleted_flavor = await flavor_manager.delete(
+        await flavor_manager.delete(
             flavor_id=flavor_data.flavor_id)
         result = await session.execute(
-            select(Flavor).filter(Flavor._flavor_id == flavor_data.flavor_id))
+            select(Flavor).filter(
+                Flavor._flavor_id == flavor_data.flavor_id)  # type: ignore
+        )
         fetched_flavor = result.scalars().first()
         assert fetched_flavor is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestFlavorManager:
         for updated_flavor in flavors:
             result = await session.execute(
                 select(Flavor).filter(
-                    Flavor._flavor_id == updated_flavor.flavor_id
+                    Flavor._flavor_id == updated_flavor.flavor_id  # type: ignore
                 )
             )
             fetched_flavor = result.scalars().first()
@@ -446,13 +451,13 @@ class TestFlavorManager:
         assert str(updated_flavors[1].last_update_user_id) == (
             str(flavor_manager._session_context.customer_code))
         result = await session.execute(
-            select(Flavor).filter(Flavor._flavor_id == 1)
+            select(Flavor).filter(Flavor._flavor_id == 1)  # type: ignore
         )
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)
         assert fetched_flavor.code == code_updated1
         result = await session.execute(
-            select(Flavor).filter(Flavor._flavor_id == 2)
+            select(Flavor).filter(Flavor._flavor_id == 2)  # type: ignore
         )
         fetched_flavor = result.scalars().first()
         assert isinstance(fetched_flavor, Flavor)
@@ -483,7 +488,7 @@ class TestFlavorManager:
         # Update flavors
         updates = [{"flavor_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_flavors = await flavor_manager.update_bulk(updates)
+            await flavor_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestFlavorManager:
         assert result is True
         for flavor_id in flavor_ids:
             execute_result = await session.execute(
-                select(Flavor).filter(Flavor._flavor_id == flavor_id))
+                select(Flavor).filter(
+                    Flavor._flavor_id == flavor_id)  # type: ignore
+            )
             fetched_flavor = execute_result.scalars().first()
             assert fetched_flavor is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestFlavorManager:
             #TODO add comment
         """
         flavor1 = await FlavorFactory.create_async(session=session)
+        assert isinstance(flavor1, Flavor)
         # Delete flavors
         flavor_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestFlavorManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a flavor instance.
+        This test performs the following steps:
+        1. Creates a flavor instance using the FlavorFactory.
+        2. Retrieves the flavor from the database to ensure it was added correctly.
+        3. Updates the flavor's code and verifies the update.
+        4. Refreshes the original flavor instance and checks if it reflects the updated code.
+        Args:
+            flavor_manager (FlavorManager): The manager responsible for flavor operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a flavor
         flavor1 = await FlavorFactory.create_async(session=session)
+        # Retrieve the flavor from the database
         result = await session.execute(
-            select(Flavor).filter(Flavor._flavor_id == flavor1.flavor_id)
-        )
+            select(Flavor).filter(
+                Flavor._flavor_id == flavor1.flavor_id)  # type: ignore
+        )  # type: ignore
         flavor2 = result.scalars().first()
+        # Verify that the retrieved flavor matches the added flavor
         assert flavor1.code == flavor2.code
+        # Update the flavor's code
         updated_code1 = uuid.uuid4()
         flavor1.code = updated_code1
         updated_flavor1 = await flavor_manager.update(flavor1)
+        # Verify that the updated flavor is of type Flavor and has the updated code
         assert isinstance(updated_flavor1, Flavor)
         assert updated_flavor1.code == updated_code1
+    # Step 4: Refresh the original flavor instance
         refreshed_flavor2 = await flavor_manager.refresh(flavor2)
+        # Verify that the refreshed flavor reflects the updated code
         assert refreshed_flavor2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_flavor(

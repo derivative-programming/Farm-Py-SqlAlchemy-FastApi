@@ -60,7 +60,7 @@ class TriStateFilterManager:
         """
             #TODO add comment
         """
-        logging.info("PlantManager.Initialize start")
+        logging.info("TriStateFilterManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
@@ -95,7 +95,7 @@ class TriStateFilterManager:
             # item.state_int_value = 1
             await self.add(item)
 # endset
-        logging.info("PlantMaanger.Initialize end")
+        logging.info("TriStateFilterManager.Initialize end")
     async def from_enum(
         self,
         enum_val: TriStateFilterEnum

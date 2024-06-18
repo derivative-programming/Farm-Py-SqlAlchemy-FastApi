@@ -7,7 +7,6 @@ from datetime import date, datetime
 from decimal import Decimal
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from business.customer import CustomerBusObj
-# import models as farm_models
 from business.factory import BusObjFactory
 from business.error_log import ErrorLogBusObj
 from flows.base import LogSeverity

@@ -7,7 +7,6 @@ from datetime import date, datetime
 from decimal import Decimal
 import flows.constants.customer_user_log_out as FlowConstants
 from business.customer import CustomerBusObj
-# import models as farm_models
 from business.factory import BusObjFactory
 from business.customer import CustomerBusObj
 from flows.base import LogSeverity

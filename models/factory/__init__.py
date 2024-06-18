@@ -2,32 +2,17 @@
 """
     #TODO add comment
 """
-
-from .customer import (  # noqa: F401
-    CustomerFactory)
-from .customer_role import (  # noqa: F401
-    CustomerRoleFactory)
-from .date_greater_than_filter import (  # noqa: F401
-    DateGreaterThanFilterFactory)
-from .error_log import (  # noqa: F401
-    ErrorLogFactory)
-from .flavor import (  # noqa: F401
-    FlavorFactory)
-from .land import (  # noqa: F401
-    LandFactory)
-from .organization import (  # noqa: F401
-    OrganizationFactory)
-from .org_api_key import (  # noqa: F401
-    OrgApiKeyFactory)
-from .org_customer import (  # noqa: F401
-    OrgCustomerFactory)
-from .pac import (  # noqa: F401
-    PacFactory)
-from .plant import (  # noqa: F401
-    PlantFactory)
-from .role import (  # noqa: F401
-    RoleFactory)
-from .tac import (  # noqa: F401
-    TacFactory)
-from .tri_state_filter import (  # noqa: F401
-    TriStateFilterFactory)
+from .customer import CustomerFactory  # noqa: F401
+from .customer_role import CustomerRoleFactory  # noqa: F401
+from .date_greater_than_filter import DateGreaterThanFilterFactory  # noqa: F401
+from .error_log import ErrorLogFactory  # noqa: F401
+from .flavor import FlavorFactory  # noqa: F401
+from .land import LandFactory  # noqa: F401
+from .organization import OrganizationFactory  # noqa: F401
+from .org_api_key import OrgApiKeyFactory  # noqa: F401
+from .org_customer import OrgCustomerFactory  # noqa: F401
+from .pac import PacFactory  # noqa: F401
+from .plant import PlantFactory  # noqa: F401
+from .role import RoleFactory  # noqa: F401
+from .tac import TacFactory  # noqa: F401
+from .tri_state_filter import TriStateFilterFactory  # noqa: F401

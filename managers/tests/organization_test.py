@@ -1,5 +1,6 @@
 # models/managers/tests/organization_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
 """
     #TODO add comment
     #TODO file too big. split into separate test files
@@ -87,7 +88,7 @@ class TestOrganizationManager:
         # Fetch the organization from the database directly
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == added_organization.organization_id
+                Organization._organization_id == added_organization.organization_id  # type: ignore
             )
         )
         fetched_organization = result.scalars().first()
@@ -191,7 +192,7 @@ class TestOrganizationManager:
         assert updated_organization.code == test_organization.code
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == test_organization.organization_id)
+                Organization._organization_id == test_organization.organization_id)  # type: ignore
         )
         fetched_organization = result.scalars().first()
         assert updated_organization.organization_id == fetched_organization.organization_id
@@ -221,7 +222,7 @@ class TestOrganizationManager:
         assert updated_organization.code == new_code
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == test_organization.organization_id)
+                Organization._organization_id == test_organization.organization_id)  # type: ignore
         )
         fetched_organization = result.scalars().first()
         assert updated_organization.organization_id == fetched_organization.organization_id
@@ -271,14 +272,18 @@ class TestOrganizationManager:
         """
         organization_data = await OrganizationFactory.create_async(session)
         result = await session.execute(
-            select(Organization).filter(Organization._organization_id == organization_data.organization_id))
+            select(Organization).filter(
+                Organization._organization_id == organization_data.organization_id)  # type: ignore
+        )
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)
         assert fetched_organization.organization_id == organization_data.organization_id
-        deleted_organization = await organization_manager.delete(
+        await organization_manager.delete(
             organization_id=organization_data.organization_id)
         result = await session.execute(
-            select(Organization).filter(Organization._organization_id == organization_data.organization_id))
+            select(Organization).filter(
+                Organization._organization_id == organization_data.organization_id)  # type: ignore
+        )
         fetched_organization = result.scalars().first()
         assert fetched_organization is None
     @pytest.mark.asyncio
@@ -391,7 +396,7 @@ class TestOrganizationManager:
         for updated_organization in organizations:
             result = await session.execute(
                 select(Organization).filter(
-                    Organization._organization_id == updated_organization.organization_id
+                    Organization._organization_id == updated_organization.organization_id  # type: ignore
                 )
             )
             fetched_organization = result.scalars().first()
@@ -446,13 +451,13 @@ class TestOrganizationManager:
         assert str(updated_organizations[1].last_update_user_id) == (
             str(organization_manager._session_context.customer_code))
         result = await session.execute(
-            select(Organization).filter(Organization._organization_id == 1)
+            select(Organization).filter(Organization._organization_id == 1)  # type: ignore
         )
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)
         assert fetched_organization.code == code_updated1
         result = await session.execute(
-            select(Organization).filter(Organization._organization_id == 2)
+            select(Organization).filter(Organization._organization_id == 2)  # type: ignore
         )
         fetched_organization = result.scalars().first()
         assert isinstance(fetched_organization, Organization)
@@ -483,7 +488,7 @@ class TestOrganizationManager:
         # Update organizations
         updates = [{"organization_id": 1, "code": uuid.uuid4()}]
         with pytest.raises(Exception):
-            updated_organizations = await organization_manager.update_bulk(updates)
+            await organization_manager.update_bulk(updates)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
@@ -515,7 +520,9 @@ class TestOrganizationManager:
         assert result is True
         for organization_id in organization_ids:
             execute_result = await session.execute(
-                select(Organization).filter(Organization._organization_id == organization_id))
+                select(Organization).filter(
+                    Organization._organization_id == organization_id)  # type: ignore
+            )
             fetched_organization = execute_result.scalars().first()
             assert fetched_organization is None
     @pytest.mark.asyncio
@@ -528,6 +535,7 @@ class TestOrganizationManager:
             #TODO add comment
         """
         organization1 = await OrganizationFactory.create_async(session=session)
+        assert isinstance(organization1, Organization)
         # Delete organizations
         organization_ids = [1, 2]
         with pytest.raises(Exception):
@@ -646,21 +654,36 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of refreshing a organization instance.
+        This test performs the following steps:
+        1. Creates a organization instance using the OrganizationFactory.
+        2. Retrieves the organization from the database to ensure it was added correctly.
+        3. Updates the organization's code and verifies the update.
+        4. Refreshes the original organization instance and checks if it reflects the updated code.
+        Args:
+            organization_manager (OrganizationManager): The manager responsible for organization operations.
+            session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a organization
         organization1 = await OrganizationFactory.create_async(session=session)
+        # Retrieve the organization from the database
         result = await session.execute(
-            select(Organization).filter(Organization._organization_id == organization1.organization_id)
-        )
+            select(Organization).filter(
+                Organization._organization_id == organization1.organization_id)  # type: ignore
+        )  # type: ignore
         organization2 = result.scalars().first()
+        # Verify that the retrieved organization matches the added organization
         assert organization1.code == organization2.code
+        # Update the organization's code
         updated_code1 = uuid.uuid4()
         organization1.code = updated_code1
         updated_organization1 = await organization_manager.update(organization1)
+        # Verify that the updated organization is of type Organization and has the updated code
         assert isinstance(updated_organization1, Organization)
         assert updated_organization1.code == updated_code1
+    # Step 4: Refresh the original organization instance
         refreshed_organization2 = await organization_manager.refresh(organization2)
+        # Verify that the refreshed organization reflects the updated code
         assert refreshed_organization2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_organization(

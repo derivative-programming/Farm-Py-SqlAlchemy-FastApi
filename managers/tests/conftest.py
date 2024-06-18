@@ -7,21 +7,13 @@
 """
 
 import asyncio
-# from decimal import Decimal
-# import time
-# from datetime import datetime, date
 from typing import Generator
 from sqlalchemy import event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-# from sqlalchemy.exc import IntegrityError
-# from sqlalchemy.future import select
 import pytest
 import pytest_asyncio
 from models import Base
-# from models.factory import PlantFactory
-# from managers.plant import PlantManager
-# from models.serialization_schema.plant import PlantSchema
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
@@ -76,7 +68,7 @@ async def session(engine) -> AsyncSession:
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session_obj:
+        async with TestingSessionLocal(bind=connection) as session_obj:  # type: ignore # noqa: E501
             @event.listens_for(
                 session_obj.sync_session, "after_transaction_end"
             )

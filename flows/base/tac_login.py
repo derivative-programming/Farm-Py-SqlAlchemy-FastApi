@@ -7,7 +7,6 @@ from datetime import date, datetime
 from decimal import Decimal
 import flows.constants.tac_login as FlowConstants
 from business.customer import CustomerBusObj
-# import models as farm_models
 from business.factory import BusObjFactory
 from business.tac import TacBusObj
 from flows.base import LogSeverity
@@ -40,14 +39,14 @@ class BaseFlowTacLogin(BaseFlow):
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Validating...")
         if email == "" and \
-                FlowConstants.PARAM_EMAIL_IS_REQUIRED \
+            FlowConstants.PARAM_EMAIL_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "email",
                 "Please enter a Email"
             )
         if password == "" and \
-                FlowConstants.PARAM_PASSWORD_IS_REQUIRED \
+            FlowConstants.PARAM_PASSWORD_IS_REQUIRED \
                 is True:
             self._add_field_validation_error(
                 "password",

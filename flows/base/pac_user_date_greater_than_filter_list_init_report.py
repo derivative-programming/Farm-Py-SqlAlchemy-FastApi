@@ -7,7 +7,6 @@ from datetime import date, datetime
 from decimal import Decimal
 import flows.constants.pac_user_date_greater_than_filter_list_init_report as FlowConstants
 from business.customer import CustomerBusObj
-# import models as farm_models
 from business.factory import BusObjFactory
 from business.pac import PacBusObj
 from flows.base import LogSeverity
