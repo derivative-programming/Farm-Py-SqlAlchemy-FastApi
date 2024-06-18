@@ -1,4 +1,5 @@
 # flavor_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -56,11 +57,13 @@ class TestFlavorSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_flavor_serialization(self, flavor: Flavor):  # pylint: disable=redefined-outer-name
+    def test_flavor_serialization(self, flavor: Flavor):
         """
-        Test the serialization of a Flavor instance using FlavorSchema.
+        Test the serialization of a Flavor instance using
+        FlavorSchema.
         Args:
-            flavor (Flavor): A Flavor instance to serialize.
+            flavor (Flavor):
+                A Flavor instance to serialize.
         """
         schema = FlavorSchema()
         result: Dict[str, Any] = schema.dump(flavor)
@@ -93,7 +96,7 @@ class TestFlavorSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(flavor.pac_code_peek))
 # endset
-    def test_flavor_deserialization(self, flavor):  # pylint: disable=redefined-outer-name
+    def test_flavor_deserialization(self, flavor):
         """
             #TODO add comment
         """
@@ -202,7 +205,7 @@ class TestFlavorSchema:
             self.sample_data['last_update_utc_date_time'])
         new_flavor = Flavor(**deserialized_data)
         assert isinstance(new_flavor, Flavor)
-    def test_to_json(self, flavor: Flavor):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, flavor: Flavor):
         """
             #TODO add comment
         """

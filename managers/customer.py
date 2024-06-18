@@ -80,8 +80,8 @@ class CustomerManager:
 # endset
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Customer.tac_id == Tac._tac_id,  # pylint: disable=protected-access
-                 Customer.tac_id != 0)
+            and_(Customer._tac_id == Tac._tac_id,  # pylint: disable=protected-access  # noqa: E501
+                 Customer._tac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -365,7 +365,7 @@ class CustomerManager:
                 f"The customer_id must be an integer, "
                 f"got {type(tac_id)} instead."
             )
-        query_filter = Customer.tac_id == tac_id
+        query_filter = Customer._tac_id == tac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

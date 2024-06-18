@@ -657,11 +657,14 @@ class TestTacManager:
         Test the basic functionality of refreshing a tac instance.
         This test performs the following steps:
         1. Creates a tac instance using the TacFactory.
-        2. Retrieves the tac from the database to ensure it was added correctly.
+        2. Retrieves the tac from the database to ensure
+            it was added correctly.
         3. Updates the tac's code and verifies the update.
-        4. Refreshes the original tac instance and checks if it reflects the updated code.
+        4. Refreshes the original tac instance and checks if
+            it reflects the updated code.
         Args:
-            tac_manager (TacManager): The manager responsible for tac operations.
+            tac_manager (TacManager): The manager responsible
+                for tac operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a tac
@@ -678,10 +681,11 @@ class TestTacManager:
         updated_code1 = uuid.uuid4()
         tac1.code = updated_code1
         updated_tac1 = await tac_manager.update(tac1)
-        # Verify that the updated tac is of type Tac and has the updated code
+        # Verify that the updated tac is of type Tac
+        # and has the updated code
         assert isinstance(updated_tac1, Tac)
         assert updated_tac1.code == updated_code1
-    # Step 4: Refresh the original tac instance
+        # Refresh the original tac instance
         refreshed_tac2 = await tac_manager.refresh(tac2)
         # Verify that the refreshed tac reflects the updated code
         assert refreshed_tac2.code == updated_code1

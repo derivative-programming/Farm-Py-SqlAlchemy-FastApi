@@ -30,8 +30,8 @@ class LandEnum(Enum):
     """
     #TODO add comment
     """
-    Unknown = 'Unknown'
-    Field_One = 'Field_One'
+    UNKNOWN = 'Unknown'
+    FIELD_ONE = 'Field_One'
 
 class LandManager:
     """
@@ -63,7 +63,7 @@ class LandManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(LandEnum.Unknown) \
+        if await self.from_enum(LandEnum.UNKNOWN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
@@ -73,7 +73,7 @@ class LandManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(LandEnum.Field_One) \
+        if await self.from_enum(LandEnum.FIELD_ONE) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Field One"
@@ -93,7 +93,7 @@ class LandManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Land.lookup_enum_name == enum_val.value
+        query_filter = Land._lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -127,8 +127,8 @@ class LandManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Land.pac_id == Pac._pac_id,  # pylint: disable=protected-access
-                 Land.pac_id != 0)
+            and_(Land._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
+                 Land._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -412,7 +412,7 @@ class LandManager:
                 f"The land_id must be an integer, "
                 f"got {type(pac_id)} instead."
             )
-        query_filter = Land.pac_id == pac_id
+        query_filter = Land._pac_id == pac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

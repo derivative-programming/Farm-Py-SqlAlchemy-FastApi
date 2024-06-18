@@ -498,10 +498,12 @@ class FlavorBusObj(BaseBusObj):
             managers_and_enums.FlavorEnum
     ):
         """
-        Load plant data from dictionary.
-        :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or
-            if no plant data is found.
+        Load flavor data from dictionary.
+        :param flavor_dict: Dictionary
+            containing flavor data.
+        :raises ValueError: If flavor_dict
+            is not a dictionary or if no
+            flavor data is found.
         """
         if not isinstance(
             flavor_enum,

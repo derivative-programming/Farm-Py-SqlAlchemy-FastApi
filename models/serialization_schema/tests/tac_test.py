@@ -1,4 +1,5 @@
 # tac_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -56,11 +57,13 @@ class TestTacSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_tac_serialization(self, tac: Tac):  # pylint: disable=redefined-outer-name
+    def test_tac_serialization(self, tac: Tac):
         """
-        Test the serialization of a Tac instance using TacSchema.
+        Test the serialization of a Tac instance using
+        TacSchema.
         Args:
-            tac (Tac): A Tac instance to serialize.
+            tac (Tac):
+                A Tac instance to serialize.
         """
         schema = TacSchema()
         result: Dict[str, Any] = schema.dump(tac)
@@ -93,7 +96,7 @@ class TestTacSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tac.pac_code_peek))
 # endset
-    def test_tac_deserialization(self, tac):  # pylint: disable=redefined-outer-name
+    def test_tac_deserialization(self, tac):
         """
             #TODO add comment
         """
@@ -202,7 +205,7 @@ class TestTacSchema:
             self.sample_data['last_update_utc_date_time'])
         new_tac = Tac(**deserialized_data)
         assert isinstance(new_tac, Tac)
-    def test_to_json(self, tac: Tac):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, tac: Tac):
         """
             #TODO add comment
         """

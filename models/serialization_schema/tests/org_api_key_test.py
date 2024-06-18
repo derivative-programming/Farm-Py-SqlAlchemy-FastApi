@@ -1,4 +1,5 @@
 # org_api_key_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -65,11 +66,13 @@ class TestOrgApiKeySchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_org_api_key_serialization(self, org_api_key: OrgApiKey):  # pylint: disable=redefined-outer-name
+    def test_org_api_key_serialization(self, org_api_key: OrgApiKey):
         """
-        Test the serialization of a OrgApiKey instance using OrgApiKeySchema.
+        Test the serialization of a OrgApiKey instance using
+        OrgApiKeySchema.
         Args:
-            org_api_key (OrgApiKey): A OrgApiKey instance to serialize.
+            org_api_key (OrgApiKey):
+                A OrgApiKey instance to serialize.
         """
         schema = OrgApiKeySchema()
         result: Dict[str, Any] = schema.dump(org_api_key)
@@ -110,7 +113,7 @@ class TestOrgApiKeySchema:
         assert result['org_customer_code_peek'] == (  # OrgCustomerID
             str(org_api_key.org_customer_code_peek))
 # endset
-    def test_org_api_key_deserialization(self, org_api_key):  # pylint: disable=redefined-outer-name
+    def test_org_api_key_deserialization(self, org_api_key):
         """
             #TODO add comment
         """
@@ -243,7 +246,7 @@ class TestOrgApiKeySchema:
             self.sample_data['last_update_utc_date_time'])
         new_org_api_key = OrgApiKey(**deserialized_data)
         assert isinstance(new_org_api_key, OrgApiKey)
-    def test_to_json(self, org_api_key: OrgApiKey):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, org_api_key: OrgApiKey):
         """
             #TODO add comment
         """

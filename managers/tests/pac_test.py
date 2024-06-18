@@ -657,11 +657,14 @@ class TestPacManager:
         Test the basic functionality of refreshing a pac instance.
         This test performs the following steps:
         1. Creates a pac instance using the PacFactory.
-        2. Retrieves the pac from the database to ensure it was added correctly.
+        2. Retrieves the pac from the database to ensure
+            it was added correctly.
         3. Updates the pac's code and verifies the update.
-        4. Refreshes the original pac instance and checks if it reflects the updated code.
+        4. Refreshes the original pac instance and checks if
+            it reflects the updated code.
         Args:
-            pac_manager (PacManager): The manager responsible for pac operations.
+            pac_manager (PacManager): The manager responsible
+                for pac operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a pac
@@ -678,10 +681,11 @@ class TestPacManager:
         updated_code1 = uuid.uuid4()
         pac1.code = updated_code1
         updated_pac1 = await pac_manager.update(pac1)
-        # Verify that the updated pac is of type Pac and has the updated code
+        # Verify that the updated pac is of type Pac
+        # and has the updated code
         assert isinstance(updated_pac1, Pac)
         assert updated_pac1.code == updated_code1
-    # Step 4: Refresh the original pac instance
+        # Refresh the original pac instance
         refreshed_pac2 = await pac_manager.refresh(pac2)
         # Verify that the refreshed pac reflects the updated code
         assert refreshed_pac2.code == updated_code1

@@ -1,4 +1,5 @@
 # date_greater_than_filter_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -57,11 +58,13 @@ class TestDateGreaterThanFilterSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter):  # pylint: disable=redefined-outer-name
+    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter):
         """
-        Test the serialization of a DateGreaterThanFilter instance using DateGreaterThanFilterSchema.
+        Test the serialization of a DateGreaterThanFilter instance using
+        DateGreaterThanFilterSchema.
         Args:
-            date_greater_than_filter (DateGreaterThanFilter): A DateGreaterThanFilter instance to serialize.
+            date_greater_than_filter (DateGreaterThanFilter):
+                A DateGreaterThanFilter instance to serialize.
         """
         schema = DateGreaterThanFilterSchema()
         result: Dict[str, Any] = schema.dump(date_greater_than_filter)
@@ -96,7 +99,7 @@ class TestDateGreaterThanFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(date_greater_than_filter.pac_code_peek))
 # endset
-    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter):  # pylint: disable=redefined-outer-name
+    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter):
         """
             #TODO add comment
         """
@@ -211,7 +214,7 @@ class TestDateGreaterThanFilterSchema:
             self.sample_data['last_update_utc_date_time'])
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
-    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter):
         """
             #TODO add comment
         """

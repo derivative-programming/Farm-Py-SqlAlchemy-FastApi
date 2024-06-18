@@ -1,4 +1,5 @@
 # role_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -56,11 +57,13 @@ class TestRoleSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_role_serialization(self, role: Role):  # pylint: disable=redefined-outer-name
+    def test_role_serialization(self, role: Role):
         """
-        Test the serialization of a Role instance using RoleSchema.
+        Test the serialization of a Role instance using
+        RoleSchema.
         Args:
-            role (Role): A Role instance to serialize.
+            role (Role):
+                A Role instance to serialize.
         """
         schema = RoleSchema()
         result: Dict[str, Any] = schema.dump(role)
@@ -93,7 +96,7 @@ class TestRoleSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(role.pac_code_peek))
 # endset
-    def test_role_deserialization(self, role):  # pylint: disable=redefined-outer-name
+    def test_role_deserialization(self, role):
         """
             #TODO add comment
         """
@@ -202,7 +205,7 @@ class TestRoleSchema:
             self.sample_data['last_update_utc_date_time'])
         new_role = Role(**deserialized_data)
         assert isinstance(new_role, Role)
-    def test_to_json(self, role: Role):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, role: Role):
         """
             #TODO add comment
         """

@@ -85,7 +85,7 @@ class PlantUserDeleteRouter(BaseRouter):
                 )
                 response.message = str(te) + " traceback:" + traceback_string
                 logging.info("response.message:%s", response.message)
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(

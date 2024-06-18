@@ -34,12 +34,12 @@ class DateGreaterThanFilterEnum(Enum):
     """
     #TODO add comment
     """
-    Last_24_Hours = 'Last_24_Hours'
-    Last_7_Days = 'Last_7_Days'
-    Last_30_Days = 'Last_30_Days'
-    Last_90_Days = 'Last_90_Days'
-    Last_365_Days = 'Last_365_Days'
-    Unknown = 'Unknown'
+    LAST_24_HOURS = 'Last_24_Hours'
+    LAST_7_DAYS = 'Last_7_Days'
+    LAST_30_DAYS = 'Last_30_Days'
+    LAST_90_DAYS = 'Last_90_Days'
+    LAST_365_DAYS = 'Last_365_Days'
+    UNKNOWN = 'Unknown'
 ##GENLearn[isLookup=true]End
 ##GENTrainingBlock[caseLookupEnums]End
 
@@ -76,7 +76,7 @@ class DateGreaterThanFilterManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(DateGreaterThanFilterEnum.Unknown) \
+        if await self.from_enum(DateGreaterThanFilterEnum.UNKNOWN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
@@ -86,7 +86,7 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 1
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_24_Hours) \
+        if await self.from_enum(DateGreaterThanFilterEnum.LAST_24_HOURS) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 24 Hours"
@@ -96,7 +96,7 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 1
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_7_Days) \
+        if await self.from_enum(DateGreaterThanFilterEnum.LAST_7_DAYS) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 7 Days"
@@ -106,7 +106,7 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 7
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_30_Days) \
+        if await self.from_enum(DateGreaterThanFilterEnum.LAST_30_DAYS) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 30 Days"
@@ -116,7 +116,7 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 30
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_90_Days) \
+        if await self.from_enum(DateGreaterThanFilterEnum.LAST_90_DAYS) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 90 Days"
@@ -126,7 +126,7 @@ class DateGreaterThanFilterManager:
             item.is_active = True
             # item.day_count = 90
             await self.add(item)
-        if await self.from_enum(DateGreaterThanFilterEnum.Last_365_Days) \
+        if await self.from_enum(DateGreaterThanFilterEnum.LAST_365_DAYS) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Last 365 Days"
@@ -148,7 +148,7 @@ class DateGreaterThanFilterManager:
         """
 
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = DateGreaterThanFilter.lookup_enum_name == enum_val.value
+        query_filter = DateGreaterThanFilter._lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 ##GENLearn[isLookup=true]End
@@ -195,8 +195,8 @@ class DateGreaterThanFilterManager:
         query = query.outerjoin(
             Pac,
             and_(
-                DateGreaterThanFilter.pac_id == Pac._pac_id,
-                DateGreaterThanFilter.pac_id != 0
+                DateGreaterThanFilter._pac_id == Pac._pac_id,  # type: ignore
+                DateGreaterThanFilter._pac_id != 0  # type: ignore
             ))
 
         return query
@@ -593,6 +593,6 @@ class DateGreaterThanFilterManager:
             raise TypeError(
                 "The date_greater_than_filter_id must be an integer, "
                 f"got {type(pac_id)} instead.")
-        query_filter = DateGreaterThanFilter.pac_id == pac_id
+        query_filter = DateGreaterThanFilter._pac_id == pac_id
         query_results = await self._run_query(query_filter)
         return query_results

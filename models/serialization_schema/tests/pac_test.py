@@ -1,4 +1,5 @@
 # pac_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -54,11 +55,13 @@ class TestPacSchema:
 
 # endset  # noqa: E122
     }
-    def test_pac_serialization(self, pac: Pac):  # pylint: disable=redefined-outer-name
+    def test_pac_serialization(self, pac: Pac):
         """
-        Test the serialization of a Pac instance using PacSchema.
+        Test the serialization of a Pac instance using
+        PacSchema.
         Args:
-            pac (Pac): A Pac instance to serialize.
+            pac (Pac):
+                A Pac instance to serialize.
         """
         schema = PacSchema()
         result: Dict[str, Any] = schema.dump(pac)
@@ -88,7 +91,7 @@ class TestPacSchema:
 # endset
 
 # endset
-    def test_pac_deserialization(self, pac):  # pylint: disable=redefined-outer-name
+    def test_pac_deserialization(self, pac):
         """
             #TODO add comment
         """
@@ -188,7 +191,7 @@ class TestPacSchema:
             self.sample_data['last_update_utc_date_time'])
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
-    def test_to_json(self, pac: Pac):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, pac: Pac):
         """
             #TODO add comment
         """

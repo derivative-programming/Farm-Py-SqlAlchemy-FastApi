@@ -82,13 +82,13 @@ class OrgCustomerManager:
 # endset
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(OrgCustomer.customer_id == Customer._customer_id,  # pylint: disable=protected-access
-                 OrgCustomer.customer_id != 0)
+            and_(OrgCustomer._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501
+                 OrgCustomer._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgCustomer.organization_id == Organization._organization_id,  # pylint: disable=protected-access
-                 OrgCustomer.organization_id != 0)
+            and_(OrgCustomer._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501
+                 OrgCustomer._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -379,7 +379,7 @@ class OrgCustomerManager:
                 f"The org_customer_id must be an integer, "
                 f"got {type(customer_id)} instead."
             )
-        query_filter = OrgCustomer.customer_id == customer_id
+        query_filter = OrgCustomer._customer_id == customer_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
     async def get_by_organization_id(self, organization_id: int) -> List[OrgCustomer]:  # OrganizationID
@@ -392,7 +392,7 @@ class OrgCustomerManager:
                 f"The org_customer_id must be an integer, "
                 f"got {type(organization_id)} instead."
             )
-        query_filter = OrgCustomer.organization_id == organization_id
+        query_filter = OrgCustomer._organization_id == organization_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

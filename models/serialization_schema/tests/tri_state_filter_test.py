@@ -1,4 +1,5 @@
 # tri_state_filter_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -57,11 +58,13 @@ class TestTriStateFilterSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter):  # pylint: disable=redefined-outer-name
+    def test_tri_state_filter_serialization(self, tri_state_filter: TriStateFilter):
         """
-        Test the serialization of a TriStateFilter instance using TriStateFilterSchema.
+        Test the serialization of a TriStateFilter instance using
+        TriStateFilterSchema.
         Args:
-            tri_state_filter (TriStateFilter): A TriStateFilter instance to serialize.
+            tri_state_filter (TriStateFilter):
+                A TriStateFilter instance to serialize.
         """
         schema = TriStateFilterSchema()
         result: Dict[str, Any] = schema.dump(tri_state_filter)
@@ -96,7 +99,7 @@ class TestTriStateFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tri_state_filter.pac_code_peek))
 # endset
-    def test_tri_state_filter_deserialization(self, tri_state_filter):  # pylint: disable=redefined-outer-name
+    def test_tri_state_filter_deserialization(self, tri_state_filter):
         """
             #TODO add comment
         """
@@ -211,7 +214,7 @@ class TestTriStateFilterSchema:
             self.sample_data['last_update_utc_date_time'])
         new_tri_state_filter = TriStateFilter(**deserialized_data)
         assert isinstance(new_tri_state_filter, TriStateFilter)
-    def test_to_json(self, tri_state_filter: TriStateFilter):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, tri_state_filter: TriStateFilter):
         """
             #TODO add comment
         """

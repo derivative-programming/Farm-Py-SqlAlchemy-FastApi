@@ -19,9 +19,10 @@ class OrgCustomerSchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # customerID
-            # email,
-            # OrganizationID
+            "_last_change_code",
+            "_customer_id",  # customerID
+            "_email",  # email
+            "_organization_id",  # OrganizationID
 # endset  # noqa E122
         )
     org_customer_id = fields.Int()

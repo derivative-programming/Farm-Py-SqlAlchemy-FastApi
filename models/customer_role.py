@@ -29,7 +29,7 @@ class CustomerRole(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -43,7 +43,7 @@ class CustomerRole(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    customer_id = Column(
+    _customer_id = Column(
         'customer_id',
         Integer,
         ForeignKey('farm_' + snake_case('Customer') + '.customer_id'),
@@ -52,7 +52,7 @@ class CustomerRole(Base):
             customer_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_placeholder = Column(
+    _is_placeholder = Column(
         'is_placeholder',
         Boolean,
         default=False,
@@ -61,7 +61,7 @@ class CustomerRole(Base):
             is_placeholder_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    placeholder = Column(
+    _placeholder = Column(
         'placeholder',
         Boolean,
         default=False,
@@ -70,7 +70,7 @@ class CustomerRole(Base):
             placeholder_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    role_id = Column(
+    _role_id = Column(
         'role_id',
         Integer,
         ForeignKey('farm_' + snake_case('Role') + '.role_id'),
@@ -94,7 +94,7 @@ class CustomerRole(Base):
     # customer = relationship('Customer', back_populates=snake_case('Customer'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -152,6 +152,18 @@ class CustomerRole(Base):
         """
         self._customer_role_id = value
     @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_change_code', 0) or 0
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+        self._last_change_code = value
+    @property
     def insert_user_id(self):
         """
             #TODO add comment
@@ -178,9 +190,69 @@ class CustomerRole(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
     # CustomerID
+    @property
+    def customer_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_customer_id', 0) or 0
+    @customer_id.setter
+    def customer_id(self, value: int) -> None:
+        """
+        Set the customer_id.
+        """
+        self._customer_id = value
     # isPlaceholder,
+    @property
+    def is_placeholder(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_placeholder', False) or False
+    @is_placeholder.setter
+    def is_placeholder(self, value: bool) -> None:
+        """
+        Set the is_placeholder.
+        """
+        self._is_placeholder = value
     # placeholder,
+    @property
+    def placeholder(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_placeholder', False) or False
+    @placeholder.setter
+    def placeholder(self, value: bool) -> None:
+        """
+        Set the placeholder.
+        """
+        self._placeholder = value
     # roleID
+    @property
+    def role_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_role_id', 0) or 0
+    @role_id.setter
+    def role_id(self, value: int) -> None:
+        """
+        Set the role_id.
+        """
+        self._role_id = value
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_some_text_val', "") or ""
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

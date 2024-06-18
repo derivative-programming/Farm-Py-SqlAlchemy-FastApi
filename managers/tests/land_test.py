@@ -657,11 +657,14 @@ class TestLandManager:
         Test the basic functionality of refreshing a land instance.
         This test performs the following steps:
         1. Creates a land instance using the LandFactory.
-        2. Retrieves the land from the database to ensure it was added correctly.
+        2. Retrieves the land from the database to ensure
+            it was added correctly.
         3. Updates the land's code and verifies the update.
-        4. Refreshes the original land instance and checks if it reflects the updated code.
+        4. Refreshes the original land instance and checks if
+            it reflects the updated code.
         Args:
-            land_manager (LandManager): The manager responsible for land operations.
+            land_manager (LandManager): The manager responsible
+                for land operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a land
@@ -678,10 +681,11 @@ class TestLandManager:
         updated_code1 = uuid.uuid4()
         land1.code = updated_code1
         updated_land1 = await land_manager.update(land1)
-        # Verify that the updated land is of type Land and has the updated code
+        # Verify that the updated land is of type Land
+        # and has the updated code
         assert isinstance(updated_land1, Land)
         assert updated_land1.code == updated_code1
-    # Step 4: Refresh the original land instance
+        # Refresh the original land instance
         refreshed_land2 = await land_manager.refresh(land2)
         # Verify that the refreshed land reflects the updated code
         assert refreshed_land2.code == updated_code1

@@ -29,7 +29,7 @@ class ErrorLog(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -70,7 +70,7 @@ class ErrorLog(Base):
             created_utc_date_time_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    description = Column(
+    _description = Column(
         'description',
 
         String,
@@ -81,7 +81,7 @@ class ErrorLog(Base):
             description_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_client_side_error = Column(
+    _is_client_side_error = Column(
         'is_client_side_error',
         Boolean,
         default=False,
@@ -90,7 +90,7 @@ class ErrorLog(Base):
             is_client_side_error_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_resolved = Column(
+    _is_resolved = Column(
         'is_resolved',
         Boolean,
         default=False,
@@ -99,7 +99,7 @@ class ErrorLog(Base):
             is_resolved_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    pac_id = Column(
+    _pac_id = Column(
         'pac_id',
         Integer,
         ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
@@ -108,7 +108,7 @@ class ErrorLog(Base):
             pac_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    url = Column(
+    _url = Column(
         'url',
 
         String,
@@ -133,7 +133,7 @@ class ErrorLog(Base):
     # pac = relationship('Pac', back_populates=snake_case('Pac'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -196,6 +196,18 @@ class ErrorLog(Base):
         Set the error_log_id.
         """
         self._error_log_id = value
+    @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_change_code', 0) or 0
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+        self._last_change_code = value
     @property
     def insert_user_id(self):
         """
@@ -288,10 +300,82 @@ class ErrorLog(Base):
         self.last_update_utc_date_time = datetime.utcnow()
     # createdUTCDateTime
     # description,
+    @property
+    def description(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_description', "") or ""
+    @description.setter
+    def description(self, value: str) -> None:
+        """
+        Set the description.
+        """
+        self._description = value
     # isClientSideError,
+    @property
+    def is_client_side_error(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_client_side_error', False) or False
+    @is_client_side_error.setter
+    def is_client_side_error(self, value: bool) -> None:
+        """
+        Set the is_client_side_error.
+        """
+        self._is_client_side_error = value
     # isResolved,
+    @property
+    def is_resolved(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_resolved', False) or False
+    @is_resolved.setter
+    def is_resolved(self, value: bool) -> None:
+        """
+        Set the is_resolved.
+        """
+        self._is_resolved = value
     # PacID
+    @property
+    def pac_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_pac_id', 0) or 0
+    @pac_id.setter
+    def pac_id(self, value: int) -> None:
+        """
+        Set the pac_id.
+        """
+        self._pac_id = value
     # url,
+    @property
+    def url(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_url', "") or ""
+    @url.setter
+    def url(self, value: str) -> None:
+        """
+        Set the url.
+        """
+        self._url = value
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_some_text_val', "") or ""
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

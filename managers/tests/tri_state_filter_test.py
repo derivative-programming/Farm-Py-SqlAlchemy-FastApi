@@ -657,11 +657,14 @@ class TestTriStateFilterManager:
         Test the basic functionality of refreshing a tri_state_filter instance.
         This test performs the following steps:
         1. Creates a tri_state_filter instance using the TriStateFilterFactory.
-        2. Retrieves the tri_state_filter from the database to ensure it was added correctly.
+        2. Retrieves the tri_state_filter from the database to ensure
+            it was added correctly.
         3. Updates the tri_state_filter's code and verifies the update.
-        4. Refreshes the original tri_state_filter instance and checks if it reflects the updated code.
+        4. Refreshes the original tri_state_filter instance and checks if
+            it reflects the updated code.
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The manager responsible for tri_state_filter operations.
+            tri_state_filter_manager (TriStateFilterManager): The manager responsible
+                for tri_state_filter operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a tri_state_filter
@@ -678,10 +681,11 @@ class TestTriStateFilterManager:
         updated_code1 = uuid.uuid4()
         tri_state_filter1.code = updated_code1
         updated_tri_state_filter1 = await tri_state_filter_manager.update(tri_state_filter1)
-        # Verify that the updated tri_state_filter is of type TriStateFilter and has the updated code
+        # Verify that the updated tri_state_filter is of type TriStateFilter
+        # and has the updated code
         assert isinstance(updated_tri_state_filter1, TriStateFilter)
         assert updated_tri_state_filter1.code == updated_code1
-    # Step 4: Refresh the original tri_state_filter instance
+        # Refresh the original tri_state_filter instance
         refreshed_tri_state_filter2 = await tri_state_filter_manager.refresh(tri_state_filter2)
         # Verify that the refreshed tri_state_filter reflects the updated code
         assert refreshed_tri_state_filter2.code == updated_code1

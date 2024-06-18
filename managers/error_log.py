@@ -80,8 +80,8 @@ class ErrorLogManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(ErrorLog.pac_id == Pac._pac_id,  # pylint: disable=protected-access
-                 ErrorLog.pac_id != 0)
+            and_(ErrorLog._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
+                 ErrorLog._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -365,7 +365,7 @@ class ErrorLogManager:
                 f"The error_log_id must be an integer, "
                 f"got {type(pac_id)} instead."
             )
-        query_filter = ErrorLog.pac_id == pac_id
+        query_filter = ErrorLog._pac_id == pac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

@@ -467,10 +467,12 @@ class PacBusObj(BaseBusObj):
             managers_and_enums.PacEnum
     ):
         """
-        Load plant data from dictionary.
-        :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or
-            if no plant data is found.
+        Load pac data from dictionary.
+        :param pac_dict: Dictionary
+            containing pac data.
+        :raises ValueError: If pac_dict
+            is not a dictionary or if no
+            pac data is found.
         """
         if not isinstance(
             pac_enum,

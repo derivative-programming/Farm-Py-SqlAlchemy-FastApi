@@ -82,13 +82,13 @@ class CustomerRoleManager:
 # endset
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(CustomerRole.customer_id == Customer._customer_id,  # pylint: disable=protected-access
-                 CustomerRole.customer_id != 0)
+            and_(CustomerRole._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501
+                 CustomerRole._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
         query = query.outerjoin(  # role_id
             Role,
-            and_(CustomerRole.role_id == Role._role_id,  # pylint: disable=protected-access
-                 CustomerRole.role_id != 0)
+            and_(CustomerRole._role_id == Role._role_id,  # pylint: disable=protected-access  # noqa: E501
+                 CustomerRole._role_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -376,7 +376,7 @@ class CustomerRoleManager:
                 f"The customer_role_id must be an integer, "
                 f"got {type(customer_id)} instead."
             )
-        query_filter = CustomerRole.customer_id == customer_id
+        query_filter = CustomerRole._customer_id == customer_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
     async def get_by_role_id(
@@ -392,7 +392,7 @@ class CustomerRoleManager:
                 f"The customer_role_id must be an integer, "
                 f"got {type(role_id)} instead."
             )
-        query_filter = CustomerRole.role_id == role_id
+        query_filter = CustomerRole._role_id == role_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

@@ -77,7 +77,7 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
             if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "customer":  # type: ignore
-                    if item.code != self._session_context.customer_code:  # type: ignore
+                    if item.code != self._session_context.customer_code:  # type: ignore  # noqa: E501
                         self._add_validation_error(
                             "Unautorized access.  Invalid User.")
 

@@ -48,7 +48,7 @@ def engine():
 
 
 @pytest_asyncio.fixture(scope="function")
-async def session(engine) -> AsyncSession:
+async def session(engine) -> AsyncSession:  # type: ignore
     """
         #TODO add comment
     """

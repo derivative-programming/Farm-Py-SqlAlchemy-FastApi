@@ -29,7 +29,7 @@ class Customer(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -43,7 +43,7 @@ class Customer(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    active_organization_id = Column(
+    _active_organization_id = Column(
         'active_organization_id',
         Integer,
         default=0,
@@ -52,7 +52,7 @@ class Customer(Base):
             active_organization_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    email = Column(
+    _email = Column(
         'email',
 
         String,
@@ -72,7 +72,7 @@ class Customer(Base):
             email_confirmed_utc_date_time_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    first_name = Column(
+    _first_name = Column(
         'first_name',
 
         String,
@@ -92,7 +92,7 @@ class Customer(Base):
             forgot_password_key_expiration_utc_date_time_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    forgot_password_key_value = Column(
+    _forgot_password_key_value = Column(
         'forgot_password_key_value',
 
         EncryptedType(),
@@ -112,7 +112,7 @@ class Customer(Base):
             fs_user_code_value_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_active = Column(
+    _is_active = Column(
         'is_active',
         Boolean,
         default=False,
@@ -121,7 +121,7 @@ class Customer(Base):
             is_active_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_email_allowed = Column(
+    _is_email_allowed = Column(
         'is_email_allowed',
         Boolean,
         default=False,
@@ -130,7 +130,7 @@ class Customer(Base):
             is_email_allowed_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_email_confirmed = Column(
+    _is_email_confirmed = Column(
         'is_email_confirmed',
         Boolean,
         default=False,
@@ -139,7 +139,7 @@ class Customer(Base):
             is_email_confirmed_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_email_marketing_allowed = Column(
+    _is_email_marketing_allowed = Column(
         'is_email_marketing_allowed',
         Boolean,
         default=False,
@@ -148,7 +148,7 @@ class Customer(Base):
             is_email_marketing_allowed_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_locked = Column(
+    _is_locked = Column(
         'is_locked',
         Boolean,
         default=False,
@@ -157,7 +157,7 @@ class Customer(Base):
             is_locked_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_multiple_organizations_allowed = Column(
+    _is_multiple_organizations_allowed = Column(
         'is_multiple_organizations_allowed',
         Boolean,
         default=False,
@@ -166,7 +166,7 @@ class Customer(Base):
             is_multiple_organizations_allowed_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_verbose_logging_forced = Column(
+    _is_verbose_logging_forced = Column(
         'is_verbose_logging_forced',
         Boolean,
         default=False,
@@ -184,7 +184,7 @@ class Customer(Base):
             last_login_utc_date_time_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    last_name = Column(
+    _last_name = Column(
         'last_name',
 
         String,
@@ -195,7 +195,7 @@ class Customer(Base):
             last_name_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    password = Column(
+    _password = Column(
         'password',
 
         EncryptedType(),
@@ -206,7 +206,7 @@ class Customer(Base):
             password_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    phone = Column(
+    _phone = Column(
         'phone',
 
         String,
@@ -217,7 +217,7 @@ class Customer(Base):
             phone_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    province = Column(
+    _province = Column(
         'province',
 
         String,
@@ -237,7 +237,7 @@ class Customer(Base):
             registration_utc_date_time_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    tac_id = Column(
+    _tac_id = Column(
         'tac_id',
         Integer,
         ForeignKey('farm_' + snake_case('Tac') + '.tac_id'),
@@ -246,7 +246,7 @@ class Customer(Base):
             tac_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    utc_offset_in_minutes = Column(
+    _utc_offset_in_minutes = Column(
         'utc_offset_in_minutes',
         Integer,
         default=0,
@@ -255,7 +255,7 @@ class Customer(Base):
             utc_offset_in_minutes_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    zip = Column(
+    _zip = Column(
         'zip',
 
         String,
@@ -280,7 +280,7 @@ class Customer(Base):
     # tac = relationship('Tac', back_populates=snake_case('Tac'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -374,6 +374,18 @@ class Customer(Base):
         """
         self._customer_id = value
     @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_change_code', 0) or 0
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+        self._last_change_code = value
+    @property
     def insert_user_id(self):
         """
             #TODO add comment
@@ -400,11 +412,59 @@ class Customer(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
     # activeOrganizationID,
+    @property
+    def active_organization_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_active_organization_id', 0) or 0
+    @active_organization_id.setter
+    def active_organization_id(self, value: int) -> None:
+        """
+        Set the active_organization_id.
+        """
+        self._active_organization_id = value
     # email,
+    @property
+    def email(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_email', "") or ""
+    @email.setter
+    def email(self, value: str) -> None:
+        """
+        Set the email.
+        """
+        self._email = value
     # emailConfirmedUTCDateTime
     # firstName,
+    @property
+    def first_name(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_first_name', "") or ""
+    @first_name.setter
+    def first_name(self, value: str) -> None:
+        """
+        Set the first_name.
+        """
+        self._first_name = value
     # forgotPasswordKeyExpirationUTCDateTime
     # forgotPasswordKeyValue,
+    @property
+    def forgot_password_key_value(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_forgot_password_key_value', "") or ""
+    @forgot_password_key_value.setter
+    def forgot_password_key_value(self, value: str) -> None:
+        """
+        Set the forgot_password_key_value.
+        """
+        self._forgot_password_key_value = value
     # fSUserCodeValue,
     @property
     def fs_user_code_value(self):
@@ -438,21 +498,201 @@ class Customer(Base):
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.utcnow()
     # isActive,
+    @property
+    def is_active(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_active', False) or False
+    @is_active.setter
+    def is_active(self, value: bool) -> None:
+        """
+        Set the is_active.
+        """
+        self._is_active = value
     # isEmailAllowed,
+    @property
+    def is_email_allowed(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_email_allowed', False) or False
+    @is_email_allowed.setter
+    def is_email_allowed(self, value: bool) -> None:
+        """
+        Set the is_email_allowed.
+        """
+        self._is_email_allowed = value
     # isEmailConfirmed,
+    @property
+    def is_email_confirmed(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_email_confirmed', False) or False
+    @is_email_confirmed.setter
+    def is_email_confirmed(self, value: bool) -> None:
+        """
+        Set the is_email_confirmed.
+        """
+        self._is_email_confirmed = value
     # isEmailMarketingAllowed,
+    @property
+    def is_email_marketing_allowed(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_email_marketing_allowed', False) or False
+    @is_email_marketing_allowed.setter
+    def is_email_marketing_allowed(self, value: bool) -> None:
+        """
+        Set the is_email_marketing_allowed.
+        """
+        self._is_email_marketing_allowed = value
     # isLocked,
+    @property
+    def is_locked(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_locked', False) or False
+    @is_locked.setter
+    def is_locked(self, value: bool) -> None:
+        """
+        Set the is_locked.
+        """
+        self._is_locked = value
     # isMultipleOrganizationsAllowed,
+    @property
+    def is_multiple_organizations_allowed(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_multiple_organizations_allowed', False) or False
+    @is_multiple_organizations_allowed.setter
+    def is_multiple_organizations_allowed(self, value: bool) -> None:
+        """
+        Set the is_multiple_organizations_allowed.
+        """
+        self._is_multiple_organizations_allowed = value
     # isVerboseLoggingForced,
+    @property
+    def is_verbose_logging_forced(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_verbose_logging_forced', False) or False
+    @is_verbose_logging_forced.setter
+    def is_verbose_logging_forced(self, value: bool) -> None:
+        """
+        Set the is_verbose_logging_forced.
+        """
+        self._is_verbose_logging_forced = value
     # lastLoginUTCDateTime
     # lastName,
+    @property
+    def last_name(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_name', "") or ""
+    @last_name.setter
+    def last_name(self, value: str) -> None:
+        """
+        Set the last_name.
+        """
+        self._last_name = value
     # password,
+    @property
+    def password(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_password', "") or ""
+    @password.setter
+    def password(self, value: str) -> None:
+        """
+        Set the password.
+        """
+        self._password = value
     # phone,
+    @property
+    def phone(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_phone', "") or ""
+    @phone.setter
+    def phone(self, value: str) -> None:
+        """
+        Set the phone.
+        """
+        self._phone = value
     # province,
+    @property
+    def province(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_province', "") or ""
+    @province.setter
+    def province(self, value: str) -> None:
+        """
+        Set the province.
+        """
+        self._province = value
     # registrationUTCDateTime
     # TacID
+    @property
+    def tac_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_tac_id', 0) or 0
+    @tac_id.setter
+    def tac_id(self, value: int) -> None:
+        """
+        Set the tac_id.
+        """
+        self._tac_id = value
     # uTCOffsetInMinutes,
+    @property
+    def utc_offset_in_minutes(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_utc_offset_in_minutes', 0) or 0
+    @utc_offset_in_minutes.setter
+    def utc_offset_in_minutes(self, value: int) -> None:
+        """
+        Set the utc_offset_in_minutes.
+        """
+        self._utc_offset_in_minutes = value
     # zip,
+    @property
+    def zip(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_zip', "") or ""
+    @zip.setter
+    def zip(self, value: str) -> None:
+        """
+        Set the zip.
+        """
+        self._zip = value
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_some_text_val', "") or ""
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

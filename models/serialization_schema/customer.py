@@ -19,30 +19,30 @@ class CustomerSchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # activeOrganizationID,
-            # email,
+            "_last_change_code",
+            "_active_organization_id",  # activeOrganizationID
+            "_email",  # email
             # emailConfirmedUTCDateTime
-            # firstName,
+            "_first_name",  # firstName
             # forgotPasswordKeyExpirationUTCDateTime
-            # forgotPasswordKeyValue,
-            # fSUserCodeValue,
-            "_fs_user_code_value",
-            # isActive,
-            # isEmailAllowed,
-            # isEmailConfirmed,
-            # isEmailMarketingAllowed,
-            # isLocked,
-            # isMultipleOrganizationsAllowed,
-            # isVerboseLoggingForced,
+            "_forgot_password_key_value",  # forgotPasswordKeyValue
+            "_fs_user_code_value",  # fSUserCodeValue
+            "_is_active",  # isActive
+            "_is_email_allowed",  # isEmailAllowed
+            "_is_email_confirmed",  # isEmailConfirmed
+            "_is_email_marketing_allowed",  # isEmailMarketingAllowed
+            "_is_locked",  # isLocked
+            "_is_multiple_organizations_allowed",  # isMultipleOrganizationsAllowed
+            "_is_verbose_logging_forced",  # isVerboseLoggingForced
             # lastLoginUTCDateTime
-            # lastName,
-            # password,
-            # phone,
-            # province,
+            "_last_name",  # lastName
+            "_password",  # password
+            "_phone",  # phone
+            "_province",  # province
             # registrationUTCDateTime
-            # TacID
-            # uTCOffsetInMinutes,
-            # zip,
+            "_tac_id",  # TacID
+            "_utc_offset_in_minutes",  # uTCOffsetInMinutes
+            "_zip",  # zip
 # endset  # noqa E122
         )
     customer_id = fields.Int()

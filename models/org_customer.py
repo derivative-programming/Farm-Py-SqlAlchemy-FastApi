@@ -29,7 +29,7 @@ class OrgCustomer(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -43,7 +43,7 @@ class OrgCustomer(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    customer_id = Column(
+    _customer_id = Column(
         'customer_id',
         Integer,
         ForeignKey('farm_' + snake_case('Customer') + '.customer_id'),
@@ -52,7 +52,7 @@ class OrgCustomer(Base):
             customer_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    email = Column(
+    _email = Column(
         'email',
 
         String,
@@ -63,7 +63,7 @@ class OrgCustomer(Base):
             email_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    organization_id = Column(
+    _organization_id = Column(
         'organization_id',
         Integer,
         ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
@@ -87,7 +87,7 @@ class OrgCustomer(Base):
     # organization = relationship('Organization', back_populates=snake_case('Organization'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -143,6 +143,18 @@ class OrgCustomer(Base):
         """
         self._org_customer_id = value
     @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_change_code', 0) or 0
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+        self._last_change_code = value
+    @property
     def insert_user_id(self):
         """
             #TODO add comment
@@ -169,8 +181,56 @@ class OrgCustomer(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
     # customerID
+    @property
+    def customer_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_customer_id', 0) or 0
+    @customer_id.setter
+    def customer_id(self, value: int) -> None:
+        """
+        Set the customer_id.
+        """
+        self._customer_id = value
     # email,
+    @property
+    def email(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_email', "") or ""
+    @email.setter
+    def email(self, value: str) -> None:
+        """
+        Set the email.
+        """
+        self._email = value
     # OrganizationID
+    @property
+    def organization_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_organization_id', 0) or 0
+    @organization_id.setter
+    def organization_id(self, value: int) -> None:
+        """
+        Set the organization_id.
+        """
+        self._organization_id = value
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_some_text_val', "") or ""
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

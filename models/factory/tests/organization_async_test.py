@@ -187,7 +187,7 @@ class TestOrganizationFactoryAsync:
         await session.commit()
         # Construct the select statement
         stmt = select(Organization).where(
-            Organization._organization_id == organization.organization_id)  # pylint: disable=protected-access
+            Organization._organization_id == organization.organization_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -256,7 +256,7 @@ class TestOrganizationFactoryAsync:
         organization = await OrganizationFactory.create_async(session=session)
         original_last_change_code = organization.last_change_code
         stmt = select(Organization).where(
-            Organization._organization_id == organization.organization_id)  # pylint: disable=protected-access
+            Organization._organization_id == organization.organization_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         organization_1 = result.scalars().first()
         # organization_1 = await session.query(Organization).filter_by(
@@ -264,7 +264,7 @@ class TestOrganizationFactoryAsync:
         organization_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(Organization).where(
-            Organization._organization_id == organization.organization_id)  # pylint: disable=protected-access
+            Organization._organization_id == organization.organization_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         organization_2 = result.scalars().first()
         # organization_2 = await session.query(Organization).filter_by(

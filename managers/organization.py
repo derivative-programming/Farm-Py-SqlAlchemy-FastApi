@@ -80,8 +80,8 @@ class OrganizationManager:
 # endset
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Organization.tac_id == Tac._tac_id,  # pylint: disable=protected-access
-                 Organization.tac_id != 0)
+            and_(Organization._tac_id == Tac._tac_id,  # pylint: disable=protected-access  # noqa: E501
+                 Organization._tac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -365,7 +365,7 @@ class OrganizationManager:
                 f"The organization_id must be an integer, "
                 f"got {type(tac_id)} instead."
             )
-        query_filter = Organization.tac_id == tac_id
+        query_filter = Organization._tac_id == tac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

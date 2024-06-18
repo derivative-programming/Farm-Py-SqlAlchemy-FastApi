@@ -30,8 +30,8 @@ class TacEnum(Enum):
     """
     #TODO add comment
     """
-    Unknown = 'Unknown'
-    Primary = 'Primary'
+    UNKNOWN = 'Unknown'
+    PRIMARY = 'Primary'
 
 class TacManager:
     """
@@ -63,7 +63,7 @@ class TacManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(TacEnum.Unknown) \
+        if await self.from_enum(TacEnum.UNKNOWN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
@@ -73,7 +73,7 @@ class TacManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(TacEnum.Primary) \
+        if await self.from_enum(TacEnum.PRIMARY) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Primary"
@@ -93,7 +93,7 @@ class TacManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Tac.lookup_enum_name == enum_val.value
+        query_filter = Tac._lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -127,8 +127,8 @@ class TacManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Tac.pac_id == Pac._pac_id,  # pylint: disable=protected-access
-                 Tac.pac_id != 0)
+            and_(Tac._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
+                 Tac._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -412,7 +412,7 @@ class TacManager:
                 f"The tac_id must be an integer, "
                 f"got {type(pac_id)} instead."
             )
-        query_filter = Tac.pac_id == pac_id
+        query_filter = Tac._pac_id == pac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

@@ -1,4 +1,5 @@
 # error_log_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -62,11 +63,13 @@ class TestErrorLogSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_error_log_serialization(self, error_log: ErrorLog):  # pylint: disable=redefined-outer-name
+    def test_error_log_serialization(self, error_log: ErrorLog):
         """
-        Test the serialization of a ErrorLog instance using ErrorLogSchema.
+        Test the serialization of a ErrorLog instance using
+        ErrorLogSchema.
         Args:
-            error_log (ErrorLog): A ErrorLog instance to serialize.
+            error_log (ErrorLog):
+                A ErrorLog instance to serialize.
         """
         schema = ErrorLogSchema()
         result: Dict[str, Any] = schema.dump(error_log)
@@ -103,7 +106,7 @@ class TestErrorLogSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(error_log.pac_code_peek))
 # endset
-    def test_error_log_deserialization(self, error_log):  # pylint: disable=redefined-outer-name
+    def test_error_log_deserialization(self, error_log):
         """
             #TODO add comment
         """
@@ -224,7 +227,7 @@ class TestErrorLogSchema:
             self.sample_data['last_update_utc_date_time'])
         new_error_log = ErrorLog(**deserialized_data)
         assert isinstance(new_error_log, ErrorLog)
-    def test_to_json(self, error_log: ErrorLog):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, error_log: ErrorLog):
         """
             #TODO add comment
         """

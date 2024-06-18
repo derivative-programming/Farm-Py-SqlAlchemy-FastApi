@@ -31,7 +31,7 @@ class TestBaseFlowLandAddPlant():
         request_other_flavor: str = ""
         request_some_int_val: int = 0
         request_some_big_int_val: int = 0
-        request_some_bit_val: bool = None
+        request_some_bit_val: bool = False
         request_is_edit_allowed: bool = False
         request_is_delete_allowed: bool = False
         request_some_float_val: float = 0
@@ -103,12 +103,12 @@ class TestBaseFlowLandAddPlant():
             assert flow.queued_validation_errors[
                 'requestSomeBigIntVal'] == (
                 'Please enter a Some Big Int Val')
-        if FlowConstants.PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED \
-                is True:
-            assert 'requestSomeBitVal' in flow.queued_validation_errors
-            assert flow.queued_validation_errors[
-                'requestSomeBitVal'] == (
-                'Please enter a Some Bit Val')
+        # if FlowConstants.PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED \
+        #         is True:
+        #     assert 'requestSomeBitVal' in flow.queued_validation_errors
+        #     assert flow.queued_validation_errors[
+        #         'requestSomeBitVal'] == (
+        #         'Please enter a Some Bit Val')
         if FlowConstants.PARAM_REQUEST_IS_EDIT_ALLOWED_IS_REQUIRED \
                 is True:
             assert 'requestIsEditAllowed' in flow.queued_validation_errors

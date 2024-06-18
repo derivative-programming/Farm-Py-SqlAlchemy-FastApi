@@ -19,12 +19,13 @@ class LandSchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # description,
-            # displayOrder,
-            # isActive,
-            # lookupEnumName,
-            # name,
-            # PacID
+            "_last_change_code",
+            "_description",  # description
+            "_display_order",  # displayOrder
+            "_is_active",  # isActive
+            "_lookup_enum_name",  # lookupEnumName
+            "_name",  # name
+            "_pac_id",  # PacID
 # endset  # noqa E122
         )
     land_id = fields.Int()

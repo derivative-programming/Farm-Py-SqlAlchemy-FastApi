@@ -657,11 +657,14 @@ class TestOrgApiKeyManager:
         Test the basic functionality of refreshing a org_api_key instance.
         This test performs the following steps:
         1. Creates a org_api_key instance using the OrgApiKeyFactory.
-        2. Retrieves the org_api_key from the database to ensure it was added correctly.
+        2. Retrieves the org_api_key from the database to ensure
+            it was added correctly.
         3. Updates the org_api_key's code and verifies the update.
-        4. Refreshes the original org_api_key instance and checks if it reflects the updated code.
+        4. Refreshes the original org_api_key instance and checks if
+            it reflects the updated code.
         Args:
-            org_api_key_manager (OrgApiKeyManager): The manager responsible for org_api_key operations.
+            org_api_key_manager (OrgApiKeyManager): The manager responsible
+                for org_api_key operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a org_api_key
@@ -678,10 +681,11 @@ class TestOrgApiKeyManager:
         updated_code1 = uuid.uuid4()
         org_api_key1.code = updated_code1
         updated_org_api_key1 = await org_api_key_manager.update(org_api_key1)
-        # Verify that the updated org_api_key is of type OrgApiKey and has the updated code
+        # Verify that the updated org_api_key is of type OrgApiKey
+        # and has the updated code
         assert isinstance(updated_org_api_key1, OrgApiKey)
         assert updated_org_api_key1.code == updated_code1
-    # Step 4: Refresh the original org_api_key instance
+        # Refresh the original org_api_key instance
         refreshed_org_api_key2 = await org_api_key_manager.refresh(org_api_key2)
         # Verify that the refreshed org_api_key reflects the updated code
         assert refreshed_org_api_key2.code == updated_code1

@@ -102,13 +102,13 @@ class PlantManager:
 # endset
         query = query.outerjoin(  # flvr_foreign_key_id
             Flavor,
-            and_(Plant.flvr_foreign_key_id == Flavor._flavor_id,  # pylint: disable=protected-access
-                 Plant.flvr_foreign_key_id != 0)
+            and_(Plant._flvr_foreign_key_id == Flavor._flavor_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 Plant._flvr_foreign_key_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
         query = query.outerjoin(  # land_id
             Land,
-            and_(Plant.land_id == Land._land_id,  # pylint: disable=protected-access
-                 Plant.land_id != 0)
+            and_(Plant._land_id == Land._land_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+                 Plant._land_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
 # endset
 
@@ -471,7 +471,7 @@ class PlantManager:
                 f"got {type(flvr_foreign_key_id)} instead."
             )
 
-        query_filter = Plant.flvr_foreign_key_id == flvr_foreign_key_id
+        query_filter = Plant._flvr_foreign_key_id == flvr_foreign_key_id  # pylint: disable=protected-access  # noqa: E501
 
         query_results = await self._run_query(query_filter)
 
@@ -489,7 +489,7 @@ class PlantManager:
                 f"got {type(land_id)} instead."
             )
 
-        query_filter = Plant.land_id == land_id
+        query_filter = Plant._land_id == land_id  # pylint: disable=protected-access  # noqa: E501
 
         query_results = await self._run_query(query_filter)
 

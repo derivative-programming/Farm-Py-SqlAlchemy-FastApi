@@ -657,11 +657,14 @@ class TestDateGreaterThanFilterManager:
         Test the basic functionality of refreshing a date_greater_than_filter instance.
         This test performs the following steps:
         1. Creates a date_greater_than_filter instance using the DateGreaterThanFilterFactory.
-        2. Retrieves the date_greater_than_filter from the database to ensure it was added correctly.
+        2. Retrieves the date_greater_than_filter from the database to ensure
+            it was added correctly.
         3. Updates the date_greater_than_filter's code and verifies the update.
-        4. Refreshes the original date_greater_than_filter instance and checks if it reflects the updated code.
+        4. Refreshes the original date_greater_than_filter instance and checks if
+            it reflects the updated code.
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The manager responsible for date_greater_than_filter operations.
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The manager responsible
+                for date_greater_than_filter operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a date_greater_than_filter
@@ -678,10 +681,11 @@ class TestDateGreaterThanFilterManager:
         updated_code1 = uuid.uuid4()
         date_greater_than_filter1.code = updated_code1
         updated_date_greater_than_filter1 = await date_greater_than_filter_manager.update(date_greater_than_filter1)
-        # Verify that the updated date_greater_than_filter is of type DateGreaterThanFilter and has the updated code
+        # Verify that the updated date_greater_than_filter is of type DateGreaterThanFilter
+        # and has the updated code
         assert isinstance(updated_date_greater_than_filter1, DateGreaterThanFilter)
         assert updated_date_greater_than_filter1.code == updated_code1
-    # Step 4: Refresh the original date_greater_than_filter instance
+        # Refresh the original date_greater_than_filter instance
         refreshed_date_greater_than_filter2 = await date_greater_than_filter_manager.refresh(date_greater_than_filter2)
         # Verify that the refreshed date_greater_than_filter reflects the updated code
         assert refreshed_date_greater_than_filter2.code == updated_code1

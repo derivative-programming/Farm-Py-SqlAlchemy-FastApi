@@ -19,15 +19,16 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # apiKeyValue,
-            # createdBy,
+            "_last_change_code",
+            "_api_key_value",  # apiKeyValue
+            "_created_by",  # createdBy
             # createdUTCDateTime
             # expirationUTCDateTime
-            # isActive,
-            # isTempUserKey,
-            # name,
-            # OrganizationID
-            # orgCustomerID
+            "_is_active",  # isActive
+            "_is_temp_user_key",  # isTempUserKey
+            "_name",  # name
+            "_organization_id",  # OrganizationID
+            "_org_customer_id",  # orgCustomerID
 # endset  # noqa E122
         )
     org_api_key_id = fields.Int()

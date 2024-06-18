@@ -29,7 +29,7 @@ class Organization(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -43,7 +43,7 @@ class Organization(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    name = Column(
+    _name = Column(
         'name',
 
         String,
@@ -54,7 +54,7 @@ class Organization(Base):
             name_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    tac_id = Column(
+    _tac_id = Column(
         'tac_id',
         Integer,
         ForeignKey('farm_' + snake_case('Tac') + '.tac_id'),
@@ -77,7 +77,7 @@ class Organization(Base):
     # tac = relationship('Tac', back_populates=snake_case('Tac'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -129,6 +129,18 @@ class Organization(Base):
         """
         self._organization_id = value
     @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_change_code', 0) or 0
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+        self._last_change_code = value
+    @property
     def insert_user_id(self):
         """
             #TODO add comment
@@ -155,7 +167,43 @@ class Organization(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
     # name,
+    @property
+    def name(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_name', "") or ""
+    @name.setter
+    def name(self, value: str) -> None:
+        """
+        Set the name.
+        """
+        self._name = value
     # TacID
+    @property
+    def tac_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_tac_id', 0) or 0
+    @tac_id.setter
+    def tac_id(self, value: int) -> None:
+        """
+        Set the tac_id.
+        """
+        self._tac_id = value
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_some_text_val', "") or ""
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

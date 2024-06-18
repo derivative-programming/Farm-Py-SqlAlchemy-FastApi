@@ -187,7 +187,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         await session.commit()
         # Construct the select statement
         stmt = select(DateGreaterThanFilter).where(
-            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # pylint: disable=protected-access
+            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -276,7 +276,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session=session)
         original_last_change_code = date_greater_than_filter.last_change_code
         stmt = select(DateGreaterThanFilter).where(
-            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # pylint: disable=protected-access
+            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         date_greater_than_filter_1 = result.scalars().first()
         # date_greater_than_filter_1 = await session.query(DateGreaterThanFilter).filter_by(
@@ -284,7 +284,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(DateGreaterThanFilter).where(
-            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # pylint: disable=protected-access
+            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         date_greater_than_filter_2 = result.scalars().first()
         # date_greater_than_filter_2 = await session.query(DateGreaterThanFilter).filter_by(

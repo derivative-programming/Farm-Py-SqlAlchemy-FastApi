@@ -49,7 +49,7 @@ def engine():
 
 
 @pytest_asyncio.fixture(scope="function")
-async def session(engine) -> AsyncSessionLocal:
+async def session(engine) -> AsyncSessionLocal:  # type: ignore
     """
     #TODO add comment
     """

@@ -29,7 +29,7 @@ class Flavor(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -43,7 +43,7 @@ class Flavor(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    description = Column(
+    _description = Column(
         'description',
 
         String,
@@ -54,7 +54,7 @@ class Flavor(Base):
             description_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    display_order = Column(
+    _display_order = Column(
         'display_order',
         Integer,
         default=0,
@@ -63,7 +63,7 @@ class Flavor(Base):
             display_order_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_active = Column(
+    _is_active = Column(
         'is_active',
         Boolean,
         default=False,
@@ -72,7 +72,7 @@ class Flavor(Base):
             is_active_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    lookup_enum_name = Column(
+    _lookup_enum_name = Column(
         'lookup_enum_name',
 
         String,
@@ -83,7 +83,7 @@ class Flavor(Base):
             lookup_enum_name_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    name = Column(
+    _name = Column(
         'name',
 
         String,
@@ -94,7 +94,7 @@ class Flavor(Base):
             name_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    pac_id = Column(
+    _pac_id = Column(
         'pac_id',
         Integer,
         ForeignKey('farm_' + snake_case('Pac') + '.pac_id'),
@@ -117,7 +117,7 @@ class Flavor(Base):
     # pac = relationship('Pac', back_populates=snake_case('Pac'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -177,6 +177,18 @@ class Flavor(Base):
         """
         self._flavor_id = value
     @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_change_code', 0) or 0
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+        self._last_change_code = value
+    @property
     def insert_user_id(self):
         """
             #TODO add comment
@@ -203,11 +215,95 @@ class Flavor(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
     # description,
+    @property
+    def description(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_description', "") or ""
+    @description.setter
+    def description(self, value: str) -> None:
+        """
+        Set the description.
+        """
+        self._description = value
     # displayOrder,
+    @property
+    def display_order(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_display_order', 0) or 0
+    @display_order.setter
+    def display_order(self, value: int) -> None:
+        """
+        Set the display_order.
+        """
+        self._display_order = value
     # isActive,
+    @property
+    def is_active(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_active', False) or False
+    @is_active.setter
+    def is_active(self, value: bool) -> None:
+        """
+        Set the is_active.
+        """
+        self._is_active = value
     # lookupEnumName,
+    @property
+    def lookup_enum_name(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_lookup_enum_name', "") or ""
+    @lookup_enum_name.setter
+    def lookup_enum_name(self, value: str) -> None:
+        """
+        Set the lookup_enum_name.
+        """
+        self._lookup_enum_name = value
     # name,
+    @property
+    def name(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_name', "") or ""
+    @name.setter
+    def name(self, value: str) -> None:
+        """
+        Set the name.
+        """
+        self._name = value
     # PacID
+    @property
+    def pac_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_pac_id', 0) or 0
+    @pac_id.setter
+    def pac_id(self, value: int) -> None:
+        """
+        Set the pac_id.
+        """
+        self._pac_id = value
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_some_text_val', "") or ""
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

@@ -82,13 +82,13 @@ class OrgApiKeyManager:
 # endset
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgApiKey.organization_id == Organization._organization_id,  # pylint: disable=protected-access
-                 OrgApiKey.organization_id != 0)
+            and_(OrgApiKey._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501
+                 OrgApiKey._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
         query = query.outerjoin(  # org_customer_id
             OrgCustomer,
-            and_(OrgApiKey.org_customer_id == OrgCustomer._org_customer_id,  # pylint: disable=protected-access
-                 OrgApiKey.org_customer_id != 0)
+            and_(OrgApiKey._org_customer_id == OrgCustomer._org_customer_id,  # pylint: disable=protected-access  # noqa: E501
+                 OrgApiKey._org_customer_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -376,7 +376,7 @@ class OrgApiKeyManager:
                 f"The org_api_key_id must be an integer, "
                 f"got {type(organization_id)} instead."
             )
-        query_filter = OrgApiKey.organization_id == organization_id
+        query_filter = OrgApiKey._organization_id == organization_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
     async def get_by_org_customer_id(
@@ -392,7 +392,7 @@ class OrgApiKeyManager:
                 f"The org_api_key_id must be an integer, "
                 f"got {type(org_customer_id)} instead."
             )
-        query_filter = OrgApiKey.org_customer_id == org_customer_id
+        query_filter = OrgApiKey._org_customer_id == org_customer_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

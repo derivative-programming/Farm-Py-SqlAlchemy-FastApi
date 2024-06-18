@@ -19,16 +19,15 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # browserCode,
-            "_browser_code",
-            # contextCode,
-            "_context_code",
+            "_last_change_code",
+            "_browser_code",  # browserCode
+            "_context_code",  # contextCode
             # createdUTCDateTime
-            # description,
-            # isClientSideError,
-            # isResolved,
-            # PacID
-            # url,
+            "_description",  # description
+            "_is_client_side_error",  # isClientSideError
+            "_is_resolved",  # isResolved
+            "_pac_id",  # PacID
+            "_url",  # url
 # endset  # noqa E122
         )
     error_log_id = fields.Int()

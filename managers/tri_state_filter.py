@@ -30,9 +30,9 @@ class TriStateFilterEnum(Enum):
     """
     #TODO add comment
     """
-    Unknown = 'Unknown'
-    Yes = 'Yes'
-    No = 'No'
+    UNKNOWN = 'Unknown'
+    YES = 'Yes'
+    NO = 'No'
 
 class TriStateFilterManager:
     """
@@ -64,7 +64,7 @@ class TriStateFilterManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(TriStateFilterEnum.Unknown) \
+        if await self.from_enum(TriStateFilterEnum.UNKNOWN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
@@ -74,7 +74,7 @@ class TriStateFilterManager:
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)
-        if await self.from_enum(TriStateFilterEnum.Yes) \
+        if await self.from_enum(TriStateFilterEnum.YES) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Yes"
@@ -84,7 +84,7 @@ class TriStateFilterManager:
             item.is_active = True
             # item.state_int_value = 1
             await self.add(item)
-        if await self.from_enum(TriStateFilterEnum.No) \
+        if await self.from_enum(TriStateFilterEnum.NO) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "No"
@@ -104,7 +104,7 @@ class TriStateFilterManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = TriStateFilter.lookup_enum_name == enum_val.value
+        query_filter = TriStateFilter._lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -138,8 +138,8 @@ class TriStateFilterManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(TriStateFilter.pac_id == Pac._pac_id,  # pylint: disable=protected-access
-                 TriStateFilter.pac_id != 0)
+            and_(TriStateFilter._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
+                 TriStateFilter._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -423,7 +423,7 @@ class TriStateFilterManager:
                 f"The tri_state_filter_id must be an integer, "
                 f"got {type(pac_id)} instead."
             )
-        query_filter = TriStateFilter.pac_id == pac_id
+        query_filter = TriStateFilter._pac_id == pac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

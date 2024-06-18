@@ -187,7 +187,7 @@ class TestTacFactoryAsync:
         await session.commit()
         # Construct the select statement
         stmt = select(Tac).where(
-            Tac._tac_id == tac.tac_id)  # pylint: disable=protected-access
+            Tac._tac_id == tac.tac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -272,7 +272,7 @@ class TestTacFactoryAsync:
         tac = await TacFactory.create_async(session=session)
         original_last_change_code = tac.last_change_code
         stmt = select(Tac).where(
-            Tac._tac_id == tac.tac_id)  # pylint: disable=protected-access
+            Tac._tac_id == tac.tac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         tac_1 = result.scalars().first()
         # tac_1 = await session.query(Tac).filter_by(
@@ -280,7 +280,7 @@ class TestTacFactoryAsync:
         tac_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(Tac).where(
-            Tac._tac_id == tac.tac_id)  # pylint: disable=protected-access
+            Tac._tac_id == tac.tac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         tac_2 = result.scalars().first()
         # tac_2 = await session.query(Tac).filter_by(

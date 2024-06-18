@@ -498,10 +498,12 @@ class RoleBusObj(BaseBusObj):
             managers_and_enums.RoleEnum
     ):
         """
-        Load plant data from dictionary.
-        :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or
-            if no plant data is found.
+        Load role data from dictionary.
+        :param role_dict: Dictionary
+            containing role data.
+        :raises ValueError: If role_dict
+            is not a dictionary or if no
+            role data is found.
         """
         if not isinstance(
             role_enum,

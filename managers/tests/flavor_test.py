@@ -657,11 +657,14 @@ class TestFlavorManager:
         Test the basic functionality of refreshing a flavor instance.
         This test performs the following steps:
         1. Creates a flavor instance using the FlavorFactory.
-        2. Retrieves the flavor from the database to ensure it was added correctly.
+        2. Retrieves the flavor from the database to ensure
+            it was added correctly.
         3. Updates the flavor's code and verifies the update.
-        4. Refreshes the original flavor instance and checks if it reflects the updated code.
+        4. Refreshes the original flavor instance and checks if
+            it reflects the updated code.
         Args:
-            flavor_manager (FlavorManager): The manager responsible for flavor operations.
+            flavor_manager (FlavorManager): The manager responsible
+                for flavor operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a flavor
@@ -678,10 +681,11 @@ class TestFlavorManager:
         updated_code1 = uuid.uuid4()
         flavor1.code = updated_code1
         updated_flavor1 = await flavor_manager.update(flavor1)
-        # Verify that the updated flavor is of type Flavor and has the updated code
+        # Verify that the updated flavor is of type Flavor
+        # and has the updated code
         assert isinstance(updated_flavor1, Flavor)
         assert updated_flavor1.code == updated_code1
-    # Step 4: Refresh the original flavor instance
+        # Refresh the original flavor instance
         refreshed_flavor2 = await flavor_manager.refresh(flavor2)
         # Verify that the refreshed flavor reflects the updated code
         assert refreshed_flavor2.code == updated_code1

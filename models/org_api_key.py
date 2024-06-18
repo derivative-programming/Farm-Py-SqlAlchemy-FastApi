@@ -29,7 +29,7 @@ class OrgApiKey(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -43,7 +43,7 @@ class OrgApiKey(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    api_key_value = Column(
+    _api_key_value = Column(
         'api_key_value',
 
         String,
@@ -54,7 +54,7 @@ class OrgApiKey(Base):
             api_key_value_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    created_by = Column(
+    _created_by = Column(
         'created_by',
 
         String,
@@ -83,7 +83,7 @@ class OrgApiKey(Base):
             expiration_utc_date_time_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_active = Column(
+    _is_active = Column(
         'is_active',
         Boolean,
         default=False,
@@ -92,7 +92,7 @@ class OrgApiKey(Base):
             is_active_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_temp_user_key = Column(
+    _is_temp_user_key = Column(
         'is_temp_user_key',
         Boolean,
         default=False,
@@ -101,7 +101,7 @@ class OrgApiKey(Base):
             is_temp_user_key_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    name = Column(
+    _name = Column(
         'name',
 
         String,
@@ -112,7 +112,7 @@ class OrgApiKey(Base):
             name_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    organization_id = Column(
+    _organization_id = Column(
         'organization_id',
         Integer,
         ForeignKey('farm_' + snake_case('Organization') + '.organization_id'),
@@ -121,7 +121,7 @@ class OrgApiKey(Base):
             organization_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    org_customer_id = Column(
+    _org_customer_id = Column(
         'org_customer_id',
         Integer,
         ForeignKey('farm_' + snake_case('OrgCustomer') + '.org_customer_id'),
@@ -145,7 +145,7 @@ class OrgApiKey(Base):
     # organization = relationship('Organization', back_populates=snake_case('Organization'))
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -213,6 +213,18 @@ class OrgApiKey(Base):
         """
         self._org_api_key_id = value
     @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_last_change_code', 0) or 0
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+        self._last_change_code = value
+    @property
     def insert_user_id(self):
         """
             #TODO add comment
@@ -239,14 +251,110 @@ class OrgApiKey(Base):
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
     # apiKeyValue,
+    @property
+    def api_key_value(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_api_key_value', "") or ""
+    @api_key_value.setter
+    def api_key_value(self, value: str) -> None:
+        """
+        Set the api_key_value.
+        """
+        self._api_key_value = value
     # createdBy,
+    @property
+    def created_by(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_created_by', "") or ""
+    @created_by.setter
+    def created_by(self, value: str) -> None:
+        """
+        Set the created_by.
+        """
+        self._created_by = value
     # createdUTCDateTime
     # expirationUTCDateTime
     # isActive,
+    @property
+    def is_active(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_active', False) or False
+    @is_active.setter
+    def is_active(self, value: bool) -> None:
+        """
+        Set the is_active.
+        """
+        self._is_active = value
     # isTempUserKey,
+    @property
+    def is_temp_user_key(self) -> bool:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_is_temp_user_key', False) or False
+    @is_temp_user_key.setter
+    def is_temp_user_key(self, value: bool) -> None:
+        """
+        Set the is_temp_user_key.
+        """
+        self._is_temp_user_key = value
     # name,
+    @property
+    def name(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_name', "") or ""
+    @name.setter
+    def name(self, value: str) -> None:
+        """
+        Set the name.
+        """
+        self._name = value
     # OrganizationID
+    @property
+    def organization_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_organization_id', 0) or 0
+    @organization_id.setter
+    def organization_id(self, value: int) -> None:
+        """
+        Set the organization_id.
+        """
+        self._organization_id = value
     # orgCustomerID
+    @property
+    def org_customer_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_org_customer_id', 0) or 0
+    @org_customer_id.setter
+    def org_customer_id(self, value: int) -> None:
+        """
+        Set the org_customer_id.
+        """
+        self._org_customer_id = value
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_some_text_val', "") or ""
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

@@ -1,4 +1,5 @@
 # land_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -56,11 +57,13 @@ class TestLandSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_land_serialization(self, land: Land):  # pylint: disable=redefined-outer-name
+    def test_land_serialization(self, land: Land):
         """
-        Test the serialization of a Land instance using LandSchema.
+        Test the serialization of a Land instance using
+        LandSchema.
         Args:
-            land (Land): A Land instance to serialize.
+            land (Land):
+                A Land instance to serialize.
         """
         schema = LandSchema()
         result: Dict[str, Any] = schema.dump(land)
@@ -93,7 +96,7 @@ class TestLandSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(land.pac_code_peek))
 # endset
-    def test_land_deserialization(self, land):  # pylint: disable=redefined-outer-name
+    def test_land_deserialization(self, land):
         """
             #TODO add comment
         """
@@ -202,7 +205,7 @@ class TestLandSchema:
             self.sample_data['last_update_utc_date_time'])
         new_land = Land(**deserialized_data)
         assert isinstance(new_land, Land)
-    def test_to_json(self, land: Land):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, land: Land):
         """
             #TODO add comment
         """

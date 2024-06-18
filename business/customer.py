@@ -1228,7 +1228,7 @@ class CustomerBusObj(BaseBusObj):
         item = CustomerRoleBusObj(self._session_context)
         role_manager = managers_and_enums.RoleManager(self._session_context)
         role_id_role = await role_manager.from_enum(
-            managers_and_enums.RoleEnum.Unknown)
+            managers_and_enums.RoleEnum.UNKNOWN)
         item.role_id = role_id_role.role_id
         item.customer_role.role_id_code_peek = role_id_role.code
 

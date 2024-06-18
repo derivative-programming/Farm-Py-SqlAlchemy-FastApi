@@ -1,4 +1,5 @@
 # plant_test.py
+# pylint: disable=redefined-outer-name
 
 """
     #TODO add comment
@@ -88,12 +89,14 @@ class TestPlantSchema:
 # endset  # noqa: E122
     }
 
-    def test_plant_serialization(self, plant: Plant):  # pylint: disable=redefined-outer-name
+    def test_plant_serialization(self, plant: Plant):
         """
-        Test the serialization of a Plant instance using PlantSchema.
+        Test the serialization of a Plant instance using
+        PlantSchema.
 
         Args:
-            plant (Plant): A Plant instance to serialize.
+            plant (Plant):
+                A Plant instance to serialize.
         """
 
         schema = PlantSchema()
@@ -158,7 +161,7 @@ class TestPlantSchema:
             str(plant.land_code_peek))
 # endset
 
-    def test_plant_deserialization(self, plant):  # pylint: disable=redefined-outer-name
+    def test_plant_deserialization(self, plant):
         """
             #TODO add comment
         """
@@ -369,7 +372,7 @@ class TestPlantSchema:
 
         assert isinstance(new_plant, Plant)
 
-    def test_to_json(self, plant: Plant):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, plant: Plant):
         """
             #TODO add comment
         """

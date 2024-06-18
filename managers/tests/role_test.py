@@ -657,11 +657,14 @@ class TestRoleManager:
         Test the basic functionality of refreshing a role instance.
         This test performs the following steps:
         1. Creates a role instance using the RoleFactory.
-        2. Retrieves the role from the database to ensure it was added correctly.
+        2. Retrieves the role from the database to ensure
+            it was added correctly.
         3. Updates the role's code and verifies the update.
-        4. Refreshes the original role instance and checks if it reflects the updated code.
+        4. Refreshes the original role instance and checks if
+            it reflects the updated code.
         Args:
-            role_manager (RoleManager): The manager responsible for role operations.
+            role_manager (RoleManager): The manager responsible
+                for role operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a role
@@ -678,10 +681,11 @@ class TestRoleManager:
         updated_code1 = uuid.uuid4()
         role1.code = updated_code1
         updated_role1 = await role_manager.update(role1)
-        # Verify that the updated role is of type Role and has the updated code
+        # Verify that the updated role is of type Role
+        # and has the updated code
         assert isinstance(updated_role1, Role)
         assert updated_role1.code == updated_code1
-    # Step 4: Refresh the original role instance
+        # Refresh the original role instance
         refreshed_role2 = await role_manager.refresh(role2)
         # Verify that the refreshed role reflects the updated code
         assert refreshed_role2.code == updated_code1

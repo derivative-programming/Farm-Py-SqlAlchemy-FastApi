@@ -261,7 +261,8 @@ class BaseFlowLandAddPlant(BaseFlow):
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrgCustomerSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start
-            if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
+            if FlowConstants. \
+                CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "org_customer":  # type: ignore
                     item = item.get_customer_id_rel_obj()  # type: ignore
@@ -273,7 +274,7 @@ class BaseFlowLandAddPlant(BaseFlow):
             if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "customer":  # type: ignore
-                    if item.code != self._session_context.customer_code:  # type: ignore
+                    if item.code != self._session_context.customer_code:  # type: ignore  # noqa: E501
                         self._add_validation_error(
                             "Unautorized access.  Invalid User.")
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]End
@@ -281,7 +282,8 @@ class BaseFlowLandAddPlant(BaseFlow):
 
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
-            if FlowConstants.CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
+            if FlowConstants. \
+                CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
                     is True:
                 if item.get_object_name() == "organization":  # type: ignore
                     organization_id = item.get_id()  # type: ignore

@@ -657,11 +657,14 @@ class TestErrorLogManager:
         Test the basic functionality of refreshing a error_log instance.
         This test performs the following steps:
         1. Creates a error_log instance using the ErrorLogFactory.
-        2. Retrieves the error_log from the database to ensure it was added correctly.
+        2. Retrieves the error_log from the database to ensure
+            it was added correctly.
         3. Updates the error_log's code and verifies the update.
-        4. Refreshes the original error_log instance and checks if it reflects the updated code.
+        4. Refreshes the original error_log instance and checks if
+            it reflects the updated code.
         Args:
-            error_log_manager (ErrorLogManager): The manager responsible for error_log operations.
+            error_log_manager (ErrorLogManager): The manager responsible
+                for error_log operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a error_log
@@ -678,10 +681,11 @@ class TestErrorLogManager:
         updated_code1 = uuid.uuid4()
         error_log1.code = updated_code1
         updated_error_log1 = await error_log_manager.update(error_log1)
-        # Verify that the updated error_log is of type ErrorLog and has the updated code
+        # Verify that the updated error_log is of type ErrorLog
+        # and has the updated code
         assert isinstance(updated_error_log1, ErrorLog)
         assert updated_error_log1.code == updated_code1
-    # Step 4: Refresh the original error_log instance
+        # Refresh the original error_log instance
         refreshed_error_log2 = await error_log_manager.refresh(error_log2)
         # Verify that the refreshed error_log reflects the updated code
         assert refreshed_error_log2.code == updated_code1

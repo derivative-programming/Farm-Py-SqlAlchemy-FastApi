@@ -84,7 +84,9 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session:  # type: ignore
+        async with TestingSessionLocal(
+            bind=connection
+        ) as session:  # type: ignore
             @event.listens_for(
                 session.sync_session, "after_transaction_end"
             )

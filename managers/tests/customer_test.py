@@ -657,11 +657,14 @@ class TestCustomerManager:
         Test the basic functionality of refreshing a customer instance.
         This test performs the following steps:
         1. Creates a customer instance using the CustomerFactory.
-        2. Retrieves the customer from the database to ensure it was added correctly.
+        2. Retrieves the customer from the database to ensure
+            it was added correctly.
         3. Updates the customer's code and verifies the update.
-        4. Refreshes the original customer instance and checks if it reflects the updated code.
+        4. Refreshes the original customer instance and checks if
+            it reflects the updated code.
         Args:
-            customer_manager (CustomerManager): The manager responsible for customer operations.
+            customer_manager (CustomerManager): The manager responsible
+                for customer operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a customer
@@ -678,10 +681,11 @@ class TestCustomerManager:
         updated_code1 = uuid.uuid4()
         customer1.code = updated_code1
         updated_customer1 = await customer_manager.update(customer1)
-        # Verify that the updated customer is of type Customer and has the updated code
+        # Verify that the updated customer is of type Customer
+        # and has the updated code
         assert isinstance(updated_customer1, Customer)
         assert updated_customer1.code == updated_code1
-    # Step 4: Refresh the original customer instance
+        # Refresh the original customer instance
         refreshed_customer2 = await customer_manager.refresh(customer2)
         # Verify that the refreshed customer reflects the updated code
         assert refreshed_customer2.code == updated_code1

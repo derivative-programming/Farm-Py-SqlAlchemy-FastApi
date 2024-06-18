@@ -1,4 +1,5 @@
 # customer_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -82,11 +83,13 @@ class TestCustomerSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_customer_serialization(self, customer: Customer):  # pylint: disable=redefined-outer-name
+    def test_customer_serialization(self, customer: Customer):
         """
-        Test the serialization of a Customer instance using CustomerSchema.
+        Test the serialization of a Customer instance using
+        CustomerSchema.
         Args:
-            customer (Customer): A Customer instance to serialize.
+            customer (Customer):
+                A Customer instance to serialize.
         """
         schema = CustomerSchema()
         result: Dict[str, Any] = schema.dump(customer)
@@ -153,7 +156,7 @@ class TestCustomerSchema:
         assert result['tac_code_peek'] == (  # TacID
             str(customer.tac_code_peek))
 # endset
-    def test_customer_deserialization(self, customer):  # pylint: disable=redefined-outer-name
+    def test_customer_deserialization(self, customer):
         """
             #TODO add comment
         """
@@ -364,7 +367,7 @@ class TestCustomerSchema:
             self.sample_data['last_update_utc_date_time'])
         new_customer = Customer(**deserialized_data)
         assert isinstance(new_customer, Customer)
-    def test_to_json(self, customer: Customer):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, customer: Customer):
         """
             #TODO add comment
         """

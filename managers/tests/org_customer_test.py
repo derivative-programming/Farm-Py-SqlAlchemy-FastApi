@@ -657,11 +657,14 @@ class TestOrgCustomerManager:
         Test the basic functionality of refreshing a org_customer instance.
         This test performs the following steps:
         1. Creates a org_customer instance using the OrgCustomerFactory.
-        2. Retrieves the org_customer from the database to ensure it was added correctly.
+        2. Retrieves the org_customer from the database to ensure
+            it was added correctly.
         3. Updates the org_customer's code and verifies the update.
-        4. Refreshes the original org_customer instance and checks if it reflects the updated code.
+        4. Refreshes the original org_customer instance and checks if
+            it reflects the updated code.
         Args:
-            org_customer_manager (OrgCustomerManager): The manager responsible for org_customer operations.
+            org_customer_manager (OrgCustomerManager): The manager responsible
+                for org_customer operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a org_customer
@@ -678,10 +681,11 @@ class TestOrgCustomerManager:
         updated_code1 = uuid.uuid4()
         org_customer1.code = updated_code1
         updated_org_customer1 = await org_customer_manager.update(org_customer1)
-        # Verify that the updated org_customer is of type OrgCustomer and has the updated code
+        # Verify that the updated org_customer is of type OrgCustomer
+        # and has the updated code
         assert isinstance(updated_org_customer1, OrgCustomer)
         assert updated_org_customer1.code == updated_code1
-    # Step 4: Refresh the original org_customer instance
+        # Refresh the original org_customer instance
         refreshed_org_customer2 = await org_customer_manager.refresh(org_customer2)
         # Verify that the refreshed org_customer reflects the updated code
         assert refreshed_org_customer2.code == updated_code1

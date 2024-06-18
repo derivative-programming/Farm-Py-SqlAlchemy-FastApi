@@ -30,9 +30,9 @@ class FlavorEnum(Enum):
     """
     #TODO add comment
     """
-    Unknown = 'Unknown'
-    Sweet = 'Sweet'
-    Sour = 'Sour'
+    UNKNOWN = 'Unknown'
+    SWEET = 'Sweet'
+    SOUR = 'Sour'
 
 class FlavorManager:
     """
@@ -64,7 +64,7 @@ class FlavorManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(FlavorEnum.Unknown) \
+        if await self.from_enum(FlavorEnum.UNKNOWN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Unknown"
@@ -74,7 +74,7 @@ class FlavorManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(FlavorEnum.Sweet) \
+        if await self.from_enum(FlavorEnum.SWEET) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Sweet"
@@ -84,7 +84,7 @@ class FlavorManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(FlavorEnum.Sour) \
+        if await self.from_enum(FlavorEnum.SOUR) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Sour"
@@ -104,7 +104,7 @@ class FlavorManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Flavor.lookup_enum_name == enum_val.value
+        query_filter = Flavor._lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -138,8 +138,8 @@ class FlavorManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Flavor.pac_id == Pac._pac_id,  # pylint: disable=protected-access
-                 Flavor.pac_id != 0)
+            and_(Flavor._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
+                 Flavor._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -423,7 +423,7 @@ class FlavorManager:
                 f"The flavor_id must be an integer, "
                 f"got {type(pac_id)} instead."
             )
-        query_filter = Flavor.pac_id == pac_id
+        query_filter = Flavor._pac_id == pac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

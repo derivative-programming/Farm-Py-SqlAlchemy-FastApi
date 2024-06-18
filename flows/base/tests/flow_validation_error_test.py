@@ -9,6 +9,7 @@ from flows.base import FlowValidationError
 
 TEST_ERROR_MESSAGE = "Test error message"
 
+
 class TestFlowValidationError():
     """
     #TODO add comment

@@ -25,26 +25,26 @@ class PlantSchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # isDeleteAllowed,
-            # isEditAllowed,
-            # otherFlavor,
-            # someBigIntVal,
-            # someBitVal,
+            "_last_change_code",
+            "_is_delete_allowed",  # isDeleteAllowed
+            "_is_edit_allowed",  # isEditAllowed
+            "_other_flavor",  # otherFlavor
+            "_some_big_int_val",  # someBigIntVal
+            "_some_bit_val",  # someBitVal
             # someDecimalVal,
-            # someEmailAddress,
+            "_some_email_address",  # someEmailAddress
             # someFloatVal,
-            # someIntVal,
+            "_some_int_val",  # someIntVal
             # someMoneyVal,
-            # someVarCharVal,
+            "_some_var_char_val",  # someVarCharVal
             # someDateVal
             # someUTCDateTimeVal
-            # flvrForeignKeyID
-            # LandID
-            # someNVarCharVal,
-            # somePhoneNumber,
-            # someUniqueidentifierVal,
-            "_some_uniqueidentifier_val",
-            # someTextVal,
+            "_flvr_foreign_key_id",  # flvrForeignKeyID
+            "_land_id",  # LandID
+            "_some_n_var_char_val",  # someNVarCharVal
+            "_some_phone_number",  # somePhoneNumber
+            "_some_uniqueidentifier_val",  # someUniqueidentifierVal
+            "_some_text_val",  # someTextVal
 # endset  # noqa E122
         )
 

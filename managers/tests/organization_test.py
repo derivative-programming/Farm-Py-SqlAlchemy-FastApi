@@ -657,11 +657,14 @@ class TestOrganizationManager:
         Test the basic functionality of refreshing a organization instance.
         This test performs the following steps:
         1. Creates a organization instance using the OrganizationFactory.
-        2. Retrieves the organization from the database to ensure it was added correctly.
+        2. Retrieves the organization from the database to ensure
+            it was added correctly.
         3. Updates the organization's code and verifies the update.
-        4. Refreshes the original organization instance and checks if it reflects the updated code.
+        4. Refreshes the original organization instance and checks if
+            it reflects the updated code.
         Args:
-            organization_manager (OrganizationManager): The manager responsible for organization operations.
+            organization_manager (OrganizationManager): The manager responsible
+                for organization operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a organization
@@ -678,10 +681,11 @@ class TestOrganizationManager:
         updated_code1 = uuid.uuid4()
         organization1.code = updated_code1
         updated_organization1 = await organization_manager.update(organization1)
-        # Verify that the updated organization is of type Organization and has the updated code
+        # Verify that the updated organization is of type Organization
+        # and has the updated code
         assert isinstance(updated_organization1, Organization)
         assert updated_organization1.code == updated_code1
-    # Step 4: Refresh the original organization instance
+        # Refresh the original organization instance
         refreshed_organization2 = await organization_manager.refresh(organization2)
         # Verify that the refreshed organization reflects the updated code
         assert refreshed_organization2.code == updated_code1

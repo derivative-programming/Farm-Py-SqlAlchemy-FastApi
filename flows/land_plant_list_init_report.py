@@ -117,7 +117,7 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
         land_name_output: str = ""
 # endset
         flavor_bus_obj = business.FlavorBusObj(land_bus_obj.get_session_context())
-        await flavor_bus_obj.load_from_enum(flavor_enum=farm_managers.FlavorEnum.Unknown)
+        await flavor_bus_obj.load_from_enum(flavor_enum=farm_managers.FlavorEnum.UNKNOWN)
         flavor_code_output = flavor_bus_obj.code
 
         land_code_output = land_bus_obj.code

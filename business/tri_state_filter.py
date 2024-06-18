@@ -528,10 +528,12 @@ class TriStateFilterBusObj(BaseBusObj):
             managers_and_enums.TriStateFilterEnum
     ):
         """
-        Load plant data from dictionary.
-        :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or
-            if no plant data is found.
+        Load tri_state_filter data from dictionary.
+        :param tri_state_filter_dict: Dictionary
+            containing tri_state_filter data.
+        :raises ValueError: If tri_state_filter_dict
+            is not a dictionary or if no
+            tri_state_filter data is found.
         """
         if not isinstance(
             tri_state_filter_enum,

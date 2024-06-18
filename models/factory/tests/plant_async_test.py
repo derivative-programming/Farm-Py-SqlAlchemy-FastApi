@@ -226,7 +226,7 @@ class TestPlantFactoryAsync:
 
         # Construct the select statement
         stmt = select(Plant).where(
-            Plant._plant_id == plant.plant_id)  # pylint: disable=protected-access
+            Plant._plant_id == plant.plant_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -395,7 +395,7 @@ class TestPlantFactoryAsync:
         original_last_change_code = plant.last_change_code
 
         stmt = select(Plant).where(
-            Plant._plant_id == plant.plant_id)  # pylint: disable=protected-access
+            Plant._plant_id == plant.plant_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         plant_1 = result.scalars().first()
 
@@ -405,7 +405,7 @@ class TestPlantFactoryAsync:
         await session.commit()
 
         stmt = select(Plant).where(
-            Plant._plant_id == plant.plant_id)  # pylint: disable=protected-access
+            Plant._plant_id == plant.plant_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         plant_2 = result.scalars().first()
 

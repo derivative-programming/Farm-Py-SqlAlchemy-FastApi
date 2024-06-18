@@ -657,11 +657,14 @@ class TestCustomerRoleManager:
         Test the basic functionality of refreshing a customer_role instance.
         This test performs the following steps:
         1. Creates a customer_role instance using the CustomerRoleFactory.
-        2. Retrieves the customer_role from the database to ensure it was added correctly.
+        2. Retrieves the customer_role from the database to ensure
+            it was added correctly.
         3. Updates the customer_role's code and verifies the update.
-        4. Refreshes the original customer_role instance and checks if it reflects the updated code.
+        4. Refreshes the original customer_role instance and checks if
+            it reflects the updated code.
         Args:
-            customer_role_manager (CustomerRoleManager): The manager responsible for customer_role operations.
+            customer_role_manager (CustomerRoleManager): The manager responsible
+                for customer_role operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a customer_role
@@ -678,10 +681,11 @@ class TestCustomerRoleManager:
         updated_code1 = uuid.uuid4()
         customer_role1.code = updated_code1
         updated_customer_role1 = await customer_role_manager.update(customer_role1)
-        # Verify that the updated customer_role is of type CustomerRole and has the updated code
+        # Verify that the updated customer_role is of type CustomerRole
+        # and has the updated code
         assert isinstance(updated_customer_role1, CustomerRole)
         assert updated_customer_role1.code == updated_code1
-    # Step 4: Refresh the original customer_role instance
+        # Refresh the original customer_role instance
         refreshed_customer_role2 = await customer_role_manager.refresh(customer_role2)
         # Verify that the refreshed customer_role reflects the updated code
         assert refreshed_customer_role2.code == updated_code1

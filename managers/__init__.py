@@ -1,4 +1,5 @@
 # models/managers/__init__.py
+# pylint: disable=line-too-long
 """
     #TODO add comment
 """

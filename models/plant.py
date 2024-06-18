@@ -33,7 +33,7 @@ class Plant(Base):
         unique=True,
         default=uuid.uuid4,
         nullable=True)
-    last_change_code = Column(
+    _last_change_code = Column(
         'last_change_code',
         Integer,
         nullable=True)
@@ -47,7 +47,7 @@ class Plant(Base):
         UUIDType(binary=False),
         default=uuid.uuid4,
         nullable=True)
-    flvr_foreign_key_id = Column(
+    _flvr_foreign_key_id = Column(
         'flvr_foreign_key_id',
         Integer,
         ForeignKey('farm_' + snake_case('Flavor') + '.flavor_id'),
@@ -56,7 +56,7 @@ class Plant(Base):
             flvr_foreign_key_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_delete_allowed = Column(
+    _is_delete_allowed = Column(
         'is_delete_allowed',
         Boolean,
         default=False,
@@ -65,7 +65,7 @@ class Plant(Base):
             is_delete_allowed_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    is_edit_allowed = Column(
+    _is_edit_allowed = Column(
         'is_edit_allowed',
         Boolean,
         default=False,
@@ -74,7 +74,7 @@ class Plant(Base):
             is_edit_allowed_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    land_id = Column(
+    _land_id = Column(
         'land_id',
         Integer,
         ForeignKey('farm_' + snake_case('Land') + '.land_id'),
@@ -83,7 +83,7 @@ class Plant(Base):
             land_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    other_flavor = Column(
+    _other_flavor = Column(
         'other_flavor',
         ##GENIF[isEncrypted=false]Start
         String,
@@ -97,7 +97,7 @@ class Plant(Base):
             other_flavor_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_big_int_val = Column(
+    _some_big_int_val = Column(
         'some_big_int_val',
         BigInteger,
         default=0,
@@ -106,7 +106,7 @@ class Plant(Base):
             some_big_int_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_bit_val = Column(
+    _some_bit_val = Column(
         'some_bit_val',
         Boolean,
         default=False,
@@ -133,7 +133,7 @@ class Plant(Base):
             some_decimal_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_email_address = Column(
+    _some_email_address = Column(
         'some_email_address',
         ##GENIF[isEncrypted=false]Start
         String,
@@ -156,7 +156,7 @@ class Plant(Base):
             some_float_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_int_val = Column(
+    _some_int_val = Column(
         'some_int_val',
         Integer,
         default=0,
@@ -174,7 +174,7 @@ class Plant(Base):
             some_money_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_n_var_char_val = Column(
+    _some_n_var_char_val = Column(
         'some_n_var_char_val',
         ##GENIF[isEncrypted=false]Start
         String,
@@ -188,7 +188,7 @@ class Plant(Base):
             some_n_var_char_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_phone_number = Column(
+    _some_phone_number = Column(
         'some_phone_number',
         ##GENIF[isEncrypted=false]Start
         String,
@@ -202,7 +202,7 @@ class Plant(Base):
             some_phone_number_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_text_val = Column(
+    _some_text_val = Column(
         'some_text_val',
         String,
         default="",
@@ -229,7 +229,7 @@ class Plant(Base):
             some_utc_date_time_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    some_var_char_val = Column(
+    _some_var_char_val = Column(
         'some_var_char_val',
         ##GENIF[isEncrypted=false]Start
         String,
@@ -260,7 +260,7 @@ class Plant(Base):
     # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
 
     __mapper_args__ = {
-        'version_id_col': last_change_code
+        'version_id_col': _last_change_code
     }
 
     def __init__(self, **kwargs):
@@ -359,6 +359,22 @@ class Plant(Base):
         self._plant_id = value
 
     @property
+    def last_change_code(self) -> int:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_last_change_code', 0) or 0
+
+    @last_change_code.setter
+    def last_change_code(self, value: int) -> None:
+        """
+        Set the last_change_code.
+        """
+
+        self._last_change_code = value
+
+    @property
     def insert_user_id(self):
         """
             #TODO add comment
@@ -391,23 +407,216 @@ class Plant(Base):
         self.last_update_utc_date_time = datetime.utcnow()
 
     # isDeleteAllowed,
+
+    @property
+    def is_delete_allowed(self) -> bool:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_is_delete_allowed', False) or False
+
+    @is_delete_allowed.setter
+    def is_delete_allowed(self, value: bool) -> None:
+        """
+        Set the is_delete_allowed.
+        """
+
+        self._is_delete_allowed = value
     # isEditAllowed,
+
+    @property
+    def is_edit_allowed(self) -> bool:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_is_edit_allowed', False) or False
+
+    @is_edit_allowed.setter
+    def is_edit_allowed(self, value: bool) -> None:
+        """
+        Set the is_edit_allowed.
+        """
+
+        self._is_edit_allowed = value
     # otherFlavor,
+
+    @property
+    def other_flavor(self) -> str:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_other_flavor', "") or ""
+
+    @other_flavor.setter
+    def other_flavor(self, value: str) -> None:
+        """
+        Set the other_flavor.
+        """
+
+        self._other_flavor = value
     # someBigIntVal,
+
+    @property
+    def some_big_int_val(self) -> int:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_big_int_val', 0) or 0
+
+    @some_big_int_val.setter
+    def some_big_int_val(self, value: int) -> None:
+        """
+        Set the some_big_int_val.
+        """
+
+        self._some_big_int_val = value
     # someBitVal,
+
+    @property
+    def some_bit_val(self) -> bool:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_bit_val', False) or False
+
+    @some_bit_val.setter
+    def some_bit_val(self, value: bool) -> None:
+        """
+        Set the some_bit_val.
+        """
+
+        self._some_bit_val = value
     # someDecimalVal,
     # someEmailAddress,
+
+    @property
+    def some_email_address(self) -> str:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_email_address', "") or ""
+
+    @some_email_address.setter
+    def some_email_address(self, value: str) -> None:
+        """
+        Set the some_email_address.
+        """
+
+        self._some_email_address = value
     # someFloatVal,
     # someIntVal,
+
+    @property
+    def some_int_val(self) -> int:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_int_val', 0) or 0
+
+    @some_int_val.setter
+    def some_int_val(self, value: int) -> None:
+        """
+        Set the some_int_val.
+        """
+
+        self._some_int_val = value
     # someMoneyVal,
     # someVarCharVal,
+
+    @property
+    def some_var_char_val(self) -> str:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_var_char_val', "") or ""
+
+    @some_var_char_val.setter
+    def some_var_char_val(self, value: str) -> None:
+        """
+        Set the some_var_char_val.
+        """
+
+        self._some_var_char_val = value
     # someDateVal
     # someUTCDateTimeVal
     # flvrForeignKeyID
+
+    @property
+    def flvr_foreign_key_id(self) -> int:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_flvr_foreign_key_id', 0) or 0
+
+    @flvr_foreign_key_id.setter
+    def flvr_foreign_key_id(self, value: int) -> None:
+        """
+        Set the flvr_foreign_key_id.
+        """
+
+        self._flvr_foreign_key_id = value
     # LandID
+
+    @property
+    def land_id(self) -> int:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_land_id', 0) or 0
+
+    @land_id.setter
+    def land_id(self, value: int) -> None:
+        """
+        Set the land_id.
+        """
+
+        self._land_id = value
     # someNVarCharVal,
+
+    @property
+    def some_n_var_char_val(self) -> str:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_n_var_char_val', "") or ""
+
+    @some_n_var_char_val.setter
+    def some_n_var_char_val(self, value: str) -> None:
+        """
+        Set the some_n_var_char_val.
+        """
+
+        self._some_n_var_char_val = value
     # somePhoneNumber,
+
+    @property
+    def some_phone_number(self) -> str:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_phone_number', "") or ""
+
+    @some_phone_number.setter
+    def some_phone_number(self, value: str) -> None:
+        """
+        Set the some_phone_number.
+        """
+
+        self._some_phone_number = value
     # someUniqueidentifierVal,
+
     @property
     def some_uniqueidentifier_val(self):
         """
@@ -446,6 +655,22 @@ class Plant(Base):
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.utcnow()
     # someTextVal,
+
+    @property
+    def some_text_val(self) -> str:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_some_text_val', "") or ""
+
+    @some_text_val.setter
+    def some_text_val(self, value: str) -> None:
+        """
+        Set the some_text_val.
+        """
+
+        self._some_text_val = value
 
 # endset
 

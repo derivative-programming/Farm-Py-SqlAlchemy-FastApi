@@ -19,8 +19,9 @@ class OrganizationSchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # name,
-            # TacID
+            "_last_change_code",
+            "_name",  # name
+            "_tac_id",  # TacID
 # endset  # noqa E122
         )
     organization_id = fields.Int()

@@ -1,4 +1,5 @@
 # customer_role_test.py
+# pylint: disable=redefined-outer-name
 """
     #TODO add comment
 """
@@ -56,11 +57,13 @@ class TestCustomerRoleSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_customer_role_serialization(self, customer_role: CustomerRole):  # pylint: disable=redefined-outer-name
+    def test_customer_role_serialization(self, customer_role: CustomerRole):
         """
-        Test the serialization of a CustomerRole instance using CustomerRoleSchema.
+        Test the serialization of a CustomerRole instance using
+        CustomerRoleSchema.
         Args:
-            customer_role (CustomerRole): A CustomerRole instance to serialize.
+            customer_role (CustomerRole):
+                A CustomerRole instance to serialize.
         """
         schema = CustomerRoleSchema()
         result: Dict[str, Any] = schema.dump(customer_role)
@@ -91,7 +94,7 @@ class TestCustomerRoleSchema:
         assert result['role_code_peek'] == (  # RoleID
             str(customer_role.role_code_peek))
 # endset
-    def test_customer_role_deserialization(self, customer_role):  # pylint: disable=redefined-outer-name
+    def test_customer_role_deserialization(self, customer_role):
         """
             #TODO add comment
         """
@@ -194,7 +197,7 @@ class TestCustomerRoleSchema:
             self.sample_data['last_update_utc_date_time'])
         new_customer_role = CustomerRole(**deserialized_data)
         assert isinstance(new_customer_role, CustomerRole)
-    def test_to_json(self, customer_role: CustomerRole):  # pylint: disable=redefined-outer-name
+    def test_to_json(self, customer_role: CustomerRole):
         """
             #TODO add comment
         """

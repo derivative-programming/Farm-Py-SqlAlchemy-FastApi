@@ -187,7 +187,7 @@ class TestCustomerFactoryAsync:
         await session.commit()
         # Construct the select statement
         stmt = select(Customer).where(
-            Customer._customer_id == customer.customer_id)  # pylint: disable=protected-access
+            Customer._customer_id == customer.customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         # Execute the statement asynchronously
         result = await session.execute(stmt)
         # Fetch all results
@@ -342,7 +342,7 @@ class TestCustomerFactoryAsync:
         customer = await CustomerFactory.create_async(session=session)
         original_last_change_code = customer.last_change_code
         stmt = select(Customer).where(
-            Customer._customer_id == customer.customer_id)  # pylint: disable=protected-access
+            Customer._customer_id == customer.customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         customer_1 = result.scalars().first()
         # customer_1 = await session.query(Customer).filter_by(
@@ -350,7 +350,7 @@ class TestCustomerFactoryAsync:
         customer_1.code = uuid.uuid4()
         await session.commit()
         stmt = select(Customer).where(
-            Customer._customer_id == customer.customer_id)  # pylint: disable=protected-access
+            Customer._customer_id == customer.customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
         result = await session.execute(stmt)
         customer_2 = result.scalars().first()
         # customer_2 = await session.query(Customer).filter_by(

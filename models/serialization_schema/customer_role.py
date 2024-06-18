@@ -19,10 +19,11 @@ class CustomerRoleSchema(SQLAlchemyAutoSchema):
             "_code",
             "_insert_user_id",
             "_last_update_user_id",
-            # CustomerID
-            # isPlaceholder,
-            # placeholder,
-            # roleID
+            "_last_change_code",
+            "_customer_id",  # CustomerID
+            "_is_placeholder",  # isPlaceholder
+            "_placeholder",  # placeholder
+            "_role_id",  # roleID
 # endset  # noqa E122
         )
     customer_role_id = fields.Int()

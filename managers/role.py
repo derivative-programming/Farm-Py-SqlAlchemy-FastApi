@@ -30,10 +30,10 @@ class RoleEnum(Enum):
     """
     #TODO add comment
     """
-    Unknown = 'Unknown'
-    Admin = 'Admin'
-    Config = 'Config'
-    User = 'User'
+    UNKNOWN = 'Unknown'
+    ADMIN = 'Admin'
+    CONFIG = 'Config'
+    USER = 'User'
 
 class RoleManager:
     """
@@ -65,7 +65,7 @@ class RoleManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(RoleEnum.Unknown) \
+        if await self.from_enum(RoleEnum.UNKNOWN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
@@ -75,7 +75,7 @@ class RoleManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(RoleEnum.Admin) \
+        if await self.from_enum(RoleEnum.ADMIN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Admin"
@@ -85,7 +85,7 @@ class RoleManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(RoleEnum.Config) \
+        if await self.from_enum(RoleEnum.CONFIG) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "Config"
@@ -95,7 +95,7 @@ class RoleManager:
             item.is_active = True
             # item. = 1
             await self.add(item)
-        if await self.from_enum(RoleEnum.User) \
+        if await self.from_enum(RoleEnum.USER) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = "User"
@@ -115,7 +115,7 @@ class RoleManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Role.lookup_enum_name == enum_val.value
+        query_filter = Role._lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 
@@ -149,8 +149,8 @@ class RoleManager:
 # endset
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Role.pac_id == Pac._pac_id,  # pylint: disable=protected-access
-                 Role.pac_id != 0)
+            and_(Role._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501
+                 Role._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501
         )
 # endset
         return query
@@ -434,7 +434,7 @@ class RoleManager:
                 f"The role_id must be an integer, "
                 f"got {type(pac_id)} instead."
             )
-        query_filter = Role.pac_id == pac_id
+        query_filter = Role._pac_id == pac_id  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
 # endset

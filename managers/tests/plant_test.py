@@ -394,7 +394,7 @@ class TestPlantManager:
         """
 
         with pytest.raises(Exception):
-            await plant_manager.delete("999")
+            await plant_manager.delete("999") # type: ignore
 
         await session.rollback()
 
@@ -843,12 +843,15 @@ class TestPlantManager:
 
         This test performs the following steps:
         1. Creates a plant instance using the PlantFactory.
-        2. Retrieves the plant from the database to ensure it was added correctly.
+        2. Retrieves the plant from the database to ensure
+            it was added correctly.
         3. Updates the plant's code and verifies the update.
-        4. Refreshes the original plant instance and checks if it reflects the updated code.
+        4. Refreshes the original plant instance and checks if
+            it reflects the updated code.
 
         Args:
-            plant_manager (PlantManager): The manager responsible for plant operations.
+            plant_manager (PlantManager): The manager responsible
+                for plant operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a plant
@@ -869,13 +872,13 @@ class TestPlantManager:
         plant1.code = updated_code1
         updated_plant1 = await plant_manager.update(plant1)
 
-        # Verify that the updated plant is of type Plant and has the updated code
+        # Verify that the updated plant is of type Plant
+        # and has the updated code
         assert isinstance(updated_plant1, Plant)
 
         assert updated_plant1.code == updated_code1
 
-
-    # Step 4: Refresh the original plant instance
+        # Refresh the original plant instance
         refreshed_plant2 = await plant_manager.refresh(plant2)
 
         # Verify that the refreshed plant reflects the updated code
@@ -959,7 +962,7 @@ class TestPlantManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.exists(invalid_id)
+            await plant_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
 # endset
@@ -999,7 +1002,7 @@ class TestPlantManager:
         assert fetched_plants[0].code == plant1.code
 
         stmt = select(models.Flavor).where(
-            models.Flavor._flavor_id == plant1.flvr_foreign_key_id)
+            models.Flavor._flavor_id == plant1.flvr_foreign_key_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         flavor = result.scalars().first()
 
@@ -1031,7 +1034,7 @@ class TestPlantManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.get_by_flvr_foreign_key_id(invalid_id)
+            await plant_manager.get_by_flvr_foreign_key_id(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
 
@@ -1083,7 +1086,7 @@ class TestPlantManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.get_by_land_id(invalid_id)
+            await plant_manager.get_by_land_id(invalid_id) # type: ignore
 
         await session.rollback()
     # somePhoneNumber,

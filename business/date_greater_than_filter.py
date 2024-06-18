@@ -559,32 +559,32 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
 
     async def load_from_obj_instance(
         self,
-        date_greater_than_filter_obj_instance: DateGreaterThanFilter
+        obj_instance: DateGreaterThanFilter
     ):
         """
         Use the provided DateGreaterThanFilter instance.
-        :param date_greater_than_filter_obj_instance:Instance
+        :param obj_instance:Instance
             of the DateGreaterThanFilter class.
-        :raises ValueError: If date_greater_than_filter_obj_instance
+        :raises ValueError: If obj_instance
             is not an instance of DateGreaterThanFilter.
         """
         if not isinstance(
-            date_greater_than_filter_obj_instance,
+            obj_instance,
             DateGreaterThanFilter
         ):
             raise ValueError(
-                "date_greater_than_filter_obj_instance must be "
+                "obj_instance must be "
                 "an instance of DateGreaterThanFilter")
         date_greater_than_filter_manager = DateGreaterThanFilterManager(
             self._session_context
         )
-        date_greater_than_filter_obj_instance_date_greater_than_filter_id = (
-            date_greater_than_filter_obj_instance.date_greater_than_filter_id
+        obj_instance_date_greater_than_filter_id = (
+            obj_instance.date_greater_than_filter_id
         )
         date_greater_than_filter_obj = await (
             date_greater_than_filter_manager
             .get_by_id(
-                date_greater_than_filter_obj_instance_date_greater_than_filter_id
+                obj_instance_date_greater_than_filter_id
             )
         )
         self.date_greater_than_filter = date_greater_than_filter_obj
@@ -679,7 +679,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return (self.date_greater_than_filter is not None)
+        return self.date_greater_than_filter is not None
 
     def to_dict(self):
         """
@@ -711,12 +711,15 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
-        if self.date_greater_than_filter.date_greater_than_filter_id is not None and self.date_greater_than_filter.date_greater_than_filter_id > 0:
+        if self.date_greater_than_filter.date_greater_than_filter_id > 0:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(
                 self._session_context
             )
-            self.date_greater_than_filter = await date_greater_than_filter_manager.update(self.date_greater_than_filter)
-        if self.date_greater_than_filter.date_greater_than_filter_id is None or self.date_greater_than_filter.date_greater_than_filter_id == 0:
+            self.date_greater_than_filter = await (
+                date_greater_than_filter_manager.update(
+                    self.date_greater_than_filter)
+            )
+        if self.date_greater_than_filter.date_greater_than_filter_id == 0:
             date_greater_than_filter_manager = DateGreaterThanFilterManager(
                 self._session_context
             )
@@ -864,10 +867,13 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         #TODO add comment
         """
         result = list()
-        for date_greater_than_filter in obj_list:
-            date_greater_than_filter_bus_obj = DateGreaterThanFilterBusObj.get(
-                session_context,
-                date_greater_than_filter_obj_instance=date_greater_than_filter
-            )
+        for obj_instance in obj_list:
+
+            date_greater_than_filter_bus_obj = DateGreaterThanFilterBusObj(
+                session_context)
+
+            await date_greater_than_filter_bus_obj.load_from_obj_instance(
+                obj_instance)
+
             result.append(date_greater_than_filter_bus_obj)
         return result

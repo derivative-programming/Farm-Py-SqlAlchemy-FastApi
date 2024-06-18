@@ -502,10 +502,12 @@ class TacBusObj(BaseBusObj):
             managers_and_enums.TacEnum
     ):
         """
-        Load plant data from dictionary.
-        :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or
-            if no plant data is found.
+        Load tac data from dictionary.
+        :param tac_dict: Dictionary
+            containing tac data.
+        :raises ValueError: If tac_dict
+            is not a dictionary or if no
+            tac data is found.
         """
         if not isinstance(
             tac_enum,

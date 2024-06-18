@@ -30,7 +30,7 @@ class PacEnum(Enum):
     """
     #TODO add comment
     """
-    Unknown = 'Unknown'
+    UNKNOWN = 'Unknown'
 
 class PacManager:
     """
@@ -62,7 +62,7 @@ class PacManager:
         pac_result = await self._session_context.session.execute(select(Pac))
         pac = pac_result.scalars().first()
 # endset
-        if await self.from_enum(PacEnum.Unknown) \
+        if await self.from_enum(PacEnum.UNKNOWN) \
                 is None:
             item = await self._build_lookup_item(pac)
             item.name = ""
@@ -82,7 +82,7 @@ class PacManager:
             #TODO add comment
         """
         # return self.get(lookup_enum_name=enum_val.value)
-        query_filter = Pac.lookup_enum_name == enum_val.value
+        query_filter = Pac._lookup_enum_name == enum_val.value
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 

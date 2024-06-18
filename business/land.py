@@ -500,10 +500,12 @@ class LandBusObj(BaseBusObj):
             managers_and_enums.LandEnum
     ):
         """
-        Load plant data from dictionary.
-        :param plant_dict: Dictionary containing plant data.
-        :raises ValueError: If plant_dict is not a dictionary or
-            if no plant data is found.
+        Load land data from dictionary.
+        :param land_dict: Dictionary
+            containing land data.
+        :raises ValueError: If land_dict
+            is not a dictionary or if no
+            land data is found.
         """
         if not isinstance(
             land_enum,
@@ -678,7 +680,7 @@ class LandBusObj(BaseBusObj):
         item = PlantBusObj(self._session_context)
         flavor_manager = managers_and_enums.FlavorManager(self._session_context)
         flvr_foreign_key_id_flavor = await flavor_manager.from_enum(
-            managers_and_enums.FlavorEnum.Unknown)
+            managers_and_enums.FlavorEnum.UNKNOWN)
         item.flvr_foreign_key_id = flvr_foreign_key_id_flavor.flavor_id
         item.plant.flvr_foreign_key_id_code_peek = flvr_foreign_key_id_flavor.code
 
