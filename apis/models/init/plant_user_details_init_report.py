@@ -1,6 +1,7 @@
 # apis/models/init/plant_user_details_init_report.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the PlantUserDetailsInitReport workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    PlantUserDetailsInitReportGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -40,7 +42,8 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
         data: FlowPlantUserDetailsInitReportResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowPlantUserDetailsInitReportResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -51,12 +54,13 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
             data.tac_code)
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    PlantUserDetailsInitReportGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -65,7 +69,7 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
             response: PlantUserDetailsInitReportGetInitModelResponse
     ) -> PlantUserDetailsInitReportGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

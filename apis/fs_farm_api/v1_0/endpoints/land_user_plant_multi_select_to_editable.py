@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/land_user_plant_multi_select_to_editable.py
 """
-    #TODO add comment
+This module contains the implementation of the LandUserPlantMultiSelectToEditableRouter,
+which handles the API endpoints related to the Land User Plant Multi Select To Editable.
+The LandUserPlantMultiSelectToEditableRouter provides the following endpoints:
+    - GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}/init:
+        Get the initialization data for the Land User Plant Multi Select To Editable page.
+    - GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}:
+        Get the  plant list report for a specific  code.
+    - GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}/to-csv:
+        Retrieve the Land User Plant Multi Select To Editable Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class LandUserPlantMultiSelectToEditableRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the LandUserPlantMultiSelectToEditableRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class LandUserPlantMultiSelectToEditableRouterConfig():
     is_public: bool = False
 class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Land User Plant Multi Select To Editable API endpoints.
     """
     router = APIRouter(tags=["LandUserPlantMultiSelectToEditable"])
 
@@ -50,7 +58,15 @@ class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Land User Plant Multi Select To Editable api post endpoint
+        Parameters:
+        - land_code: The code of the  object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+        Returns:
+        - response: JSON response with the result of the operation.
         """
         logging.info(
             "LandUserPlantMultiSelectToEditableRouter.request_post_with_id start. landCode: %s",

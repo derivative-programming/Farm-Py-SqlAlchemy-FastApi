@@ -1,7 +1,21 @@
 # flavor_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the Flavor serialization schema.
+The Flavor serialization schema is responsible for serializing and deserializing
+Flavor instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of Flavor
+instances using the FlavorSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a Flavor instance.
+The FlavorSchema class is used to define the serialization and deserialization
+rules for Flavor instances. It specifies how each attribute of a Flavor instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a Flavor instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -99,7 +113,13 @@ class TestFlavorSchema:
 # endset
     def test_flavor_deserialization(self, flavor):
         """
-            #TODO add comment
+        Test the deserialization of a Flavor object using the FlavorSchema.
+        Args:
+            flavor (Flavor): The Flavor object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = FlavorSchema()
         serialized_data = schema.dump(flavor)
@@ -164,7 +184,17 @@ class TestFlavorSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the FlavorSchema class.
+        This method tests the deserialization of
+        a JSON string to a Flavor object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a Flavor
+        object. Finally, it asserts the
+        equality of the deserialized Flavor object
+        with the sample data.
+        Returns:
+            None
         """
         flavor_schema = FlavorSchema()
         # Convert sample data to JSON string
@@ -208,7 +238,12 @@ class TestFlavorSchema:
         assert isinstance(new_flavor, Flavor)
     def test_to_json(self, flavor: Flavor):
         """
-            #TODO add comment
+        Test the conversion of a Flavor instance to JSON.
+        Args:
+            flavor (Flavor): The Flavor instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the Flavor instance to JSON using the schema
         flavor_schema = FlavorSchema()

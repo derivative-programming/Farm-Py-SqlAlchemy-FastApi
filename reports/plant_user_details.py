@@ -36,7 +36,9 @@ class ReportManagerPlantUserDetails():
         order_by_descending: bool = False,
     ) -> List[ReportItemPlantUserDetails]:
         """
-            #TODO add comment
+        Generate the 'Plant User Details' report.
+        Returns:
+            List[ReportItemPlantUserDetails]: The list of report items.
         """
         logging.info('ReportManagerPlantUserDetails.generate Start')
         role_required = "User"
@@ -44,7 +46,7 @@ class ReportManagerPlantUserDetails():
             if role_required not in self._session_context.role_name_csv:
                 raise ReportRequestValidationError(
                     "",
-                    "Unautorized access. " + role_required + " role not found."
+                    f"Unauthorized access. {role_required} role not found."
                 )
         if item_count_per_page <= 0:
             raise ReportRequestValidationError(
@@ -79,7 +81,11 @@ class ReportManagerPlantUserDetails():
                         file_name: str,
                         data_list: List[ReportItemPlantUserDetails]):
         """
-            #TODO add comment
+        Build a CSV file for the 'Plant User Details' report.
+        Args:
+            file_name (str): The name of the CSV file.
+            data_list (List[ReportItemPlantUserDetails]):
+                The list of report items.
         """
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(
@@ -91,12 +97,21 @@ class ReportManagerPlantUserDetails():
                 writer.writerow(obj.__dict__)
     def _parse_bool(self, value):
         """
-            #TODO add comment
+        Parse a boolean value.
+        Args:
+            value (str): The value to parse.
+        Returns:
+            bool: The parsed boolean value.
         """
         return value.lower() in ['true', '1', 'yes']
     def _convert_value(self, value, attr_type):
         """
-            #TODO add comment
+        Convert a value to the specified attribute type.
+        Args:
+            value: The value to convert.
+            attr_type: The attribute type to convert to.
+        Returns:
+            The converted value.
         """
         if attr_type == int:
             return int(value)
@@ -116,7 +131,11 @@ class ReportManagerPlantUserDetails():
             return value
     async def read_csv(self, file_name: str) -> List[ReportItemPlantUserDetails]:
         """
-            #TODO add comment
+        Read a CSV file and return a list of report items.
+        Args:
+            file_name (str): The name of the CSV file.
+        Returns:
+            List[ReportItemPlantUserDetails]: The list of report items.
         """
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:

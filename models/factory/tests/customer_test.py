@@ -1,6 +1,7 @@
 # models/factory/tests/customer_test.py
 """
-    #TODO add comment
+This module contains unit tests for the CustomerFactory
+class in the models.factory package.
 """
 from decimal import Decimal
 import time
@@ -19,15 +20,15 @@ logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestCustomerFactory:
     """
-    #TODO add comment
+    This class contains unit tests for the CustomerFactory class.
     """
     @pytest.fixture(scope="module")
     def engine(self):
         """
-        #TODO add comment
+        Fixture for creating a database engine.
         """
         engine = create_engine(DATABASE_URL, echo=False)
-        #FKs are not activated by default in sqllite
+        # FKs are not activated by default in sqllite
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -35,7 +36,7 @@ class TestCustomerFactory:
     @pytest.fixture
     def session(self, engine):
         """
-        #TODO add comment
+        Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(  # pylint: disable=invalid-name
@@ -45,32 +46,35 @@ class TestCustomerFactory:
         session_instance.close()
     def test_customer_creation(self, session):
         """
-        #TODO add comment
+        Test case for creating a customer.
         """
         customer = CustomerFactory.create(session=session)
         assert customer.customer_id is not None
     def test_code_default(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
         customer = CustomerFactory.create(session=session)
         assert isinstance(customer.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of
+        the last_change_code attribute on build.
         """
         customer: Customer = CustomerFactory.build(session=session)
         assert customer.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on creation.
         """
         customer: Customer = CustomerFactory.create(session=session)
         assert customer.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on update.
         """
         customer = CustomerFactory.create(session=session)
         initial_code = customer.last_change_code
@@ -79,14 +83,16 @@ class TestCustomerFactory:
         assert customer.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on build.
         """
         customer = CustomerFactory.build(session=session)
         assert customer.insert_utc_date_time is not None
         assert isinstance(customer.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on initial save.
         """
         customer = CustomerFactory.build(session=session)
         assert customer.insert_utc_date_time is not None
@@ -98,7 +104,8 @@ class TestCustomerFactory:
         assert customer.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on second save.
         """
         customer = CustomerFactory(session=session)
         assert customer.insert_utc_date_time is not None
@@ -110,14 +117,16 @@ class TestCustomerFactory:
         assert customer.insert_utc_date_time == initial_time
     def test_date_updated_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on build.
         """
         customer = CustomerFactory.build(session=session)
         assert customer.last_update_utc_date_time is not None
         assert isinstance(customer.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on initial save.
         """
         customer = CustomerFactory.build(session=session)
         assert customer.last_update_utc_date_time is not None
@@ -129,7 +138,8 @@ class TestCustomerFactory:
         assert customer.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on second save.
         """
         customer = CustomerFactory(session=session)
         assert customer.last_update_utc_date_time is not None
@@ -141,7 +151,7 @@ class TestCustomerFactory:
         assert customer.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        #TODO add comment
+        Test case for deleting a customer model.
         """
         customer = CustomerFactory.create(session=session)
         session.delete(customer)
@@ -151,7 +161,7 @@ class TestCustomerFactory:
         assert deleted_customer is None
     def test_data_types(self, session):
         """
-        #TODO add comment
+        Test case for checking the data types of the customer attributes.
         """
         customer = CustomerFactory.create(session=session)
         assert isinstance(customer.customer_id, int)
@@ -219,7 +229,7 @@ class TestCustomerFactory:
         assert isinstance(customer.last_update_utc_date_time, datetime)
     def test_unique_code_constraint(self, session):
         """
-        #TODO add comment
+        Test case for checking the unique code constraint.
         """
         customer_1 = CustomerFactory.create(session=session)
         customer_2 = CustomerFactory.create(session=session)
@@ -230,7 +240,7 @@ class TestCustomerFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        #TODO add comment
+        Test case for checking the default values of the customer fields.
         """
         customer = Customer()
         assert customer.code is not None
@@ -297,7 +307,21 @@ class TestCustomerFactory:
 # endset
     def test_last_change_code_concurrency(self, session):
         """
-        #TODO add comment
+        Test case to verify the concurrency of
+        last_change_code in the Customer model.
+        This test case checks if the last_change_code
+        of a Customer object is updated correctly
+        when multiple changes are made concurrently.
+        It creates a Customer object, retrieves it
+        from the database, and updates its code
+        attribute twice in separate transactions.
+        Finally, it asserts that the last_change_code
+        of the second retrieved Customer object
+        is different from the original last_change_code.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Returns:
+            None
         """
         customer = CustomerFactory.create(session=session)
         original_last_change_code = customer.last_change_code
@@ -334,7 +358,18 @@ class TestCustomerFactory:
     # TacID
     def test_invalid_tac_id(self, session):
         """
-        #TODO add comment
+        Test case to check if an invalid tac ID raises an IntegrityError.
+        This test case creates a customer object using
+        the CustomerFactory and assigns an invalid tac ID to it.
+        It then tries to commit the changes to the
+        session and expects an IntegrityError to be raised.
+        Finally, it rolls back the session to ensure
+        no changes are persisted.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Raises:
+            IntegrityError: If the changes to the
+                session violate any integrity constraints.
         """
         customer = CustomerFactory.create(session=session)
         customer.tac_id = 99999

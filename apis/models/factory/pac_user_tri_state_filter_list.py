@@ -1,7 +1,8 @@
 # apis/models/factory/pac_user_tri_state_filter_list.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the factory class for creating
+instances of the PacUserTriStateFilterListGetModelRequest model.
 """
 import uuid
 from datetime import datetime
@@ -15,11 +16,12 @@ class PacUserTriStateFilterListGetModelRequestFactory(
     factory.base.Factory
 ):
     """
-    #TODO add comment
+    Factory class for creating instances of the
+    PacUserTriStateFilterListGetModelRequest model.
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the factory.
         """
         model = PacUserTriStateFilterListGetModelRequest
 
@@ -31,6 +33,17 @@ class PacUserTriStateFilterListGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PacUserTriStateFilterListGetModelRequest:
+        """
+        Build a PacUserTriStateFilterListGetModelRequest instance.
+        Args:
+            model_class: The model class to build an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserTriStateFilterListGetModelRequest: The built
+                instance of PacUserTriStateFilterListGetModelRequest.
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -49,6 +62,17 @@ class PacUserTriStateFilterListGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PacUserTriStateFilterListGetModelRequest:
+        """
+        Create a PacUserTriStateFilterListGetModelRequest instance.
+        Args:
+            model_class: The model class to create an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserTriStateFilterListGetModelRequest: The created
+                instance of PacUserTriStateFilterListGetModelRequest.
+        """
 
 # endset
 
@@ -64,7 +88,14 @@ class PacUserTriStateFilterListGetModelRequestFactory(
         *args, **kwargs
     ) -> PacUserTriStateFilterListGetModelRequest:
         """
-            #TODO add comment
+        Asynchronously create a PacUserTriStateFilterListGetModelRequest instance.
+        Args:
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserTriStateFilterListGetModelRequest: The created
+                instance of PacUserTriStateFilterListGetModelRequest.
         """
 
 # endset

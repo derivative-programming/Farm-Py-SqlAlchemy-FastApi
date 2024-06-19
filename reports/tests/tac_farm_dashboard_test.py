@@ -2,7 +2,8 @@
 # pylint: disable=unused-argument
 # pylint: disable=protected-access
 """
-    #TODO add comment
+This module contains unit tests for the `ReportManagerTacFarmDashboard`
+class in the `tac_farm_dashboard` module.
 """
 import os
 import uuid
@@ -27,19 +28,17 @@ from reports.row_models.tac_farm_dashboard import (
 sqlite3.register_adapter(Decimal, str)
 class TestReportManagerTacFarmDashboard:
     """
-    #TODO add comment
+    This class contains unit tests for the `ReportManagerTacFarmDashboard` class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
         Test case for generating a report.
-        This test case verifies the functionality of
-        generating a report using the
-        ReportManagerTacFarmDashboard class. It mocks the
-        generate_list method and
-        asserts that the results returned are of type
-        list. The test also ensures
-        that the generate_list method is awaited.
+        This test case verifies the functionality of generating
+        a report using the `ReportManagerTacFarmDashboard` class.
+        It mocks the `generate_list` method and asserts that the
+        results returned are of type list.
+        The test also ensures that the `generate_list` method is awaited.
         Args:
             session: The session object for the test.
         Returns:
@@ -88,13 +87,13 @@ class TestReportManagerTacFarmDashboard:
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
         """
-        Test case to verify that an exception is raised
-        when an invalid item count per page is provided.
+        Test case to verify that an exception is raised when an
+        invalid item count per page is provided.
         Args:
             session: The session object.
         Raises:
-            ReportRequestValidationError: If an invalid
-            item count per page is provided.
+            ReportRequestValidationError: If an invalid item
+                count per page is provided.
         """
         async def mock_generate_list(
             context_code: uuid.UUID,
@@ -142,8 +141,8 @@ class TestReportManagerTacFarmDashboard:
         Args:
             session: The session object.
         Raises:
-            ReportRequestValidationError: If the report
-                request validation fails.
+            ReportRequestValidationError: If the report request
+                validation fails.
         """
         async def mock_generate_list(
             context_code: uuid.UUID,

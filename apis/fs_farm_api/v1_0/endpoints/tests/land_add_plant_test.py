@@ -420,9 +420,22 @@ async def test_init_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
-    """
+    Test case to check authorization failure when no header is provided.
 
+    This test case sends a GET request to the
+    '/api/v1_0/land-add-plant/{land_code}/init' endpoint
+    without providing the required authorization header.
+    The expected behavior depends on the value
+    of the 'is_public' flag in the LandAddPlantRouterConfig.
+    If the flag is True, the response status
+    code should be 200. Otherwise, the response status code should be 401.
+
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
@@ -433,7 +446,6 @@ async def test_init_authorization_failure_no_header(
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
             f'/api/v1_0/land-add-plant/{land_code}/init'
-
         )
 
         if LandAddPlantRouterConfig.is_public is True:
@@ -448,9 +460,20 @@ async def test_init_endpoint_url_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
-    """
+    Test case for the failure scenario of the 'init'
+    endpoint URL in the 'land-add-plant' API.
 
+    This test verifies that when an invalid parameter is
+    provided in the URL, the API returns a 501 status code.
+
+    Args:
+        overridden_get_db (AsyncSession): The overridden
+            database session for testing.
+        api_key_fixture (str): The API key for authentication.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
@@ -473,7 +496,12 @@ async def test_init_endpoint_invalid_code_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
+    Test case to verify the behavior of the 'init' endpoint
+    when an invalid land code is provided.
+
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
     """
 
     land_code = uuid.UUID(int=0)
@@ -498,9 +526,21 @@ async def test_init_endpoint_method_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
-    """
+    Test case for the failure scenario of the `init` endpoint method.
 
+    This test case verifies that when the `init` endpoint
+    method is called with an invalid HTTP method,
+    it returns a response with a status code of
+    405 (Method Not Allowed).
+
+    Args:
+        overridden_get_db (AsyncSession): The overridden
+            database session for testing.
+        api_key_fixture (str): The API key fixture for testing.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
@@ -519,7 +559,13 @@ async def test_init_endpoint_method_failure(
 
 def teardown_module(module):  # pylint: disable=unused-argument
     """
-    #TODO add comment
-    """
+    Teardown function called after all tests in the module have been run.
+    It clears the dependency overrides in the app.
 
+    Args:
+        module: The module object representing the test module.
+
+    Returns:
+        None
+    """
     app.dependency_overrides.clear()

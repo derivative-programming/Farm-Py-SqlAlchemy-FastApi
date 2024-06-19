@@ -1,7 +1,8 @@
 # apis/models/factory/tac_farm_dashboard.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the factory class for creating
+instances of the TacFarmDashboardGetModelRequest model.
 """
 import uuid
 from datetime import datetime
@@ -15,11 +16,12 @@ class TacFarmDashboardGetModelRequestFactory(
     factory.base.Factory
 ):
     """
-    #TODO add comment
+    Factory class for creating instances of the
+    TacFarmDashboardGetModelRequest model.
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the factory.
         """
         model = TacFarmDashboardGetModelRequest
 
@@ -31,6 +33,17 @@ class TacFarmDashboardGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> TacFarmDashboardGetModelRequest:
+        """
+        Build a TacFarmDashboardGetModelRequest instance.
+        Args:
+            model_class: The model class to build an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            TacFarmDashboardGetModelRequest: The built
+                instance of TacFarmDashboardGetModelRequest.
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -49,6 +62,17 @@ class TacFarmDashboardGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> TacFarmDashboardGetModelRequest:
+        """
+        Create a TacFarmDashboardGetModelRequest instance.
+        Args:
+            model_class: The model class to create an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            TacFarmDashboardGetModelRequest: The created
+                instance of TacFarmDashboardGetModelRequest.
+        """
 
 # endset
 
@@ -64,7 +88,14 @@ class TacFarmDashboardGetModelRequestFactory(
         *args, **kwargs
     ) -> TacFarmDashboardGetModelRequest:
         """
-            #TODO add comment
+        Asynchronously create a TacFarmDashboardGetModelRequest instance.
+        Args:
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            TacFarmDashboardGetModelRequest: The created
+                instance of TacFarmDashboardGetModelRequest.
         """
 
 # endset

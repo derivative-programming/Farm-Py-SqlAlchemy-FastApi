@@ -1,7 +1,7 @@
 # apis/models/land_add_plant.py
 
 """
-    #TODO add comment
+This module contains the models for the Land Add Plant API.
 """
 
 import json
@@ -25,8 +25,9 @@ from .post_reponse import PostResponse
 
 class LandAddPlantPostModelRequest(CamelModel):
     """
-        #TODO add comment
+    Represents the request model for the Land Add Plant API.
     """
+
     force_error_message: str = Field(
         default="",
         description="Force Error Message")
@@ -88,9 +89,10 @@ class LandAddPlantPostModelRequest(CamelModel):
         description="Request Sample Image Upload File")
 # endset
 
+
     class Config:
         """
-            #TODO add comment
+        Configuration class for the LandAddPlantPostModelRequest.
         """
 
         json_encoders = {
@@ -99,7 +101,7 @@ class LandAddPlantPostModelRequest(CamelModel):
 
     def to_dict_snake(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case keys.
         """
 
         data = self.model_dump()
@@ -107,7 +109,8 @@ class LandAddPlantPostModelRequest(CamelModel):
 
     def to_dict_snake_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case
+        keys and serialized values.
         """
 
         data = json.loads(self.model_dump_json())
@@ -115,7 +118,7 @@ class LandAddPlantPostModelRequest(CamelModel):
 
     def to_dict_camel(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase keys.
         """
 
         data = self.model_dump()
@@ -123,7 +126,8 @@ class LandAddPlantPostModelRequest(CamelModel):
 
     def to_dict_camel_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase
+        keys and serialized values.
         """
 
         data = json.loads(self.model_dump_json())
@@ -132,7 +136,7 @@ class LandAddPlantPostModelRequest(CamelModel):
 
 class LandAddPlantPostModelResponse(PostResponse):
     """
-        #TODO add comment
+    Represents the response model for the Land Add Plant API.
     """
 
     output_flavor_code: UUID4 = Field(
@@ -192,12 +196,12 @@ class LandAddPlantPostModelResponse(PostResponse):
     plant_code: UUID4 = Field(
         default=uuid.UUID(int=0),
         description="Plant Code")
-# endset
-# endset
 
+# endset
+# endset
     def load_flow_response(self, data: FlowLandAddPlantResult):
         """
-            #TODO add comment
+        Loads the flow response data into the response model.
         """
 
         self.output_flavor_code = data.land_code
@@ -228,7 +232,7 @@ class LandAddPlantPostModelResponse(PostResponse):
         request: LandAddPlantPostModelRequest
     ):
         """
-            #TODO add comment
+        Processes the request and generates the response.
         """
 
         try:
@@ -277,7 +281,9 @@ class LandAddPlantPostModelResponse(PostResponse):
 
     def to_json(self):
         """
-        #TODO add comment
-        """
+        Converts the object to a JSON representation.
 
+        Returns:
+            str: The JSON representation of the object.
+        """
         return self.model_dump_json()

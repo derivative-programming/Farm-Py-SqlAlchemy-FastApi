@@ -1,6 +1,7 @@
 # flows/default/pac_user_role_list_init_report.py
 """
-    #TODO add comment
+This module contains the FlowPacUserRoleListInitReport class and related classes
+that handle the addition of a  to a specific pac in the flow process.
 """
 import uuid
 import json
@@ -13,18 +14,20 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPacUserRoleListInitReportResult():
     """
-    #TODO add comment
+    Represents the result of the FlowPacUserRoleListInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowPacUserRoleListInitReportResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowPacUserRoleListInitReportResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -44,7 +47,7 @@ class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowPacUserRoleListInitReport with the provided session context.
+        Initializes a new instance of the FlowPacUserRoleListInitReport class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -57,7 +60,9 @@ class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
 # endset  # noqa: E122
     ) -> FlowPacUserRoleListInitReportResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific pac.
+        Returns:
+            FlowPacUserRoleListInitReportResult: The result of the FlowPacUserRoleListInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

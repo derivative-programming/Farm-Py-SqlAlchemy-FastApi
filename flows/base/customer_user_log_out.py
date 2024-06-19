@@ -1,6 +1,7 @@
 # flows/base/customer_user_log_out.py
 """
-    #TODO add comment
+This module contains the implementation
+of the BaseFlow Customer User Log Out class
 """
 import uuid
 from datetime import date, datetime
@@ -16,11 +17,12 @@ from managers.org_customer import OrgCustomerManager
 from .base_flow import BaseFlow
 class BaseFlowCustomerUserLogOut(BaseFlow):
     """
-    #TODO add comment
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initializes a new instance of the BaseFlowCustomerUserLogOut class.
+        Args:
+            session_context (SessionContext): The session context for the flow.
         """
         super(BaseFlowCustomerUserLogOut, self).__init__(
             "CustomerUserLogOut",
@@ -32,7 +34,7 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
 
     ):
         """
-        #TODO add comment
+        Processes the validation rules for adding s to customer.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -53,7 +55,7 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
                 self._add_validation_error(
-                    "Unautorized access. " + role_required + " role not found."
+                    f"Unauthorized access. {role_required} role not found."
                 )
         if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                 is True:
@@ -78,7 +80,7 @@ class BaseFlowCustomerUserLogOut(BaseFlow):
                     is True and item.get_object_name() == "customer":  # type: ignore  # noqa: E501
                 if item.code != self._session_context.customer_code:  # type: ignore  # noqa: E501
                     self._add_validation_error(
-                        "Unautorized access.  Invalid User.")
+                        "Unauthorized access.  Invalid User.")
 
             if val is True:
                 # item = await item.get_parent_obj()

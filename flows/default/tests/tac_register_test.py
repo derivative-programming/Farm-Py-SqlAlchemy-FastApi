@@ -1,6 +1,7 @@
 # flows/default/tests/tac_register_test.py
 """
-    #TODO add comment
+This module contains unit tests for the
+`FlowTacRegisterResult` and `FlowTacRegister` classes.
 """
 import json
 import uuid
@@ -16,11 +17,11 @@ from helpers.type_conversion import TypeConversion
 from models.factory.tac import TacFactory
 class TestTacRegisterPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the `FlowTacRegisterResult` class.
     """
     def test_flow_tac_register_result_to_json(self):
         """
-            #TODO add comment
+        Test the `to_json` method of the `FlowTacRegisterResult` class.
         """
         # Create an instance and set attributes
         result = FlowTacRegisterResult()
@@ -56,7 +57,7 @@ class TestTacRegisterPostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        Test the `process` method of the `FlowTacRegister` class.
         """
         session_context = SessionContext(dict(), session)
         flow = FlowTacRegister(session_context)

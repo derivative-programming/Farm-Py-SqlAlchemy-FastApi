@@ -1,7 +1,7 @@
 # models/factory/tests/plant_test.py
-
 """
-    #TODO add comment
+This module contains unit tests for the PlantFactory
+class in the models.factory package.
 """
 
 from decimal import Decimal
@@ -24,17 +24,16 @@ DATABASE_URL = "sqlite:///:memory:"
 
 class TestPlantFactory:
     """
-    #TODO add comment
+    This class contains unit tests for the PlantFactory class.
     """
 
     @pytest.fixture(scope="module")
     def engine(self):
         """
-        #TODO add comment
+        Fixture for creating a database engine.
         """
-
         engine = create_engine(DATABASE_URL, echo=False)
-        #FKs are not activated by default in sqllite
+        # FKs are not activated by default in sqllite
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -43,9 +42,8 @@ class TestPlantFactory:
     @pytest.fixture
     def session(self, engine):
         """
-        #TODO add comment
+        Fixture for creating a database session.
         """
-
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
@@ -55,42 +53,40 @@ class TestPlantFactory:
 
     def test_plant_creation(self, session):
         """
-        #TODO add comment
+        Test case for creating a plant.
         """
-
         plant = PlantFactory.create(session=session)
         assert plant.plant_id is not None
 
     def test_code_default(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the code attribute.
         """
-
         logging.info("vrtest")
         plant = PlantFactory.create(session=session)
         assert isinstance(plant.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of
+        the last_change_code attribute on build.
         """
-
         plant: Plant = PlantFactory.build(session=session)
         assert plant.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on creation.
         """
-
         plant: Plant = PlantFactory.create(session=session)
         assert plant.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on update.
         """
-
         plant = PlantFactory.create(session=session)
         initial_code = plant.last_change_code
         plant.code = uuid.uuid4()
@@ -99,18 +95,18 @@ class TestPlantFactory:
 
     def test_date_inserted_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on build.
         """
-
         plant = PlantFactory.build(session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on initial save.
         """
-
         plant = PlantFactory.build(session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
@@ -122,9 +118,9 @@ class TestPlantFactory:
 
     def test_date_inserted_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on second save.
         """
-
         plant = PlantFactory(session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(plant.insert_utc_date_time, datetime)
@@ -136,18 +132,18 @@ class TestPlantFactory:
 
     def test_date_updated_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on build.
         """
-
         plant = PlantFactory.build(session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on initial save.
         """
-
         plant = PlantFactory.build(session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
@@ -159,9 +155,9 @@ class TestPlantFactory:
 
     def test_date_updated_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on second save.
         """
-
         plant = PlantFactory(session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(plant.last_update_utc_date_time, datetime)
@@ -173,9 +169,8 @@ class TestPlantFactory:
 
     def test_model_deletion(self, session):
         """
-        #TODO add comment
+        Test case for deleting a plant model.
         """
-
         plant = PlantFactory.create(session=session)
         session.delete(plant)
         session.commit()
@@ -185,19 +180,14 @@ class TestPlantFactory:
 
     def test_data_types(self, session):
         """
-        #TODO add comment
+        Test case for checking the data types of the plant attributes.
         """
-
         plant = PlantFactory.create(session=session)
         assert isinstance(plant.plant_id, int)
         assert isinstance(plant.code, uuid.UUID)
-
         assert isinstance(plant.last_change_code, int)
-
         assert isinstance(plant.insert_user_id, uuid.UUID)
-
         assert isinstance(plant.last_update_user_id, uuid.UUID)
-
         assert isinstance(plant.flvr_foreign_key_id, int)
         assert isinstance(plant.is_delete_allowed, bool)
         assert isinstance(plant.is_edit_allowed, bool)
@@ -254,15 +244,13 @@ class TestPlantFactory:
         # someUniqueidentifierVal,
 
 # endset
-
         assert isinstance(plant.insert_utc_date_time, datetime)
         assert isinstance(plant.last_update_utc_date_time, datetime)
 
     def test_unique_code_constraint(self, session):
         """
-        #TODO add comment
+        Test case for checking the unique code constraint.
         """
-
         plant_1 = PlantFactory.create(session=session)
         plant_2 = PlantFactory.create(session=session)
         plant_2.code = plant_1.code
@@ -273,9 +261,8 @@ class TestPlantFactory:
 
     def test_fields_default(self):
         """
-        #TODO add comment
+        Test case for checking the default values of the plant fields.
         """
-
         plant = Plant()
         assert plant.code is not None
         assert plant.last_change_code is not None
@@ -283,7 +270,6 @@ class TestPlantFactory:
         assert plant.last_update_user_id == uuid.UUID(int=0)
         assert plant.insert_utc_date_time is not None
         assert plant.last_update_utc_date_time is not None
-
 # endset
         # isDeleteAllowed,
         # isEditAllowed,
@@ -341,7 +327,24 @@ class TestPlantFactory:
 
     def test_last_change_code_concurrency(self, session):
         """
-        #TODO add comment
+        Test case to verify the concurrency of
+        last_change_code in the Plant model.
+
+        This test case checks if the last_change_code
+        of a Plant object is updated correctly
+        when multiple changes are made concurrently.
+        It creates a Plant object, retrieves it
+        from the database, and updates its code
+        attribute twice in separate transactions.
+        Finally, it asserts that the last_change_code
+        of the second retrieved Plant object
+        is different from the original last_change_code.
+
+        Args:
+            session (Session): The SQLAlchemy session object.
+
+        Returns:
+            None
         """
 
         plant = PlantFactory.create(session=session)
@@ -373,9 +376,23 @@ class TestPlantFactory:
     # LandID
     def test_invalid_land_id(self, session):
         """
-        #TODO add comment
-        """
+        Test case to check if an invalid land ID raises an IntegrityError.
 
+        This test case creates a plant object using
+        the PlantFactory and assigns an invalid land ID to it.
+        It then tries to commit the changes to the
+        session and expects an IntegrityError to be raised.
+        Finally, it rolls back the session to ensure
+        no changes are persisted.
+
+        Args:
+            session (Session): The SQLAlchemy session object.
+
+        Raises:
+            IntegrityError: If the changes to the
+                session violate any integrity constraints.
+
+        """
         plant = PlantFactory.create(session=session)
         plant.land_id = 99999
         with pytest.raises(IntegrityError):
@@ -385,9 +402,29 @@ class TestPlantFactory:
     # FlvrForeignKeyID
     def test_invalid_flvr_foreign_key_id(self, session):
         """
-        #TODO add comment
-        """
+        Test case to check if an invalid foreign key ID
+        for flavor is handled correctly.
 
+        This test creates a new plant object using
+        the PlantFactory and sets an invalid foreign key ID for the flavor.
+        It then tries to commit the changes to the
+        session and expects an IntegrityError to be raised.
+        Finally, it rolls back the session to ensure
+        no changes are persisted.
+
+        Note: This test assumes that the PlantFactory
+            and session objects are properly set up.
+
+        Args:
+            session (Session): The SQLAlchemy session object.
+
+        Raises:
+            IntegrityError: If the changes to the
+            session violate the integrity constraints.
+
+        Returns:
+            None
+        """
         plant = PlantFactory.create(session=session)
         plant.flvr_foreign_key_id = 99999
         with pytest.raises(IntegrityError):

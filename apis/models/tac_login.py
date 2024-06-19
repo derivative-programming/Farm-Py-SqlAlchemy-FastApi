@@ -1,6 +1,6 @@
 # apis/models/tac_login.py
 """
-    #TODO add comment
+This module contains the models for the Tac Login API.
 """
 import json
 import logging
@@ -18,7 +18,7 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class TacLoginPostModelRequest(CamelModel):
     """
-        #TODO add comment
+    Represents the request model for the Tac Login API.
     """
     force_error_message: str = Field(
         default="",
@@ -32,38 +32,40 @@ class TacLoginPostModelRequest(CamelModel):
 # endset
     class Config:
         """
-            #TODO add comment
+        Configuration class for the TacLoginPostModelRequest.
         """
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
     def to_dict_snake_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return data
     def to_dict_camel(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class TacLoginPostModelResponse(PostResponse):
     """
-        #TODO add comment
+    Represents the response model for the Tac Login API.
     """
     customer_code: UUID4 = Field(
         default=uuid.UUID(int=0),
@@ -87,7 +89,7 @@ class TacLoginPostModelResponse(PostResponse):
 # endset
     def load_flow_response(self, data: FlowTacLoginResult):
         """
-            #TODO add comment
+        Loads the flow response data into the response model.
         """
         self.customer_code = data.customer_code
         self.email = data.email
@@ -103,7 +105,7 @@ class TacLoginPostModelResponse(PostResponse):
         request: TacLoginPostModelRequest
     ):
         """
-            #TODO add comment
+        Processes the request and generates the response.
         """
         try:
             logging.info("loading model...TacLoginPostModelResponse")
@@ -134,7 +136,9 @@ class TacLoginPostModelResponse(PostResponse):
                 self.validation_errors.append(validation_error)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the object to a JSON representation.
+        Returns:
+            str: The JSON representation of the object.
         """
         return self.model_dump_json()
 

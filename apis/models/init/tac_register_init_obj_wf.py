@@ -1,6 +1,7 @@
 # apis/models/init/tac_register_init_obj_wf.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the TacRegisterInitObjWF workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    TacRegisterInitObjWFGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -45,7 +47,8 @@ class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
         data: FlowTacRegisterInitObjWFResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowTacRegisterInitObjWFResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -62,12 +65,13 @@ class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
             data.last_name)
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class TacRegisterInitObjWFGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    TacRegisterInitObjWFGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -76,7 +80,7 @@ class TacRegisterInitObjWFGetInitModelRequest(SnakeModel):
             response: TacRegisterInitObjWFGetInitModelResponse
     ) -> TacRegisterInitObjWFGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

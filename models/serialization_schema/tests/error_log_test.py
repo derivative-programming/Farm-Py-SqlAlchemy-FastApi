@@ -1,7 +1,21 @@
 # error_log_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the ErrorLog serialization schema.
+The ErrorLog serialization schema is responsible for serializing and deserializing
+ErrorLog instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of ErrorLog
+instances using the ErrorLogSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a ErrorLog instance.
+The ErrorLogSchema class is used to define the serialization and deserialization
+rules for ErrorLog instances. It specifies how each attribute of a ErrorLog instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a ErrorLog instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -109,7 +123,13 @@ class TestErrorLogSchema:
 # endset
     def test_error_log_deserialization(self, error_log):
         """
-            #TODO add comment
+        Test the deserialization of a ErrorLog object using the ErrorLogSchema.
+        Args:
+            error_log (ErrorLog): The ErrorLog object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = ErrorLogSchema()
         serialized_data = schema.dump(error_log)
@@ -182,7 +202,17 @@ class TestErrorLogSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the ErrorLogSchema class.
+        This method tests the deserialization of
+        a JSON string to a ErrorLog object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a ErrorLog
+        object. Finally, it asserts the
+        equality of the deserialized ErrorLog object
+        with the sample data.
+        Returns:
+            None
         """
         error_log_schema = ErrorLogSchema()
         # Convert sample data to JSON string
@@ -230,7 +260,12 @@ class TestErrorLogSchema:
         assert isinstance(new_error_log, ErrorLog)
     def test_to_json(self, error_log: ErrorLog):
         """
-            #TODO add comment
+        Test the conversion of a ErrorLog instance to JSON.
+        Args:
+            error_log (ErrorLog): The ErrorLog instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the ErrorLog instance to JSON using the schema
         error_log_schema = ErrorLogSchema()

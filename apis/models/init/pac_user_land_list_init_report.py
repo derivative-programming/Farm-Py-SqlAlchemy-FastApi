@@ -1,6 +1,7 @@
 # apis/models/init/pac_user_land_list_init_report.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the PacUserLandListInitReport workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class PacUserLandListInitReportGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    PacUserLandListInitReportGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -31,7 +33,8 @@ class PacUserLandListInitReportGetInitModelResponse(CamelModel):
         data: FlowPacUserLandListInitReportResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowPacUserLandListInitReportResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -39,12 +42,13 @@ class PacUserLandListInitReportGetInitModelResponse(CamelModel):
 
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class PacUserLandListInitReportGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    PacUserLandListInitReportGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -53,7 +57,7 @@ class PacUserLandListInitReportGetInitModelRequest(SnakeModel):
             response: PacUserLandListInitReportGetInitModelResponse
     ) -> PacUserLandListInitReportGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

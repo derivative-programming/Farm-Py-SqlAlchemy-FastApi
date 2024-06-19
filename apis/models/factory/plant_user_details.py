@@ -1,7 +1,8 @@
 # apis/models/factory/plant_user_details.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the factory class for creating
+instances of the PlantUserDetailsGetModelRequest model.
 """
 import uuid
 from datetime import datetime
@@ -15,11 +16,12 @@ class PlantUserDetailsGetModelRequestFactory(
     factory.base.Factory
 ):
     """
-    #TODO add comment
+    Factory class for creating instances of the
+    PlantUserDetailsGetModelRequest model.
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the factory.
         """
         model = PlantUserDetailsGetModelRequest
 
@@ -31,6 +33,17 @@ class PlantUserDetailsGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PlantUserDetailsGetModelRequest:
+        """
+        Build a PlantUserDetailsGetModelRequest instance.
+        Args:
+            model_class: The model class to build an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PlantUserDetailsGetModelRequest: The built
+                instance of PlantUserDetailsGetModelRequest.
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -49,6 +62,17 @@ class PlantUserDetailsGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PlantUserDetailsGetModelRequest:
+        """
+        Create a PlantUserDetailsGetModelRequest instance.
+        Args:
+            model_class: The model class to create an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PlantUserDetailsGetModelRequest: The created
+                instance of PlantUserDetailsGetModelRequest.
+        """
 
 # endset
 
@@ -64,7 +88,14 @@ class PlantUserDetailsGetModelRequestFactory(
         *args, **kwargs
     ) -> PlantUserDetailsGetModelRequest:
         """
-            #TODO add comment
+        Asynchronously create a PlantUserDetailsGetModelRequest instance.
+        Args:
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PlantUserDetailsGetModelRequest: The created
+                instance of PlantUserDetailsGetModelRequest.
         """
 
 # endset

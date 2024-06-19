@@ -1,6 +1,7 @@
 # flows/default/customer_build_temp_api_key.py
 """
-    #TODO add comment
+This module contains the FlowCustomerBuildTempApiKey class and related classes
+that handle the addition of a  to a specific customer in the flow process.
 """
 import uuid
 import json
@@ -13,18 +14,20 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowCustomerBuildTempApiKeyResult():
     """
-    #TODO add comment
+    Represents the result of the FlowCustomerBuildTempApiKey process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     tmp_org_api_key_code: uuid.UUID = uuid.UUID(int=0)
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowCustomerBuildTempApiKeyResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowCustomerBuildTempApiKeyResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -45,7 +48,7 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowCustomerBuildTempApiKey with the provided session context.
+        Initializes a new instance of the FlowCustomerBuildTempApiKey class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -58,7 +61,9 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
 # endset  # noqa: E122
     ) -> FlowCustomerBuildTempApiKeyResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific customer.
+        Returns:
+            FlowCustomerBuildTempApiKeyResult: The result of the FlowCustomerBuildTempApiKey process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

@@ -1,6 +1,7 @@
 # flows/default/tests/customer_user_log_out_test.py
 """
-    #TODO add comment
+This module contains unit tests for the
+`FlowCustomerUserLogOutResult` and `FlowCustomerUserLogOut` classes.
 """
 import json
 import uuid
@@ -16,11 +17,11 @@ from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
 class TestCustomerUserLogOutPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the `FlowCustomerUserLogOutResult` class.
     """
     def test_flow_customer_user_log_out_result_to_json(self):
         """
-            #TODO add comment
+        Test the `to_json` method of the `FlowCustomerUserLogOutResult` class.
         """
         # Create an instance and set attributes
         result = FlowCustomerUserLogOutResult()
@@ -40,7 +41,7 @@ class TestCustomerUserLogOutPostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        Test the `process` method of the `FlowCustomerUserLogOut` class.
         """
         session_context = SessionContext(dict(), session)
         flow = FlowCustomerUserLogOut(session_context)

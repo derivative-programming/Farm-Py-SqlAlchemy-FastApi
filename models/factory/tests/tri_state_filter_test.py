@@ -1,6 +1,7 @@
 # models/factory/tests/tri_state_filter_test.py
 """
-    #TODO add comment
+This module contains unit tests for the TriStateFilterFactory
+class in the models.factory package.
 """
 from decimal import Decimal
 import time
@@ -19,15 +20,15 @@ logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestTriStateFilterFactory:
     """
-    #TODO add comment
+    This class contains unit tests for the TriStateFilterFactory class.
     """
     @pytest.fixture(scope="module")
     def engine(self):
         """
-        #TODO add comment
+        Fixture for creating a database engine.
         """
         engine = create_engine(DATABASE_URL, echo=False)
-        #FKs are not activated by default in sqllite
+        # FKs are not activated by default in sqllite
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -35,7 +36,7 @@ class TestTriStateFilterFactory:
     @pytest.fixture
     def session(self, engine):
         """
-        #TODO add comment
+        Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(  # pylint: disable=invalid-name
@@ -45,32 +46,35 @@ class TestTriStateFilterFactory:
         session_instance.close()
     def test_tri_state_filter_creation(self, session):
         """
-        #TODO add comment
+        Test case for creating a tri_state_filter.
         """
         tri_state_filter = TriStateFilterFactory.create(session=session)
         assert tri_state_filter.tri_state_filter_id is not None
     def test_code_default(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
         tri_state_filter = TriStateFilterFactory.create(session=session)
         assert isinstance(tri_state_filter.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of
+        the last_change_code attribute on build.
         """
         tri_state_filter: TriStateFilter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on creation.
         """
         tri_state_filter: TriStateFilter = TriStateFilterFactory.create(session=session)
         assert tri_state_filter.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on update.
         """
         tri_state_filter = TriStateFilterFactory.create(session=session)
         initial_code = tri_state_filter.last_change_code
@@ -79,14 +83,16 @@ class TestTriStateFilterFactory:
         assert tri_state_filter.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on build.
         """
         tri_state_filter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.insert_utc_date_time is not None
         assert isinstance(tri_state_filter.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on initial save.
         """
         tri_state_filter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.insert_utc_date_time is not None
@@ -98,7 +104,8 @@ class TestTriStateFilterFactory:
         assert tri_state_filter.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on second save.
         """
         tri_state_filter = TriStateFilterFactory(session=session)
         assert tri_state_filter.insert_utc_date_time is not None
@@ -110,14 +117,16 @@ class TestTriStateFilterFactory:
         assert tri_state_filter.insert_utc_date_time == initial_time
     def test_date_updated_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on build.
         """
         tri_state_filter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.last_update_utc_date_time is not None
         assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on initial save.
         """
         tri_state_filter = TriStateFilterFactory.build(session=session)
         assert tri_state_filter.last_update_utc_date_time is not None
@@ -129,7 +138,8 @@ class TestTriStateFilterFactory:
         assert tri_state_filter.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on second save.
         """
         tri_state_filter = TriStateFilterFactory(session=session)
         assert tri_state_filter.last_update_utc_date_time is not None
@@ -141,7 +151,7 @@ class TestTriStateFilterFactory:
         assert tri_state_filter.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        #TODO add comment
+        Test case for deleting a tri_state_filter model.
         """
         tri_state_filter = TriStateFilterFactory.create(session=session)
         session.delete(tri_state_filter)
@@ -151,7 +161,7 @@ class TestTriStateFilterFactory:
         assert deleted_tri_state_filter is None
     def test_data_types(self, session):
         """
-        #TODO add comment
+        Test case for checking the data types of the tri_state_filter attributes.
         """
         tri_state_filter = TriStateFilterFactory.create(session=session)
         assert isinstance(tri_state_filter.tri_state_filter_id, int)
@@ -183,7 +193,7 @@ class TestTriStateFilterFactory:
         assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
     def test_unique_code_constraint(self, session):
         """
-        #TODO add comment
+        Test case for checking the unique code constraint.
         """
         tri_state_filter_1 = TriStateFilterFactory.create(session=session)
         tri_state_filter_2 = TriStateFilterFactory.create(session=session)
@@ -194,7 +204,7 @@ class TestTriStateFilterFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        #TODO add comment
+        Test case for checking the default values of the tri_state_filter fields.
         """
         tri_state_filter = TriStateFilter()
         assert tri_state_filter.code is not None
@@ -225,7 +235,21 @@ class TestTriStateFilterFactory:
 # endset
     def test_last_change_code_concurrency(self, session):
         """
-        #TODO add comment
+        Test case to verify the concurrency of
+        last_change_code in the TriStateFilter model.
+        This test case checks if the last_change_code
+        of a TriStateFilter object is updated correctly
+        when multiple changes are made concurrently.
+        It creates a TriStateFilter object, retrieves it
+        from the database, and updates its code
+        attribute twice in separate transactions.
+        Finally, it asserts that the last_change_code
+        of the second retrieved TriStateFilter object
+        is different from the original last_change_code.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Returns:
+            None
         """
         tri_state_filter = TriStateFilterFactory.create(session=session)
         original_last_change_code = tri_state_filter.last_change_code
@@ -247,7 +271,18 @@ class TestTriStateFilterFactory:
     # PacID
     def test_invalid_pac_id(self, session):
         """
-        #TODO add comment
+        Test case to check if an invalid pac ID raises an IntegrityError.
+        This test case creates a tri_state_filter object using
+        the TriStateFilterFactory and assigns an invalid pac ID to it.
+        It then tries to commit the changes to the
+        session and expects an IntegrityError to be raised.
+        Finally, it rolls back the session to ensure
+        no changes are persisted.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Raises:
+            IntegrityError: If the changes to the
+                session violate any integrity constraints.
         """
         tri_state_filter = TriStateFilterFactory.create(session=session)
         tri_state_filter.pac_id = 99999

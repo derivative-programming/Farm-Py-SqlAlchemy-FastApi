@@ -1,6 +1,7 @@
 # apis/models/init/tac_farm_dashboard_init_report.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the TacFarmDashboardInitReport workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    TacFarmDashboardInitReportGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -35,7 +37,8 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
         data: FlowTacFarmDashboardInitReportResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowTacFarmDashboardInitReportResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -44,12 +47,13 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
             data.customer_code)
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    TacFarmDashboardInitReportGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -58,7 +62,7 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
             response: TacFarmDashboardInitReportGetInitModelResponse
     ) -> TacFarmDashboardInitReportGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

@@ -17,7 +17,7 @@ class PacFactory(factory.Factory):
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the PacFactory.
         """
         model = Pac
     # pac_id = factory.Sequence(lambda n: n)
@@ -36,7 +36,15 @@ class PacFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Pac:
         """
-        #TODO add comment
+            Builds and returns an instance of the Pac model.
+            Args:
+                model_class (class): The class of the model to be built.
+                session (Session, optional): The SQLAlchemy
+                session to be used. Defaults to None.
+                *args: Variable length argument list.
+                **kwargs: Arbitrary keyword arguments.
+            Returns:
+                Pac: An instance of the Pac model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -58,7 +66,14 @@ class PacFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> Pac:
         """
-        #TODO add comment
+        Create a new Pac object and save it to the database.
+        Args:
+            model_class (class): The class of the model to create.
+            session (Session): The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            Pac: The created Pac object.
         """
         logger.info("factory create")
 
@@ -78,7 +93,13 @@ class PacFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Pac:
         """
-            #TODO add comment
+        Create a new Pac object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created Pac object.
         """
 
 # endset
@@ -97,7 +118,13 @@ class PacFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Pac:
         """
-            #TODO add comment
+        Build a new Pac object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created Pac object.
         """
 
 # endset

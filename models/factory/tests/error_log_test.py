@@ -1,6 +1,7 @@
 # models/factory/tests/error_log_test.py
 """
-    #TODO add comment
+This module contains unit tests for the ErrorLogFactory
+class in the models.factory package.
 """
 from decimal import Decimal
 import time
@@ -19,15 +20,15 @@ logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestErrorLogFactory:
     """
-    #TODO add comment
+    This class contains unit tests for the ErrorLogFactory class.
     """
     @pytest.fixture(scope="module")
     def engine(self):
         """
-        #TODO add comment
+        Fixture for creating a database engine.
         """
         engine = create_engine(DATABASE_URL, echo=False)
-        #FKs are not activated by default in sqllite
+        # FKs are not activated by default in sqllite
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -35,7 +36,7 @@ class TestErrorLogFactory:
     @pytest.fixture
     def session(self, engine):
         """
-        #TODO add comment
+        Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(  # pylint: disable=invalid-name
@@ -45,32 +46,35 @@ class TestErrorLogFactory:
         session_instance.close()
     def test_error_log_creation(self, session):
         """
-        #TODO add comment
+        Test case for creating a error_log.
         """
         error_log = ErrorLogFactory.create(session=session)
         assert error_log.error_log_id is not None
     def test_code_default(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
         error_log = ErrorLogFactory.create(session=session)
         assert isinstance(error_log.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of
+        the last_change_code attribute on build.
         """
         error_log: ErrorLog = ErrorLogFactory.build(session=session)
         assert error_log.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on creation.
         """
         error_log: ErrorLog = ErrorLogFactory.create(session=session)
         assert error_log.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on update.
         """
         error_log = ErrorLogFactory.create(session=session)
         initial_code = error_log.last_change_code
@@ -79,14 +83,16 @@ class TestErrorLogFactory:
         assert error_log.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on build.
         """
         error_log = ErrorLogFactory.build(session=session)
         assert error_log.insert_utc_date_time is not None
         assert isinstance(error_log.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on initial save.
         """
         error_log = ErrorLogFactory.build(session=session)
         assert error_log.insert_utc_date_time is not None
@@ -98,7 +104,8 @@ class TestErrorLogFactory:
         assert error_log.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on second save.
         """
         error_log = ErrorLogFactory(session=session)
         assert error_log.insert_utc_date_time is not None
@@ -110,14 +117,16 @@ class TestErrorLogFactory:
         assert error_log.insert_utc_date_time == initial_time
     def test_date_updated_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on build.
         """
         error_log = ErrorLogFactory.build(session=session)
         assert error_log.last_update_utc_date_time is not None
         assert isinstance(error_log.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on initial save.
         """
         error_log = ErrorLogFactory.build(session=session)
         assert error_log.last_update_utc_date_time is not None
@@ -129,7 +138,8 @@ class TestErrorLogFactory:
         assert error_log.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on second save.
         """
         error_log = ErrorLogFactory(session=session)
         assert error_log.last_update_utc_date_time is not None
@@ -141,7 +151,7 @@ class TestErrorLogFactory:
         assert error_log.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        #TODO add comment
+        Test case for deleting a error_log model.
         """
         error_log = ErrorLogFactory.create(session=session)
         session.delete(error_log)
@@ -151,7 +161,7 @@ class TestErrorLogFactory:
         assert deleted_error_log is None
     def test_data_types(self, session):
         """
-        #TODO add comment
+        Test case for checking the data types of the error_log attributes.
         """
         error_log = ErrorLogFactory.create(session=session)
         assert isinstance(error_log.error_log_id, int)
@@ -189,7 +199,7 @@ class TestErrorLogFactory:
         assert isinstance(error_log.last_update_utc_date_time, datetime)
     def test_unique_code_constraint(self, session):
         """
-        #TODO add comment
+        Test case for checking the unique code constraint.
         """
         error_log_1 = ErrorLogFactory.create(session=session)
         error_log_2 = ErrorLogFactory.create(session=session)
@@ -200,7 +210,7 @@ class TestErrorLogFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        #TODO add comment
+        Test case for checking the default values of the error_log fields.
         """
         error_log = ErrorLog()
         assert error_log.code is not None
@@ -241,7 +251,21 @@ class TestErrorLogFactory:
 # endset
     def test_last_change_code_concurrency(self, session):
         """
-        #TODO add comment
+        Test case to verify the concurrency of
+        last_change_code in the ErrorLog model.
+        This test case checks if the last_change_code
+        of a ErrorLog object is updated correctly
+        when multiple changes are made concurrently.
+        It creates a ErrorLog object, retrieves it
+        from the database, and updates its code
+        attribute twice in separate transactions.
+        Finally, it asserts that the last_change_code
+        of the second retrieved ErrorLog object
+        is different from the original last_change_code.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Returns:
+            None
         """
         error_log = ErrorLogFactory.create(session=session)
         original_last_change_code = error_log.last_change_code
@@ -264,7 +288,18 @@ class TestErrorLogFactory:
     # PacID
     def test_invalid_pac_id(self, session):
         """
-        #TODO add comment
+        Test case to check if an invalid pac ID raises an IntegrityError.
+        This test case creates a error_log object using
+        the ErrorLogFactory and assigns an invalid pac ID to it.
+        It then tries to commit the changes to the
+        session and expects an IntegrityError to be raised.
+        Finally, it rolls back the session to ensure
+        no changes are persisted.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Raises:
+            IntegrityError: If the changes to the
+                session violate any integrity constraints.
         """
         error_log = ErrorLogFactory.create(session=session)
         error_log.pac_id = 99999

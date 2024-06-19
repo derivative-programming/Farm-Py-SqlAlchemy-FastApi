@@ -1,6 +1,7 @@
 # flows/default/plant_user_delete.py
 """
-    #TODO add comment
+This module contains the FlowPlantUserDelete class and related classes
+that handle the addition of a  to a specific plant in the flow process.
 """
 import uuid
 import json
@@ -13,18 +14,20 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPlantUserDeleteResult():
     """
-    #TODO add comment
+    Represents the result of the FlowPlantUserDelete process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowPlantUserDeleteResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowPlantUserDeleteResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -44,7 +47,7 @@ class FlowPlantUserDelete(BaseFlowPlantUserDelete):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowPlantUserDelete with the provided session context.
+        Initializes a new instance of the FlowPlantUserDelete class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -57,7 +60,9 @@ class FlowPlantUserDelete(BaseFlowPlantUserDelete):
 # endset  # noqa: E122
     ) -> FlowPlantUserDeleteResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific plant.
+        Returns:
+            FlowPlantUserDeleteResult: The result of the FlowPlantUserDelete process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

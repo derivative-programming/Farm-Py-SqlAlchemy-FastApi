@@ -1,6 +1,7 @@
 # flows/default/tests/plant_user_delete_test.py
 """
-    #TODO add comment
+This module contains unit tests for the
+`FlowPlantUserDeleteResult` and `FlowPlantUserDelete` classes.
 """
 import json
 import uuid
@@ -16,11 +17,11 @@ from helpers.type_conversion import TypeConversion
 from models.factory.plant import PlantFactory
 class TestPlantUserDeletePostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the `FlowPlantUserDeleteResult` class.
     """
     def test_flow_plant_user_delete_result_to_json(self):
         """
-            #TODO add comment
+        Test the `to_json` method of the `FlowPlantUserDeleteResult` class.
         """
         # Create an instance and set attributes
         result = FlowPlantUserDeleteResult()
@@ -40,7 +41,7 @@ class TestPlantUserDeletePostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        Test the `process` method of the `FlowPlantUserDelete` class.
         """
         session_context = SessionContext(dict(), session)
         flow = FlowPlantUserDelete(session_context)

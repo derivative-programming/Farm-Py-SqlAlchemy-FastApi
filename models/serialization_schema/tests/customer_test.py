@@ -1,7 +1,21 @@
 # customer_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the Customer serialization schema.
+The Customer serialization schema is responsible for serializing and deserializing
+Customer instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of Customer
+instances using the CustomerSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a Customer instance.
+The CustomerSchema class is used to define the serialization and deserialization
+rules for Customer instances. It specifies how each attribute of a Customer instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a Customer instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -159,7 +173,13 @@ class TestCustomerSchema:
 # endset
     def test_customer_deserialization(self, customer):
         """
-            #TODO add comment
+        Test the deserialization of a Customer object using the CustomerSchema.
+        Args:
+            customer (Customer): The Customer object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = CustomerSchema()
         serialized_data = schema.dump(customer)
@@ -292,7 +312,17 @@ class TestCustomerSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the CustomerSchema class.
+        This method tests the deserialization of
+        a JSON string to a Customer object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a Customer
+        object. Finally, it asserts the
+        equality of the deserialized Customer object
+        with the sample data.
+        Returns:
+            None
         """
         customer_schema = CustomerSchema()
         # Convert sample data to JSON string
@@ -370,7 +400,12 @@ class TestCustomerSchema:
         assert isinstance(new_customer, Customer)
     def test_to_json(self, customer: Customer):
         """
-            #TODO add comment
+        Test the conversion of a Customer instance to JSON.
+        Args:
+            customer (Customer): The Customer instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the Customer instance to JSON using the schema
         customer_schema = CustomerSchema()

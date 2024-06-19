@@ -1,7 +1,21 @@
 # organization_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the Organization serialization schema.
+The Organization serialization schema is responsible for serializing and deserializing
+Organization instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of Organization
+instances using the OrganizationSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a Organization instance.
+The OrganizationSchema class is used to define the serialization and deserialization
+rules for Organization instances. It specifies how each attribute of a Organization instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a Organization instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -87,7 +101,13 @@ class TestOrganizationSchema:
 # endset
     def test_organization_deserialization(self, organization):
         """
-            #TODO add comment
+        Test the deserialization of a Organization object using the OrganizationSchema.
+        Args:
+            organization (Organization): The Organization object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = OrganizationSchema()
         serialized_data = schema.dump(organization)
@@ -136,7 +156,17 @@ class TestOrganizationSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the OrganizationSchema class.
+        This method tests the deserialization of
+        a JSON string to a Organization object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a Organization
+        object. Finally, it asserts the
+        equality of the deserialized Organization object
+        with the sample data.
+        Returns:
+            None
         """
         organization_schema = OrganizationSchema()
         # Convert sample data to JSON string
@@ -172,7 +202,12 @@ class TestOrganizationSchema:
         assert isinstance(new_organization, Organization)
     def test_to_json(self, organization: Organization):
         """
-            #TODO add comment
+        Test the conversion of a Organization instance to JSON.
+        Args:
+            organization (Organization): The Organization instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the Organization instance to JSON using the schema
         organization_schema = OrganizationSchema()

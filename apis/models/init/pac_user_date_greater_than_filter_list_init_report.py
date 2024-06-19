@@ -1,6 +1,7 @@
 # apis/models/init/pac_user_date_greater_than_filter_list_init_report.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the PacUserDateGreaterThanFilterListInitReport workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    PacUserDateGreaterThanFilterListInitReportGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -31,7 +33,8 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel)
         data: FlowPacUserDateGreaterThanFilterListInitReportResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowPacUserDateGreaterThanFilterListInitReportResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -39,12 +42,13 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelResponse(CamelModel)
 
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    PacUserDateGreaterThanFilterListInitReportGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -53,7 +57,7 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(SnakeModel):
             response: PacUserDateGreaterThanFilterListInitReportGetInitModelResponse
     ) -> PacUserDateGreaterThanFilterListInitReportGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

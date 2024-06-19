@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/customer_build_temp_api_key_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the `customer_build_temp_api_key` endpoint.
+The `customer_build_temp_api_key` endpoint is responsible for handling requests related to
+the list of plants in a .
 """
 import logging
 import uuid

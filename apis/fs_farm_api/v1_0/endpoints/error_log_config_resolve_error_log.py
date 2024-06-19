@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/error_log_config_resolve_error_log.py
 """
-    #TODO add comment
+This module contains the implementation of the ErrorLogConfigResolveErrorLogRouter,
+which handles the API endpoints related to the Error Log Config Resolve Error Log.
+The ErrorLogConfigResolveErrorLogRouter provides the following endpoints:
+    - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/init:
+        Get the initialization data for the Error Log Config Resolve Error Log page.
+    - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}:
+        Get the  plant list report for a specific  code.
+    - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/to-csv:
+        Retrieve the Error Log Config Resolve Error Log Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class ErrorLogConfigResolveErrorLogRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the ErrorLogConfigResolveErrorLogRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class ErrorLogConfigResolveErrorLogRouterConfig():
     is_public: bool = False
 class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Error Log Config Resolve Error Log API endpoints.
     """
     router = APIRouter(tags=["ErrorLogConfigResolveErrorLog"])
 
@@ -50,7 +58,15 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Error Log Config Resolve Error Log api post endpoint
+        Parameters:
+        - error_log_code: The code of the  object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+        Returns:
+        - response: JSON response with the result of the operation.
         """
         logging.info(
             "ErrorLogConfigResolveErrorLogRouter.request_post_with_id start. errorLogCode: %s",

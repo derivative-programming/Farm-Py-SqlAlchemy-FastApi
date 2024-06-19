@@ -1,6 +1,7 @@
 # flows/default/land_user_plant_multi_select_to_not_editable.py
 """
-    #TODO add comment
+This module contains the FlowLandUserPlantMultiSelectToNotEditable class and related classes
+that handle the addition of a  to a specific land in the flow process.
 """
 import uuid
 import json
@@ -13,18 +14,20 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowLandUserPlantMultiSelectToNotEditableResult():
     """
-    #TODO add comment
+    Represents the result of the FlowLandUserPlantMultiSelectToNotEditable process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowLandUserPlantMultiSelectToNotEditableResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowLandUserPlantMultiSelectToNotEditableResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -44,7 +47,7 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowLandUserPlantMultiSelectToNotEditable with the provided session context.
+        Initializes a new instance of the FlowLandUserPlantMultiSelectToNotEditable class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -57,7 +60,9 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
 # endset  # noqa: E122
     ) -> FlowLandUserPlantMultiSelectToNotEditableResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific land.
+        Returns:
+            FlowLandUserPlantMultiSelectToNotEditableResult: The result of the FlowLandUserPlantMultiSelectToNotEditable process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

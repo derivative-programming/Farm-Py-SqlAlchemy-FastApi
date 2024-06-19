@@ -1,7 +1,8 @@
 # flows/default/land_add_plant.py
 
 """
-    #TODO add comment
+This module contains the FlowLandAddPlant class and related classes
+that handle the addition of a plant to a specific land in the flow process.
 """
 
 import uuid
@@ -17,8 +18,9 @@ from helpers import TypeConversion
 
 class FlowLandAddPlantResult():
     """
-    #TODO add comment
+    Represents the result of the FlowLandAddPlant process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     land_code: uuid.UUID = uuid.UUID(int=0)
     plant_code: uuid.UUID = uuid.UUID(int=0)
@@ -42,17 +44,18 @@ class FlowLandAddPlantResult():
     output_some_phone_number: str = ""
     output_some_email_address: str = ""
 # endset
-
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowLandAddPlantResult class.
         """
 
     def to_json(self):
         """
-            #TODO add comment
-        """
+        Converts the FlowLandAddPlantResult instance to a JSON string.
 
+        Returns:
+            str: The JSON representation of the instance.
+        """
         # Create a dictionary representation of the instance
         data = {
             'context_object_code':
@@ -112,13 +115,12 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowLandAddPlant with the provided session context.
+        Initializes a new instance of the FlowLandAddPlant class.
 
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
         """
-
         super().__init__(session_context)
 
     async def process(
@@ -147,9 +149,11 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 # endset  # noqa: E122
     ) -> FlowLandAddPlantResult:
         """
-            #TODO add comment
+        Processes the addition of a plant to a specific land.
+ 
+        Returns:
+            FlowLandAddPlantResult: The result of the FlowLandAddPlant process.
         """
-
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Start"

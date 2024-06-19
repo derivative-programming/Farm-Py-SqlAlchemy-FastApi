@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_property_random_update.py
 """
-    #TODO add comment
+This module contains the implementation of the PlantUserPropertyRandomUpdateRouter,
+which handles the API endpoints related to the Plant User Property Random Update.
+The PlantUserPropertyRandomUpdateRouter provides the following endpoints:
+    - GET /api/v1_0/plant-user-property-random-update/{plant_code}/init:
+        Get the initialization data for the Plant User Property Random Update page.
+    - GET /api/v1_0/plant-user-property-random-update/{plant_code}:
+        Get the  plant list report for a specific  code.
+    - GET /api/v1_0/plant-user-property-random-update/{plant_code}/to-csv:
+        Retrieve the Plant User Property Random Update Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class PlantUserPropertyRandomUpdateRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the PlantUserPropertyRandomUpdateRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class PlantUserPropertyRandomUpdateRouterConfig():
     is_public: bool = False
 class PlantUserPropertyRandomUpdateRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Plant User Property Random Update API endpoints.
     """
     router = APIRouter(tags=["PlantUserPropertyRandomUpdate"])
 
@@ -50,7 +58,15 @@ class PlantUserPropertyRandomUpdateRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Plant User Property Random Update api post endpoint
+        Parameters:
+        - plant_code: The code of the  object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+        Returns:
+        - response: JSON response with the result of the operation.
         """
         logging.info(
             "PlantUserPropertyRandomUpdateRouter.request_post_with_id start. plantCode: %s",

@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/land_user_plant_multi_select_to_editable_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the `land_user_plant_multi_select_to_editable` endpoint.
+The `land_user_plant_multi_select_to_editable` endpoint is responsible for handling requests related to
+the list of plants in a .
 """
 import logging
 import uuid

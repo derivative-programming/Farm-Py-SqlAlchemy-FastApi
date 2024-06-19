@@ -1,7 +1,8 @@
 # apis/models/init/land_add_plant_init_obj_wf.py
 
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the LandAddPlantInitObjWF workflow.
 """
 
 import logging
@@ -25,8 +26,10 @@ from helpers.pydantic_serialization import CamelModel, SnakeModel
 
 class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    LandAddPlantInitObjWFGetInitModelRequest.
     """
+
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
@@ -98,7 +101,8 @@ class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
         data: FlowLandAddPlantInitObjWFResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the 
+        FlowLandAddPlantInitObjWFResult object.
         """
 
         self.validation_errors = list()
@@ -145,7 +149,7 @@ class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
 
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
 
         return self.model_dump_json()
@@ -153,7 +157,8 @@ class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
 
 class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    LandAddPlantInitObjWFGetInitModelRequest.
     """
 
     async def process_request(
@@ -163,7 +168,7 @@ class LandAddPlantInitObjWFGetInitModelRequest(SnakeModel):
             response: LandAddPlantInitObjWFGetInitModelResponse
     ) -> LandAddPlantInitObjWFGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
 
         try:

@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/endpoints/land_add_plant.py
 
 """
-    #TODO add comment
+This module contains the implementation of the
+LandAddPlantRouter class, which handles the
+API endpoints related to adding plants to a land.
 """
 
 import logging
@@ -21,8 +23,9 @@ from .base_router import BaseRouter
 
 class LandAddPlantRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the LandAddPlantRouter.
     """
+
     # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = False
@@ -37,8 +40,9 @@ class LandAddPlantRouterConfig():
 
 class LandAddPlantRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the LandAddPlant API endpoints.
     """
+
     router = APIRouter(tags=["LandAddPlant"])
 
     @staticmethod
@@ -55,15 +59,15 @@ class LandAddPlantRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            Initialize the Land Add Plant process.
+        Initialize the Land Add Plant process.
 
-            Parameters:
-            - land_code: The code of the land to add a plant.
-            - session: Database session dependency.
-            - api_key: API key for authorization.
+        Parameters:
+        - land_code: The code of the land to add a plant.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
 
-            Returns:
-            - response: JSON response with initialization details.
+        Returns:
+        - response: JSON response with initialization details.
         """
         logging.info(
             'LandAddPlantRouter.request_get_init start. landCode:%s',
@@ -133,9 +137,18 @@ class LandAddPlantRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
-        """
+        Land Add Plant api post endpoint
 
+        Parameters:
+        - land_code: The code of the land object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+
+        Returns:
+        - response: JSON response with the result of the operation.
+        """
         logging.info(
             "LandAddPlantRouter.request_post_with_id start. landCode: %s",
             land_code

@@ -17,7 +17,7 @@ class OrganizationFactory(factory.Factory):
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the OrganizationFactory.
         """
         model = Organization
     # organization_id = factory.Sequence(lambda n: n)
@@ -35,7 +35,15 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Organization:
         """
-        #TODO add comment
+            Builds and returns an instance of the Organization model.
+            Args:
+                model_class (class): The class of the model to be built.
+                session (Session, optional): The SQLAlchemy
+                session to be used. Defaults to None.
+                *args: Variable length argument list.
+                **kwargs: Arbitrary keyword arguments.
+            Returns:
+                Organization: An instance of the Organization model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -60,7 +68,14 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> Organization:
         """
-        #TODO add comment
+        Create a new Organization object and save it to the database.
+        Args:
+            model_class (class): The class of the model to create.
+            session (Session): The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            Organization: The created Organization object.
         """
         logger.info("factory create")
         tac_id_tac_instance = (  # TacID
@@ -83,7 +98,13 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Organization:
         """
-            #TODO add comment
+        Create a new Organization object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created Organization object.
         """
         tac_id_tac_instance = await (  # TacID
             TacFactory.create_async(session=session))
@@ -105,7 +126,13 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Organization:
         """
-            #TODO add comment
+        Build a new Organization object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created Organization object.
         """
         tac_id_tac_instance = await (  # TacID
             TacFactory.create_async(session=session))

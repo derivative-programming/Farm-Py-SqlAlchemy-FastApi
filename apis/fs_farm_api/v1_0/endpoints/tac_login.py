@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_login.py
 """
-    #TODO add comment
+This module contains the implementation of the TacLoginRouter,
+which handles the API endpoints related to the Tac Login.
+The TacLoginRouter provides the following endpoints:
+    - GET /api/v1_0/tac-login/{tac_code}/init:
+        Get the initialization data for the Tac Login page.
+    - GET /api/v1_0/tac-login/{tac_code}:
+        Get the tac plant list report for a specific tac code.
+    - GET /api/v1_0/tac-login/{tac_code}/to-csv:
+        Retrieve the Tac Login Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class TacLoginRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the TacLoginRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class TacLoginRouterConfig():
     is_public: bool = True
 class TacLoginRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Tac Login API endpoints.
     """
     router = APIRouter(tags=["TacLogin"])
 
@@ -51,7 +59,14 @@ class TacLoginRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Get the initialization data for the Tac Login page.
+        Args:
+            tac_code (uuid.UUID): The UUID of the tac.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+        Returns:
+            TacLoginInitObjWFGetInitModelResponse:
+                The initialization data for the Tac Login page.
         """
         logging.info(
             'TacLoginRouter.request_get_init start. tacCode:%s',
@@ -119,7 +134,15 @@ class TacLoginRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Tac Login api post endpoint
+        Parameters:
+        - tac_code: The code of the tac object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+        Returns:
+        - response: JSON response with the result of the operation.
         """
         logging.info(
             "TacLoginRouter.request_post_with_id start. tacCode: %s",

@@ -1,6 +1,7 @@
 # flows/default/tests/customer_build_temp_api_key_test.py
 """
-    #TODO add comment
+This module contains unit tests for the
+`FlowCustomerBuildTempApiKeyResult` and `FlowCustomerBuildTempApiKey` classes.
 """
 import json
 import uuid
@@ -16,11 +17,11 @@ from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
 class TestCustomerBuildTempApiKeyPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the `FlowCustomerBuildTempApiKeyResult` class.
     """
     def test_flow_customer_build_temp_api_key_result_to_json(self):
         """
-            #TODO add comment
+        Test the `to_json` method of the `FlowCustomerBuildTempApiKeyResult` class.
         """
         # Create an instance and set attributes
         result = FlowCustomerBuildTempApiKeyResult()
@@ -41,7 +42,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        Test the `process` method of the `FlowCustomerBuildTempApiKey` class.
         """
         session_context = SessionContext(dict(), session)
         flow = FlowCustomerBuildTempApiKey(session_context)

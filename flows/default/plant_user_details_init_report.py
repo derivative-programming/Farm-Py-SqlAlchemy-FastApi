@@ -1,6 +1,7 @@
 # flows/default/plant_user_details_init_report.py
 """
-    #TODO add comment
+This module contains the FlowPlantUserDetailsInitReport class and related classes
+that handle the addition of a  to a specific plant in the flow process.
 """
 import uuid
 import json
@@ -13,7 +14,7 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPlantUserDetailsInitReportResult():
     """
-    #TODO add comment
+    Represents the result of the FlowPlantUserDetailsInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     land_code: uuid.UUID = uuid.UUID(int=0)
@@ -21,11 +22,13 @@ class FlowPlantUserDetailsInitReportResult():
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowPlantUserDetailsInitReportResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowPlantUserDetailsInitReportResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -48,7 +51,7 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowPlantUserDetailsInitReport with the provided session context.
+        Initializes a new instance of the FlowPlantUserDetailsInitReport class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -61,7 +64,9 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
 # endset  # noqa: E122
     ) -> FlowPlantUserDetailsInitReportResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific plant.
+        Returns:
+            FlowPlantUserDetailsInitReportResult: The result of the FlowPlantUserDetailsInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

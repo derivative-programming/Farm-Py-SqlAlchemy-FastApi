@@ -1,6 +1,7 @@
 # flows/default/tac_register_init_obj_wf.py
 """
-    #TODO add comment
+This module contains the FlowTacRegisterInitObjWF class and related classes
+that handle the addition of a  to a specific tac in the flow process.
 """
 import uuid
 import json
@@ -13,7 +14,7 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacRegisterInitObjWFResult():
     """
-    #TODO add comment
+    Represents the result of the FlowTacRegisterInitObjWF process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
@@ -24,11 +25,13 @@ class FlowTacRegisterInitObjWFResult():
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowTacRegisterInitObjWFResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowTacRegisterInitObjWFResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -57,7 +60,7 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowTacRegisterInitObjWF with the provided session context.
+        Initializes a new instance of the FlowTacRegisterInitObjWF class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -70,7 +73,9 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
 # endset  # noqa: E122
     ) -> FlowTacRegisterInitObjWFResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific tac.
+        Returns:
+            FlowTacRegisterInitObjWFResult: The result of the FlowTacRegisterInitObjWF process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

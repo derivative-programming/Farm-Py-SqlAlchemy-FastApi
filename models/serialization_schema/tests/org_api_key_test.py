@@ -1,7 +1,21 @@
 # org_api_key_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the OrgApiKey serialization schema.
+The OrgApiKey serialization schema is responsible for serializing and deserializing
+OrgApiKey instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of OrgApiKey
+instances using the OrgApiKeySchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a OrgApiKey instance.
+The OrgApiKeySchema class is used to define the serialization and deserialization
+rules for OrgApiKey instances. It specifies how each attribute of a OrgApiKey instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a OrgApiKey instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -116,7 +130,13 @@ class TestOrgApiKeySchema:
 # endset
     def test_org_api_key_deserialization(self, org_api_key):
         """
-            #TODO add comment
+        Test the deserialization of a OrgApiKey object using the OrgApiKeySchema.
+        Args:
+            org_api_key (OrgApiKey): The OrgApiKey object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = OrgApiKeySchema()
         serialized_data = schema.dump(org_api_key)
@@ -197,7 +217,17 @@ class TestOrgApiKeySchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the OrgApiKeySchema class.
+        This method tests the deserialization of
+        a JSON string to a OrgApiKey object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a OrgApiKey
+        object. Finally, it asserts the
+        equality of the deserialized OrgApiKey object
+        with the sample data.
+        Returns:
+            None
         """
         org_api_key_schema = OrgApiKeySchema()
         # Convert sample data to JSON string
@@ -249,7 +279,12 @@ class TestOrgApiKeySchema:
         assert isinstance(new_org_api_key, OrgApiKey)
     def test_to_json(self, org_api_key: OrgApiKey):
         """
-            #TODO add comment
+        Test the conversion of a OrgApiKey instance to JSON.
+        Args:
+            org_api_key (OrgApiKey): The OrgApiKey instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the OrgApiKey instance to JSON using the schema
         org_api_key_schema = OrgApiKeySchema()

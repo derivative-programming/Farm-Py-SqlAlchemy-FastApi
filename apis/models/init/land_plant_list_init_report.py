@@ -1,6 +1,7 @@
 # apis/models/init/land_plant_list_init_report.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the LandPlantListInitReport workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class LandPlantListInitReportGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    LandPlantListInitReportGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -88,7 +90,8 @@ class LandPlantListInitReportGetInitModelResponse(CamelModel):
         data: FlowLandPlantListInitReportResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowLandPlantListInitReportResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -131,12 +134,13 @@ class LandPlantListInitReportGetInitModelResponse(CamelModel):
             data.land_name)
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class LandPlantListInitReportGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    LandPlantListInitReportGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -145,7 +149,7 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
             response: LandPlantListInitReportGetInitModelResponse
     ) -> LandPlantListInitReportGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

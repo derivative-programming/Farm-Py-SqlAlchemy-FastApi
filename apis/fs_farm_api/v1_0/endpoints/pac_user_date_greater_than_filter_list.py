@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/pac_user_date_greater_than_filter_list.py
 """
-    #TODO add comment
+This module contains the implementation of the PacUserDateGreaterThanFilterListRouter,
+which handles the API endpoints related to the Pac User Date Greater Than Filter List.
+The PacUserDateGreaterThanFilterListRouter provides the following endpoints:
+    - GET /api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}/init:
+        Get the initialization data for the Pac User Date Greater Than Filter List page.
+    - GET /api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}:
+        Get the pac plant list report for a specific pac code.
+    - GET /api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}/to-csv:
+        Retrieve the Pac User Date Greater Than Filter List Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class PacUserDateGreaterThanFilterListRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the PacUserDateGreaterThanFilterListRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class PacUserDateGreaterThanFilterListRouterConfig():
     is_public: bool = False
 class PacUserDateGreaterThanFilterListRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Pac User Date Greater Than Filter List API endpoints.
     """
     router = APIRouter(tags=["PacUserDateGreaterThanFilterList"])
 
@@ -51,7 +59,14 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Get the initialization data for the Pac User Date Greater Than Filter List page.
+        Args:
+            pac_code (uuid.UUID): The UUID of the pac.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+        Returns:
+            PacUserDateGreaterThanFilterListInitReportGetInitModelResponse:
+                The initialization data for the Pac User Date Greater Than Filter List page.
         """
         logging.info(
             'PacUserDateGreaterThanFilterListRouter.request_get_init start. pacCode:%s',
@@ -119,7 +134,18 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Get the pac plant list report for a specific pac code.
+        Args:
+            pac_code (uuid.UUID): The unique identifier for the pac.
+            request_model (api_models.PacUserDateGreaterThanFilterListGetModelRequest):
+                The request model for the API.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+        Returns:
+            api_models.PacUserDateGreaterThanFilterListGetModelResponse: The response
+                model containing the pac plant list report.
+        Raises:
+            Exception: If an error occurs during the processing of the request.
         """
         logging.info(
             'PacUserDateGreaterThanFilterListRouter.request_get_with_id start. pacCode:%s',
@@ -182,7 +208,15 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Retrieve the Pac User Date Greater Than Filter List Report as a CSV file.
+        Args:
+            pac_code (uuid.UUID): The unique identifier for the pac.
+            request_model (api_models.PacUserDateGreaterThanFilterListGetModelRequest):
+                The request model for the API.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+        Returns:
+            FileResponse: The CSV file containing the Pac User Date Greater Than Filter List Report.
         """
         logging.info(
             "PacUserDateGreaterThanFilterListRouter.request_get_with_id_to_csv"

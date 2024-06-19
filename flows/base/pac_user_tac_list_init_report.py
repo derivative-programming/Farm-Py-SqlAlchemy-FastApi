@@ -1,6 +1,7 @@
 # flows/base/pac_user_tac_list_init_report.py
 """
-    #TODO add comment
+This module contains the implementation
+of the BaseFlow Pac User Tac List Init Report class
 """
 import uuid
 from datetime import date, datetime
@@ -16,11 +17,12 @@ from managers.org_customer import OrgCustomerManager
 from .base_flow import BaseFlow
 class BaseFlowPacUserTacListInitReport(BaseFlow):
     """
-    #TODO add comment
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initializes a new instance of the BaseFlowPacUserTacListInitReport class.
+        Args:
+            session_context (SessionContext): The session context for the flow.
         """
         super(BaseFlowPacUserTacListInitReport, self).__init__(
             "PacUserTacListInitReport",
@@ -32,7 +34,7 @@ class BaseFlowPacUserTacListInitReport(BaseFlow):
 
     ):
         """
-        #TODO add comment
+        Processes the validation rules for adding s to pac.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -53,7 +55,7 @@ class BaseFlowPacUserTacListInitReport(BaseFlow):
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
                 self._add_validation_error(
-                    "Unautorized access. " + role_required + " role not found."
+                    f"Unauthorized access. {role_required} role not found."
                 )
         if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                 is True:

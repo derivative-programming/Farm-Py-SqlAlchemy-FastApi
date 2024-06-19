@@ -23,7 +23,7 @@ class PlantFactory(factory.Factory):
 
     class Meta:
         """
-        #TODO add comment
+        Meta class for the PlantFactory.
         """
 
         model = Plant
@@ -77,7 +77,18 @@ class PlantFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Plant:
         """
-        #TODO add comment
+            Builds and returns an instance of the Plant model.
+
+            Args:
+                model_class (class): The class of the model to be built.
+                session (Session, optional): The SQLAlchemy
+                session to be used. Defaults to None.
+                *args: Variable length argument list.
+                **kwargs: Arbitrary keyword arguments.
+
+            Returns:
+                Plant: An instance of the Plant model.
+
         """
 
         if session is None:
@@ -122,7 +133,17 @@ class PlantFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> Plant:
         """
-        #TODO add comment
+        Create a new Plant object and save it to the database.
+
+        Args:
+            model_class (class): The class of the model to create.
+            session (Session): The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            Plant: The created Plant object.
+
         """
 
         logger.info("factory create")
@@ -163,7 +184,16 @@ class PlantFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Plant:
         """
-            #TODO add comment
+        Create a new Plant object asynchronously.
+
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            The newly created Plant object.
+
         """
 
         land_id_land_instance = await (  # LandID
@@ -204,7 +234,16 @@ class PlantFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Plant:
         """
-            #TODO add comment
+        Build a new Plant object asynchronously.
+
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            The newly created Plant object.
+
         """
 
         land_id_land_instance = await (  # LandID

@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/pac_user_land_list_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the `pac_user_land_list` endpoint.
+The `pac_user_land_list` endpoint is responsible for handling requests related to
+the list of plants in a pac.
 """
 import logging
 import uuid
@@ -26,7 +28,7 @@ async def test_init_success(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the successful initialization of the pac plant list.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -46,7 +48,7 @@ async def test_init_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with a bad API key during initialization.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -67,7 +69,8 @@ async def test_init_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with an
+    empty header key during initialization.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -88,7 +91,7 @@ async def test_init_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with no header during initialization.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -109,7 +112,7 @@ async def test_init_endpoint_url_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the failure of the endpoint URL during initialization.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -129,7 +132,8 @@ async def test_init_endpoint_invalid_code_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the failure of the endpoint with an
+    invalid pac code during initialization.
     """
     pac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
@@ -149,7 +153,8 @@ async def test_init_endpoint_method_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the failure of the endpoint with an
+    invalid HTTP method during initialization.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -170,7 +175,7 @@ async def test_get_success(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the successful retrieval of the pac plant list.
     """
     async def mock_process_request(
         session,
@@ -215,7 +220,7 @@ async def test_get_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with a bad API key during retrieval.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -245,7 +250,7 @@ async def test_get_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with an empty header key during retrieval.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -275,7 +280,17 @@ async def test_get_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test case to verify authorization failure when no header is provided.
+    This test case sends a GET request to the
+    '/api/v1_0/pac-user-land-list/{pac_code}' endpoint
+    without providing the required authorization
+    header. It checks whether the response status code
+    is 401 (Unauthorized) if the endpoint is not
+    public, or 200 (OK) if the endpoint is public.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -305,7 +320,16 @@ async def test_get_endpoint_url_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test case for the failure scenario of the GET endpoint URL.
+    This test case verifies that the API returns the expected
+    response when an invalid URL is provided.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
+    Raises:
+        AssertionError: If the response status code is not 501.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -333,7 +357,12 @@ async def test_get_endpoint_invalid_code_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test case for the GET endpoint when an invalid pac code is provided.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     pac_code = uuid.UUID(int=0)
     request = await (
@@ -362,7 +391,12 @@ async def test_get_endpoint_method_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test case for the failure scenario of the GET endpoint method.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -383,7 +417,12 @@ async def test_get_csv_success(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test case for successful retrieval of CSV data.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     async def mock_process_request(
         session,
@@ -430,7 +469,24 @@ async def test_get_csv_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
+    Test case to verify the behavior of the API
+    when an invalid API key is provided.
+    This test case sends a GET request to the
+    '/api/v1_0/pac-user-land-list/{pac_code}/to-csv' endpoint
+    with an invalid API key in the headers.
+    The expected behavior is a 401 Unauthorized response.
+    Steps:
+    1. Create a test pac using the PacFactory.
+    2. Create a PacUserLandListGetModelRequest using
+        the PacUserLandListGetModelRequestFactory.
+    3. Convert the request object to a dictionary.
+    4. Send a GET request to the API endpoint with
+        the pac code and request parameters.
+    5. Assert that the response status code is 401
+        if the endpoint is not public.
+       Otherwise, assert that the response status code
+        is 200 and the content-type header
+       starts with the expected media type for CSV reports.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code

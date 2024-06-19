@@ -1,6 +1,7 @@
 # flows/default/tac_register.py
 """
-    #TODO add comment
+This module contains the FlowTacRegister class and related classes
+that handle the addition of a customer to a specific tac in the flow process.
 """
 import uuid
 import json
@@ -13,7 +14,7 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacRegisterResult():
     """
-    #TODO add comment
+    Represents the result of the FlowTacRegister process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     customer_code: uuid.UUID = uuid.UUID(int=0)
@@ -25,11 +26,13 @@ class FlowTacRegisterResult():
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowTacRegisterResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowTacRegisterResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -60,7 +63,7 @@ class FlowTacRegister(BaseFlowTacRegister):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowTacRegister with the provided session context.
+        Initializes a new instance of the FlowTacRegister class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -77,7 +80,9 @@ class FlowTacRegister(BaseFlowTacRegister):
 # endset  # noqa: E122
     ) -> FlowTacRegisterResult:
         """
-            #TODO add comment
+        Processes the addition of a customer to a specific tac.
+        Returns:
+            FlowTacRegisterResult: The result of the FlowTacRegister process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

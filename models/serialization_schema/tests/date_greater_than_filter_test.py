@@ -1,7 +1,21 @@
 # date_greater_than_filter_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the DateGreaterThanFilter serialization schema.
+The DateGreaterThanFilter serialization schema is responsible for serializing and deserializing
+DateGreaterThanFilter instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of DateGreaterThanFilter
+instances using the DateGreaterThanFilterSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a DateGreaterThanFilter instance.
+The DateGreaterThanFilterSchema class is used to define the serialization and deserialization
+rules for DateGreaterThanFilter instances. It specifies how each attribute of a DateGreaterThanFilter instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a DateGreaterThanFilter instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -102,7 +116,13 @@ class TestDateGreaterThanFilterSchema:
 # endset
     def test_date_greater_than_filter_deserialization(self, date_greater_than_filter):
         """
-            #TODO add comment
+        Test the deserialization of a DateGreaterThanFilter object using the DateGreaterThanFilterSchema.
+        Args:
+            date_greater_than_filter (DateGreaterThanFilter): The DateGreaterThanFilter object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = DateGreaterThanFilterSchema()
         serialized_data = schema.dump(date_greater_than_filter)
@@ -171,7 +191,17 @@ class TestDateGreaterThanFilterSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the DateGreaterThanFilterSchema class.
+        This method tests the deserialization of
+        a JSON string to a DateGreaterThanFilter object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a DateGreaterThanFilter
+        object. Finally, it asserts the
+        equality of the deserialized DateGreaterThanFilter object
+        with the sample data.
+        Returns:
+            None
         """
         date_greater_than_filter_schema = DateGreaterThanFilterSchema()
         # Convert sample data to JSON string
@@ -217,7 +247,12 @@ class TestDateGreaterThanFilterSchema:
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
     def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter):
         """
-            #TODO add comment
+        Test the conversion of a DateGreaterThanFilter instance to JSON.
+        Args:
+            date_greater_than_filter (DateGreaterThanFilter): The DateGreaterThanFilter instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the DateGreaterThanFilter instance to JSON using the schema
         date_greater_than_filter_schema = DateGreaterThanFilterSchema()

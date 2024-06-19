@@ -17,7 +17,7 @@ class LandFactory(factory.Factory):
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the LandFactory.
         """
         model = Land
     # land_id = factory.Sequence(lambda n: n)
@@ -39,7 +39,15 @@ class LandFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Land:
         """
-        #TODO add comment
+            Builds and returns an instance of the Land model.
+            Args:
+                model_class (class): The class of the model to be built.
+                session (Session, optional): The SQLAlchemy
+                session to be used. Defaults to None.
+                *args: Variable length argument list.
+                **kwargs: Arbitrary keyword arguments.
+            Returns:
+                Land: An instance of the Land model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -64,7 +72,14 @@ class LandFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> Land:
         """
-        #TODO add comment
+        Create a new Land object and save it to the database.
+        Args:
+            model_class (class): The class of the model to create.
+            session (Session): The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            Land: The created Land object.
         """
         logger.info("factory create")
         pac_id_pac_instance = (  # PacID
@@ -87,7 +102,13 @@ class LandFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Land:
         """
-            #TODO add comment
+        Create a new Land object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created Land object.
         """
         pac_id_pac_instance = await (  # PacID
             PacFactory.create_async(session=session))
@@ -109,7 +130,13 @@ class LandFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Land:
         """
-            #TODO add comment
+        Build a new Land object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created Land object.
         """
         pac_id_pac_instance = await (  # PacID
             PacFactory.create_async(session=session))

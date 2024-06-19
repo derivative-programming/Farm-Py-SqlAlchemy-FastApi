@@ -1,7 +1,8 @@
 # apis/models/factory/pac_user_tac_list.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the factory class for creating
+instances of the PacUserTacListGetModelRequest model.
 """
 import uuid
 from datetime import datetime
@@ -15,11 +16,12 @@ class PacUserTacListGetModelRequestFactory(
     factory.base.Factory
 ):
     """
-    #TODO add comment
+    Factory class for creating instances of the
+    PacUserTacListGetModelRequest model.
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the factory.
         """
         model = PacUserTacListGetModelRequest
 
@@ -31,6 +33,17 @@ class PacUserTacListGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PacUserTacListGetModelRequest:
+        """
+        Build a PacUserTacListGetModelRequest instance.
+        Args:
+            model_class: The model class to build an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserTacListGetModelRequest: The built
+                instance of PacUserTacListGetModelRequest.
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -49,6 +62,17 @@ class PacUserTacListGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PacUserTacListGetModelRequest:
+        """
+        Create a PacUserTacListGetModelRequest instance.
+        Args:
+            model_class: The model class to create an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserTacListGetModelRequest: The created
+                instance of PacUserTacListGetModelRequest.
+        """
 
 # endset
 
@@ -64,7 +88,14 @@ class PacUserTacListGetModelRequestFactory(
         *args, **kwargs
     ) -> PacUserTacListGetModelRequest:
         """
-            #TODO add comment
+        Asynchronously create a PacUserTacListGetModelRequest instance.
+        Args:
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserTacListGetModelRequest: The created
+                instance of PacUserTacListGetModelRequest.
         """
 
 # endset

@@ -1,6 +1,7 @@
 # apis/models/init/pac_user_tri_state_filter_list_init_report.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the PacUserTriStateFilterListInitReport workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    PacUserTriStateFilterListInitReportGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -31,7 +33,8 @@ class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
         data: FlowPacUserTriStateFilterListInitReportResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowPacUserTriStateFilterListInitReportResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -39,12 +42,13 @@ class PacUserTriStateFilterListInitReportGetInitModelResponse(CamelModel):
 
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    PacUserTriStateFilterListInitReportGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -53,7 +57,7 @@ class PacUserTriStateFilterListInitReportGetInitModelRequest(SnakeModel):
             response: PacUserTriStateFilterListInitReportGetInitModelResponse
     ) -> PacUserTriStateFilterListInitReportGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

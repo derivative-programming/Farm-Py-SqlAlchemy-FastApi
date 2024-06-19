@@ -1,6 +1,7 @@
 # flows/base/tac_login_init_obj_wf.py
 """
-    #TODO add comment
+This module contains the implementation
+of the BaseFlow Tac Login Init Obj WF class
 """
 import uuid
 from datetime import date, datetime
@@ -16,11 +17,12 @@ from managers.org_customer import OrgCustomerManager
 from .base_flow import BaseFlow
 class BaseFlowTacLoginInitObjWF(BaseFlow):
     """
-    #TODO add comment
     """
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initializes a new instance of the BaseFlowTacLoginInitObjWF class.
+        Args:
+            session_context (SessionContext): The session context for the flow.
         """
         super(BaseFlowTacLoginInitObjWF, self).__init__(
             "TacLoginInitObjWF",
@@ -32,7 +34,7 @@ class BaseFlowTacLoginInitObjWF(BaseFlow):
 
     ):
         """
-        #TODO add comment
+        Processes the validation rules for adding s to tac.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -53,7 +55,7 @@ class BaseFlowTacLoginInitObjWF(BaseFlow):
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
                 self._add_validation_error(
-                    "Unautorized access. " + role_required + " role not found."
+                    f"Unauthorized access. {role_required} role not found."
                 )
         if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                 is True:

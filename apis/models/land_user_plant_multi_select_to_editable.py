@@ -1,6 +1,6 @@
 # apis/models/land_user_plant_multi_select_to_editable.py
 """
-    #TODO add comment
+This module contains the models for the Land User Plant Multi Select To Editable API.
 """
 import json
 import logging
@@ -18,7 +18,7 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class LandUserPlantMultiSelectToEditablePostModelRequest(CamelModel):
     """
-        #TODO add comment
+    Represents the request model for the Land User Plant Multi Select To Editable API.
     """
     force_error_message: str = Field(
         default="",
@@ -29,45 +29,47 @@ class LandUserPlantMultiSelectToEditablePostModelRequest(CamelModel):
 # endset
     class Config:
         """
-            #TODO add comment
+        Configuration class for the LandUserPlantMultiSelectToEditablePostModelRequest.
         """
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
     def to_dict_snake_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return data
     def to_dict_camel(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class LandUserPlantMultiSelectToEditablePostModelResponse(PostResponse):
     """
-        #TODO add comment
+    Represents the response model for the Land User Plant Multi Select To Editable API.
     """
 
 # endset
 # endset
     def load_flow_response(self, data: FlowLandUserPlantMultiSelectToEditableResult):
         """
-            #TODO add comment
+        Loads the flow response data into the response model.
         """
 
 # endset
@@ -78,7 +80,7 @@ class LandUserPlantMultiSelectToEditablePostModelResponse(PostResponse):
         request: LandUserPlantMultiSelectToEditablePostModelRequest
     ):
         """
-            #TODO add comment
+        Processes the request and generates the response.
         """
         try:
             logging.info("loading model...LandUserPlantMultiSelectToEditablePostModelResponse")
@@ -108,7 +110,9 @@ class LandUserPlantMultiSelectToEditablePostModelResponse(PostResponse):
                 self.validation_errors.append(validation_error)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the object to a JSON representation.
+        Returns:
+            str: The JSON representation of the object.
         """
         return self.model_dump_json()
 

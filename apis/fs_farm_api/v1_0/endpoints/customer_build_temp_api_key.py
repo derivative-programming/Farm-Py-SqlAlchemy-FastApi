@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/customer_build_temp_api_key.py
 """
-    #TODO add comment
+This module contains the implementation of the CustomerBuildTempApiKeyRouter,
+which handles the API endpoints related to the Customer Build Temp Api Key.
+The CustomerBuildTempApiKeyRouter provides the following endpoints:
+    - GET /api/v1_0/customer-build-temp-api-key/{customer_code}/init:
+        Get the initialization data for the Customer Build Temp Api Key page.
+    - GET /api/v1_0/customer-build-temp-api-key/{customer_code}:
+        Get the  plant list report for a specific  code.
+    - GET /api/v1_0/customer-build-temp-api-key/{customer_code}/to-csv:
+        Retrieve the Customer Build Temp Api Key Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class CustomerBuildTempApiKeyRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the CustomerBuildTempApiKeyRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class CustomerBuildTempApiKeyRouterConfig():
     is_public: bool = False
 class CustomerBuildTempApiKeyRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Customer Build Temp Api Key API endpoints.
     """
     router = APIRouter(tags=["CustomerBuildTempApiKey"])
 
@@ -50,7 +58,15 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Customer Build Temp Api Key api post endpoint
+        Parameters:
+        - customer_code: The code of the  object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+        Returns:
+        - response: JSON response with the result of the operation.
         """
         logging.info(
             "CustomerBuildTempApiKeyRouter.request_post_with_id start. customerCode: %s",

@@ -18,7 +18,7 @@ class OrgCustomerFactory(factory.Factory):
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the OrgCustomerFactory.
         """
         model = OrgCustomer
     # org_customer_id = factory.Sequence(lambda n: n)
@@ -40,7 +40,15 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
         """
-        #TODO add comment
+            Builds and returns an instance of the OrgCustomer model.
+            Args:
+                model_class (class): The class of the model to be built.
+                session (Session, optional): The SQLAlchemy
+                session to be used. Defaults to None.
+                *args: Variable length argument list.
+                **kwargs: Arbitrary keyword arguments.
+            Returns:
+                OrgCustomer: An instance of the OrgCustomer model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -75,7 +83,14 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> OrgCustomer:
         """
-        #TODO add comment
+        Create a new OrgCustomer object and save it to the database.
+        Args:
+            model_class (class): The class of the model to create.
+            session (Session): The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            OrgCustomer: The created OrgCustomer object.
         """
         logger.info("factory create")
         customer_id_customer_instance = (  # CustomerID
@@ -108,7 +123,13 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> OrgCustomer:
         """
-            #TODO add comment
+        Create a new OrgCustomer object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created OrgCustomer object.
         """
         customer_id_customer_instance = await (  # CustomerID
             CustomerFactory.create_async(session=session))
@@ -140,7 +161,13 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> OrgCustomer:
         """
-            #TODO add comment
+        Build a new OrgCustomer object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created OrgCustomer object.
         """
         customer_id_customer_instance = await (  # CustomerID
             CustomerFactory.create_async(session=session))

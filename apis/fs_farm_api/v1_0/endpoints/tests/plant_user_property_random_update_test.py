@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/plant_user_property_random_update_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the `plant_user_property_random_update` endpoint.
+The `plant_user_property_random_update` endpoint is responsible for handling requests related to
+the list of plants in a .
 """
 import logging
 import uuid

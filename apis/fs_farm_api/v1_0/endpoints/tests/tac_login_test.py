@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/tac_login_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the `tac_login` endpoint.
+The `tac_login` endpoint is responsible for handling requests related to
+the list of plants in a tac.
 """
 import logging
 import uuid
@@ -26,7 +28,7 @@ async def test_init_success(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the successful initialization of the tac plant list.
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
@@ -46,7 +48,7 @@ async def test_init_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with a bad API key during initialization.
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
@@ -67,7 +69,8 @@ async def test_init_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with an
+    empty header key during initialization.
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
@@ -88,7 +91,7 @@ async def test_init_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the authorization failure with no header during initialization.
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
@@ -109,7 +112,7 @@ async def test_init_endpoint_url_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the failure of the endpoint URL during initialization.
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
@@ -129,7 +132,8 @@ async def test_init_endpoint_invalid_code_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the failure of the endpoint with an
+    invalid tac code during initialization.
     """
     tac_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
@@ -149,7 +153,8 @@ async def test_init_endpoint_method_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test the failure of the endpoint with an
+    invalid HTTP method during initialization.
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code

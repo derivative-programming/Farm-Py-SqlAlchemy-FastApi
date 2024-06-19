@@ -1,6 +1,9 @@
 # reports/providers/pac_user_tac_list.py
 """
-    #TODO add comment
+This module contains the implementation of
+the ReportProviderPacUserTacList class,
+which is responsible for generating a list
+of pac tacs based on the provided parameters.
 """
 import json
 from datetime import date, datetime
@@ -14,14 +17,28 @@ from sqlalchemy import text
 from helpers import SessionContext
 class ReportProviderPacUserTacList():
     """
-    #TODO add comment
+    The ReportProviderPacUserTacList class is responsible
+    for generating a list of pac tacs
+    based on the provided parameters.
+    Args:
+        session_context (SessionContext): The session context object.
+    Raises:
+        ValueError: If the session is not provided.
+    Attributes:
+        _session_context (SessionContext): The session context object.
+        _session (AsyncSession): The async session object.
+        _cached_sql_query (str): Static variable for caching the SQL query.
     """
     _session_context: SessionContext
     _session: AsyncSession
-    _cached_sql_query: str = ""  # Static variable for caching the SQL query
+    _cached_sql_query: str = ""
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the ReportProviderPacUserTacList class.
+        Args:
+            session_context (SessionContext): The session context object.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
@@ -36,7 +53,9 @@ class ReportProviderPacUserTacList():
         order_by_descending: bool,
     ) -> list[dict[str, Any]]:
         """
-            #TODO add comment
+        Generates a list of pac tacs based on the provided parameters.
+        Returns:
+            list[dict[str, Any]]: The list of pac tacs as dictionaries.
         """
         flow_name = "ReportProviderPacUserTacList.generate_list"
         logging.info("%s Start", flow_name)
@@ -79,9 +98,14 @@ class ReportProviderPacUserTacList():
         logging.info("%s End", flow_name)
         return results
     def dictfetchall(self, cursor) -> list[dict[str, Any]]:
-        "Return all rows from a cursor as a dict"
-        # columns = [col[0] for col in cursor.description]
-        # Get the column names from the CursorResult object
+        """
+        Returns all rows from a cursor as a list of dictionaries.
+        Args:
+            cursor: The cursor object.
+        Returns:
+            list[dict[str, Any]]: The list of dictionaries
+            representing the rows.
+        """
         columns = cursor.keys()
         return [
             dict(zip(columns, row))

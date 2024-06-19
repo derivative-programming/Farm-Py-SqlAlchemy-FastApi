@@ -1,6 +1,7 @@
 # apis/models/init/customer_user_log_out_init_obj_wf.py
 """
-    #TODO add comment
+This module contains the models and request/response classes
+for the CustomerUserLogOutInitObjWF workflow.
 """
 import logging
 import uuid
@@ -19,7 +20,8 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
     """
-    #TODO add comment
+    Represents the response model for the
+    CustomerUserLogOutInitObjWFGetInitModelRequest.
     """
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
@@ -35,7 +37,8 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
         data: FlowCustomerUserLogOutInitObjWFResult
     ):
         """
-            #TODO add comment
+        Loads the response data from the
+        FlowCustomerUserLogOutInitObjWFResult object.
         """
         self.validation_errors = list()
         self.success = False
@@ -44,12 +47,13 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
             data.tac_code)
     def to_json(self):
         """
-            #TODO add comment
+        Serializes the response model to JSON.
         """
         return self.model_dump_json()
 class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
     """
-    #TODO add comment
+    Represents the request model for the
+    CustomerUserLogOutInitObjWFGetInitModelRequest.
     """
     async def process_request(
             self,
@@ -58,7 +62,7 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             response: CustomerUserLogOutInitObjWFGetInitModelResponse
     ) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
         """
-            #TODO add comment
+        Processes the request and returns the response.
         """
         try:
             logging.info(

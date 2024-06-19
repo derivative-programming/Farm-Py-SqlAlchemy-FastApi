@@ -1,6 +1,7 @@
 # flows/default/plant_user_property_random_update.py
 """
-    #TODO add comment
+This module contains the FlowPlantUserPropertyRandomUpdate class and related classes
+that handle the addition of a  to a specific plant in the flow process.
 """
 import uuid
 import json
@@ -13,18 +14,20 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPlantUserPropertyRandomUpdateResult():
     """
-    #TODO add comment
+    Represents the result of the FlowPlantUserPropertyRandomUpdate process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowPlantUserPropertyRandomUpdateResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowPlantUserPropertyRandomUpdateResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -44,7 +47,7 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowPlantUserPropertyRandomUpdate with the provided session context.
+        Initializes a new instance of the FlowPlantUserPropertyRandomUpdate class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -57,7 +60,9 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
 # endset  # noqa: E122
     ) -> FlowPlantUserPropertyRandomUpdateResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific plant.
+        Returns:
+            FlowPlantUserPropertyRandomUpdateResult: The result of the FlowPlantUserPropertyRandomUpdate process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

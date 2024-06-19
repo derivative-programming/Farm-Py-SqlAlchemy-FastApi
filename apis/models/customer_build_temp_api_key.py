@@ -1,6 +1,6 @@
 # apis/models/customer_build_temp_api_key.py
 """
-    #TODO add comment
+This module contains the models for the Customer Build Temp Api Key API.
 """
 import json
 import logging
@@ -18,7 +18,7 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class CustomerBuildTempApiKeyPostModelRequest(CamelModel):
     """
-        #TODO add comment
+    Represents the request model for the Customer Build Temp Api Key API.
     """
     force_error_message: str = Field(
         default="",
@@ -27,38 +27,40 @@ class CustomerBuildTempApiKeyPostModelRequest(CamelModel):
 # endset
     class Config:
         """
-            #TODO add comment
+        Configuration class for the CustomerBuildTempApiKeyPostModelRequest.
         """
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
     def to_dict_snake_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return data
     def to_dict_camel(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
     """
-        #TODO add comment
+    Represents the response model for the Customer Build Temp Api Key API.
     """
     tmp_org_api_key_code: UUID4 = Field(
         default=uuid.UUID(int=0),
@@ -67,7 +69,7 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
 # endset
     def load_flow_response(self, data: FlowCustomerBuildTempApiKeyResult):
         """
-            #TODO add comment
+        Loads the flow response data into the response model.
         """
         self.tmp_org_api_key_code = data.tmp_org_api_key_code
 # endset
@@ -78,7 +80,7 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
         request: CustomerBuildTempApiKeyPostModelRequest
     ):
         """
-            #TODO add comment
+        Processes the request and generates the response.
         """
         try:
             logging.info("loading model...CustomerBuildTempApiKeyPostModelResponse")
@@ -108,7 +110,9 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
                 self.validation_errors.append(validation_error)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the object to a JSON representation.
+        Returns:
+            str: The JSON representation of the object.
         """
         return self.model_dump_json()
 

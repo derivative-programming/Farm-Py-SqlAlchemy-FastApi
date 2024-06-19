@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/customer_user_log_out.py
 """
-    #TODO add comment
+This module contains the implementation of the CustomerUserLogOutRouter,
+which handles the API endpoints related to the Customer User Log Out.
+The CustomerUserLogOutRouter provides the following endpoints:
+    - GET /api/v1_0/customer-user-log-out/{customer_code}/init:
+        Get the initialization data for the Customer User Log Out page.
+    - GET /api/v1_0/customer-user-log-out/{customer_code}:
+        Get the customer plant list report for a specific customer code.
+    - GET /api/v1_0/customer-user-log-out/{customer_code}/to-csv:
+        Retrieve the Customer User Log Out Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class CustomerUserLogOutRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the CustomerUserLogOutRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class CustomerUserLogOutRouterConfig():
     is_public: bool = False
 class CustomerUserLogOutRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Customer User Log Out API endpoints.
     """
     router = APIRouter(tags=["CustomerUserLogOut"])
 
@@ -51,7 +59,14 @@ class CustomerUserLogOutRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Get the initialization data for the Customer User Log Out page.
+        Args:
+            customer_code (uuid.UUID): The UUID of the customer.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+        Returns:
+            CustomerUserLogOutInitObjWFGetInitModelResponse:
+                The initialization data for the Customer User Log Out page.
         """
         logging.info(
             'CustomerUserLogOutRouter.request_get_init start. customerCode:%s',
@@ -119,7 +134,15 @@ class CustomerUserLogOutRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Customer User Log Out api post endpoint
+        Parameters:
+        - customer_code: The code of the customer object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+        Returns:
+        - response: JSON response with the result of the operation.
         """
         logging.info(
             "CustomerUserLogOutRouter.request_post_with_id start. customerCode: %s",

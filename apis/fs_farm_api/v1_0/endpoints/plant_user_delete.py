@@ -1,6 +1,14 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_delete.py
 """
-    #TODO add comment
+This module contains the implementation of the PlantUserDeleteRouter,
+which handles the API endpoints related to the Plant User Delete.
+The PlantUserDeleteRouter provides the following endpoints:
+    - GET /api/v1_0/plant-user-delete/{plant_code}/init:
+        Get the initialization data for the Plant User Delete page.
+    - GET /api/v1_0/plant-user-delete/{plant_code}:
+        Get the  plant list report for a specific  code.
+    - GET /api/v1_0/plant-user-delete/{plant_code}/to-csv:
+        Retrieve the Plant User Delete Report as a CSV file.
 """
 import logging
 import tempfile
@@ -20,7 +28,7 @@ TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 class PlantUserDeleteRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the PlantUserDeleteRouter.
     """
     # constants
     is_get_available: bool = False
@@ -34,7 +42,7 @@ class PlantUserDeleteRouterConfig():
     is_public: bool = False
 class PlantUserDeleteRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Plant User Delete API endpoints.
     """
     router = APIRouter(tags=["PlantUserDelete"])
 
@@ -50,7 +58,15 @@ class PlantUserDeleteRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Plant User Delete api post endpoint
+        Parameters:
+        - plant_code: The code of the  object.
+        - request_model: The request model containing
+            the details of the item to be added.
+        - session: Database session dependency.
+        - api_key: API key for authorization.
+        Returns:
+        - response: JSON response with the result of the operation.
         """
         logging.info(
             "PlantUserDeleteRouter.request_post_with_id start. plantCode: %s",

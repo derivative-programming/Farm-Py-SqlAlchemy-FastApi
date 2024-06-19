@@ -2,7 +2,8 @@
 # pylint: disable=unused-argument
 # pylint: disable=protected-access
 """
-    #TODO add comment
+This module contains unit tests for the `ReportManagerLandPlantList`
+class in the `land_plant_list` module.
 """
 
 import os
@@ -31,7 +32,7 @@ sqlite3.register_adapter(Decimal, str)
 
 class TestReportManagerLandPlantList:
     """
-    #TODO add comment
+    This class contains unit tests for the `ReportManagerLandPlantList` class.
     """
 
     @pytest.mark.asyncio
@@ -39,13 +40,11 @@ class TestReportManagerLandPlantList:
         """
         Test case for generating a report.
 
-        This test case verifies the functionality of
-        generating a report using the
-        ReportManagerLandPlantList class. It mocks the
-        generate_list method and
-        asserts that the results returned are of type
-        list. The test also ensures
-        that the generate_list method is awaited.
+        This test case verifies the functionality of generating
+        a report using the `ReportManagerLandPlantList` class.
+        It mocks the `generate_list` method and asserts that the
+        results returned are of type list.
+        The test also ensures that the `generate_list` method is awaited.
 
         Args:
             session: The session object for the test.
@@ -151,16 +150,15 @@ class TestReportManagerLandPlantList:
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
         """
-        Test case to verify that an exception is raised
-        when an invalid item count per page is provided.
+        Test case to verify that an exception is raised when an
+        invalid item count per page is provided.
 
         Args:
             session: The session object.
 
         Raises:
-            ReportRequestValidationError: If an invalid
-            item count per page is provided.
-
+            ReportRequestValidationError: If an invalid item
+                count per page is provided.
         """
 
         async def mock_generate_list(
@@ -265,8 +263,8 @@ class TestReportManagerLandPlantList:
             session: The session object.
 
         Raises:
-            ReportRequestValidationError: If the report
-                request validation fails.
+            ReportRequestValidationError: If the report request
+                validation fails.
         """
 
         async def mock_generate_list(

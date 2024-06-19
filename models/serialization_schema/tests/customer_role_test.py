@@ -1,7 +1,21 @@
 # customer_role_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the CustomerRole serialization schema.
+The CustomerRole serialization schema is responsible for serializing and deserializing
+CustomerRole instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of CustomerRole
+instances using the CustomerRoleSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a CustomerRole instance.
+The CustomerRoleSchema class is used to define the serialization and deserialization
+rules for CustomerRole instances. It specifies how each attribute of a CustomerRole instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a CustomerRole instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -97,7 +111,13 @@ class TestCustomerRoleSchema:
 # endset
     def test_customer_role_deserialization(self, customer_role):
         """
-            #TODO add comment
+        Test the deserialization of a CustomerRole object using the CustomerRoleSchema.
+        Args:
+            customer_role (CustomerRole): The CustomerRole object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = CustomerRoleSchema()
         serialized_data = schema.dump(customer_role)
@@ -158,7 +178,17 @@ class TestCustomerRoleSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the CustomerRoleSchema class.
+        This method tests the deserialization of
+        a JSON string to a CustomerRole object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a CustomerRole
+        object. Finally, it asserts the
+        equality of the deserialized CustomerRole object
+        with the sample data.
+        Returns:
+            None
         """
         customer_role_schema = CustomerRoleSchema()
         # Convert sample data to JSON string
@@ -200,7 +230,12 @@ class TestCustomerRoleSchema:
         assert isinstance(new_customer_role, CustomerRole)
     def test_to_json(self, customer_role: CustomerRole):
         """
-            #TODO add comment
+        Test the conversion of a CustomerRole instance to JSON.
+        Args:
+            customer_role (CustomerRole): The CustomerRole instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the CustomerRole instance to JSON using the schema
         customer_role_schema = CustomerRoleSchema()

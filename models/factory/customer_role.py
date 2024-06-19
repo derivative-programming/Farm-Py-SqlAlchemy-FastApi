@@ -18,7 +18,7 @@ class CustomerRoleFactory(factory.Factory):
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the CustomerRoleFactory.
         """
         model = CustomerRole
     # customer_role_id = factory.Sequence(lambda n: n)
@@ -41,7 +41,15 @@ class CustomerRoleFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
         """
-        #TODO add comment
+            Builds and returns an instance of the CustomerRole model.
+            Args:
+                model_class (class): The class of the model to be built.
+                session (Session, optional): The SQLAlchemy
+                session to be used. Defaults to None.
+                *args: Variable length argument list.
+                **kwargs: Arbitrary keyword arguments.
+            Returns:
+                CustomerRole: An instance of the CustomerRole model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -76,7 +84,14 @@ class CustomerRoleFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> CustomerRole:
         """
-        #TODO add comment
+        Create a new CustomerRole object and save it to the database.
+        Args:
+            model_class (class): The class of the model to create.
+            session (Session): The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            CustomerRole: The created CustomerRole object.
         """
         logger.info("factory create")
         customer_id_customer_instance = (  # CustomerID
@@ -109,7 +124,13 @@ class CustomerRoleFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> CustomerRole:
         """
-            #TODO add comment
+        Create a new CustomerRole object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created CustomerRole object.
         """
         customer_id_customer_instance = await (  # CustomerID
             CustomerFactory.create_async(session=session))
@@ -141,7 +162,13 @@ class CustomerRoleFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> CustomerRole:
         """
-            #TODO add comment
+        Build a new CustomerRole object asynchronously.
+        Args:
+            session: The SQLAlchemy session object.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        Returns:
+            The newly created CustomerRole object.
         """
         customer_id_customer_instance = await (  # CustomerID
             CustomerFactory.create_async(session=session))

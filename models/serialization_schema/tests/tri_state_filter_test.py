@@ -1,7 +1,21 @@
 # tri_state_filter_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the TriStateFilter serialization schema.
+The TriStateFilter serialization schema is responsible for serializing and deserializing
+TriStateFilter instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of TriStateFilter
+instances using the TriStateFilterSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a TriStateFilter instance.
+The TriStateFilterSchema class is used to define the serialization and deserialization
+rules for TriStateFilter instances. It specifies how each attribute of a TriStateFilter instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a TriStateFilter instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -102,7 +116,13 @@ class TestTriStateFilterSchema:
 # endset
     def test_tri_state_filter_deserialization(self, tri_state_filter):
         """
-            #TODO add comment
+        Test the deserialization of a TriStateFilter object using the TriStateFilterSchema.
+        Args:
+            tri_state_filter (TriStateFilter): The TriStateFilter object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = TriStateFilterSchema()
         serialized_data = schema.dump(tri_state_filter)
@@ -171,7 +191,17 @@ class TestTriStateFilterSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the TriStateFilterSchema class.
+        This method tests the deserialization of
+        a JSON string to a TriStateFilter object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a TriStateFilter
+        object. Finally, it asserts the
+        equality of the deserialized TriStateFilter object
+        with the sample data.
+        Returns:
+            None
         """
         tri_state_filter_schema = TriStateFilterSchema()
         # Convert sample data to JSON string
@@ -217,7 +247,12 @@ class TestTriStateFilterSchema:
         assert isinstance(new_tri_state_filter, TriStateFilter)
     def test_to_json(self, tri_state_filter: TriStateFilter):
         """
-            #TODO add comment
+        Test the conversion of a TriStateFilter instance to JSON.
+        Args:
+            tri_state_filter (TriStateFilter): The TriStateFilter instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the TriStateFilter instance to JSON using the schema
         tri_state_filter_schema = TriStateFilterSchema()

@@ -2,7 +2,26 @@
 # pylint: disable=redefined-outer-name
 
 """
-    #TODO add comment
+This module contains tests for the Plant serialization schema.
+
+The Plant serialization schema is responsible for serializing and deserializing
+Plant instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+
+The tests in this module cover the serialization and deserialization of Plant
+instances using the PlantSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a Plant instance.
+
+The PlantSchema class is used to define the serialization and deserialization
+rules for Plant instances. It specifies how each attribute of a Plant instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a Plant instance.
+
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
+
 """
 
 import json
@@ -166,7 +185,16 @@ class TestPlantSchema:
 
     def test_plant_deserialization(self, plant):
         """
-            #TODO add comment
+        Test the deserialization of a Plant object using the PlantSchema.
+
+        Args:
+            plant (Plant): The Plant object to be deserialized.
+
+        Raises:
+            AssertionError: If any of the assertions fail.
+
+        Returns:
+            None
         """
 
         schema = PlantSchema()
@@ -297,7 +325,19 @@ class TestPlantSchema:
 
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the PlantSchema class.
+
+        This method tests the deserialization of
+        a JSON string to a Plant object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a Plant
+        object. Finally, it asserts the
+        equality of the deserialized Plant object
+        with the sample data.
+
+        Returns:
+            None
         """
 
         plant_schema = PlantSchema()
@@ -377,7 +417,14 @@ class TestPlantSchema:
 
     def test_to_json(self, plant: Plant):
         """
-            #TODO add comment
+        Test the conversion of a Plant instance to JSON.
+
+        Args:
+            plant (Plant): The Plant instance to convert.
+
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
 
         # Convert the Plant instance to JSON using the schema

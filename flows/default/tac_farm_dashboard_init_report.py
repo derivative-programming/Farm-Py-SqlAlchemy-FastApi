@@ -1,6 +1,7 @@
 # flows/default/tac_farm_dashboard_init_report.py
 """
-    #TODO add comment
+This module contains the FlowTacFarmDashboardInitReport class and related classes
+that handle the addition of a  to a specific tac in the flow process.
 """
 import uuid
 import json
@@ -13,18 +14,20 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacFarmDashboardInitReportResult():
     """
-    #TODO add comment
+    Represents the result of the FlowTacFarmDashboardInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     customer_code: uuid.UUID = uuid.UUID(int=0)
 # endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the FlowTacFarmDashboardInitReportResult class.
         """
     def to_json(self):
         """
-            #TODO add comment
+        Converts the FlowTacFarmDashboardInitReportResult instance to a JSON string.
+        Returns:
+            str: The JSON representation of the instance.
         """
         # Create a dictionary representation of the instance
         data = {
@@ -45,7 +48,7 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initialize FlowTacFarmDashboardInitReport with the provided session context.
+        Initializes a new instance of the FlowTacFarmDashboardInitReport class.
         Args:
             session_context (SessionContext): The session
                 context to be used for this flow.
@@ -58,7 +61,9 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
 # endset  # noqa: E122
     ) -> FlowTacFarmDashboardInitReportResult:
         """
-            #TODO add comment
+        Processes the addition of a  to a specific tac.
+        Returns:
+            FlowTacFarmDashboardInitReportResult: The result of the FlowTacFarmDashboardInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

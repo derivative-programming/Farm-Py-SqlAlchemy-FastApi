@@ -1,7 +1,21 @@
 # org_customer_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the OrgCustomer serialization schema.
+The OrgCustomer serialization schema is responsible for serializing and deserializing
+OrgCustomer instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of OrgCustomer
+instances using the OrgCustomerSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a OrgCustomer instance.
+The OrgCustomerSchema class is used to define the serialization and deserialization
+rules for OrgCustomer instances. It specifies how each attribute of a OrgCustomer instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a OrgCustomer instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -94,7 +108,13 @@ class TestOrgCustomerSchema:
 # endset
     def test_org_customer_deserialization(self, org_customer):
         """
-            #TODO add comment
+        Test the deserialization of a OrgCustomer object using the OrgCustomerSchema.
+        Args:
+            org_customer (OrgCustomer): The OrgCustomer object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = OrgCustomerSchema()
         serialized_data = schema.dump(org_customer)
@@ -151,7 +171,17 @@ class TestOrgCustomerSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the OrgCustomerSchema class.
+        This method tests the deserialization of
+        a JSON string to a OrgCustomer object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a OrgCustomer
+        object. Finally, it asserts the
+        equality of the deserialized OrgCustomer object
+        with the sample data.
+        Returns:
+            None
         """
         org_customer_schema = OrgCustomerSchema()
         # Convert sample data to JSON string
@@ -191,7 +221,12 @@ class TestOrgCustomerSchema:
         assert isinstance(new_org_customer, OrgCustomer)
     def test_to_json(self, org_customer: OrgCustomer):
         """
-            #TODO add comment
+        Test the conversion of a OrgCustomer instance to JSON.
+        Args:
+            org_customer (OrgCustomer): The OrgCustomer instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the OrgCustomer instance to JSON using the schema
         org_customer_schema = OrgCustomerSchema()

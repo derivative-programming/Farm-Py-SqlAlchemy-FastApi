@@ -1,7 +1,8 @@
 # flows/base/land_add_plant.py
 
 """
-    #TODO add comment
+This module contains the implementation
+of the BaseFlow Land Add Plant class
 """
 
 import uuid
@@ -22,12 +23,15 @@ from .base_flow import BaseFlow
 
 class BaseFlowLandAddPlant(BaseFlow):
     """
-    #TODO add comment
+
     """
 
     def __init__(self, session_context: SessionContext):
         """
-        #TODO add comment
+        Initializes a new instance of the BaseFlowLandAddPlant class.
+
+        Args:
+            session_context (SessionContext): The session context for the flow.
         """
 
         super(BaseFlowLandAddPlant, self).__init__(
@@ -60,7 +64,8 @@ class BaseFlowLandAddPlant(BaseFlow):
         request_sample_image_upload_file: str = "",
     ):
         """
-        #TODO add comment
+        Processes the validation rules for adding plants to land.
+
         """
 
         super()._log_message_and_severity(
@@ -232,7 +237,7 @@ class BaseFlowLandAddPlant(BaseFlow):
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
                 self._add_validation_error(
-                    "Unautorized access. " + role_required + " role not found."
+                    f"Unauthorized access. {role_required} role not found."
                 )
 
         if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
@@ -274,7 +279,7 @@ class BaseFlowLandAddPlant(BaseFlow):
                     is True and item.get_object_name() == "customer":  # type: ignore  # noqa: E501
                 if item.code != self._session_context.customer_code:  # type: ignore  # noqa: E501
                     self._add_validation_error(
-                        "Unautorized access.  Invalid User.")
+                        "Unauthorized access.  Invalid User.")
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelCustomerSecurityUsed]End
 
@@ -302,7 +307,7 @@ class BaseFlowLandAddPlant(BaseFlow):
                     for org_customer in org_customers
                 ):
                     self._add_validation_error(
-                        "Unautorized access. Invalid user in organization."
+                        "Unauthorized access. Invalid user in organization."
                     )
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End

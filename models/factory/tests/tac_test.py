@@ -1,6 +1,7 @@
 # models/factory/tests/tac_test.py
 """
-    #TODO add comment
+This module contains unit tests for the TacFactory
+class in the models.factory package.
 """
 from decimal import Decimal
 import time
@@ -19,15 +20,15 @@ logger = get_logger(__name__)
 DATABASE_URL = "sqlite:///:memory:"
 class TestTacFactory:
     """
-    #TODO add comment
+    This class contains unit tests for the TacFactory class.
     """
     @pytest.fixture(scope="module")
     def engine(self):
         """
-        #TODO add comment
+        Fixture for creating a database engine.
         """
         engine = create_engine(DATABASE_URL, echo=False)
-        #FKs are not activated by default in sqllite
+        # FKs are not activated by default in sqllite
         with engine.connect() as conn:
             conn.connection.execute("PRAGMA foreign_keys=ON")
         yield engine
@@ -35,7 +36,7 @@ class TestTacFactory:
     @pytest.fixture
     def session(self, engine):
         """
-        #TODO add comment
+        Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
         SessionLocal = sessionmaker(  # pylint: disable=invalid-name
@@ -45,32 +46,35 @@ class TestTacFactory:
         session_instance.close()
     def test_tac_creation(self, session):
         """
-        #TODO add comment
+        Test case for creating a tac.
         """
         tac = TacFactory.create(session=session)
         assert tac.tac_id is not None
     def test_code_default(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
         tac = TacFactory.create(session=session)
         assert isinstance(tac.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of
+        the last_change_code attribute on build.
         """
         tac: Tac = TacFactory.build(session=session)
         assert tac.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on creation.
         """
         tac: Tac = TacFactory.create(session=session)
         assert tac.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
-        #TODO add comment
+        Test case for checking the default value of the
+        last_change_code attribute on update.
         """
         tac = TacFactory.create(session=session)
         initial_code = tac.last_change_code
@@ -79,14 +83,16 @@ class TestTacFactory:
         assert tac.last_change_code != initial_code
     def test_date_inserted_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on build.
         """
         tac = TacFactory.build(session=session)
         assert tac.insert_utc_date_time is not None
         assert isinstance(tac.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on initial save.
         """
         tac = TacFactory.build(session=session)
         assert tac.insert_utc_date_time is not None
@@ -98,7 +104,8 @@ class TestTacFactory:
         assert tac.insert_utc_date_time > initial_time
     def test_date_inserted_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        insert_utc_date_time attribute on second save.
         """
         tac = TacFactory(session=session)
         assert tac.insert_utc_date_time is not None
@@ -110,14 +117,16 @@ class TestTacFactory:
         assert tac.insert_utc_date_time == initial_time
     def test_date_updated_on_build(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on build.
         """
         tac = TacFactory.build(session=session)
         assert tac.last_update_utc_date_time is not None
         assert isinstance(tac.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on initial save.
         """
         tac = TacFactory.build(session=session)
         assert tac.last_update_utc_date_time is not None
@@ -129,7 +138,8 @@ class TestTacFactory:
         assert tac.last_update_utc_date_time > initial_time
     def test_date_updated_on_second_save(self, session):
         """
-        #TODO add comment
+        Test case for checking the value of the
+        last_update_utc_date_time attribute on second save.
         """
         tac = TacFactory(session=session)
         assert tac.last_update_utc_date_time is not None
@@ -141,7 +151,7 @@ class TestTacFactory:
         assert tac.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        #TODO add comment
+        Test case for deleting a tac model.
         """
         tac = TacFactory.create(session=session)
         session.delete(tac)
@@ -151,7 +161,7 @@ class TestTacFactory:
         assert deleted_tac is None
     def test_data_types(self, session):
         """
-        #TODO add comment
+        Test case for checking the data types of the tac attributes.
         """
         tac = TacFactory.create(session=session)
         assert isinstance(tac.tac_id, int)
@@ -181,7 +191,7 @@ class TestTacFactory:
         assert isinstance(tac.last_update_utc_date_time, datetime)
     def test_unique_code_constraint(self, session):
         """
-        #TODO add comment
+        Test case for checking the unique code constraint.
         """
         tac_1 = TacFactory.create(session=session)
         tac_2 = TacFactory.create(session=session)
@@ -192,7 +202,7 @@ class TestTacFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        #TODO add comment
+        Test case for checking the default values of the tac fields.
         """
         tac = Tac()
         assert tac.code is not None
@@ -221,7 +231,21 @@ class TestTacFactory:
 # endset
     def test_last_change_code_concurrency(self, session):
         """
-        #TODO add comment
+        Test case to verify the concurrency of
+        last_change_code in the Tac model.
+        This test case checks if the last_change_code
+        of a Tac object is updated correctly
+        when multiple changes are made concurrently.
+        It creates a Tac object, retrieves it
+        from the database, and updates its code
+        attribute twice in separate transactions.
+        Finally, it asserts that the last_change_code
+        of the second retrieved Tac object
+        is different from the original last_change_code.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Returns:
+            None
         """
         tac = TacFactory.create(session=session)
         original_last_change_code = tac.last_change_code
@@ -243,7 +267,18 @@ class TestTacFactory:
     # PacID
     def test_invalid_pac_id(self, session):
         """
-        #TODO add comment
+        Test case to check if an invalid pac ID raises an IntegrityError.
+        This test case creates a tac object using
+        the TacFactory and assigns an invalid pac ID to it.
+        It then tries to commit the changes to the
+        session and expects an IntegrityError to be raised.
+        Finally, it rolls back the session to ensure
+        no changes are persisted.
+        Args:
+            session (Session): The SQLAlchemy session object.
+        Raises:
+            IntegrityError: If the changes to the
+                session violate any integrity constraints.
         """
         tac = TacFactory.create(session=session)
         tac.pac_id = 99999

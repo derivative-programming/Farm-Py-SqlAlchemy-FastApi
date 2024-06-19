@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/error_log_config_resolve_error_log_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the `error_log_config_resolve_error_log` endpoint.
+The `error_log_config_resolve_error_log` endpoint is responsible for handling requests related to
+the list of plants in a .
 """
 import logging
 import uuid

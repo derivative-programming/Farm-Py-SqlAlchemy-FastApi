@@ -1,7 +1,21 @@
 # land_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the Land serialization schema.
+The Land serialization schema is responsible for serializing and deserializing
+Land instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of Land
+instances using the LandSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a Land instance.
+The LandSchema class is used to define the serialization and deserialization
+rules for Land instances. It specifies how each attribute of a Land instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a Land instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -99,7 +113,13 @@ class TestLandSchema:
 # endset
     def test_land_deserialization(self, land):
         """
-            #TODO add comment
+        Test the deserialization of a Land object using the LandSchema.
+        Args:
+            land (Land): The Land object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = LandSchema()
         serialized_data = schema.dump(land)
@@ -164,7 +184,17 @@ class TestLandSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the LandSchema class.
+        This method tests the deserialization of
+        a JSON string to a Land object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a Land
+        object. Finally, it asserts the
+        equality of the deserialized Land object
+        with the sample data.
+        Returns:
+            None
         """
         land_schema = LandSchema()
         # Convert sample data to JSON string
@@ -208,7 +238,12 @@ class TestLandSchema:
         assert isinstance(new_land, Land)
     def test_to_json(self, land: Land):
         """
-            #TODO add comment
+        Test the conversion of a Land instance to JSON.
+        Args:
+            land (Land): The Land instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the Land instance to JSON using the schema
         land_schema = LandSchema()

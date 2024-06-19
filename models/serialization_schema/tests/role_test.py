@@ -1,7 +1,21 @@
 # role_test.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains tests for the Role serialization schema.
+The Role serialization schema is responsible for serializing and deserializing
+Role instances. It ensures that the data is properly formatted and can be
+stored or retrieved from a database or transmitted over a network.
+The tests in this module cover the serialization and deserialization of Role
+instances using the RoleSchema class. They verify that the serialized data
+matches the expected format and that the deserialized data can be used to
+reconstruct a Role instance.
+The RoleSchema class is used to define the serialization and deserialization
+rules for Role instances. It specifies how each attribute of a Role instance
+should be converted to a serialized format and how the serialized data should
+be converted back to a Role instance.
+The tests in this module use the pytest framework to define test cases and
+assertions. They ensure that the serialization and deserialization process
+works correctly and produces the expected results.
 """
 import json
 import logging
@@ -99,7 +113,13 @@ class TestRoleSchema:
 # endset
     def test_role_deserialization(self, role):
         """
-            #TODO add comment
+        Test the deserialization of a Role object using the RoleSchema.
+        Args:
+            role (Role): The Role object to be deserialized.
+        Raises:
+            AssertionError: If any of the assertions fail.
+        Returns:
+            None
         """
         schema = RoleSchema()
         serialized_data = schema.dump(role)
@@ -164,7 +184,17 @@ class TestRoleSchema:
 # endset
     def test_from_json(self):
         """
-            #TODO add comment
+        Test the `from_json` method of the RoleSchema class.
+        This method tests the deserialization of
+        a JSON string to a Role object.
+        It converts the sample data to a JSON string,
+        deserializes it to a dictionary,
+        and then loads the dictionary to a Role
+        object. Finally, it asserts the
+        equality of the deserialized Role object
+        with the sample data.
+        Returns:
+            None
         """
         role_schema = RoleSchema()
         # Convert sample data to JSON string
@@ -208,7 +238,12 @@ class TestRoleSchema:
         assert isinstance(new_role, Role)
     def test_to_json(self, role: Role):
         """
-            #TODO add comment
+        Test the conversion of a Role instance to JSON.
+        Args:
+            role (Role): The Role instance to convert.
+        Raises:
+            AssertionError: If the conversion fails or the
+            converted JSON does not match the expected values.
         """
         # Convert the Role instance to JSON using the schema
         role_schema = RoleSchema()

@@ -1,7 +1,8 @@
 # apis/models/factory/pac_user_flavor_list.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the factory class for creating
+instances of the PacUserFlavorListGetModelRequest model.
 """
 import uuid
 from datetime import datetime
@@ -15,11 +16,12 @@ class PacUserFlavorListGetModelRequestFactory(
     factory.base.Factory
 ):
     """
-    #TODO add comment
+    Factory class for creating instances of the
+    PacUserFlavorListGetModelRequest model.
     """
     class Meta:
         """
-        #TODO add comment
+        Meta class for the factory.
         """
         model = PacUserFlavorListGetModelRequest
 
@@ -31,6 +33,17 @@ class PacUserFlavorListGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PacUserFlavorListGetModelRequest:
+        """
+        Build a PacUserFlavorListGetModelRequest instance.
+        Args:
+            model_class: The model class to build an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserFlavorListGetModelRequest: The built
+                instance of PacUserFlavorListGetModelRequest.
+        """
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -49,6 +62,17 @@ class PacUserFlavorListGetModelRequestFactory(
         session=None,
         *args, **kwargs
     ) -> PacUserFlavorListGetModelRequest:
+        """
+        Create a PacUserFlavorListGetModelRequest instance.
+        Args:
+            model_class: The model class to create an instance of.
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserFlavorListGetModelRequest: The created
+                instance of PacUserFlavorListGetModelRequest.
+        """
 
 # endset
 
@@ -64,7 +88,14 @@ class PacUserFlavorListGetModelRequestFactory(
         *args, **kwargs
     ) -> PacUserFlavorListGetModelRequest:
         """
-            #TODO add comment
+        Asynchronously create a PacUserFlavorListGetModelRequest instance.
+        Args:
+            session: The session to use for creating related objects.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+        Returns:
+            PacUserFlavorListGetModelRequest: The created
+                instance of PacUserFlavorListGetModelRequest.
         """
 
 # endset

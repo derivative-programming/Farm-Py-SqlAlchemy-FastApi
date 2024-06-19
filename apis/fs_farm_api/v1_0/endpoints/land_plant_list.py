@@ -1,7 +1,16 @@
 # apis/fs_farm_api/v1_0/endpoints/land_plant_list.py
 
 """
-    #TODO add comment
+This module contains the implementation of the LandPlantListRouter,
+which handles the API endpoints related to the Land Plant List.
+
+The LandPlantListRouter provides the following endpoints:
+    - GET /api/v1_0/land-plant-list/{land_code}/init:
+        Get the initialization data for the Land Plant List page.
+    - GET /api/v1_0/land-plant-list/{land_code}:
+        Get the land plant list report for a specific land code.
+    - GET /api/v1_0/land-plant-list/{land_code}/to-csv:
+        Retrieve the Land Plant List Report as a CSV file.
 """
 
 import logging
@@ -30,8 +39,9 @@ EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 
 class LandPlantListRouterConfig():
     """
-        #TODO add comment
+    Configuration class for the LandPlantListRouter.
     """
+
     # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = True
@@ -46,7 +56,7 @@ class LandPlantListRouterConfig():
 
 class LandPlantListRouter(BaseRouter):
     """
-        #TODO add comment
+    Router class for the Land Plant List API endpoints.
     """
     router = APIRouter(tags=["LandPlantList"])
 
@@ -65,7 +75,16 @@ class LandPlantListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Get the initialization data for the Land Plant List page.
+
+        Args:
+            land_code (uuid.UUID): The UUID of the land.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+
+        Returns:
+            LandPlantListInitReportGetInitModelResponse:
+                The initialization data for the Land Plant List page.
         """
 
         logging.info(
@@ -145,7 +164,21 @@ class LandPlantListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Get the land plant list report for a specific land code.
+
+        Args:
+            land_code (uuid.UUID): The unique identifier for the land.
+            request_model (api_models.LandPlantListGetModelRequest):
+                The request model for the API.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+
+        Returns:
+            api_models.LandPlantListGetModelResponse: The response
+                model containing the land plant list report.
+
+        Raises:
+            Exception: If an error occurs during the processing of the request.
         """
 
         logging.info(
@@ -216,7 +249,17 @@ class LandPlantListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-            #TODO add comment
+        Retrieve the Land Plant List Report as a CSV file.
+
+        Args:
+            land_code (uuid.UUID): The unique identifier for the land.
+            request_model (api_models.LandPlantListGetModelRequest):
+                The request model for the API.
+            session (AsyncSession): The database session.
+            api_key (str): The API key for authorization.
+
+        Returns:
+            FileResponse: The CSV file containing the Land Plant List Report.
         """
 
         logging.info(
