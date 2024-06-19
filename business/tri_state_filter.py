@@ -517,6 +517,10 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.tri_state_filter:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
         return (
             managers_and_enums.TriStateFilterEnum[
                 self.tri_state_filter.lookup_enum_name
@@ -583,10 +587,11 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         if not self.tri_state_filter:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.tri_state_filter.tri_state_filter_id > 0:
+        tri_state_filter_id = self.tri_state_filter.tri_state_filter_id
+        if tri_state_filter_id > 0:
             tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = await tri_state_filter_manager.update(self.tri_state_filter)
-        if self.tri_state_filter.tri_state_filter_id == 0:
+        if tri_state_filter_id == 0:
             tri_state_filter_manager = TriStateFilterManager(self._session_context)
             self.tri_state_filter = await tri_state_filter_manager.add(self.tri_state_filter)
         return self
@@ -692,7 +697,8 @@ class TriStateFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_pac_id_rel_obj()
+        pac = await self.get_pac_id_rel_obj()
+        return pac
     # stateIntValue,
 # endset
     @staticmethod

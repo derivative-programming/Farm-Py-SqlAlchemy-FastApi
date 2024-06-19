@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -246,13 +246,14 @@ class LandManager:
         schema = LandSchema()
         land_data = schema.dump(land)
         return json.dumps(land_data)
-    def to_dict(self, land: Land) -> dict:
+    def to_dict(self, land: Land) -> Dict[str, Any]:
         """
         Serialize the Land object to a JSON string using the LandSchema.
         """
         logging.info("LandManager.to_dict")
         schema = LandSchema()
         land_data = schema.dump(land)
+        assert isinstance(land_data, dict)
         return land_data
     def from_json(self, json_str: str) -> Land:
         """
@@ -264,13 +265,20 @@ class LandManager:
         land_dict = schema.load(data)
         new_land = Land(**land_dict)
         return new_land
-    def from_dict(self, land_dict: str) -> Land:
+    def from_dict(self, land_dict: Dict[str, Any]) -> Land:
         """
-        #TODO add comment
+        Create a Land instance from a dictionary of attributes.
+        Args:
+            land_dict (Dict[str, Any]): A dictionary containing
+                land attributes.
+        Returns:
+            Land: A new Land instance created from the given dictionary.
         """
         logging.info("LandManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = LandSchema()
         land_dict_converted = schema.load(land_dict)
+        # Create a new Land instance using the validated data
         new_land = Land(**land_dict_converted)
         return new_land
     async def add_bulk(self, lands: List[Land]) -> List[Land]:
@@ -294,7 +302,7 @@ class LandManager:
         return lands
     async def update_bulk(
         self,
-        land_updates: List[Dict[int, Dict]]
+        land_updates: List[Dict[str, Any]]
     ) -> List[Land]:
         """
         #TODO add comment

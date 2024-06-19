@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -246,13 +246,14 @@ class TacManager:
         schema = TacSchema()
         tac_data = schema.dump(tac)
         return json.dumps(tac_data)
-    def to_dict(self, tac: Tac) -> dict:
+    def to_dict(self, tac: Tac) -> Dict[str, Any]:
         """
         Serialize the Tac object to a JSON string using the TacSchema.
         """
         logging.info("TacManager.to_dict")
         schema = TacSchema()
         tac_data = schema.dump(tac)
+        assert isinstance(tac_data, dict)
         return tac_data
     def from_json(self, json_str: str) -> Tac:
         """
@@ -264,13 +265,20 @@ class TacManager:
         tac_dict = schema.load(data)
         new_tac = Tac(**tac_dict)
         return new_tac
-    def from_dict(self, tac_dict: str) -> Tac:
+    def from_dict(self, tac_dict: Dict[str, Any]) -> Tac:
         """
-        #TODO add comment
+        Create a Tac instance from a dictionary of attributes.
+        Args:
+            tac_dict (Dict[str, Any]): A dictionary containing
+                tac attributes.
+        Returns:
+            Tac: A new Tac instance created from the given dictionary.
         """
         logging.info("TacManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = TacSchema()
         tac_dict_converted = schema.load(tac_dict)
+        # Create a new Tac instance using the validated data
         new_tac = Tac(**tac_dict_converted)
         return new_tac
     async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
@@ -294,7 +302,7 @@ class TacManager:
         return tacs
     async def update_bulk(
         self,
-        tac_updates: List[Dict[int, Dict]]
+        tac_updates: List[Dict[str, Any]]
     ) -> List[Tac]:
         """
         #TODO add comment

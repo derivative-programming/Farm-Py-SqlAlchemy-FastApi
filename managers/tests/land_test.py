@@ -308,7 +308,7 @@ class TestLandManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await land_manager.delete("999") # type: ignore
+            await land_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestLandManager:
         land = await LandFactory.create_async(session)
         schema = LandSchema()
         land_data = schema.dump(land)
+        assert isinstance(land_data, dict)
         deserialized_land = land_manager.from_dict(land_data)
         assert isinstance(deserialized_land, Land)
         assert deserialized_land.code == land.code
@@ -777,6 +778,12 @@ class TestLandManager:
         assert len(fetched_lands) == 1
         assert isinstance(fetched_lands[0], Land)
         assert fetched_lands[0].code == land1.code
+        stmt = select(models.Pac).where(
+            models.Pac._pac_id == land1.pac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert isinstance(pac, models.Pac)
+        assert fetched_lands[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
@@ -799,6 +806,6 @@ class TestLandManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await land_manager.get_by_pac_id(invalid_id) # type: ignore
+            await land_manager.get_by_pac_id(invalid_id)  # type: ignore
         await session.rollback()
 # endset

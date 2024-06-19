@@ -174,3 +174,4 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
                 val_error.message = ve.error_dict[key]
                 response.validation_errors.append(val_error)
         return response
+

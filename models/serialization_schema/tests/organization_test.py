@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import Organization
@@ -62,7 +61,9 @@ class TestOrganizationSchema:
                 A Organization instance to serialize.
         """
         schema = OrganizationSchema()
-        result: Dict[str, Any] = schema.dump(organization)
+        organization_data = schema.dump(organization)
+        assert isinstance(organization_data, dict)
+        result = organization_data
         assert result['code'] == str(organization.code)
         assert result['last_change_code'] == (
             organization.last_change_code)

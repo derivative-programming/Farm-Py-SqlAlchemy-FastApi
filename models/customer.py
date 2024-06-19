@@ -267,7 +267,7 @@ class Customer(Base):
             zip_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    tac_code_peek = uuid.UUID  # TacID
+    tac_code_peek: uuid.UUID = uuid.UUID(int=0)  # TacID  # noqa: E501
     _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,

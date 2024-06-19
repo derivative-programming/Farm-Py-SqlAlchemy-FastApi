@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import TriStateFilter
@@ -67,7 +66,9 @@ class TestTriStateFilterSchema:
                 A TriStateFilter instance to serialize.
         """
         schema = TriStateFilterSchema()
-        result: Dict[str, Any] = schema.dump(tri_state_filter)
+        tri_state_filter_data = schema.dump(tri_state_filter)
+        assert isinstance(tri_state_filter_data, dict)
+        result = tri_state_filter_data
         assert result['code'] == str(tri_state_filter.code)
         assert result['last_change_code'] == (
             tri_state_filter.last_change_code)

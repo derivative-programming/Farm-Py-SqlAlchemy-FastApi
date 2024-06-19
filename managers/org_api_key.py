@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -209,13 +209,14 @@ class OrgApiKeyManager:
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
         return json.dumps(org_api_key_data)
-    def to_dict(self, org_api_key: OrgApiKey) -> dict:
+    def to_dict(self, org_api_key: OrgApiKey) -> Dict[str, Any]:
         """
         Serialize the OrgApiKey object to a JSON string using the OrgApiKeySchema.
         """
         logging.info("OrgApiKeyManager.to_dict")
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
+        assert isinstance(org_api_key_data, dict)
         return org_api_key_data
     def from_json(self, json_str: str) -> OrgApiKey:
         """
@@ -227,13 +228,20 @@ class OrgApiKeyManager:
         org_api_key_dict = schema.load(data)
         new_org_api_key = OrgApiKey(**org_api_key_dict)
         return new_org_api_key
-    def from_dict(self, org_api_key_dict: str) -> OrgApiKey:
+    def from_dict(self, org_api_key_dict: Dict[str, Any]) -> OrgApiKey:
         """
-        #TODO add comment
+        Create a OrgApiKey instance from a dictionary of attributes.
+        Args:
+            org_api_key_dict (Dict[str, Any]): A dictionary containing
+                org_api_key attributes.
+        Returns:
+            OrgApiKey: A new OrgApiKey instance created from the given dictionary.
         """
         logging.info("OrgApiKeyManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = OrgApiKeySchema()
         org_api_key_dict_converted = schema.load(org_api_key_dict)
+        # Create a new OrgApiKey instance using the validated data
         new_org_api_key = OrgApiKey(**org_api_key_dict_converted)
         return new_org_api_key
     async def add_bulk(self, org_api_keys: List[OrgApiKey]) -> List[OrgApiKey]:
@@ -257,7 +265,7 @@ class OrgApiKeyManager:
         return org_api_keys
     async def update_bulk(
         self,
-        org_api_key_updates: List[Dict[int, Dict]]
+        org_api_key_updates: List[Dict[str, Any]]
     ) -> List[OrgApiKey]:
         """
         #TODO add comment

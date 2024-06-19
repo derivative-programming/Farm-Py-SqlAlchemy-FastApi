@@ -11,8 +11,9 @@ from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.customer_user_log_out_init_obj_wf import (FlowCustomerUserLogOutInitObjWF,
-                                              FlowCustomerUserLogOutInitObjWFResult)
+from flows.customer_user_log_out_init_obj_wf import (
+    FlowCustomerUserLogOutInitObjWF,
+    FlowCustomerUserLogOutInitObjWFResult)
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel

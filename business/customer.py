@@ -1036,10 +1036,11 @@ class CustomerBusObj(BaseBusObj):
         """
         if not self.customer:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.customer.customer_id > 0:
+        customer_id = self.customer.customer_id
+        if customer_id > 0:
             customer_manager = CustomerManager(self._session_context)
             self.customer = await customer_manager.update(self.customer)
-        if self.customer.customer_id == 0:
+        if customer_id == 0:
             customer_manager = CustomerManager(self._session_context)
             self.customer = await customer_manager.add(self.customer)
         return self
@@ -1066,7 +1067,7 @@ class CustomerBusObj(BaseBusObj):
         self.customer.active_organization_id = (
             random.randint(0, 100))
         self.customer.email = (
-             f"user{random.randint(1, 100)}@abc.com")
+            f"user{random.randint(1, 100)}@abc.com")
         self.customer.email_confirmed_utc_date_time = datetime(
             random.randint(2000, 2023),
             random.randint(1, 12),
@@ -1215,7 +1216,8 @@ class CustomerBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_tac_id_rel_obj()
+        tac = await self.get_tac_id_rel_obj()
+        return tac
     # uTCOffsetInMinutes,
     # zip,
 # endset

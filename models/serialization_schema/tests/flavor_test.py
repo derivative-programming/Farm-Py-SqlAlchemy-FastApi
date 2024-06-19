@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import Flavor
@@ -66,7 +65,9 @@ class TestFlavorSchema:
                 A Flavor instance to serialize.
         """
         schema = FlavorSchema()
-        result: Dict[str, Any] = schema.dump(flavor)
+        flavor_data = schema.dump(flavor)
+        assert isinstance(flavor_data, dict)
+        result = flavor_data
         assert result['code'] == str(flavor.code)
         assert result['last_change_code'] == (
             flavor.last_change_code)

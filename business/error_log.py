@@ -576,10 +576,11 @@ class ErrorLogBusObj(BaseBusObj):
         """
         if not self.error_log:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.error_log.error_log_id > 0:
+        error_log_id = self.error_log.error_log_id
+        if error_log_id > 0:
             error_log_manager = ErrorLogManager(self._session_context)
             self.error_log = await error_log_manager.update(self.error_log)
-        if self.error_log.error_log_id == 0:
+        if error_log_id == 0:
             error_log_manager = ErrorLogManager(self._session_context)
             self.error_log = await error_log_manager.add(self.error_log)
         return self
@@ -689,7 +690,8 @@ class ErrorLogBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_pac_id_rel_obj()
+        pac = await self.get_pac_id_rel_obj()
+        return pac
     # url,
 # endset
     @staticmethod

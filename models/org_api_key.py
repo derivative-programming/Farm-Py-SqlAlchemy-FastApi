@@ -131,8 +131,8 @@ class OrgApiKey(Base):
             org_customer_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    organization_code_peek = uuid.UUID  # OrganizationID
-    org_customer_code_peek = uuid.UUID  # OrgCustomerID
+    organization_code_peek: uuid.UUID = uuid.UUID(int=0)  # OrganizationID  # noqa: E501
+    org_customer_code_peek: uuid.UUID = uuid.UUID(int=0)  # OrgCustomerID  # noqa: E501
     _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,

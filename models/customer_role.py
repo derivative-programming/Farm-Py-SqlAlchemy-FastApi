@@ -80,8 +80,8 @@ class CustomerRole(Base):
             role_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    customer_code_peek = uuid.UUID  # CustomerID
-    role_code_peek = uuid.UUID  # RoleID
+    customer_code_peek: uuid.UUID = uuid.UUID(int=0)  # CustomerID  # noqa: E501
+    role_code_peek: uuid.UUID = uuid.UUID(int=0)  # RoleID  # noqa: E501
     _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,

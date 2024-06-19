@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -257,13 +257,14 @@ class TriStateFilterManager:
         schema = TriStateFilterSchema()
         tri_state_filter_data = schema.dump(tri_state_filter)
         return json.dumps(tri_state_filter_data)
-    def to_dict(self, tri_state_filter: TriStateFilter) -> dict:
+    def to_dict(self, tri_state_filter: TriStateFilter) -> Dict[str, Any]:
         """
         Serialize the TriStateFilter object to a JSON string using the TriStateFilterSchema.
         """
         logging.info("TriStateFilterManager.to_dict")
         schema = TriStateFilterSchema()
         tri_state_filter_data = schema.dump(tri_state_filter)
+        assert isinstance(tri_state_filter_data, dict)
         return tri_state_filter_data
     def from_json(self, json_str: str) -> TriStateFilter:
         """
@@ -275,13 +276,20 @@ class TriStateFilterManager:
         tri_state_filter_dict = schema.load(data)
         new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
         return new_tri_state_filter
-    def from_dict(self, tri_state_filter_dict: str) -> TriStateFilter:
+    def from_dict(self, tri_state_filter_dict: Dict[str, Any]) -> TriStateFilter:
         """
-        #TODO add comment
+        Create a TriStateFilter instance from a dictionary of attributes.
+        Args:
+            tri_state_filter_dict (Dict[str, Any]): A dictionary containing
+                tri_state_filter attributes.
+        Returns:
+            TriStateFilter: A new TriStateFilter instance created from the given dictionary.
         """
         logging.info("TriStateFilterManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = TriStateFilterSchema()
         tri_state_filter_dict_converted = schema.load(tri_state_filter_dict)
+        # Create a new TriStateFilter instance using the validated data
         new_tri_state_filter = TriStateFilter(**tri_state_filter_dict_converted)
         return new_tri_state_filter
     async def add_bulk(self, tri_state_filters: List[TriStateFilter]) -> List[TriStateFilter]:
@@ -305,7 +313,7 @@ class TriStateFilterManager:
         return tri_state_filters
     async def update_bulk(
         self,
-        tri_state_filter_updates: List[Dict[int, Dict]]
+        tri_state_filter_updates: List[Dict[str, Any]]
     ) -> List[TriStateFilter]:
         """
         #TODO add comment

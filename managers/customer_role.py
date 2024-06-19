@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -209,13 +209,14 @@ class CustomerRoleManager:
         schema = CustomerRoleSchema()
         customer_role_data = schema.dump(customer_role)
         return json.dumps(customer_role_data)
-    def to_dict(self, customer_role: CustomerRole) -> dict:
+    def to_dict(self, customer_role: CustomerRole) -> Dict[str, Any]:
         """
         Serialize the CustomerRole object to a JSON string using the CustomerRoleSchema.
         """
         logging.info("CustomerRoleManager.to_dict")
         schema = CustomerRoleSchema()
         customer_role_data = schema.dump(customer_role)
+        assert isinstance(customer_role_data, dict)
         return customer_role_data
     def from_json(self, json_str: str) -> CustomerRole:
         """
@@ -227,13 +228,20 @@ class CustomerRoleManager:
         customer_role_dict = schema.load(data)
         new_customer_role = CustomerRole(**customer_role_dict)
         return new_customer_role
-    def from_dict(self, customer_role_dict: str) -> CustomerRole:
+    def from_dict(self, customer_role_dict: Dict[str, Any]) -> CustomerRole:
         """
-        #TODO add comment
+        Create a CustomerRole instance from a dictionary of attributes.
+        Args:
+            customer_role_dict (Dict[str, Any]): A dictionary containing
+                customer_role attributes.
+        Returns:
+            CustomerRole: A new CustomerRole instance created from the given dictionary.
         """
         logging.info("CustomerRoleManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = CustomerRoleSchema()
         customer_role_dict_converted = schema.load(customer_role_dict)
+        # Create a new CustomerRole instance using the validated data
         new_customer_role = CustomerRole(**customer_role_dict_converted)
         return new_customer_role
     async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
@@ -257,7 +265,7 @@ class CustomerRoleManager:
         return customer_roles
     async def update_bulk(
         self,
-        customer_role_updates: List[Dict[int, Dict]]
+        customer_role_updates: List[Dict[str, Any]]
     ) -> List[CustomerRole]:
         """
         #TODO add comment

@@ -487,6 +487,10 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.flavor:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
         return (
             managers_and_enums.FlavorEnum[
                 self.flavor.lookup_enum_name
@@ -553,10 +557,11 @@ class FlavorBusObj(BaseBusObj):
         """
         if not self.flavor:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.flavor.flavor_id > 0:
+        flavor_id = self.flavor.flavor_id
+        if flavor_id > 0:
             flavor_manager = FlavorManager(self._session_context)
             self.flavor = await flavor_manager.update(self.flavor)
-        if self.flavor.flavor_id == 0:
+        if flavor_id == 0:
             flavor_manager = FlavorManager(self._session_context)
             self.flavor = await flavor_manager.add(self.flavor)
         return self
@@ -659,7 +664,8 @@ class FlavorBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_pac_id_rel_obj()
+        pac = await self.get_pac_id_rel_obj()
+        return pac
 # endset
     @staticmethod
     async def to_bus_obj_list(

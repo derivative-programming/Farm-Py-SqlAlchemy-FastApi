@@ -73,8 +73,8 @@ class OrgCustomer(Base):
             organization_id_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    customer_code_peek = uuid.UUID  # CustomerID
-    organization_code_peek = uuid.UUID  # OrganizationID
+    customer_code_peek: uuid.UUID = uuid.UUID(int=0)  # CustomerID  # noqa: E501
+    organization_code_peek: uuid.UUID = uuid.UUID(int=0)  # OrganizationID  # noqa: E501
     _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,

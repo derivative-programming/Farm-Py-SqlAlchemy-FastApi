@@ -308,7 +308,7 @@ class TestOrgApiKeyManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await org_api_key_manager.delete("999") # type: ignore
+            await org_api_key_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestOrgApiKeyManager:
         org_api_key = await OrgApiKeyFactory.create_async(session)
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
+        assert isinstance(org_api_key_data, dict)
         deserialized_org_api_key = org_api_key_manager.from_dict(org_api_key_data)
         assert isinstance(deserialized_org_api_key, OrgApiKey)
         assert deserialized_org_api_key.code == org_api_key.code
@@ -779,6 +780,12 @@ class TestOrgApiKeyManager:
         assert len(fetched_org_api_keys) == 1
         assert isinstance(fetched_org_api_keys[0], OrgApiKey)
         assert fetched_org_api_keys[0].code == org_api_key1.code
+        stmt = select(models.Organization).where(
+            models.Organization._organization_id == org_api_key1.organization_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        organization = result.scalars().first()
+        assert isinstance(organization, models.Organization)
+        assert fetched_org_api_keys[0].organization_code_peek == organization.code
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(
         self,
@@ -801,7 +808,7 @@ class TestOrgApiKeyManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_api_key_manager.get_by_organization_id(invalid_id) # type: ignore
+            await org_api_key_manager.get_by_organization_id(invalid_id)  # type: ignore
         await session.rollback()
     # OrgCustomerID
     @pytest.mark.asyncio
@@ -825,6 +832,7 @@ class TestOrgApiKeyManager:
             models.OrgCustomer._org_customer_id == org_api_key1.org_customer_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         org_customer = result.scalars().first()
+        assert isinstance(org_customer, models.OrgCustomer)
         assert fetched_org_api_keys[0].org_customer_code_peek == org_customer.code
     @pytest.mark.asyncio
     async def test_get_by_org_customer_id_nonexistent(

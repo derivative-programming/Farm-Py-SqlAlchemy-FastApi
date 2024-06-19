@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import Pac
@@ -64,7 +63,9 @@ class TestPacSchema:
                 A Pac instance to serialize.
         """
         schema = PacSchema()
-        result: Dict[str, Any] = schema.dump(pac)
+        pac_data = schema.dump(pac)
+        assert isinstance(pac_data, dict)
+        result = pac_data
         assert result['code'] == str(pac.code)
         assert result['last_change_code'] == (
             pac.last_change_code)

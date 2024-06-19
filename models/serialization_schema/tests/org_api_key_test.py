@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import OrgApiKey
@@ -75,7 +74,9 @@ class TestOrgApiKeySchema:
                 A OrgApiKey instance to serialize.
         """
         schema = OrgApiKeySchema()
-        result: Dict[str, Any] = schema.dump(org_api_key)
+        org_api_key_data = schema.dump(org_api_key)
+        assert isinstance(org_api_key_data, dict)
+        result = org_api_key_data
         assert result['code'] == str(org_api_key.code)
         assert result['last_change_code'] == (
             org_api_key.last_change_code)

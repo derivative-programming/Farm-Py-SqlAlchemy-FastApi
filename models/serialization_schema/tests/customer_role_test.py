@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import CustomerRole
@@ -66,7 +65,9 @@ class TestCustomerRoleSchema:
                 A CustomerRole instance to serialize.
         """
         schema = CustomerRoleSchema()
-        result: Dict[str, Any] = schema.dump(customer_role)
+        customer_role_data = schema.dump(customer_role)
+        assert isinstance(customer_role_data, dict)
+        result = customer_role_data
         assert result['code'] == str(customer_role.code)
         assert result['last_change_code'] == (
             customer_role.last_change_code)

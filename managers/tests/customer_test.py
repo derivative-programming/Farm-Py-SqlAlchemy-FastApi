@@ -308,7 +308,7 @@ class TestCustomerManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await customer_manager.delete("999") # type: ignore
+            await customer_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestCustomerManager:
         customer = await CustomerFactory.create_async(session)
         schema = CustomerSchema()
         customer_data = schema.dump(customer)
+        assert isinstance(customer_data, dict)
         deserialized_customer = customer_manager.from_dict(customer_data)
         assert isinstance(deserialized_customer, Customer)
         assert deserialized_customer.code == customer.code
@@ -792,6 +793,12 @@ class TestCustomerManager:
         assert len(fetched_customers) == 1
         assert isinstance(fetched_customers[0], Customer)
         assert fetched_customers[0].code == customer1.code
+        stmt = select(models.Tac).where(
+            models.Tac._tac_id == customer1.tac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        tac = result.scalars().first()
+        assert isinstance(tac, models.Tac)
+        assert fetched_customers[0].tac_code_peek == tac.code
     @pytest.mark.asyncio
     async def test_get_by_tac_id_nonexistent(
         self,
@@ -814,7 +821,7 @@ class TestCustomerManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await customer_manager.get_by_tac_id(invalid_id) # type: ignore
+            await customer_manager.get_by_tac_id(invalid_id)  # type: ignore
         await session.rollback()
     # uTCOffsetInMinutes,
     # zip,

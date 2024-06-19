@@ -113,7 +113,7 @@ class TriStateFilter(Base):
             state_int_value_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    pac_code_peek = uuid.UUID  # PacID
+    pac_code_peek: uuid.UUID = uuid.UUID(int=0)  # PacID  # noqa: E501
     _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,

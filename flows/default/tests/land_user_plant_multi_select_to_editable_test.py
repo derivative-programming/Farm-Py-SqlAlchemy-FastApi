@@ -70,7 +70,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
             customer_code_match_required = True
         if customer_code_match_required is True:
             with pytest.raises(FlowValidationError):
-                flow_result = await flow.process(
+                await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
 # endset  # noqa: E122

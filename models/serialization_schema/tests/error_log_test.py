@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import ErrorLog
@@ -72,7 +71,9 @@ class TestErrorLogSchema:
                 A ErrorLog instance to serialize.
         """
         schema = ErrorLogSchema()
-        result: Dict[str, Any] = schema.dump(error_log)
+        error_log_data = schema.dump(error_log)
+        assert isinstance(error_log_data, dict)
+        result = error_log_data
         assert result['code'] == str(error_log.code)
         assert result['last_change_code'] == (
             error_log.last_change_code)

@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import Customer
@@ -92,7 +91,9 @@ class TestCustomerSchema:
                 A Customer instance to serialize.
         """
         schema = CustomerSchema()
-        result: Dict[str, Any] = schema.dump(customer)
+        customer_data = schema.dump(customer)
+        assert isinstance(customer_data, dict)
+        result = customer_data
         assert result['code'] == str(customer.code)
         assert result['last_change_code'] == (
             customer.last_change_code)

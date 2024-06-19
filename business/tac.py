@@ -491,6 +491,10 @@ class TacBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.tac:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
         return (
             managers_and_enums.TacEnum[
                 self.tac.lookup_enum_name
@@ -557,10 +561,11 @@ class TacBusObj(BaseBusObj):
         """
         if not self.tac:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.tac.tac_id > 0:
+        tac_id = self.tac.tac_id
+        if tac_id > 0:
             tac_manager = TacManager(self._session_context)
             self.tac = await tac_manager.update(self.tac)
-        if self.tac.tac_id == 0:
+        if tac_id == 0:
             tac_manager = TacManager(self._session_context)
             self.tac = await tac_manager.add(self.tac)
         return self
@@ -663,7 +668,8 @@ class TacBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_pac_id_rel_obj()
+        pac = await self.get_pac_id_rel_obj()
+        return pac
 # endset
     @staticmethod
     async def to_bus_obj_list(

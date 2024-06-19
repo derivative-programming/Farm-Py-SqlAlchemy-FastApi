@@ -308,7 +308,7 @@ class TestTriStateFilterManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await tri_state_filter_manager.delete("999") # type: ignore
+            await tri_state_filter_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestTriStateFilterManager:
         tri_state_filter = await TriStateFilterFactory.create_async(session)
         schema = TriStateFilterSchema()
         tri_state_filter_data = schema.dump(tri_state_filter)
+        assert isinstance(tri_state_filter_data, dict)
         deserialized_tri_state_filter = tri_state_filter_manager.from_dict(tri_state_filter_data)
         assert isinstance(deserialized_tri_state_filter, TriStateFilter)
         assert deserialized_tri_state_filter.code == tri_state_filter.code
@@ -777,6 +778,12 @@ class TestTriStateFilterManager:
         assert len(fetched_tri_state_filters) == 1
         assert isinstance(fetched_tri_state_filters[0], TriStateFilter)
         assert fetched_tri_state_filters[0].code == tri_state_filter1.code
+        stmt = select(models.Pac).where(
+            models.Pac._pac_id == tri_state_filter1.pac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert isinstance(pac, models.Pac)
+        assert fetched_tri_state_filters[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
@@ -799,7 +806,7 @@ class TestTriStateFilterManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await tri_state_filter_manager.get_by_pac_id(invalid_id) # type: ignore
+            await tri_state_filter_manager.get_by_pac_id(invalid_id)  # type: ignore
         await session.rollback()
     # stateIntValue,
 # endset

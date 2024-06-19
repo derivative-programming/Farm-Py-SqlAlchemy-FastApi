@@ -5,6 +5,7 @@
 import json
 from datetime import date, datetime
 import os
+from typing import Any
 import uuid
 from decimal import Decimal
 import logging
@@ -17,7 +18,7 @@ class ReportProviderPacUserFlavorList():
     """
     _session_context: SessionContext
     _session: AsyncSession
-    _cached_sql_query: str = None  # Static variable for caching the SQL query
+    _cached_sql_query: str = ""  # Static variable for caching the SQL query
     def __init__(self, session_context: SessionContext):
         """
             #TODO add comment
@@ -33,7 +34,7 @@ class ReportProviderPacUserFlavorList():
         item_count_per_page: int,
         order_by_column_name: str,
         order_by_descending: bool,
-    ) -> list[dict[str, any]]:
+    ) -> list[dict[str, Any]]:
         """
             #TODO add comment
         """
@@ -55,7 +56,7 @@ class ReportProviderPacUserFlavorList():
             order_by_descending)
         query_dict["user_id"] = (
             str(self._session_context.customer_code))
-        if ReportProviderPacUserFlavorList._cached_sql_query is None:
+        if ReportProviderPacUserFlavorList._cached_sql_query == "":
             # Prioritize 'pac_user_flavor_list.inc.sql' if it exists
             inc_file_path = "reports/providers/sql/pac_user_flavor_list.inc.sql"
             gen_file_path = "reports/providers/sql/pac_user_flavor_list.gen.sql"
@@ -65,7 +66,7 @@ class ReportProviderPacUserFlavorList():
                 file_to_read = gen_file_path
             else:
                 raise FileNotFoundError("SQL file not found")
-            with open(file_to_read, 'r') as file:
+            with open(file_to_read, 'r', encoding='utf-8') as file:
                 ReportProviderPacUserFlavorList._cached_sql_query = file.read()
         # Execute the SQL query with the provided parameters
         cursor = await self._session_context.session.execute(
@@ -77,7 +78,7 @@ class ReportProviderPacUserFlavorList():
             "%s Results: %s", flow_name, json.dumps(results))
         logging.info("%s End", flow_name)
         return results
-    def dictfetchall(self, cursor) -> list[dict[str, any]]:
+    def dictfetchall(self, cursor) -> list[dict[str, Any]]:
         "Return all rows from a cursor as a dict"
         # columns = [col[0] for col in cursor.description]
         # Get the column names from the CursorResult object

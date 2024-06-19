@@ -456,6 +456,10 @@ class PacBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.pac:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
         return (
             managers_and_enums.PacEnum[
                 self.pac.lookup_enum_name
@@ -522,10 +526,11 @@ class PacBusObj(BaseBusObj):
         """
         if not self.pac:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.pac.pac_id > 0:
+        pac_id = self.pac.pac_id
+        if pac_id > 0:
             pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.update(self.pac)
-        if self.pac.pac_id == 0:
+        if pac_id == 0:
             pac_manager = PacManager(self._session_context)
             self.pac = await pac_manager.add(self.pac)
         return self

@@ -70,7 +70,7 @@ class TestCustomerUserLogOutPostModelResponse:
             customer_code_match_required = True
         if customer_code_match_required is True:
             with pytest.raises(FlowValidationError):
-                flow_result = await flow.process(
+                await flow.process(
                     customer_bus_obj,
 
 # endset  # noqa: E122

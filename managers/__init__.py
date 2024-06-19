@@ -2,28 +2,25 @@
 # pylint: disable=line-too-long
 """
 This module contains the manager classes for various models.
-
 The manager classes provide an interface for interacting with
 the database tables corresponding to the models.
 They encapsulate the logic for querying, creating,
 updating, and deleting records in the database.
-
 The following manager classes are defined in this module:
 - CustomerManager: Manages customer records.
-- CustomerRoleManager: Manages customer role records.
-- DateGreaterThanFilterManager: Manages date greater than filter records.
-- ErrorLogManager: Manages error log records.
-- FlavorManager: Manages flavor records.
-- LandManager: Manages land records.
+- CustomerRoleManager: Manages customer_role records.
+- DateGreaterThanFilterManager: Manages Date Greater Than Filter records.
+- ErrorLogManager: Manages error_log records.
+- FlavorManager: Manages Flavor records.
+- LandManager: Manages Land records.
 - OrganizationManager: Manages organization records.
-- OrgApiKeyManager: Manages organization API key records.
-- OrgCustomerManager: Manages organization customer records.
-- PacManager: Manages PAC records.
+- OrgApiKeyManager: Manages org_api_key records.
+- OrgCustomerManager: Manages org_customer records.
+- PacManager: Manages Pac records.
 - PlantManager: Manages plant records.
-- RoleManager: Manages role records.
-- TacManager: Manages TAC records.
-- TriStateFilterManager: Manages tri-state filter records.
-
+- RoleManager: Manages Role records.
+- TacManager: Manages Tac records.
+- TriStateFilterManager: Manages Tri State Filter records.
 Note: The `noqa` comments are used to disable linting warnings for
     unused imports.
 """

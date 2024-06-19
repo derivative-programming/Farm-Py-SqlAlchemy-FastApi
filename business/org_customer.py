@@ -442,10 +442,11 @@ class OrgCustomerBusObj(BaseBusObj):
         """
         if not self.org_customer:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.org_customer.org_customer_id > 0:
+        org_customer_id = self.org_customer.org_customer_id
+        if org_customer_id > 0:
             org_customer_manager = OrgCustomerManager(self._session_context)
             self.org_customer = await org_customer_manager.update(self.org_customer)
-        if self.org_customer.org_customer_id == 0:
+        if org_customer_id == 0:
             org_customer_manager = OrgCustomerManager(self._session_context)
             self.org_customer = await org_customer_manager.add(self.org_customer)
         return self
@@ -473,7 +474,7 @@ class OrgCustomerBusObj(BaseBusObj):
             await managers_and_enums.CustomerManager(
                 self._session_context).get_list()).customer_id
         self.org_customer.email = (
-             f"user{random.randint(1, 100)}@abc.com")
+            f"user{random.randint(1, 100)}@abc.com")
         # self.org_customer.organization_id = random.randint(0, 100)
 # endset
         return self
@@ -547,7 +548,8 @@ class OrgCustomerBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_organization_id_rel_obj()
+        organization = await self.get_organization_id_rel_obj()
+        return organization
 # endset
     @staticmethod
     async def to_bus_obj_list(

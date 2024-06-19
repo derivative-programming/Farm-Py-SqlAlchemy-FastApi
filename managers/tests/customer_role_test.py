@@ -308,7 +308,7 @@ class TestCustomerRoleManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await customer_role_manager.delete("999") # type: ignore
+            await customer_role_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestCustomerRoleManager:
         customer_role = await CustomerRoleFactory.create_async(session)
         schema = CustomerRoleSchema()
         customer_role_data = schema.dump(customer_role)
+        assert isinstance(customer_role_data, dict)
         deserialized_customer_role = customer_role_manager.from_dict(customer_role_data)
         assert isinstance(deserialized_customer_role, CustomerRole)
         assert deserialized_customer_role.code == customer_role.code
@@ -772,6 +773,12 @@ class TestCustomerRoleManager:
         assert len(fetched_customer_roles) == 1
         assert isinstance(fetched_customer_roles[0], CustomerRole)
         assert fetched_customer_roles[0].code == customer_role1.code
+        stmt = select(models.Customer).where(
+            models.Customer._customer_id == customer_role1.customer_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        customer = result.scalars().first()
+        assert isinstance(customer, models.Customer)
+        assert fetched_customer_roles[0].customer_code_peek == customer.code
     @pytest.mark.asyncio
     async def test_get_by_customer_id_nonexistent(
         self,
@@ -794,7 +801,7 @@ class TestCustomerRoleManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await customer_role_manager.get_by_customer_id(invalid_id) # type: ignore
+            await customer_role_manager.get_by_customer_id(invalid_id)  # type: ignore
         await session.rollback()
     # isPlaceholder,
     # placeholder,
@@ -820,6 +827,7 @@ class TestCustomerRoleManager:
             models.Role._role_id == customer_role1.role_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         role = result.scalars().first()
+        assert isinstance(role, models.Role)
         assert fetched_customer_roles[0].role_code_peek == role.code
     @pytest.mark.asyncio
     async def test_get_by_role_id_nonexistent(

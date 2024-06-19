@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import DateGreaterThanFilter
@@ -67,7 +66,9 @@ class TestDateGreaterThanFilterSchema:
                 A DateGreaterThanFilter instance to serialize.
         """
         schema = DateGreaterThanFilterSchema()
-        result: Dict[str, Any] = schema.dump(date_greater_than_filter)
+        date_greater_than_filter_data = schema.dump(date_greater_than_filter)
+        assert isinstance(date_greater_than_filter_data, dict)
+        result = date_greater_than_filter_data
         assert result['code'] == str(date_greater_than_filter.code)
         assert result['last_change_code'] == (
             date_greater_than_filter.last_change_code)

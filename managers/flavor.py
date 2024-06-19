@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -257,13 +257,14 @@ class FlavorManager:
         schema = FlavorSchema()
         flavor_data = schema.dump(flavor)
         return json.dumps(flavor_data)
-    def to_dict(self, flavor: Flavor) -> dict:
+    def to_dict(self, flavor: Flavor) -> Dict[str, Any]:
         """
         Serialize the Flavor object to a JSON string using the FlavorSchema.
         """
         logging.info("FlavorManager.to_dict")
         schema = FlavorSchema()
         flavor_data = schema.dump(flavor)
+        assert isinstance(flavor_data, dict)
         return flavor_data
     def from_json(self, json_str: str) -> Flavor:
         """
@@ -275,13 +276,20 @@ class FlavorManager:
         flavor_dict = schema.load(data)
         new_flavor = Flavor(**flavor_dict)
         return new_flavor
-    def from_dict(self, flavor_dict: str) -> Flavor:
+    def from_dict(self, flavor_dict: Dict[str, Any]) -> Flavor:
         """
-        #TODO add comment
+        Create a Flavor instance from a dictionary of attributes.
+        Args:
+            flavor_dict (Dict[str, Any]): A dictionary containing
+                flavor attributes.
+        Returns:
+            Flavor: A new Flavor instance created from the given dictionary.
         """
         logging.info("FlavorManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = FlavorSchema()
         flavor_dict_converted = schema.load(flavor_dict)
+        # Create a new Flavor instance using the validated data
         new_flavor = Flavor(**flavor_dict_converted)
         return new_flavor
     async def add_bulk(self, flavors: List[Flavor]) -> List[Flavor]:
@@ -305,7 +313,7 @@ class FlavorManager:
         return flavors
     async def update_bulk(
         self,
-        flavor_updates: List[Dict[int, Dict]]
+        flavor_updates: List[Dict[str, Any]]
     ) -> List[Flavor]:
         """
         #TODO add comment

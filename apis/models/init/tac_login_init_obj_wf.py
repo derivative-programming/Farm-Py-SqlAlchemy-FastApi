@@ -11,8 +11,9 @@ from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
 from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.tac_login_init_obj_wf import (FlowTacLoginInitObjWF,
-                                              FlowTacLoginInitObjWFResult)
+from flows.tac_login_init_obj_wf import (
+    FlowTacLoginInitObjWF,
+    FlowTacLoginInitObjWFResult)
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel

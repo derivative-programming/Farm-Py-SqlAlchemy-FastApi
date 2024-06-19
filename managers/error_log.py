@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -198,13 +198,14 @@ class ErrorLogManager:
         schema = ErrorLogSchema()
         error_log_data = schema.dump(error_log)
         return json.dumps(error_log_data)
-    def to_dict(self, error_log: ErrorLog) -> dict:
+    def to_dict(self, error_log: ErrorLog) -> Dict[str, Any]:
         """
         Serialize the ErrorLog object to a JSON string using the ErrorLogSchema.
         """
         logging.info("ErrorLogManager.to_dict")
         schema = ErrorLogSchema()
         error_log_data = schema.dump(error_log)
+        assert isinstance(error_log_data, dict)
         return error_log_data
     def from_json(self, json_str: str) -> ErrorLog:
         """
@@ -216,13 +217,20 @@ class ErrorLogManager:
         error_log_dict = schema.load(data)
         new_error_log = ErrorLog(**error_log_dict)
         return new_error_log
-    def from_dict(self, error_log_dict: str) -> ErrorLog:
+    def from_dict(self, error_log_dict: Dict[str, Any]) -> ErrorLog:
         """
-        #TODO add comment
+        Create a ErrorLog instance from a dictionary of attributes.
+        Args:
+            error_log_dict (Dict[str, Any]): A dictionary containing
+                error_log attributes.
+        Returns:
+            ErrorLog: A new ErrorLog instance created from the given dictionary.
         """
         logging.info("ErrorLogManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = ErrorLogSchema()
         error_log_dict_converted = schema.load(error_log_dict)
+        # Create a new ErrorLog instance using the validated data
         new_error_log = ErrorLog(**error_log_dict_converted)
         return new_error_log
     async def add_bulk(self, error_logs: List[ErrorLog]) -> List[ErrorLog]:
@@ -246,7 +254,7 @@ class ErrorLogManager:
         return error_logs
     async def update_bulk(
         self,
-        error_log_updates: List[Dict[int, Dict]]
+        error_log_updates: List[Dict[str, Any]]
     ) -> List[ErrorLog]:
         """
         #TODO add comment

@@ -308,7 +308,7 @@ class TestErrorLogManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await error_log_manager.delete("999") # type: ignore
+            await error_log_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestErrorLogManager:
         error_log = await ErrorLogFactory.create_async(session)
         schema = ErrorLogSchema()
         error_log_data = schema.dump(error_log)
+        assert isinstance(error_log_data, dict)
         deserialized_error_log = error_log_manager.from_dict(error_log_data)
         assert isinstance(deserialized_error_log, ErrorLog)
         assert deserialized_error_log.code == error_log.code
@@ -778,6 +779,12 @@ class TestErrorLogManager:
         assert len(fetched_error_logs) == 1
         assert isinstance(fetched_error_logs[0], ErrorLog)
         assert fetched_error_logs[0].code == error_log1.code
+        stmt = select(models.Pac).where(
+            models.Pac._pac_id == error_log1.pac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert isinstance(pac, models.Pac)
+        assert fetched_error_logs[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
@@ -800,7 +807,7 @@ class TestErrorLogManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await error_log_manager.get_by_pac_id(invalid_id) # type: ignore
+            await error_log_manager.get_by_pac_id(invalid_id)  # type: ignore
         await session.rollback()
     # url,
 # endset

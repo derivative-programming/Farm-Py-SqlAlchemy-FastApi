@@ -308,7 +308,7 @@ class TestDateGreaterThanFilterManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.delete("999") # type: ignore
+            await date_greater_than_filter_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
         schema = DateGreaterThanFilterSchema()
         date_greater_than_filter_data = schema.dump(date_greater_than_filter)
+        assert isinstance(date_greater_than_filter_data, dict)
         deserialized_date_greater_than_filter = date_greater_than_filter_manager.from_dict(date_greater_than_filter_data)
         assert isinstance(deserialized_date_greater_than_filter, DateGreaterThanFilter)
         assert deserialized_date_greater_than_filter.code == date_greater_than_filter.code
@@ -778,6 +779,12 @@ class TestDateGreaterThanFilterManager:
         assert len(fetched_date_greater_than_filters) == 1
         assert isinstance(fetched_date_greater_than_filters[0], DateGreaterThanFilter)
         assert fetched_date_greater_than_filters[0].code == date_greater_than_filter1.code
+        stmt = select(models.Pac).where(
+            models.Pac._pac_id == date_greater_than_filter1.pac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert isinstance(pac, models.Pac)
+        assert fetched_date_greater_than_filters[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
@@ -800,6 +807,6 @@ class TestDateGreaterThanFilterManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.get_by_pac_id(invalid_id) # type: ignore
+            await date_greater_than_filter_manager.get_by_pac_id(invalid_id)  # type: ignore
         await session.rollback()
 # endset

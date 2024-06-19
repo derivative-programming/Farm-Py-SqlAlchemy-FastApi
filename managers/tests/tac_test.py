@@ -308,7 +308,7 @@ class TestTacManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await tac_manager.delete("999") # type: ignore
+            await tac_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestTacManager:
         tac = await TacFactory.create_async(session)
         schema = TacSchema()
         tac_data = schema.dump(tac)
+        assert isinstance(tac_data, dict)
         deserialized_tac = tac_manager.from_dict(tac_data)
         assert isinstance(deserialized_tac, Tac)
         assert deserialized_tac.code == tac.code
@@ -777,6 +778,12 @@ class TestTacManager:
         assert len(fetched_tacs) == 1
         assert isinstance(fetched_tacs[0], Tac)
         assert fetched_tacs[0].code == tac1.code
+        stmt = select(models.Pac).where(
+            models.Pac._pac_id == tac1.pac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert isinstance(pac, models.Pac)
+        assert fetched_tacs[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
@@ -799,6 +806,6 @@ class TestTacManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await tac_manager.get_by_pac_id(invalid_id) # type: ignore
+            await tac_manager.get_by_pac_id(invalid_id)  # type: ignore
         await session.rollback()
 # endset

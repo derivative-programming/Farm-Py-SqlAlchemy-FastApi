@@ -487,6 +487,10 @@ class RoleBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.role:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
         return (
             managers_and_enums.RoleEnum[
                 self.role.lookup_enum_name
@@ -553,10 +557,11 @@ class RoleBusObj(BaseBusObj):
         """
         if not self.role:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.role.role_id > 0:
+        role_id = self.role.role_id
+        if role_id > 0:
             role_manager = RoleManager(self._session_context)
             self.role = await role_manager.update(self.role)
-        if self.role.role_id == 0:
+        if role_id == 0:
             role_manager = RoleManager(self._session_context)
             self.role = await role_manager.add(self.role)
         return self
@@ -659,7 +664,8 @@ class RoleBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_pac_id_rel_obj()
+        pac = await self.get_pac_id_rel_obj()
+        return pac
 # endset
     @staticmethod
     async def to_bus_obj_list(

@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -268,13 +268,14 @@ class RoleManager:
         schema = RoleSchema()
         role_data = schema.dump(role)
         return json.dumps(role_data)
-    def to_dict(self, role: Role) -> dict:
+    def to_dict(self, role: Role) -> Dict[str, Any]:
         """
         Serialize the Role object to a JSON string using the RoleSchema.
         """
         logging.info("RoleManager.to_dict")
         schema = RoleSchema()
         role_data = schema.dump(role)
+        assert isinstance(role_data, dict)
         return role_data
     def from_json(self, json_str: str) -> Role:
         """
@@ -286,13 +287,20 @@ class RoleManager:
         role_dict = schema.load(data)
         new_role = Role(**role_dict)
         return new_role
-    def from_dict(self, role_dict: str) -> Role:
+    def from_dict(self, role_dict: Dict[str, Any]) -> Role:
         """
-        #TODO add comment
+        Create a Role instance from a dictionary of attributes.
+        Args:
+            role_dict (Dict[str, Any]): A dictionary containing
+                role attributes.
+        Returns:
+            Role: A new Role instance created from the given dictionary.
         """
         logging.info("RoleManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = RoleSchema()
         role_dict_converted = schema.load(role_dict)
+        # Create a new Role instance using the validated data
         new_role = Role(**role_dict_converted)
         return new_role
     async def add_bulk(self, roles: List[Role]) -> List[Role]:
@@ -316,7 +324,7 @@ class RoleManager:
         return roles
     async def update_bulk(
         self,
-        role_updates: List[Dict[int, Dict]]
+        role_updates: List[Dict[str, Any]]
     ) -> List[Role]:
         """
         #TODO add comment

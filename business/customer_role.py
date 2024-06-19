@@ -470,10 +470,11 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         if not self.customer_role:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.customer_role.customer_role_id > 0:
+        customer_role_id = self.customer_role.customer_role_id
+        if customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = await customer_role_manager.update(self.customer_role)
-        if self.customer_role.customer_role_id == 0:
+        if customer_role_id == 0:
             customer_role_manager = CustomerRoleManager(self._session_context)
             self.customer_role = await customer_role_manager.add(self.customer_role)
         return self
@@ -576,7 +577,8 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_customer_id_rel_obj()
+        customer = await self.get_customer_id_rel_obj()
+        return customer
     # isPlaceholder,
     # placeholder,
     # RoleID

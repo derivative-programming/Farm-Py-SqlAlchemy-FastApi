@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import Land
@@ -66,7 +65,9 @@ class TestLandSchema:
                 A Land instance to serialize.
         """
         schema = LandSchema()
-        result: Dict[str, Any] = schema.dump(land)
+        land_data = schema.dump(land)
+        assert isinstance(land_data, dict)
+        result = land_data
         assert result['code'] == str(land.code)
         assert result['last_change_code'] == (
             land.last_change_code)

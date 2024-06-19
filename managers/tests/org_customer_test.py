@@ -308,7 +308,7 @@ class TestOrgCustomerManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await org_customer_manager.delete("999") # type: ignore
+            await org_customer_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestOrgCustomerManager:
         org_customer = await OrgCustomerFactory.create_async(session)
         schema = OrgCustomerSchema()
         org_customer_data = schema.dump(org_customer)
+        assert isinstance(org_customer_data, dict)
         deserialized_org_customer = org_customer_manager.from_dict(org_customer_data)
         assert isinstance(deserialized_org_customer, OrgCustomer)
         assert deserialized_org_customer.code == org_customer.code
@@ -777,6 +778,7 @@ class TestOrgCustomerManager:
             models.Customer._customer_id == org_customer1.customer_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         customer = result.scalars().first()
+        assert isinstance(customer, models.Customer)
         assert fetched_org_customers[0].customer_code_peek == customer.code
     @pytest.mark.asyncio
     async def test_get_by_customer_id_nonexistent(
@@ -821,6 +823,12 @@ class TestOrgCustomerManager:
         assert len(fetched_org_customers) == 1
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == org_customer1.code
+        stmt = select(models.Organization).where(
+            models.Organization._organization_id == org_customer1.organization_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        organization = result.scalars().first()
+        assert isinstance(organization, models.Organization)
+        assert fetched_org_customers[0].organization_code_peek == organization.code
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(
         self,
@@ -843,6 +851,6 @@ class TestOrgCustomerManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await org_customer_manager.get_by_organization_id(invalid_id) # type: ignore
+            await org_customer_manager.get_by_organization_id(invalid_id)  # type: ignore
         await session.rollback()
 # endset

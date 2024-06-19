@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 import pytest
 import pytz
 from models import Tac
@@ -66,7 +65,9 @@ class TestTacSchema:
                 A Tac instance to serialize.
         """
         schema = TacSchema()
-        result: Dict[str, Any] = schema.dump(tac)
+        tac_data = schema.dump(tac)
+        assert isinstance(tac_data, dict)
+        result = tac_data
         assert result['code'] == str(tac.code)
         assert result['last_change_code'] == (
             tac.last_change_code)

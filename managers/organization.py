@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -198,13 +198,14 @@ class OrganizationManager:
         schema = OrganizationSchema()
         organization_data = schema.dump(organization)
         return json.dumps(organization_data)
-    def to_dict(self, organization: Organization) -> dict:
+    def to_dict(self, organization: Organization) -> Dict[str, Any]:
         """
         Serialize the Organization object to a JSON string using the OrganizationSchema.
         """
         logging.info("OrganizationManager.to_dict")
         schema = OrganizationSchema()
         organization_data = schema.dump(organization)
+        assert isinstance(organization_data, dict)
         return organization_data
     def from_json(self, json_str: str) -> Organization:
         """
@@ -216,13 +217,20 @@ class OrganizationManager:
         organization_dict = schema.load(data)
         new_organization = Organization(**organization_dict)
         return new_organization
-    def from_dict(self, organization_dict: str) -> Organization:
+    def from_dict(self, organization_dict: Dict[str, Any]) -> Organization:
         """
-        #TODO add comment
+        Create a Organization instance from a dictionary of attributes.
+        Args:
+            organization_dict (Dict[str, Any]): A dictionary containing
+                organization attributes.
+        Returns:
+            Organization: A new Organization instance created from the given dictionary.
         """
         logging.info("OrganizationManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = OrganizationSchema()
         organization_dict_converted = schema.load(organization_dict)
+        # Create a new Organization instance using the validated data
         new_organization = Organization(**organization_dict_converted)
         return new_organization
     async def add_bulk(self, organizations: List[Organization]) -> List[Organization]:
@@ -246,7 +254,7 @@ class OrganizationManager:
         return organizations
     async def update_bulk(
         self,
-        organization_updates: List[Dict[int, Dict]]
+        organization_updates: List[Dict[str, Any]]
     ) -> List[Organization]:
         """
         #TODO add comment

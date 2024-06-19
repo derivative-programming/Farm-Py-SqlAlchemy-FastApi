@@ -308,7 +308,7 @@ class TestPacManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await pac_manager.delete("999") # type: ignore
+            await pac_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestPacManager:
         pac = await PacFactory.create_async(session)
         schema = PacSchema()
         pac_data = schema.dump(pac)
+        assert isinstance(pac_data, dict)
         deserialized_pac = pac_manager.from_dict(pac_data)
         assert isinstance(deserialized_pac, Pac)
         assert deserialized_pac.code == pac.code

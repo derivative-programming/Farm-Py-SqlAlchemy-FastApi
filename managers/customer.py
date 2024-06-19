@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -198,13 +198,14 @@ class CustomerManager:
         schema = CustomerSchema()
         customer_data = schema.dump(customer)
         return json.dumps(customer_data)
-    def to_dict(self, customer: Customer) -> dict:
+    def to_dict(self, customer: Customer) -> Dict[str, Any]:
         """
         Serialize the Customer object to a JSON string using the CustomerSchema.
         """
         logging.info("CustomerManager.to_dict")
         schema = CustomerSchema()
         customer_data = schema.dump(customer)
+        assert isinstance(customer_data, dict)
         return customer_data
     def from_json(self, json_str: str) -> Customer:
         """
@@ -216,13 +217,20 @@ class CustomerManager:
         customer_dict = schema.load(data)
         new_customer = Customer(**customer_dict)
         return new_customer
-    def from_dict(self, customer_dict: str) -> Customer:
+    def from_dict(self, customer_dict: Dict[str, Any]) -> Customer:
         """
-        #TODO add comment
+        Create a Customer instance from a dictionary of attributes.
+        Args:
+            customer_dict (Dict[str, Any]): A dictionary containing
+                customer attributes.
+        Returns:
+            Customer: A new Customer instance created from the given dictionary.
         """
         logging.info("CustomerManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = CustomerSchema()
         customer_dict_converted = schema.load(customer_dict)
+        # Create a new Customer instance using the validated data
         new_customer = Customer(**customer_dict_converted)
         return new_customer
     async def add_bulk(self, customers: List[Customer]) -> List[Customer]:
@@ -246,7 +254,7 @@ class CustomerManager:
         return customers
     async def update_bulk(
         self,
-        customer_updates: List[Dict[int, Dict]]
+        customer_updates: List[Dict[str, Any]]
     ) -> List[Customer]:
         """
         #TODO add comment
@@ -377,7 +385,7 @@ class CustomerManager:
             "CustomerManager"
             ".get_by_email_prop")
         query_filter = (
-            Customer._email == email)
+            Customer._email == email)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
     async def get_by_fs_user_code_value_prop(
@@ -388,6 +396,6 @@ class CustomerManager:
             "CustomerManager"
             ".get_by_fs_user_code_value_prop")
         query_filter = (
-            Customer._fs_user_code_value == fs_user_code_value)
+            Customer._fs_user_code_value == fs_user_code_value)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results

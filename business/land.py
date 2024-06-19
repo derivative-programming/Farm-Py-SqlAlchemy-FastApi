@@ -489,6 +489,10 @@ class LandBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        if not self.land:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
         return (
             managers_and_enums.LandEnum[
                 self.land.lookup_enum_name
@@ -555,10 +559,11 @@ class LandBusObj(BaseBusObj):
         """
         if not self.land:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.land.land_id > 0:
+        land_id = self.land.land_id
+        if land_id > 0:
             land_manager = LandManager(self._session_context)
             self.land = await land_manager.update(self.land)
-        if self.land.land_id == 0:
+        if land_id == 0:
             land_manager = LandManager(self._session_context)
             self.land = await land_manager.add(self.land)
         return self
@@ -661,7 +666,8 @@ class LandBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_pac_id_rel_obj()
+        pac = await self.get_pac_id_rel_obj()
+        return pac
 # endset
     @staticmethod
     async def to_bus_obj_list(

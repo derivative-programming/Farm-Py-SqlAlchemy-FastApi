@@ -308,7 +308,7 @@ class TestOrganizationManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await organization_manager.delete("999") # type: ignore
+            await organization_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestOrganizationManager:
         organization = await OrganizationFactory.create_async(session)
         schema = OrganizationSchema()
         organization_data = schema.dump(organization)
+        assert isinstance(organization_data, dict)
         deserialized_organization = organization_manager.from_dict(organization_data)
         assert isinstance(deserialized_organization, Organization)
         assert deserialized_organization.code == organization.code
@@ -773,6 +774,12 @@ class TestOrganizationManager:
         assert len(fetched_organizations) == 1
         assert isinstance(fetched_organizations[0], Organization)
         assert fetched_organizations[0].code == organization1.code
+        stmt = select(models.Tac).where(
+            models.Tac._tac_id == organization1.tac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        tac = result.scalars().first()
+        assert isinstance(tac, models.Tac)
+        assert fetched_organizations[0].tac_code_peek == tac.code
     @pytest.mark.asyncio
     async def test_get_by_tac_id_nonexistent(
         self,
@@ -795,6 +802,6 @@ class TestOrganizationManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await organization_manager.get_by_tac_id(invalid_id) # type: ignore
+            await organization_manager.get_by_tac_id(invalid_id)  # type: ignore
         await session.rollback()
 # endset

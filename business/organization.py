@@ -399,10 +399,11 @@ class OrganizationBusObj(BaseBusObj):
         """
         if not self.organization:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.organization.organization_id > 0:
+        organization_id = self.organization.organization_id
+        if organization_id > 0:
             organization_manager = OrganizationManager(self._session_context)
             self.organization = await organization_manager.update(self.organization)
-        if self.organization.organization_id == 0:
+        if organization_id == 0:
             organization_manager = OrganizationManager(self._session_context)
             self.organization = await organization_manager.add(self.organization)
         return self
@@ -489,7 +490,8 @@ class OrganizationBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_tac_id_rel_obj()
+        tac = await self.get_tac_id_rel_obj()
+        return tac
 # endset
     @staticmethod
     async def to_bus_obj_list(

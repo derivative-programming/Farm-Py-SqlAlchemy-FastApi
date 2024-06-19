@@ -7,7 +7,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -209,13 +209,14 @@ class OrgCustomerManager:
         schema = OrgCustomerSchema()
         org_customer_data = schema.dump(org_customer)
         return json.dumps(org_customer_data)
-    def to_dict(self, org_customer: OrgCustomer) -> dict:
+    def to_dict(self, org_customer: OrgCustomer) -> Dict[str, Any]:
         """
         Serialize the OrgCustomer object to a JSON string using the OrgCustomerSchema.
         """
         logging.info("OrgCustomerManager.to_dict")
         schema = OrgCustomerSchema()
         org_customer_data = schema.dump(org_customer)
+        assert isinstance(org_customer_data, dict)
         return org_customer_data
     def from_json(self, json_str: str) -> OrgCustomer:
         """
@@ -227,13 +228,20 @@ class OrgCustomerManager:
         org_customer_dict = schema.load(data)
         new_org_customer = OrgCustomer(**org_customer_dict)
         return new_org_customer
-    def from_dict(self, org_customer_dict: str) -> OrgCustomer:
+    def from_dict(self, org_customer_dict: Dict[str, Any]) -> OrgCustomer:
         """
-        #TODO add comment
+        Create a OrgCustomer instance from a dictionary of attributes.
+        Args:
+            org_customer_dict (Dict[str, Any]): A dictionary containing
+                org_customer attributes.
+        Returns:
+            OrgCustomer: A new OrgCustomer instance created from the given dictionary.
         """
         logging.info("OrgCustomerManager.from_dict")
+        # Deserialize the dictionary into a validated schema object
         schema = OrgCustomerSchema()
         org_customer_dict_converted = schema.load(org_customer_dict)
+        # Create a new OrgCustomer instance using the validated data
         new_org_customer = OrgCustomer(**org_customer_dict_converted)
         return new_org_customer
     async def add_bulk(self, org_customers: List[OrgCustomer]) -> List[OrgCustomer]:
@@ -257,7 +265,7 @@ class OrgCustomerManager:
         return org_customers
     async def update_bulk(
         self,
-        org_customer_updates: List[Dict[int, Dict]]
+        org_customer_updates: List[Dict[str, Any]]
     ) -> List[OrgCustomer]:
         """
         #TODO add comment

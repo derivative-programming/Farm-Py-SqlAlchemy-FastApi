@@ -308,7 +308,7 @@ class TestRoleManager:
             #TODO add comment
         """
         with pytest.raises(Exception):
-            await role_manager.delete("999") # type: ignore
+            await role_manager.delete("999")  # type: ignore
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_list(
@@ -377,6 +377,7 @@ class TestRoleManager:
         role = await RoleFactory.create_async(session)
         schema = RoleSchema()
         role_data = schema.dump(role)
+        assert isinstance(role_data, dict)
         deserialized_role = role_manager.from_dict(role_data)
         assert isinstance(deserialized_role, Role)
         assert deserialized_role.code == role.code
@@ -777,6 +778,12 @@ class TestRoleManager:
         assert len(fetched_roles) == 1
         assert isinstance(fetched_roles[0], Role)
         assert fetched_roles[0].code == role1.code
+        stmt = select(models.Pac).where(
+            models.Pac._pac_id == role1.pac_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        pac = result.scalars().first()
+        assert isinstance(pac, models.Pac)
+        assert fetched_roles[0].pac_code_peek == pac.code
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
@@ -799,6 +806,6 @@ class TestRoleManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await role_manager.get_by_pac_id(invalid_id) # type: ignore
+            await role_manager.get_by_pac_id(invalid_id)  # type: ignore
         await session.rollback()
 # endset

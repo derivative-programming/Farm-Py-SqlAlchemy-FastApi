@@ -623,10 +623,11 @@ class OrgApiKeyBusObj(BaseBusObj):
         """
         if not self.org_api_key:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-        if self.org_api_key.org_api_key_id > 0:
+        org_api_key_id = self.org_api_key.org_api_key_id
+        if org_api_key_id > 0:
             org_api_key_manager = OrgApiKeyManager(self._session_context)
             self.org_api_key = await org_api_key_manager.update(self.org_api_key)
-        if self.org_api_key.org_api_key_id == 0:
+        if org_api_key_id == 0:
             org_api_key_manager = OrgApiKeyManager(self._session_context)
             self.org_api_key = await org_api_key_manager.add(self.org_api_key)
         return self
@@ -755,7 +756,8 @@ class OrgApiKeyBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        return self.get_organization_id_rel_obj()
+        organization = await self.get_organization_id_rel_obj()
+        return organization
     # OrgCustomerID
 # endset
     @staticmethod
