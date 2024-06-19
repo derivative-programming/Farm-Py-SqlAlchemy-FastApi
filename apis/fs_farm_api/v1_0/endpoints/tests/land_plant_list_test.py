@@ -455,7 +455,7 @@ async def test_get_endpoint_invalid_code_failure(
 ):
     """
     Test case for the GET endpoint when an invalid land code is provided.
-    
+
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
         api_key_fixture (str): The API key fixture.

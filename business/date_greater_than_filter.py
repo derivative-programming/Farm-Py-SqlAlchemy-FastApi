@@ -49,15 +49,6 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             )
         return self.date_greater_than_filter.date_greater_than_filter_id
 
-    # @date_greater_than_filter_id.setter
-    # def date_greater_than_filter_id(self, value: int):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not isinstance(value, int):
-    #         raise ValueError("date_greater_than_filter_id must be a int.")
-    #     self.date_greater_than_filter.date_greater_than_filter_id = value
-
     # code
     @property
     def code(self):
@@ -623,7 +614,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
-        
+
         if not self.date_greater_than_filter:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE

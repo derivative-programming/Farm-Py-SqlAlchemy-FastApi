@@ -44,6 +44,7 @@ class FlowLandAddPlantResult():
     output_some_phone_number: str = ""
     output_some_email_address: str = ""
 # endset
+
     def __init__(self):
         """
         Initializes a new instance of the FlowLandAddPlantResult class.
@@ -150,7 +151,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
     ) -> FlowLandAddPlantResult:
         """
         Processes the addition of a plant to a specific land.
- 
+
         Returns:
             FlowLandAddPlantResult: The result of the FlowLandAddPlant process.
         """

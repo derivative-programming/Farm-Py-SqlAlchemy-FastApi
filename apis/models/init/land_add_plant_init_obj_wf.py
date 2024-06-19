@@ -101,7 +101,7 @@ class LandAddPlantInitObjWFGetInitModelResponse(CamelModel):
         data: FlowLandAddPlantInitObjWFResult
     ):
         """
-        Loads the response data from the 
+        Loads the response data from the
         FlowLandAddPlantInitObjWFResult object.
         """
 

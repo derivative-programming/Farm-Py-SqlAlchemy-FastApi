@@ -89,7 +89,6 @@ class LandAddPlantPostModelRequest(CamelModel):
         description="Request Sample Image Upload File")
 # endset
 
-
     class Config:
         """
         Configuration class for the LandAddPlantPostModelRequest.

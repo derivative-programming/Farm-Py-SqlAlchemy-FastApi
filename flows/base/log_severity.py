@@ -16,7 +16,7 @@ class LogSeverity(Enum):
     The available severity levels are:
     - ERROR_OCCURRED: Represents an error that occurred.
     - WARNING: Represents a warning message.
-    - INFORMATION_LOW_DETAIL: Represents an 
+    - INFORMATION_LOW_DETAIL: Represents an
         information message with low detail.
     - INFORMATION_MID_DETAIL: Represents an
         information message with medium detail.

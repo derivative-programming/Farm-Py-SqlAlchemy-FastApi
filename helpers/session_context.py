@@ -21,8 +21,8 @@ class SessionContext:
         pac_code (uuid.UUID): The pac code associated with the session.
         api_key_dict (dict): A dictionary containing API key values.
         session_code (uuid.UUID): The session code associated with the session.
-        role_name_csv (str): 
-            A comma-separated string of role 
+        role_name_csv (str):
+            A comma-separated string of role
             names associated with the session.
         session (AsyncSession): The SQLAlchemy AsyncSession object.
 
