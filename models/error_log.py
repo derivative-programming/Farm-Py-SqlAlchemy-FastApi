@@ -1,7 +1,8 @@
 # models/error_log.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The ErrorLog model inherits from the Base model and is mapped to the
+'farm_ErrorLog' table in the database.
 """
 from decimal import Decimal
 import uuid

@@ -1,7 +1,8 @@
 # models/tac.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The Tac model inherits from the Base model and is mapped to the
+'farm_Tac' table in the database.
 """
 from decimal import Decimal
 import uuid

@@ -1,7 +1,8 @@
 # models/org_customer.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The OrgCustomer model inherits from the Base model and is mapped to the
+'farm_OrgCustomer' table in the database.
 """
 from decimal import Decimal
 import uuid

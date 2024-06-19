@@ -1,7 +1,8 @@
 # models/role.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The Role model inherits from the Base model and is mapped to the
+'farm_Role' table in the database.
 """
 from decimal import Decimal
 import uuid

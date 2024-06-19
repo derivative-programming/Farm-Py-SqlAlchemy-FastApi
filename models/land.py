@@ -1,7 +1,8 @@
 # models/land.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The Land model inherits from the Base model and is mapped to the
+'farm_Land' table in the database.
 """
 from decimal import Decimal
 import uuid

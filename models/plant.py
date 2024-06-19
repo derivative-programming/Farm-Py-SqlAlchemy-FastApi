@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-    #TODO add comment
+The Plant model inherits from the Base model and is mapped to the
+'farm_Plant' table in the database.
 """
 from decimal import Decimal
 import uuid
@@ -19,8 +20,10 @@ from .base import Base, EncryptedType  # noqa: F401
 
 class Plant(Base):
     """
-    #TODO add comment
+    The Plant model represents a plant in the farm.
+    It inherits from the Base model and is mapped to the 'farm_Plant' table in the database.
     """
+
     __tablename__ = 'farm_' + snake_case('Plant')
 
     _plant_id = Column(
@@ -655,9 +658,11 @@ class Plant(Base):
     @property
     def some_utc_date_time_val(self) -> datetime:
         """
-            #TODO add comment
-        """
+        Get the value of some_utc_date_time_val property.
 
+        Returns:
+            datetime: The value of some_utc_date_time_val property.
+        """
         return getattr(
             self,
             '_some_utc_date_time_val',
@@ -676,9 +681,11 @@ class Plant(Base):
     @property
     def some_n_var_char_val(self) -> str:
         """
-            #TODO add comment
-        """
+        Returns the value of the 'some_n_var_char_val' attribute.
 
+        :return: The value of the 'some_n_var_char_val' attribute.
+        :rtype: str
+        """
         return getattr(self, '_some_n_var_char_val', "") or ""
 
     @some_n_var_char_val.setter
@@ -693,9 +700,11 @@ class Plant(Base):
     @property
     def some_phone_number(self) -> str:
         """
-            #TODO add comment
-        """
+        Get the value of the 'some_phone_number' property.
 
+        Returns:
+            str: The value of the 'some_phone_number' property.
+        """
         return getattr(self, '_some_phone_number', "") or ""
 
     @some_phone_number.setter
@@ -749,9 +758,11 @@ class Plant(Base):
     @property
     def some_text_val(self) -> str:
         """
-            #TODO add comment
-        """
+        Returns the value of the 'some_text_val' attribute.
 
+        :return: The value of the 'some_text_val' attribute.
+        :rtype: str
+        """
         return getattr(self, '_some_text_val', "") or ""
 
     @some_text_val.setter
@@ -772,9 +783,11 @@ class Plant(Base):
     @property
     def flvr_foreign_key_id(self) -> int:
         """
-            #TODO add comment
-        """
+        Get the foreign key ID for the flavor of the plant.
 
+        Returns:
+            int: The foreign key ID for the flavor of the plant.
+        """
         return getattr(self, '_flvr_foreign_key_id', 0) or 0
 
     @flvr_foreign_key_id.setter
@@ -789,9 +802,11 @@ class Plant(Base):
     @property
     def land_id(self) -> int:
         """
-            #TODO add comment
-        """
+        Get the ID of the land associated with this plant.
 
+        Returns:
+            int: The ID of the land.
+        """
         return getattr(self, '_land_id', 0) or 0
 
     @land_id.setter
@@ -807,7 +822,10 @@ class Plant(Base):
     @staticmethod
     def property_list():
         """
-            #TODO add comment
+        Returns a list of property names for the Plant model.
+
+        Returns:
+            list: A list of property names.
         """
 
         result = [
@@ -843,7 +861,15 @@ def set_created_on(
     target
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Set the created on and last update timestamps for a Plant object.
+
+    Args:
+        mapper: The SQLAlchemy mapper.
+        connection: The SQLAlchemy connection.
+        target: The Plant object being inserted.
+
+    Returns:
+        None
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
@@ -856,6 +882,11 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Sets the 'last_update_utc_date_time' attribute of
+    the target object to the current UTC date and time.
+
+    :param mapper: The SQLAlchemy mapper object.
+    :param connection: The SQLAlchemy connection object.
+    :param target: The target object to update.
     """
     target.last_update_utc_date_time = datetime.utcnow()

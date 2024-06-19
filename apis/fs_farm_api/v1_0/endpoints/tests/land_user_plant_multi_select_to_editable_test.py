@@ -25,7 +25,20 @@ from ..land_user_plant_multi_select_to_editable import LandUserPlantMultiSelectT
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
     """
-    #TODO add comment
+    Test the successful submission of a delete request.
+    This test ensures that a delete request is successfully processed and returns the expected response.
+    Steps:
+    1. Create a mock process_request function.
+    2. Patch the `process_request` method of `LandUserPlantMultiSelectToEditablePostModelResponse` with the mock function.
+    3. Create a land using the `LandFactory`.
+    4. Generate an API key for the land.
+    5. Send a POST request to the `land-user-plant-multi-select-to-editable` endpoint with the land code and API key.
+    6. Assert that the response status code is 200 and the 'success' field in the response JSON is False.
+    7. Assert that the `process_request` method was called.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     async def mock_process_request(
         session,
@@ -61,7 +74,17 @@ async def test_submit_success(overridden_get_db):
 @pytest.mark.asyncio
 async def test_submit_request_validation_error(overridden_get_db):
     """
-    #TODO add comment
+    Test the submission of a delete request with validation errors.
+    This test ensures that a delete request with incorrect data results in a validation error.
+    Steps:
+    1. Create a land using the `LandFactory`.
+    2. Generate an API key for the land.
+    3. Send a POST request to the `land-user-plant-multi-select-to-editable` endpoint with the land code, invalid data, and API key.
+    4. Assert that the response status code is 400 (validation error).
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code

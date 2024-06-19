@@ -1,7 +1,8 @@
 # models/pac.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The Pac model inherits from the Base model and is mapped to the
+'farm_Pac' table in the database.
 """
 from decimal import Decimal
 import uuid

@@ -1,7 +1,8 @@
 # models/org_api_key.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The OrgApiKey model inherits from the Base model and is mapped to the
+'farm_OrgApiKey' table in the database.
 """
 from decimal import Decimal
 import uuid

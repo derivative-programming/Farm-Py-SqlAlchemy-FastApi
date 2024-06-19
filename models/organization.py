@@ -1,7 +1,8 @@
 # models/organization.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The Organization model inherits from the Base model and is mapped to the
+'farm_Organization' table in the database.
 """
 from decimal import Decimal
 import uuid

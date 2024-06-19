@@ -1,7 +1,8 @@
 # models/flavor.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The Flavor model inherits from the Base model and is mapped to the
+'farm_Flavor' table in the database.
 """
 from decimal import Decimal
 import uuid

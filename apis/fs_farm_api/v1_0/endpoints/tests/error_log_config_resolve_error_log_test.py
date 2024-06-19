@@ -25,7 +25,20 @@ from ..error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogRo
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
     """
-    #TODO add comment
+    Test the successful submission of a delete request.
+    This test ensures that a delete request is successfully processed and returns the expected response.
+    Steps:
+    1. Create a mock process_request function.
+    2. Patch the `process_request` method of `ErrorLogConfigResolveErrorLogPostModelResponse` with the mock function.
+    3. Create a error_log using the `ErrorLogFactory`.
+    4. Generate an API key for the error_log.
+    5. Send a POST request to the `error-log-config-resolve-error-log` endpoint with the error_log code and API key.
+    6. Assert that the response status code is 200 and the 'success' field in the response JSON is False.
+    7. Assert that the `process_request` method was called.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     async def mock_process_request(
         session,
@@ -61,7 +74,17 @@ async def test_submit_success(overridden_get_db):
 @pytest.mark.asyncio
 async def test_submit_request_validation_error(overridden_get_db):
     """
-    #TODO add comment
+    Test the submission of a delete request with validation errors.
+    This test ensures that a delete request with incorrect data results in a validation error.
+    Steps:
+    1. Create a error_log using the `ErrorLogFactory`.
+    2. Generate an API key for the error_log.
+    3. Send a POST request to the `error-log-config-resolve-error-log` endpoint with the error_log code, invalid data, and API key.
+    4. Assert that the response status code is 400 (validation error).
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     error_log = await model_factorys.ErrorLogFactory.create_async(overridden_get_db)
     error_log_code = error_log.code

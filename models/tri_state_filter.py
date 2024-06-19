@@ -1,7 +1,8 @@
 # models/tri_state_filter.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The TriStateFilter model inherits from the Base model and is mapped to the
+'farm_TriStateFilter' table in the database.
 """
 from decimal import Decimal
 import uuid

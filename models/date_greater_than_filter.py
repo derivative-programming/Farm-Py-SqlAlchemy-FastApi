@@ -1,7 +1,8 @@
 # models/date_greater_than_filter.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+The DateGreaterThanFilter model inherits from the Base model and is mapped to the
+'farm_DateGreaterThanFilter' table in the database.
 """
 from decimal import Decimal
 import uuid
