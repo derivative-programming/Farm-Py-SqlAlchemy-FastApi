@@ -41,14 +41,6 @@ class ErrorLogBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.error_log.error_log_id
-    # @error_log_id.setter
-    # def error_log_id(self, value: int):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not isinstance(value, int):
-    #         raise ValueError("error_log_id must be a int.")
-    #     self.error_log.error_log_id = value
     # code
     @property
     def code(self):
@@ -118,14 +110,6 @@ class ErrorLogBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.error_log.insert_user_id = value
-    # def set_prop_insert_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not self.error_log:
-    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-    #     self.insert_user_id = value
-    #     return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
@@ -149,12 +133,6 @@ class ErrorLogBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.error_log.last_update_user_id = value
-    # def set_prop_last_update_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.last_update_user_id = value
-    #     return self
 # endset
     # browserCode
     @property

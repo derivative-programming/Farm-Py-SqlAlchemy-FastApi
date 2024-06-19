@@ -1,17 +1,18 @@
-# tac.py
+# models/serialization_schema/tac.py
 """
-    #TODO add comment
+This module contains the TacSchema class, which is responsible
+for serializing and deserializing Tac objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Tac
 class TacSchema(SQLAlchemyAutoSchema):
     """
-    #TODO add comment
+    Schema class for serializing and deserializing Tac objects.
     """
     class Meta:
         """
-            #TODO add comment
+        Meta class for defining the schema's metadata.
         """
         model = Tac
         exclude = (

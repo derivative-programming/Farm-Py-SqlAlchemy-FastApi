@@ -2,7 +2,8 @@
 
 """
 This is the main module of the Farm-Py-SqlAlchemy-FastApi application.
-It contains the FastAPI application setup, exception handlers, and startup event.
+It contains the FastAPI application setup,
+exception handlers, and startup event.
 """
 
 import logging

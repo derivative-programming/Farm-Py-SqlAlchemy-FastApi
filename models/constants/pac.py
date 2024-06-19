@@ -1,6 +1,6 @@
 # models/constants/pac.py
 """
-    #TODO add comment
+This module contains boolean constants related to pacs.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

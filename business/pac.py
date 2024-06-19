@@ -55,14 +55,6 @@ class PacBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.pac.pac_id
-    # @pac_id.setter
-    # def pac_id(self, value: int):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not isinstance(value, int):
-    #         raise ValueError("pac_id must be a int.")
-    #     self.pac.pac_id = value
     # code
     @property
     def code(self):
@@ -132,14 +124,6 @@ class PacBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.pac.insert_user_id = value
-    # def set_prop_insert_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not self.pac:
-    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-    #     self.insert_user_id = value
-    #     return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
@@ -163,12 +147,6 @@ class PacBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.pac.last_update_user_id = value
-    # def set_prop_last_update_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.last_update_user_id = value
-    #     return self
 # endset
     # description
     @property

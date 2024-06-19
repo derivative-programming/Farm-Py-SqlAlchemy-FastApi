@@ -463,7 +463,23 @@ async def test_get_csv_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
+    Test case to verify the behavior of the GET
+    /api/v1_0/pac-user-flavor-list/{pac_code}/to-csv endpoint
+    when the API key header is empty, and the user is not authorized.
+    Steps:
+    1. Create a test pac using the PacFactory.
+    2. Create a PacUserFlavorListGetModelRequest using the request_factory.
+    3. Convert the request to a dictionary in camel case format.
+    4. Send a GET request to the endpoint with the pac code
+        and request parameters.
+    5. Verify the response status code and content type based
+        on the configuration.
+    If the PacUserFlavorListRouterConfig.is_public is True:
+    - The response status code should be 200.
+    - The response content type should start with the test_constants.
+        REPORT_TO_CSV_MEDIA_TYPE.
+    If the PacUserFlavorListRouterConfig.is_public is False:
+    - The response status code should be 401.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -496,7 +512,25 @@ async def test_get_csv_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
+    Test case to check the behavior of the
+    'get_csv_authorization_failure_no_header' endpoint.
+    This test case verifies the response of the endpoint
+    when the authorization header is missing.
+    Steps:
+    1. Create a test pac using the PacFactory.
+    2. Create a test request using the
+        PacUserFlavorListGetModelRequestFactory.
+    3. Send a GET request to the
+        '/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv'
+        endpoint with the request parameters.
+    4. Verify the response status code and content type based
+    on the configuration.
+    If the 'is_public' flag in the PacUserFlavorListRouterConfig is True:
+    - The response status code should be 200.
+    - The response content type should start with the
+        'REPORT_TO_CSV_MEDIA_TYPE' defined in the test_constants.
+    If the 'is_public' flag in the PacUserFlavorListRouterConfig is False:
+    - The response status code should be 401.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -529,7 +563,15 @@ async def test_get_csv_endpoint_url_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test case for the failure scenario of the get_csv_endpoint_url function.
+    This test case verifies that the API endpoint
+        '/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv/xxx'
+    returns a status code of 501 when an invalid API key is provided.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -549,7 +591,27 @@ async def test_get_csv_endpoint_invalid_code_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test case for the 'get_csv_endpoint_invalid_code_failure' function.
+    This test case verifies the behavior of the
+        '/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv' endpoint
+    when an invalid pac code is provided.
+    Steps:
+    1. Create a UUID representing an invalid pac code.
+    2. Create a request object using the PacUserFlavorListGetModelRequestFactory.
+    3. Convert the request object to a dictionary
+        in camel case serialization format.
+    4. Set the test API key.
+    5. Send a GET request to the
+        '/api/v1_0/pac-user-flavor-list/{pac_code}/to-csv'
+        endpoint with the request parameters and headers.
+    6. Assert that the response status code is 200.
+    7. Assert that the response content type starts with the
+        expected media type for CSV reports.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     pac_code = uuid.UUID(int=0)
     request = await (
@@ -580,7 +642,14 @@ async def test_get_csv_endpoint_method_failure(
     api_key_fixture: str
 ):
     """
-    #TODO add comment
+    Test case for the failure scenario of the GET CSV endpoint method.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
+    Raises:
+        AssertionError: If the response status code is not 405.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -597,6 +666,13 @@ async def test_get_csv_endpoint_method_failure(
 
 def teardown_module(module):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Teardown function for the module.
+    This function is called after all the tests
+    in the module have been executed.
+    It clears the dependency overrides for the app.
+    Args:
+        module: The module object.
+    Returns:
+        None
     """
     app.dependency_overrides.clear()

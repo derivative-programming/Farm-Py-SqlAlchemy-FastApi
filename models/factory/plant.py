@@ -1,5 +1,7 @@
+# models/factory/plant.py
 """
-    #TODO add comment
+This module contains the PlantFactory class, which is responsible
+for creating instances of the Plant model using the Factory pattern.
 """
 
 from datetime import datetime
@@ -16,7 +18,7 @@ logger = get_logger(__name__)
 
 class PlantFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the Plant model.
     """
 
     class Meta:

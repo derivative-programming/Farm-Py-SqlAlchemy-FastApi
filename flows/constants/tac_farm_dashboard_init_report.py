@@ -1,6 +1,7 @@
 # flows/constants/tac_farm_dashboard_init_report.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the tac_farm_dashboard_init_report flow.
 """
 
 CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False

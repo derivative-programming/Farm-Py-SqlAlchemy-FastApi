@@ -104,10 +104,6 @@ class Pac(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    # no relationsip properties.
-    # they are not updated immediately if the id prop is updated directly
-    #  = relationship('', back_populates=snake_case(''))
-    # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
@@ -300,18 +296,20 @@ class Pac(Base):
         Set the name.
         """
         self._name = value
+# endset
+
     @property
-    def some_text_val(self) -> str:
+    def _id(self) -> int:
         """
             #TODO add comment
         """
-        return getattr(self, '_some_text_val', "") or ""
-    @some_text_val.setter
-    def some_text_val(self, value: str) -> None:
+        return getattr(self, '__id', 0) or 0
+    @_id.setter
+    def _id(self, value: int) -> None:
         """
-        Set the some_text_val.
+        Set the _id.
         """
-        self._some_text_val = value
+        self.__id = value
 # endset
     @staticmethod
     def property_list():

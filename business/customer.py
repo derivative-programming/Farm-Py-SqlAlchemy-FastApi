@@ -43,14 +43,6 @@ class CustomerBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.customer.customer_id
-    # @customer_id.setter
-    # def customer_id(self, value: int):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not isinstance(value, int):
-    #         raise ValueError("customer_id must be a int.")
-    #     self.customer.customer_id = value
     # code
     @property
     def code(self):
@@ -120,14 +112,6 @@ class CustomerBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.customer.insert_user_id = value
-    # def set_prop_insert_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not self.customer:
-    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-    #     self.insert_user_id = value
-    #     return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
@@ -151,12 +135,6 @@ class CustomerBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.customer.last_update_user_id = value
-    # def set_prop_last_update_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.last_update_user_id = value
-    #     return self
 # endset
     # activeOrganizationID
     @property

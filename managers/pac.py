@@ -1,7 +1,8 @@
 # models/managers/pac.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the PacManager class, which is
+responsible for managing pacs in the system.
 """
 import json
 import logging
@@ -240,7 +241,11 @@ class PacManager:
         return pac_data
     def from_json(self, json_str: str) -> Pac:
         """
-        Deserialize a JSON string into a Pac object using the PacSchema.
+        Deserializes a JSON string into a Pac object using the PacSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            Pac: The deserialized Pac object.
         """
         logging.info("PacManager.from_json")
         schema = PacSchema()
@@ -250,7 +255,7 @@ class PacManager:
         return new_pac
     def from_dict(self, pac_dict: Dict[str, Any]) -> Pac:
         """
-        Create a Pac instance from a dictionary of attributes.
+        Creates a Pac instance from a dictionary of attributes.
         Args:
             pac_dict (Dict[str, Any]): A dictionary containing
                 pac attributes.
@@ -266,7 +271,11 @@ class PacManager:
         return new_pac
     async def add_bulk(self, pacs: List[Pac]) -> List[Pac]:
         """
-        Add multiple pacs at once.
+        Adds multiple pacs at once.
+        Args:
+            pacs (List[Pac]): The list of pacs to add.
+        Returns:
+            List[Pac]: The list of added pacs.
         """
         logging.info("PacManager.add_bulk")
         for pac in pacs:

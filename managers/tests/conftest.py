@@ -3,7 +3,12 @@
 # pylint: disable=redefined-outer-name
 
 """
-    #TODO add comment
+This module contains fixtures for testing the managers module.
+
+Fixtures are functions that provide test resources to other test functions.
+In this module, we have fixtures for creating a
+new event loop, creating a SQLAlchemy engine,
+and creating an asynchronous session object for interacting with the database.
 """
 
 import asyncio

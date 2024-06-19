@@ -1,6 +1,6 @@
 # plant_user_details_test.py
 """
-    #TODO add comment
+This module contains a test case for the ReportProviderPlantUserDetails class.
 """
 import uuid
 import sqlite3
@@ -16,20 +16,24 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderPlantUserDetails:
     """
-    #TODO add comment
+    This class contains test cases for the ReportProviderPlantUserDetails class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
-        #TODO add comment
+        This test case verifies the generation of a Plant Details report.
+        It creates a session context, initializes the runtime, and generates
+        a Plant Details report using the ReportProviderPlantUserDetails class.
+        The generated report is then checked for the expected format.
         """
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
         report_provider = ReportProviderPlantUserDetails(session_context)
         plant = await PlantFactory.create_async(session=session)
         plant_code = plant.code
+        # Set up test data
 
-# endset
+        # Generate the report
         page_number = 1
         item_count_per_page = 10
         order_by_column_name = ""

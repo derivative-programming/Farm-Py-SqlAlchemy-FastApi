@@ -1,6 +1,7 @@
 # flows/constants/customer_user_log_out_init_obj_wf.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the customer_user_log_out_init_obj_wf flow.
 """
 
 CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False

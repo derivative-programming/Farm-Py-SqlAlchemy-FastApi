@@ -167,7 +167,12 @@ async def test_init_endpoint_method_failure(
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db, api_key_fixture: str):
     """
-        #TODO add comment
+    Test case for successful submission of a post to a customer.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     async def mock_process_request(
         session,
@@ -176,7 +181,14 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         request
     ):  # pylint: disable=unused-argument
         """
-            #TODO add comment
+        Mock function for processing the request.
+        Args:
+            session (AsyncSession): The database session.
+            session_context: The session context.
+            customer_code: The customer code.
+            request: The request.
+        Returns:
+            None
         """
     with patch.object(
         apis_models.CustomerUserLogOutPostModelResponse,
@@ -205,7 +217,12 @@ async def test_submit_request_validation_error(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
+    Test case for submission of a post with validation error.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
     customer_code = customer.code
@@ -230,7 +247,11 @@ async def test_submit_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
+    Test case for authorization failure with a bad API key.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
     customer_code = customer.code
@@ -252,7 +273,11 @@ async def test_submit_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
+    Test case for authorization failure with an empty header key.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
     customer_code = customer.code
@@ -274,7 +299,11 @@ async def test_submit_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
+    Test case for authorization failure with no header.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
     customer_code = customer.code
@@ -296,7 +325,12 @@ async def test_submit_endpoint_url_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
+    Test case for failure of the submit endpoint URL.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
     customer_code = customer.code
@@ -317,7 +351,12 @@ async def test_submit_endpoint_invalid_code_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
+    Test case for failure of the submit endpoint with an invalid code.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     customer_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
@@ -338,7 +377,12 @@ async def test_submit_endpoint_method_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
+    Test case for failure of the submit endpoint with an invalid method.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+    Returns:
+        None
     """
     customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
     customer_code = customer.code
@@ -355,6 +399,13 @@ async def test_submit_endpoint_method_failure(
 
 def teardown_module(module):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Teardown function for the module.
+    This function is called after all the tests
+    in the module have been executed.
+    It clears the dependency overrides for the app.
+    Args:
+        module: The module object.
+    Returns:
+        None
     """
     app.dependency_overrides.clear()

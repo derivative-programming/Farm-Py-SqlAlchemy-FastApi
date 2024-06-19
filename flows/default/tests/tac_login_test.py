@@ -26,11 +26,11 @@ class TestTacLoginPostModelResponse:
         result = FlowTacLoginResult()
         result.context_object_code = uuid.uuid4()
         result.customer_code = uuid.uuid4()
-        result.email = "test flavor"
+        result.email = "test text"
         result.user_code_value = uuid.uuid4()
         result.utc_offset_in_minutes = 123
-        result.role_name_csv_list = "test flavor"
-        result.api_key = "test flavor"
+        result.role_name_csv_list = "test text"
+        result.api_key = "test text"
 # endset
         # Call to_json method
         json_output = result.to_json()
@@ -69,7 +69,7 @@ class TestTacLoginPostModelResponse:
 # endset
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
-                flow_result = await flow.process(
+                await flow.process(
                     tac_bus_obj,
                     email,
                     password,

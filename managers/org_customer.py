@@ -1,7 +1,8 @@
 # models/managers/org_customer.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the OrgCustomerManager class, which is
+responsible for managing org_customers in the system.
 """
 import json
 import logging
@@ -220,7 +221,11 @@ class OrgCustomerManager:
         return org_customer_data
     def from_json(self, json_str: str) -> OrgCustomer:
         """
-        Deserialize a JSON string into a OrgCustomer object using the OrgCustomerSchema.
+        Deserializes a JSON string into a OrgCustomer object using the OrgCustomerSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            OrgCustomer: The deserialized OrgCustomer object.
         """
         logging.info("OrgCustomerManager.from_json")
         schema = OrgCustomerSchema()
@@ -230,7 +235,7 @@ class OrgCustomerManager:
         return new_org_customer
     def from_dict(self, org_customer_dict: Dict[str, Any]) -> OrgCustomer:
         """
-        Create a OrgCustomer instance from a dictionary of attributes.
+        Creates a OrgCustomer instance from a dictionary of attributes.
         Args:
             org_customer_dict (Dict[str, Any]): A dictionary containing
                 org_customer attributes.
@@ -246,7 +251,11 @@ class OrgCustomerManager:
         return new_org_customer
     async def add_bulk(self, org_customers: List[OrgCustomer]) -> List[OrgCustomer]:
         """
-        Add multiple org_customers at once.
+        Adds multiple org_customers at once.
+        Args:
+            org_customers (List[OrgCustomer]): The list of org_customers to add.
+        Returns:
+            List[OrgCustomer]: The list of added org_customers.
         """
         logging.info("OrgCustomerManager.add_bulk")
         for org_customer in org_customers:

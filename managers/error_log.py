@@ -1,7 +1,8 @@
 # models/managers/error_log.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the ErrorLogManager class, which is
+responsible for managing error_logs in the system.
 """
 import json
 import logging
@@ -209,7 +210,11 @@ class ErrorLogManager:
         return error_log_data
     def from_json(self, json_str: str) -> ErrorLog:
         """
-        Deserialize a JSON string into a ErrorLog object using the ErrorLogSchema.
+        Deserializes a JSON string into a ErrorLog object using the ErrorLogSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            ErrorLog: The deserialized ErrorLog object.
         """
         logging.info("ErrorLogManager.from_json")
         schema = ErrorLogSchema()
@@ -219,7 +224,7 @@ class ErrorLogManager:
         return new_error_log
     def from_dict(self, error_log_dict: Dict[str, Any]) -> ErrorLog:
         """
-        Create a ErrorLog instance from a dictionary of attributes.
+        Creates a ErrorLog instance from a dictionary of attributes.
         Args:
             error_log_dict (Dict[str, Any]): A dictionary containing
                 error_log attributes.
@@ -235,7 +240,11 @@ class ErrorLogManager:
         return new_error_log
     async def add_bulk(self, error_logs: List[ErrorLog]) -> List[ErrorLog]:
         """
-        Add multiple error_logs at once.
+        Adds multiple error_logs at once.
+        Args:
+            error_logs (List[ErrorLog]): The list of error_logs to add.
+        Returns:
+            List[ErrorLog]: The list of added error_logs.
         """
         logging.info("ErrorLogManager.add_bulk")
         for error_log in error_logs:

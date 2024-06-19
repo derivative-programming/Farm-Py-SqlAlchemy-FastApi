@@ -1,6 +1,7 @@
 # apis/models/tests/plant_user_details_test.py
 """
-    #TODO add comment
+This module contains unit tests for the
+PlantUserDetailsGetModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,20 @@ from ..factory.plant_user_details import PlantUserDetailsGetModelRequestFactory
 from ..plant_user_details import PlantUserDetailsGetModelRequest
 class PlantUserDetailsGetModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains asynchronous unit tests for the
+    PlantUserDetailsGetModelRequestFactory class.
     """
     @pytest.mark.asyncio
     async def test_report_generation(self, session):
         """
-            #TODO add comment
+        Test the generation of a report using the
+        PlantUserDetailsGetModelRequestFactory class.
+        Args:
+            session: The database session.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         model_instance = await (
             PlantUserDetailsGetModelRequestFactory

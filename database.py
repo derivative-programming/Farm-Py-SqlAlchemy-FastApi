@@ -31,7 +31,8 @@ async def get_db():
             # Use the database session here
 
     Returns:
-        AsyncGenerator[AsyncSession, None]: An asynchronous generator that yields the database session.
+        AsyncGenerator[AsyncSession, None]: An
+        asynchronous generator that yields the database session.
 
     """
     async with AsyncSessionLocal() as db:  # type: ignore # noqa: E501

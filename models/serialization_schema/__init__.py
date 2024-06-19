@@ -2,10 +2,8 @@
 """
 This module contains the serialization schemas for the
 models in the Farm-Py-SqlAlchemy-FastApi project.
-
 The serialization schemas define how the data should be
 serialized and deserialized when interacting with the API.
-
 The following schemas are included in this module:
     - CustomerSchema
     - CustomerRoleSchema

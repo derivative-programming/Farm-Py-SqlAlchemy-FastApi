@@ -213,8 +213,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 
         # plant: PlantBusObj = land_bus_obj.build_plant()
         # plant.land_id = land_bus_obj.land_id
-        # plant.flvr_foreign_key_id = await FlavorBusObj.get(
-        #   land_bus_obj.session_context.session,code=request_flavor_code).code
+        # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session_context.session,code=request_flavor_code).code
         # plant.other_flavor = request_other_flavor
         # plant.some_int_val = request_some_int_val
         # plant.some_big_int_val = request_some_big_int_val

@@ -36,7 +36,7 @@ class TestLandAddPlantPostModelResponse:
         result.land_code = uuid.uuid4()
         result.plant_code = uuid.uuid4()
         result.output_flavor_code = uuid.uuid4()
-        result.output_other_flavor = "test flavor"
+        result.output_other_flavor = "test text"
         result.output_some_int_val = 123
         result.output_some_big_int_val = 123456789
         result.output_some_bit_val = True
@@ -144,7 +144,7 @@ class TestLandAddPlantPostModelResponse:
 
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
-                flow_result = await flow.process(
+                await flow.process(
                     land_bus_obj,
                     request_flavor_code,
                     request_other_flavor,

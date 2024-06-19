@@ -1,7 +1,8 @@
 # models/managers/role.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the RoleManager class, which is
+responsible for managing roles in the system.
 """
 import json
 import logging
@@ -279,7 +280,11 @@ class RoleManager:
         return role_data
     def from_json(self, json_str: str) -> Role:
         """
-        Deserialize a JSON string into a Role object using the RoleSchema.
+        Deserializes a JSON string into a Role object using the RoleSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            Role: The deserialized Role object.
         """
         logging.info("RoleManager.from_json")
         schema = RoleSchema()
@@ -289,7 +294,7 @@ class RoleManager:
         return new_role
     def from_dict(self, role_dict: Dict[str, Any]) -> Role:
         """
-        Create a Role instance from a dictionary of attributes.
+        Creates a Role instance from a dictionary of attributes.
         Args:
             role_dict (Dict[str, Any]): A dictionary containing
                 role attributes.
@@ -305,7 +310,11 @@ class RoleManager:
         return new_role
     async def add_bulk(self, roles: List[Role]) -> List[Role]:
         """
-        Add multiple roles at once.
+        Adds multiple roles at once.
+        Args:
+            roles (List[Role]): The list of roles to add.
+        Returns:
+            List[Role]: The list of added roles.
         """
         logging.info("RoleManager.add_bulk")
         for role in roles:

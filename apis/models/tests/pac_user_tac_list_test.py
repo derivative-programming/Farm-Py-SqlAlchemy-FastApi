@@ -1,6 +1,7 @@
 # apis/models/tests/pac_user_tac_list_test.py
 """
-    #TODO add comment
+This module contains unit tests for the
+PacUserTacListGetModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,20 @@ from ..factory.pac_user_tac_list import PacUserTacListGetModelRequestFactory
 from ..pac_user_tac_list import PacUserTacListGetModelRequest
 class PacUserTacListGetModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains asynchronous unit tests for the
+    PacUserTacListGetModelRequestFactory class.
     """
     @pytest.mark.asyncio
     async def test_report_generation(self, session):
         """
-            #TODO add comment
+        Test the generation of a report using the
+        PacUserTacListGetModelRequestFactory class.
+        Args:
+            session: The database session.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         model_instance = await (
             PacUserTacListGetModelRequestFactory

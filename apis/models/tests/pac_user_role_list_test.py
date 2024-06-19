@@ -1,6 +1,7 @@
 # apis/models/tests/pac_user_role_list_test.py
 """
-    #TODO add comment
+This module contains unit tests for the
+PacUserRoleListGetModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,20 @@ from ..factory.pac_user_role_list import PacUserRoleListGetModelRequestFactory
 from ..pac_user_role_list import PacUserRoleListGetModelRequest
 class PacUserRoleListGetModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains asynchronous unit tests for the
+    PacUserRoleListGetModelRequestFactory class.
     """
     @pytest.mark.asyncio
     async def test_report_generation(self, session):
         """
-            #TODO add comment
+        Test the generation of a report using the
+        PacUserRoleListGetModelRequestFactory class.
+        Args:
+            session: The database session.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         model_instance = await (
             PacUserRoleListGetModelRequestFactory

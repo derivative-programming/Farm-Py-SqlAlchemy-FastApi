@@ -1,6 +1,7 @@
 # flows/constants/tac_register_init_obj_wf.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the tac_register_init_obj_wf flow.
 """
 
 CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False

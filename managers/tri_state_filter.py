@@ -1,7 +1,8 @@
 # models/managers/tri_state_filter.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the TriStateFilterManager class, which is
+responsible for managing tri_state_filters in the system.
 """
 import json
 import logging
@@ -268,7 +269,11 @@ class TriStateFilterManager:
         return tri_state_filter_data
     def from_json(self, json_str: str) -> TriStateFilter:
         """
-        Deserialize a JSON string into a TriStateFilter object using the TriStateFilterSchema.
+        Deserializes a JSON string into a TriStateFilter object using the TriStateFilterSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            TriStateFilter: The deserialized TriStateFilter object.
         """
         logging.info("TriStateFilterManager.from_json")
         schema = TriStateFilterSchema()
@@ -278,7 +283,7 @@ class TriStateFilterManager:
         return new_tri_state_filter
     def from_dict(self, tri_state_filter_dict: Dict[str, Any]) -> TriStateFilter:
         """
-        Create a TriStateFilter instance from a dictionary of attributes.
+        Creates a TriStateFilter instance from a dictionary of attributes.
         Args:
             tri_state_filter_dict (Dict[str, Any]): A dictionary containing
                 tri_state_filter attributes.
@@ -294,7 +299,11 @@ class TriStateFilterManager:
         return new_tri_state_filter
     async def add_bulk(self, tri_state_filters: List[TriStateFilter]) -> List[TriStateFilter]:
         """
-        Add multiple tri_state_filters at once.
+        Adds multiple tri_state_filters at once.
+        Args:
+            tri_state_filters (List[TriStateFilter]): The list of tri_state_filters to add.
+        Returns:
+            List[TriStateFilter]: The list of added tri_state_filters.
         """
         logging.info("TriStateFilterManager.add_bulk")
         for tri_state_filter in tri_state_filters:

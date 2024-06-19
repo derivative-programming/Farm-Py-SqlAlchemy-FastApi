@@ -1,5 +1,7 @@
+# models/factory/pac.py
 """
-    #TODO add comment
+This module contains the PacFactory class, which is responsible
+for creating instances of the Pac model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -11,7 +13,7 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 class PacFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the Pac model.
     """
     class Meta:
         """

@@ -1,7 +1,8 @@
 # apis/models/tests/customer_build_temp_api_key_test.py
 # pylint: disable=unused-argument
 """
-    #TODO add comment
+This module contains unit tests for the
+CustomerBuildTempApiKeyPostModelResponse class.
 """
 import uuid
 from datetime import date, datetime
@@ -17,12 +18,16 @@ from ...models.customer_build_temp_api_key import (CustomerBuildTempApiKeyPostMo
 from ..factory.customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequestFactory
 class TestCustomerBuildTempApiKeyPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    CustomerBuildTempApiKeyPostModelResponse class.
     """
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        This method tests the flow process request
+        for adding a  to a customer.
+        It mocks the process method of FlowCustomerBuildTempApiKey
+        and asserts that the response is successful.
         """
         async def mock_process(
             customer_bus_obj: CustomerBusObj,

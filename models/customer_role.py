@@ -90,10 +90,6 @@ class CustomerRole(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    # no relationsip properties.
-    # they are not updated immediately if the id prop is updated directly
-    # customer = relationship('Customer', back_populates=snake_case('Customer'))
-    # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
@@ -223,18 +219,6 @@ class CustomerRole(Base):
         """
         self._last_update_utc_date_time = value
     # CustomerID
-    @property
-    def customer_id(self) -> int:
-        """
-            #TODO add comment
-        """
-        return getattr(self, '_customer_id', 0) or 0
-    @customer_id.setter
-    def customer_id(self, value: int) -> None:
-        """
-        Set the customer_id.
-        """
-        self._customer_id = value
     # isPlaceholder,
     @property
     def is_placeholder(self) -> bool:
@@ -262,6 +246,9 @@ class CustomerRole(Base):
         """
         self._placeholder = value
     # roleID
+# endset
+    # CustomerID
+    # roleID
     @property
     def role_id(self) -> int:
         """
@@ -275,17 +262,17 @@ class CustomerRole(Base):
         """
         self._role_id = value
     @property
-    def some_text_val(self) -> str:
+    def customer_id(self) -> int:
         """
             #TODO add comment
         """
-        return getattr(self, '_some_text_val', "") or ""
-    @some_text_val.setter
-    def some_text_val(self, value: str) -> None:
+        return getattr(self, '_customer_id', 0) or 0
+    @customer_id.setter
+    def customer_id(self, value: int) -> None:
         """
-        Set the some_text_val.
+        Set the customer_id.
         """
-        self._some_text_val = value
+        self._customer_id = value
 # endset
     @staticmethod
     def property_list():

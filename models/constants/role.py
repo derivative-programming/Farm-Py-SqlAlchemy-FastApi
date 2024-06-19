@@ -1,6 +1,6 @@
 # models/constants/role.py
 """
-    #TODO add comment
+This module contains boolean constants related to roles.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

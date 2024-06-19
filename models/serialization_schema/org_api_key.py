@@ -1,17 +1,18 @@
-# org_api_key.py
+# models/serialization_schema/org_api_key.py
 """
-    #TODO add comment
+This module contains the OrgApiKeySchema class, which is responsible
+for serializing and deserializing OrgApiKey objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import OrgApiKey
 class OrgApiKeySchema(SQLAlchemyAutoSchema):
     """
-    #TODO add comment
+    Schema class for serializing and deserializing OrgApiKey objects.
     """
     class Meta:
         """
-            #TODO add comment
+        Meta class for defining the schema's metadata.
         """
         model = OrgApiKey
         exclude = (

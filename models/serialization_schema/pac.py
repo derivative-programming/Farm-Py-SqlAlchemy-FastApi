@@ -1,17 +1,18 @@
-# pac.py
+# models/serialization_schema/pac.py
 """
-    #TODO add comment
+This module contains the PacSchema class, which is responsible
+for serializing and deserializing Pac objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Pac
 class PacSchema(SQLAlchemyAutoSchema):
     """
-    #TODO add comment
+    Schema class for serializing and deserializing Pac objects.
     """
     class Meta:
         """
-            #TODO add comment
+        Meta class for defining the schema's metadata.
         """
         model = Pac
         exclude = (

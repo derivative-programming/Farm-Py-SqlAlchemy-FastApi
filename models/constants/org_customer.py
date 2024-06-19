@@ -1,6 +1,6 @@
 # models/constants/org_customer.py
 """
-    #TODO add comment
+This module contains boolean constants related to org_customers.
 """
 customer_id_calculatedIsDBColumnIndexed: bool = True
 email_calculatedIsDBColumnIndexed: bool = False

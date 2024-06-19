@@ -1,6 +1,6 @@
 # plant_user_details.py
 """
-    #TODO add comment
+This module contains the definition of the ReportItemPlantUserDetails class.
 """
 import uuid
 from decimal import Decimal
@@ -8,7 +8,7 @@ from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
 class ReportItemPlantUserDetails():
     """
-    #TODO add comment
+    Represents a report item for a plant Plant Details.
     """
     flavor_name: str = ""
     is_delete_allowed: bool = False
@@ -16,7 +16,8 @@ class ReportItemPlantUserDetails():
     other_flavor: str = ""
     some_big_int_val: int = 0
     some_bit_val: bool = False
-    some_date_val: date = TypeConversion.get_default_date()
+    some_date_val: date = (
+        TypeConversion.get_default_date())
     some_decimal_val: Decimal = Decimal(0)
     some_email_address: str = ""
     some_float_val: float = 0.0
@@ -25,18 +26,27 @@ class ReportItemPlantUserDetails():
     some_n_var_char_val: str = ""
     some_phone_number: str = ""
     some_text_val: str = ""
-    some_uniqueidentifier_val: uuid.UUID = uuid.UUID(int=0)
-    some_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
+    some_uniqueidentifier_val: uuid.UUID = (
+        uuid.UUID(int=0))
+    some_utc_date_time_val: datetime = (
+        TypeConversion.get_default_date_time())
     some_var_char_val: str = ""
     phone_num_conditional_on_is_editable: str = ""
     n_var_char_as_url: str = ""
-    update_button_text_link_plant_code: uuid.UUID = uuid.UUID(int=0)
-    random_property_updates_link_plant_code: uuid.UUID = uuid.UUID(int=0)
-    back_to_dashboard_link_tac_code: uuid.UUID = uuid.UUID(int=0)
+    update_button_text_link_plant_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    random_property_updates_link_plant_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    back_to_dashboard_link_tac_code: uuid.UUID = (
+        uuid.UUID(int=0))
 # endset
     def load_data_provider_dict(self, data: dict):
         """
-        #TODO add comment
+        Loads data from a dictionary into the report item.
+        Args:
+            data (dict): The dictionary containing the data.
+        Returns:
+            None
         """
         self.flavor_name = (
             str(data["flavor_name"]))

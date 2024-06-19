@@ -1,17 +1,18 @@
-# customer_role.py
+# models/serialization_schema/customer_role.py
 """
-    #TODO add comment
+This module contains the CustomerRoleSchema class, which is responsible
+for serializing and deserializing CustomerRole objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import CustomerRole
 class CustomerRoleSchema(SQLAlchemyAutoSchema):
     """
-    #TODO add comment
+    Schema class for serializing and deserializing CustomerRole objects.
     """
     class Meta:
         """
-            #TODO add comment
+        Meta class for defining the schema's metadata.
         """
         model = CustomerRole
         exclude = (

@@ -2,7 +2,6 @@
 """
 This module contains factory classes for creating
 instances of various models.
-
 The factory classes in this module are used to create
 instances of different models
 used in the application. These factories provide a

@@ -1,6 +1,6 @@
 # models/constants/organization.py
 """
-    #TODO add comment
+This module contains boolean constants related to organizations.
 """
 name_calculatedIsDBColumnIndexed: bool = False
 tac_id_calculatedIsDBColumnIndexed: bool = True

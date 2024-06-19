@@ -1,5 +1,7 @@
+# models/factory/land.py
 """
-    #TODO add comment
+This module contains the LandFactory class, which is responsible
+for creating instances of the Land model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -11,7 +13,7 @@ from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class LandFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the Land model.
     """
     class Meta:
         """

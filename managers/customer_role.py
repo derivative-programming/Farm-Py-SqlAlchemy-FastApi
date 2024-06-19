@@ -1,7 +1,8 @@
 # models/managers/customer_role.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the CustomerRoleManager class, which is
+responsible for managing customer_roles in the system.
 """
 import json
 import logging
@@ -220,7 +221,11 @@ class CustomerRoleManager:
         return customer_role_data
     def from_json(self, json_str: str) -> CustomerRole:
         """
-        Deserialize a JSON string into a CustomerRole object using the CustomerRoleSchema.
+        Deserializes a JSON string into a CustomerRole object using the CustomerRoleSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            CustomerRole: The deserialized CustomerRole object.
         """
         logging.info("CustomerRoleManager.from_json")
         schema = CustomerRoleSchema()
@@ -230,7 +235,7 @@ class CustomerRoleManager:
         return new_customer_role
     def from_dict(self, customer_role_dict: Dict[str, Any]) -> CustomerRole:
         """
-        Create a CustomerRole instance from a dictionary of attributes.
+        Creates a CustomerRole instance from a dictionary of attributes.
         Args:
             customer_role_dict (Dict[str, Any]): A dictionary containing
                 customer_role attributes.
@@ -246,7 +251,11 @@ class CustomerRoleManager:
         return new_customer_role
     async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
         """
-        Add multiple customer_roles at once.
+        Adds multiple customer_roles at once.
+        Args:
+            customer_roles (List[CustomerRole]): The list of customer_roles to add.
+        Returns:
+            List[CustomerRole]: The list of added customer_roles.
         """
         logging.info("CustomerRoleManager.add_bulk")
         for customer_role in customer_roles:

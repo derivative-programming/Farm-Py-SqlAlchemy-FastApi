@@ -141,10 +141,6 @@ class OrgApiKey(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    # no relationsip properties.
-    # they are not updated immediately if the id prop is updated directly
-    # organization = relationship('Organization', back_populates=snake_case('Organization'))
-    # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
@@ -383,18 +379,9 @@ class OrgApiKey(Base):
         """
         self._name = value
     # OrganizationID
-    @property
-    def organization_id(self) -> int:
-        """
-            #TODO add comment
-        """
-        return getattr(self, '_organization_id', 0) or 0
-    @organization_id.setter
-    def organization_id(self, value: int) -> None:
-        """
-        Set the organization_id.
-        """
-        self._organization_id = value
+    # orgCustomerID
+# endset
+    # OrganizationID
     # orgCustomerID
     @property
     def org_customer_id(self) -> int:
@@ -409,17 +396,17 @@ class OrgApiKey(Base):
         """
         self._org_customer_id = value
     @property
-    def some_text_val(self) -> str:
+    def organization_id(self) -> int:
         """
             #TODO add comment
         """
-        return getattr(self, '_some_text_val', "") or ""
-    @some_text_val.setter
-    def some_text_val(self, value: str) -> None:
+        return getattr(self, '_organization_id', 0) or 0
+    @organization_id.setter
+    def organization_id(self, value: int) -> None:
         """
-        Set the some_text_val.
+        Set the organization_id.
         """
-        self._some_text_val = value
+        self._organization_id = value
 # endset
     @staticmethod
     def property_list():

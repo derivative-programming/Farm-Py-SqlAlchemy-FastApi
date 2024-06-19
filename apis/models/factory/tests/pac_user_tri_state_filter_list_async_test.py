@@ -1,6 +1,7 @@
 # apis/models/factory/tests/pac_user_tri_state_filter_list_async_test.py
 """
-    #TODO add comment
+This module contains test cases for the
+PacUserTriStateFilterListGetModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,14 @@ from ...pac_user_tri_state_filter_list import PacUserTriStateFilterListGetModelR
 from ..pac_user_tri_state_filter_list import PacUserTriStateFilterListGetModelRequestFactory
 class TestPacUserTriStateFilterListGetModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains test cases for the
+    PacUserTriStateFilterListGetModelRequestFactoryAsync class.
     """
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         """
-            #TODO add comment
+        Test the create_async method of
+        PacUserTriStateFilterListGetModelRequestFactoryAsync class.
         """
         model_instance = await (
             PacUserTriStateFilterListGetModelRequestFactory

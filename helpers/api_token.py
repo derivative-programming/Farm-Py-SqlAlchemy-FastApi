@@ -1,7 +1,7 @@
 # helpers/api_token.py
 
 """
-    #TODO add comment
+This module contains functions and classes related to API token handling.
 """
 
 import datetime
@@ -32,13 +32,22 @@ async def get_api_key(api_key: str = Depends(api_key_header)):
 
 class ApiToken:
     """
-    #TODO create comment
+    This class provides methods for creating and validating API tokens.
     """
     @staticmethod
     def create_token(payload: dict, expires_in_day_count: int):
         """
-            #TODO create comment
-        """
+            Create a JWT token with the given payload and expiration time.
+
+            Args:
+                payload (dict): The payload to be included in the token.
+                expires_in_day_count (int): The number of days
+                    until the token expires.
+
+            Returns:
+                str: The generated JWT token.
+
+            """
         logging.info("create_token Start")
 
         payload["exp"] = datetime.datetime.utcnow() + datetime.timedelta(
@@ -55,7 +64,18 @@ class ApiToken:
     @staticmethod
     def validate_token(token: str) -> dict:
         """
-            #TODO create comment
+        Validate the given authentication token.
+
+        Args:
+            token (str): The authentication token to be validated.
+
+        Returns:
+            dict: The payload of the token if it is valid,
+            otherwise an empty dictionary.
+
+        Raises:
+            None
+
         """
         if token is None:
             logging.info("No auth token found")

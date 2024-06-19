@@ -1,6 +1,7 @@
 # apis/models/factory/tests/pac_user_flavor_list_async_test.py
 """
-    #TODO add comment
+This module contains test cases for the
+PacUserFlavorListGetModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,14 @@ from ...pac_user_flavor_list import PacUserFlavorListGetModelRequest
 from ..pac_user_flavor_list import PacUserFlavorListGetModelRequestFactory
 class TestPacUserFlavorListGetModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains test cases for the
+    PacUserFlavorListGetModelRequestFactoryAsync class.
     """
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         """
-            #TODO add comment
+        Test the create_async method of
+        PacUserFlavorListGetModelRequestFactoryAsync class.
         """
         model_instance = await (
             PacUserFlavorListGetModelRequestFactory

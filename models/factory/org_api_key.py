@@ -1,5 +1,7 @@
+# models/factory/org_api_key.py
 """
-    #TODO add comment
+This module contains the OrgApiKeyFactory class, which is responsible
+for creating instances of the OrgApiKey model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -12,7 +14,7 @@ from .org_customer import OrgCustomerFactory  # org_customer_id
 logger = get_logger(__name__)
 class OrgApiKeyFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the OrgApiKey model.
     """
     class Meta:
         """

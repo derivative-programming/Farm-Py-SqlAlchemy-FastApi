@@ -52,7 +52,7 @@ class TestPlantUserDeletePostModelResponse:
 # endset
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
-                flow_result = await flow.process(
+                await flow.process(
                     plant_bus_obj,
 
 # endset  # noqa: E122

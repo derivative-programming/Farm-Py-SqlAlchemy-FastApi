@@ -1,7 +1,8 @@
 # models/managers/tac.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the TacManager class, which is
+responsible for managing tacs in the system.
 """
 import json
 import logging
@@ -257,7 +258,11 @@ class TacManager:
         return tac_data
     def from_json(self, json_str: str) -> Tac:
         """
-        Deserialize a JSON string into a Tac object using the TacSchema.
+        Deserializes a JSON string into a Tac object using the TacSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            Tac: The deserialized Tac object.
         """
         logging.info("TacManager.from_json")
         schema = TacSchema()
@@ -267,7 +272,7 @@ class TacManager:
         return new_tac
     def from_dict(self, tac_dict: Dict[str, Any]) -> Tac:
         """
-        Create a Tac instance from a dictionary of attributes.
+        Creates a Tac instance from a dictionary of attributes.
         Args:
             tac_dict (Dict[str, Any]): A dictionary containing
                 tac attributes.
@@ -283,7 +288,11 @@ class TacManager:
         return new_tac
     async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
         """
-        Add multiple tacs at once.
+        Adds multiple tacs at once.
+        Args:
+            tacs (List[Tac]): The list of tacs to add.
+        Returns:
+            List[Tac]: The list of added tacs.
         """
         logging.info("TacManager.add_bulk")
         for tac in tacs:

@@ -1,7 +1,8 @@
 # models/managers/land.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the LandManager class, which is
+responsible for managing lands in the system.
 """
 import json
 import logging
@@ -257,7 +258,11 @@ class LandManager:
         return land_data
     def from_json(self, json_str: str) -> Land:
         """
-        Deserialize a JSON string into a Land object using the LandSchema.
+        Deserializes a JSON string into a Land object using the LandSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            Land: The deserialized Land object.
         """
         logging.info("LandManager.from_json")
         schema = LandSchema()
@@ -267,7 +272,7 @@ class LandManager:
         return new_land
     def from_dict(self, land_dict: Dict[str, Any]) -> Land:
         """
-        Create a Land instance from a dictionary of attributes.
+        Creates a Land instance from a dictionary of attributes.
         Args:
             land_dict (Dict[str, Any]): A dictionary containing
                 land attributes.
@@ -283,7 +288,11 @@ class LandManager:
         return new_land
     async def add_bulk(self, lands: List[Land]) -> List[Land]:
         """
-        Add multiple lands at once.
+        Adds multiple lands at once.
+        Args:
+            lands (List[Land]): The list of lands to add.
+        Returns:
+            List[Land]: The list of added lands.
         """
         logging.info("LandManager.add_bulk")
         for land in lands:

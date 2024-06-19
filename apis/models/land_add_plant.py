@@ -85,7 +85,7 @@ class LandAddPlantPostModelRequest(CamelModel):
         description="Request Some Email Address")
     request_sample_image_upload_file: str = Field(
         default="",
-        description="Request Some Image Upload File")
+        description="Request Sample Image Upload File")
 # endset
 
     class Config:

@@ -1,5 +1,7 @@
+# models/factory/tri_state_filter.py
 """
-    #TODO add comment
+This module contains the TriStateFilterFactory class, which is responsible
+for creating instances of the TriStateFilter model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -11,7 +13,7 @@ from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class TriStateFilterFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the TriStateFilter model.
     """
     class Meta:
         """

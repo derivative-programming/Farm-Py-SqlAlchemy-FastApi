@@ -129,10 +129,6 @@ class ErrorLog(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    # no relationsip properties.
-    # they are not updated immediately if the id prop is updated directly
-    # pac = relationship('Pac', back_populates=snake_case('Pac'))
-    # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
@@ -388,18 +384,6 @@ class ErrorLog(Base):
         """
         self._is_resolved = value
     # PacID
-    @property
-    def pac_id(self) -> int:
-        """
-            #TODO add comment
-        """
-        return getattr(self, '_pac_id', 0) or 0
-    @pac_id.setter
-    def pac_id(self, value: int) -> None:
-        """
-        Set the pac_id.
-        """
-        self._pac_id = value
     # url,
     @property
     def url(self) -> str:
@@ -413,18 +397,20 @@ class ErrorLog(Base):
         Set the url.
         """
         self._url = value
+# endset
+    # PacID
     @property
-    def some_text_val(self) -> str:
+    def pac_id(self) -> int:
         """
             #TODO add comment
         """
-        return getattr(self, '_some_text_val', "") or ""
-    @some_text_val.setter
-    def some_text_val(self, value: str) -> None:
+        return getattr(self, '_pac_id', 0) or 0
+    @pac_id.setter
+    def pac_id(self, value: int) -> None:
         """
-        Set the some_text_val.
+        Set the pac_id.
         """
-        self._some_text_val = value
+        self._pac_id = value
 # endset
     @staticmethod
     def property_list():

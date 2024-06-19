@@ -41,14 +41,6 @@ class OrgApiKeyBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.org_api_key.org_api_key_id
-    # @org_api_key_id.setter
-    # def org_api_key_id(self, value: int):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not isinstance(value, int):
-    #         raise ValueError("org_api_key_id must be a int.")
-    #     self.org_api_key.org_api_key_id = value
     # code
     @property
     def code(self):
@@ -118,14 +110,6 @@ class OrgApiKeyBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.org_api_key.insert_user_id = value
-    # def set_prop_insert_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not self.org_api_key:
-    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-    #     self.insert_user_id = value
-    #     return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
@@ -149,12 +133,6 @@ class OrgApiKeyBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.org_api_key.last_update_user_id = value
-    # def set_prop_last_update_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.last_update_user_id = value
-    #     return self
 # endset
     # apiKeyValue
     @property

@@ -1,6 +1,7 @@
 # flows/constants/plant_user_delete.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the plant_user_delete flow.
 """
 
 CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False

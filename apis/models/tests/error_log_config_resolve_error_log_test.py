@@ -1,7 +1,8 @@
 # apis/models/tests/error_log_config_resolve_error_log_test.py
 # pylint: disable=unused-argument
 """
-    #TODO add comment
+This module contains unit tests for the
+ErrorLogConfigResolveErrorLogPostModelResponse class.
 """
 import uuid
 from datetime import date, datetime
@@ -17,12 +18,16 @@ from ...models.error_log_config_resolve_error_log import (ErrorLogConfigResolveE
 from ..factory.error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequestFactory
 class TestErrorLogConfigResolveErrorLogPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    ErrorLogConfigResolveErrorLogPostModelResponse class.
     """
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        This method tests the flow process request
+        for adding a  to a error_log.
+        It mocks the process method of FlowErrorLogConfigResolveErrorLog
+        and asserts that the response is successful.
         """
         async def mock_process(
             error_log_bus_obj: ErrorLogBusObj,

@@ -41,14 +41,6 @@ class TriStateFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.tri_state_filter.tri_state_filter_id
-    # @tri_state_filter_id.setter
-    # def tri_state_filter_id(self, value: int):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not isinstance(value, int):
-    #         raise ValueError("tri_state_filter_id must be a int.")
-    #     self.tri_state_filter.tri_state_filter_id = value
     # code
     @property
     def code(self):
@@ -118,14 +110,6 @@ class TriStateFilterBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("insert_user_id must be a UUID.")
         self.tri_state_filter.insert_user_id = value
-    # def set_prop_insert_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     if not self.tri_state_filter:
-    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-    #     self.insert_user_id = value
-    #     return self
     # last_update_user_id
     @property
     def last_update_user_id(self):
@@ -149,12 +133,6 @@ class TriStateFilterBusObj(BaseBusObj):
         if not isinstance(value, uuid.UUID):
             raise ValueError("last_update_user_id must be a UUID.")
         self.tri_state_filter.last_update_user_id = value
-    # def set_prop_last_update_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-    #     self.last_update_user_id = value
-    #     return self
 # endset
     # description
     @property

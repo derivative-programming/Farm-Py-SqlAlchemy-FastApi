@@ -1,7 +1,8 @@
 # business/factory.py
 
 """
-This module contains the BusObjFactory class which is responsible for creating business objects based on the object type.
+This module contains the BusObjFactory class which is
+responsible for creating business objects based on the object type.
 """
 
 import uuid
@@ -25,7 +26,8 @@ from .tri_state_filter import TriStateFilterBusObj
 
 class BusObjFactory:
     """
-    The BusObjFactory class is responsible for creating business objects based on the object type.
+    The BusObjFactory class is responsible for
+    creating business objects based on the object type.
     """
 
     @staticmethod

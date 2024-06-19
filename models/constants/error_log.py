@@ -1,6 +1,6 @@
 # models/constants/error_log.py
 """
-    #TODO add comment
+This module contains boolean constants related to error_logs.
 """
 browser_code_calculatedIsDBColumnIndexed: bool = False
 context_code_calculatedIsDBColumnIndexed: bool = False

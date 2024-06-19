@@ -1,7 +1,8 @@
 # apis/models/tests/plant_user_property_random_update_test.py
 # pylint: disable=unused-argument
 """
-    #TODO add comment
+This module contains unit tests for the
+PlantUserPropertyRandomUpdatePostModelResponse class.
 """
 import uuid
 from datetime import date, datetime
@@ -17,12 +18,16 @@ from ...models.plant_user_property_random_update import (PlantUserPropertyRandom
 from ..factory.plant_user_property_random_update import PlantUserPropertyRandomUpdatePostModelRequestFactory
 class TestPlantUserPropertyRandomUpdatePostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    PlantUserPropertyRandomUpdatePostModelResponse class.
     """
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        This method tests the flow process request
+        for adding a  to a plant.
+        It mocks the process method of FlowPlantUserPropertyRandomUpdate
+        and asserts that the response is successful.
         """
         async def mock_process(
             plant_bus_obj: PlantBusObj,

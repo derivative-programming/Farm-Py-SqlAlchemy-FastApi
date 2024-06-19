@@ -32,7 +32,18 @@ class TestReportManagerPacUserLandList:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
-        #TODO add comment
+        Test case for generating a report.
+        This test case verifies the functionality of
+        generating a report using the
+        ReportManagerPacUserLandList class. It mocks the
+        generate_list method and
+        asserts that the results returned are of type
+        list. The test also ensures
+        that the generate_list method is awaited.
+        Args:
+            session: The session object for the test.
+        Returns:
+            None
         """
         async def mock_generate_list(
             context_code: uuid.UUID,
@@ -77,7 +88,13 @@ class TestReportManagerPacUserLandList:
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
         """
-        #TODO add comment
+        Test case to verify that an exception is raised
+        when an invalid item count per page is provided.
+        Args:
+            session: The session object.
+        Raises:
+            ReportRequestValidationError: If an invalid
+            item count per page is provided.
         """
         async def mock_generate_list(
             context_code: uuid.UUID,
@@ -121,7 +138,12 @@ class TestReportManagerPacUserLandList:
     @pytest.mark.asyncio
     async def test_generate_invalid_page_number(self, session):
         """
-        #TODO add comment
+        Test case for generating a report with an invalid page number.
+        Args:
+            session: The session object.
+        Raises:
+            ReportRequestValidationError: If the report
+                request validation fails.
         """
         async def mock_generate_list(
             context_code: uuid.UUID,
@@ -165,7 +187,16 @@ class TestReportManagerPacUserLandList:
     @pytest.mark.asyncio
     async def test_build_csv(self, session):
         """
-        #TODO add comment
+        Test case for the build_csv method of ReportManagerPacUserLandList.
+            This method tests the functionality of the build_csv
+            method by creating a test CSV file
+            using the provided session and test data. It then
+            verifies that the file is created
+            and removes it after the test is complete.
+            Args:
+                session: The session object used for testing.
+            Returns:
+                None
         """
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserLandList(session_context)
@@ -175,11 +206,17 @@ class TestReportManagerPacUserLandList:
         # Verify the file is created
         assert os.path.exists(file_name)
         os.remove(file_name)
-        # Further checks can be added to verify the content of the file
     @pytest.mark.asyncio
     async def test_read_csv(self, session):
         """
-        #TODO add comment
+            Test case for reading a CSV file and verifying the data.
+            Args:
+                session: The session object for database operations.
+            Returns:
+                None
+            Raises:
+                AssertionError: If the data read from the CSV
+                    file is not as expected.
         """
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserLandList(session_context)
@@ -196,7 +233,15 @@ class TestReportManagerPacUserLandList:
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self, session):
         """
-        #TODO add comment
+        Test the _parse_bool method of ReportManagerPacUserLandList.
+        This method tests the behavior of the _parse_bool method
+        in the ReportManagerPacUserLandList class.
+        It verifies that the method correctly parses boolean
+        values and returns the expected results.
+        Args:
+            session: The session object for the test.
+        Returns:
+            None
         """
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserLandList(session_context)

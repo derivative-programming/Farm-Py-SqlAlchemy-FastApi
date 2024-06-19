@@ -1,6 +1,6 @@
 # tac_farm_dashboard_test.py
 """
-    #TODO add comment
+This module contains a test case for the ReportProviderTacFarmDashboard class.
 """
 import uuid
 import sqlite3
@@ -16,20 +16,24 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderTacFarmDashboard:
     """
-    #TODO add comment
+    This class contains test cases for the ReportProviderTacFarmDashboard class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
-        #TODO add comment
+        This test case verifies the generation of a Farm Dashboard report.
+        It creates a session context, initializes the runtime, and generates
+        a Farm Dashboard report using the ReportProviderTacFarmDashboard class.
+        The generated report is then checked for the expected format.
         """
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
         report_provider = ReportProviderTacFarmDashboard(session_context)
         tac = await TacFactory.create_async(session=session)
         tac_code = tac.code
+        # Set up test data
 
-# endset
+        # Generate the report
         page_number = 1
         item_count_per_page = 10
         order_by_column_name = ""

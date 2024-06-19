@@ -1,7 +1,8 @@
 # models/managers/flavor.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the FlavorManager class, which is
+responsible for managing flavors in the system.
 """
 import json
 import logging
@@ -268,7 +269,11 @@ class FlavorManager:
         return flavor_data
     def from_json(self, json_str: str) -> Flavor:
         """
-        Deserialize a JSON string into a Flavor object using the FlavorSchema.
+        Deserializes a JSON string into a Flavor object using the FlavorSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            Flavor: The deserialized Flavor object.
         """
         logging.info("FlavorManager.from_json")
         schema = FlavorSchema()
@@ -278,7 +283,7 @@ class FlavorManager:
         return new_flavor
     def from_dict(self, flavor_dict: Dict[str, Any]) -> Flavor:
         """
-        Create a Flavor instance from a dictionary of attributes.
+        Creates a Flavor instance from a dictionary of attributes.
         Args:
             flavor_dict (Dict[str, Any]): A dictionary containing
                 flavor attributes.
@@ -294,7 +299,11 @@ class FlavorManager:
         return new_flavor
     async def add_bulk(self, flavors: List[Flavor]) -> List[Flavor]:
         """
-        Add multiple flavors at once.
+        Adds multiple flavors at once.
+        Args:
+            flavors (List[Flavor]): The list of flavors to add.
+        Returns:
+            List[Flavor]: The list of added flavors.
         """
         logging.info("FlavorManager.add_bulk")
         for flavor in flavors:

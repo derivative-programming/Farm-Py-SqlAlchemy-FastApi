@@ -1,7 +1,8 @@
 # apis/models/tests/tac_login_test.py
 # pylint: disable=unused-argument
 """
-    #TODO add comment
+This module contains unit tests for the
+TacLoginPostModelResponse class.
 """
 import uuid
 from datetime import date, datetime
@@ -17,12 +18,16 @@ from ...models.tac_login import (TacLoginPostModelResponse)
 from ..factory.tac_login import TacLoginPostModelRequestFactory
 class TestTacLoginPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    TacLoginPostModelResponse class.
     """
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        This method tests the flow process request
+        for adding a  to a tac.
+        It mocks the process method of FlowTacLogin
+        and asserts that the response is successful.
         """
         async def mock_process(
             tac_bus_obj: TacBusObj,

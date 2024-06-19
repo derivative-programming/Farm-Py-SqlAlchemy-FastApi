@@ -1,5 +1,7 @@
+# models/factory/error_log.py
 """
-    #TODO add comment
+This module contains the ErrorLogFactory class, which is responsible
+for creating instances of the ErrorLog model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -11,7 +13,7 @@ from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class ErrorLogFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the ErrorLog model.
     """
     class Meta:
         """

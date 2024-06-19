@@ -1,7 +1,8 @@
 # apis/models/tests/tac_register_test.py
 # pylint: disable=unused-argument
 """
-    #TODO add comment
+This module contains unit tests for the
+TacRegisterPostModelResponse class.
 """
 import uuid
 from datetime import date, datetime
@@ -17,12 +18,16 @@ from ...models.tac_register import (TacRegisterPostModelResponse)
 from ..factory.tac_register import TacRegisterPostModelRequestFactory
 class TestTacRegisterPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    TacRegisterPostModelResponse class.
     """
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        This method tests the flow process request
+        for adding a customer to a tac.
+        It mocks the process method of FlowTacRegister
+        and asserts that the response is successful.
         """
         async def mock_process(
             tac_bus_obj: TacBusObj,

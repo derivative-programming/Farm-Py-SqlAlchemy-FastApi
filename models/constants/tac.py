@@ -1,6 +1,6 @@
 # models/constants/tac.py
 """
-    #TODO add comment
+This module contains boolean constants related to tacs.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

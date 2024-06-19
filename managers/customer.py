@@ -1,7 +1,8 @@
 # models/managers/customer.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the CustomerManager class, which is
+responsible for managing customers in the system.
 """
 import json
 import logging
@@ -209,7 +210,11 @@ class CustomerManager:
         return customer_data
     def from_json(self, json_str: str) -> Customer:
         """
-        Deserialize a JSON string into a Customer object using the CustomerSchema.
+        Deserializes a JSON string into a Customer object using the CustomerSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            Customer: The deserialized Customer object.
         """
         logging.info("CustomerManager.from_json")
         schema = CustomerSchema()
@@ -219,7 +224,7 @@ class CustomerManager:
         return new_customer
     def from_dict(self, customer_dict: Dict[str, Any]) -> Customer:
         """
-        Create a Customer instance from a dictionary of attributes.
+        Creates a Customer instance from a dictionary of attributes.
         Args:
             customer_dict (Dict[str, Any]): A dictionary containing
                 customer attributes.
@@ -235,7 +240,11 @@ class CustomerManager:
         return new_customer
     async def add_bulk(self, customers: List[Customer]) -> List[Customer]:
         """
-        Add multiple customers at once.
+        Adds multiple customers at once.
+        Args:
+            customers (List[Customer]): The list of customers to add.
+        Returns:
+            List[Customer]: The list of added customers.
         """
         logging.info("CustomerManager.add_bulk")
         for customer in customers:

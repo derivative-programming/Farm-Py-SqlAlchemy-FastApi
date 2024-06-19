@@ -1,6 +1,13 @@
 # reports/row_models/tests/pac_user_role_list_test.py
 """
-    #TODO add comment
+This module contains unit tests for the `ReportItemPacUserRoleList` class.
+The `ReportItemPacUserRoleList` class represents a
+report item for a pac Pac User Role List Report.
+It contains various fields with default values and
+provides methods to load data from a dictionary.
+The unit tests in this module ensure that the default
+values of the fields are set correctly
+and that data can be loaded into the model from a dictionary.
 """
 import math
 from decimal import Decimal
@@ -10,7 +17,7 @@ from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_role_list import ReportItemPacUserRoleList
 class TestReportItemPacUserRoleList:
     """
-    #TODO add comment
+    Test class for the ReportItemPacUserRoleList model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

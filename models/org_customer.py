@@ -83,10 +83,6 @@ class OrgCustomer(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    # no relationsip properties.
-    # they are not updated immediately if the id prop is updated directly
-    # organization = relationship('Organization', back_populates=snake_case('Organization'))
-    # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
@@ -214,18 +210,6 @@ class OrgCustomer(Base):
         """
         self._last_update_utc_date_time = value
     # customerID
-    @property
-    def customer_id(self) -> int:
-        """
-            #TODO add comment
-        """
-        return getattr(self, '_customer_id', 0) or 0
-    @customer_id.setter
-    def customer_id(self, value: int) -> None:
-        """
-        Set the customer_id.
-        """
-        self._customer_id = value
     # email,
     @property
     def email(self) -> str:
@@ -240,6 +224,21 @@ class OrgCustomer(Base):
         """
         self._email = value
     # OrganizationID
+# endset
+    # customerID
+    @property
+    def customer_id(self) -> int:
+        """
+            #TODO add comment
+        """
+        return getattr(self, '_customer_id', 0) or 0
+    @customer_id.setter
+    def customer_id(self, value: int) -> None:
+        """
+        Set the customer_id.
+        """
+        self._customer_id = value
+    # OrganizationID
     @property
     def organization_id(self) -> int:
         """
@@ -252,18 +251,6 @@ class OrgCustomer(Base):
         Set the organization_id.
         """
         self._organization_id = value
-    @property
-    def some_text_val(self) -> str:
-        """
-            #TODO add comment
-        """
-        return getattr(self, '_some_text_val', "") or ""
-    @some_text_val.setter
-    def some_text_val(self, value: str) -> None:
-        """
-        Set the some_text_val.
-        """
-        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

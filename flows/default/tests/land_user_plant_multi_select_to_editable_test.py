@@ -52,7 +52,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
 # endset
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
-                flow_result = await flow.process(
+                await flow.process(
                     land_bus_obj,
                     plant_code_list_csv,
 # endset  # noqa: E122

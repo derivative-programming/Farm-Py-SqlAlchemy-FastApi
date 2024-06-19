@@ -1,7 +1,8 @@
 # models/managers/org_api_key.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the OrgApiKeyManager class, which is
+responsible for managing org_api_keys in the system.
 """
 import json
 import logging
@@ -220,7 +221,11 @@ class OrgApiKeyManager:
         return org_api_key_data
     def from_json(self, json_str: str) -> OrgApiKey:
         """
-        Deserialize a JSON string into a OrgApiKey object using the OrgApiKeySchema.
+        Deserializes a JSON string into a OrgApiKey object using the OrgApiKeySchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            OrgApiKey: The deserialized OrgApiKey object.
         """
         logging.info("OrgApiKeyManager.from_json")
         schema = OrgApiKeySchema()
@@ -230,7 +235,7 @@ class OrgApiKeyManager:
         return new_org_api_key
     def from_dict(self, org_api_key_dict: Dict[str, Any]) -> OrgApiKey:
         """
-        Create a OrgApiKey instance from a dictionary of attributes.
+        Creates a OrgApiKey instance from a dictionary of attributes.
         Args:
             org_api_key_dict (Dict[str, Any]): A dictionary containing
                 org_api_key attributes.
@@ -246,7 +251,11 @@ class OrgApiKeyManager:
         return new_org_api_key
     async def add_bulk(self, org_api_keys: List[OrgApiKey]) -> List[OrgApiKey]:
         """
-        Add multiple org_api_keys at once.
+        Adds multiple org_api_keys at once.
+        Args:
+            org_api_keys (List[OrgApiKey]): The list of org_api_keys to add.
+        Returns:
+            List[OrgApiKey]: The list of added org_api_keys.
         """
         logging.info("OrgApiKeyManager.add_bulk")
         for org_api_key in org_api_keys:

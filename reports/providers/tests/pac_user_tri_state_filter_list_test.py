@@ -1,6 +1,6 @@
 # pac_user_tri_state_filter_list_test.py
 """
-    #TODO add comment
+This module contains a test case for the ReportProviderPacUserTriStateFilterList class.
 """
 import uuid
 import sqlite3
@@ -16,20 +16,24 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderPacUserTriStateFilterList:
     """
-    #TODO add comment
+    This class contains test cases for the ReportProviderPacUserTriStateFilterList class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
-        #TODO add comment
+        This test case verifies the generation of a Pac User Tri State Filter List Report report.
+        It creates a session context, initializes the runtime, and generates
+        a Pac User Tri State Filter List Report report using the ReportProviderPacUserTriStateFilterList class.
+        The generated report is then checked for the expected format.
         """
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
         report_provider = ReportProviderPacUserTriStateFilterList(session_context)
         pac = await PacFactory.create_async(session=session)
         pac_code = pac.code
+        # Set up test data
 
-# endset
+        # Generate the report
         page_number = 1
         item_count_per_page = 10
         order_by_column_name = ""

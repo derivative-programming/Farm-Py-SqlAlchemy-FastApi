@@ -1,5 +1,7 @@
+# models/factory/customer_role.py
 """
-    #TODO add comment
+This module contains the CustomerRoleFactory class, which is responsible
+for creating instances of the CustomerRole model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -12,7 +14,7 @@ from .role import RoleFactory  # role_id
 logger = get_logger(__name__)
 class CustomerRoleFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the CustomerRole model.
     """
     class Meta:
         """

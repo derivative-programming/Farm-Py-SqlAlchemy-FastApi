@@ -1,7 +1,8 @@
 # apis/models/tests/customer_user_log_out_test.py
 # pylint: disable=unused-argument
 """
-    #TODO add comment
+This module contains unit tests for the
+CustomerUserLogOutPostModelResponse class.
 """
 import uuid
 from datetime import date, datetime
@@ -17,12 +18,16 @@ from ...models.customer_user_log_out import (CustomerUserLogOutPostModelResponse
 from ..factory.customer_user_log_out import CustomerUserLogOutPostModelRequestFactory
 class TestCustomerUserLogOutPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    CustomerUserLogOutPostModelResponse class.
     """
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        This method tests the flow process request
+        for adding a  to a customer.
+        It mocks the process method of FlowCustomerUserLogOut
+        and asserts that the response is successful.
         """
         async def mock_process(
             customer_bus_obj: CustomerBusObj,

@@ -1,5 +1,7 @@
+# models/factory/customer.py
 """
-    #TODO add comment
+This module contains the CustomerFactory class, which is responsible
+for creating instances of the Customer model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -11,7 +13,7 @@ from .tac import TacFactory  # tac_id
 logger = get_logger(__name__)
 class CustomerFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the Customer model.
     """
     class Meta:
         """

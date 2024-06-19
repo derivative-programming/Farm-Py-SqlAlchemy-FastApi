@@ -1,6 +1,6 @@
 # models/constants/land.py
 """
-    #TODO add comment
+This module contains boolean constants related to lands.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

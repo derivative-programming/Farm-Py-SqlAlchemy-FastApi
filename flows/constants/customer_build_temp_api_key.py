@@ -1,6 +1,7 @@
 # flows/constants/customer_build_temp_api_key.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the customer_build_temp_api_key flow.
 """
 
 CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False

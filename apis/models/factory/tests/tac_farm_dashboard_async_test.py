@@ -1,6 +1,7 @@
 # apis/models/factory/tests/tac_farm_dashboard_async_test.py
 """
-    #TODO add comment
+This module contains test cases for the
+TacFarmDashboardGetModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,14 @@ from ...tac_farm_dashboard import TacFarmDashboardGetModelRequest
 from ..tac_farm_dashboard import TacFarmDashboardGetModelRequestFactory
 class TestTacFarmDashboardGetModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains test cases for the
+    TacFarmDashboardGetModelRequestFactoryAsync class.
     """
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         """
-            #TODO add comment
+        Test the create_async method of
+        TacFarmDashboardGetModelRequestFactoryAsync class.
         """
         model_instance = await (
             TacFarmDashboardGetModelRequestFactory

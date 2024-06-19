@@ -1,6 +1,7 @@
 # apis/models/factory/tests/customer_user_log_out_async_test.py
 """
-    #TODO add comment
+This module contains test cases for the
+CustomerUserLogOutPostModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,14 @@ from ...customer_user_log_out import CustomerUserLogOutPostModelRequest
 from ..customer_user_log_out import CustomerUserLogOutPostModelRequestFactory
 class TestCustomerUserLogOutPostModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains test cases for the
+    CustomerUserLogOutPostModelRequestFactoryAsync class.
     """
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         """
-            #TODO add comment
+        Test the create_async method of
+        CustomerUserLogOutPostModelRequestFactoryAsync class.
         """
         model_instance = (
             await CustomerUserLogOutPostModelRequestFactory.create_async(

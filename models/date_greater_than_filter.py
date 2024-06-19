@@ -122,10 +122,6 @@ class DateGreaterThanFilter(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
-    # no relationsip properties.
-    # they are not updated immediately if the id prop is updated directly
-    # pac = relationship('Pac', back_populates=snake_case('Pac'))
-    # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
@@ -337,6 +333,8 @@ class DateGreaterThanFilter(Base):
         """
         self._name = value
     # PacID
+# endset
+    # PacID
     @property
     def pac_id(self) -> int:
         """
@@ -349,18 +347,6 @@ class DateGreaterThanFilter(Base):
         Set the pac_id.
         """
         self._pac_id = value
-    @property
-    def some_text_val(self) -> str:
-        """
-            #TODO add comment
-        """
-        return getattr(self, '_some_text_val', "") or ""
-    @some_text_val.setter
-    def some_text_val(self, value: str) -> None:
-        """
-        Set the some_text_val.
-        """
-        self._some_text_val = value
 # endset
     @staticmethod
     def property_list():

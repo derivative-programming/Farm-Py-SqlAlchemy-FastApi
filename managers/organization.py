@@ -1,7 +1,8 @@
 # models/managers/organization.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the OrganizationManager class, which is
+responsible for managing organizations in the system.
 """
 import json
 import logging
@@ -209,7 +210,11 @@ class OrganizationManager:
         return organization_data
     def from_json(self, json_str: str) -> Organization:
         """
-        Deserialize a JSON string into a Organization object using the OrganizationSchema.
+        Deserializes a JSON string into a Organization object using the OrganizationSchema.
+        Args:
+            json_str (str): The JSON string to deserialize.
+        Returns:
+            Organization: The deserialized Organization object.
         """
         logging.info("OrganizationManager.from_json")
         schema = OrganizationSchema()
@@ -219,7 +224,7 @@ class OrganizationManager:
         return new_organization
     def from_dict(self, organization_dict: Dict[str, Any]) -> Organization:
         """
-        Create a Organization instance from a dictionary of attributes.
+        Creates a Organization instance from a dictionary of attributes.
         Args:
             organization_dict (Dict[str, Any]): A dictionary containing
                 organization attributes.
@@ -235,7 +240,11 @@ class OrganizationManager:
         return new_organization
     async def add_bulk(self, organizations: List[Organization]) -> List[Organization]:
         """
-        Add multiple organizations at once.
+        Adds multiple organizations at once.
+        Args:
+            organizations (List[Organization]): The list of organizations to add.
+        Returns:
+            List[Organization]: The list of added organizations.
         """
         logging.info("OrganizationManager.add_bulk")
         for organization in organizations:

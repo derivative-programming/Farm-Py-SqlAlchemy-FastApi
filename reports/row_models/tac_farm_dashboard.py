@@ -1,6 +1,6 @@
 # tac_farm_dashboard.py
 """
-    #TODO add comment
+This module contains the definition of the ReportItemTacFarmDashboard class.
 """
 import uuid
 from decimal import Decimal
@@ -8,15 +8,21 @@ from datetime import datetime, date
 from helpers.type_conversion import TypeConversion
 class ReportItemTacFarmDashboard():
     """
-    #TODO add comment
+    Represents a report item for a tac Farm Dashboard.
     """
-    field_one_plant_list_link_land_code: uuid.UUID = uuid.UUID(int=0)
-    conditional_btn_example_link_land_code: uuid.UUID = uuid.UUID(int=0)
+    field_one_plant_list_link_land_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    conditional_btn_example_link_land_code: uuid.UUID = (
+        uuid.UUID(int=0))
     is_conditional_btn_available: bool = False
 # endset
     def load_data_provider_dict(self, data: dict):
         """
-        #TODO add comment
+        Loads data from a dictionary into the report item.
+        Args:
+            data (dict): The dictionary containing the data.
+        Returns:
+            None
         """
         self.field_one_plant_list_link_land_code = (
             TypeConversion.get_uuid(data["field_one_plant_list_link_land_code"]))

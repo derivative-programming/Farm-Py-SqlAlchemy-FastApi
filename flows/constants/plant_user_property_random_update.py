@@ -1,6 +1,7 @@
 # flows/constants/plant_user_property_random_update.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the plant_user_property_random_update flow.
 """
 
 CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False

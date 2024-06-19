@@ -1,6 +1,7 @@
 # flows/constants/error_log_config_resolve_error_log.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the error_log_config_resolve_error_log flow.
 """
 
 CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED = False

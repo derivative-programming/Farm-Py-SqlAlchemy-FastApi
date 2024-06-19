@@ -56,17 +56,6 @@ class PlantBusObj(BaseBusObj):
 
         return self.plant.plant_id
 
-    # @plant_id.setter
-    # def plant_id(self, value: int):
-    #     """
-    #     #TODO add comment
-    #     """
-
-    #     if not isinstance(value, int):
-    #         raise ValueError("plant_id must be a int.")
-
-    #     self.plant.plant_id = value
-
     # code
     @property
     def code(self):
@@ -157,17 +146,6 @@ class PlantBusObj(BaseBusObj):
 
         self.plant.insert_user_id = value
 
-    # def set_prop_insert_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-
-    #     if not self.plant:
-    #         raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
-
-    #     self.insert_user_id = value
-    #     return self
-
     # last_update_user_id
     @property
     def last_update_user_id(self):
@@ -197,14 +175,6 @@ class PlantBusObj(BaseBusObj):
             raise ValueError("last_update_user_id must be a UUID.")
 
         self.plant.last_update_user_id = value
-
-    # def set_prop_last_update_user_id(self, value: uuid.UUID):
-    #     """
-    #     #TODO add comment
-    #     """
-
-    #     self.last_update_user_id = value
-    #     return self
 
 # endset
 

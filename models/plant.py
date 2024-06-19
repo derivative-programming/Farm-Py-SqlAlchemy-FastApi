@@ -255,11 +255,6 @@ class Plant(Base):
         DateTime,
         nullable=True)
 
-    # no relationsip properties.
-    # they are not updated immediately if the id prop is updated directly
-    # land = relationship('Land', back_populates=snake_case('Land'))
-    # flavor = relationship('Flavor', back_populates=snake_case('Flavor'))
-
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
@@ -676,40 +671,6 @@ class Plant(Base):
         """
 
         self._some_utc_date_time_val = value
-    # flvrForeignKeyID
-
-    @property
-    def flvr_foreign_key_id(self) -> int:
-        """
-            #TODO add comment
-        """
-
-        return getattr(self, '_flvr_foreign_key_id', 0) or 0
-
-    @flvr_foreign_key_id.setter
-    def flvr_foreign_key_id(self, value: int) -> None:
-        """
-        Set the flvr_foreign_key_id.
-        """
-
-        self._flvr_foreign_key_id = value
-    # LandID
-
-    @property
-    def land_id(self) -> int:
-        """
-            #TODO add comment
-        """
-
-        return getattr(self, '_land_id', 0) or 0
-
-    @land_id.setter
-    def land_id(self, value: int) -> None:
-        """
-        Set the land_id.
-        """
-
-        self._land_id = value
     # someNVarCharVal,
 
     @property
@@ -783,8 +744,8 @@ class Plant(Base):
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.utcnow()
-    # someTextVal,
 
+    # someTextVal,
     @property
     def some_text_val(self) -> str:
         """
@@ -800,6 +761,46 @@ class Plant(Base):
         """
 
         self._some_text_val = value
+
+    # flvrForeignKeyID
+    # LandID
+
+# endset
+
+    # flvrForeignKeyID
+
+    @property
+    def flvr_foreign_key_id(self) -> int:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_flvr_foreign_key_id', 0) or 0
+
+    @flvr_foreign_key_id.setter
+    def flvr_foreign_key_id(self, value: int) -> None:
+        """
+        Set the flvr_foreign_key_id.
+        """
+
+        self._flvr_foreign_key_id = value
+    # LandID
+
+    @property
+    def land_id(self) -> int:
+        """
+            #TODO add comment
+        """
+
+        return getattr(self, '_land_id', 0) or 0
+
+    @land_id.setter
+    def land_id(self, value: int) -> None:
+        """
+        Set the land_id.
+        """
+
+        self._land_id = value
 
 # endset
 

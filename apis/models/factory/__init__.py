@@ -5,21 +5,12 @@ This module contains the factory functions for creating model request
 objects used in the API.
 
 The factory functions in this module are responsible for creating
-model request objects for various operations and workflows related
-to the Land object and its associated workflows. It also includes
+model request objects for various operations and workflows. It also includes
 model request objects for other operations and reports.
 
 The factory functions are imported from their respective modules
 and are used to create instances of the model request objects when needed.
 
-Example usage:
-
-    from .land_add_plant import LandAddPlantPostModelRequestFactory
-    request_factory = LandAddPlantPostModelRequestFactory()
-    request = request_factory.create_model_request(data)
-
-    The `create_model_request` method of the factory object is used
-    to create a model request object with the provided data.
 
 Note: This module contains generated code and should not be modified manually.
 """

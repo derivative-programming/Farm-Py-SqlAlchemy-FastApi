@@ -1,5 +1,7 @@
+# models/factory/org_customer.py
 """
-    #TODO add comment
+This module contains the OrgCustomerFactory class, which is responsible
+for creating instances of the OrgCustomer model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -12,7 +14,7 @@ from .organization import OrganizationFactory  # organization_id
 logger = get_logger(__name__)
 class OrgCustomerFactory(factory.Factory):
     """
-    #TODO add comment
+    Factory class for creating instances of the OrgCustomer model.
     """
     class Meta:
         """

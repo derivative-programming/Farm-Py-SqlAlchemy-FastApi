@@ -210,6 +210,13 @@ async def test_submit_endpoint_method_failure(
 
 def teardown_module(module):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Teardown function for the module.
+    This function is called after all the tests
+    in the module have been executed.
+    It clears the dependency overrides for the app.
+    Args:
+        module: The module object.
+    Returns:
+        None
     """
     app.dependency_overrides.clear()

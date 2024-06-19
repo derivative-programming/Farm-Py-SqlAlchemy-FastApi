@@ -1,6 +1,7 @@
 # apis/models/factory/tests/customer_build_temp_api_key_async_test.py
 """
-    #TODO add comment
+This module contains test cases for the
+CustomerBuildTempApiKeyPostModelRequestFactoryAsync class.
 """
 import uuid
 from datetime import date, datetime
@@ -10,12 +11,14 @@ from ...customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelReque
 from ..customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequestFactory
 class TestCustomerBuildTempApiKeyPostModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains test cases for the
+    CustomerBuildTempApiKeyPostModelRequestFactoryAsync class.
     """
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         """
-            #TODO add comment
+        Test the create_async method of
+        CustomerBuildTempApiKeyPostModelRequestFactoryAsync class.
         """
         model_instance = (
             await CustomerBuildTempApiKeyPostModelRequestFactory.create_async(

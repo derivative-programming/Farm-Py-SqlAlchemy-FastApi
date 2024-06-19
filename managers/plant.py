@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains the PlantManager class, which is responsible for managing plants in the system.
+This module contains the PlantManager class, which is
+responsible for managing plants in the system.
 """
 
 import json
@@ -252,13 +253,7 @@ class PlantManager:
 
     def to_json(self, plant: Plant) -> str:
         """
-        Serializes the Plant object to a JSON string using the PlantSchema.
-
-        Args:
-            plant (Plant): The plant object to serialize.
-
-        Returns:
-            str: The JSON string representation of the plant object.
+        Serialize the Plant object to a JSON string using the PlantSchema.
         """
         logging.info("PlantManager.to_json")
         schema = PlantSchema()
@@ -267,13 +262,7 @@ class PlantManager:
 
     def to_dict(self, plant: Plant) -> Dict[str, Any]:
         """
-        Serializes the Plant object to a dictionary using the PlantSchema.
-
-        Args:
-            plant (Plant): The plant object to serialize.
-
-        Returns:
-            Dict[str, Any]: The dictionary representation of the plant object.
+        Serialize the Plant object to a JSON string using the PlantSchema.
         """
         logging.info("PlantManager.to_dict")
         schema = PlantSchema()

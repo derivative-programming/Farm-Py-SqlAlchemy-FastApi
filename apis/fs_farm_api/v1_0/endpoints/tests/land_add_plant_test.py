@@ -20,14 +20,15 @@ from database import get_db
 from main import app
 
 from ..land_add_plant import LandAddPlantRouterConfig
-
 # Test cases for the `submit` endpoint
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=true]Start
+
+
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db, api_key_fixture: str):
     """
-    Test case for successful submission of a plant to a land.
+    Test case for successful submission of a post to a land.
 
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
@@ -54,7 +55,6 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         Returns:
             None
         """
-        pass
 
     with patch.object(
         apis_models.LandAddPlantPostModelResponse,
@@ -87,7 +87,7 @@ async def test_submit_request_validation_error(
     api_key_fixture: str
 ):
     """
-    Test case for submission of a plant with validation error.
+    Test case for submission of a post with validation error.
 
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
@@ -352,7 +352,8 @@ async def test_init_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-    Test case for authorization failure with a bad API key for the `init` endpoint.
+    Test case for authorization failure with a bad API key
+    for the `init` endpoint.
 
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
@@ -385,7 +386,8 @@ async def test_init_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-    Test case for authorization failure with an empty header key for the `init` endpoint.
+    Test case for authorization failure with an empty header
+    key for the `init` endpoint.
 
     Args:
         overridden_get_db (AsyncSession): The overridden database session.

@@ -3,21 +3,6 @@
 """
 This module contains the initialization code for the models used in the APIs.
 
-The models include:
-- Land
-- LandAddPlantInitObjWF
-- LandPlantListInitReport
-- TacFarmDashboardInitReport
-- TacLoginInitObjWF
-- TacRegisterInitObjWF
-- CustomerUserLogOutInitObjWF
-- PacUserDateGreaterThanFilterListInitReport
-- PacUserFlavorListInitReport
-- PacUserLandListInitReport
-- PacUserRoleListInitReport
-- PacUserTacListInitReport
-- PacUserTriStateFilterListInitReport
-- PlantUserDetailsInitReport
 """
 
 ##GENLOOPObjectStart

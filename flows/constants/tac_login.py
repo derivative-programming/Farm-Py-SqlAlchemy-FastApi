@@ -1,6 +1,7 @@
 # flows/constants/tac_login.py
 """
-    configuration constants
+    This module contains configuration constants
+    used in the tac_login flow.
 """
 PARAM_EMAIL_IS_REQUIRED = True
 PARAM_PASSWORD_IS_REQUIRED = True
