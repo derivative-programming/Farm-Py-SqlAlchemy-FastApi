@@ -623,6 +623,11 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         #TODO add comment
         """
+        
+        if not self.date_greater_than_filter:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
 
         return (
             managers_and_enums.DateGreaterThanFilterEnum[
@@ -638,7 +643,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         """
         Load date_greater_than_filter data from dictionary.
 
-        :param date_greater_than_filter_dict: Dictionary 
+        :param date_greater_than_filter_dict: Dictionary
             containing date_greater_than_filter data.
         :raises ValueError: If date_greater_than_filter_dict
             is not a dictionary or if no

@@ -37,7 +37,7 @@ app.include_router(fs_farm_api_v1_0_router)
 async def validation_exception_handler(
     request: Request,
     exc: RequestValidationError
-):
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
@@ -51,7 +51,7 @@ async def validation_exception_handler(
 async def http_exception_handler(
     request: Request,
     exc: StarletteHTTPException
-):
+):  # pylint: disable=unused-argument
     """
         #TODO add comment
     """
@@ -70,7 +70,7 @@ async def http_exception_handler(
             status_code=400,
             content={"message": "Bad Request. Schema Failure."}
         )
-    # You can add more custom handling for other status codes if needed
+
     return JSONResponse(
         status_code=exc.status_code,
         content={"detail": exc.detail}

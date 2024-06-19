@@ -394,7 +394,7 @@ class TestPlantManager:
         """
 
         with pytest.raises(Exception):
-            await plant_manager.delete("999") # type: ignore
+            await plant_manager.delete("999")  # type: ignore
 
         await session.rollback()
 
@@ -484,6 +484,8 @@ class TestPlantManager:
         schema = PlantSchema()
 
         plant_data = schema.dump(plant)
+
+        assert isinstance(plant_data, dict)
 
         deserialized_plant = plant_manager.from_dict(plant_data)
 
@@ -1006,6 +1008,8 @@ class TestPlantManager:
         result = await session.execute(stmt)
         flavor = result.scalars().first()
 
+        assert isinstance(flavor, models.Flavor)
+
         assert fetched_plants[0].flvr_foreign_key_code_peek == flavor.code
 
     @pytest.mark.asyncio
@@ -1059,6 +1063,15 @@ class TestPlantManager:
         assert isinstance(fetched_plants[0], Plant)
         assert fetched_plants[0].code == plant1.code
 
+        stmt = select(models.Land).where(
+            models.Land._land_id == plant1.land_id)  # type: ignore  # noqa: E501
+        result = await session.execute(stmt)
+        land = result.scalars().first()
+
+        assert isinstance(land, models.Land)
+
+        assert fetched_plants[0].land_code_peek == land.code
+
     @pytest.mark.asyncio
     async def test_get_by_land_id_nonexistent(
         self,
@@ -1086,7 +1099,7 @@ class TestPlantManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.get_by_land_id(invalid_id) # type: ignore
+            await plant_manager.get_by_land_id(invalid_id)  # type: ignore
 
         await session.rollback()
     # somePhoneNumber,

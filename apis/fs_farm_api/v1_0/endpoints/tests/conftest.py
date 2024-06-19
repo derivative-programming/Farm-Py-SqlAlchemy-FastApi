@@ -1,7 +1,12 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/conftest.py
 # pylint: disable=redefined-outer-name
 """
-    #TODO add comment
+This module contains fixtures for unit testing the endpoints in the API.
+
+Fixtures:
+- overridden_get_db: Fixture that creates an in-memory SQLite
+    database and provides a session for testing.
+- api_key_fixture: Fixture that builds a test API key for unit testing.
 """
 
 import pytest_asyncio
@@ -20,7 +25,8 @@ TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 @pytest_asyncio.fixture(scope="function")
 async def overridden_get_db():
     """
-        #TODO create comment
+    Fixture that creates an in-memory SQLite database and
+    provides a session for testing.
     """
     # Create the async engine for the in-memory SQLite database
     engine = create_async_engine(TEST_DATABASE_URL, echo=False)
@@ -48,65 +54,15 @@ async def overridden_get_db():
     await engine.dispose()
 
 
-# @pytest_asyncio.fixture(scope="function")
-# async def old_api_key_fixture(overridden_get_db: AsyncSession):
-#     """
-#         Build a test api key for unit testing
-#     """
-
-#     session_context = SessionContext(dict(), overridden_get_db)
-
-#     await current_runtime.initialize(session_context)
-
-#     customer = await model_factorys.CustomerFactory.create_async(
-#         overridden_get_db)
-
-#     customer_bus_obj = business.CustomerBusObj(session_context)
-
-#     await customer_bus_obj.load_from_obj_instance(customer)
-
-#     tac_bus_obj = business.TacBusObj(session_context)
-
-#     await tac_bus_obj.load_from_id(customer_bus_obj.tac_id)
-
-#     pac_bus_obj = business.PacBusObj(session_context)
-
-#     assert tac_bus_obj.pac_id is not None
-
-#     await pac_bus_obj.load_from_id(tac_bus_obj.pac_id)
-
-#     api_dict = {'CustomerCode': str(customer_bus_obj.code),
-#                 'TacCode': str(tac_bus_obj.code),
-#                 'PacCode': str(pac_bus_obj.code),
-#                 'UserName': customer.email}
-#     test_api_key = ApiToken.create_token(api_dict, 1)
-#     return test_api_key
-
-
 @pytest_asyncio.fixture(scope="function")
 async def api_key_fixture(overridden_get_db: AsyncSession):
     """
-        Build a test api key for unit testing
+    Fixture that builds a test API key for unit testing.
     """
 
     session_context = SessionContext(dict(), overridden_get_db)
 
     await current_runtime.initialize(session_context)
-
-    # customer = await model_factorys.CustomerFactory.create_async(
-    #     overridden_get_db)
-
-    # customer_bus_obj = business.CustomerBusObj(session_context)
-
-    # await customer_bus_obj.load_from_obj_instance(customer)
-
-    # tac_bus_obj = business.TacBusObj(session_context)
-
-    # await tac_bus_obj.load_from_id(customer_bus_obj.tac_id)
-
-    # pac_bus_obj = business.PacBusObj(session_context)
-
-    # await pac_bus_obj.load_from_id(tac_bus_obj.pac_id)
 
     api_dict = {}
     test_api_key = ApiToken.create_token(api_dict, 1)

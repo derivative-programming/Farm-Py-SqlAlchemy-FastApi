@@ -1213,11 +1213,13 @@ class PlantBusObj(BaseBusObj):
         if not self.plant:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
 
-        if self.plant.plant_id > 0:
+        plant_id = self.plant.plant_id
+
+        if plant_id > 0:
             plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.update(self.plant)
 
-        if self.plant.plant_id == 0:
+        if plant_id == 0:
             plant_manager = PlantManager(self._session_context)
             self.plant = await plant_manager.add(self.plant)
 
@@ -1269,7 +1271,7 @@ class PlantBusObj(BaseBusObj):
         self.plant.some_decimal_val = (
             Decimal(str(round(random.uniform(0, 100), 2))))
         self.plant.some_email_address = (
-             f"user{random.randint(1, 100)}@abc.com")
+            f"user{random.randint(1, 100)}@abc.com")
         self.plant.some_float_val = (
             random.uniform(0, 100))
         self.plant.some_int_val = (
@@ -1412,7 +1414,9 @@ class PlantBusObj(BaseBusObj):
         #TODO add comment
         """
 
-        return self.get_land_id_rel_obj()
+        land = await self.get_land_id_rel_obj()
+
+        return land
     # somePhoneNumber,
     # someTextVal,
     # someUniqueidentifierVal,

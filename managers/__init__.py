@@ -1,7 +1,31 @@
 # models/managers/__init__.py
 # pylint: disable=line-too-long
 """
-    #TODO add comment
+This module contains the manager classes for various models.
+
+The manager classes provide an interface for interacting with
+the database tables corresponding to the models.
+They encapsulate the logic for querying, creating,
+updating, and deleting records in the database.
+
+The following manager classes are defined in this module:
+- CustomerManager: Manages customer records.
+- CustomerRoleManager: Manages customer role records.
+- DateGreaterThanFilterManager: Manages date greater than filter records.
+- ErrorLogManager: Manages error log records.
+- FlavorManager: Manages flavor records.
+- LandManager: Manages land records.
+- OrganizationManager: Manages organization records.
+- OrgApiKeyManager: Manages organization API key records.
+- OrgCustomerManager: Manages organization customer records.
+- PacManager: Manages PAC records.
+- PlantManager: Manages plant records.
+- RoleManager: Manages role records.
+- TacManager: Manages TAC records.
+- TriStateFilterManager: Manages tri-state filter records.
+
+Note: The `noqa` comments are used to disable linting warnings for
+    unused imports.
 """
 from .customer import (CustomerManager)  # noqa: F401,E501
 from .customer_role import (CustomerRoleManager)  # noqa: F401,E501

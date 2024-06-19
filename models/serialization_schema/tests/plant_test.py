@@ -9,7 +9,6 @@ import json
 import logging
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
 
 import pytest
 import pytz
@@ -100,7 +99,11 @@ class TestPlantSchema:
         """
 
         schema = PlantSchema()
-        result: Dict[str, Any] = schema.dump(plant)
+        plant_data = schema.dump(plant)
+
+        assert isinstance(plant_data, dict)
+
+        result = plant_data
 
         assert result['code'] == str(plant.code)
         assert result['last_change_code'] == (

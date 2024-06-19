@@ -183,7 +183,7 @@ class TestLandAddPlantPostModelResponse:
         if customer_code_match_required is True:
             with pytest.raises(FlowValidationError):
 
-                flow_result = await flow.process(
+                await flow.process(
                     land_bus_obj,
                     request_flavor_code,
                     request_other_flavor,

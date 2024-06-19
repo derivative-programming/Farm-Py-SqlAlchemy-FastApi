@@ -1,7 +1,7 @@
 # business/factory.py
 
 """
-    #TODO add comment
+This module contains the BusObjFactory class which is responsible for creating business objects based on the object type.
 """
 
 import uuid
@@ -21,12 +21,11 @@ from .plant import PlantBusObj
 from .role import RoleBusObj
 from .tac import TacBusObj
 from .tri_state_filter import TriStateFilterBusObj
-# endset
 
 
 class BusObjFactory:
     """
-    #TODO add comment
+    The BusObjFactory class is responsible for creating business objects based on the object type.
     """
 
     @staticmethod
@@ -36,7 +35,18 @@ class BusObjFactory:
         code: uuid.UUID
     ):
         """
-            #TODO add comment
+        Create a business object based on the object type and code.
+
+        Args:
+            session_context (SessionContext): The session context.
+            name (str): The object type.
+            code (uuid.UUID): The object code.
+
+        Returns:
+            The created business object.
+
+        Raises:
+            ValueError: If the object type is unknown.
         """
 
         if name == '':
@@ -112,7 +122,7 @@ class BusObjFactory:
                 TriStateFilterBusObj(session_context)
                 .load_from_code(code)
             )
-# endset
+
         else:
             raise ValueError(f"Unknown object type: {name}")
 
@@ -123,7 +133,18 @@ class BusObjFactory:
         obj_id: int
     ):
         """
-            #TODO add comment
+        Create a business object based on the object type and ID.
+
+        Args:
+            session_context (SessionContext): The session context.
+            name (str): The object type.
+            obj_id (int): The object ID.
+
+        Returns:
+            The created business object.
+
+        Raises:
+            ValueError: If the object type is unknown.
         """
 
         if name == '':
@@ -198,6 +219,6 @@ class BusObjFactory:
                 TriStateFilterBusObj(session_context)
                 .load_from_id(obj_id)
             )
-# endset
+
         else:
             raise ValueError(f"Unknown object type: {name}")

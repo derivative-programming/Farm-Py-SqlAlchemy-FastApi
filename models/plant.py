@@ -244,8 +244,8 @@ class Plant(Base):
             some_var_char_val_calculatedIsDBColumnIndexed
         ),
         nullable=True)
-    flvr_foreign_key_code_peek = uuid.UUID  # FlvrForeignKeyID
-    land_code_peek = uuid.UUID  # LandID
+    flvr_foreign_key_code_peek: uuid.UUID = uuid.UUID(int=0)  # FlvrForeignKeyID  # noqa: E501
+    land_code_peek: uuid.UUID = uuid.UUID(int=0)  # LandID  # noqa: E501
     _insert_utc_date_time = Column(
         'insert_utc_date_time',
         DateTime,

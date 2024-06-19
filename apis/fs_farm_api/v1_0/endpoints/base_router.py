@@ -1,7 +1,8 @@
 # apis/fs_farm_api/v1_0/endpoints/base_router.py
 
 """
-    #TODO add comment
+This module contains the BaseRouter class which provides common
+functionality for API routers.
 """
 
 import logging
@@ -13,13 +14,29 @@ from helpers import ApiToken
 
 class BaseRouter():
     """
-        #TODO add comment
+    BaseRouter class provides common functionality for API routers.
+
+    Methods:
+    - implementation_check: Checks if a method is implemented.
+    - authorization_check: Performs authorization check based on
+        whether the API is public or requires an API key.
     """
 
     @staticmethod
     def implementation_check(is_implemented: bool):
         """
-            #TODO add comment
+        Checks if a method is implemented.
+
+        Parameters:
+        - is_implemented (bool): Flag indicating whether the method
+            is implemented.
+
+        Raises:
+        - HTTPException: If the method is not implemented
+            (HTTP status code 501).
+
+        Returns:
+        - None
         """
         if is_implemented is True:
             return
@@ -30,7 +47,19 @@ class BaseRouter():
     @staticmethod
     def authorization_check(is_public: bool, api_key: str) -> dict:
         """
-            #TODO add comment
+        Performs authorization check based on whether the API is public
+        or requires an API key.
+
+        Parameters:
+        - is_public (bool): Flag indicating whether the API is public.
+        - api_key (str): API key for authorization.
+
+        Raises:
+        - HTTPException: If the API is not public and the API key is
+            invalid or missing (HTTP status code 401).
+
+        Returns:
+        - auth_dict (dict): Dictionary containing authorization information.
         """
         if is_public is True:
             return dict()

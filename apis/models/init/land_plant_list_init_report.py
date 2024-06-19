@@ -11,8 +11,9 @@ from pydantic import Field
 from apis.models.validation_error import ValidationErrorItem
 from business.land import LandBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.land_plant_list_init_report import (FlowLandPlantListInitReport,
-                                              FlowLandPlantListInitReportResult)
+from flows.land_plant_list_init_report import (
+    FlowLandPlantListInitReport,
+    FlowLandPlantListInitReportResult)
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
@@ -173,4 +174,3 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
                 val_error.message = ve.error_dict[key]
                 response.validation_errors.append(val_error)
         return response
-

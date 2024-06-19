@@ -9,7 +9,7 @@ import json
 import logging
 import uuid
 from enum import Enum  # noqa: F401
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
 from sqlalchemy.future import select
 from helpers.session_context import SessionContext
@@ -259,13 +259,16 @@ class PlantManager:
         plant_data = schema.dump(plant)
         return json.dumps(plant_data)
 
-    def to_dict(self, plant: Plant) -> dict:
+    def to_dict(self, plant: Plant) -> Dict[str, Any]:
         """
         Serialize the Plant object to a JSON string using the PlantSchema.
         """
         logging.info("PlantManager.to_dict")
         schema = PlantSchema()
         plant_data = schema.dump(plant)
+
+        assert isinstance(plant_data, dict)
+
         return plant_data
 
     def from_json(self, json_str: str) -> Plant:
@@ -281,13 +284,24 @@ class PlantManager:
 
         return new_plant
 
-    def from_dict(self, plant_dict: str) -> Plant:
+    def from_dict(self, plant_dict: Dict[str, Any]) -> Plant:
         """
-        #TODO add comment
+        Create a Plant instance from a dictionary of attributes.
+
+        Args:
+            plant_dict (Dict[str, Any]): A dictionary containing
+                plant attributes.
+
+        Returns:
+            Plant: A new Plant instance created from the given dictionary.
         """
         logging.info("PlantManager.from_dict")
+
+        # Deserialize the dictionary into a validated schema object
         schema = PlantSchema()
         plant_dict_converted = schema.load(plant_dict)
+
+        # Create a new Plant instance using the validated data
         new_plant = Plant(**plant_dict_converted)
         return new_plant
 
@@ -313,7 +327,7 @@ class PlantManager:
 
     async def update_bulk(
         self,
-        plant_updates: List[Dict[int, Dict]]
+        plant_updates: List[Dict[str, Any]]
     ) -> List[Plant]:
         """
         #TODO add comment
@@ -507,7 +521,7 @@ class PlantManager:
     ##GENREMOVECOMMENT        "GENVALPascalObjectNameManager"
     ##GENREMOVECOMMENT        ".get_by_GENVALSnakeName_prop")
     ##GENREMOVECOMMENT    query_filter = (
-    ##GENREMOVECOMMENT        GENVALPascalObjectName._GENVALSnakeName == GENVALSnakeName)
+    ##GENREMOVECOMMENT        GENVALPascalObjectName._GENVALSnakeName == GENVALSnakeName)  # pylint: disable=protected-access  # noqa: E501
     ##GENREMOVECOMMENT    query_results = await self._run_query(query_filter)
     ##GENREMOVECOMMENT    return query_results
     ##GENIF[isFK=false,forceDBColumnIndex=true]End
