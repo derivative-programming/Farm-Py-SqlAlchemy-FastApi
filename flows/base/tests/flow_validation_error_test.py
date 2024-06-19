@@ -1,7 +1,7 @@
 # flows/base/tests/flow_validation_error_test.py
 
 """
-    #TODO add comment
+This module contains unit tests for the FlowValidationError class.
 """
 
 import pytest
@@ -12,12 +12,12 @@ TEST_ERROR_MESSAGE = "Test error message"
 
 class TestFlowValidationError():
     """
-    #TODO add comment
+    Unit tests for the FlowValidationError class.
     """
 
     def test_init_with_message(self):
         """
-        #TODO add comment
+        Test the initialization of FlowValidationError with a message.
         """
 
         exception = FlowValidationError(message=TEST_ERROR_MESSAGE)
@@ -25,7 +25,8 @@ class TestFlowValidationError():
 
     def test_init_with_field_name_and_message(self):
         """
-        #TODO add comment
+        Test the initialization of FlowValidationError
+        with a field name and message.
         """
 
         exception = FlowValidationError("field1", TEST_ERROR_MESSAGE)
@@ -33,7 +34,8 @@ class TestFlowValidationError():
 
     def test_init_with_error_dict(self):
         """
-        #TODO add comment
+        Test the initialization of FlowValidationError
+        with an error dictionary.
         """
 
         error_dict = {
@@ -44,7 +46,7 @@ class TestFlowValidationError():
 
     def test_raise_flow_validation_error(self):
         """
-        #TODO add comment
+        Test raising a FlowValidationError.
         """
 
         with pytest.raises(FlowValidationError) as exc_info:

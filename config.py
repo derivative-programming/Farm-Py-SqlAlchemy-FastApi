@@ -1,7 +1,7 @@
 # config.py
 
 """
-    #TODO add comment
+This module provides configuration settings for the application.
 """
 
 import configparser

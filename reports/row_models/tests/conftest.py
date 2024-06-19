@@ -1,5 +1,6 @@
-# conftest.py
+# reports/row_models/tests/conftest.py
 
 """
-    #TODO add comment
+This module contains fixtures and configuration
+for the tests in the 'row_models' package.
 """

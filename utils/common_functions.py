@@ -1,7 +1,7 @@
 # utils/common_functions.py
 
 """
-    #TODO add comment
+    common utility functions
 """
 
 import re
@@ -12,7 +12,7 @@ def snake_case(name):
     Convert a CamelCase string to snake_case.
 
     Args:
-    - name (str):The CamelCase string.
+    - name (str): The CamelCase string.
 
     Returns:
     - str: The snake_case version of the input string.

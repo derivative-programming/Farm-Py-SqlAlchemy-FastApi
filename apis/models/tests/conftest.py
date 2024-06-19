@@ -3,7 +3,21 @@
 # pylint: disable=unused-argument
 
 """
-    #TODO add comment
+This module contains fixtures for testing the models in the APIs.
+
+Fixtures are functions that provide a fixed baseline for tests.
+They are used to initialize database connections, create test data,
+and perform other setup tasks required for testing.
+
+The fixtures in this module provide the following functionality:
+- `event_loop`: Fixture to provide a new event loop for each test function.
+- `engine`: Fixture to create an async engine for the database.
+- `session`: Async fixture to provide a database session for testing.
+
+These fixtures ensure that each test function runs in its own event loop,
+providing isolation and avoiding potential issues with shared state.
+They also ensure that the database schema is created before each test
+and dropped afterwards, and that SQLite foreign key constraints are enforced.
 """
 
 import asyncio
@@ -42,7 +56,13 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 @pytest.fixture(scope="function")
 def engine():
     """
-    #TODO add comment
+    Fixture to create an async engine for the database.
+
+    This fixture creates an async engine using the specified DATABASE_URL,
+    which is a SQLite in-memory database.
+
+    Yields:
+        sqlalchemy.ext.asyncio.AsyncEngine: The async engine for the database.
     """
 
     engine = create_async_engine(DATABASE_URL, echo=False)
@@ -63,7 +83,7 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
         engine: The SQLAlchemy async engine.
 
     Yields:
-        AsyncSession: A SQLAlchemy async session object.
+        sqlalchemy.ext.asyncio.AsyncSession: A SQLAlchemy async session object.
     """
 
     @event.listens_for(engine.sync_engine, "connect")

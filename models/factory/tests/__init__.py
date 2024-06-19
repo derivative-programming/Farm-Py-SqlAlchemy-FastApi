@@ -1,5 +1,5 @@
 # models/factory/tests/__init__.py
 
 """
-    #TODO add comment
+This module contains the tests for the factory models.
 """

@@ -1,7 +1,10 @@
 # services/tests/encryption_test.py
 
 """
-    #TODO add comment
+This module contains unit tests for the encryption module.
+
+The encryption module provides functions for encrypting and
+decrypting messages using a specified encryption key.
 """
 
 from services.encryption import encrypt_message, decrypt_message
@@ -11,7 +14,11 @@ ENCRYPTION_KEY_SECRET = "your_test_key_here"  # Use a test key
 
 def test_encrypt_decrypt():
     """
-        #TODO add comment
+    Test the encrypt_message and decrypt_message functions.
+
+    This test encrypts a message using the encrypt_message function
+    and then decrypts it using the decrypt_message function.
+    It checks if the decrypted message matches the original message.
     """
 
     original_message = "Hello, World!"
@@ -26,7 +33,11 @@ def test_encrypt_decrypt():
 
 def test_empty_string():
     """
-        #TODO add comment
+    Test encrypting and decrypting an empty string.
+
+    This test encrypts an empty string using the encrypt_message
+    function and then decrypts it using the decrypt_message function.
+    It checks if the decrypted message matches the original empty string.
     """
 
     original_message = ""

@@ -2,7 +2,7 @@
 # pylint: disable=unused-import
 
 """
-    #TODO add comment
+This module contains unit tests for the `land_add_plant` endpoint.
 """
 
 import json
@@ -21,15 +21,21 @@ from main import app
 
 from ..land_add_plant import LandAddPlantRouterConfig
 
-
+# Test cases for the `submit` endpoint
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=true]Start
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db, api_key_fixture: str):
     """
-        #TODO add comment
-    """
+    Test case for successful submission of a plant to a land.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+
+    Returns:
+        None
+    """
     async def mock_process_request(
         session,
         session_context,
@@ -37,8 +43,18 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         request
     ):  # pylint: disable=unused-argument
         """
-            #TODO add comment
+        Mock function for processing the request.
+
+        Args:
+            session (AsyncSession): The database session.
+            session_context: The session context.
+            land_code: The land code.
+            request: The request.
+
+        Returns:
+            None
         """
+        pass
 
     with patch.object(
         apis_models.LandAddPlantPostModelResponse,
@@ -71,9 +87,15 @@ async def test_submit_request_validation_error(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
-    """
+    Test case for submission of a plant with validation error.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
@@ -99,9 +121,14 @@ async def test_submit_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
-    """
+    Test case for authorization failure with a bad API key.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
@@ -128,9 +155,14 @@ async def test_submit_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
-    """
+    Test case for authorization failure with an empty header key.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
@@ -157,9 +189,14 @@ async def test_submit_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
-    """
+    Test case for authorization failure with no header.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
@@ -186,9 +223,15 @@ async def test_submit_endpoint_url_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
-    """
+    Test case for failure of the submit endpoint URL.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
@@ -212,9 +255,15 @@ async def test_submit_endpoint_invalid_code_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
-    """
+    Test case for failure of the submit endpoint with an invalid code.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+
+    Returns:
+        None
+    """
     land_code = uuid.UUID(int=0)
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -238,9 +287,15 @@ async def test_submit_endpoint_method_failure(
     api_key_fixture: str
 ):
     """
-        #TODO add comment
-    """
+    Test case for failure of the submit endpoint with an invalid method.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
@@ -259,15 +314,22 @@ async def test_submit_endpoint_method_failure(
 ##GENTrainingBlock[caseisPostWithIdAvailable]End
 
 
+# Test cases for the `init` endpoint
 @pytest.mark.asyncio
 async def test_init_success(
     overridden_get_db: AsyncSession,
     api_key_fixture: str
 ):
     """
-        #TODO add comment
-    """
+    Test case for successful initialization of the `land-add-plant` endpoint.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+        api_key_fixture (str): The API key fixture.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
@@ -290,9 +352,14 @@ async def test_init_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
-    """
+    Test case for authorization failure with a bad API key for the `init` endpoint.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 
@@ -318,9 +385,14 @@ async def test_init_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-        #TODO add comment
-    """
+    Test case for authorization failure with an empty header key for the `init` endpoint.
 
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+
+    Returns:
+        None
+    """
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
     land_code = land.code
 

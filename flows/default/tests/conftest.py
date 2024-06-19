@@ -3,7 +3,10 @@
 # pylint: disable=redefined-outer-name
 
 """
-    #TODO add comment
+This module contains fixtures for testing the application.
+
+Fixtures are functions that provide a fixed baseline for tests.
+They are used to initialize and clean up resources used by multiple tests.
 """
 
 import asyncio
@@ -42,9 +45,12 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 @pytest.fixture(scope="function")
 def engine():
     """
-        #TODO add comment
-    """
+    Fixture that creates and yields an SQLAlchemy engine.
 
+    Returns:
+        sqlalchemy.engine.Engine: The SQLAlchemy engine object.
+
+    """
     engine = create_async_engine(DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()

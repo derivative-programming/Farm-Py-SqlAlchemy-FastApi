@@ -1,6 +1,6 @@
 # database.py
 """
-    #TODO add comment
+This module provides functions for interacting with the database.
 """
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
@@ -24,7 +24,15 @@ AsyncSessionLocal = sessionmaker(
 
 async def get_db():
     """
-        #TODO add comment
+    Returns an asynchronous context manager for the database session.
+
+    Usage:
+        async with get_db() as db:
+            # Use the database session here
+
+    Returns:
+        AsyncGenerator[AsyncSession, None]: An asynchronous generator that yields the database session.
+
     """
     async with AsyncSessionLocal() as db:  # type: ignore # noqa: E501
         yield db

@@ -1,7 +1,15 @@
 # services/encryption.py
 
 """
-    #TODO add comment
+This module provides functions for encrypting and decrypting
+messages using AES encryption algorithm.
+
+It includes the following functions:
+- encrypt_message: Encrypts a given message using AES encryption.
+- decrypt_message: Decrypts a given encrypted message using AES decryption.
+
+Note: The encryption key is obtained from the ENCRYPTION_KEY_SECRET
+variable defined in the config module.
 """
 
 import os
@@ -14,7 +22,16 @@ from config import ENCRYPTION_KEY_SECRET
 
 def encrypt_message(message):
     """
-        #TODO add comment
+    Encrypts a given message using AES encryption.
+
+    Args:
+        message (str): The message to be encrypted.
+
+    Returns:
+        str: The encrypted message.
+
+    Raises:
+        None
     """
     password = ENCRYPTION_KEY_SECRET
 
@@ -42,7 +59,16 @@ def encrypt_message(message):
 
 def decrypt_message(encrypted_message):
     """
-        #TODO add comment
+    Decrypts a given encrypted message using AES decryption.
+
+    Args:
+        encrypted_message (str): The encrypted message to be decrypted.
+
+    Returns:
+        str: The decrypted message.
+
+    Raises:
+        None
     """
     password = ENCRYPTION_KEY_SECRET
 

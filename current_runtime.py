@@ -1,7 +1,8 @@
 # current_runtime.py
 
 """
-    #TODO add commment
+This module contains the code for initializing various
+managers in the application.
 """
 
 import managers
@@ -10,7 +11,13 @@ from helpers.session_context import SessionContext
 
 async def initialize(session_context: SessionContext):
     """
-        #TODO add commment
+    Initializes various managers in the application.
+
+    Args:
+        session_context (SessionContext): The session context object.
+
+    Returns:
+        None
     """
     await managers.PacManager(session_context).initialize()
 # endset

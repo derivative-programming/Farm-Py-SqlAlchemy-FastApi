@@ -1,7 +1,8 @@
 # helpers/session_context.py
 
 """
-    #TODO add comment
+This module contains the SessionContext class which is used to
+manage the session context for API requests.
 """
 
 import uuid
@@ -10,8 +11,27 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 class SessionContext:
     """
-    #TODO add comment
+    The SessionContext class represents the session context for API requests.
+
+    Attributes:
+        user_name (str): The user name associated with the session.
+        customer_code (uuid.UUID): The customer code
+            associated with the session.
+        tac_code (uuid.UUID): The tac code associated with the session.
+        pac_code (uuid.UUID): The pac code associated with the session.
+        api_key_dict (dict): A dictionary containing API key values.
+        session_code (uuid.UUID): The session code associated with the session.
+        role_name_csv (str): 
+            A comma-separated string of role 
+            names associated with the session.
+        session (AsyncSession): The SQLAlchemy AsyncSession object.
+
+    Methods:
+        __init__: Initializes a new instance of the SessionContext class.
+        check_context_code: Checks and returns the context code value.
+
     """
+
     user_name: str = ""
     customer_code: uuid.UUID = uuid.UUID(int=0)
     tac_code: uuid.UUID = uuid.UUID(int=0)
@@ -26,6 +46,15 @@ class SessionContext:
         api_key_dict: dict,
         session: AsyncSession = None  # type: ignore
     ) -> None:
+        """
+        Initializes a new instance of the SessionContext class.
+
+        Args:
+            api_key_dict (dict): A dictionary containing API key values.
+            session (AsyncSession, optional): The SQLAlchemy
+                AsyncSession object. Defaults to None.
+
+        """
         self.api_key_dict = api_key_dict
         self.session_code = uuid.uuid4()
         self.session = session
@@ -36,9 +65,18 @@ class SessionContext:
         context_code_value: uuid.UUID = uuid.UUID(int=0)
     ) -> uuid.UUID:
         """
-        #TODO add comment
-        """
+        Checks and returns the context code value.
 
+        Args:
+            context_code_name (str, optional): The name of the
+                context code. Defaults to "".
+            context_code_value (uuid.UUID, optional): The value
+                of the context code. Defaults to uuid.UUID(int=0).
+
+        Returns:
+            uuid.UUID: The context code value.
+
+        """
         # if code dne or unknown then use the one in the api token
         if context_code_value == uuid.UUID(int=0) \
                 and self.api_key_dict[context_code_name] is not None:

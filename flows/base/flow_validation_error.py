@@ -1,7 +1,9 @@
 # flows/base/flow_validation_error.py
 
 """
-    #TODO add comment
+This module contains the definition of the
+FlowValidationError class, which is a custom
+exception class for flow validation errors.
 """
 
 UNKNOWN_ERROR_OCCURRED_MESSAGE = "An unknown error occurred."

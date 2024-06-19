@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 """
-    #TODO add comment
+This module contains fixtures and utilities for testing the providers module.
 """
 
 import asyncio
@@ -41,7 +41,12 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 @pytest.fixture(scope="session")
 def engine():
     """
-    #TODO add comment
+    Fixture to create the SQLAlchemy async engine.
+
+    This fixture creates the async engine for the database connection.
+
+    Returns:
+        sqlalchemy.ext.asyncio.AsyncEngine: The SQLAlchemy async engine.
     """
 
     engine = create_async_engine(DATABASE_URL, echo=False)

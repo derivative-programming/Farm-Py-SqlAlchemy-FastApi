@@ -1,6 +1,10 @@
-# __init__.py
+# models/__init__.py
 """
-    #TODO add comment
+This module contains the models for the Farm-Py-SqlAlchemy-FastApi project.
+
+The models define the database tables and their relationships.
+
+Note: The `noqa: F401` comments are used to suppress unused import warnings.
 """
 from .base import Base  # noqa: F401
 from .customer import Customer  # noqa: F401

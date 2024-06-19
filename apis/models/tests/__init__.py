@@ -1,5 +1,5 @@
 # apis/models/tests/__init__.py
 
 """
-    #TODO add comment
+This module contains tests for the models in the APIs package.
 """

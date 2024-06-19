@@ -1,7 +1,7 @@
 # services/logging_config.py
 
 """
-    #TODO add comment
+This module provides configuration for logging in the application.
 """
 
 import logging
@@ -19,6 +19,12 @@ logging.basicConfig(
 
 def get_logger(name):
     """
-    #TODO add comment
+    Get a logger instance with the specified name.
+
+    Args:
+        name (str): The name of the logger.
+
+    Returns:
+        logging.Logger: The logger instance.
     """
     return logging.getLogger(name)

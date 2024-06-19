@@ -1,5 +1,5 @@
 # business/tests/__init__.py
 
 """
-    #TODO add comment
+This module contains the unit tests for the business package.
 """

@@ -1,7 +1,16 @@
 # reports/row_models/tests/land_plant_list_test.py
 
 """
-    #TODO add comment
+This module contains unit tests for the `ReportItemLandPlantList` class.
+
+The `ReportItemLandPlantList` class represents a
+report item for a land plant list.
+It contains various fields with default values and
+provides methods to load data from a dictionary.
+
+The unit tests in this module ensure that the default
+values of the fields are set correctly
+and that data can be loaded into the model from a dictionary.
 """
 import math
 from decimal import Decimal
@@ -13,7 +22,7 @@ from reports.row_models.land_plant_list import ReportItemLandPlantList
 
 class TestReportItemLandPlantList:
     """
-    #TODO add comment
+    Test class for the ReportItemLandPlantList model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

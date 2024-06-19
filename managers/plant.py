@@ -2,7 +2,7 @@
 # pylint: disable=unused-import
 
 """
-    #TODO add comment
+This module contains the PlantManager class, which is responsible for managing plants in the system.
 """
 
 import json
@@ -252,7 +252,13 @@ class PlantManager:
 
     def to_json(self, plant: Plant) -> str:
         """
-        Serialize the Plant object to a JSON string using the PlantSchema.
+        Serializes the Plant object to a JSON string using the PlantSchema.
+
+        Args:
+            plant (Plant): The plant object to serialize.
+
+        Returns:
+            str: The JSON string representation of the plant object.
         """
         logging.info("PlantManager.to_json")
         schema = PlantSchema()
@@ -261,7 +267,13 @@ class PlantManager:
 
     def to_dict(self, plant: Plant) -> Dict[str, Any]:
         """
-        Serialize the Plant object to a JSON string using the PlantSchema.
+        Serializes the Plant object to a dictionary using the PlantSchema.
+
+        Args:
+            plant (Plant): The plant object to serialize.
+
+        Returns:
+            Dict[str, Any]: The dictionary representation of the plant object.
         """
         logging.info("PlantManager.to_dict")
         schema = PlantSchema()
@@ -273,7 +285,13 @@ class PlantManager:
 
     def from_json(self, json_str: str) -> Plant:
         """
-        Deserialize a JSON string into a Plant object using the PlantSchema.
+        Deserializes a JSON string into a Plant object using the PlantSchema.
+
+        Args:
+            json_str (str): The JSON string to deserialize.
+
+        Returns:
+            Plant: The deserialized Plant object.
         """
         logging.info("PlantManager.from_json")
         schema = PlantSchema()
@@ -286,7 +304,7 @@ class PlantManager:
 
     def from_dict(self, plant_dict: Dict[str, Any]) -> Plant:
         """
-        Create a Plant instance from a dictionary of attributes.
+        Creates a Plant instance from a dictionary of attributes.
 
         Args:
             plant_dict (Dict[str, Any]): A dictionary containing
@@ -307,7 +325,13 @@ class PlantManager:
 
     async def add_bulk(self, plants: List[Plant]) -> List[Plant]:
         """
-        Add multiple plants at once.
+        Adds multiple plants at once.
+
+        Args:
+            plants (List[Plant]): The list of plants to add.
+
+        Returns:
+            List[Plant]: The list of added plants.
         """
         logging.info("PlantManager.add_bulk")
         for plant in plants:

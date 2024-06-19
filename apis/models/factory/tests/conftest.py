@@ -3,7 +3,26 @@
 # pylint: disable=redefined-outer-name
 
 """
-    #TODO add comment
+This module contains fixtures for testing the factory models.
+
+Fixtures are functions that provide a set of data or resources
+to be used in tests. This module provides fixtures for
+creating a new event loop, creating a database engine,
+and creating a database session for testing.
+
+The fixtures ensure that each test function runs in its own event loop,
+providing isolation and avoiding potential issues with shared state.
+They also ensure that the database schema is created before each
+test and dropped afterwards, and that SQLite foreign key
+constraints are enforced.
+
+The fixtures defined in this module are:
+- event_loop: Fixture to provide a new event loop for each test function.
+- engine: Fixture to create a database engine.
+- session: Async fixture to provide a database session for testing.
+
+Note: This module requires the 'pytest', 'pytest-asyncio', 'sqlalchemy',
+and 'sqlalchemy-aiosqlite' packages to be installed.
 """
 
 import asyncio
@@ -42,7 +61,13 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 @pytest.fixture(scope="function")
 def engine():
     """
-        #TODO add comment
+    Fixture to create a database engine.
+
+    This fixture creates an asynchronous SQLAlchemy engine
+    using the specified database URL.
+
+    Yields:
+        Engine: The SQLAlchemy async engine.
     """
 
     engine = create_async_engine(DATABASE_URL, echo=False)

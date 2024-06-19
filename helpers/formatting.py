@@ -1,13 +1,23 @@
 # helpers/formatting.py
 
 """
-    #TODO add comment
+    This module provides helper functions for formatting strings.
 """
 
 
 def snake_to_camel(snake_str: str) -> str:
     """
-        #TODO add comment
+    Convert a snake_case string to camelCase.
+
+    Args:
+        snake_str (str): The snake_case string to convert.
+
+    Returns:
+        str: The camelCase string.
+
+    Example:
+        >>> snake_to_camel('hello_world')
+        'helloWorld'
     """
 
     components = snake_str.split('_')

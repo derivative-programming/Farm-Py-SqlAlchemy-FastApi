@@ -1,7 +1,7 @@
 # land_plant_list.py
 
 """
-    #TODO add comment
+This module contains the definition of the ReportItemLandPlantList class.
 """
 
 import uuid
@@ -13,7 +13,7 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemLandPlantList():
     """
-    #TODO add comment
+    Represents a report item for a land plant list.
     """
 
     plant_code: uuid.UUID = uuid.UUID(int=0)
@@ -24,8 +24,10 @@ class ReportItemLandPlantList():
     is_delete_allowed: bool = False
     some_float_val: float = 0.0
     some_decimal_val: Decimal = Decimal(0)
-    some_utc_date_time_val: datetime = TypeConversion.get_default_date_time()
-    some_date_val: date = TypeConversion.get_default_date()
+    some_utc_date_time_val: datetime = (
+        TypeConversion.get_default_date_time())
+    some_date_val: date = (
+        TypeConversion.get_default_date())
     some_money_val: Decimal = Decimal(0)
     some_n_var_char_val: str = ""
     some_var_char_val: str = ""
@@ -33,17 +35,26 @@ class ReportItemLandPlantList():
     some_phone_number: str = ""
     some_email_address: str = ""
     flavor_name: str = ""
-    flavor_code: uuid.UUID = uuid.UUID(int=0)
+    flavor_code: uuid.UUID = (
+        uuid.UUID(int=0))
     some_int_conditional_on_deletable: int = 0
     n_var_char_as_url: str = ""
     update_link_plant_code: uuid.UUID = uuid.UUID(int=0)
-    delete_async_button_link_plant_code: uuid.UUID = uuid.UUID(int=0)
-    details_link_plant_code: uuid.UUID = uuid.UUID(int=0)
+    delete_async_button_link_plant_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    details_link_plant_code: uuid.UUID = (
+        uuid.UUID(int=0))
 # endset
 
     def load_data_provider_dict(self, data: dict):
         """
-        #TODO add comment
+        Loads data from a dictionary into the report item.
+
+        Args:
+            data (dict): The dictionary containing the data.
+
+        Returns:
+            None
         """
 
         self.plant_code = (

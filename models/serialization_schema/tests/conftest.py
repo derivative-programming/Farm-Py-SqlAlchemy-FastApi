@@ -2,7 +2,7 @@
 # pylint: disable=redefined-outer-name
 
 """
-    #TODO add comment
+This module contains fixtures for testing the serialization schema.
 """
 
 import pytest
@@ -19,7 +19,18 @@ DATABASE_URL = "sqlite:///:memory:"
 @pytest.fixture(scope="module")
 def engine():
     """
-        #TODO add comment
+    Fixture that creates a SQLAlchemy engine for the test module.
+
+    This fixture creates an in-memory SQLite database engine
+    and enables foreign key constraints. The engine is yielded
+    to the test module and disposed of after the tests are run.
+
+    Returns:
+        Engine: The SQLAlchemy engine object.
+
+    Example:
+        def test_something(engine):
+            # use the engine object for database operations
     """
 
     engine = create_engine(DATABASE_URL, echo=False)
@@ -32,13 +43,11 @@ def engine():
 @pytest.fixture(scope="function")
 def session(engine):
     """
-    Create a new database session for a test and
-    ensure it is properly closed after the test.
+    Fixture that creates a new database session for a test.
 
-    This fixture sets up a new database session
-    using the provided engine. It ensures that
-    the database schema is created before the test
-    and that the session is closed after the test.
+    This fixture sets up a new database session using the provided
+    engine. It ensures that the database schema is created before
+    the test and that the session is closed after the test.
 
     Args:
         engine (Engine): The SQLAlchemy engine to bind the session to.

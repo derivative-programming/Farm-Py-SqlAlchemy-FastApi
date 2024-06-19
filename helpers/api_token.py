@@ -16,7 +16,13 @@ api_key_header = APIKeyHeader(name='API_KEY', auto_error=False)
 
 async def get_api_key(api_key: str = Depends(api_key_header)):
     """
-        #TODO create comment
+    Get the API key from the request header.
+
+    Args:
+        api_key (str): The API key extracted from the request header.
+
+    Returns:
+        str: The API key if provided, otherwise None.
     """
     if not api_key:
         # API key is optional, return None if not provided

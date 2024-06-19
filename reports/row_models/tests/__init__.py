@@ -1,5 +1,5 @@
-# __init__.py
+# reports/row_models/tests/__init__.py
 
 """
-    #TODO add comment
+This module contains the tests for the row_models module.
 """

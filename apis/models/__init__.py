@@ -3,7 +3,10 @@
 
 
 """
-    #TODO add comment
+This module contains the model classes for the API.
+
+The models in this module represent the data
+structures used in the API endpoints.
 """
 
 ##GENLOOPObjectStart

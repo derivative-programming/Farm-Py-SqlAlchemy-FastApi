@@ -1,7 +1,10 @@
 # __init__.py
 
 """
-    #TODO add comment
+This module contains the reports package.
+
+The reports package provides functionality for
+generating various reports
 """
 
 from .report_request_validation_error import (  # noqa: F401

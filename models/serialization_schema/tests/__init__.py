@@ -1,5 +1,5 @@
-# __init__.py
+#models/serialization_schema/tests/__init__.py
 
 """
-    #TODO add comment
+This module contains the tests for the serialization schema models.
 """

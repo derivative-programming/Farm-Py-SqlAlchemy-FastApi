@@ -1,5 +1,7 @@
-# __init__.py
+# reports/providers/__init__.py
 
 """
-    #TODO add comment
+This module contains the providers package.
+
+The providers package is responsible for providing data to the reports module.
 """

@@ -1,6 +1,6 @@
 # models/constants/plant.py
 """
-    #TODO add comment
+This module contains boolean constants related to plants.
 """
 flvr_foreign_key_id_calculatedIsDBColumnIndexed: bool = True
 is_delete_allowed_calculatedIsDBColumnIndexed: bool = False

@@ -1,7 +1,10 @@
 # flows/base/__init__.py
 
 """
-    #TODO add comment
+This module contains the base flow classes and related imports.
+
+The base flow classes provide the foundation for
+implementing specific workflows in the application.
 """
 
 from .base_flow import BaseFlow  # noqa: F401

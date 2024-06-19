@@ -2,7 +2,7 @@
 # pylint: disable=protected-access
 
 """
-    #TODO add comment
+This module contains unit tests for the BaseFlow class.
 """
 
 import logging
@@ -18,13 +18,13 @@ TEST_ERROR_MESSAGE = "Test error message"
 
 class TestBaseFlow():
     """
-    #TODO add comment
+    This class contains unit tests for the BaseFlow class.
     """
 
     @pytest.fixture
     def base_flow(self):
         """
-        #TODO add comment
+        Fixture that returns an instance of BaseFlow for testing.
         """
 
         session_context = SessionContext(dict())
@@ -32,14 +32,15 @@ class TestBaseFlow():
 
     def test_init(self, base_flow):
         """
-        #TODO add comment
+        Test case to verify the initialization of BaseFlow.
         """
 
         assert base_flow._BaseFlow__flow_name == "TestFlow"
 
     def test_add_validation_error(self, base_flow):
         """
-        #TODO add comment
+        Test case to verify the addition of a
+        validation error to the BaseFlow.
         """
 
         base_flow._add_validation_error(TEST_ERROR_MESSAGE)
@@ -47,7 +48,8 @@ class TestBaseFlow():
 
     def test_add_field_validation_error(self, base_flow):
         """
-        #TODO add comment
+        Test case to verify the addition of a field
+        validation error to the BaseFlow.
         """
 
         base_flow._add_field_validation_error(
@@ -57,7 +59,9 @@ class TestBaseFlow():
 
     def test_add_field_validation_error_existing_field(self, base_flow):
         """
-        #TODO add comment
+        Test case to verify the addition of a field
+        validation error to the BaseFlow
+        when the field already has an existing error message.
         """
 
         base_flow.queued_validation_errors = {
@@ -69,7 +73,8 @@ class TestBaseFlow():
 
     def test_throw_validation_error(self, base_flow):
         """
-        #TODO add comment
+        Test case to verify the throwing of a validation
+        error from the BaseFlow.
         """
 
         with pytest.raises(FlowValidationError) as exc_info:
@@ -78,7 +83,8 @@ class TestBaseFlow():
 
     def test_throw_field_validation_error(self, base_flow):
         """
-        #TODO add comment
+        Test case to verify the throwing of a field
+        validation error from the BaseFlow.
         """
 
         with pytest.raises(FlowValidationError) as exc_info:
@@ -91,7 +97,8 @@ class TestBaseFlow():
 
     def test_throw_queued_validation_errors(self, base_flow):
         """
-        #TODO add comment
+        Test case to verify the throwing of all queued
+        validation errors from the BaseFlow.
         """
 
         base_flow.queued_validation_errors = {
@@ -103,7 +110,7 @@ class TestBaseFlow():
 
     def test_log_exception(self, monkeypatch, base_flow):
         """
-        #TODO add comment
+        Test case to verify the logging of an exception in the BaseFlow.
         """
 
         logging_error_mock = Mock()
@@ -114,7 +121,7 @@ class TestBaseFlow():
 
     def test_log_message(self, monkeypatch, base_flow):
         """
-        #TODO add comment
+        Test case to verify the logging of a message in the BaseFlow.
         """
 
         logging_debug_mock = Mock()

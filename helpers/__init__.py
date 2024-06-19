@@ -1,7 +1,7 @@
 # helpers/__init__.py
 
 """
-    #TODO add comment
+This module contains helper functions and classes for the application.
 """
 
 from .session_context import SessionContext  # noqa: F401

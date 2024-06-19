@@ -1,7 +1,8 @@
 # main.py
 
 """
-    #TODO add comment
+This is the main module of the Farm-Py-SqlAlchemy-FastApi application.
+It contains the FastAPI application setup, exception handlers, and startup event.
 """
 
 import logging
@@ -39,7 +40,14 @@ async def validation_exception_handler(
     exc: RequestValidationError
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Exception handler for RequestValidationError.
+
+    Args:
+        request (Request): The incoming request.
+        exc (RequestValidationError): The raised exception.
+
+    Returns:
+        JSONResponse: The JSON response with error details.
     """
     return JSONResponse(
         status_code=400,
@@ -53,7 +61,14 @@ async def http_exception_handler(
     exc: StarletteHTTPException
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Exception handler for StarletteHTTPException.
+
+    Args:
+        request (Request): The incoming request.
+        exc (StarletteHTTPException): The raised exception.
+
+    Returns:
+        JSONResponse: The JSON response with error details.
     """
     if exc.status_code == 404:
         return JSONResponse(
@@ -80,7 +95,10 @@ async def http_exception_handler(
 @app.get("/")
 async def read_root():
     """
-        #TODO add comment
+    Root endpoint of the application.
+
+    Returns:
+        RedirectResponse: Redirects to the API documentation.
     """
     return RedirectResponse(url="/redoc")
 
@@ -88,9 +106,12 @@ async def read_root():
 @app.on_event("startup")
 async def startup_event():
     """
-        #TODO add comment
-    """
+    Startup event of the application.
+    Performs necessary initialization tasks.
 
+    Returns:
+        None
+    """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

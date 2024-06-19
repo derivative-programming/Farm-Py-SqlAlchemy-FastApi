@@ -1,7 +1,9 @@
 # apis/fs_farm_api/v1_0/routers.py
 # pylint: disable=line-too-long
 """
-    #TODO add comment
+This module defines the routers for the FS Farm API version 1.0.
+
+The routers in this module handle the different endpoints of the API.
 """
 
 from fastapi import APIRouter
@@ -30,7 +32,10 @@ fs_farm_api_v1_0_router = APIRouter()
 
 def include_all_routers():
     """
-    #TODO add comment
+    Includes all the routers in the FS Farm API version 1.0.
+
+    This function adds all the routers defined in this
+    module to the main API router.
     """
 
     fs_farm_api_v1_0_router.include_router(  # LandPlantList

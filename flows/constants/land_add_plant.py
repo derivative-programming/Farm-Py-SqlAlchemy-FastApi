@@ -1,7 +1,8 @@
 # flows/constants/land_add_plant.py
 
 """
-    configuration constants
+    This module contains configuration constants
+    used in the land_add_plant flow.
 """
 
 PARAM_REQUEST_FLAVOR_CODE_IS_REQUIRED = True

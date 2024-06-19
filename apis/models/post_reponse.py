@@ -1,7 +1,17 @@
 # apis/models/post_reponse.py
 
 """
-    #TODO add comment
+This module contains the definition of the PostResponse class.
+
+The PostResponse class is a Pydantic model that represents
+the response returned by the API when creating a post.
+
+Attributes:
+    success (bool): Indicates whether the operation was successful.
+    message (str): A message associated with the response.
+    validation_errors (List[ValidationErrorItem]):
+        A list of validation errors, if any.
+
 """
 
 from typing import List
@@ -12,8 +22,16 @@ from .validation_error import ValidationErrorItem
 
 class PostResponse(CamelModel):
     """
-        #TODO add comment
+    Represents the response returned by the API when creating a post.
+
+    Attributes:
+        success (bool): Indicates whether the operation was successful.
+        message (str): A message associated with the response.
+        validation_errors (List[ValidationErrorItem]):
+            A list of validation errors, if any.
+
     """
+
     success: bool = Field(
         default=False,
         description="Success")

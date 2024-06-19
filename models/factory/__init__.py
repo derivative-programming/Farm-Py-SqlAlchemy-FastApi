@@ -1,6 +1,13 @@
 # models/factory/__init__.py
 """
-    #TODO add comment
+This module contains factory classes for creating
+instances of various models.
+
+The factory classes in this module are used to create
+instances of different models
+used in the application. These factories provide a
+convenient way to generate
+mock or test data for the models.
 """
 from .customer import CustomerFactory  # noqa: F401
 from .customer_role import CustomerRoleFactory  # noqa: F401

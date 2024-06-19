@@ -1,7 +1,8 @@
 # apis/models/tests/land_plant_list_test.py
 
 """
-    #TODO add comment
+This module contains unit tests for the
+LandPlantListGetModelRequestFactoryAsync class.
 """
 
 import uuid
@@ -16,13 +17,24 @@ from ..land_plant_list import LandPlantListGetModelRequest
 
 class LandPlantListGetModelRequestFactoryAsync:
     """
-    #TODO add comment
+    This class contains asynchronous unit tests for the
+    LandPlantListGetModelRequestFactory class.
     """
 
     @pytest.mark.asyncio
     async def test_report_generation(self, session):
         """
-            #TODO add comment
+        Test the generation of a report using the
+        LandPlantListGetModelRequestFactory class.
+
+        Args:
+            session: The database session.
+
+        Returns:
+            None
+
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
 
         model_instance = await (

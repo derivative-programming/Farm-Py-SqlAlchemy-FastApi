@@ -41,8 +41,10 @@ def engine():
     """
     Returns a SQLAlchemy engine.
 
-    This function creates and returns a SQLAlchemy engine using the provided DATABASE_URL.
-    The engine is created as an asynchronous engine and is yielded as a context manager.
+    This function creates and returns a SQLAlchemy
+    engine using the provided DATABASE_URL.
+    The engine is created as an asynchronous engine
+    and is yielded as a context manager.
     After the context manager is exited, the engine is disposed.
 
     Returns:

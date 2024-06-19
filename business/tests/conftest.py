@@ -3,7 +3,17 @@
 # pylint: disable=redefined-outer-name
 
 """
-    #TODO add comment
+This module contains fixtures and configurations
+for testing the business module.
+
+Fixtures:
+- event_loop: Fixture to provide a new event loop for each test function.
+- engine: Fixture to create an async engine for the database.
+- session: Fixture to create an async session for the database.
+
+Configurations:
+- DATABASE_URL: The URL for the in-memory SQLite database.
+
 """
 
 import asyncio
@@ -44,7 +54,10 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 @pytest.fixture(scope="function")
 def engine():
     """
-        #TODO add comment
+    Fixture to create an async engine for the database.
+
+    Returns:
+        sqlalchemy.ext.asyncio.AsyncEngine: The async engine for the database.
     """
 
     engine = create_async_engine(DATABASE_URL, echo=False)
@@ -55,7 +68,15 @@ def engine():
 @pytest_asyncio.fixture(scope="function")
 async def session(engine) -> AsyncSession:  # type: ignore
     """
-        #TODO add comment
+    Fixture to create an async session for the database.
+
+    Args:
+        engine (sqlalchemy.ext.asyncio.AsyncEngine):
+            The async engine for the database.
+
+    Returns:
+        sqlalchemy.ext.asyncio.AsyncSession:
+            The async session for the database.
     """
 
     @event.listens_for(engine.sync_engine, "connect")

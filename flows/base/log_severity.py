@@ -1,7 +1,9 @@
 # flows/base/log_severity.py
 
 """
-    #TODO add comment
+This module defines the LogSeverity enumeration class.
+
+LogSeverity represents the severity levels for logging messages.
 """
 
 from enum import Enum
@@ -9,7 +11,17 @@ from enum import Enum
 
 class LogSeverity(Enum):
     """
-    #TODO add comment
+    Enumeration class representing the severity levels for logging messages.
+
+    The available severity levels are:
+    - ERROR_OCCURRED: Represents an error that occurred.
+    - WARNING: Represents a warning message.
+    - INFORMATION_LOW_DETAIL: Represents an 
+        information message with low detail.
+    - INFORMATION_MID_DETAIL: Represents an
+        information message with medium detail.
+    - INFORMATION_HIGH_DETAIL: Represents an
+        information message with high detail.
     """
 
     ERROR_OCCURRED = 0

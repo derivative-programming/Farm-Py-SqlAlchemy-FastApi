@@ -1,7 +1,8 @@
 # apis/models/tests/land_add_plant_test.py
 # pylint: disable=unused-argument
 """
-    #TODO add comment
+This module contains unit tests for the
+LandAddPlantPostModelResponse class.
 """
 
 import uuid
@@ -23,13 +24,17 @@ from ..factory.land_add_plant import LandAddPlantPostModelRequestFactory
 
 class TestLandAddPlantPostModelResponse:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    LandAddPlantPostModelResponse class.
     """
 
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-            #TODO add comment
+        This method tests the flow process request
+        for adding a plant to a land.
+        It mocks the process method of FlowLandAddPlant
+        and asserts that the response is successful.
         """
 
         async def mock_process(

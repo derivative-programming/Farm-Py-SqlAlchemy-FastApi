@@ -1,11 +1,11 @@
 # business/base_bus_obj.py
 
 """
-    #TODO add comment
+    This module contains the base business object class.
 """
 
 
 class BaseBusObj:
     """
-    #TODO add comment
+    This is the base class for all business objects.
     """
