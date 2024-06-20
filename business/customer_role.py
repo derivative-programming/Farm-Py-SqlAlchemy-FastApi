@@ -1,6 +1,6 @@
 # business/customer_role.py
 """
-    #TODO add comment
+This module contains the CustomerRoleBusObj class, which represents the business object for a CustomerRole.
 """
 from decimal import Decimal
 import random
@@ -18,7 +18,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "CustomerRole object is not initialized")
 class CustomerRoleInvalidInitError(Exception):
     """
-    #TODO add comment
+    Exception raised when the CustomerRole object is not initialized properly.
     """
 class CustomerRoleBusObj(BaseBusObj):
     """
@@ -26,6 +26,11 @@ class CustomerRoleBusObj(BaseBusObj):
     It requires a valid session context for initialization.
     """
     def __init__(self, session_context: SessionContext):
+        """
+        Initializes a new instance of the CustomerRoleBusObj class.
+        :param session_context: The session context.
+        :raises ValueError: If the session is not provided.
+        """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -35,6 +40,7 @@ class CustomerRoleBusObj(BaseBusObj):
         """
         Get the customer_role ID from the CustomerRole object.
         :return: The customer_role ID.
+        :raises AttributeError: If the CustomerRole object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -45,7 +51,9 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        #TODO add comment
+        Get the code from the CustomerRole object.
+        :return: The code.
+        :raises AttributeError: If the CustomerRole object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -55,7 +63,10 @@ class CustomerRoleBusObj(BaseBusObj):
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
-        #TODO add comment
+        Set the code for the CustomerRole object.
+        :param value: The code value.
+        :raises AttributeError: If the CustomerRole object is not initialized.
+        :raises ValueError: If the code is not a UUID.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -68,7 +79,9 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        #TODO add comment
+        Get the last change code from the CustomerRole object.
+        :return: The last change code.
+        :raises AttributeError: If the CustomerRole object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -78,7 +91,10 @@ class CustomerRoleBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        #TODO add comment
+        Set the last change code for the CustomerRole object.
+        :param value: The last change code value.
+        :raises AttributeError: If the CustomerRole object is not initialized.
+        :raises ValueError: If the last change code is not an integer.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -91,7 +107,9 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        #TODO add comment
+        Get the insert user ID from the CustomerRole object.
+        :return: The insert user ID.
+        :raises AttributeError: If the CustomerRole object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -101,7 +119,10 @@ class CustomerRoleBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the insert user ID for the CustomerRole object.
+        :param value: The insert user ID value.
+        :raises AttributeError: If the CustomerRole object is not initialized.
+        :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -114,7 +135,9 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        #TODO add comment
+        Get the last update user ID from the CustomerRole object.
+        :return: The last update user ID.
+        :raises AttributeError: If the CustomerRole object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -124,7 +147,10 @@ class CustomerRoleBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the last update user ID for the CustomerRole object.
+        :param value: The last update user ID value.
+        :raises AttributeError: If the CustomerRole object is not initialized.
+        :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -139,7 +165,9 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def is_placeholder(self):
         """
-        #TODO add comment
+        Get the Is Placeholder flag from the CustomerRole object.
+        :return: The Is Placeholder flag.
+        :raises AttributeError: If the CustomerRole object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -149,7 +177,10 @@ class CustomerRoleBusObj(BaseBusObj):
     @is_placeholder.setter
     def is_placeholder(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Placeholder flag for the CustomerRole object.
+        :param value: The Is Placeholder flag value.
+        :raises AttributeError: If the CustomerRole object is not initialized.
+        :raises ValueError: If the Is Placeholder flag is not a boolean.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -160,7 +191,9 @@ class CustomerRoleBusObj(BaseBusObj):
         self.customer_role.is_placeholder = value
     def set_prop_is_placeholder(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Placeholder flag for the CustomerRole object.
+        :param value: The Is Placeholder flag value.
+        :return: The updated CustomerRoleBusObj instance.
         """
         self.is_placeholder = value
         return self
@@ -168,7 +201,9 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def placeholder(self):
         """
-        #TODO add comment
+        Get the Placeholder flag from the CustomerRole object.
+        :return: The Placeholder flag.
+        :raises AttributeError: If the CustomerRole object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -178,7 +213,10 @@ class CustomerRoleBusObj(BaseBusObj):
     @placeholder.setter
     def placeholder(self, value: bool):
         """
-        #TODO add comment
+        Set the Placeholder flag for the CustomerRole object.
+        :param value: The Placeholder flag value.
+        :raises AttributeError: If the CustomerRole object is not initialized.
+        :raises ValueError: If the Placeholder flag is not a boolean.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -189,7 +227,9 @@ class CustomerRoleBusObj(BaseBusObj):
         self.customer_role.placeholder = value
     def set_prop_placeholder(self, value: bool):
         """
-        #TODO add comment
+        Set the Placeholder flag for the CustomerRole object.
+        :param value: The Placeholder flag value.
+        :return: The updated CustomerRoleBusObj instance.
         """
         self.placeholder = value
         return self
@@ -199,7 +239,11 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def customer_id(self):
         """
-        #TODO add comment
+        Returns the customer ID associated with the customer_role.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
+        Returns:
+            int: The customer ID of the customer_role.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -209,7 +253,12 @@ class CustomerRoleBusObj(BaseBusObj):
     @customer_id.setter
     def customer_id(self, value):
         """
-        #TODO add comment
+        Sets the customer ID for the customer_role.
+        Args:
+            value (int or None): The customer ID to be set.
+                Must be an integer or None.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -220,14 +269,22 @@ class CustomerRoleBusObj(BaseBusObj):
         self.customer_role.customer_id = value
     def set_prop_customer_id(self, value: int):
         """
-        #TODO add comment
+        Set the customer ID for the customer_role.
+        Args:
+            value (int): The ID of the customer.
+        Returns:
+            CustomerRole: The updated CustomerRole object.
         """
         self.customer_id = value
         return self
     @property
     def customer_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Returns the customer code peek of the customer_role.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
+        Returns:
+            uuid.UUID: The customer code peek of the customer_role.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -255,7 +312,12 @@ class CustomerRoleBusObj(BaseBusObj):
     @role_id.setter
     def role_id(self, value: int):
         """
-        #TODO add comment
+        Sets the foreign key ID for the role of the customer_role.
+        Args:
+            value (int): The foreign key ID to set.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
+            ValueError: If the value is not an integer.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -266,14 +328,23 @@ class CustomerRoleBusObj(BaseBusObj):
         self.customer_role.role_id = value
     def set_prop_role_id(self, value: int):
         """
-        #TODO add comment
+        Sets the value of the 'role_id' property.
+        Args:
+            value (int): The value to set for the
+                'role_id' property.
+        Returns:
+            self: The current instance of the class.
         """
         self.role_id = value
         return self
     @property
     def role_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Returns the foreign key code peek of the customer_role's role.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
+        Returns:
+            uuid.UUID: The foreign key code peek of the customer_role's role.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -291,7 +362,11 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        #TODO add comment
+        Inserts the UTC date and time into the customer_role object.
+        Raises:
+            AttributeError: If the customer_role object is not initialized.
+        Returns:
+            The UTC date and time inserted into the customer_role object.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -301,7 +376,12 @@ class CustomerRoleBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        #TODO add comment
+        Inserts the UTC date and time for the customer_role.
+        Args:
+            value (datetime): The UTC date and time to be inserted.
+                It should be a datetime object or None.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -314,7 +394,11 @@ class CustomerRoleBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        #TODO add comment
+        Returns the last update UTC date and time of the customer_role.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
+        Returns:
+            datetime: The last update UTC date and time of the customer_role.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -324,7 +408,13 @@ class CustomerRoleBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        #TODO add comment
+        Sets the last update UTC date and time for the customer_role.
+        Args:
+            value (datetime): The datetime object
+                representing the last update UTC date and time.
+                Pass None to unset the value.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -415,36 +505,55 @@ class CustomerRoleBusObj(BaseBusObj):
 
     def get_session_context(self):
         """
-        #TODO add comment
+        Returns the session context.
+        :return: The session context.
+        :rtype: SessionContext
         """
         return self._session_context
     async def refresh(self):
         """
-        #TODO add comment
+        Refreshes the customer_role object by fetching
+        the latest data from the database.
+        Returns:
+            The updated customer_role object.
         """
         customer_role_manager = CustomerRoleManager(self._session_context)
         self.customer_role = await customer_role_manager.refresh(self.customer_role)
         return self
     def is_valid(self):
         """
-        #TODO add comment
+        Check if the customer_role is valid.
+        Returns:
+            bool: True if the customer_role is valid, False otherwise.
         """
         return self.customer_role is not None
     def to_dict(self):
         """
-        #TODO add comment
+        Converts the CustomerRole object to a dictionary representation.
+        Returns:
+            dict: A dictionary representation of the CustomerRole object.
         """
         customer_role_manager = CustomerRoleManager(self._session_context)
         return customer_role_manager.to_dict(self.customer_role)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the customer_role object to a JSON representation.
+        Returns:
+            str: The JSON representation of the customer_role object.
         """
         customer_role_manager = CustomerRoleManager(self._session_context)
         return customer_role_manager.to_json(self.customer_role)
     async def save(self):
         """
-        #TODO add comment
+        Saves the customer_role object to the database.
+        If the customer_role object is not initialized, an AttributeError is raised.
+        If the customer_role_id is greater than 0, the customer_role is
+        updated in the database.
+        If the customer_role_id is 0, the customer_role is added to the database.
+        Returns:
+            The updated or added customer_role object.
+        Raises:
+            AttributeError: If the customer_role object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
@@ -458,7 +567,9 @@ class CustomerRoleBusObj(BaseBusObj):
         return self
     async def delete(self):
         """
-        #TODO add comment
+        Deletes the customer_role from the database.
+        Raises:
+            AttributeError: If the customer_role is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -470,7 +581,13 @@ class CustomerRoleBusObj(BaseBusObj):
             self.customer_role = None
     async def randomize_properties(self):
         """
-        #TODO add comment
+        Randomizes the properties of the customer_role object.
+        This method generates random values for various
+        properties of the customer_role object
+        Returns:
+            self: The current instance of the CustomerRole class.
+        Raises:
+            AttributeError: If the customer_role object is not initialized.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -488,7 +605,11 @@ class CustomerRoleBusObj(BaseBusObj):
         return self
     def get_customer_role_obj(self) -> CustomerRole:
         """
-        #TODO add comment
+        Returns the customer_role object.
+        Raises:
+            AttributeError: If the customer_role object is not initialized.
+        Returns:
+            CustomerRole: The customer_role object.
         """
         if not self.customer_role:
             raise AttributeError(
@@ -497,7 +618,11 @@ class CustomerRoleBusObj(BaseBusObj):
         return self.customer_role
     def is_equal(self, customer_role: CustomerRole) -> bool:
         """
-        #TODO add comment
+        Checks if the current customer_role is equal to the given customer_role.
+        Args:
+            customer_role (CustomerRole): The customer_role to compare with.
+        Returns:
+            bool: True if the customer_roles are equal, False otherwise.
         """
         customer_role_manager = CustomerRoleManager(self._session_context)
         my_customer_role = self.get_customer_role_obj()
@@ -506,7 +631,9 @@ class CustomerRoleBusObj(BaseBusObj):
     # CustomerID
     async def get_customer_id_rel_obj(self) -> models.Customer:
         """
-        #TODO add comment
+        Retrieves the related Customer object based on the customer_id.
+        Returns:
+            An instance of the Customer model representing the related customer.
         """
         customer_manager = managers_and_enums.CustomerManager(self._session_context)
         customer_obj = await customer_manager.get_by_id(self.customer_id)
@@ -516,7 +643,9 @@ class CustomerRoleBusObj(BaseBusObj):
     # RoleID
     async def get_role_id_rel_obj(self) -> models.Role:
         """
-        #TODO add comment
+        Retrieves the related Role object based on the foreign key ID.
+        Returns:
+            The related Role object.
         """
         role_manager = managers_and_enums.RoleManager(
             self._session_context)
@@ -527,33 +656,46 @@ class CustomerRoleBusObj(BaseBusObj):
 # endset
     def get_obj(self) -> CustomerRole:
         """
-        #TODO add comment
+        Returns the CustomerRole object.
+        :return: The CustomerRole object.
+        :rtype: CustomerRole
         """
         return self.customer_role
     def get_object_name(self) -> str:
         """
-        #TODO add comment
+        Returns the name of the object.
+        :return: The name of the object.
+        :rtype: str
         """
         return "customer_role"
     def get_id(self) -> int:
         """
-        #TODO add comment
+        Returns the ID of the customer_role.
+        :return: The ID of the customer_role.
+        :rtype: int
         """
         return self.customer_role_id
     # CustomerID
     async def get_parent_name(self) -> str:
         """
-        #TODO add comment
+        Get the name of the parent customer_role.
+        Returns:
+            str: The name of the parent customer_role.
         """
         return 'Customer'
     async def get_parent_code(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Get the parent code of the customer_role.
+        Returns:
+            The parent code of the customer_role as a UUID.
         """
         return self.customer_code_peek
     async def get_parent_obj(self) -> models.Customer:
         """
-        #TODO add comment
+        Get the parent object of the current customer_role.
+        Returns:
+            The parent object of the current customer_role,
+            which is an instance of the Customer model.
         """
         customer = await self.get_customer_id_rel_obj()
         return customer
@@ -567,7 +709,12 @@ class CustomerRoleBusObj(BaseBusObj):
         obj_list: List[CustomerRole]
     ):
         """
-        #TODO add comment
+        Convert a list of CustomerRole objects to a list of CustomerRoleBusObj objects.
+        Args:
+            session_context (SessionContext): The session context.
+            obj_list (List[CustomerRole]): The list of CustomerRole objects to convert.
+        Returns:
+            List[CustomerRoleBusObj]: The list of converted CustomerRoleBusObj objects.
         """
         result = list()
         for customer_role in obj_list:

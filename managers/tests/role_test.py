@@ -311,7 +311,13 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent role.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent role,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param role_manager: The instance of the RoleManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await role_manager.delete(999)
@@ -323,7 +329,21 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a role
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `role_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            role_manager (RoleManager): An instance of the
+                `RoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await role_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `RoleManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of roles.
+        Steps:
+        1. Call the `get_list` method of the
+            `role_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 role objects using the
+            `RoleFactory.create_async` method.
+        4. Assert that the `roles_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `role_manager` instance again.
+        6. Assert that the returned list contains 5 roles.
+        7. Assert that all elements in the returned list are
+            instances of the `Role` class.
         """
         roles = await role_manager.get_list()
         assert len(roles) == 0
@@ -352,7 +387,15 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the RoleManager class.
+        Args:
+            role_manager (RoleManager): An instance of the
+                RoleManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         role = await RoleFactory.build_async(session)
         json_data = role_manager.to_json(role)
@@ -364,7 +407,13 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the RoleManager class.
+        Args:
+            role_manager (RoleManager): An instance of the
+                RoleManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         role = await RoleFactory.build_async(session)
         dict_data = role_manager.to_dict(role)
@@ -376,7 +425,21 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `RoleManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `RoleManager` class.
+        It creates a role using the `RoleFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        role is an instance of the `Role` class and has
+        the same code as the original role.
+        Args:
+            role_manager (RoleManager): An instance of the
+                `RoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         role = await RoleFactory.create_async(session)
         json_data = role_manager.to_json(role)
@@ -390,7 +453,19 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `RoleManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a role object.
+        Args:
+            role_manager (RoleManager): An instance
+                of the `RoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         role = await RoleFactory.create_async(session)
         schema = RoleSchema()
@@ -406,7 +481,26 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `RoleManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple roles to the database.
+        Steps:
+        1. Generate a list of role data using the
+            `RoleFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `role_manager` instance, passing in the generated role data.
+        3. Verify that the number of roles returned is
+            equal to the number of roles added.
+        4. For each updated role, fetch the corresponding
+            role from the database.
+        5. Verify that the fetched role is an instance of the
+            `Role` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched role match the
+            customer code of the session context.
+        7. Verify that the role_id of the fetched
+            role matches the role_id of the updated role.
         """
         roles_data = [
             await RoleFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of roles.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `RoleManager` class.
+        It creates two role instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two role instances using the
+            `RoleFactory.create_async` method.
+        2. Generate new codes for the roles.
+        3. Update the roles' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            role_manager (RoleManager): An instance of the
+                `RoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking role instances
         role1 = await RoleFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the role_id is missing.
+        This test case ensures that when the role_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing role_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No roles to update since role_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a role is not found.
+        This test case performs the following steps:
+        1. Defines a list of role updates, where each update
+            contains a role_id and a code.
+        2. Calls the update_bulk method of the
+            role_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the role was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a role is not found.
         """
         # Update roles
         updates = [{"role_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param role_manager: An instance of the RoleManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"role_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        RoleManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple roles
+        from the database.
+        Steps:
+        1. Create two role objects using the RoleFactory.
+        2. Delete the roles using the delete_bulk method
+            of the role_manager.
+        3. Verify that the delete operation was successful by
+            checking if the roles no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The roles should no longer exist in the database.
         """
         role1 = await RoleFactory.create_async(session=session)
         role2 = await RoleFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        roles when some roles are not found.
+        Steps:
+        1. Create a role using the RoleFactory.
+        2. Assert that the created role is an instance of the
+            Role class.
+        3. Define a list of role IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk roles.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        RoleManager raises an exception
+        when some roles with the specified IDs are
+        not found in the database.
         """
         role1 = await RoleFactory.create_async(session=session)
         assert isinstance(role1, Role)
@@ -566,7 +734,15 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        roles with an empty list.
+        Args:
+            role_manager (RoleManager): The instance of the
+                RoleManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete roles with an empty list
         role_ids = []
@@ -580,7 +756,17 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid role IDs are provided.
+        Args:
+            role_manager (RoleManager): The instance of the
+                RoleManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         role_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the RoleManager class.
+        This test case creates 5 role objects using the
+        RoleFactory and checks if the count method
+        returns the correct count of roles.
+        Steps:
+        1. Create 5 role objects using the RoleFactory.
+        2. Call the count method of the role_manager.
+        3. Assert that the count is equal to 5.
         """
         roles_data = (
             [await RoleFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        RoleManager class returns 0 when the database is empty.
+        Args:
+            role_manager (RoleManager): An instance of the
+                RoleManager class.
+        Returns:
+            None
         """
         count = await role_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of roles
+        sorted by the '_role_id' attribute in ascending order.
+        Steps:
+        1. Add roles to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_role_id'.
+        3. Verify that the returned list of roles is
+            sorted by the '_role_id' attribute.
         """
         # Add roles
         roles_data = (
@@ -634,7 +844,16 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of roles in descending order.
+        Steps:
+        1. Create a list of roles using the RoleFactory.
+        2. Assert that the roles_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="role_id" and order="desc".
+        4. Assert that the role_ids of the
+            sorted_roles are in descending order.
         """
         # Add roles
         roles_data = (
@@ -651,7 +870,16 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            role_manager (RoleManager): The instance of the
+                RoleManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await role_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            role_manager (RoleManager): An instance of the
+                RoleManager class.
+        Returns:
+            None
         """
         sorted_roles = await role_manager.get_sorted_list(sort_by="role_id")
         assert len(sorted_roles) == 0
@@ -715,7 +951,15 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent role.
+        Args:
+            role_manager (RoleManager): The instance of the
+                RoleManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the role refresh operation raises an exception.
+        Returns:
+            None
         """
         role = Role(role_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a role exists using the manager function.
+        Args:
+            role_manager (RoleManager): The role manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a role
         role1 = await RoleFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        RoleManager class correctly compares two roles.
+        Args:
+            role_manager (RoleManager): An instance of the
+                RoleManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a role
         role1 = await RoleFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case to check if a role with a
+        non-existent ID exists in the database.
+        Args:
+            role_manager (RoleManager): The
+                instance of the RoleManager class.
+        Returns:
+            bool: True if the role exists, False otherwise.
         """
         non_existent_id = 999
         assert await role_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            role_manager (RoleManager): The instance
+                of the RoleManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

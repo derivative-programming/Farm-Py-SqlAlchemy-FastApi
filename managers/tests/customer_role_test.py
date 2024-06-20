@@ -311,7 +311,13 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent customer_role.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent customer_role,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param customer_role_manager: The instance of the CustomerRoleManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await customer_role_manager.delete(999)
@@ -323,7 +329,21 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a customer_role
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `customer_role_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                `CustomerRoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await customer_role_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `CustomerRoleManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of customer_roles.
+        Steps:
+        1. Call the `get_list` method of the
+            `customer_role_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 customer_role objects using the
+            `CustomerRoleFactory.create_async` method.
+        4. Assert that the `customer_roles_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `customer_role_manager` instance again.
+        6. Assert that the returned list contains 5 customer_roles.
+        7. Assert that all elements in the returned list are
+            instances of the `CustomerRole` class.
         """
         customer_roles = await customer_role_manager.get_list()
         assert len(customer_roles) == 0
@@ -352,7 +387,15 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the CustomerRoleManager class.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                CustomerRoleManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         customer_role = await CustomerRoleFactory.build_async(session)
         json_data = customer_role_manager.to_json(customer_role)
@@ -364,7 +407,13 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the CustomerRoleManager class.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                CustomerRoleManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         customer_role = await CustomerRoleFactory.build_async(session)
         dict_data = customer_role_manager.to_dict(customer_role)
@@ -376,7 +425,21 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `CustomerRoleManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `CustomerRoleManager` class.
+        It creates a customer_role using the `CustomerRoleFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        customer_role is an instance of the `CustomerRole` class and has
+        the same code as the original customer_role.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                `CustomerRoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         customer_role = await CustomerRoleFactory.create_async(session)
         json_data = customer_role_manager.to_json(customer_role)
@@ -390,7 +453,19 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `CustomerRoleManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a customer_role object.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance
+                of the `CustomerRoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         customer_role = await CustomerRoleFactory.create_async(session)
         schema = CustomerRoleSchema()
@@ -406,7 +481,26 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `CustomerRoleManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple customer_roles to the database.
+        Steps:
+        1. Generate a list of customer_role data using the
+            `CustomerRoleFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `customer_role_manager` instance, passing in the generated customer_role data.
+        3. Verify that the number of customer_roles returned is
+            equal to the number of customer_roles added.
+        4. For each updated customer_role, fetch the corresponding
+            customer_role from the database.
+        5. Verify that the fetched customer_role is an instance of the
+            `CustomerRole` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched customer_role match the
+            customer code of the session context.
+        7. Verify that the customer_role_id of the fetched
+            customer_role matches the customer_role_id of the updated customer_role.
         """
         customer_roles_data = [
             await CustomerRoleFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of customer_roles.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `CustomerRoleManager` class.
+        It creates two customer_role instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two customer_role instances using the
+            `CustomerRoleFactory.create_async` method.
+        2. Generate new codes for the customer_roles.
+        3. Update the customer_roles' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                `CustomerRoleManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking customer_role instances
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the customer_role_id is missing.
+        This test case ensures that when the customer_role_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing customer_role_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No customer_roles to update since customer_role_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a customer_role is not found.
+        This test case performs the following steps:
+        1. Defines a list of customer_role updates, where each update
+            contains a customer_role_id and a code.
+        2. Calls the update_bulk method of the
+            customer_role_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the customer_role was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a customer_role is not found.
         """
         # Update customer_roles
         updates = [{"customer_role_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param customer_role_manager: An instance of the CustomerRoleManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"customer_role_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        CustomerRoleManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple customer_roles
+        from the database.
+        Steps:
+        1. Create two customer_role objects using the CustomerRoleFactory.
+        2. Delete the customer_roles using the delete_bulk method
+            of the customer_role_manager.
+        3. Verify that the delete operation was successful by
+            checking if the customer_roles no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The customer_roles should no longer exist in the database.
         """
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
         customer_role2 = await CustomerRoleFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        customer_roles when some customer_roles are not found.
+        Steps:
+        1. Create a customer_role using the CustomerRoleFactory.
+        2. Assert that the created customer_role is an instance of the
+            CustomerRole class.
+        3. Define a list of customer_role IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk customer_roles.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        CustomerRoleManager raises an exception
+        when some customer_roles with the specified IDs are
+        not found in the database.
         """
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
         assert isinstance(customer_role1, CustomerRole)
@@ -566,7 +734,15 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        customer_roles with an empty list.
+        Args:
+            customer_role_manager (CustomerRoleManager): The instance of the
+                CustomerRoleManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete customer_roles with an empty list
         customer_role_ids = []
@@ -580,7 +756,17 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid customer_role IDs are provided.
+        Args:
+            customer_role_manager (CustomerRoleManager): The instance of the
+                CustomerRoleManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         customer_role_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the CustomerRoleManager class.
+        This test case creates 5 customer_role objects using the
+        CustomerRoleFactory and checks if the count method
+        returns the correct count of customer_roles.
+        Steps:
+        1. Create 5 customer_role objects using the CustomerRoleFactory.
+        2. Call the count method of the customer_role_manager.
+        3. Assert that the count is equal to 5.
         """
         customer_roles_data = (
             [await CustomerRoleFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        CustomerRoleManager class returns 0 when the database is empty.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                CustomerRoleManager class.
+        Returns:
+            None
         """
         count = await customer_role_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of customer_roles
+        sorted by the '_customer_role_id' attribute in ascending order.
+        Steps:
+        1. Add customer_roles to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_customer_role_id'.
+        3. Verify that the returned list of customer_roles is
+            sorted by the '_customer_role_id' attribute.
         """
         # Add customer_roles
         customer_roles_data = (
@@ -634,7 +844,16 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of customer_roles in descending order.
+        Steps:
+        1. Create a list of customer_roles using the CustomerRoleFactory.
+        2. Assert that the customer_roles_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="customer_role_id" and order="desc".
+        4. Assert that the customer_role_ids of the
+            sorted_customer_roles are in descending order.
         """
         # Add customer_roles
         customer_roles_data = (
@@ -651,7 +870,16 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            customer_role_manager (CustomerRoleManager): The instance of the
+                CustomerRoleManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await customer_role_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                CustomerRoleManager class.
+        Returns:
+            None
         """
         sorted_customer_roles = await customer_role_manager.get_sorted_list(sort_by="customer_role_id")
         assert len(sorted_customer_roles) == 0
@@ -715,7 +951,15 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent customer_role.
+        Args:
+            customer_role_manager (CustomerRoleManager): The instance of the
+                CustomerRoleManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the customer_role refresh operation raises an exception.
+        Returns:
+            None
         """
         customer_role = CustomerRole(customer_role_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a customer_role exists using the manager function.
+        Args:
+            customer_role_manager (CustomerRoleManager): The customer_role manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a customer_role
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        CustomerRoleManager class correctly compares two customer_roles.
+        Args:
+            customer_role_manager (CustomerRoleManager): An instance of the
+                CustomerRoleManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a customer_role
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case to check if a customer_role with a
+        non-existent ID exists in the database.
+        Args:
+            customer_role_manager (CustomerRoleManager): The
+                instance of the CustomerRoleManager class.
+        Returns:
+            bool: True if the customer_role exists, False otherwise.
         """
         non_existent_id = 999
         assert await customer_role_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            customer_role_manager (CustomerRoleManager): The instance
+                of the CustomerRoleManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
@@ -864,7 +1135,23 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_role_id` method
+        when a customer_role with a specific role_id exists.
+        Steps:
+        1. Create a customer_role using the CustomerRoleFactory.
+        2. Fetch the customer_role using the
+            `get_by_role_id` method of the customer_role_manager.
+        3. Assert that the fetched customer_roles list has a length of 1.
+        4. Assert that the first element in the fetched
+            customer_roles list is an instance of the CustomerRole class.
+        5. Assert that the code of the fetched customer_role
+            matches the code of the created customer_role.
+        6. Execute a select statement to fetch the
+            Role object associated with the role_id.
+        7. Assert that the fetched role is an instance of the Role class.
+        8. Assert that the role_code_peek
+            of the fetched customer_role matches the code of the fetched role.
         """
         # Add a customer_role with a specific role_id
         customer_role1 = await CustomerRoleFactory.create_async(session=session)

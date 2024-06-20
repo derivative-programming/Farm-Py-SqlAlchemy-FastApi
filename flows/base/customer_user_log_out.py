@@ -17,7 +17,8 @@ from managers.org_customer import OrgCustomerManager
 from .base_flow import BaseFlow
 class BaseFlowCustomerUserLogOut(BaseFlow):
     """
-    Base class for CustomerUserLogOut flow. Contains some validaiton and security check logic
+    Base class for CustomerUserLogOut flow. Contains
+    some validaiton and security check logic
     """
     def __init__(self, session_context: SessionContext):
         """

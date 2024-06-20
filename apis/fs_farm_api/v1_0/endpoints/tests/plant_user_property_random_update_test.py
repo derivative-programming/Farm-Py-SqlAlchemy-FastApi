@@ -266,9 +266,12 @@ async def test_submit_endpoint_method_failure(
 ):
     """
     Test the failure of the submit endpoint method.
-    This test case checks the behavior of the submit endpoint method when it fails to delete a plant user.
-    It creates a plant using the PlantFactory, generates an API token, and sends a GET request to the
-    '/api/v1_0/plant-user-property-random-update/{plant_code}' endpoint with the API key in the headers. The expected
+    This test case checks the behavior of the submit
+    endpoint method when it fails to delete a plant user.
+    It creates a plant using the PlantFactory, generates
+    an API token, and sends a GET request to the
+    '/api/v1_0/plant-user-property-random-update/{plant_code}' endpoint
+    with the API key in the headers. The expected
     response status code is 405 (Method Not Allowed).
     Args:
         overridden_get_db (AsyncSession): The overridden database session.

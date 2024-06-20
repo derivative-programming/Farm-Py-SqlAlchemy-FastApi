@@ -81,7 +81,7 @@ class TacRegisterPostModelResponse(PostResponse):
         description="Customer Code")
     email: str = Field(
         default="",
-        description="Output Some Email")
+        description="Email")
     user_code_value: UUID4 = Field(
         default=uuid.UUID(int=0),
         description="User Code Value")
@@ -90,10 +90,10 @@ class TacRegisterPostModelResponse(PostResponse):
         description="UTC Offset In Minutes")
     role_name_csv_list: str = Field(
         default="",
-        description="Output Some Role Name CSV List")
+        description="Role Name CSV List")
     api_key: str = Field(
         default="",
-        description="Output Some Api Key")
+        description="Api Key")
 # endset
 # endset
     def load_flow_response(self, data: FlowTacRegisterResult):

@@ -1,6 +1,6 @@
 # business/pac.py
 """
-    #TODO add comment
+This module contains the PacBusObj class, which represents the business object for a Pac.
 """
 from decimal import Decimal
 import random
@@ -32,7 +32,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Pac object is not initialized")
 class PacInvalidInitError(Exception):
     """
-    #TODO add comment
+    Exception raised when the Pac object is not initialized properly.
     """
 class PacBusObj(BaseBusObj):
     """
@@ -40,6 +40,11 @@ class PacBusObj(BaseBusObj):
     It requires a valid session context for initialization.
     """
     def __init__(self, session_context: SessionContext):
+        """
+        Initializes a new instance of the PacBusObj class.
+        :param session_context: The session context.
+        :raises ValueError: If the session is not provided.
+        """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -49,6 +54,7 @@ class PacBusObj(BaseBusObj):
         """
         Get the pac ID from the Pac object.
         :return: The pac ID.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -59,7 +65,9 @@ class PacBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        #TODO add comment
+        Get the code from the Pac object.
+        :return: The code.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -69,7 +77,10 @@ class PacBusObj(BaseBusObj):
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
-        #TODO add comment
+        Set the code for the Pac object.
+        :param value: The code value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises ValueError: If the code is not a UUID.
         """
         if not self.pac:
             raise AttributeError(
@@ -82,7 +93,9 @@ class PacBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        #TODO add comment
+        Get the last change code from the Pac object.
+        :return: The last change code.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -92,7 +105,10 @@ class PacBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        #TODO add comment
+        Set the last change code for the Pac object.
+        :param value: The last change code value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises ValueError: If the last change code is not an integer.
         """
         if not self.pac:
             raise AttributeError(
@@ -105,7 +121,9 @@ class PacBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        #TODO add comment
+        Get the insert user ID from the Pac object.
+        :return: The insert user ID.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -115,7 +133,10 @@ class PacBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the insert user ID for the Pac object.
+        :param value: The insert user ID value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.pac:
             raise AttributeError(
@@ -128,7 +149,9 @@ class PacBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        #TODO add comment
+        Get the last update user ID from the Pac object.
+        :return: The last update user ID.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -138,7 +161,10 @@ class PacBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the last update user ID for the Pac object.
+        :param value: The last update user ID value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.pac:
             raise AttributeError(
@@ -152,7 +178,9 @@ class PacBusObj(BaseBusObj):
     @property
     def description(self):
         """
-        #TODO add comment
+        Get the Description from the Pac object.
+        :return: The Description.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -164,7 +192,10 @@ class PacBusObj(BaseBusObj):
     @description.setter
     def description(self, value):
         """
-        #TODO add comment
+        Set the Description for the Pac object.
+        :param value: The Description value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises AssertionError: If the Description is not a string.
         """
         if not self.pac:
             raise AttributeError(
@@ -174,7 +205,9 @@ class PacBusObj(BaseBusObj):
         self.pac.description = value
     def set_prop_description(self, value: str):
         """
-        #TODO add comment
+        Set the Description for the Pac object.
+        :param value: The Description value.
+        :return: The updated PacBusObj instance.
         """
         self.description = value
         return self
@@ -211,7 +244,9 @@ class PacBusObj(BaseBusObj):
     @property
     def is_active(self):
         """
-        #TODO add comment
+        Get the Is Active flag from the Pac object.
+        :return: The Is Active flag.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -221,7 +256,10 @@ class PacBusObj(BaseBusObj):
     @is_active.setter
     def is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the Pac object.
+        :param value: The Is Active flag value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises ValueError: If the Is Active flag is not a boolean.
         """
         if not self.pac:
             raise AttributeError(
@@ -232,7 +270,9 @@ class PacBusObj(BaseBusObj):
         self.pac.is_active = value
     def set_prop_is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the Pac object.
+        :param value: The Is Active flag value.
+        :return: The updated PacBusObj instance.
         """
         self.is_active = value
         return self
@@ -240,7 +280,9 @@ class PacBusObj(BaseBusObj):
     @property
     def lookup_enum_name(self):
         """
-        #TODO add comment
+        Get the Lookup Enum Name from the Pac object.
+        :return: The Lookup Enum Name.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -252,7 +294,10 @@ class PacBusObj(BaseBusObj):
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
         """
-        #TODO add comment
+        Set the Lookup Enum Name for the Pac object.
+        :param value: The Lookup Enum Name value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises AssertionError: If the Lookup Enum Name is not a string.
         """
         if not self.pac:
             raise AttributeError(
@@ -262,7 +307,9 @@ class PacBusObj(BaseBusObj):
         self.pac.lookup_enum_name = value
     def set_prop_lookup_enum_name(self, value: str):
         """
-        #TODO add comment
+        Set the Lookup Enum Name for the Pac object.
+        :param value: The Lookup Enum Name value.
+        :return: The updated PacBusObj instance.
         """
         self.lookup_enum_name = value
         return self
@@ -270,7 +317,9 @@ class PacBusObj(BaseBusObj):
     @property
     def name(self):
         """
-        #TODO add comment
+        Get the Name from the Pac object.
+        :return: The Name.
+        :raises AttributeError: If the Pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -282,7 +331,10 @@ class PacBusObj(BaseBusObj):
     @name.setter
     def name(self, value):
         """
-        #TODO add comment
+        Set the Name for the Pac object.
+        :param value: The Name value.
+        :raises AttributeError: If the Pac object is not initialized.
+        :raises AssertionError: If the Name is not a string.
         """
         if not self.pac:
             raise AttributeError(
@@ -292,7 +344,9 @@ class PacBusObj(BaseBusObj):
         self.pac.name = value
     def set_prop_name(self, value: str):
         """
-        #TODO add comment
+        Set the Name for the Pac object.
+        :param value: The Name value.
+        :return: The updated PacBusObj instance.
         """
         self.name = value
         return self
@@ -307,7 +361,11 @@ class PacBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        #TODO add comment
+        Inserts the UTC date and time into the pac object.
+        Raises:
+            AttributeError: If the pac object is not initialized.
+        Returns:
+            The UTC date and time inserted into the pac object.
         """
         if not self.pac:
             raise AttributeError(
@@ -317,7 +375,12 @@ class PacBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        #TODO add comment
+        Inserts the UTC date and time for the pac.
+        Args:
+            value (datetime): The UTC date and time to be inserted.
+                It should be a datetime object or None.
+        Raises:
+            AttributeError: If the pac is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -330,7 +393,11 @@ class PacBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        #TODO add comment
+        Returns the last update UTC date and time of the pac.
+        Raises:
+            AttributeError: If the pac is not initialized.
+        Returns:
+            datetime: The last update UTC date and time of the pac.
         """
         if not self.pac:
             raise AttributeError(
@@ -340,7 +407,13 @@ class PacBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        #TODO add comment
+        Sets the last update UTC date and time for the pac.
+        Args:
+            value (datetime): The datetime object
+                representing the last update UTC date and time.
+                Pass None to unset the value.
+        Raises:
+            AttributeError: If the pac is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -432,7 +505,14 @@ class PacBusObj(BaseBusObj):
     @property
     def lookup_enum(self) -> managers_and_enums.PacEnum:
         """
-        #TODO add comment
+        Returns the corresponding PacEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the pac
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.PacEnum:
+                The corresponding PacEnum value.
         """
         if not self.pac:
             raise AttributeError(
@@ -471,36 +551,55 @@ class PacBusObj(BaseBusObj):
 
     def get_session_context(self):
         """
-        #TODO add comment
+        Returns the session context.
+        :return: The session context.
+        :rtype: SessionContext
         """
         return self._session_context
     async def refresh(self):
         """
-        #TODO add comment
+        Refreshes the pac object by fetching
+        the latest data from the database.
+        Returns:
+            The updated pac object.
         """
         pac_manager = PacManager(self._session_context)
         self.pac = await pac_manager.refresh(self.pac)
         return self
     def is_valid(self):
         """
-        #TODO add comment
+        Check if the pac is valid.
+        Returns:
+            bool: True if the pac is valid, False otherwise.
         """
         return self.pac is not None
     def to_dict(self):
         """
-        #TODO add comment
+        Converts the Pac object to a dictionary representation.
+        Returns:
+            dict: A dictionary representation of the Pac object.
         """
         pac_manager = PacManager(self._session_context)
         return pac_manager.to_dict(self.pac)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the pac object to a JSON representation.
+        Returns:
+            str: The JSON representation of the pac object.
         """
         pac_manager = PacManager(self._session_context)
         return pac_manager.to_json(self.pac)
     async def save(self):
         """
-        #TODO add comment
+        Saves the pac object to the database.
+        If the pac object is not initialized, an AttributeError is raised.
+        If the pac_id is greater than 0, the pac is
+        updated in the database.
+        If the pac_id is 0, the pac is added to the database.
+        Returns:
+            The updated or added pac object.
+        Raises:
+            AttributeError: If the pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
@@ -514,7 +613,9 @@ class PacBusObj(BaseBusObj):
         return self
     async def delete(self):
         """
-        #TODO add comment
+        Deletes the pac from the database.
+        Raises:
+            AttributeError: If the pac is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -526,7 +627,13 @@ class PacBusObj(BaseBusObj):
             self.pac = None
     async def randomize_properties(self):
         """
-        #TODO add comment
+        Randomizes the properties of the pac object.
+        This method generates random values for various
+        properties of the pac object
+        Returns:
+            self: The current instance of the Pac class.
+        Raises:
+            AttributeError: If the pac object is not initialized.
         """
         if not self.pac:
             raise AttributeError(
@@ -546,7 +653,11 @@ class PacBusObj(BaseBusObj):
         return self
     def get_pac_obj(self) -> Pac:
         """
-        #TODO add comment
+        Returns the pac object.
+        Raises:
+            AttributeError: If the pac object is not initialized.
+        Returns:
+            Pac: The pac object.
         """
         if not self.pac:
             raise AttributeError(
@@ -555,7 +666,11 @@ class PacBusObj(BaseBusObj):
         return self.pac
     def is_equal(self, pac: Pac) -> bool:
         """
-        #TODO add comment
+        Checks if the current pac is equal to the given pac.
+        Args:
+            pac (Pac): The pac to compare with.
+        Returns:
+            bool: True if the pacs are equal, False otherwise.
         """
         pac_manager = PacManager(self._session_context)
         my_pac = self.get_pac_obj()
@@ -569,17 +684,23 @@ class PacBusObj(BaseBusObj):
 # endset
     def get_obj(self) -> Pac:
         """
-        #TODO add comment
+        Returns the Pac object.
+        :return: The Pac object.
+        :rtype: Pac
         """
         return self.pac
     def get_object_name(self) -> str:
         """
-        #TODO add comment
+        Returns the name of the object.
+        :return: The name of the object.
+        :rtype: str
         """
         return "pac"
     def get_id(self) -> int:
         """
-        #TODO add comment
+        Returns the ID of the pac.
+        :return: The ID of the pac.
+        :rtype: int
         """
         return self.pac_id
     # description,
@@ -594,7 +715,12 @@ class PacBusObj(BaseBusObj):
         obj_list: List[Pac]
     ):
         """
-        #TODO add comment
+        Convert a list of Pac objects to a list of PacBusObj objects.
+        Args:
+            session_context (SessionContext): The session context.
+            obj_list (List[Pac]): The list of Pac objects to convert.
+        Returns:
+            List[PacBusObj]: The list of converted PacBusObj objects.
         """
         result = list()
         for pac in obj_list:

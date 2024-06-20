@@ -311,7 +311,13 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent error_log.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent error_log,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param error_log_manager: The instance of the ErrorLogManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await error_log_manager.delete(999)
@@ -323,7 +329,21 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a error_log
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `error_log_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                `ErrorLogManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await error_log_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `ErrorLogManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of error_logs.
+        Steps:
+        1. Call the `get_list` method of the
+            `error_log_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 error_log objects using the
+            `ErrorLogFactory.create_async` method.
+        4. Assert that the `error_logs_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `error_log_manager` instance again.
+        6. Assert that the returned list contains 5 error_logs.
+        7. Assert that all elements in the returned list are
+            instances of the `ErrorLog` class.
         """
         error_logs = await error_log_manager.get_list()
         assert len(error_logs) == 0
@@ -352,7 +387,15 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the ErrorLogManager class.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                ErrorLogManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         error_log = await ErrorLogFactory.build_async(session)
         json_data = error_log_manager.to_json(error_log)
@@ -364,7 +407,13 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the ErrorLogManager class.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                ErrorLogManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         error_log = await ErrorLogFactory.build_async(session)
         dict_data = error_log_manager.to_dict(error_log)
@@ -376,7 +425,21 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `ErrorLogManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `ErrorLogManager` class.
+        It creates a error_log using the `ErrorLogFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        error_log is an instance of the `ErrorLog` class and has
+        the same code as the original error_log.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                `ErrorLogManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         error_log = await ErrorLogFactory.create_async(session)
         json_data = error_log_manager.to_json(error_log)
@@ -390,7 +453,19 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `ErrorLogManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a error_log object.
+        Args:
+            error_log_manager (ErrorLogManager): An instance
+                of the `ErrorLogManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         error_log = await ErrorLogFactory.create_async(session)
         schema = ErrorLogSchema()
@@ -406,7 +481,26 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `ErrorLogManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple error_logs to the database.
+        Steps:
+        1. Generate a list of error_log data using the
+            `ErrorLogFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `error_log_manager` instance, passing in the generated error_log data.
+        3. Verify that the number of error_logs returned is
+            equal to the number of error_logs added.
+        4. For each updated error_log, fetch the corresponding
+            error_log from the database.
+        5. Verify that the fetched error_log is an instance of the
+            `ErrorLog` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched error_log match the
+            customer code of the session context.
+        7. Verify that the error_log_id of the fetched
+            error_log matches the error_log_id of the updated error_log.
         """
         error_logs_data = [
             await ErrorLogFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of error_logs.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `ErrorLogManager` class.
+        It creates two error_log instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two error_log instances using the
+            `ErrorLogFactory.create_async` method.
+        2. Generate new codes for the error_logs.
+        3. Update the error_logs' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                `ErrorLogManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking error_log instances
         error_log1 = await ErrorLogFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the error_log_id is missing.
+        This test case ensures that when the error_log_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing error_log_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No error_logs to update since error_log_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a error_log is not found.
+        This test case performs the following steps:
+        1. Defines a list of error_log updates, where each update
+            contains a error_log_id and a code.
+        2. Calls the update_bulk method of the
+            error_log_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the error_log was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a error_log is not found.
         """
         # Update error_logs
         updates = [{"error_log_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param error_log_manager: An instance of the ErrorLogManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"error_log_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        ErrorLogManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple error_logs
+        from the database.
+        Steps:
+        1. Create two error_log objects using the ErrorLogFactory.
+        2. Delete the error_logs using the delete_bulk method
+            of the error_log_manager.
+        3. Verify that the delete operation was successful by
+            checking if the error_logs no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The error_logs should no longer exist in the database.
         """
         error_log1 = await ErrorLogFactory.create_async(session=session)
         error_log2 = await ErrorLogFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        error_logs when some error_logs are not found.
+        Steps:
+        1. Create a error_log using the ErrorLogFactory.
+        2. Assert that the created error_log is an instance of the
+            ErrorLog class.
+        3. Define a list of error_log IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk error_logs.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        ErrorLogManager raises an exception
+        when some error_logs with the specified IDs are
+        not found in the database.
         """
         error_log1 = await ErrorLogFactory.create_async(session=session)
         assert isinstance(error_log1, ErrorLog)
@@ -566,7 +734,15 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        error_logs with an empty list.
+        Args:
+            error_log_manager (ErrorLogManager): The instance of the
+                ErrorLogManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete error_logs with an empty list
         error_log_ids = []
@@ -580,7 +756,17 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid error_log IDs are provided.
+        Args:
+            error_log_manager (ErrorLogManager): The instance of the
+                ErrorLogManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         error_log_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the ErrorLogManager class.
+        This test case creates 5 error_log objects using the
+        ErrorLogFactory and checks if the count method
+        returns the correct count of error_logs.
+        Steps:
+        1. Create 5 error_log objects using the ErrorLogFactory.
+        2. Call the count method of the error_log_manager.
+        3. Assert that the count is equal to 5.
         """
         error_logs_data = (
             [await ErrorLogFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        ErrorLogManager class returns 0 when the database is empty.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                ErrorLogManager class.
+        Returns:
+            None
         """
         count = await error_log_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of error_logs
+        sorted by the '_error_log_id' attribute in ascending order.
+        Steps:
+        1. Add error_logs to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_error_log_id'.
+        3. Verify that the returned list of error_logs is
+            sorted by the '_error_log_id' attribute.
         """
         # Add error_logs
         error_logs_data = (
@@ -634,7 +844,16 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of error_logs in descending order.
+        Steps:
+        1. Create a list of error_logs using the ErrorLogFactory.
+        2. Assert that the error_logs_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="error_log_id" and order="desc".
+        4. Assert that the error_log_ids of the
+            sorted_error_logs are in descending order.
         """
         # Add error_logs
         error_logs_data = (
@@ -651,7 +870,16 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            error_log_manager (ErrorLogManager): The instance of the
+                ErrorLogManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await error_log_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                ErrorLogManager class.
+        Returns:
+            None
         """
         sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="error_log_id")
         assert len(sorted_error_logs) == 0
@@ -715,7 +951,15 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent error_log.
+        Args:
+            error_log_manager (ErrorLogManager): The instance of the
+                ErrorLogManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the error_log refresh operation raises an exception.
+        Returns:
+            None
         """
         error_log = ErrorLog(error_log_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a error_log exists using the manager function.
+        Args:
+            error_log_manager (ErrorLogManager): The error_log manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        ErrorLogManager class correctly compares two error_logs.
+        Args:
+            error_log_manager (ErrorLogManager): An instance of the
+                ErrorLogManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a error_log
         error_log1 = await ErrorLogFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case to check if a error_log with a
+        non-existent ID exists in the database.
+        Args:
+            error_log_manager (ErrorLogManager): The
+                instance of the ErrorLogManager class.
+        Returns:
+            bool: True if the error_log exists, False otherwise.
         """
         non_existent_id = 999
         assert await error_log_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            error_log_manager (ErrorLogManager): The instance
+                of the ErrorLogManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

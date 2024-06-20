@@ -1,6 +1,6 @@
 # business/role.py
 """
-    #TODO add comment
+This module contains the RoleBusObj class, which represents the business object for a Role.
 """
 from decimal import Decimal
 import random
@@ -18,7 +18,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Role object is not initialized")
 class RoleInvalidInitError(Exception):
     """
-    #TODO add comment
+    Exception raised when the Role object is not initialized properly.
     """
 class RoleBusObj(BaseBusObj):
     """
@@ -26,6 +26,11 @@ class RoleBusObj(BaseBusObj):
     It requires a valid session context for initialization.
     """
     def __init__(self, session_context: SessionContext):
+        """
+        Initializes a new instance of the RoleBusObj class.
+        :param session_context: The session context.
+        :raises ValueError: If the session is not provided.
+        """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -35,6 +40,7 @@ class RoleBusObj(BaseBusObj):
         """
         Get the role ID from the Role object.
         :return: The role ID.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -45,7 +51,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        #TODO add comment
+        Get the code from the Role object.
+        :return: The code.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -55,7 +63,10 @@ class RoleBusObj(BaseBusObj):
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
-        #TODO add comment
+        Set the code for the Role object.
+        :param value: The code value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises ValueError: If the code is not a UUID.
         """
         if not self.role:
             raise AttributeError(
@@ -68,7 +79,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        #TODO add comment
+        Get the last change code from the Role object.
+        :return: The last change code.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -78,7 +91,10 @@ class RoleBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        #TODO add comment
+        Set the last change code for the Role object.
+        :param value: The last change code value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises ValueError: If the last change code is not an integer.
         """
         if not self.role:
             raise AttributeError(
@@ -91,7 +107,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        #TODO add comment
+        Get the insert user ID from the Role object.
+        :return: The insert user ID.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -101,7 +119,10 @@ class RoleBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the insert user ID for the Role object.
+        :param value: The insert user ID value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.role:
             raise AttributeError(
@@ -114,7 +135,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        #TODO add comment
+        Get the last update user ID from the Role object.
+        :return: The last update user ID.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -124,7 +147,10 @@ class RoleBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the last update user ID for the Role object.
+        :param value: The last update user ID value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.role:
             raise AttributeError(
@@ -138,7 +164,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def description(self):
         """
-        #TODO add comment
+        Get the Description from the Role object.
+        :return: The Description.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -150,7 +178,10 @@ class RoleBusObj(BaseBusObj):
     @description.setter
     def description(self, value):
         """
-        #TODO add comment
+        Set the Description for the Role object.
+        :param value: The Description value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises AssertionError: If the Description is not a string.
         """
         if not self.role:
             raise AttributeError(
@@ -160,7 +191,9 @@ class RoleBusObj(BaseBusObj):
         self.role.description = value
     def set_prop_description(self, value: str):
         """
-        #TODO add comment
+        Set the Description for the Role object.
+        :param value: The Description value.
+        :return: The updated RoleBusObj instance.
         """
         self.description = value
         return self
@@ -197,7 +230,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def is_active(self):
         """
-        #TODO add comment
+        Get the Is Active flag from the Role object.
+        :return: The Is Active flag.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -207,7 +242,10 @@ class RoleBusObj(BaseBusObj):
     @is_active.setter
     def is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the Role object.
+        :param value: The Is Active flag value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises ValueError: If the Is Active flag is not a boolean.
         """
         if not self.role:
             raise AttributeError(
@@ -218,7 +256,9 @@ class RoleBusObj(BaseBusObj):
         self.role.is_active = value
     def set_prop_is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the Role object.
+        :param value: The Is Active flag value.
+        :return: The updated RoleBusObj instance.
         """
         self.is_active = value
         return self
@@ -226,7 +266,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def lookup_enum_name(self):
         """
-        #TODO add comment
+        Get the Lookup Enum Name from the Role object.
+        :return: The Lookup Enum Name.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -238,7 +280,10 @@ class RoleBusObj(BaseBusObj):
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
         """
-        #TODO add comment
+        Set the Lookup Enum Name for the Role object.
+        :param value: The Lookup Enum Name value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises AssertionError: If the Lookup Enum Name is not a string.
         """
         if not self.role:
             raise AttributeError(
@@ -248,7 +293,9 @@ class RoleBusObj(BaseBusObj):
         self.role.lookup_enum_name = value
     def set_prop_lookup_enum_name(self, value: str):
         """
-        #TODO add comment
+        Set the Lookup Enum Name for the Role object.
+        :param value: The Lookup Enum Name value.
+        :return: The updated RoleBusObj instance.
         """
         self.lookup_enum_name = value
         return self
@@ -256,7 +303,9 @@ class RoleBusObj(BaseBusObj):
     @property
     def name(self):
         """
-        #TODO add comment
+        Get the Name from the Role object.
+        :return: The Name.
+        :raises AttributeError: If the Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -268,7 +317,10 @@ class RoleBusObj(BaseBusObj):
     @name.setter
     def name(self, value):
         """
-        #TODO add comment
+        Set the Name for the Role object.
+        :param value: The Name value.
+        :raises AttributeError: If the Role object is not initialized.
+        :raises AssertionError: If the Name is not a string.
         """
         if not self.role:
             raise AttributeError(
@@ -278,7 +330,9 @@ class RoleBusObj(BaseBusObj):
         self.role.name = value
     def set_prop_name(self, value: str):
         """
-        #TODO add comment
+        Set the Name for the Role object.
+        :param value: The Name value.
+        :return: The updated RoleBusObj instance.
         """
         self.name = value
         return self
@@ -293,7 +347,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def pac_id(self):
         """
-        #TODO add comment
+        Returns the pac ID associated with the role.
+        Raises:
+            AttributeError: If the role is not initialized.
+        Returns:
+            int: The pac ID of the role.
         """
         if not self.role:
             raise AttributeError(
@@ -303,7 +361,12 @@ class RoleBusObj(BaseBusObj):
     @pac_id.setter
     def pac_id(self, value):
         """
-        #TODO add comment
+        Sets the pac ID for the role.
+        Args:
+            value (int or None): The pac ID to be set.
+                Must be an integer or None.
+        Raises:
+            AttributeError: If the role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -314,14 +377,22 @@ class RoleBusObj(BaseBusObj):
         self.role.pac_id = value
     def set_prop_pac_id(self, value: int):
         """
-        #TODO add comment
+        Set the pac ID for the role.
+        Args:
+            value (int): The ID of the pac.
+        Returns:
+            Role: The updated Role object.
         """
         self.pac_id = value
         return self
     @property
     def pac_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Returns the pac code peek of the role.
+        Raises:
+            AttributeError: If the role is not initialized.
+        Returns:
+            uuid.UUID: The pac code peek of the role.
         """
         if not self.role:
             raise AttributeError(
@@ -338,7 +409,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        #TODO add comment
+        Inserts the UTC date and time into the role object.
+        Raises:
+            AttributeError: If the role object is not initialized.
+        Returns:
+            The UTC date and time inserted into the role object.
         """
         if not self.role:
             raise AttributeError(
@@ -348,7 +423,12 @@ class RoleBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        #TODO add comment
+        Inserts the UTC date and time for the role.
+        Args:
+            value (datetime): The UTC date and time to be inserted.
+                It should be a datetime object or None.
+        Raises:
+            AttributeError: If the role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -361,7 +441,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        #TODO add comment
+        Returns the last update UTC date and time of the role.
+        Raises:
+            AttributeError: If the role is not initialized.
+        Returns:
+            datetime: The last update UTC date and time of the role.
         """
         if not self.role:
             raise AttributeError(
@@ -371,7 +455,13 @@ class RoleBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        #TODO add comment
+        Sets the last update UTC date and time for the role.
+        Args:
+            value (datetime): The datetime object
+                representing the last update UTC date and time.
+                Pass None to unset the value.
+        Raises:
+            AttributeError: If the role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -463,7 +553,14 @@ class RoleBusObj(BaseBusObj):
     @property
     def lookup_enum(self) -> managers_and_enums.RoleEnum:
         """
-        #TODO add comment
+        Returns the corresponding RoleEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the role
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.RoleEnum:
+                The corresponding RoleEnum value.
         """
         if not self.role:
             raise AttributeError(
@@ -502,36 +599,55 @@ class RoleBusObj(BaseBusObj):
 
     def get_session_context(self):
         """
-        #TODO add comment
+        Returns the session context.
+        :return: The session context.
+        :rtype: SessionContext
         """
         return self._session_context
     async def refresh(self):
         """
-        #TODO add comment
+        Refreshes the role object by fetching
+        the latest data from the database.
+        Returns:
+            The updated role object.
         """
         role_manager = RoleManager(self._session_context)
         self.role = await role_manager.refresh(self.role)
         return self
     def is_valid(self):
         """
-        #TODO add comment
+        Check if the role is valid.
+        Returns:
+            bool: True if the role is valid, False otherwise.
         """
         return self.role is not None
     def to_dict(self):
         """
-        #TODO add comment
+        Converts the Role object to a dictionary representation.
+        Returns:
+            dict: A dictionary representation of the Role object.
         """
         role_manager = RoleManager(self._session_context)
         return role_manager.to_dict(self.role)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the role object to a JSON representation.
+        Returns:
+            str: The JSON representation of the role object.
         """
         role_manager = RoleManager(self._session_context)
         return role_manager.to_json(self.role)
     async def save(self):
         """
-        #TODO add comment
+        Saves the role object to the database.
+        If the role object is not initialized, an AttributeError is raised.
+        If the role_id is greater than 0, the role is
+        updated in the database.
+        If the role_id is 0, the role is added to the database.
+        Returns:
+            The updated or added role object.
+        Raises:
+            AttributeError: If the role object is not initialized.
         """
         if not self.role:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
@@ -545,7 +661,9 @@ class RoleBusObj(BaseBusObj):
         return self
     async def delete(self):
         """
-        #TODO add comment
+        Deletes the role from the database.
+        Raises:
+            AttributeError: If the role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -557,7 +675,13 @@ class RoleBusObj(BaseBusObj):
             self.role = None
     async def randomize_properties(self):
         """
-        #TODO add comment
+        Randomizes the properties of the role object.
+        This method generates random values for various
+        properties of the role object
+        Returns:
+            self: The current instance of the Role class.
+        Raises:
+            AttributeError: If the role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -578,7 +702,11 @@ class RoleBusObj(BaseBusObj):
         return self
     def get_role_obj(self) -> Role:
         """
-        #TODO add comment
+        Returns the role object.
+        Raises:
+            AttributeError: If the role object is not initialized.
+        Returns:
+            Role: The role object.
         """
         if not self.role:
             raise AttributeError(
@@ -587,7 +715,11 @@ class RoleBusObj(BaseBusObj):
         return self.role
     def is_equal(self, role: Role) -> bool:
         """
-        #TODO add comment
+        Checks if the current role is equal to the given role.
+        Args:
+            role (Role): The role to compare with.
+        Returns:
+            bool: True if the roles are equal, False otherwise.
         """
         role_manager = RoleManager(self._session_context)
         my_role = self.get_role_obj()
@@ -601,7 +733,9 @@ class RoleBusObj(BaseBusObj):
     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         """
-        #TODO add comment
+        Retrieves the related Pac object based on the pac_id.
+        Returns:
+            An instance of the Pac model representing the related pac.
         """
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -609,17 +743,23 @@ class RoleBusObj(BaseBusObj):
 # endset
     def get_obj(self) -> Role:
         """
-        #TODO add comment
+        Returns the Role object.
+        :return: The Role object.
+        :rtype: Role
         """
         return self.role
     def get_object_name(self) -> str:
         """
-        #TODO add comment
+        Returns the name of the object.
+        :return: The name of the object.
+        :rtype: str
         """
         return "role"
     def get_id(self) -> int:
         """
-        #TODO add comment
+        Returns the ID of the role.
+        :return: The ID of the role.
+        :rtype: int
         """
         return self.role_id
     # description,
@@ -630,17 +770,24 @@ class RoleBusObj(BaseBusObj):
     # PacID
     async def get_parent_name(self) -> str:
         """
-        #TODO add comment
+        Get the name of the parent role.
+        Returns:
+            str: The name of the parent role.
         """
         return 'Pac'
     async def get_parent_code(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Get the parent code of the role.
+        Returns:
+            The parent code of the role as a UUID.
         """
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         """
-        #TODO add comment
+        Get the parent object of the current role.
+        Returns:
+            The parent object of the current role,
+            which is an instance of the Pac model.
         """
         pac = await self.get_pac_id_rel_obj()
         return pac
@@ -651,7 +798,12 @@ class RoleBusObj(BaseBusObj):
         obj_list: List[Role]
     ):
         """
-        #TODO add comment
+        Convert a list of Role objects to a list of RoleBusObj objects.
+        Args:
+            session_context (SessionContext): The session context.
+            obj_list (List[Role]): The list of Role objects to convert.
+        Returns:
+            List[RoleBusObj]: The list of converted RoleBusObj objects.
         """
         result = list()
         for role in obj_list:

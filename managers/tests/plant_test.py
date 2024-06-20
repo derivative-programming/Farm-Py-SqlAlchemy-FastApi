@@ -393,9 +393,16 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
-        """
+        Test case to verify the behavior of deleting a nonexistent plant.
 
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent plant,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+
+        :param plant_manager: The instance of the PlantManager class.
+        :param session: The instance of the AsyncSession class.
+        """
         with pytest.raises(Exception):
             await plant_manager.delete(999)
 
@@ -408,9 +415,27 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
-        """
+        Test case to verify the behavior of deleting a plant
+        with an invalid type.
 
+        This test case ensures that when the `delete` method
+        of the `plant_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                `PlantManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+
+        Returns:
+            None
+
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
+
+        """
         with pytest.raises(Exception):
             await plant_manager.delete("999")  # type: ignore
 
@@ -423,7 +448,24 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `PlantManager` class.
+
+        This test verifies that the `get_list`
+        method returns the correct list of plants.
+
+        Steps:
+        1. Call the `get_list` method of the
+            `plant_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 plant objects using the
+            `PlantFactory.create_async` method.
+        4. Assert that the `plants_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `plant_manager` instance again.
+        6. Assert that the returned list contains 5 plants.
+        7. Assert that all elements in the returned list are
+            instances of the `Plant` class.
         """
 
         plants = await plant_manager.get_list()
@@ -447,7 +489,18 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the PlantManager class.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                PlantManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+
+        Returns:
+            None
+
+        Raises:
+            AssertionError: If the json_data is None.
         """
         plant = await PlantFactory.build_async(session)
 
@@ -462,7 +515,15 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the PlantManager class.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                PlantManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+
+        Returns:
+            None
         """
         plant = await PlantFactory.build_async(session)
 
@@ -477,7 +538,24 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `PlantManager` class.
+
+        This method tests the functionality of the
+        `from_json` method of the `PlantManager` class.
+        It creates a plant using the `PlantFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        plant is an instance of the `Plant` class and has
+        the same code as the original plant.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                `PlantManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+
+        Returns:
+            None
         """
         plant = await PlantFactory.create_async(session)
 
@@ -495,7 +573,23 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `PlantManager` class.
+
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a plant object.
+
+        Args:
+            plant_manager (PlantManager): An instance
+                of the `PlantManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+
+        Returns:
+            None
+
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         plant = await PlantFactory.create_async(session)
 
@@ -518,7 +612,29 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `PlantManager` class.
+
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple plants to the database.
+
+        Steps:
+        1. Generate a list of plant data using the
+            `PlantFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `plant_manager` instance, passing in the generated plant data.
+        3. Verify that the number of plants returned is
+            equal to the number of plants added.
+        4. For each updated plant, fetch the corresponding
+            plant from the database.
+        5. Verify that the fetched plant is an instance of the
+            `Plant` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched plant match the
+            customer code of the session context.
+        7. Verify that the plant_id of the fetched
+            plant matches the plant_id of the updated plant.
+
         """
         plants_data = [
             await PlantFactory.build_async(session) for _ in range(5)]
@@ -551,7 +667,30 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of plants.
+
+        This test case verifies the functionality of the
+        `update_bulk` method in the `PlantManager` class.
+        It creates two plant instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+
+        Steps:
+        1. Create two plant instances using the
+            `PlantFactory.create_async` method.
+        2. Generate new codes for the plants.
+        3. Update the plants' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                `PlantManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+
+        Returns:
+            None
         """
         # Mocking plant instances
         plant1 = await PlantFactory.create_async(session=session)
@@ -621,7 +760,19 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the plant_id is missing.
+
+        This test case ensures that when the plant_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+
+        Steps:
+        1. Prepare the updates list with a missing plant_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
+
         """
         # No plants to update since plant_id is missing
         updates = [{"name": "Red Rose"}]
@@ -638,7 +789,21 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a plant is not found.
+
+        This test case performs the following steps:
+        1. Defines a list of plant updates, where each update
+            contains a plant_id and a code.
+        2. Calls the update_bulk method of the
+            plant_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the plant was not found.
+        4. Rolls back the session to undo any changes made during the test.
+
+        Note: This test assumes that the update_bulk method
+        throws an exception when a plant is not found.
+
         """
 
         # Update plants
@@ -656,7 +821,17 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+
+        :param plant_manager: An instance of the PlantManager class.
+        :param session: An instance of the AsyncSession class.
         """
 
         updates = [{"plant_id": "2", "code": uuid.uuid4()}]
@@ -673,7 +848,25 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        PlantManager class.
+
+        This test verifies that the delete_bulk method
+        successfully deletes multiple plants
+        from the database.
+
+        Steps:
+        1. Create two plant objects using the PlantFactory.
+        2. Delete the plants using the delete_bulk method
+            of the plant_manager.
+        3. Verify that the delete operation was successful by
+            checking if the plants no longer exist in the database.
+
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The plants should no longer exist in the database.
+
         """
 
         plant1 = await PlantFactory.create_async(session=session)
@@ -702,9 +895,23 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
-        """
+        Test case to verify the behavior of deleting bulk
+        plants when some plants are not found.
 
+        Steps:
+        1. Create a plant using the PlantFactory.
+        2. Assert that the created plant is an instance of the
+            Plant class.
+        3. Define a list of plant IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk plants.
+        5. Rollback the session to undo any changes made during the test.
+
+        This test case ensures that the delete_bulk method of the
+        PlantManager raises an exception
+        when some plants with the specified IDs are
+        not found in the database.
+        """
         plant1 = await PlantFactory.create_async(session=session)
 
         assert isinstance(plant1, Plant)
@@ -723,7 +930,18 @@ class TestPlantManager:
         plant_manager: PlantManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        plants with an empty list.
+
+        Args:
+            plant_manager (PlantManager): The instance of the
+                PlantManager class.
+
+        Returns:
+            None
+
+        Raises:
+            AssertionError: If the result is not True.
         """
 
         # Delete plants with an empty list
@@ -740,7 +958,20 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid plant IDs are provided.
+
+        Args:
+            plant_manager (PlantManager): The instance of the
+                PlantManager class.
+            session (AsyncSession): The async session object.
+
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+
+        Returns:
+            None
         """
 
         plant_ids = ["1", 2]
@@ -757,9 +988,19 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
-        """
+        Test the basic functionality of the count method
+        in the PlantManager class.
 
+        This test case creates 5 plant objects using the
+        PlantFactory and checks if the count method
+        returns the correct count of plants.
+
+        Steps:
+        1. Create 5 plant objects using the PlantFactory.
+        2. Call the count method of the plant_manager.
+        3. Assert that the count is equal to 5.
+
+        """
         plants_data = (
             [await PlantFactory.create_async(session) for _ in range(5)])
 
@@ -775,7 +1016,17 @@ class TestPlantManager:
         plant_manager: PlantManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+
+        This test case checks if the count method of the
+        PlantManager class returns 0 when the database is empty.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                PlantManager class.
+
+        Returns:
+            None
         """
 
         count = await plant_manager.count()
@@ -789,7 +1040,19 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of plants
+        sorted by the '_plant_id' attribute in ascending order.
+
+        Steps:
+        1. Add plants to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_plant_id'.
+        3. Verify that the returned list of plants is
+            sorted by the '_plant_id' attribute.
+
         """
         # Add plants
         plants_data = (
@@ -810,7 +1073,18 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of plants in descending order.
+
+        Steps:
+        1. Create a list of plants using the PlantFactory.
+        2. Assert that the plants_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="plant_id" and order="desc".
+        4. Assert that the plant_ids of the
+            sorted_plants are in descending order.
+
         """
         # Add plants
         plants_data = (
@@ -831,7 +1105,19 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+
+        Args:
+            plant_manager (PlantManager): The instance of the
+                PlantManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+
+        Returns:
+            None
         """
 
         with pytest.raises(AttributeError):
@@ -845,7 +1131,18 @@ class TestPlantManager:
         plant_manager: PlantManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                PlantManager class.
+
+        Returns:
+            None
         """
 
         sorted_plants = await plant_manager.get_sorted_list(sort_by="plant_id")
@@ -911,7 +1208,18 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent plant.
+
+        Args:
+            plant_manager (PlantManager): The instance of the
+                PlantManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+
+        Raises:
+            Exception: If the plant refresh operation raises an exception.
+
+        Returns:
+            None
         """
         plant = Plant(plant_id=999)
 
@@ -927,13 +1235,19 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a plant exists using the manager function.
+
+        Args:
+            plant_manager (PlantManager): The plant manager instance.
+            session (AsyncSession): The async session object.
+
+        Returns:
+            None
         """
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
 
         # Check if the plant exists using the manager function
-
         assert await plant_manager.exists(plant1.plant_id) is True
 
     @pytest.mark.asyncio
@@ -943,7 +1257,16 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        PlantManager class correctly compares two plants.
+
+        Args:
+            plant_manager (PlantManager): An instance of the
+                PlantManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+
+        Returns:
+            None
         """
         # Add a plant
         plant1 = await PlantFactory.create_async(session=session)
@@ -964,7 +1287,15 @@ class TestPlantManager:
         plant_manager: PlantManager
     ):
         """
-            #TODO add comment
+        Test case to check if a plant with a
+        non-existent ID exists in the database.
+
+        Args:
+            plant_manager (PlantManager): The
+                instance of the PlantManager class.
+
+        Returns:
+            bool: True if the plant exists, False otherwise.
         """
         non_existent_id = 999
 
@@ -977,7 +1308,19 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+
+        Args:
+            plant_manager (PlantManager): The instance
+                of the PlantManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
 
@@ -1008,7 +1351,24 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_flvr_foreign_key_id` method
+        when a plant with a specific flvr_foreign_key_id exists.
+
+        Steps:
+        1. Create a plant using the PlantFactory.
+        2. Fetch the plant using the
+            `get_by_flvr_foreign_key_id` method of the plant_manager.
+        3. Assert that the fetched plants list has a length of 1.
+        4. Assert that the first element in the fetched
+            plants list is an instance of the Plant class.
+        5. Assert that the code of the fetched plant
+            matches the code of the created plant.
+        6. Execute a select statement to fetch the
+            Flavor object associated with the flvr_foreign_key_id.
+        7. Assert that the fetched flavor is an instance of the Flavor class.
+        8. Assert that the flvr_foreign_key_code_peek
+            of the fetched plant matches the code of the fetched flavor.
         """
         # Add a plant with a specific flvr_foreign_key_id
         plant1 = await PlantFactory.create_async(session=session)
@@ -1147,7 +1507,7 @@ class TestPlantManager:
         """
         Test case to verify the behavior of the
         get_by_land_id method when the land ID does not exist.
-        
+
         This test case ensures that when a non-existent
         land ID is provided to the get_by_land_id method,
         an empty list is returned.

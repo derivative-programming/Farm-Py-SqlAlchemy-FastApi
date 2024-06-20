@@ -311,7 +311,13 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent organization.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent organization,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param organization_manager: The instance of the OrganizationManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await organization_manager.delete(999)
@@ -323,7 +329,21 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a organization
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `organization_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                `OrganizationManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await organization_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `OrganizationManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of organizations.
+        Steps:
+        1. Call the `get_list` method of the
+            `organization_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 organization objects using the
+            `OrganizationFactory.create_async` method.
+        4. Assert that the `organizations_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `organization_manager` instance again.
+        6. Assert that the returned list contains 5 organizations.
+        7. Assert that all elements in the returned list are
+            instances of the `Organization` class.
         """
         organizations = await organization_manager.get_list()
         assert len(organizations) == 0
@@ -352,7 +387,15 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the OrganizationManager class.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                OrganizationManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         organization = await OrganizationFactory.build_async(session)
         json_data = organization_manager.to_json(organization)
@@ -364,7 +407,13 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the OrganizationManager class.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                OrganizationManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         organization = await OrganizationFactory.build_async(session)
         dict_data = organization_manager.to_dict(organization)
@@ -376,7 +425,21 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `OrganizationManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `OrganizationManager` class.
+        It creates a organization using the `OrganizationFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        organization is an instance of the `Organization` class and has
+        the same code as the original organization.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                `OrganizationManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         organization = await OrganizationFactory.create_async(session)
         json_data = organization_manager.to_json(organization)
@@ -390,7 +453,19 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `OrganizationManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a organization object.
+        Args:
+            organization_manager (OrganizationManager): An instance
+                of the `OrganizationManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         organization = await OrganizationFactory.create_async(session)
         schema = OrganizationSchema()
@@ -406,7 +481,26 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `OrganizationManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple organizations to the database.
+        Steps:
+        1. Generate a list of organization data using the
+            `OrganizationFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `organization_manager` instance, passing in the generated organization data.
+        3. Verify that the number of organizations returned is
+            equal to the number of organizations added.
+        4. For each updated organization, fetch the corresponding
+            organization from the database.
+        5. Verify that the fetched organization is an instance of the
+            `Organization` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched organization match the
+            customer code of the session context.
+        7. Verify that the organization_id of the fetched
+            organization matches the organization_id of the updated organization.
         """
         organizations_data = [
             await OrganizationFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of organizations.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `OrganizationManager` class.
+        It creates two organization instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two organization instances using the
+            `OrganizationFactory.create_async` method.
+        2. Generate new codes for the organizations.
+        3. Update the organizations' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                `OrganizationManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking organization instances
         organization1 = await OrganizationFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the organization_id is missing.
+        This test case ensures that when the organization_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing organization_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No organizations to update since organization_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a organization is not found.
+        This test case performs the following steps:
+        1. Defines a list of organization updates, where each update
+            contains a organization_id and a code.
+        2. Calls the update_bulk method of the
+            organization_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the organization was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a organization is not found.
         """
         # Update organizations
         updates = [{"organization_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param organization_manager: An instance of the OrganizationManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"organization_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        OrganizationManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple organizations
+        from the database.
+        Steps:
+        1. Create two organization objects using the OrganizationFactory.
+        2. Delete the organizations using the delete_bulk method
+            of the organization_manager.
+        3. Verify that the delete operation was successful by
+            checking if the organizations no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The organizations should no longer exist in the database.
         """
         organization1 = await OrganizationFactory.create_async(session=session)
         organization2 = await OrganizationFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        organizations when some organizations are not found.
+        Steps:
+        1. Create a organization using the OrganizationFactory.
+        2. Assert that the created organization is an instance of the
+            Organization class.
+        3. Define a list of organization IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk organizations.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        OrganizationManager raises an exception
+        when some organizations with the specified IDs are
+        not found in the database.
         """
         organization1 = await OrganizationFactory.create_async(session=session)
         assert isinstance(organization1, Organization)
@@ -566,7 +734,15 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        organizations with an empty list.
+        Args:
+            organization_manager (OrganizationManager): The instance of the
+                OrganizationManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete organizations with an empty list
         organization_ids = []
@@ -580,7 +756,17 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid organization IDs are provided.
+        Args:
+            organization_manager (OrganizationManager): The instance of the
+                OrganizationManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         organization_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the OrganizationManager class.
+        This test case creates 5 organization objects using the
+        OrganizationFactory and checks if the count method
+        returns the correct count of organizations.
+        Steps:
+        1. Create 5 organization objects using the OrganizationFactory.
+        2. Call the count method of the organization_manager.
+        3. Assert that the count is equal to 5.
         """
         organizations_data = (
             [await OrganizationFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        OrganizationManager class returns 0 when the database is empty.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                OrganizationManager class.
+        Returns:
+            None
         """
         count = await organization_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of organizations
+        sorted by the '_organization_id' attribute in ascending order.
+        Steps:
+        1. Add organizations to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_organization_id'.
+        3. Verify that the returned list of organizations is
+            sorted by the '_organization_id' attribute.
         """
         # Add organizations
         organizations_data = (
@@ -634,7 +844,16 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of organizations in descending order.
+        Steps:
+        1. Create a list of organizations using the OrganizationFactory.
+        2. Assert that the organizations_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="organization_id" and order="desc".
+        4. Assert that the organization_ids of the
+            sorted_organizations are in descending order.
         """
         # Add organizations
         organizations_data = (
@@ -651,7 +870,16 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            organization_manager (OrganizationManager): The instance of the
+                OrganizationManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await organization_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                OrganizationManager class.
+        Returns:
+            None
         """
         sorted_organizations = await organization_manager.get_sorted_list(sort_by="organization_id")
         assert len(sorted_organizations) == 0
@@ -715,7 +951,15 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent organization.
+        Args:
+            organization_manager (OrganizationManager): The instance of the
+                OrganizationManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the organization refresh operation raises an exception.
+        Returns:
+            None
         """
         organization = Organization(organization_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a organization exists using the manager function.
+        Args:
+            organization_manager (OrganizationManager): The organization manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a organization
         organization1 = await OrganizationFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        OrganizationManager class correctly compares two organizations.
+        Args:
+            organization_manager (OrganizationManager): An instance of the
+                OrganizationManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a organization
         organization1 = await OrganizationFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case to check if a organization with a
+        non-existent ID exists in the database.
+        Args:
+            organization_manager (OrganizationManager): The
+                instance of the OrganizationManager class.
+        Returns:
+            bool: True if the organization exists, False otherwise.
         """
         non_existent_id = 999
         assert await organization_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            organization_manager (OrganizationManager): The instance
+                of the OrganizationManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

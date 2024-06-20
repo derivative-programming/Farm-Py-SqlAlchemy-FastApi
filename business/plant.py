@@ -1,7 +1,7 @@
 # business/plant.py
 
 """
-    #TODO add comment
+This module contains the PlantBusObj class, which represents the business object for a Plant.
 """
 
 from decimal import Decimal
@@ -23,7 +23,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
 
 class PlantInvalidInitError(Exception):
     """
-    #TODO add comment
+    Exception raised when the Plant object is not initialized properly.
     """
 
 
@@ -34,6 +34,12 @@ class PlantBusObj(BaseBusObj):
     """
 
     def __init__(self, session_context: SessionContext):
+        """
+        Initializes a new instance of the PlantBusObj class.
+
+        :param session_context: The session context.
+        :raises ValueError: If the session is not provided.
+        """
 
         if not session_context.session:
             raise ValueError("session required")
@@ -47,6 +53,7 @@ class PlantBusObj(BaseBusObj):
         Get the plant ID from the Plant object.
 
         :return: The plant ID.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -60,7 +67,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        #TODO add comment
+        Get the code from the Plant object.
+
+        :return: The code.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -73,7 +83,11 @@ class PlantBusObj(BaseBusObj):
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
-        #TODO add comment
+        Set the code for the Plant object.
+
+        :param value: The code value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises ValueError: If the code is not a UUID.
         """
 
         if not self.plant:
@@ -90,7 +104,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        #TODO add comment
+        Get the last change code from the Plant object.
+
+        :return: The last change code.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -103,7 +120,11 @@ class PlantBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        #TODO add comment
+        Set the last change code for the Plant object.
+
+        :param value: The last change code value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises ValueError: If the last change code is not an integer.
         """
 
         if not self.plant:
@@ -120,7 +141,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        #TODO add comment
+        Get the insert user ID from the Plant object.
+
+        :return: The insert user ID.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -133,7 +157,11 @@ class PlantBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the insert user ID for the Plant object.
+
+        :param value: The insert user ID value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises ValueError: If the insert user ID is not a UUID.
         """
 
         if not self.plant:
@@ -150,7 +178,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        #TODO add comment
+        Get the last update user ID from the Plant object.
+
+        :return: The last update user ID.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -163,7 +194,11 @@ class PlantBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the last update user ID for the Plant object.
+
+        :param value: The last update user ID value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises ValueError: If the last update user ID is not a UUID.
         """
 
         if not self.plant:
@@ -184,7 +219,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def is_delete_allowed(self):
         """
-        #TODO add comment
+        Get the is delete allowed flag from the Plant object.
+
+        :return: The is delete allowed flag.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -197,7 +235,11 @@ class PlantBusObj(BaseBusObj):
     @is_delete_allowed.setter
     def is_delete_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the is delete allowed flag for the Plant object.
+
+        :param value: The is delete allowed flag value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises ValueError: If the is delete allowed flag is not a boolean.
         """
 
         if not self.plant:
@@ -212,7 +254,10 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_is_delete_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the is delete allowed flag for the Plant object.
+
+        :param value: The is delete allowed flag value.
+        :return: The updated PlantBusObj instance.
         """
 
         self.is_delete_allowed = value
@@ -222,7 +267,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def is_edit_allowed(self):
         """
-        #TODO add comment
+        Get the is edit allowed flag from the Plant object.
+
+        :return: The is edit allowed flag.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -235,7 +283,11 @@ class PlantBusObj(BaseBusObj):
     @is_edit_allowed.setter
     def is_edit_allowed(self, value):
         """
-        #TODO add comment
+        Set the is edit allowed flag for the Plant object.
+
+        :param value: The is edit allowed flag value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises AssertionError: If the is edit allowed flag is not a boolean.
         """
 
         if not self.plant:
@@ -248,7 +300,10 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_is_edit_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the is edit allowed flag for the Plant object.
+
+        :param value: The is edit allowed flag value.
+        :return: The updated PlantBusObj instance.
         """
 
         self.is_edit_allowed = value
@@ -258,7 +313,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def other_flavor(self):
         """
-        #TODO add comment
+        Get the other flavor from the Plant object.
+
+        :return: The other flavor.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -274,7 +332,11 @@ class PlantBusObj(BaseBusObj):
     @other_flavor.setter
     def other_flavor(self, value):
         """
-        #TODO add comment
+        Set the other flavor for the Plant object.
+
+        :param value: The other flavor value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises AssertionError: If the other flavor is not a string.
         """
 
         if not self.plant:
@@ -287,7 +349,10 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_other_flavor(self, value: str):
         """
-        #TODO add comment
+        Set the other flavor for the Plant object.
+
+        :param value: The other flavor value.
+        :return: The updated PlantBusObj instance.
         """
 
         self.other_flavor = value
@@ -297,7 +362,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def some_big_int_val(self):
         """
-        #TODO add comment
+        Get the some big int value from the Plant object.
+
+        :return: The some big int value.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -310,7 +378,11 @@ class PlantBusObj(BaseBusObj):
     @some_big_int_val.setter
     def some_big_int_val(self, value):
         """
-        #TODO add comment
+        Set the some big int value for the Plant object.
+
+        :param value: The some big int value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises AssertionError: If the some big int value is not an integer.
         """
 
         if not self.plant:
@@ -323,7 +395,10 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_some_big_int_val(self, value: int):
         """
-        #TODO add comment
+        Set the some big int value for the Plant object.
+
+        :param value: The some big int value.
+        :return: The updated PlantBusObj instance.
         """
 
         self.some_big_int_val = value
@@ -333,7 +408,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def some_bit_val(self):
         """
-        #TODO add comment
+        Get the some bit value from the Plant object.
+
+        :return: The some bit value.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -346,7 +424,11 @@ class PlantBusObj(BaseBusObj):
     @some_bit_val.setter
     def some_bit_val(self, value):
         """
-        #TODO add comment
+        Set the some bit value for the Plant object.
+
+        :param value: The some bit value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises AssertionError: If the some bit value is not a boolean.
         """
 
         if not self.plant:
@@ -359,7 +441,10 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_some_bit_val(self, value: bool):
         """
-        #TODO add comment
+        Set the some bit value for the Plant object.
+
+        :param value: The some bit value.
+        :return: The updated PlantBusObj instance.
         """
 
         self.some_bit_val = value
@@ -369,7 +454,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def some_date_val(self):
         """
-        #TODO add comment
+        Get the some date value from the Plant object.
+
+        :return: The some date value.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -382,7 +470,11 @@ class PlantBusObj(BaseBusObj):
     @some_date_val.setter
     def some_date_val(self, value):
         """
-        #TODO add comment
+        Set the some date value for the Plant object.
+
+        :param value: The some date value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises AssertionError: If the some date value is not a date object.
         """
 
         if not self.plant:
@@ -397,7 +489,10 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_some_date_val(self, value: date):
         """
-        #TODO add comment
+        Set the some date value for the Plant object.
+
+        :param value: The some date value.
+        :return: The updated PlantBusObj instance.
         """
 
         self.some_date_val = value
@@ -407,7 +502,10 @@ class PlantBusObj(BaseBusObj):
     @property
     def some_decimal_val(self):
         """
-        #TODO add comment
+        Get the some decimal value from the Plant object.
+
+        :return: The some decimal value.
+        :raises AttributeError: If the Plant object is not initialized.
         """
 
         if not self.plant:
@@ -420,7 +518,11 @@ class PlantBusObj(BaseBusObj):
     @some_decimal_val.setter
     def some_decimal_val(self, value):
         """
-        #TODO add comment
+        Set the some decimal value for the Plant object.
+
+        :param value: The some decimal value.
+        :raises AttributeError: If the Plant object is not initialized.
+        :raises AssertionError: If the some decimal value is not a number.
         """
 
         if not self.plant:
@@ -860,7 +962,14 @@ class PlantBusObj(BaseBusObj):
     @flvr_foreign_key_id.setter
     def flvr_foreign_key_id(self, value: int):
         """
-        #TODO add comment
+        Sets the foreign key ID for the flavor of the plant.
+
+        Args:
+            value (int): The foreign key ID to set.
+
+        Raises:
+            AttributeError: If the plant is not initialized.
+            ValueError: If the value is not an integer.
         """
 
         if not self.plant:
@@ -875,18 +984,30 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_flvr_foreign_key_id(self, value: int):
         """
-        #TODO add comment
-        """
+        Sets the value of the 'flvr_foreign_key_id' property.
 
+        Args:
+            value (int): The value to set for the
+                'flvr_foreign_key_id' property.
+
+        Returns:
+            self: The current instance of the class.
+
+        """
         self.flvr_foreign_key_id = value
         return self
 
     @property
     def flvr_foreign_key_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
-        """
+        Returns the foreign key code peek of the plant's flavor.
 
+        Raises:
+            AttributeError: If the plant is not initialized.
+
+        Returns:
+            uuid.UUID: The foreign key code peek of the plant's flavor.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -905,9 +1026,14 @@ class PlantBusObj(BaseBusObj):
     @property
     def land_id(self):
         """
-        #TODO add comment
-        """
+        Returns the land ID associated with the plant.
 
+        Raises:
+            AttributeError: If the plant is not initialized.
+
+        Returns:
+            int: The land ID of the plant.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -918,9 +1044,16 @@ class PlantBusObj(BaseBusObj):
     @land_id.setter
     def land_id(self, value):
         """
-        #TODO add comment
-        """
+        Sets the land ID for the plant.
 
+        Args:
+            value (int or None): The land ID to be set.
+                Must be an integer or None.
+
+        Raises:
+            AttributeError: If the plant is not initialized.
+
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -933,7 +1066,13 @@ class PlantBusObj(BaseBusObj):
 
     def set_prop_land_id(self, value: int):
         """
-        #TODO add comment
+        Set the land ID for the plant.
+
+        Args:
+            value (int): The ID of the land.
+
+        Returns:
+            Plant: The updated Plant object.
         """
 
         self.land_id = value
@@ -942,9 +1081,14 @@ class PlantBusObj(BaseBusObj):
     @property
     def land_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
-        """
+        Returns the land code peek of the plant.
 
+        Raises:
+            AttributeError: If the plant is not initialized.
+
+        Returns:
+            uuid.UUID: The land code peek of the plant.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -969,9 +1113,14 @@ class PlantBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        #TODO add comment
-        """
+        Inserts the UTC date and time into the plant object.
 
+        Raises:
+            AttributeError: If the plant object is not initialized.
+
+        Returns:
+            The UTC date and time inserted into the plant object.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -982,9 +1131,16 @@ class PlantBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        #TODO add comment
-        """
+        Inserts the UTC date and time for the plant.
 
+        Args:
+            value (datetime): The UTC date and time to be inserted.
+                It should be a datetime object or None.
+
+        Raises:
+            AttributeError: If the plant is not initialized.
+
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -999,9 +1155,14 @@ class PlantBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        #TODO add comment
-        """
+        Returns the last update UTC date and time of the plant.
 
+        Raises:
+            AttributeError: If the plant is not initialized.
+
+        Returns:
+            datetime: The last update UTC date and time of the plant.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -1012,9 +1173,17 @@ class PlantBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        #TODO add comment
-        """
+        Sets the last update UTC date and time for the plant.
 
+        Args:
+            value (datetime): The datetime object
+                representing the last update UTC date and time. 
+                Pass None to unset the value.
+
+        Raises:
+            AttributeError: If the plant is not initialized.
+
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -1137,16 +1306,21 @@ class PlantBusObj(BaseBusObj):
 
     def get_session_context(self):
         """
-        #TODO add comment
-        """
+        Returns the session context.
 
+        :return: The session context.
+        :rtype: SessionContext
+        """
         return self._session_context
 
     async def refresh(self):
         """
-        #TODO add comment
-        """
+        Refreshes the plant object by fetching
+        the latest data from the database.
 
+        Returns:
+            The updated plant object.
+        """
         plant_manager = PlantManager(self._session_context)
         self.plant = await plant_manager.refresh(self.plant)
 
@@ -1154,32 +1328,48 @@ class PlantBusObj(BaseBusObj):
 
     def is_valid(self):
         """
-        #TODO add comment
-        """
+        Check if the plant is valid.
 
+        Returns:
+            bool: True if the plant is valid, False otherwise.
+        """
         return self.plant is not None
 
     def to_dict(self):
         """
-        #TODO add comment
-        """
+        Converts the Plant object to a dictionary representation.
 
+        Returns:
+            dict: A dictionary representation of the Plant object.
+        """
         plant_manager = PlantManager(self._session_context)
         return plant_manager.to_dict(self.plant)
 
     def to_json(self):
         """
-        #TODO add comment
-        """
+        Converts the plant object to a JSON representation.
 
+        Returns:
+            str: The JSON representation of the plant object.
+        """
         plant_manager = PlantManager(self._session_context)
         return plant_manager.to_json(self.plant)
 
     async def save(self):
         """
-        #TODO add comment
-        """
+        Saves the plant object to the database.
 
+        If the plant object is not initialized, an AttributeError is raised.
+        If the plant_id is greater than 0, the plant is
+        updated in the database.
+        If the plant_id is 0, the plant is added to the database.
+
+        Returns:
+            The updated or added plant object.
+
+        Raises:
+            AttributeError: If the plant object is not initialized.
+        """
         if not self.plant:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
 
@@ -1197,9 +1387,11 @@ class PlantBusObj(BaseBusObj):
 
     async def delete(self):
         """
-        #TODO add comment
-        """
+        Deletes the plant from the database.
 
+        Raises:
+            AttributeError: If the plant is not initialized.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -1212,9 +1404,17 @@ class PlantBusObj(BaseBusObj):
 
     async def randomize_properties(self):
         """
-        #TODO add comment
-        """
+        Randomizes the properties of the plant object.
 
+        This method generates random values for various
+        properties of the plant object
+
+        Returns:
+            self: The current instance of the Plant class.
+
+        Raises:
+            AttributeError: If the plant object is not initialized.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -1266,9 +1466,14 @@ class PlantBusObj(BaseBusObj):
 
     def get_plant_obj(self) -> Plant:
         """
-        #TODO add comment
-        """
+        Returns the plant object.
 
+        Raises:
+            AttributeError: If the plant object is not initialized.
+
+        Returns:
+            Plant: The plant object.
+        """
         if not self.plant:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
@@ -1278,9 +1483,14 @@ class PlantBusObj(BaseBusObj):
 
     def is_equal(self, plant: Plant) -> bool:
         """
-        #TODO add comment
-        """
+        Checks if the current plant is equal to the given plant.
 
+        Args:
+            plant (Plant): The plant to compare with.
+
+        Returns:
+            bool: True if the plants are equal, False otherwise.
+        """
         plant_manager = PlantManager(self._session_context)
         my_plant = self.get_plant_obj()
         return plant_manager.is_equal(plant, my_plant)
@@ -1302,9 +1512,12 @@ class PlantBusObj(BaseBusObj):
     # LandID
     async def get_land_id_rel_obj(self) -> models.Land:
         """
-        #TODO add comment
-        """
+        Retrieves the related Land object based on the land_id.
 
+        Returns:
+            An instance of the Land model representing the related land.
+
+        """
         land_manager = managers_and_enums.LandManager(self._session_context)
         land_obj = await land_manager.get_by_id(self.land_id)
         return land_obj
@@ -1312,9 +1525,12 @@ class PlantBusObj(BaseBusObj):
     # FlvrForeignKeyID
     async def get_flvr_foreign_key_id_rel_obj(self) -> models.Flavor:
         """
-        #TODO add comment
-        """
+        Retrieves the related Flavor object based on the foreign key ID.
 
+        Returns:
+            The related Flavor object.
+
+        """
         flavor_manager = managers_and_enums.FlavorManager(
             self._session_context)
         flavor_obj = await flavor_manager.get_by_id(
@@ -1330,23 +1546,30 @@ class PlantBusObj(BaseBusObj):
 
     def get_obj(self) -> Plant:
         """
-        #TODO add comment
+        Returns the Plant object.
+
+        :return: The Plant object.
+        :rtype: Plant
         """
 
         return self.plant
 
     def get_object_name(self) -> str:
         """
-        #TODO add comment
-        """
+        Returns the name of the object.
 
+        :return: The name of the object.
+        :rtype: str
+        """
         return "plant"
 
     def get_id(self) -> int:
         """
-        #TODO add comment
-        """
+        Returns the ID of the plant.
 
+        :return: The ID of the plant.
+        :rtype: int
+        """
         return self.plant_id
 
     # isDeleteAllowed,
@@ -1367,23 +1590,30 @@ class PlantBusObj(BaseBusObj):
 
     async def get_parent_name(self) -> str:
         """
-        #TODO add comment
-        """
+        Get the name of the parent plant.
 
+        Returns:
+            str: The name of the parent plant.
+        """
         return 'Land'
 
     async def get_parent_code(self) -> uuid.UUID:
         """
-        #TODO add comment
-        """
+        Get the parent code of the plant.
 
+        Returns:
+            The parent code of the plant as a UUID.
+        """
         return self.land_code_peek
 
     async def get_parent_obj(self) -> models.Land:
         """
-        #TODO add comment
-        """
+        Get the parent object of the current plant.
 
+        Returns:
+            The parent object of the current plant,
+            which is an instance of the Land model.
+        """
         land = await self.get_land_id_rel_obj()
 
         return land
@@ -1399,9 +1629,15 @@ class PlantBusObj(BaseBusObj):
         obj_list: List[Plant]
     ):
         """
-        #TODO add comment
-        """
+        Convert a list of Plant objects to a list of PlantBusObj objects.
 
+        Args:
+            session_context (SessionContext): The session context.
+            obj_list (List[Plant]): The list of Plant objects to convert.
+
+        Returns:
+            List[PlantBusObj]: The list of converted PlantBusObj objects.
+        """
         result = list()
 
         for plant in obj_list:

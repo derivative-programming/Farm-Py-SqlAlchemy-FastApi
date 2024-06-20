@@ -1,6 +1,6 @@
 # business/customer.py
 """
-    #TODO add comment
+This module contains the CustomerBusObj class, which represents the business object for a Customer.
 """
 from decimal import Decimal
 import random
@@ -20,7 +20,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Customer object is not initialized")
 class CustomerInvalidInitError(Exception):
     """
-    #TODO add comment
+    Exception raised when the Customer object is not initialized properly.
     """
 class CustomerBusObj(BaseBusObj):
     """
@@ -28,6 +28,11 @@ class CustomerBusObj(BaseBusObj):
     It requires a valid session context for initialization.
     """
     def __init__(self, session_context: SessionContext):
+        """
+        Initializes a new instance of the CustomerBusObj class.
+        :param session_context: The session context.
+        :raises ValueError: If the session is not provided.
+        """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -37,6 +42,7 @@ class CustomerBusObj(BaseBusObj):
         """
         Get the customer ID from the Customer object.
         :return: The customer ID.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -47,7 +53,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        #TODO add comment
+        Get the code from the Customer object.
+        :return: The code.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -57,7 +65,10 @@ class CustomerBusObj(BaseBusObj):
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
-        #TODO add comment
+        Set the code for the Customer object.
+        :param value: The code value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the code is not a UUID.
         """
         if not self.customer:
             raise AttributeError(
@@ -70,7 +81,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        #TODO add comment
+        Get the last change code from the Customer object.
+        :return: The last change code.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -80,7 +93,10 @@ class CustomerBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        #TODO add comment
+        Set the last change code for the Customer object.
+        :param value: The last change code value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the last change code is not an integer.
         """
         if not self.customer:
             raise AttributeError(
@@ -93,7 +109,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        #TODO add comment
+        Get the insert user ID from the Customer object.
+        :return: The insert user ID.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -103,7 +121,10 @@ class CustomerBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the insert user ID for the Customer object.
+        :param value: The insert user ID value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.customer:
             raise AttributeError(
@@ -116,7 +137,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        #TODO add comment
+        Get the last update user ID from the Customer object.
+        :return: The last update user ID.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -126,7 +149,10 @@ class CustomerBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the last update user ID for the Customer object.
+        :param value: The last update user ID value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.customer:
             raise AttributeError(
@@ -229,7 +255,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def first_name(self):
         """
-        #TODO add comment
+        Get the First Name from the Customer object.
+        :return: The First Name.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -241,7 +269,10 @@ class CustomerBusObj(BaseBusObj):
     @first_name.setter
     def first_name(self, value):
         """
-        #TODO add comment
+        Set the First Name for the Customer object.
+        :param value: The First Name value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises AssertionError: If the First Name is not a string.
         """
         if not self.customer:
             raise AttributeError(
@@ -251,7 +282,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.first_name = value
     def set_prop_first_name(self, value: str):
         """
-        #TODO add comment
+        Set the First Name for the Customer object.
+        :param value: The First Name value.
+        :return: The updated CustomerBusObj instance.
         """
         self.first_name = value
         return self
@@ -288,7 +321,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def forgot_password_key_value(self):
         """
-        #TODO add comment
+        Get the Forgot Password Key Value from the Customer object.
+        :return: The Forgot Password Key Value.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -300,7 +335,10 @@ class CustomerBusObj(BaseBusObj):
     @forgot_password_key_value.setter
     def forgot_password_key_value(self, value):
         """
-        #TODO add comment
+        Set the Forgot Password Key Value for the Customer object.
+        :param value: The Forgot Password Key Value value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises AssertionError: If the Forgot Password Key Value is not a string.
         """
         if not self.customer:
             raise AttributeError(
@@ -310,7 +348,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.forgot_password_key_value = value
     def set_prop_forgot_password_key_value(self, value: str):
         """
-        #TODO add comment
+        Set the Forgot Password Key Value for the Customer object.
+        :param value: The Forgot Password Key Value value.
+        :return: The updated CustomerBusObj instance.
         """
         self.forgot_password_key_value = value
         return self
@@ -347,7 +387,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def is_active(self):
         """
-        #TODO add comment
+        Get the Is Active flag from the Customer object.
+        :return: The Is Active flag.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -357,7 +399,10 @@ class CustomerBusObj(BaseBusObj):
     @is_active.setter
     def is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the Customer object.
+        :param value: The Is Active flag value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the Is Active flag is not a boolean.
         """
         if not self.customer:
             raise AttributeError(
@@ -368,7 +413,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_active = value
     def set_prop_is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the Customer object.
+        :param value: The Is Active flag value.
+        :return: The updated CustomerBusObj instance.
         """
         self.is_active = value
         return self
@@ -376,7 +423,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def is_email_allowed(self):
         """
-        #TODO add comment
+        Get the Is Email Allowed flag from the Customer object.
+        :return: The Is Email Allowed flag.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -386,7 +435,10 @@ class CustomerBusObj(BaseBusObj):
     @is_email_allowed.setter
     def is_email_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Email Allowed flag for the Customer object.
+        :param value: The Is Email Allowed flag value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the Is Email Allowed flag is not a boolean.
         """
         if not self.customer:
             raise AttributeError(
@@ -397,7 +449,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_email_allowed = value
     def set_prop_is_email_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Email Allowed flag for the Customer object.
+        :param value: The Is Email Allowed flag value.
+        :return: The updated CustomerBusObj instance.
         """
         self.is_email_allowed = value
         return self
@@ -405,7 +459,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def is_email_confirmed(self):
         """
-        #TODO add comment
+        Get the Is Email Confirmed flag from the Customer object.
+        :return: The Is Email Confirmed flag.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -415,7 +471,10 @@ class CustomerBusObj(BaseBusObj):
     @is_email_confirmed.setter
     def is_email_confirmed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Email Confirmed flag for the Customer object.
+        :param value: The Is Email Confirmed flag value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the Is Email Confirmed flag is not a boolean.
         """
         if not self.customer:
             raise AttributeError(
@@ -426,7 +485,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_email_confirmed = value
     def set_prop_is_email_confirmed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Email Confirmed flag for the Customer object.
+        :param value: The Is Email Confirmed flag value.
+        :return: The updated CustomerBusObj instance.
         """
         self.is_email_confirmed = value
         return self
@@ -434,7 +495,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def is_email_marketing_allowed(self):
         """
-        #TODO add comment
+        Get the Is Email Marketing Allowed flag from the Customer object.
+        :return: The Is Email Marketing Allowed flag.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -444,7 +507,10 @@ class CustomerBusObj(BaseBusObj):
     @is_email_marketing_allowed.setter
     def is_email_marketing_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Email Marketing Allowed flag for the Customer object.
+        :param value: The Is Email Marketing Allowed flag value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the Is Email Marketing Allowed flag is not a boolean.
         """
         if not self.customer:
             raise AttributeError(
@@ -455,7 +521,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_email_marketing_allowed = value
     def set_prop_is_email_marketing_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Email Marketing Allowed flag for the Customer object.
+        :param value: The Is Email Marketing Allowed flag value.
+        :return: The updated CustomerBusObj instance.
         """
         self.is_email_marketing_allowed = value
         return self
@@ -463,7 +531,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def is_locked(self):
         """
-        #TODO add comment
+        Get the Is Locked flag from the Customer object.
+        :return: The Is Locked flag.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -473,7 +543,10 @@ class CustomerBusObj(BaseBusObj):
     @is_locked.setter
     def is_locked(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Locked flag for the Customer object.
+        :param value: The Is Locked flag value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the Is Locked flag is not a boolean.
         """
         if not self.customer:
             raise AttributeError(
@@ -484,7 +557,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_locked = value
     def set_prop_is_locked(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Locked flag for the Customer object.
+        :param value: The Is Locked flag value.
+        :return: The updated CustomerBusObj instance.
         """
         self.is_locked = value
         return self
@@ -492,7 +567,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def is_multiple_organizations_allowed(self):
         """
-        #TODO add comment
+        Get the Is Multiple Organizations Allowed flag from the Customer object.
+        :return: The Is Multiple Organizations Allowed flag.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -502,7 +579,10 @@ class CustomerBusObj(BaseBusObj):
     @is_multiple_organizations_allowed.setter
     def is_multiple_organizations_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Multiple Organizations Allowed flag for the Customer object.
+        :param value: The Is Multiple Organizations Allowed flag value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the Is Multiple Organizations Allowed flag is not a boolean.
         """
         if not self.customer:
             raise AttributeError(
@@ -513,7 +593,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_multiple_organizations_allowed = value
     def set_prop_is_multiple_organizations_allowed(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Multiple Organizations Allowed flag for the Customer object.
+        :param value: The Is Multiple Organizations Allowed flag value.
+        :return: The updated CustomerBusObj instance.
         """
         self.is_multiple_organizations_allowed = value
         return self
@@ -521,7 +603,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def is_verbose_logging_forced(self):
         """
-        #TODO add comment
+        Get the Is Verbose Logging Forced flag from the Customer object.
+        :return: The Is Verbose Logging Forced flag.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -531,7 +615,10 @@ class CustomerBusObj(BaseBusObj):
     @is_verbose_logging_forced.setter
     def is_verbose_logging_forced(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Verbose Logging Forced flag for the Customer object.
+        :param value: The Is Verbose Logging Forced flag value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises ValueError: If the Is Verbose Logging Forced flag is not a boolean.
         """
         if not self.customer:
             raise AttributeError(
@@ -542,7 +629,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.is_verbose_logging_forced = value
     def set_prop_is_verbose_logging_forced(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Verbose Logging Forced flag for the Customer object.
+        :param value: The Is Verbose Logging Forced flag value.
+        :return: The updated CustomerBusObj instance.
         """
         self.is_verbose_logging_forced = value
         return self
@@ -579,7 +668,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def last_name(self):
         """
-        #TODO add comment
+        Get the Last Name from the Customer object.
+        :return: The Last Name.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -591,7 +682,10 @@ class CustomerBusObj(BaseBusObj):
     @last_name.setter
     def last_name(self, value):
         """
-        #TODO add comment
+        Set the Last Name for the Customer object.
+        :param value: The Last Name value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises AssertionError: If the Last Name is not a string.
         """
         if not self.customer:
             raise AttributeError(
@@ -601,7 +695,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.last_name = value
     def set_prop_last_name(self, value: str):
         """
-        #TODO add comment
+        Set the Last Name for the Customer object.
+        :param value: The Last Name value.
+        :return: The updated CustomerBusObj instance.
         """
         self.last_name = value
         return self
@@ -609,7 +705,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def password(self):
         """
-        #TODO add comment
+        Get the Password from the Customer object.
+        :return: The Password.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -621,7 +719,10 @@ class CustomerBusObj(BaseBusObj):
     @password.setter
     def password(self, value):
         """
-        #TODO add comment
+        Set the Password for the Customer object.
+        :param value: The Password value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises AssertionError: If the Password is not a string.
         """
         if not self.customer:
             raise AttributeError(
@@ -631,7 +732,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.password = value
     def set_prop_password(self, value: str):
         """
-        #TODO add comment
+        Set the Password for the Customer object.
+        :param value: The Password value.
+        :return: The updated CustomerBusObj instance.
         """
         self.password = value
         return self
@@ -670,7 +773,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def province(self):
         """
-        #TODO add comment
+        Get the Province from the Customer object.
+        :return: The Province.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -682,7 +787,10 @@ class CustomerBusObj(BaseBusObj):
     @province.setter
     def province(self, value):
         """
-        #TODO add comment
+        Set the Province for the Customer object.
+        :param value: The Province value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises AssertionError: If the Province is not a string.
         """
         if not self.customer:
             raise AttributeError(
@@ -692,7 +800,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.province = value
     def set_prop_province(self, value: str):
         """
-        #TODO add comment
+        Set the Province for the Customer object.
+        :param value: The Province value.
+        :return: The updated CustomerBusObj instance.
         """
         self.province = value
         return self
@@ -759,7 +869,9 @@ class CustomerBusObj(BaseBusObj):
     @property
     def zip(self):
         """
-        #TODO add comment
+        Get the Zip from the Customer object.
+        :return: The Zip.
+        :raises AttributeError: If the Customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -771,7 +883,10 @@ class CustomerBusObj(BaseBusObj):
     @zip.setter
     def zip(self, value):
         """
-        #TODO add comment
+        Set the Zip for the Customer object.
+        :param value: The Zip value.
+        :raises AttributeError: If the Customer object is not initialized.
+        :raises AssertionError: If the Zip is not a string.
         """
         if not self.customer:
             raise AttributeError(
@@ -781,7 +896,9 @@ class CustomerBusObj(BaseBusObj):
         self.customer.zip = value
     def set_prop_zip(self, value: str):
         """
-        #TODO add comment
+        Set the Zip for the Customer object.
+        :param value: The Zip value.
+        :return: The updated CustomerBusObj instance.
         """
         self.zip = value
         return self
@@ -810,7 +927,11 @@ class CustomerBusObj(BaseBusObj):
     @property
     def tac_id(self):
         """
-        #TODO add comment
+        Returns the tac ID associated with the customer.
+        Raises:
+            AttributeError: If the customer is not initialized.
+        Returns:
+            int: The tac ID of the customer.
         """
         if not self.customer:
             raise AttributeError(
@@ -820,7 +941,12 @@ class CustomerBusObj(BaseBusObj):
     @tac_id.setter
     def tac_id(self, value):
         """
-        #TODO add comment
+        Sets the tac ID for the customer.
+        Args:
+            value (int or None): The tac ID to be set.
+                Must be an integer or None.
+        Raises:
+            AttributeError: If the customer is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -831,14 +957,22 @@ class CustomerBusObj(BaseBusObj):
         self.customer.tac_id = value
     def set_prop_tac_id(self, value: int):
         """
-        #TODO add comment
+        Set the tac ID for the customer.
+        Args:
+            value (int): The ID of the tac.
+        Returns:
+            Customer: The updated Customer object.
         """
         self.tac_id = value
         return self
     @property
     def tac_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Returns the tac code peek of the customer.
+        Raises:
+            AttributeError: If the customer is not initialized.
+        Returns:
+            uuid.UUID: The tac code peek of the customer.
         """
         if not self.customer:
             raise AttributeError(
@@ -857,7 +991,11 @@ class CustomerBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        #TODO add comment
+        Inserts the UTC date and time into the customer object.
+        Raises:
+            AttributeError: If the customer object is not initialized.
+        Returns:
+            The UTC date and time inserted into the customer object.
         """
         if not self.customer:
             raise AttributeError(
@@ -867,7 +1005,12 @@ class CustomerBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        #TODO add comment
+        Inserts the UTC date and time for the customer.
+        Args:
+            value (datetime): The UTC date and time to be inserted.
+                It should be a datetime object or None.
+        Raises:
+            AttributeError: If the customer is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -880,7 +1023,11 @@ class CustomerBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        #TODO add comment
+        Returns the last update UTC date and time of the customer.
+        Raises:
+            AttributeError: If the customer is not initialized.
+        Returns:
+            datetime: The last update UTC date and time of the customer.
         """
         if not self.customer:
             raise AttributeError(
@@ -890,7 +1037,13 @@ class CustomerBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        #TODO add comment
+        Sets the last update UTC date and time for the customer.
+        Args:
+            value (datetime): The datetime object
+                representing the last update UTC date and time.
+                Pass None to unset the value.
+        Raises:
+            AttributeError: If the customer is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -981,36 +1134,55 @@ class CustomerBusObj(BaseBusObj):
 
     def get_session_context(self):
         """
-        #TODO add comment
+        Returns the session context.
+        :return: The session context.
+        :rtype: SessionContext
         """
         return self._session_context
     async def refresh(self):
         """
-        #TODO add comment
+        Refreshes the customer object by fetching
+        the latest data from the database.
+        Returns:
+            The updated customer object.
         """
         customer_manager = CustomerManager(self._session_context)
         self.customer = await customer_manager.refresh(self.customer)
         return self
     def is_valid(self):
         """
-        #TODO add comment
+        Check if the customer is valid.
+        Returns:
+            bool: True if the customer is valid, False otherwise.
         """
         return self.customer is not None
     def to_dict(self):
         """
-        #TODO add comment
+        Converts the Customer object to a dictionary representation.
+        Returns:
+            dict: A dictionary representation of the Customer object.
         """
         customer_manager = CustomerManager(self._session_context)
         return customer_manager.to_dict(self.customer)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the customer object to a JSON representation.
+        Returns:
+            str: The JSON representation of the customer object.
         """
         customer_manager = CustomerManager(self._session_context)
         return customer_manager.to_json(self.customer)
     async def save(self):
         """
-        #TODO add comment
+        Saves the customer object to the database.
+        If the customer object is not initialized, an AttributeError is raised.
+        If the customer_id is greater than 0, the customer is
+        updated in the database.
+        If the customer_id is 0, the customer is added to the database.
+        Returns:
+            The updated or added customer object.
+        Raises:
+            AttributeError: If the customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
@@ -1024,7 +1196,9 @@ class CustomerBusObj(BaseBusObj):
         return self
     async def delete(self):
         """
-        #TODO add comment
+        Deletes the customer from the database.
+        Raises:
+            AttributeError: If the customer is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -1036,7 +1210,13 @@ class CustomerBusObj(BaseBusObj):
             self.customer = None
     async def randomize_properties(self):
         """
-        #TODO add comment
+        Randomizes the properties of the customer object.
+        This method generates random values for various
+        properties of the customer object
+        Returns:
+            self: The current instance of the Customer class.
+        Raises:
+            AttributeError: If the customer object is not initialized.
         """
         if not self.customer:
             raise AttributeError(
@@ -1098,7 +1278,11 @@ class CustomerBusObj(BaseBusObj):
         return self
     def get_customer_obj(self) -> Customer:
         """
-        #TODO add comment
+        Returns the customer object.
+        Raises:
+            AttributeError: If the customer object is not initialized.
+        Returns:
+            Customer: The customer object.
         """
         if not self.customer:
             raise AttributeError(
@@ -1107,7 +1291,11 @@ class CustomerBusObj(BaseBusObj):
         return self.customer
     def is_equal(self, customer: Customer) -> bool:
         """
-        #TODO add comment
+        Checks if the current customer is equal to the given customer.
+        Args:
+            customer (Customer): The customer to compare with.
+        Returns:
+            bool: True if the customers are equal, False otherwise.
         """
         customer_manager = CustomerManager(self._session_context)
         my_customer = self.get_customer_obj()
@@ -1136,7 +1324,9 @@ class CustomerBusObj(BaseBusObj):
     # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
         """
-        #TODO add comment
+        Retrieves the related Tac object based on the tac_id.
+        Returns:
+            An instance of the Tac model representing the related tac.
         """
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
@@ -1146,17 +1336,23 @@ class CustomerBusObj(BaseBusObj):
 # endset
     def get_obj(self) -> Customer:
         """
-        #TODO add comment
+        Returns the Customer object.
+        :return: The Customer object.
+        :rtype: Customer
         """
         return self.customer
     def get_object_name(self) -> str:
         """
-        #TODO add comment
+        Returns the name of the object.
+        :return: The name of the object.
+        :rtype: str
         """
         return "customer"
     def get_id(self) -> int:
         """
-        #TODO add comment
+        Returns the ID of the customer.
+        :return: The ID of the customer.
+        :rtype: int
         """
         return self.customer_id
     # activeOrganizationID,
@@ -1182,17 +1378,24 @@ class CustomerBusObj(BaseBusObj):
     # TacID
     async def get_parent_name(self) -> str:
         """
-        #TODO add comment
+        Get the name of the parent customer.
+        Returns:
+            str: The name of the parent customer.
         """
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Get the parent code of the customer.
+        Returns:
+            The parent code of the customer as a UUID.
         """
         return self.tac_code_peek
     async def get_parent_obj(self) -> models.Tac:
         """
-        #TODO add comment
+        Get the parent object of the current customer.
+        Returns:
+            The parent object of the current customer,
+            which is an instance of the Tac model.
         """
         tac = await self.get_tac_id_rel_obj()
         return tac
@@ -1205,7 +1408,12 @@ class CustomerBusObj(BaseBusObj):
         obj_list: List[Customer]
     ):
         """
-        #TODO add comment
+        Convert a list of Customer objects to a list of CustomerBusObj objects.
+        Args:
+            session_context (SessionContext): The session context.
+            obj_list (List[Customer]): The list of Customer objects to convert.
+        Returns:
+            List[CustomerBusObj]: The list of converted CustomerBusObj objects.
         """
         result = list()
         for customer in obj_list:

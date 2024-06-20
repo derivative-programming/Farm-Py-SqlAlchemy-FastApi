@@ -311,7 +311,13 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent land.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent land,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param land_manager: The instance of the LandManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await land_manager.delete(999)
@@ -323,7 +329,21 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a land
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `land_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            land_manager (LandManager): An instance of the
+                `LandManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await land_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `LandManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of lands.
+        Steps:
+        1. Call the `get_list` method of the
+            `land_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 land objects using the
+            `LandFactory.create_async` method.
+        4. Assert that the `lands_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `land_manager` instance again.
+        6. Assert that the returned list contains 5 lands.
+        7. Assert that all elements in the returned list are
+            instances of the `Land` class.
         """
         lands = await land_manager.get_list()
         assert len(lands) == 0
@@ -352,7 +387,15 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the LandManager class.
+        Args:
+            land_manager (LandManager): An instance of the
+                LandManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         land = await LandFactory.build_async(session)
         json_data = land_manager.to_json(land)
@@ -364,7 +407,13 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the LandManager class.
+        Args:
+            land_manager (LandManager): An instance of the
+                LandManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         land = await LandFactory.build_async(session)
         dict_data = land_manager.to_dict(land)
@@ -376,7 +425,21 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `LandManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `LandManager` class.
+        It creates a land using the `LandFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        land is an instance of the `Land` class and has
+        the same code as the original land.
+        Args:
+            land_manager (LandManager): An instance of the
+                `LandManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         land = await LandFactory.create_async(session)
         json_data = land_manager.to_json(land)
@@ -390,7 +453,19 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `LandManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a land object.
+        Args:
+            land_manager (LandManager): An instance
+                of the `LandManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         land = await LandFactory.create_async(session)
         schema = LandSchema()
@@ -406,7 +481,26 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `LandManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple lands to the database.
+        Steps:
+        1. Generate a list of land data using the
+            `LandFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `land_manager` instance, passing in the generated land data.
+        3. Verify that the number of lands returned is
+            equal to the number of lands added.
+        4. For each updated land, fetch the corresponding
+            land from the database.
+        5. Verify that the fetched land is an instance of the
+            `Land` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched land match the
+            customer code of the session context.
+        7. Verify that the land_id of the fetched
+            land matches the land_id of the updated land.
         """
         lands_data = [
             await LandFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of lands.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `LandManager` class.
+        It creates two land instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two land instances using the
+            `LandFactory.create_async` method.
+        2. Generate new codes for the lands.
+        3. Update the lands' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            land_manager (LandManager): An instance of the
+                `LandManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking land instances
         land1 = await LandFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the land_id is missing.
+        This test case ensures that when the land_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing land_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No lands to update since land_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a land is not found.
+        This test case performs the following steps:
+        1. Defines a list of land updates, where each update
+            contains a land_id and a code.
+        2. Calls the update_bulk method of the
+            land_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the land was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a land is not found.
         """
         # Update lands
         updates = [{"land_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param land_manager: An instance of the LandManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"land_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        LandManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple lands
+        from the database.
+        Steps:
+        1. Create two land objects using the LandFactory.
+        2. Delete the lands using the delete_bulk method
+            of the land_manager.
+        3. Verify that the delete operation was successful by
+            checking if the lands no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The lands should no longer exist in the database.
         """
         land1 = await LandFactory.create_async(session=session)
         land2 = await LandFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        lands when some lands are not found.
+        Steps:
+        1. Create a land using the LandFactory.
+        2. Assert that the created land is an instance of the
+            Land class.
+        3. Define a list of land IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk lands.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        LandManager raises an exception
+        when some lands with the specified IDs are
+        not found in the database.
         """
         land1 = await LandFactory.create_async(session=session)
         assert isinstance(land1, Land)
@@ -566,7 +734,15 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        lands with an empty list.
+        Args:
+            land_manager (LandManager): The instance of the
+                LandManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete lands with an empty list
         land_ids = []
@@ -580,7 +756,17 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid land IDs are provided.
+        Args:
+            land_manager (LandManager): The instance of the
+                LandManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         land_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the LandManager class.
+        This test case creates 5 land objects using the
+        LandFactory and checks if the count method
+        returns the correct count of lands.
+        Steps:
+        1. Create 5 land objects using the LandFactory.
+        2. Call the count method of the land_manager.
+        3. Assert that the count is equal to 5.
         """
         lands_data = (
             [await LandFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        LandManager class returns 0 when the database is empty.
+        Args:
+            land_manager (LandManager): An instance of the
+                LandManager class.
+        Returns:
+            None
         """
         count = await land_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of lands
+        sorted by the '_land_id' attribute in ascending order.
+        Steps:
+        1. Add lands to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_land_id'.
+        3. Verify that the returned list of lands is
+            sorted by the '_land_id' attribute.
         """
         # Add lands
         lands_data = (
@@ -634,7 +844,16 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of lands in descending order.
+        Steps:
+        1. Create a list of lands using the LandFactory.
+        2. Assert that the lands_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="land_id" and order="desc".
+        4. Assert that the land_ids of the
+            sorted_lands are in descending order.
         """
         # Add lands
         lands_data = (
@@ -651,7 +870,16 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            land_manager (LandManager): The instance of the
+                LandManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await land_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            land_manager (LandManager): An instance of the
+                LandManager class.
+        Returns:
+            None
         """
         sorted_lands = await land_manager.get_sorted_list(sort_by="land_id")
         assert len(sorted_lands) == 0
@@ -715,7 +951,15 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent land.
+        Args:
+            land_manager (LandManager): The instance of the
+                LandManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the land refresh operation raises an exception.
+        Returns:
+            None
         """
         land = Land(land_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a land exists using the manager function.
+        Args:
+            land_manager (LandManager): The land manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a land
         land1 = await LandFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        LandManager class correctly compares two lands.
+        Args:
+            land_manager (LandManager): An instance of the
+                LandManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a land
         land1 = await LandFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case to check if a land with a
+        non-existent ID exists in the database.
+        Args:
+            land_manager (LandManager): The
+                instance of the LandManager class.
+        Returns:
+            bool: True if the land exists, False otherwise.
         """
         non_existent_id = 999
         assert await land_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            land_manager (LandManager): The instance
+                of the LandManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

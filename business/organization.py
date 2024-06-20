@@ -1,6 +1,6 @@
 # business/organization.py
 """
-    #TODO add comment
+This module contains the OrganizationBusObj class, which represents the business object for a Organization.
 """
 from decimal import Decimal
 import random
@@ -22,7 +22,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Organization object is not initialized")
 class OrganizationInvalidInitError(Exception):
     """
-    #TODO add comment
+    Exception raised when the Organization object is not initialized properly.
     """
 class OrganizationBusObj(BaseBusObj):
     """
@@ -30,6 +30,11 @@ class OrganizationBusObj(BaseBusObj):
     It requires a valid session context for initialization.
     """
     def __init__(self, session_context: SessionContext):
+        """
+        Initializes a new instance of the OrganizationBusObj class.
+        :param session_context: The session context.
+        :raises ValueError: If the session is not provided.
+        """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -39,6 +44,7 @@ class OrganizationBusObj(BaseBusObj):
         """
         Get the organization ID from the Organization object.
         :return: The organization ID.
+        :raises AttributeError: If the Organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -49,7 +55,9 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        #TODO add comment
+        Get the code from the Organization object.
+        :return: The code.
+        :raises AttributeError: If the Organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -59,7 +67,10 @@ class OrganizationBusObj(BaseBusObj):
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
-        #TODO add comment
+        Set the code for the Organization object.
+        :param value: The code value.
+        :raises AttributeError: If the Organization object is not initialized.
+        :raises ValueError: If the code is not a UUID.
         """
         if not self.organization:
             raise AttributeError(
@@ -72,7 +83,9 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        #TODO add comment
+        Get the last change code from the Organization object.
+        :return: The last change code.
+        :raises AttributeError: If the Organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -82,7 +95,10 @@ class OrganizationBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        #TODO add comment
+        Set the last change code for the Organization object.
+        :param value: The last change code value.
+        :raises AttributeError: If the Organization object is not initialized.
+        :raises ValueError: If the last change code is not an integer.
         """
         if not self.organization:
             raise AttributeError(
@@ -95,7 +111,9 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        #TODO add comment
+        Get the insert user ID from the Organization object.
+        :return: The insert user ID.
+        :raises AttributeError: If the Organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -105,7 +123,10 @@ class OrganizationBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the insert user ID for the Organization object.
+        :param value: The insert user ID value.
+        :raises AttributeError: If the Organization object is not initialized.
+        :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.organization:
             raise AttributeError(
@@ -118,7 +139,9 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        #TODO add comment
+        Get the last update user ID from the Organization object.
+        :return: The last update user ID.
+        :raises AttributeError: If the Organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -128,7 +151,10 @@ class OrganizationBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the last update user ID for the Organization object.
+        :param value: The last update user ID value.
+        :raises AttributeError: If the Organization object is not initialized.
+        :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.organization:
             raise AttributeError(
@@ -142,7 +168,9 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def name(self):
         """
-        #TODO add comment
+        Get the Name from the Organization object.
+        :return: The Name.
+        :raises AttributeError: If the Organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -154,7 +182,10 @@ class OrganizationBusObj(BaseBusObj):
     @name.setter
     def name(self, value):
         """
-        #TODO add comment
+        Set the Name for the Organization object.
+        :param value: The Name value.
+        :raises AttributeError: If the Organization object is not initialized.
+        :raises AssertionError: If the Name is not a string.
         """
         if not self.organization:
             raise AttributeError(
@@ -164,7 +195,9 @@ class OrganizationBusObj(BaseBusObj):
         self.organization.name = value
     def set_prop_name(self, value: str):
         """
-        #TODO add comment
+        Set the Name for the Organization object.
+        :param value: The Name value.
+        :return: The updated OrganizationBusObj instance.
         """
         self.name = value
         return self
@@ -175,7 +208,11 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def tac_id(self):
         """
-        #TODO add comment
+        Returns the tac ID associated with the organization.
+        Raises:
+            AttributeError: If the organization is not initialized.
+        Returns:
+            int: The tac ID of the organization.
         """
         if not self.organization:
             raise AttributeError(
@@ -185,7 +222,12 @@ class OrganizationBusObj(BaseBusObj):
     @tac_id.setter
     def tac_id(self, value):
         """
-        #TODO add comment
+        Sets the tac ID for the organization.
+        Args:
+            value (int or None): The tac ID to be set.
+                Must be an integer or None.
+        Raises:
+            AttributeError: If the organization is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -196,14 +238,22 @@ class OrganizationBusObj(BaseBusObj):
         self.organization.tac_id = value
     def set_prop_tac_id(self, value: int):
         """
-        #TODO add comment
+        Set the tac ID for the organization.
+        Args:
+            value (int): The ID of the tac.
+        Returns:
+            Organization: The updated Organization object.
         """
         self.tac_id = value
         return self
     @property
     def tac_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Returns the tac code peek of the organization.
+        Raises:
+            AttributeError: If the organization is not initialized.
+        Returns:
+            uuid.UUID: The tac code peek of the organization.
         """
         if not self.organization:
             raise AttributeError(
@@ -220,7 +270,11 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        #TODO add comment
+        Inserts the UTC date and time into the organization object.
+        Raises:
+            AttributeError: If the organization object is not initialized.
+        Returns:
+            The UTC date and time inserted into the organization object.
         """
         if not self.organization:
             raise AttributeError(
@@ -230,7 +284,12 @@ class OrganizationBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        #TODO add comment
+        Inserts the UTC date and time for the organization.
+        Args:
+            value (datetime): The UTC date and time to be inserted.
+                It should be a datetime object or None.
+        Raises:
+            AttributeError: If the organization is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -243,7 +302,11 @@ class OrganizationBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        #TODO add comment
+        Returns the last update UTC date and time of the organization.
+        Raises:
+            AttributeError: If the organization is not initialized.
+        Returns:
+            datetime: The last update UTC date and time of the organization.
         """
         if not self.organization:
             raise AttributeError(
@@ -253,7 +316,13 @@ class OrganizationBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        #TODO add comment
+        Sets the last update UTC date and time for the organization.
+        Args:
+            value (datetime): The datetime object
+                representing the last update UTC date and time.
+                Pass None to unset the value.
+        Raises:
+            AttributeError: If the organization is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -344,36 +413,55 @@ class OrganizationBusObj(BaseBusObj):
 
     def get_session_context(self):
         """
-        #TODO add comment
+        Returns the session context.
+        :return: The session context.
+        :rtype: SessionContext
         """
         return self._session_context
     async def refresh(self):
         """
-        #TODO add comment
+        Refreshes the organization object by fetching
+        the latest data from the database.
+        Returns:
+            The updated organization object.
         """
         organization_manager = OrganizationManager(self._session_context)
         self.organization = await organization_manager.refresh(self.organization)
         return self
     def is_valid(self):
         """
-        #TODO add comment
+        Check if the organization is valid.
+        Returns:
+            bool: True if the organization is valid, False otherwise.
         """
         return self.organization is not None
     def to_dict(self):
         """
-        #TODO add comment
+        Converts the Organization object to a dictionary representation.
+        Returns:
+            dict: A dictionary representation of the Organization object.
         """
         organization_manager = OrganizationManager(self._session_context)
         return organization_manager.to_dict(self.organization)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the organization object to a JSON representation.
+        Returns:
+            str: The JSON representation of the organization object.
         """
         organization_manager = OrganizationManager(self._session_context)
         return organization_manager.to_json(self.organization)
     async def save(self):
         """
-        #TODO add comment
+        Saves the organization object to the database.
+        If the organization object is not initialized, an AttributeError is raised.
+        If the organization_id is greater than 0, the organization is
+        updated in the database.
+        If the organization_id is 0, the organization is added to the database.
+        Returns:
+            The updated or added organization object.
+        Raises:
+            AttributeError: If the organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
@@ -387,7 +475,9 @@ class OrganizationBusObj(BaseBusObj):
         return self
     async def delete(self):
         """
-        #TODO add comment
+        Deletes the organization from the database.
+        Raises:
+            AttributeError: If the organization is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -399,7 +489,13 @@ class OrganizationBusObj(BaseBusObj):
             self.organization = None
     async def randomize_properties(self):
         """
-        #TODO add comment
+        Randomizes the properties of the organization object.
+        This method generates random values for various
+        properties of the organization object
+        Returns:
+            self: The current instance of the Organization class.
+        Raises:
+            AttributeError: If the organization object is not initialized.
         """
         if not self.organization:
             raise AttributeError(
@@ -412,7 +508,11 @@ class OrganizationBusObj(BaseBusObj):
         return self
     def get_organization_obj(self) -> Organization:
         """
-        #TODO add comment
+        Returns the organization object.
+        Raises:
+            AttributeError: If the organization object is not initialized.
+        Returns:
+            Organization: The organization object.
         """
         if not self.organization:
             raise AttributeError(
@@ -421,7 +521,11 @@ class OrganizationBusObj(BaseBusObj):
         return self.organization
     def is_equal(self, organization: Organization) -> bool:
         """
-        #TODO add comment
+        Checks if the current organization is equal to the given organization.
+        Args:
+            organization (Organization): The organization to compare with.
+        Returns:
+            bool: True if the organizations are equal, False otherwise.
         """
         organization_manager = OrganizationManager(self._session_context)
         my_organization = self.get_organization_obj()
@@ -431,7 +535,9 @@ class OrganizationBusObj(BaseBusObj):
     # TacID
     async def get_tac_id_rel_obj(self) -> models.Tac:
         """
-        #TODO add comment
+        Retrieves the related Tac object based on the tac_id.
+        Returns:
+            An instance of the Tac model representing the related tac.
         """
         tac_manager = managers_and_enums.TacManager(self._session_context)
         tac_obj = await tac_manager.get_by_id(self.tac_id)
@@ -439,34 +545,47 @@ class OrganizationBusObj(BaseBusObj):
 # endset
     def get_obj(self) -> Organization:
         """
-        #TODO add comment
+        Returns the Organization object.
+        :return: The Organization object.
+        :rtype: Organization
         """
         return self.organization
     def get_object_name(self) -> str:
         """
-        #TODO add comment
+        Returns the name of the object.
+        :return: The name of the object.
+        :rtype: str
         """
         return "organization"
     def get_id(self) -> int:
         """
-        #TODO add comment
+        Returns the ID of the organization.
+        :return: The ID of the organization.
+        :rtype: int
         """
         return self.organization_id
     # name,
     # TacID
     async def get_parent_name(self) -> str:
         """
-        #TODO add comment
+        Get the name of the parent organization.
+        Returns:
+            str: The name of the parent organization.
         """
         return 'Tac'
     async def get_parent_code(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Get the parent code of the organization.
+        Returns:
+            The parent code of the organization as a UUID.
         """
         return self.tac_code_peek
     async def get_parent_obj(self) -> models.Tac:
         """
-        #TODO add comment
+        Get the parent object of the current organization.
+        Returns:
+            The parent object of the current organization,
+            which is an instance of the Tac model.
         """
         tac = await self.get_tac_id_rel_obj()
         return tac
@@ -477,7 +596,12 @@ class OrganizationBusObj(BaseBusObj):
         obj_list: List[Organization]
     ):
         """
-        #TODO add comment
+        Convert a list of Organization objects to a list of OrganizationBusObj objects.
+        Args:
+            session_context (SessionContext): The session context.
+            obj_list (List[Organization]): The list of Organization objects to convert.
+        Returns:
+            List[OrganizationBusObj]: The list of converted OrganizationBusObj objects.
         """
         result = list()
         for organization in obj_list:

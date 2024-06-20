@@ -23,7 +23,8 @@ from .base_flow import BaseFlow
 
 class BaseFlowLandAddPlant(BaseFlow):
     """
-    Base class for LandAddPlant flow. Contains some validaiton and security check logic
+    Base class for LandAddPlant flow. Contains
+    some validaiton and security check logic
     """
 
     def __init__(self, session_context: SessionContext):

@@ -612,9 +612,17 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
     @property
     def lookup_enum(self) -> managers_and_enums.DateGreaterThanFilterEnum:
         """
-        #TODO add comment
-        """
+        Returns the corresponding DateGreaterThanFilterEnum
+        value based on the lookup_enum_name.
 
+        Raises:
+            AttributeError: If the date_greater_than_filter
+                attribute is not initialized.
+
+        Returns:
+            managers_and_enums.DateGreaterThanFilterEnum:
+                The corresponding DateGreaterThanFilterEnum value.
+        """
         if not self.date_greater_than_filter:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE

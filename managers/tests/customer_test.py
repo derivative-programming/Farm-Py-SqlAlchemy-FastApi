@@ -311,7 +311,13 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent customer.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent customer,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param customer_manager: The instance of the CustomerManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await customer_manager.delete(999)
@@ -323,7 +329,21 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a customer
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `customer_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                `CustomerManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await customer_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `CustomerManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of customers.
+        Steps:
+        1. Call the `get_list` method of the
+            `customer_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 customer objects using the
+            `CustomerFactory.create_async` method.
+        4. Assert that the `customers_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `customer_manager` instance again.
+        6. Assert that the returned list contains 5 customers.
+        7. Assert that all elements in the returned list are
+            instances of the `Customer` class.
         """
         customers = await customer_manager.get_list()
         assert len(customers) == 0
@@ -352,7 +387,15 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the CustomerManager class.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                CustomerManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         customer = await CustomerFactory.build_async(session)
         json_data = customer_manager.to_json(customer)
@@ -364,7 +407,13 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the CustomerManager class.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                CustomerManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         customer = await CustomerFactory.build_async(session)
         dict_data = customer_manager.to_dict(customer)
@@ -376,7 +425,21 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `CustomerManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `CustomerManager` class.
+        It creates a customer using the `CustomerFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        customer is an instance of the `Customer` class and has
+        the same code as the original customer.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                `CustomerManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         customer = await CustomerFactory.create_async(session)
         json_data = customer_manager.to_json(customer)
@@ -390,7 +453,19 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `CustomerManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a customer object.
+        Args:
+            customer_manager (CustomerManager): An instance
+                of the `CustomerManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         customer = await CustomerFactory.create_async(session)
         schema = CustomerSchema()
@@ -406,7 +481,26 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `CustomerManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple customers to the database.
+        Steps:
+        1. Generate a list of customer data using the
+            `CustomerFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `customer_manager` instance, passing in the generated customer data.
+        3. Verify that the number of customers returned is
+            equal to the number of customers added.
+        4. For each updated customer, fetch the corresponding
+            customer from the database.
+        5. Verify that the fetched customer is an instance of the
+            `Customer` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched customer match the
+            customer code of the session context.
+        7. Verify that the customer_id of the fetched
+            customer matches the customer_id of the updated customer.
         """
         customers_data = [
             await CustomerFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of customers.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `CustomerManager` class.
+        It creates two customer instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two customer instances using the
+            `CustomerFactory.create_async` method.
+        2. Generate new codes for the customers.
+        3. Update the customers' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                `CustomerManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking customer instances
         customer1 = await CustomerFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the customer_id is missing.
+        This test case ensures that when the customer_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing customer_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No customers to update since customer_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a customer is not found.
+        This test case performs the following steps:
+        1. Defines a list of customer updates, where each update
+            contains a customer_id and a code.
+        2. Calls the update_bulk method of the
+            customer_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the customer was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a customer is not found.
         """
         # Update customers
         updates = [{"customer_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param customer_manager: An instance of the CustomerManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"customer_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        CustomerManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple customers
+        from the database.
+        Steps:
+        1. Create two customer objects using the CustomerFactory.
+        2. Delete the customers using the delete_bulk method
+            of the customer_manager.
+        3. Verify that the delete operation was successful by
+            checking if the customers no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The customers should no longer exist in the database.
         """
         customer1 = await CustomerFactory.create_async(session=session)
         customer2 = await CustomerFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        customers when some customers are not found.
+        Steps:
+        1. Create a customer using the CustomerFactory.
+        2. Assert that the created customer is an instance of the
+            Customer class.
+        3. Define a list of customer IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk customers.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        CustomerManager raises an exception
+        when some customers with the specified IDs are
+        not found in the database.
         """
         customer1 = await CustomerFactory.create_async(session=session)
         assert isinstance(customer1, Customer)
@@ -566,7 +734,15 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        customers with an empty list.
+        Args:
+            customer_manager (CustomerManager): The instance of the
+                CustomerManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete customers with an empty list
         customer_ids = []
@@ -580,7 +756,17 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid customer IDs are provided.
+        Args:
+            customer_manager (CustomerManager): The instance of the
+                CustomerManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         customer_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the CustomerManager class.
+        This test case creates 5 customer objects using the
+        CustomerFactory and checks if the count method
+        returns the correct count of customers.
+        Steps:
+        1. Create 5 customer objects using the CustomerFactory.
+        2. Call the count method of the customer_manager.
+        3. Assert that the count is equal to 5.
         """
         customers_data = (
             [await CustomerFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        CustomerManager class returns 0 when the database is empty.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                CustomerManager class.
+        Returns:
+            None
         """
         count = await customer_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of customers
+        sorted by the '_customer_id' attribute in ascending order.
+        Steps:
+        1. Add customers to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_customer_id'.
+        3. Verify that the returned list of customers is
+            sorted by the '_customer_id' attribute.
         """
         # Add customers
         customers_data = (
@@ -634,7 +844,16 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of customers in descending order.
+        Steps:
+        1. Create a list of customers using the CustomerFactory.
+        2. Assert that the customers_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="customer_id" and order="desc".
+        4. Assert that the customer_ids of the
+            sorted_customers are in descending order.
         """
         # Add customers
         customers_data = (
@@ -651,7 +870,16 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            customer_manager (CustomerManager): The instance of the
+                CustomerManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await customer_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                CustomerManager class.
+        Returns:
+            None
         """
         sorted_customers = await customer_manager.get_sorted_list(sort_by="customer_id")
         assert len(sorted_customers) == 0
@@ -715,7 +951,15 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent customer.
+        Args:
+            customer_manager (CustomerManager): The instance of the
+                CustomerManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the customer refresh operation raises an exception.
+        Returns:
+            None
         """
         customer = Customer(customer_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a customer exists using the manager function.
+        Args:
+            customer_manager (CustomerManager): The customer manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a customer
         customer1 = await CustomerFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        CustomerManager class correctly compares two customers.
+        Args:
+            customer_manager (CustomerManager): An instance of the
+                CustomerManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a customer
         customer1 = await CustomerFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case to check if a customer with a
+        non-existent ID exists in the database.
+        Args:
+            customer_manager (CustomerManager): The
+                instance of the CustomerManager class.
+        Returns:
+            bool: True if the customer exists, False otherwise.
         """
         non_existent_id = 999
         assert await customer_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            customer_manager (CustomerManager): The instance
+                of the CustomerManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

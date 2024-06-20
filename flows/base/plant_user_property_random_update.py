@@ -17,7 +17,8 @@ from managers.org_customer import OrgCustomerManager
 from .base_flow import BaseFlow
 class BaseFlowPlantUserPropertyRandomUpdate(BaseFlow):
     """
-    Base class for PlantUserPropertyRandomUpdate flow. Contains some validaiton and security check logic
+    Base class for PlantUserPropertyRandomUpdate flow. Contains
+    some validaiton and security check logic
     """
     def __init__(self, session_context: SessionContext):
         """

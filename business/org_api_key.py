@@ -1,6 +1,6 @@
 # business/org_api_key.py
 """
-    #TODO add comment
+This module contains the OrgApiKeyBusObj class, which represents the business object for a OrgApiKey.
 """
 from decimal import Decimal
 import random
@@ -18,7 +18,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "OrgApiKey object is not initialized")
 class OrgApiKeyInvalidInitError(Exception):
     """
-    #TODO add comment
+    Exception raised when the OrgApiKey object is not initialized properly.
     """
 class OrgApiKeyBusObj(BaseBusObj):
     """
@@ -26,6 +26,11 @@ class OrgApiKeyBusObj(BaseBusObj):
     It requires a valid session context for initialization.
     """
     def __init__(self, session_context: SessionContext):
+        """
+        Initializes a new instance of the OrgApiKeyBusObj class.
+        :param session_context: The session context.
+        :raises ValueError: If the session is not provided.
+        """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
@@ -35,6 +40,7 @@ class OrgApiKeyBusObj(BaseBusObj):
         """
         Get the org_api_key ID from the OrgApiKey object.
         :return: The org_api_key ID.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -45,7 +51,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        #TODO add comment
+        Get the code from the OrgApiKey object.
+        :return: The code.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -55,7 +63,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
-        #TODO add comment
+        Set the code for the OrgApiKey object.
+        :param value: The code value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises ValueError: If the code is not a UUID.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -68,7 +79,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        #TODO add comment
+        Get the last change code from the OrgApiKey object.
+        :return: The last change code.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -78,7 +91,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        #TODO add comment
+        Set the last change code for the OrgApiKey object.
+        :param value: The last change code value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises ValueError: If the last change code is not an integer.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -91,7 +107,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        #TODO add comment
+        Get the insert user ID from the OrgApiKey object.
+        :return: The insert user ID.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -101,7 +119,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the insert user ID for the OrgApiKey object.
+        :param value: The insert user ID value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -114,7 +135,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        #TODO add comment
+        Get the last update user ID from the OrgApiKey object.
+        :return: The last update user ID.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -124,7 +147,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the last update user ID for the OrgApiKey object.
+        :param value: The last update user ID value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -138,7 +164,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def api_key_value(self):
         """
-        #TODO add comment
+        Get the Api Key Value from the OrgApiKey object.
+        :return: The Api Key Value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -150,7 +178,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @api_key_value.setter
     def api_key_value(self, value):
         """
-        #TODO add comment
+        Set the Api Key Value for the OrgApiKey object.
+        :param value: The Api Key Value value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises AssertionError: If the Api Key Value is not a string.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -160,7 +191,9 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.api_key_value = value
     def set_prop_api_key_value(self, value: str):
         """
-        #TODO add comment
+        Set the Api Key Value for the OrgApiKey object.
+        :param value: The Api Key Value value.
+        :return: The updated OrgApiKeyBusObj instance.
         """
         self.api_key_value = value
         return self
@@ -168,7 +201,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def created_by(self):
         """
-        #TODO add comment
+        Get the Created By from the OrgApiKey object.
+        :return: The Created By.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -180,7 +215,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @created_by.setter
     def created_by(self, value):
         """
-        #TODO add comment
+        Set the Created By for the OrgApiKey object.
+        :param value: The Created By value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises AssertionError: If the Created By is not a string.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -190,7 +228,9 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.created_by = value
     def set_prop_created_by(self, value: str):
         """
-        #TODO add comment
+        Set the Created By for the OrgApiKey object.
+        :param value: The Created By value.
+        :return: The updated OrgApiKeyBusObj instance.
         """
         self.created_by = value
         return self
@@ -256,7 +296,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def is_active(self):
         """
-        #TODO add comment
+        Get the Is Active flag from the OrgApiKey object.
+        :return: The Is Active flag.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -266,7 +308,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @is_active.setter
     def is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the OrgApiKey object.
+        :param value: The Is Active flag value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises ValueError: If the Is Active flag is not a boolean.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -277,7 +322,9 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.is_active = value
     def set_prop_is_active(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Active flag for the OrgApiKey object.
+        :param value: The Is Active flag value.
+        :return: The updated OrgApiKeyBusObj instance.
         """
         self.is_active = value
         return self
@@ -285,7 +332,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def is_temp_user_key(self):
         """
-        #TODO add comment
+        Get the Is Temp User Key flag from the OrgApiKey object.
+        :return: The Is Temp User Key flag.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -295,7 +344,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @is_temp_user_key.setter
     def is_temp_user_key(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Temp User Key flag for the OrgApiKey object.
+        :param value: The Is Temp User Key flag value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises ValueError: If the Is Temp User Key flag is not a boolean.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -306,7 +358,9 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.is_temp_user_key = value
     def set_prop_is_temp_user_key(self, value: bool):
         """
-        #TODO add comment
+        Set the Is Temp User Key flag for the OrgApiKey object.
+        :param value: The Is Temp User Key flag value.
+        :return: The updated OrgApiKeyBusObj instance.
         """
         self.is_temp_user_key = value
         return self
@@ -314,7 +368,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def name(self):
         """
-        #TODO add comment
+        Get the Name from the OrgApiKey object.
+        :return: The Name.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -326,7 +382,10 @@ class OrgApiKeyBusObj(BaseBusObj):
     @name.setter
     def name(self, value):
         """
-        #TODO add comment
+        Set the Name for the OrgApiKey object.
+        :param value: The Name value.
+        :raises AttributeError: If the OrgApiKey object is not initialized.
+        :raises AssertionError: If the Name is not a string.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -336,7 +395,9 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.name = value
     def set_prop_name(self, value: str):
         """
-        #TODO add comment
+        Set the Name for the OrgApiKey object.
+        :param value: The Name value.
+        :return: The updated OrgApiKeyBusObj instance.
         """
         self.name = value
         return self
@@ -354,7 +415,11 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def organization_id(self):
         """
-        #TODO add comment
+        Returns the organization ID associated with the org_api_key.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
+        Returns:
+            int: The organization ID of the org_api_key.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -364,7 +429,12 @@ class OrgApiKeyBusObj(BaseBusObj):
     @organization_id.setter
     def organization_id(self, value):
         """
-        #TODO add comment
+        Sets the organization ID for the org_api_key.
+        Args:
+            value (int or None): The organization ID to be set.
+                Must be an integer or None.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -375,14 +445,22 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.organization_id = value
     def set_prop_organization_id(self, value: int):
         """
-        #TODO add comment
+        Set the organization ID for the org_api_key.
+        Args:
+            value (int): The ID of the organization.
+        Returns:
+            OrgApiKey: The updated OrgApiKey object.
         """
         self.organization_id = value
         return self
     @property
     def organization_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Returns the organization code peek of the org_api_key.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
+        Returns:
+            uuid.UUID: The organization code peek of the org_api_key.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -408,7 +486,12 @@ class OrgApiKeyBusObj(BaseBusObj):
     @org_customer_id.setter
     def org_customer_id(self, value: int):
         """
-        #TODO add comment
+        Sets the foreign key ID for the org_customer of the org_api_key.
+        Args:
+            value (int): The foreign key ID to set.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
+            ValueError: If the value is not an integer.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -419,14 +502,23 @@ class OrgApiKeyBusObj(BaseBusObj):
         self.org_api_key.org_customer_id = value
     def set_prop_org_customer_id(self, value: int):
         """
-        #TODO add comment
+        Sets the value of the 'org_customer_id' property.
+        Args:
+            value (int): The value to set for the
+                'org_customer_id' property.
+        Returns:
+            self: The current instance of the class.
         """
         self.org_customer_id = value
         return self
     @property
     def org_customer_code_peek(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Returns the foreign key code peek of the org_api_key's org_customer.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
+        Returns:
+            uuid.UUID: The foreign key code peek of the org_api_key's org_customer.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -444,7 +536,11 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        #TODO add comment
+        Inserts the UTC date and time into the org_api_key object.
+        Raises:
+            AttributeError: If the org_api_key object is not initialized.
+        Returns:
+            The UTC date and time inserted into the org_api_key object.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -454,7 +550,12 @@ class OrgApiKeyBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        #TODO add comment
+        Inserts the UTC date and time for the org_api_key.
+        Args:
+            value (datetime): The UTC date and time to be inserted.
+                It should be a datetime object or None.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -467,7 +568,11 @@ class OrgApiKeyBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        #TODO add comment
+        Returns the last update UTC date and time of the org_api_key.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
+        Returns:
+            datetime: The last update UTC date and time of the org_api_key.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -477,7 +582,13 @@ class OrgApiKeyBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        #TODO add comment
+        Sets the last update UTC date and time for the org_api_key.
+        Args:
+            value (datetime): The datetime object
+                representing the last update UTC date and time.
+                Pass None to unset the value.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -568,36 +679,55 @@ class OrgApiKeyBusObj(BaseBusObj):
 
     def get_session_context(self):
         """
-        #TODO add comment
+        Returns the session context.
+        :return: The session context.
+        :rtype: SessionContext
         """
         return self._session_context
     async def refresh(self):
         """
-        #TODO add comment
+        Refreshes the org_api_key object by fetching
+        the latest data from the database.
+        Returns:
+            The updated org_api_key object.
         """
         org_api_key_manager = OrgApiKeyManager(self._session_context)
         self.org_api_key = await org_api_key_manager.refresh(self.org_api_key)
         return self
     def is_valid(self):
         """
-        #TODO add comment
+        Check if the org_api_key is valid.
+        Returns:
+            bool: True if the org_api_key is valid, False otherwise.
         """
         return self.org_api_key is not None
     def to_dict(self):
         """
-        #TODO add comment
+        Converts the OrgApiKey object to a dictionary representation.
+        Returns:
+            dict: A dictionary representation of the OrgApiKey object.
         """
         org_api_key_manager = OrgApiKeyManager(self._session_context)
         return org_api_key_manager.to_dict(self.org_api_key)
     def to_json(self):
         """
-        #TODO add comment
+        Converts the org_api_key object to a JSON representation.
+        Returns:
+            str: The JSON representation of the org_api_key object.
         """
         org_api_key_manager = OrgApiKeyManager(self._session_context)
         return org_api_key_manager.to_json(self.org_api_key)
     async def save(self):
         """
-        #TODO add comment
+        Saves the org_api_key object to the database.
+        If the org_api_key object is not initialized, an AttributeError is raised.
+        If the org_api_key_id is greater than 0, the org_api_key is
+        updated in the database.
+        If the org_api_key_id is 0, the org_api_key is added to the database.
+        Returns:
+            The updated or added org_api_key object.
+        Raises:
+            AttributeError: If the org_api_key object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
@@ -611,7 +741,9 @@ class OrgApiKeyBusObj(BaseBusObj):
         return self
     async def delete(self):
         """
-        #TODO add comment
+        Deletes the org_api_key from the database.
+        Raises:
+            AttributeError: If the org_api_key is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -623,7 +755,13 @@ class OrgApiKeyBusObj(BaseBusObj):
             self.org_api_key = None
     async def randomize_properties(self):
         """
-        #TODO add comment
+        Randomizes the properties of the org_api_key object.
+        This method generates random values for various
+        properties of the org_api_key object
+        Returns:
+            self: The current instance of the OrgApiKey class.
+        Raises:
+            AttributeError: If the org_api_key object is not initialized.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -655,7 +793,11 @@ class OrgApiKeyBusObj(BaseBusObj):
         return self
     def get_org_api_key_obj(self) -> OrgApiKey:
         """
-        #TODO add comment
+        Returns the org_api_key object.
+        Raises:
+            AttributeError: If the org_api_key object is not initialized.
+        Returns:
+            OrgApiKey: The org_api_key object.
         """
         if not self.org_api_key:
             raise AttributeError(
@@ -664,7 +806,11 @@ class OrgApiKeyBusObj(BaseBusObj):
         return self.org_api_key
     def is_equal(self, org_api_key: OrgApiKey) -> bool:
         """
-        #TODO add comment
+        Checks if the current org_api_key is equal to the given org_api_key.
+        Args:
+            org_api_key (OrgApiKey): The org_api_key to compare with.
+        Returns:
+            bool: True if the org_api_keys are equal, False otherwise.
         """
         org_api_key_manager = OrgApiKeyManager(self._session_context)
         my_org_api_key = self.get_org_api_key_obj()
@@ -680,7 +826,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     # OrganizationID
     async def get_organization_id_rel_obj(self) -> models.Organization:
         """
-        #TODO add comment
+        Retrieves the related Organization object based on the organization_id.
+        Returns:
+            An instance of the Organization model representing the related organization.
         """
         organization_manager = managers_and_enums.OrganizationManager(self._session_context)
         organization_obj = await organization_manager.get_by_id(self.organization_id)
@@ -688,7 +836,9 @@ class OrgApiKeyBusObj(BaseBusObj):
     # OrgCustomerID
     async def get_org_customer_id_rel_obj(self) -> models.OrgCustomer:
         """
-        #TODO add comment
+        Retrieves the related OrgCustomer object based on the foreign key ID.
+        Returns:
+            The related OrgCustomer object.
         """
         org_customer_manager = managers_and_enums.OrgCustomerManager(
             self._session_context)
@@ -699,17 +849,23 @@ class OrgApiKeyBusObj(BaseBusObj):
 # endset
     def get_obj(self) -> OrgApiKey:
         """
-        #TODO add comment
+        Returns the OrgApiKey object.
+        :return: The OrgApiKey object.
+        :rtype: OrgApiKey
         """
         return self.org_api_key
     def get_object_name(self) -> str:
         """
-        #TODO add comment
+        Returns the name of the object.
+        :return: The name of the object.
+        :rtype: str
         """
         return "org_api_key"
     def get_id(self) -> int:
         """
-        #TODO add comment
+        Returns the ID of the org_api_key.
+        :return: The ID of the org_api_key.
+        :rtype: int
         """
         return self.org_api_key_id
     # apiKeyValue,
@@ -722,17 +878,24 @@ class OrgApiKeyBusObj(BaseBusObj):
     # OrganizationID
     async def get_parent_name(self) -> str:
         """
-        #TODO add comment
+        Get the name of the parent org_api_key.
+        Returns:
+            str: The name of the parent org_api_key.
         """
         return 'Organization'
     async def get_parent_code(self) -> uuid.UUID:
         """
-        #TODO add comment
+        Get the parent code of the org_api_key.
+        Returns:
+            The parent code of the org_api_key as a UUID.
         """
         return self.organization_code_peek
     async def get_parent_obj(self) -> models.Organization:
         """
-        #TODO add comment
+        Get the parent object of the current org_api_key.
+        Returns:
+            The parent object of the current org_api_key,
+            which is an instance of the Organization model.
         """
         organization = await self.get_organization_id_rel_obj()
         return organization
@@ -744,7 +907,12 @@ class OrgApiKeyBusObj(BaseBusObj):
         obj_list: List[OrgApiKey]
     ):
         """
-        #TODO add comment
+        Convert a list of OrgApiKey objects to a list of OrgApiKeyBusObj objects.
+        Args:
+            session_context (SessionContext): The session context.
+            obj_list (List[OrgApiKey]): The list of OrgApiKey objects to convert.
+        Returns:
+            List[OrgApiKeyBusObj]: The list of converted OrgApiKeyBusObj objects.
         """
         result = list()
         for org_api_key in obj_list:

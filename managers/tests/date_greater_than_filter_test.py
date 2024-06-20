@@ -311,7 +311,13 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent date_greater_than_filter.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent date_greater_than_filter,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param date_greater_than_filter_manager: The instance of the DateGreaterThanFilterManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await date_greater_than_filter_manager.delete(999)
@@ -323,7 +329,21 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a date_greater_than_filter
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `date_greater_than_filter_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                `DateGreaterThanFilterManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await date_greater_than_filter_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `DateGreaterThanFilterManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of date_greater_than_filters.
+        Steps:
+        1. Call the `get_list` method of the
+            `date_greater_than_filter_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 date_greater_than_filter objects using the
+            `DateGreaterThanFilterFactory.create_async` method.
+        4. Assert that the `date_greater_than_filters_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `date_greater_than_filter_manager` instance again.
+        6. Assert that the returned list contains 5 date_greater_than_filters.
+        7. Assert that all elements in the returned list are
+            instances of the `DateGreaterThanFilter` class.
         """
         date_greater_than_filters = await date_greater_than_filter_manager.get_list()
         assert len(date_greater_than_filters) == 0
@@ -352,7 +387,15 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the DateGreaterThanFilterManager class.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                DateGreaterThanFilterManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(session)
         json_data = date_greater_than_filter_manager.to_json(date_greater_than_filter)
@@ -364,7 +407,13 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the DateGreaterThanFilterManager class.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                DateGreaterThanFilterManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(session)
         dict_data = date_greater_than_filter_manager.to_dict(date_greater_than_filter)
@@ -376,7 +425,21 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `DateGreaterThanFilterManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `DateGreaterThanFilterManager` class.
+        It creates a date_greater_than_filter using the `DateGreaterThanFilterFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        date_greater_than_filter is an instance of the `DateGreaterThanFilter` class and has
+        the same code as the original date_greater_than_filter.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                `DateGreaterThanFilterManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
         json_data = date_greater_than_filter_manager.to_json(date_greater_than_filter)
@@ -390,7 +453,19 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `DateGreaterThanFilterManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a date_greater_than_filter object.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance
+                of the `DateGreaterThanFilterManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(session)
         schema = DateGreaterThanFilterSchema()
@@ -406,7 +481,26 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `DateGreaterThanFilterManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple date_greater_than_filters to the database.
+        Steps:
+        1. Generate a list of date_greater_than_filter data using the
+            `DateGreaterThanFilterFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `date_greater_than_filter_manager` instance, passing in the generated date_greater_than_filter data.
+        3. Verify that the number of date_greater_than_filters returned is
+            equal to the number of date_greater_than_filters added.
+        4. For each updated date_greater_than_filter, fetch the corresponding
+            date_greater_than_filter from the database.
+        5. Verify that the fetched date_greater_than_filter is an instance of the
+            `DateGreaterThanFilter` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched date_greater_than_filter match the
+            customer code of the session context.
+        7. Verify that the date_greater_than_filter_id of the fetched
+            date_greater_than_filter matches the date_greater_than_filter_id of the updated date_greater_than_filter.
         """
         date_greater_than_filters_data = [
             await DateGreaterThanFilterFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of date_greater_than_filters.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `DateGreaterThanFilterManager` class.
+        It creates two date_greater_than_filter instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two date_greater_than_filter instances using the
+            `DateGreaterThanFilterFactory.create_async` method.
+        2. Generate new codes for the date_greater_than_filters.
+        3. Update the date_greater_than_filters' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                `DateGreaterThanFilterManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking date_greater_than_filter instances
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the date_greater_than_filter_id is missing.
+        This test case ensures that when the date_greater_than_filter_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing date_greater_than_filter_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No date_greater_than_filters to update since date_greater_than_filter_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a date_greater_than_filter is not found.
+        This test case performs the following steps:
+        1. Defines a list of date_greater_than_filter updates, where each update
+            contains a date_greater_than_filter_id and a code.
+        2. Calls the update_bulk method of the
+            date_greater_than_filter_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the date_greater_than_filter was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a date_greater_than_filter is not found.
         """
         # Update date_greater_than_filters
         updates = [{"date_greater_than_filter_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param date_greater_than_filter_manager: An instance of the DateGreaterThanFilterManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"date_greater_than_filter_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        DateGreaterThanFilterManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple date_greater_than_filters
+        from the database.
+        Steps:
+        1. Create two date_greater_than_filter objects using the DateGreaterThanFilterFactory.
+        2. Delete the date_greater_than_filters using the delete_bulk method
+            of the date_greater_than_filter_manager.
+        3. Verify that the delete operation was successful by
+            checking if the date_greater_than_filters no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The date_greater_than_filters should no longer exist in the database.
         """
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
         date_greater_than_filter2 = await DateGreaterThanFilterFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        date_greater_than_filters when some date_greater_than_filters are not found.
+        Steps:
+        1. Create a date_greater_than_filter using the DateGreaterThanFilterFactory.
+        2. Assert that the created date_greater_than_filter is an instance of the
+            DateGreaterThanFilter class.
+        3. Define a list of date_greater_than_filter IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk date_greater_than_filters.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        DateGreaterThanFilterManager raises an exception
+        when some date_greater_than_filters with the specified IDs are
+        not found in the database.
         """
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
         assert isinstance(date_greater_than_filter1, DateGreaterThanFilter)
@@ -566,7 +734,15 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter_manager: DateGreaterThanFilterManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        date_greater_than_filters with an empty list.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The instance of the
+                DateGreaterThanFilterManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete date_greater_than_filters with an empty list
         date_greater_than_filter_ids = []
@@ -580,7 +756,17 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid date_greater_than_filter IDs are provided.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The instance of the
+                DateGreaterThanFilterManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         date_greater_than_filter_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the DateGreaterThanFilterManager class.
+        This test case creates 5 date_greater_than_filter objects using the
+        DateGreaterThanFilterFactory and checks if the count method
+        returns the correct count of date_greater_than_filters.
+        Steps:
+        1. Create 5 date_greater_than_filter objects using the DateGreaterThanFilterFactory.
+        2. Call the count method of the date_greater_than_filter_manager.
+        3. Assert that the count is equal to 5.
         """
         date_greater_than_filters_data = (
             [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter_manager: DateGreaterThanFilterManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        DateGreaterThanFilterManager class returns 0 when the database is empty.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                DateGreaterThanFilterManager class.
+        Returns:
+            None
         """
         count = await date_greater_than_filter_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of date_greater_than_filters
+        sorted by the '_date_greater_than_filter_id' attribute in ascending order.
+        Steps:
+        1. Add date_greater_than_filters to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_date_greater_than_filter_id'.
+        3. Verify that the returned list of date_greater_than_filters is
+            sorted by the '_date_greater_than_filter_id' attribute.
         """
         # Add date_greater_than_filters
         date_greater_than_filters_data = (
@@ -634,7 +844,16 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of date_greater_than_filters in descending order.
+        Steps:
+        1. Create a list of date_greater_than_filters using the DateGreaterThanFilterFactory.
+        2. Assert that the date_greater_than_filters_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="date_greater_than_filter_id" and order="desc".
+        4. Assert that the date_greater_than_filter_ids of the
+            sorted_date_greater_than_filters are in descending order.
         """
         # Add date_greater_than_filters
         date_greater_than_filters_data = (
@@ -651,7 +870,16 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The instance of the
+                DateGreaterThanFilterManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await date_greater_than_filter_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter_manager: DateGreaterThanFilterManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                DateGreaterThanFilterManager class.
+        Returns:
+            None
         """
         sorted_date_greater_than_filters = await date_greater_than_filter_manager.get_sorted_list(sort_by="date_greater_than_filter_id")
         assert len(sorted_date_greater_than_filters) == 0
@@ -715,7 +951,15 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent date_greater_than_filter.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The instance of the
+                DateGreaterThanFilterManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the date_greater_than_filter refresh operation raises an exception.
+        Returns:
+            None
         """
         date_greater_than_filter = DateGreaterThanFilter(date_greater_than_filter_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a date_greater_than_filter exists using the manager function.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The date_greater_than_filter manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a date_greater_than_filter
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        DateGreaterThanFilterManager class correctly compares two date_greater_than_filters.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+                DateGreaterThanFilterManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a date_greater_than_filter
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter_manager: DateGreaterThanFilterManager
     ):
         """
-            #TODO add comment
+        Test case to check if a date_greater_than_filter with a
+        non-existent ID exists in the database.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The
+                instance of the DateGreaterThanFilterManager class.
+        Returns:
+            bool: True if the date_greater_than_filter exists, False otherwise.
         """
         non_existent_id = 999
         assert await date_greater_than_filter_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            date_greater_than_filter_manager (DateGreaterThanFilterManager): The instance
+                of the DateGreaterThanFilterManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

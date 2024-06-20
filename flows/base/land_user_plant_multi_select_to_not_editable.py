@@ -17,7 +17,8 @@ from managers.org_customer import OrgCustomerManager
 from .base_flow import BaseFlow
 class BaseFlowLandUserPlantMultiSelectToNotEditable(BaseFlow):
     """
-    Base class for LandUserPlantMultiSelectToNotEditable flow. Contains some validaiton and security check logic
+    Base class for LandUserPlantMultiSelectToNotEditable flow. Contains
+    some validaiton and security check logic
     """
     def __init__(self, session_context: SessionContext):
         """

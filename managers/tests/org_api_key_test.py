@@ -311,7 +311,13 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a nonexistent org_api_key.
+        This test case ensures that when the delete method
+        is called with the ID of a nonexistent org_api_key,
+        an exception is raised. The test also verifies that
+        the session is rolled back after the delete operation.
+        :param org_api_key_manager: The instance of the OrgApiKeyManager class.
+        :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
             await org_api_key_manager.delete(999)
@@ -323,7 +329,21 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting a org_api_key
+        with an invalid type.
+        This test case ensures that when the `delete` method
+        of the `org_api_key_manager` is called with an invalid type,
+        an exception is raised. The test case expects the
+        `delete` method to raise an exception, and if it doesn't,
+        the test case will fail.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                `OrgApiKeyManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            Exception: If the `delete` method does not raise an exception.
         """
         with pytest.raises(Exception):
             await org_api_key_manager.delete("999")  # type: ignore
@@ -335,7 +355,22 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_list` method of the
+        `OrgApiKeyManager` class.
+        This test verifies that the `get_list`
+        method returns the correct list of org_api_keys.
+        Steps:
+        1. Call the `get_list` method of the
+            `org_api_key_manager` instance.
+        2. Assert that the returned list is empty.
+        3. Create 5 org_api_key objects using the
+            `OrgApiKeyFactory.create_async` method.
+        4. Assert that the `org_api_keys_data` variable is of type `List`.
+        5. Call the `get_list` method of the
+            `org_api_key_manager` instance again.
+        6. Assert that the returned list contains 5 org_api_keys.
+        7. Assert that all elements in the returned list are
+            instances of the `OrgApiKey` class.
         """
         org_api_keys = await org_api_key_manager.get_list()
         assert len(org_api_keys) == 0
@@ -352,7 +387,15 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the 'to_json' method of the OrgApiKeyManager class.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                OrgApiKeyManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the json_data is None.
         """
         org_api_key = await OrgApiKeyFactory.build_async(session)
         json_data = org_api_key_manager.to_json(org_api_key)
@@ -364,7 +407,13 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the to_dict method of the OrgApiKeyManager class.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                OrgApiKeyManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         org_api_key = await OrgApiKeyFactory.build_async(session)
         dict_data = org_api_key_manager.to_dict(org_api_key)
@@ -376,7 +425,21 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_json` method of the `OrgApiKeyManager` class.
+        This method tests the functionality of the
+        `from_json` method of the `OrgApiKeyManager` class.
+        It creates a org_api_key using the `OrgApiKeyFactory`
+        and converts it to JSON using the `to_json` method.
+        Then, it deserializes the JSON data using the
+        `from_json` method and asserts that the deserialized
+        org_api_key is an instance of the `OrgApiKey` class and has
+        the same code as the original org_api_key.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                `OrgApiKeyManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         org_api_key = await OrgApiKeyFactory.create_async(session)
         json_data = org_api_key_manager.to_json(org_api_key)
@@ -390,7 +453,19 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the `from_dict` method of the
+        `OrgApiKeyManager` class.
+        This method tests the functionality of the
+        `from_dict` method, which is used to deserialize
+        a dictionary representation of a org_api_key object.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance
+                of the `OrgApiKeyManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If any of the assertions fail.
         """
         org_api_key = await OrgApiKeyFactory.create_async(session)
         schema = OrgApiKeySchema()
@@ -406,7 +481,26 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add_bulk` method of the
+        `OrgApiKeyManager` class.
+        This test case verifies that the `add_bulk`
+        method correctly adds multiple org_api_keys to the database.
+        Steps:
+        1. Generate a list of org_api_key data using the
+            `OrgApiKeyFactory.build_async` method.
+        2. Call the `add_bulk` method of the
+            `org_api_key_manager` instance, passing in the generated org_api_key data.
+        3. Verify that the number of org_api_keys returned is
+            equal to the number of org_api_keys added.
+        4. For each updated org_api_key, fetch the corresponding
+            org_api_key from the database.
+        5. Verify that the fetched org_api_key is an instance of the
+            `OrgApiKey` class.
+        6. Verify that the insert_user_id and
+            last_update_user_id of the fetched org_api_key match the
+            customer code of the session context.
+        7. Verify that the org_api_key_id of the fetched
+            org_api_key matches the org_api_key_id of the updated org_api_key.
         """
         org_api_keys_data = [
             await OrgApiKeyFactory.build_async(session) for _ in range(5)]
@@ -432,7 +526,26 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for bulk update of org_api_keys.
+        This test case verifies the functionality of the
+        `update_bulk` method in the `OrgApiKeyManager` class.
+        It creates two org_api_key instances, updates their codes
+        using the `update_bulk` method, and then verifies
+        that the updates were successful by checking the
+        updated codes in the database.
+        Steps:
+        1. Create two org_api_key instances using the
+            `OrgApiKeyFactory.create_async` method.
+        2. Generate new codes for the org_api_keys.
+        3. Update the org_api_keys' codes using the `update_bulk` method.
+        4. Verify that the update was successful by checking
+            the updated codes in the database.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                `OrgApiKeyManager` class.
+            session (AsyncSession): An instance of the `AsyncSession` class.
+        Returns:
+            None
         """
         # Mocking org_api_key instances
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
@@ -488,7 +601,16 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the `update_bulk`
+        method when the org_api_key_id is missing.
+        This test case ensures that when the org_api_key_id is
+        missing in the updates list,
+        an exception is raised and the session is rolled back.
+        Steps:
+        1. Prepare the updates list with a missing org_api_key_id.
+        2. Call the `update_bulk` method with the updates list.
+        3. Assert that an exception is raised.
+        4. Rollback the session to undo any changes made during the test.
         """
         # No org_api_keys to update since org_api_key_id is missing
         updates = [{"name": "Red Rose"}]
@@ -502,7 +624,18 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the update_bulk
+        method when a org_api_key is not found.
+        This test case performs the following steps:
+        1. Defines a list of org_api_key updates, where each update
+            contains a org_api_key_id and a code.
+        2. Calls the update_bulk method of the
+            org_api_key_manager with the list of updates.
+        3. Expects an exception to be raised, indicating that
+            the org_api_key was not found.
+        4. Rolls back the session to undo any changes made during the test.
+        Note: This test assumes that the update_bulk method
+        throws an exception when a org_api_key is not found.
         """
         # Update org_api_keys
         updates = [{"org_api_key_id": 1, "code": uuid.uuid4()}]
@@ -516,7 +649,15 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        update_bulk method when invalid data types are provided.
+        This test case verifies that when the update_bulk method
+        is called with a list of updates containing invalid data types,
+        an exception is raised. The test case also ensures
+        that the session is rolled back after the test
+        to maintain data integrity.
+        :param org_api_key_manager: An instance of the OrgApiKeyManager class.
+        :param session: An instance of the AsyncSession class.
         """
         updates = [{"org_api_key_id": "2", "code": uuid.uuid4()}]
         with pytest.raises(Exception):
@@ -529,7 +670,21 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the delete_bulk method of the
+        OrgApiKeyManager class.
+        This test verifies that the delete_bulk method
+        successfully deletes multiple org_api_keys
+        from the database.
+        Steps:
+        1. Create two org_api_key objects using the OrgApiKeyFactory.
+        2. Delete the org_api_keys using the delete_bulk method
+            of the org_api_key_manager.
+        3. Verify that the delete operation was successful by
+            checking if the org_api_keys no longer exist in the database.
+        Expected Result:
+        - The delete_bulk method should return True, indicating
+            that the delete operation was successful.
+        - The org_api_keys should no longer exist in the database.
         """
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
         org_api_key2 = await OrgApiKeyFactory.create_async(session=session)
@@ -551,7 +706,20 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting bulk
+        org_api_keys when some org_api_keys are not found.
+        Steps:
+        1. Create a org_api_key using the OrgApiKeyFactory.
+        2. Assert that the created org_api_key is an instance of the
+            OrgApiKey class.
+        3. Define a list of org_api_key IDs to delete.
+        4. Use pytest.raises to assert that an exception is
+            raised when deleting the bulk org_api_keys.
+        5. Rollback the session to undo any changes made during the test.
+        This test case ensures that the delete_bulk method of the
+        OrgApiKeyManager raises an exception
+        when some org_api_keys with the specified IDs are
+        not found in the database.
         """
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
         assert isinstance(org_api_key1, OrgApiKey)
@@ -566,7 +734,15 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of deleting
+        org_api_keys with an empty list.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The instance of the
+                OrgApiKeyManager class.
+        Returns:
+            None
+        Raises:
+            AssertionError: If the result is not True.
         """
         # Delete org_api_keys with an empty list
         org_api_key_ids = []
@@ -580,7 +756,17 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the delete_bulk
+        method when invalid org_api_key IDs are provided.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The instance of the
+                OrgApiKeyManager class.
+            session (AsyncSession): The async session object.
+        Raises:
+            Exception: If an exception is raised during the
+                execution of the delete_bulk method.
+        Returns:
+            None
         """
         org_api_key_ids = ["1", 2]
         with pytest.raises(Exception):
@@ -593,7 +779,15 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test the basic functionality of the count method
+        in the OrgApiKeyManager class.
+        This test case creates 5 org_api_key objects using the
+        OrgApiKeyFactory and checks if the count method
+        returns the correct count of org_api_keys.
+        Steps:
+        1. Create 5 org_api_key objects using the OrgApiKeyFactory.
+        2. Call the count method of the org_api_key_manager.
+        3. Assert that the count is equal to 5.
         """
         org_api_keys_data = (
             [await OrgApiKeyFactory.create_async(session) for _ in range(5)])
@@ -606,7 +800,14 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test the count method when the database is empty.
+        This test case checks if the count method of the
+        OrgApiKeyManager class returns 0 when the database is empty.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                OrgApiKeyManager class.
+        Returns:
+            None
         """
         count = await org_api_key_manager.count()
         assert count == 0
@@ -617,7 +818,16 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the 'get_sorted_list' method with basic sorting.
+        This test case verifies that the 'get_sorted_list'
+        method returns a list of org_api_keys
+        sorted by the '_org_api_key_id' attribute in ascending order.
+        Steps:
+        1. Add org_api_keys to the database.
+        2. Call the 'get_sorted_list' method with the
+            sort_by parameter set to '_org_api_key_id'.
+        3. Verify that the returned list of org_api_keys is
+            sorted by the '_org_api_key_id' attribute.
         """
         # Add org_api_keys
         org_api_keys_data = (
@@ -634,7 +844,16 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_sorted_list' method
+        when sorting the list of org_api_keys in descending order.
+        Steps:
+        1. Create a list of org_api_keys using the OrgApiKeyFactory.
+        2. Assert that the org_api_keys_data is of type List.
+        3. Call the 'get_sorted_list' method with
+            sort_by="org_api_key_id" and order="desc".
+        4. Assert that the org_api_key_ids of the
+            sorted_org_api_keys are in descending order.
         """
         # Add org_api_keys
         org_api_keys_data = (
@@ -651,7 +870,16 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if an AttributeError is raised when
+        sorting the list by an invalid attribute.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The instance of the
+                OrgApiKeyManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            AttributeError: If an invalid attribute is used for sorting.
+        Returns:
+            None
         """
         with pytest.raises(AttributeError):
             await org_api_key_manager.get_sorted_list(sort_by="invalid_attribute")
@@ -662,7 +890,15 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of
+        `get_sorted_list` method when the database is empty.
+        This test ensures that when the database is empty, the
+        `get_sorted_list` method returns an empty list.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                OrgApiKeyManager class.
+        Returns:
+            None
         """
         sorted_org_api_keys = await org_api_key_manager.get_sorted_list(sort_by="org_api_key_id")
         assert len(sorted_org_api_keys) == 0
@@ -715,7 +951,15 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of refreshing a nonexistent org_api_key.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The instance of the
+                OrgApiKeyManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If the org_api_key refresh operation raises an exception.
+        Returns:
+            None
         """
         org_api_key = OrgApiKey(org_api_key_id=999)
         with pytest.raises(Exception):
@@ -728,7 +972,12 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if a org_api_key exists using the manager function.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The org_api_key manager instance.
+            session (AsyncSession): The async session object.
+        Returns:
+            None
         """
         # Add a org_api_key
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
@@ -741,7 +990,14 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test if the is_equal method of the
+        OrgApiKeyManager class correctly compares two org_api_keys.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An instance of the
+                OrgApiKeyManager class.
+            session (AsyncSession): An instance of the AsyncSession class.
+        Returns:
+            None
         """
         # Add a org_api_key
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
@@ -756,7 +1012,13 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case to check if a org_api_key with a
+        non-existent ID exists in the database.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The
+                instance of the OrgApiKeyManager class.
+        Returns:
+            bool: True if the org_api_key exists, False otherwise.
         """
         non_existent_id = 999
         assert await org_api_key_manager.exists(non_existent_id) is False
@@ -767,7 +1029,16 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to check if the exists method raises
+        an exception when an invalid ID type is provided.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The instance
+                of the OrgApiKeyManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not raised by the exists method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
@@ -869,7 +1140,23 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_org_customer_id` method
+        when a org_api_key with a specific org_customer_id exists.
+        Steps:
+        1. Create a org_api_key using the OrgApiKeyFactory.
+        2. Fetch the org_api_key using the
+            `get_by_org_customer_id` method of the org_api_key_manager.
+        3. Assert that the fetched org_api_keys list has a length of 1.
+        4. Assert that the first element in the fetched
+            org_api_keys list is an instance of the OrgApiKey class.
+        5. Assert that the code of the fetched org_api_key
+            matches the code of the created org_api_key.
+        6. Execute a select statement to fetch the
+            OrgCustomer object associated with the org_customer_id.
+        7. Assert that the fetched org_customer is an instance of the OrgCustomer class.
+        8. Assert that the org_customer_code_peek
+            of the fetched org_api_key matches the code of the fetched org_customer.
         """
         # Add a org_api_key with a specific org_customer_id
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
