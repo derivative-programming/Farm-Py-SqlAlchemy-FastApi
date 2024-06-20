@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `LandManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import LandFactory
 from models.serialization_schema.land import LandSchema
 class TestLandManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `LandManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def land_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `LandManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `LandManager`.
         """
         # Define mock data for our land
         mock_data = {
@@ -55,7 +59,8 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `LandManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `LandManager` that checks if a
+        land is correctly added to the database.
         """
         test_land = await LandFactory.build_async(session)
         assert test_land.land_id == 0
@@ -103,7 +110,9 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `LandManager` that checks if the
+        correct land object is returned.
         """
         # Create a test land using the LandFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `LandManager`.
         """
         test_land = await LandFactory.create_async(session)
         land = await land_manager.get_by_id(test_land.land_id)
@@ -141,7 +151,8 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `LandManager` when the land is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_land = await land_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `LandManager` that checks if a land is
+        returned by its code.
         """
         test_land = await LandFactory.create_async(session)
         land = await land_manager.get_by_code(test_land.code)
@@ -166,7 +179,8 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `LandManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any Land in the database
@@ -180,7 +194,8 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `LandManager`
+        that checks if a land is correctly updated.
         """
         test_land = await LandFactory.create_async(session)
         test_land.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `LandManager`
+        that checks if a land is correctly updated using a dictionary.
         """
         test_land = await LandFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `LandManager`
+        with an invalid land.
         """
         # None land
         land = None
@@ -251,7 +268,8 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `LandManager`
+        with a nonexistent attribute.
         """
         test_land = await LandFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `LandManager`.
         """
         land_data = await LandFactory.create_async(session)
         result = await session.execute(
@@ -769,7 +787,25 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when a land with
+        a specific pac_id exists.
+        Steps:
+        1. Create a land using the LandFactory.
+        2. Fetch the land using the
+            `get_by_pac_id` method of the land_manager.
+        3. Assert that the fetched lands list contains
+            only one land.
+        4. Assert that the fetched land is an instance
+            of the Land class.
+        5. Assert that the code of the fetched land
+            matches the code of the created land.
+        6. Fetch the corresponding pac object
+            using the pac_id of the created land.
+        7. Assert that the fetched pac object is
+            an instance of the Pac class.
+        8. Assert that the pac_code_peek of the fetched
+            land matches the code of the fetched pac.
         """
         # Add a land with a specific pac_id
         land1 = await LandFactory.create_async(session=session)
@@ -790,7 +826,11 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_pac_id method when the pac ID does not exist.
+        This test case ensures that when a non-existent
+        pac ID is provided to the get_by_pac_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_lands = await land_manager.get_by_pac_id(non_existent_id)
@@ -802,7 +842,18 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when an invalid pac ID is provided.
+        Args:
+            land_manager (LandManager): An
+                instance of the LandManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_pac_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

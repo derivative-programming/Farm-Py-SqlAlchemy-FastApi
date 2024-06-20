@@ -6,7 +6,7 @@ The PlantUserDeleteRouter provides the following endpoints:
     - GET /api/v1_0/plant-user-delete/{plant_code}/init:
         Get the initialization data for the Plant User Delete page.
     - GET /api/v1_0/plant-user-delete/{plant_code}:
-        Get the  plant list report for a specific  code.
+        Get the Plant User Delete Report for a specific  code.
     - GET /api/v1_0/plant-user-delete/{plant_code}/to-csv:
         Retrieve the Plant User Delete Report as a CSV file.
 """

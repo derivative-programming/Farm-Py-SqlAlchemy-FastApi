@@ -22,7 +22,7 @@ class CustomerRoleNotFoundError(Exception):
     """
     Exception raised when a specified customer_role is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="CustomerRole not found"):
         self.message = message
@@ -30,37 +30,55 @@ class CustomerRoleNotFoundError(Exception):
 
 class CustomerRoleManager:
     """
-    #TODO add comment
+    The CustomerRoleManager class is responsible for managing customer_roles in the system.
+    It provides methods for adding, updating, deleting, and retrieving customer_roles.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the CustomerRoleManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
 
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the CustomerRoleManager.
         """
         logging.info("CustomerRoleManager.Initialize")
 
     async def build(self, **kwargs) -> CustomerRole:
         """
-            #TODO add comment
+        Builds a new CustomerRole object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the customer_role.
+        Returns:
+            CustomerRole: The newly created CustomerRole object.
         """
         logging.info("CustomerRoleManager.build")
         return CustomerRole(**kwargs)
     async def add(self, customer_role: CustomerRole) -> CustomerRole:
         """
-            #TODO add comment
+        Adds a new customer_role to the system.
+        Args:
+            customer_role (CustomerRole): The customer_role to add.
+        Returns:
+            CustomerRole: The added customer_role.
         """
         logging.info("CustomerRoleManager.add")
         customer_role.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -72,7 +90,9 @@ class CustomerRoleManager:
         return customer_role
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving customer_roles.
+        Returns:
+            The base query for retrieving customer_roles.
         """
         logging.info("CustomerRoleManager._build_query")
         query = select(
@@ -95,7 +115,11 @@ class CustomerRoleManager:
         return query
     async def _run_query(self, query_filter) -> List[CustomerRole]:
         """
-            #TODO add comment
+        Runs the query to retrieve customer_roles from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[CustomerRole]: The list of customer_roles that match the query.
         """
         logging.info("CustomerRoleManager._run_query")
         customer_role_query_all = self._build_query()
@@ -128,14 +152,14 @@ class CustomerRoleManager:
         customer_role_list: List['CustomerRole']
     ) -> Optional['CustomerRole']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            customer_role_list (List[CustomerRole]):
-                The list to retrieve the first element from.
+            customer_role_list (List[CustomerRole]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[CustomerRole]: The first element
-                of the list if it exists, otherwise None.
+            Optional[CustomerRole]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             customer_role_list[0]
@@ -144,7 +168,11 @@ class CustomerRoleManager:
         )
     async def get_by_id(self, customer_role_id: int) -> Optional[CustomerRole]:
         """
-            #TODO add comment
+        Retrieves a customer_role by its ID.
+        Args:
+            customer_role_id (int): The ID of the customer_role to retrieve.
+        Returns:
+            Optional[CustomerRole]: The retrieved customer_role, or None if not found.
         """
         logging.info(
             "CustomerRoleManager.get_by_id start customer_role_id: %s",
@@ -159,7 +187,11 @@ class CustomerRoleManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:
         """
-            #TODO add comment
+        Retrieves a customer_role by its code.
+        Args:
+            code (uuid.UUID): The code of the customer_role to retrieve.
+        Returns:
+            Optional[CustomerRole]: The retrieved customer_role, or None if not found.
         """
         logging.info("CustomerRoleManager.get_by_code %s", code)
         query_filter = CustomerRole._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -167,7 +199,14 @@ class CustomerRoleManager:
         return self._first_or_none(query_results)
     async def update(self, customer_role: CustomerRole, **kwargs) -> Optional[CustomerRole]:
         """
-            #TODO add comment
+        Updates a customer_role with the specified attributes.
+        Args:
+            customer_role (CustomerRole): The customer_role to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[CustomerRole]: The updated customer_role, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("CustomerRoleManager.update")
         property_list = CustomerRole.property_list()
@@ -182,7 +221,13 @@ class CustomerRoleManager:
         return customer_role
     async def delete(self, customer_role_id: int):
         """
-            #TODO add comment
+        Deletes a customer_role by its ID.
+        Args:
+            customer_role_id (int): The ID of the customer_role to delete.
+        Raises:
+            TypeError: If the customer_role_id is not an integer.
+            CustomerRoleNotFoundError: If the customer_role with the
+                specified ID is not found.
         """
         logging.info("CustomerRoleManager.delete %s", customer_role_id)
         if not isinstance(customer_role_id, int):
@@ -197,14 +242,20 @@ class CustomerRoleManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[CustomerRole]:
         """
-            #TODO add comment
+        Retrieves a list of all customer_roles.
+        Returns:
+            List[CustomerRole]: The list of customer_roles.
         """
         logging.info("CustomerRoleManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, customer_role: CustomerRole) -> str:
         """
-        Serialize the CustomerRole object to a JSON string using the CustomerRoleSchema.
+        Serializes a CustomerRole object to a JSON string.
+        Args:
+            customer_role (CustomerRole): The customer_role to serialize.
+        Returns:
+            str: The JSON string representation of the customer_role.
         """
         logging.info("CustomerRoleManager.to_json")
         schema = CustomerRoleSchema()
@@ -212,7 +263,11 @@ class CustomerRoleManager:
         return json.dumps(customer_role_data)
     def to_dict(self, customer_role: CustomerRole) -> Dict[str, Any]:
         """
-        Serialize the CustomerRole object to a JSON string using the CustomerRoleSchema.
+        Serializes a CustomerRole object to a dictionary.
+        Args:
+            customer_role (CustomerRole): The customer_role to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the customer_role.
         """
         logging.info("CustomerRoleManager.to_dict")
         schema = CustomerRoleSchema()
@@ -221,7 +276,7 @@ class CustomerRoleManager:
         return customer_role_data
     def from_json(self, json_str: str) -> CustomerRole:
         """
-        Deserializes a JSON string into a CustomerRole object using the CustomerRoleSchema.
+        Deserializes a JSON string into a CustomerRole object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -237,8 +292,8 @@ class CustomerRoleManager:
         """
         Creates a CustomerRole instance from a dictionary of attributes.
         Args:
-            customer_role_dict (Dict[str, Any]): A dictionary containing
-                customer_role attributes.
+            customer_role_dict (Dict[str, Any]): A dictionary
+                containing customer_role attributes.
         Returns:
             CustomerRole: A new CustomerRole instance created from the given dictionary.
         """
@@ -251,11 +306,11 @@ class CustomerRoleManager:
         return new_customer_role
     async def add_bulk(self, customer_roles: List[CustomerRole]) -> List[CustomerRole]:
         """
-        Adds multiple customer_roles at once.
+        Adds multiple customer_roles to the system.
         Args:
             customer_roles (List[CustomerRole]): The list of customer_roles to add.
         Returns:
-            List[CustomerRole]: The list of added customer_roles.
+            List[CustomerRole]: The added customer_roles.
         """
         logging.info("CustomerRoleManager.add_bulk")
         for customer_role in customer_roles:
@@ -277,7 +332,16 @@ class CustomerRoleManager:
         customer_role_updates: List[Dict[str, Any]]
     ) -> List[CustomerRole]:
         """
-        #TODO add comment
+        Update multiple customer_roles with the provided updates.
+        Args:
+            customer_role_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each customer_role.
+        Returns:
+            List[CustomerRole]: A list of updated CustomerRole objects.
+        Raises:
+            TypeError: If the customer_role_id is not an integer.
+            CustomerRoleNotFoundError: If a customer_role with the
+                provided customer_role_id is not found.
         """
         logging.info("CustomerRoleManager.update_bulk start")
         updated_customer_roles = []
@@ -369,7 +433,15 @@ class CustomerRoleManager:
         return bool(customer_role)
     def is_equal(self, customer_role1: CustomerRole, customer_role2: CustomerRole) -> bool:
         """
-        #TODO add comment
+        Check if two CustomerRole objects are equal.
+        Args:
+            customer_role1 (CustomerRole): The first CustomerRole object.
+            customer_role2 (CustomerRole): The second CustomerRole object.
+        Returns:
+            bool: True if the two CustomerRole objects are equal, False otherwise.
+        Raises:
+            TypeError: If either customer_role1 or customer_role2
+                is not provided or is not an instance of CustomerRole.
         """
         if not customer_role1:
             raise TypeError("CustomerRole1 required.")
@@ -385,7 +457,12 @@ class CustomerRoleManager:
 # endset
     async def get_by_customer_id(self, customer_id: int) -> List[CustomerRole]:  # CustomerID
         """
-        #TODO add comment
+        Retrieve a list of customer_roles by customer ID.
+        Args:
+            customer_id (int): The ID of the customer.
+        Returns:
+            List[CustomerRole]: A list of customer_roles associated
+            with the specified customer ID.
         """
         logging.info("CustomerRoleManager.get_by_customer_id")
         if not isinstance(customer_id, int):
@@ -401,7 +478,14 @@ class CustomerRoleManager:
         role_id: int
     ) -> List[CustomerRole]:  # RoleID
         """
-        #TODO add comment
+        Retrieve a list of customer_roles based on the
+            given role foreign key ID.
+        Args:
+            role_id (int): The
+                role foreign key ID to filter the customer_roles.
+        Returns:
+            List[CustomerRole]: A list of CustomerRole objects
+                matching the given role foreign key ID.
         """
         logging.info("CustomerRoleManager.get_by_role_id")
         if not isinstance(role_id, int):

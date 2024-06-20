@@ -6,7 +6,7 @@ The TacFarmDashboardRouter provides the following endpoints:
     - GET /api/v1_0/tac-farm-dashboard/{tac_code}/init:
         Get the initialization data for the Tac Farm Dashboard page.
     - GET /api/v1_0/tac-farm-dashboard/{tac_code}:
-        Get the tac plant list report for a specific tac code.
+        Get the Tac Farm Dashboard Report for a specific tac code.
     - GET /api/v1_0/tac-farm-dashboard/{tac_code}/to-csv:
         Retrieve the Tac Farm Dashboard Report as a CSV file.
 """
@@ -134,7 +134,7 @@ class TacFarmDashboardRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the tac plant list report for a specific tac code.
+        Get the Tac Farm Dashboard Report for a specific tac code.
         Args:
             tac_code (uuid.UUID): The unique identifier for the tac.
             request_model (api_models.TacFarmDashboardGetModelRequest):
@@ -143,7 +143,7 @@ class TacFarmDashboardRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.TacFarmDashboardGetModelResponse: The response
-                model containing the tac plant list report.
+                model containing the Tac Farm Dashboard Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """

@@ -6,7 +6,7 @@ The TacLoginRouter provides the following endpoints:
     - GET /api/v1_0/tac-login/{tac_code}/init:
         Get the initialization data for the Tac Login page.
     - GET /api/v1_0/tac-login/{tac_code}:
-        Get the tac plant list report for a specific tac code.
+        Get the Tac Login Report for a specific tac code.
     - GET /api/v1_0/tac-login/{tac_code}/to-csv:
         Retrieve the Tac Login Report as a CSV file.
 """

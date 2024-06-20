@@ -6,7 +6,7 @@ The PlantUserPropertyRandomUpdateRouter provides the following endpoints:
     - GET /api/v1_0/plant-user-property-random-update/{plant_code}/init:
         Get the initialization data for the Plant User Property Random Update page.
     - GET /api/v1_0/plant-user-property-random-update/{plant_code}:
-        Get the  plant list report for a specific  code.
+        Get the Plant User Property Random Update Report for a specific  code.
     - GET /api/v1_0/plant-user-property-random-update/{plant_code}/to-csv:
         Retrieve the Plant User Property Random Update Report as a CSV file.
 """

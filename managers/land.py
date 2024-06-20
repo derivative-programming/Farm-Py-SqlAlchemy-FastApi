@@ -21,7 +21,7 @@ class LandNotFoundError(Exception):
     """
     Exception raised when a specified land is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="Land not found"):
         self.message = message
@@ -29,25 +29,36 @@ class LandNotFoundError(Exception):
 
 class LandEnum(Enum):
     """
-    #TODO add comment
+    Represents an enumeration of
+    Land options.
     """
     UNKNOWN = 'Unknown'
     FIELD_ONE = 'Field_One'
 
 class LandManager:
     """
-    #TODO add comment
+    The LandManager class is responsible for managing lands in the system.
+    It provides methods for adding, updating, deleting, and retrieving lands.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the LandManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
@@ -58,7 +69,15 @@ class LandManager:
         return item
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the LandManager.
+        This method initializes the LandManager
+        by adding predefined filter items to the database.
+        If the filter items do not already exist in the database,
+        they are created and added.
+        Returns:
+            None
+        Raises:
+            None
         """
         logging.info("LandManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
@@ -91,9 +110,16 @@ class LandManager:
         enum_val: LandEnum
     ) -> Land:
         """
-            #TODO add comment
+        Returns a Land object
+        based on the provided enum value.
+        Args:
+            enum_val (LandEnum):
+                The enum value representing the filter.
+        Returns:
+            Land:
+                The Land object
+                matching the enum value.
         """
-        # return self.get(lookup_enum_name=enum_val.value)
         query_filter = (
             Land._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
@@ -101,13 +127,21 @@ class LandManager:
 
     async def build(self, **kwargs) -> Land:
         """
-            #TODO add comment
+        Builds a new Land object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the land.
+        Returns:
+            Land: The newly created Land object.
         """
         logging.info("LandManager.build")
         return Land(**kwargs)
     async def add(self, land: Land) -> Land:
         """
-            #TODO add comment
+        Adds a new land to the system.
+        Args:
+            land (Land): The land to add.
+        Returns:
+            Land: The added land.
         """
         logging.info("LandManager.add")
         land.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -119,7 +153,9 @@ class LandManager:
         return land
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving lands.
+        Returns:
+            The base query for retrieving lands.
         """
         logging.info("LandManager._build_query")
         query = select(
@@ -136,7 +172,11 @@ class LandManager:
         return query
     async def _run_query(self, query_filter) -> List[Land]:
         """
-            #TODO add comment
+        Runs the query to retrieve lands from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[Land]: The list of lands that match the query.
         """
         logging.info("LandManager._run_query")
         land_query_all = self._build_query()
@@ -165,14 +205,14 @@ class LandManager:
         land_list: List['Land']
     ) -> Optional['Land']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            land_list (List[Land]):
-                The list to retrieve the first element from.
+            land_list (List[Land]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[Land]: The first element
-                of the list if it exists, otherwise None.
+            Optional[Land]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             land_list[0]
@@ -181,7 +221,11 @@ class LandManager:
         )
     async def get_by_id(self, land_id: int) -> Optional[Land]:
         """
-            #TODO add comment
+        Retrieves a land by its ID.
+        Args:
+            land_id (int): The ID of the land to retrieve.
+        Returns:
+            Optional[Land]: The retrieved land, or None if not found.
         """
         logging.info(
             "LandManager.get_by_id start land_id: %s",
@@ -196,7 +240,11 @@ class LandManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Land]:
         """
-            #TODO add comment
+        Retrieves a land by its code.
+        Args:
+            code (uuid.UUID): The code of the land to retrieve.
+        Returns:
+            Optional[Land]: The retrieved land, or None if not found.
         """
         logging.info("LandManager.get_by_code %s", code)
         query_filter = Land._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -204,7 +252,14 @@ class LandManager:
         return self._first_or_none(query_results)
     async def update(self, land: Land, **kwargs) -> Optional[Land]:
         """
-            #TODO add comment
+        Updates a land with the specified attributes.
+        Args:
+            land (Land): The land to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[Land]: The updated land, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("LandManager.update")
         property_list = Land.property_list()
@@ -219,7 +274,13 @@ class LandManager:
         return land
     async def delete(self, land_id: int):
         """
-            #TODO add comment
+        Deletes a land by its ID.
+        Args:
+            land_id (int): The ID of the land to delete.
+        Raises:
+            TypeError: If the land_id is not an integer.
+            LandNotFoundError: If the land with the
+                specified ID is not found.
         """
         logging.info("LandManager.delete %s", land_id)
         if not isinstance(land_id, int):
@@ -234,14 +295,20 @@ class LandManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[Land]:
         """
-            #TODO add comment
+        Retrieves a list of all lands.
+        Returns:
+            List[Land]: The list of lands.
         """
         logging.info("LandManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, land: Land) -> str:
         """
-        Serialize the Land object to a JSON string using the LandSchema.
+        Serializes a Land object to a JSON string.
+        Args:
+            land (Land): The land to serialize.
+        Returns:
+            str: The JSON string representation of the land.
         """
         logging.info("LandManager.to_json")
         schema = LandSchema()
@@ -249,7 +316,11 @@ class LandManager:
         return json.dumps(land_data)
     def to_dict(self, land: Land) -> Dict[str, Any]:
         """
-        Serialize the Land object to a JSON string using the LandSchema.
+        Serializes a Land object to a dictionary.
+        Args:
+            land (Land): The land to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the land.
         """
         logging.info("LandManager.to_dict")
         schema = LandSchema()
@@ -258,7 +329,7 @@ class LandManager:
         return land_data
     def from_json(self, json_str: str) -> Land:
         """
-        Deserializes a JSON string into a Land object using the LandSchema.
+        Deserializes a JSON string into a Land object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -274,8 +345,8 @@ class LandManager:
         """
         Creates a Land instance from a dictionary of attributes.
         Args:
-            land_dict (Dict[str, Any]): A dictionary containing
-                land attributes.
+            land_dict (Dict[str, Any]): A dictionary
+                containing land attributes.
         Returns:
             Land: A new Land instance created from the given dictionary.
         """
@@ -288,11 +359,11 @@ class LandManager:
         return new_land
     async def add_bulk(self, lands: List[Land]) -> List[Land]:
         """
-        Adds multiple lands at once.
+        Adds multiple lands to the system.
         Args:
             lands (List[Land]): The list of lands to add.
         Returns:
-            List[Land]: The list of added lands.
+            List[Land]: The added lands.
         """
         logging.info("LandManager.add_bulk")
         for land in lands:
@@ -314,7 +385,16 @@ class LandManager:
         land_updates: List[Dict[str, Any]]
     ) -> List[Land]:
         """
-        #TODO add comment
+        Update multiple lands with the provided updates.
+        Args:
+            land_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each land.
+        Returns:
+            List[Land]: A list of updated Land objects.
+        Raises:
+            TypeError: If the land_id is not an integer.
+            LandNotFoundError: If a land with the
+                provided land_id is not found.
         """
         logging.info("LandManager.update_bulk start")
         updated_lands = []
@@ -406,7 +486,15 @@ class LandManager:
         return bool(land)
     def is_equal(self, land1: Land, land2: Land) -> bool:
         """
-        #TODO add comment
+        Check if two Land objects are equal.
+        Args:
+            land1 (Land): The first Land object.
+            land2 (Land): The second Land object.
+        Returns:
+            bool: True if the two Land objects are equal, False otherwise.
+        Raises:
+            TypeError: If either land1 or land2
+                is not provided or is not an instance of Land.
         """
         if not land1:
             raise TypeError("Land1 required.")
@@ -422,7 +510,12 @@ class LandManager:
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Land]:  # PacID
         """
-        #TODO add comment
+        Retrieve a list of lands by pac ID.
+        Args:
+            pac_id (int): The ID of the pac.
+        Returns:
+            List[Land]: A list of lands associated
+            with the specified pac ID.
         """
         logging.info("LandManager.get_by_pac_id")
         if not isinstance(pac_id, int):

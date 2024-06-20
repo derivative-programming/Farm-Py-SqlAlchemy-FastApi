@@ -21,7 +21,7 @@ class PacNotFoundError(Exception):
     """
     Exception raised when a specified pac is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="Pac not found"):
         self.message = message
@@ -29,24 +29,35 @@ class PacNotFoundError(Exception):
 
 class PacEnum(Enum):
     """
-    #TODO add comment
+    Represents an enumeration of
+    Pac options.
     """
     UNKNOWN = 'Unknown'
 
 class PacManager:
     """
-    #TODO add comment
+    The PacManager class is responsible for managing pacs in the system.
+    It provides methods for adding, updating, deleting, and retrieving pacs.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the PacManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
@@ -57,7 +68,15 @@ class PacManager:
         return item
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the PacManager.
+        This method initializes the PacManager
+        by adding predefined filter items to the database.
+        If the filter items do not already exist in the database,
+        they are created and added.
+        Returns:
+            None
+        Raises:
+            None
         """
         logging.info("PacManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
@@ -80,9 +99,16 @@ class PacManager:
         enum_val: PacEnum
     ) -> Pac:
         """
-            #TODO add comment
+        Returns a Pac object
+        based on the provided enum value.
+        Args:
+            enum_val (PacEnum):
+                The enum value representing the filter.
+        Returns:
+            Pac:
+                The Pac object
+                matching the enum value.
         """
-        # return self.get(lookup_enum_name=enum_val.value)
         query_filter = (
             Pac._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
@@ -90,13 +116,21 @@ class PacManager:
 
     async def build(self, **kwargs) -> Pac:
         """
-            #TODO add comment
+        Builds a new Pac object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the pac.
+        Returns:
+            Pac: The newly created Pac object.
         """
         logging.info("PacManager.build")
         return Pac(**kwargs)
     async def add(self, pac: Pac) -> Pac:
         """
-            #TODO add comment
+        Adds a new pac to the system.
+        Args:
+            pac (Pac): The pac to add.
+        Returns:
+            Pac: The added pac.
         """
         logging.info("PacManager.add")
         pac.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -108,7 +142,9 @@ class PacManager:
         return pac
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving pacs.
+        Returns:
+            The base query for retrieving pacs.
         """
         logging.info("PacManager._build_query")
         query = select(
@@ -121,7 +157,11 @@ class PacManager:
         return query
     async def _run_query(self, query_filter) -> List[Pac]:
         """
-            #TODO add comment
+        Runs the query to retrieve pacs from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[Pac]: The list of pacs that match the query.
         """
         logging.info("PacManager._run_query")
         pac_query_all = self._build_query()
@@ -148,14 +188,14 @@ class PacManager:
         pac_list: List['Pac']
     ) -> Optional['Pac']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            pac_list (List[Pac]):
-                The list to retrieve the first element from.
+            pac_list (List[Pac]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[Pac]: The first element
-                of the list if it exists, otherwise None.
+            Optional[Pac]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             pac_list[0]
@@ -164,7 +204,11 @@ class PacManager:
         )
     async def get_by_id(self, pac_id: int) -> Optional[Pac]:
         """
-            #TODO add comment
+        Retrieves a pac by its ID.
+        Args:
+            pac_id (int): The ID of the pac to retrieve.
+        Returns:
+            Optional[Pac]: The retrieved pac, or None if not found.
         """
         logging.info(
             "PacManager.get_by_id start pac_id: %s",
@@ -179,7 +223,11 @@ class PacManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Pac]:
         """
-            #TODO add comment
+        Retrieves a pac by its code.
+        Args:
+            code (uuid.UUID): The code of the pac to retrieve.
+        Returns:
+            Optional[Pac]: The retrieved pac, or None if not found.
         """
         logging.info("PacManager.get_by_code %s", code)
         query_filter = Pac._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -187,7 +235,14 @@ class PacManager:
         return self._first_or_none(query_results)
     async def update(self, pac: Pac, **kwargs) -> Optional[Pac]:
         """
-            #TODO add comment
+        Updates a pac with the specified attributes.
+        Args:
+            pac (Pac): The pac to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[Pac]: The updated pac, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("PacManager.update")
         property_list = Pac.property_list()
@@ -202,7 +257,13 @@ class PacManager:
         return pac
     async def delete(self, pac_id: int):
         """
-            #TODO add comment
+        Deletes a pac by its ID.
+        Args:
+            pac_id (int): The ID of the pac to delete.
+        Raises:
+            TypeError: If the pac_id is not an integer.
+            PacNotFoundError: If the pac with the
+                specified ID is not found.
         """
         logging.info("PacManager.delete %s", pac_id)
         if not isinstance(pac_id, int):
@@ -217,14 +278,20 @@ class PacManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[Pac]:
         """
-            #TODO add comment
+        Retrieves a list of all pacs.
+        Returns:
+            List[Pac]: The list of pacs.
         """
         logging.info("PacManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, pac: Pac) -> str:
         """
-        Serialize the Pac object to a JSON string using the PacSchema.
+        Serializes a Pac object to a JSON string.
+        Args:
+            pac (Pac): The pac to serialize.
+        Returns:
+            str: The JSON string representation of the pac.
         """
         logging.info("PacManager.to_json")
         schema = PacSchema()
@@ -232,7 +299,11 @@ class PacManager:
         return json.dumps(pac_data)
     def to_dict(self, pac: Pac) -> Dict[str, Any]:
         """
-        Serialize the Pac object to a JSON string using the PacSchema.
+        Serializes a Pac object to a dictionary.
+        Args:
+            pac (Pac): The pac to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the pac.
         """
         logging.info("PacManager.to_dict")
         schema = PacSchema()
@@ -241,7 +312,7 @@ class PacManager:
         return pac_data
     def from_json(self, json_str: str) -> Pac:
         """
-        Deserializes a JSON string into a Pac object using the PacSchema.
+        Deserializes a JSON string into a Pac object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -257,8 +328,8 @@ class PacManager:
         """
         Creates a Pac instance from a dictionary of attributes.
         Args:
-            pac_dict (Dict[str, Any]): A dictionary containing
-                pac attributes.
+            pac_dict (Dict[str, Any]): A dictionary
+                containing pac attributes.
         Returns:
             Pac: A new Pac instance created from the given dictionary.
         """
@@ -271,11 +342,11 @@ class PacManager:
         return new_pac
     async def add_bulk(self, pacs: List[Pac]) -> List[Pac]:
         """
-        Adds multiple pacs at once.
+        Adds multiple pacs to the system.
         Args:
             pacs (List[Pac]): The list of pacs to add.
         Returns:
-            List[Pac]: The list of added pacs.
+            List[Pac]: The added pacs.
         """
         logging.info("PacManager.add_bulk")
         for pac in pacs:
@@ -297,7 +368,16 @@ class PacManager:
         pac_updates: List[Dict[str, Any]]
     ) -> List[Pac]:
         """
-        #TODO add comment
+        Update multiple pacs with the provided updates.
+        Args:
+            pac_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each pac.
+        Returns:
+            List[Pac]: A list of updated Pac objects.
+        Raises:
+            TypeError: If the pac_id is not an integer.
+            PacNotFoundError: If a pac with the
+                provided pac_id is not found.
         """
         logging.info("PacManager.update_bulk start")
         updated_pacs = []
@@ -389,7 +469,15 @@ class PacManager:
         return bool(pac)
     def is_equal(self, pac1: Pac, pac2: Pac) -> bool:
         """
-        #TODO add comment
+        Check if two Pac objects are equal.
+        Args:
+            pac1 (Pac): The first Pac object.
+            pac2 (Pac): The second Pac object.
+        Returns:
+            bool: True if the two Pac objects are equal, False otherwise.
+        Raises:
+            TypeError: If either pac1 or pac2
+                is not provided or is not an instance of Pac.
         """
         if not pac1:
             raise TypeError("Pac1 required.")

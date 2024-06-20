@@ -1,7 +1,7 @@
 # business/tests/org_api_key_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the OrgApiKeyBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestOrgApiKeyBusObj:
     """
-        #TODO add comment
+    Unit tests for the OrgApiKeyBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the OrgApiKeyManager class.
         """
         session_context = SessionContext(dict(), session)
         return OrgApiKeyManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the OrgApiKeyBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return OrgApiKeyBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_org_api_key(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the OrgApiKey class.
         """
         # Use the OrgApiKeyFactory to create a new org_api_key instance
         # Assuming OrgApiKeyFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestOrgApiKeyBusObj:
         org_api_key_bus_obj: OrgApiKeyBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new org_api_key.
         """
         # Test creating a new org_api_key
         assert org_api_key_bus_obj.org_api_key_id == 0
@@ -76,7 +76,7 @@ class TestOrgApiKeyBusObj:
         new_org_api_key: OrgApiKey
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_api_key object instance.
         """
         await org_api_key_bus_obj.load_from_obj_instance(new_org_api_key)
         assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key, new_org_api_key) is True
@@ -88,7 +88,7 @@ class TestOrgApiKeyBusObj:
         new_org_api_key: OrgApiKey
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_api_key ID.
         """
         new_org_api_key_org_api_key_id = new_org_api_key.org_api_key_id
         await org_api_key_bus_obj.load_from_id(new_org_api_key_org_api_key_id)
@@ -101,7 +101,7 @@ class TestOrgApiKeyBusObj:
         new_org_api_key: OrgApiKey
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_api_key code.
         """
         await org_api_key_bus_obj.load_from_code(new_org_api_key.code)
         assert org_api_key_manager.is_equal(org_api_key_bus_obj.org_api_key, new_org_api_key) is True
@@ -113,7 +113,7 @@ class TestOrgApiKeyBusObj:
         new_org_api_key: OrgApiKey
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_api_key JSON.
         """
         org_api_key_json = org_api_key_manager.to_json(new_org_api_key)
         await org_api_key_bus_obj.load_from_json(org_api_key_json)
@@ -126,7 +126,7 @@ class TestOrgApiKeyBusObj:
         new_org_api_key: OrgApiKey
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_api_key dictionary.
         """
         logger.info("test_load_with_org_api_key_dict 1")
         org_api_key_dict = org_api_key_manager.to_dict(new_org_api_key)
@@ -141,7 +141,7 @@ class TestOrgApiKeyBusObj:
         org_api_key_bus_obj: OrgApiKeyBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent org_api_key.
         """
         # Test retrieving a nonexistent org_api_key raises an exception
         await org_api_key_bus_obj.load_from_id(-1)
@@ -155,7 +155,7 @@ class TestOrgApiKeyBusObj:
         new_org_api_key: OrgApiKey
     ):
         """
-            #TODO add comment
+        Test case for updating a org_api_key's data.
         """
         # Test updating a org_api_key's data
         new_org_api_key_org_api_key_id_value = new_org_api_key.org_api_key_id
@@ -178,7 +178,7 @@ class TestOrgApiKeyBusObj:
         new_org_api_key: OrgApiKey
     ):
         """
-            #TODO add comment
+        Test case for deleting a org_api_key.
         """
         assert new_org_api_key.org_api_key_id is not None
         assert org_api_key_bus_obj.org_api_key_id == 0

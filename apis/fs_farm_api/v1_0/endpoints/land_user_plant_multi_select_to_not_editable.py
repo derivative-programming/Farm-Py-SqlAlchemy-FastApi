@@ -6,7 +6,7 @@ The LandUserPlantMultiSelectToNotEditableRouter provides the following endpoints
     - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/init:
         Get the initialization data for the Land User Plant Multi Select To Not Editable page.
     - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}:
-        Get the  plant list report for a specific  code.
+        Get the Land User Plant Multi Select To Not Editable Report for a specific  code.
     - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/to-csv:
         Retrieve the Land User Plant Multi Select To Not Editable Report as a CSV file.
 """

@@ -21,7 +21,7 @@ class ErrorLogNotFoundError(Exception):
     """
     Exception raised when a specified error_log is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="ErrorLog not found"):
         self.message = message
@@ -29,37 +29,55 @@ class ErrorLogNotFoundError(Exception):
 
 class ErrorLogManager:
     """
-    #TODO add comment
+    The ErrorLogManager class is responsible for managing error_logs in the system.
+    It provides methods for adding, updating, deleting, and retrieving error_logs.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the ErrorLogManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
 
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the ErrorLogManager.
         """
         logging.info("ErrorLogManager.Initialize")
 
     async def build(self, **kwargs) -> ErrorLog:
         """
-            #TODO add comment
+        Builds a new ErrorLog object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the error_log.
+        Returns:
+            ErrorLog: The newly created ErrorLog object.
         """
         logging.info("ErrorLogManager.build")
         return ErrorLog(**kwargs)
     async def add(self, error_log: ErrorLog) -> ErrorLog:
         """
-            #TODO add comment
+        Adds a new error_log to the system.
+        Args:
+            error_log (ErrorLog): The error_log to add.
+        Returns:
+            ErrorLog: The added error_log.
         """
         logging.info("ErrorLogManager.add")
         error_log.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -71,7 +89,9 @@ class ErrorLogManager:
         return error_log
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving error_logs.
+        Returns:
+            The base query for retrieving error_logs.
         """
         logging.info("ErrorLogManager._build_query")
         query = select(
@@ -88,7 +108,11 @@ class ErrorLogManager:
         return query
     async def _run_query(self, query_filter) -> List[ErrorLog]:
         """
-            #TODO add comment
+        Runs the query to retrieve error_logs from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[ErrorLog]: The list of error_logs that match the query.
         """
         logging.info("ErrorLogManager._run_query")
         error_log_query_all = self._build_query()
@@ -117,14 +141,14 @@ class ErrorLogManager:
         error_log_list: List['ErrorLog']
     ) -> Optional['ErrorLog']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            error_log_list (List[ErrorLog]):
-                The list to retrieve the first element from.
+            error_log_list (List[ErrorLog]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[ErrorLog]: The first element
-                of the list if it exists, otherwise None.
+            Optional[ErrorLog]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             error_log_list[0]
@@ -133,7 +157,11 @@ class ErrorLogManager:
         )
     async def get_by_id(self, error_log_id: int) -> Optional[ErrorLog]:
         """
-            #TODO add comment
+        Retrieves a error_log by its ID.
+        Args:
+            error_log_id (int): The ID of the error_log to retrieve.
+        Returns:
+            Optional[ErrorLog]: The retrieved error_log, or None if not found.
         """
         logging.info(
             "ErrorLogManager.get_by_id start error_log_id: %s",
@@ -148,7 +176,11 @@ class ErrorLogManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[ErrorLog]:
         """
-            #TODO add comment
+        Retrieves a error_log by its code.
+        Args:
+            code (uuid.UUID): The code of the error_log to retrieve.
+        Returns:
+            Optional[ErrorLog]: The retrieved error_log, or None if not found.
         """
         logging.info("ErrorLogManager.get_by_code %s", code)
         query_filter = ErrorLog._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -156,7 +188,14 @@ class ErrorLogManager:
         return self._first_or_none(query_results)
     async def update(self, error_log: ErrorLog, **kwargs) -> Optional[ErrorLog]:
         """
-            #TODO add comment
+        Updates a error_log with the specified attributes.
+        Args:
+            error_log (ErrorLog): The error_log to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[ErrorLog]: The updated error_log, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("ErrorLogManager.update")
         property_list = ErrorLog.property_list()
@@ -171,7 +210,13 @@ class ErrorLogManager:
         return error_log
     async def delete(self, error_log_id: int):
         """
-            #TODO add comment
+        Deletes a error_log by its ID.
+        Args:
+            error_log_id (int): The ID of the error_log to delete.
+        Raises:
+            TypeError: If the error_log_id is not an integer.
+            ErrorLogNotFoundError: If the error_log with the
+                specified ID is not found.
         """
         logging.info("ErrorLogManager.delete %s", error_log_id)
         if not isinstance(error_log_id, int):
@@ -186,14 +231,20 @@ class ErrorLogManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[ErrorLog]:
         """
-            #TODO add comment
+        Retrieves a list of all error_logs.
+        Returns:
+            List[ErrorLog]: The list of error_logs.
         """
         logging.info("ErrorLogManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, error_log: ErrorLog) -> str:
         """
-        Serialize the ErrorLog object to a JSON string using the ErrorLogSchema.
+        Serializes a ErrorLog object to a JSON string.
+        Args:
+            error_log (ErrorLog): The error_log to serialize.
+        Returns:
+            str: The JSON string representation of the error_log.
         """
         logging.info("ErrorLogManager.to_json")
         schema = ErrorLogSchema()
@@ -201,7 +252,11 @@ class ErrorLogManager:
         return json.dumps(error_log_data)
     def to_dict(self, error_log: ErrorLog) -> Dict[str, Any]:
         """
-        Serialize the ErrorLog object to a JSON string using the ErrorLogSchema.
+        Serializes a ErrorLog object to a dictionary.
+        Args:
+            error_log (ErrorLog): The error_log to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the error_log.
         """
         logging.info("ErrorLogManager.to_dict")
         schema = ErrorLogSchema()
@@ -210,7 +265,7 @@ class ErrorLogManager:
         return error_log_data
     def from_json(self, json_str: str) -> ErrorLog:
         """
-        Deserializes a JSON string into a ErrorLog object using the ErrorLogSchema.
+        Deserializes a JSON string into a ErrorLog object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -226,8 +281,8 @@ class ErrorLogManager:
         """
         Creates a ErrorLog instance from a dictionary of attributes.
         Args:
-            error_log_dict (Dict[str, Any]): A dictionary containing
-                error_log attributes.
+            error_log_dict (Dict[str, Any]): A dictionary
+                containing error_log attributes.
         Returns:
             ErrorLog: A new ErrorLog instance created from the given dictionary.
         """
@@ -240,11 +295,11 @@ class ErrorLogManager:
         return new_error_log
     async def add_bulk(self, error_logs: List[ErrorLog]) -> List[ErrorLog]:
         """
-        Adds multiple error_logs at once.
+        Adds multiple error_logs to the system.
         Args:
             error_logs (List[ErrorLog]): The list of error_logs to add.
         Returns:
-            List[ErrorLog]: The list of added error_logs.
+            List[ErrorLog]: The added error_logs.
         """
         logging.info("ErrorLogManager.add_bulk")
         for error_log in error_logs:
@@ -266,7 +321,16 @@ class ErrorLogManager:
         error_log_updates: List[Dict[str, Any]]
     ) -> List[ErrorLog]:
         """
-        #TODO add comment
+        Update multiple error_logs with the provided updates.
+        Args:
+            error_log_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each error_log.
+        Returns:
+            List[ErrorLog]: A list of updated ErrorLog objects.
+        Raises:
+            TypeError: If the error_log_id is not an integer.
+            ErrorLogNotFoundError: If a error_log with the
+                provided error_log_id is not found.
         """
         logging.info("ErrorLogManager.update_bulk start")
         updated_error_logs = []
@@ -358,7 +422,15 @@ class ErrorLogManager:
         return bool(error_log)
     def is_equal(self, error_log1: ErrorLog, error_log2: ErrorLog) -> bool:
         """
-        #TODO add comment
+        Check if two ErrorLog objects are equal.
+        Args:
+            error_log1 (ErrorLog): The first ErrorLog object.
+            error_log2 (ErrorLog): The second ErrorLog object.
+        Returns:
+            bool: True if the two ErrorLog objects are equal, False otherwise.
+        Raises:
+            TypeError: If either error_log1 or error_log2
+                is not provided or is not an instance of ErrorLog.
         """
         if not error_log1:
             raise TypeError("ErrorLog1 required.")
@@ -374,7 +446,12 @@ class ErrorLogManager:
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[ErrorLog]:  # PacID
         """
-        #TODO add comment
+        Retrieve a list of error_logs by pac ID.
+        Args:
+            pac_id (int): The ID of the pac.
+        Returns:
+            List[ErrorLog]: A list of error_logs associated
+            with the specified pac ID.
         """
         logging.info("ErrorLogManager.get_by_pac_id")
         if not isinstance(pac_id, int):

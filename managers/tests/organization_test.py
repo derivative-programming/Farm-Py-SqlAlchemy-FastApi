@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `OrganizationManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import OrganizationFactory
 from models.serialization_schema.organization import OrganizationSchema
 class TestOrganizationManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `OrganizationManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `OrganizationManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `OrganizationManager`.
         """
         # Define mock data for our organization
         mock_data = {
@@ -55,7 +59,8 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `OrganizationManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `OrganizationManager` that checks if a
+        organization is correctly added to the database.
         """
         test_organization = await OrganizationFactory.build_async(session)
         assert test_organization.organization_id == 0
@@ -103,7 +110,9 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `OrganizationManager` that checks if the
+        correct organization object is returned.
         """
         # Create a test organization using the OrganizationFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `OrganizationManager`.
         """
         test_organization = await OrganizationFactory.create_async(session)
         organization = await organization_manager.get_by_id(test_organization.organization_id)
@@ -141,7 +151,8 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `OrganizationManager` when the organization is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_organization = await organization_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `OrganizationManager` that checks if a organization is
+        returned by its code.
         """
         test_organization = await OrganizationFactory.create_async(session)
         organization = await organization_manager.get_by_code(test_organization.code)
@@ -166,7 +179,8 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `OrganizationManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any Organization in the database
@@ -180,7 +194,8 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrganizationManager`
+        that checks if a organization is correctly updated.
         """
         test_organization = await OrganizationFactory.create_async(session)
         test_organization.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrganizationManager`
+        that checks if a organization is correctly updated using a dictionary.
         """
         test_organization = await OrganizationFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrganizationManager`
+        with an invalid organization.
         """
         # None organization
         organization = None
@@ -251,7 +268,8 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrganizationManager`
+        with a nonexistent attribute.
         """
         test_organization = await OrganizationFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `OrganizationManager`.
         """
         organization_data = await OrganizationFactory.create_async(session)
         result = await session.execute(
@@ -765,7 +783,25 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_tac_id` method when a organization with
+        a specific tac_id exists.
+        Steps:
+        1. Create a organization using the OrganizationFactory.
+        2. Fetch the organization using the
+            `get_by_tac_id` method of the organization_manager.
+        3. Assert that the fetched organizations list contains
+            only one organization.
+        4. Assert that the fetched organization is an instance
+            of the Organization class.
+        5. Assert that the code of the fetched organization
+            matches the code of the created organization.
+        6. Fetch the corresponding tac object
+            using the tac_id of the created organization.
+        7. Assert that the fetched tac object is
+            an instance of the Tac class.
+        8. Assert that the tac_code_peek of the fetched
+            organization matches the code of the fetched tac.
         """
         # Add a organization with a specific tac_id
         organization1 = await OrganizationFactory.create_async(session=session)
@@ -786,7 +822,11 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_tac_id method when the tac ID does not exist.
+        This test case ensures that when a non-existent
+        tac ID is provided to the get_by_tac_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_organizations = await organization_manager.get_by_tac_id(non_existent_id)
@@ -798,7 +838,18 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_tac_id` method when an invalid tac ID is provided.
+        Args:
+            organization_manager (OrganizationManager): An
+                instance of the OrganizationManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_tac_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

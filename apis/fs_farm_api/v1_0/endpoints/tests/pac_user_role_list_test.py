@@ -2,8 +2,6 @@
 # pylint: disable=unused-import
 """
 This module contains unit tests for the `pac_user_role_list` endpoint.
-The `pac_user_role_list` endpoint is responsible for handling requests related to
-the list of plants in a pac.
 """
 import logging
 import uuid
@@ -28,7 +26,7 @@ async def test_init_success(
     api_key_fixture: str
 ):
     """
-    Test the successful initialization of the pac plant list.
+    Test the successful initialization endpoint.
     """
     pac = await model_factorys.PacFactory.create_async(overridden_get_db)
     pac_code = pac.code
@@ -175,7 +173,7 @@ async def test_get_success(
     api_key_fixture: str
 ):
     """
-    Test the successful retrieval of the pac plant list.
+    Test the successful retrieval of the `pac_user_role_list` get endpoint.
     """
     async def mock_process_request(
         session,

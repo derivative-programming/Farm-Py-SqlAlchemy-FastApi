@@ -6,7 +6,7 @@ The PacUserTriStateFilterListRouter provides the following endpoints:
     - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init:
         Get the initialization data for the Pac User Tri State Filter List page.
     - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}:
-        Get the pac plant list report for a specific pac code.
+        Get the Pac User Tri State Filter List Report for a specific pac code.
     - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/to-csv:
         Retrieve the Pac User Tri State Filter List Report as a CSV file.
 """
@@ -134,7 +134,7 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the pac plant list report for a specific pac code.
+        Get the Pac User Tri State Filter List Report for a specific pac code.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserTriStateFilterListGetModelRequest):
@@ -143,7 +143,7 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.PacUserTriStateFilterListGetModelResponse: The response
-                model containing the pac plant list report.
+                model containing the Pac User Tri State Filter List Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """

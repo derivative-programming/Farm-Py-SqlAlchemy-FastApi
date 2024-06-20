@@ -6,7 +6,7 @@ The TacRegisterRouter provides the following endpoints:
     - GET /api/v1_0/tac-register/{tac_code}/init:
         Get the initialization data for the Tac Register page.
     - GET /api/v1_0/tac-register/{tac_code}:
-        Get the tac plant list report for a specific tac code.
+        Get the Tac Register Report for a specific tac code.
     - GET /api/v1_0/tac-register/{tac_code}/to-csv:
         Retrieve the Tac Register Report as a CSV file.
 """

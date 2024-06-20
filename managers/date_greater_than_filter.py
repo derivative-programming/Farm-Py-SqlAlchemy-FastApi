@@ -32,7 +32,8 @@ class DateGreaterThanFilterNotFoundError(Exception):
 ##GENLearn[isLookup=true]Start
 class DateGreaterThanFilterEnum(Enum):
     """
-    #TODO add comment
+    Represents an enumeration of
+    date greater than filter options.
     """
     LAST_24_HOURS = 'Last_24_Hours'
     LAST_7_DAYS = 'Last_7_Days'
@@ -69,7 +70,18 @@ class DateGreaterThanFilterManager:
 
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the DateGreaterThanFilterManager.
+
+        This method initializes the DateGreaterThanFilterManager
+        by adding predefined filter items to the database.
+        If the filter items do not already exist in the database,
+        they are created and added.
+
+        Returns:
+            None
+
+        Raises:
+            None
         """
 
         logging.info("DateGreaterThanFilterManager.Initialize start")
@@ -144,10 +156,18 @@ class DateGreaterThanFilterManager:
         enum_val: DateGreaterThanFilterEnum
     ) -> DateGreaterThanFilter:
         """
-            #TODO add comment
-        """
+        Returns a DateGreaterThanFilter object
+        based on the provided enum value.
 
-        # return self.get(lookup_enum_name=enum_val.value)
+        Args:
+            enum_val (DateGreaterThanFilterEnum):
+                The enum value representing the filter.
+
+        Returns:
+            DateGreaterThanFilter:
+                The DateGreaterThanFilter object
+                matching the enum value.
+        """
         query_filter = (
             DateGreaterThanFilter._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)

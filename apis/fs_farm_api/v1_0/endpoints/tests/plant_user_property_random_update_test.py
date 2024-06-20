@@ -2,8 +2,6 @@
 # pylint: disable=unused-import
 """
 This module contains unit tests for the `plant_user_property_random_update` endpoint.
-The `plant_user_property_random_update` endpoint is responsible for handling requests related to
-the list of plants in a .
 """
 import logging
 import uuid
@@ -26,14 +24,18 @@ from ..plant_user_property_random_update import PlantUserPropertyRandomUpdateRou
 async def test_submit_success(overridden_get_db):
     """
     Test the successful submission of a delete request.
-    This test ensures that a delete request is successfully processed and returns the expected response.
+    This test ensures that a delete request is successfully
+    processed and returns the expected response.
     Steps:
     1. Create a mock process_request function.
-    2. Patch the `process_request` method of `PlantUserPropertyRandomUpdatePostModelResponse` with the mock function.
+    2. Patch the `process_request` method of
+        `PlantUserPropertyRandomUpdatePostModelResponse` with the mock function.
     3. Create a plant using the `PlantFactory`.
     4. Generate an API key for the plant.
-    5. Send a POST request to the `plant-user-property-random-update` endpoint with the plant code and API key.
-    6. Assert that the response status code is 200 and the 'success' field in the response JSON is False.
+    5. Send a POST request to the `plant-user-property-random-update`
+        endpoint with the plant code and API key.
+    6. Assert that the response status code is 200 and
+        the 'success' field in the response JSON is False.
     7. Assert that the `process_request` method was called.
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
@@ -74,12 +76,15 @@ async def test_submit_success(overridden_get_db):
 @pytest.mark.asyncio
 async def test_submit_request_validation_error(overridden_get_db):
     """
-    Test the submission of a delete request with validation errors.
-    This test ensures that a delete request with incorrect data results in a validation error.
+    Test the submission of a delete request with
+    validation errors.
+    This test ensures that a delete request with
+    incorrect data results in a validation error.
     Steps:
     1. Create a plant using the `PlantFactory`.
     2. Generate an API key for the plant.
-    3. Send a POST request to the `plant-user-property-random-update` endpoint with the plant code, invalid data, and API key.
+    3. Send a POST request to the `plant-user-property-random-update`
+    endpoint with the plant code, invalid data, and API key.
     4. Assert that the response status code is 400 (validation error).
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
@@ -110,7 +115,19 @@ async def test_submit_authorization_failure_bad_api_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test case to verify the behavior when submitting a
+    request with a bad API key for authorization failure.
+    Steps:
+    1. Create a plant using the PlantFactory.
+    2. Get the plant code.
+    3. Send a POST request to the
+        '/api/v1_0/plant-user-property-random-update/{plant_code}'
+        endpoint with an empty JSON payload and a bad API key.
+    4. Verify the response status code based on the
+        configuration of the PlantUserPropertyRandomUpdateRouter.
+    If the PlantUserPropertyRandomUpdateRouterConfig.is_public is True,
+    the expected response status code is 200.
+    Otherwise, the expected response status code is 401.
     """
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code
@@ -132,7 +149,17 @@ async def test_submit_authorization_failure_empty_header_key(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test case to verify the behavior when submitting a
+    request without header.
+    This test case sends a POST request to the
+    '/api/v1_0/plant-user-property-random-update/{plant_code}' endpoint
+    without providing an authorization header.
+    It checks whether the response status code is 401
+    if the endpoint is not public, or 200 if the endpoint is public.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code
@@ -154,7 +181,17 @@ async def test_submit_authorization_failure_no_header(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test case to verify the behavior when submitting a
+    request without authorization header.
+    This test case sends a POST request to the
+    '/api/v1_0/plant-user-property-random-update/{plant_code}' endpoint
+    without providing an authorization header.
+    It checks whether the response status code is 401
+    if the endpoint is not public, or 200 if the endpoint is public.
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code
@@ -175,7 +212,15 @@ async def test_submit_endpoint_url_failure(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the failure of the submit endpoint URL.
+    This test case sends a POST request to the
+    '/api/v1_0/plant-user-property-random-update/{plant_code}/xxxx' endpoint
+    with an invalid URL parameter ('xxxx'). It verifies
+    that the response status code is 501 (Not Implemented).
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
     """
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code
@@ -196,7 +241,10 @@ async def test_submit_endpoint_invalid_code_failure(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test case for the submit endpoint when an invalid plant code is provided.
+    This test case verifies that when an invalid plant code is provided,
+    the API returns a failure response with a status code of 200 and
+    the 'success' field in the response JSON is set to False.
     """
     plant_code = uuid.UUID(int=0)
     api_dict = {'PlantCode': str(plant_code)}
@@ -217,7 +265,17 @@ async def test_submit_endpoint_method_failure(
     overridden_get_db: AsyncSession
 ):
     """
-    #TODO add comment
+    Test the failure of the submit endpoint method.
+    This test case checks the behavior of the submit endpoint method when it fails to delete a plant user.
+    It creates a plant using the PlantFactory, generates an API token, and sends a GET request to the
+    '/api/v1_0/plant-user-property-random-update/{plant_code}' endpoint with the API key in the headers. The expected
+    response status code is 405 (Method Not Allowed).
+    Args:
+        overridden_get_db (AsyncSession): The overridden database session.
+    Returns:
+        None
+    Raises:
+        AssertionError: If the response status code is not 405.
     """
     plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
     plant_code = plant.code

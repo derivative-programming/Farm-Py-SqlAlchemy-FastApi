@@ -17,7 +17,9 @@ from utils.common_functions import snake_case
 from .base import Base, EncryptedType  # noqa: F401
 class OrgApiKey(Base):
     """
-    #TODO add comment
+    The OrgApiKey model represents a org_api_key in the farm.
+    It inherits from the Base model and is mapped to the
+    'farm_OrgApiKey' table in the database.
     """
     __tablename__ = 'farm_' + snake_case('OrgApiKey')
     _org_api_key_id = Column(
@@ -185,13 +187,19 @@ class OrgApiKey(Base):
     @property
     def code(self):
         """
-            #TODO add comment
+        Get the code of the org_api_key.
+        Returns:
+            UUID: The code of the org_api_key.
         """
         return uuid.UUID(str(self._code))
     @code.setter
     def code(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Set the code of the org_api_key.
+        Args:
+            value (uuid.UUID): The code to set for the org_api_key.
+        Raises:
+            TypeError: If the value is not of type uuid.UUID.
         """
         if isinstance(value, uuid.UUID):
             self._code = value
@@ -201,7 +209,9 @@ class OrgApiKey(Base):
     @property
     def org_api_key_id(self) -> int:
         """
-            #TODO add comment
+        Get the ID of the org_api_key.
+        Returns:
+            int: The ID of the org_api_key.
         """
         return getattr(self, '_org_api_key_id', 0) or 0
     @org_api_key_id.setter
@@ -213,7 +223,9 @@ class OrgApiKey(Base):
     @property
     def last_change_code(self) -> int:
         """
-            #TODO add comment
+        Returns the last change code of the org_api_key.
+        :return: The last change code of the org_api_key.
+        :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
     @last_change_code.setter
@@ -225,7 +237,9 @@ class OrgApiKey(Base):
     @property
     def insert_user_id(self):
         """
-            #TODO add comment
+        Inserts the user ID into the org_api_key object.
+        Returns:
+            UUID: The UUID of the inserted user ID.
         """
         return uuid.UUID(str(self._insert_user_id))
     @insert_user_id.setter
@@ -238,7 +252,9 @@ class OrgApiKey(Base):
     @property
     def last_update_user_id(self):
         """
-            #TODO add comment
+        Returns the UUID of the last user who updated the org_api_key.
+        :return: The UUID of the last update user.
+        :rtype: UUID
         """
         return uuid.UUID(str(self._last_update_user_id))
     @last_update_user_id.setter
@@ -251,7 +267,9 @@ class OrgApiKey(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
+        Inserts the UTC date and time for the org_api_key.
+        Returns:
+            datetime: The UTC date and time for the org_api_key.
         """
         return getattr(
             self,
@@ -267,7 +285,9 @@ class OrgApiKey(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
+        Returns the last update UTC date and time of the org_api_key.
+        :return: A datetime object representing the
+            last update UTC date and time.
         """
         return getattr(
             self,
@@ -284,7 +304,9 @@ class OrgApiKey(Base):
     @property
     def api_key_value(self) -> str:
         """
-            #TODO add comment
+        Returns the Api Key Value of the org_api_key.
+        :return: The Api Key Value of the org_api_key.
+        :rtype: str
         """
         return getattr(self, '_api_key_value', "") or ""
     @api_key_value.setter
@@ -297,7 +319,9 @@ class OrgApiKey(Base):
     @property
     def created_by(self) -> str:
         """
-            #TODO add comment
+        Returns the Created By of the org_api_key.
+        :return: The Created By of the org_api_key.
+        :rtype: str
         """
         return getattr(self, '_created_by', "") or ""
     @created_by.setter
@@ -310,7 +334,9 @@ class OrgApiKey(Base):
     @property
     def created_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
+        Get the value of created_utc_date_time property.
+        Returns:
+            datetime: The value of created_utc_date_time property.
         """
         return getattr(
             self,
@@ -327,7 +353,9 @@ class OrgApiKey(Base):
     @property
     def expiration_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
+        Get the value of expiration_utc_date_time property.
+        Returns:
+            datetime: The value of expiration_utc_date_time property.
         """
         return getattr(
             self,
@@ -344,7 +372,9 @@ class OrgApiKey(Base):
     @property
     def is_active(self) -> bool:
         """
-            #TODO add comment
+        Check if the delete operation is allowed for the org_api_key.
+        Returns:
+            bool: True if delete is allowed, False otherwise.
         """
         return getattr(self, '_is_active', False) or False
     @is_active.setter
@@ -357,7 +387,9 @@ class OrgApiKey(Base):
     @property
     def is_temp_user_key(self) -> bool:
         """
-            #TODO add comment
+        Check if the delete operation is allowed for the org_api_key.
+        Returns:
+            bool: True if delete is allowed, False otherwise.
         """
         return getattr(self, '_is_temp_user_key', False) or False
     @is_temp_user_key.setter
@@ -370,7 +402,9 @@ class OrgApiKey(Base):
     @property
     def name(self) -> str:
         """
-            #TODO add comment
+        Returns the Name of the org_api_key.
+        :return: The Name of the org_api_key.
+        :rtype: str
         """
         return getattr(self, '_name', "") or ""
     @name.setter
@@ -387,7 +421,9 @@ class OrgApiKey(Base):
     @property
     def org_customer_id(self) -> int:
         """
-            #TODO add comment
+        Get the foreign key ID for the org_customer of the org_api_key.
+        Returns:
+            int: The foreign key ID for the org_customer of the org_api_key.
         """
         return getattr(self, '_org_customer_id', 0) or 0
     @org_customer_id.setter
@@ -399,7 +435,9 @@ class OrgApiKey(Base):
     @property
     def organization_id(self) -> int:
         """
-            #TODO add comment
+        Get the ID of the organization associated with this org_api_key.
+        Returns:
+            int: The ID of the organization.
         """
         return getattr(self, '_organization_id', 0) or 0
     @organization_id.setter
@@ -412,7 +450,9 @@ class OrgApiKey(Base):
     @staticmethod
     def property_list():
         """
-            #TODO add comment
+        Returns a list of property names for the OrgApiKey model.
+        Returns:
+            list: A list of property names.
         """
         result = [
             "api_key_value",
@@ -435,7 +475,13 @@ def set_created_on(
     target
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Set the created on and last update timestamps for a OrgApiKey object.
+    Args:
+        mapper: The SQLAlchemy mapper.
+        connection: The SQLAlchemy connection.
+        target: The OrgApiKey object being inserted.
+    Returns:
+        None
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
@@ -446,6 +492,10 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Sets the 'last_update_utc_date_time' attribute of
+    the target object to the current UTC date and time.
+    :param mapper: The SQLAlchemy mapper object.
+    :param connection: The SQLAlchemy connection object.
+    :param target: The target object to update.
     """
     target.last_update_utc_date_time = datetime.utcnow()

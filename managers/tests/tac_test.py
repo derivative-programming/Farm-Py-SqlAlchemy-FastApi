@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `TacManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import TacFactory
 from models.serialization_schema.tac import TacSchema
 class TestTacManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `TacManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `TacManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestTacManager:
         tac_manager: TacManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `TacManager`.
         """
         # Define mock data for our tac
         mock_data = {
@@ -55,7 +59,8 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `TacManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `TacManager` that checks if a
+        tac is correctly added to the database.
         """
         test_tac = await TacFactory.build_async(session)
         assert test_tac.tac_id == 0
@@ -103,7 +110,9 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `TacManager` that checks if the
+        correct tac object is returned.
         """
         # Create a test tac using the TacFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `TacManager`.
         """
         test_tac = await TacFactory.create_async(session)
         tac = await tac_manager.get_by_id(test_tac.tac_id)
@@ -141,7 +151,8 @@ class TestTacManager:
         tac_manager: TacManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `TacManager` when the tac is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_tac = await tac_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `TacManager` that checks if a tac is
+        returned by its code.
         """
         test_tac = await TacFactory.create_async(session)
         tac = await tac_manager.get_by_code(test_tac.code)
@@ -166,7 +179,8 @@ class TestTacManager:
         tac_manager: TacManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `TacManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any Tac in the database
@@ -180,7 +194,8 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TacManager`
+        that checks if a tac is correctly updated.
         """
         test_tac = await TacFactory.create_async(session)
         test_tac.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TacManager`
+        that checks if a tac is correctly updated using a dictionary.
         """
         test_tac = await TacFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestTacManager:
         tac_manager: TacManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TacManager`
+        with an invalid tac.
         """
         # None tac
         tac = None
@@ -251,7 +268,8 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TacManager`
+        with a nonexistent attribute.
         """
         test_tac = await TacFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `TacManager`.
         """
         tac_data = await TacFactory.create_async(session)
         result = await session.execute(
@@ -769,7 +787,25 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when a tac with
+        a specific pac_id exists.
+        Steps:
+        1. Create a tac using the TacFactory.
+        2. Fetch the tac using the
+            `get_by_pac_id` method of the tac_manager.
+        3. Assert that the fetched tacs list contains
+            only one tac.
+        4. Assert that the fetched tac is an instance
+            of the Tac class.
+        5. Assert that the code of the fetched tac
+            matches the code of the created tac.
+        6. Fetch the corresponding pac object
+            using the pac_id of the created tac.
+        7. Assert that the fetched pac object is
+            an instance of the Pac class.
+        8. Assert that the pac_code_peek of the fetched
+            tac matches the code of the fetched pac.
         """
         # Add a tac with a specific pac_id
         tac1 = await TacFactory.create_async(session=session)
@@ -790,7 +826,11 @@ class TestTacManager:
         tac_manager: TacManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_pac_id method when the pac ID does not exist.
+        This test case ensures that when a non-existent
+        pac ID is provided to the get_by_pac_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_tacs = await tac_manager.get_by_pac_id(non_existent_id)
@@ -802,7 +842,18 @@ class TestTacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when an invalid pac ID is provided.
+        Args:
+            tac_manager (TacManager): An
+                instance of the TacManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_pac_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

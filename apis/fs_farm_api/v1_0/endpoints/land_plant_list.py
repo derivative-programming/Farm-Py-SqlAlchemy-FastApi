@@ -8,7 +8,7 @@ The LandPlantListRouter provides the following endpoints:
     - GET /api/v1_0/land-plant-list/{land_code}/init:
         Get the initialization data for the Land Plant List page.
     - GET /api/v1_0/land-plant-list/{land_code}:
-        Get the land plant list report for a specific land code.
+        Get the Land Plant List Report for a specific land code.
     - GET /api/v1_0/land-plant-list/{land_code}/to-csv:
         Retrieve the Land Plant List Report as a CSV file.
 """
@@ -164,7 +164,7 @@ class LandPlantListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the land plant list report for a specific land code.
+        Get the Land Plant List Report for a specific land code.
 
         Args:
             land_code (uuid.UUID): The unique identifier for the land.
@@ -175,7 +175,7 @@ class LandPlantListRouter(BaseRouter):
 
         Returns:
             api_models.LandPlantListGetModelResponse: The response
-                model containing the land plant list report.
+                model containing the Land Plant List Report.
 
         Raises:
             Exception: If an error occurs during the processing of the request.

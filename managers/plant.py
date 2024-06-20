@@ -53,7 +53,7 @@ class PlantManager:
         Args:
             session_context (SessionContext): The session context object.
                 Must contain a valid session.
-        
+
         Raises:
             ValueError: If the session is not provided.
         """
@@ -73,7 +73,6 @@ class PlantManager:
         """
         # Conditionally set the UUID column type
         return value
-
 
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=false]Start
@@ -624,7 +623,8 @@ class PlantManager:
             land_id (int): The ID of the land.
 
         Returns:
-            List[Plant]: A list of plants associated with the specified land ID.
+            List[Plant]: A list of plants associated
+            with the specified land ID.
         """
 
         logging.info("PlantManager.get_by_land_id")

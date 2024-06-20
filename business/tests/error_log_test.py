@@ -1,7 +1,7 @@
 # business/tests/error_log_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the ErrorLogBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestErrorLogBusObj:
     """
-        #TODO add comment
+    Unit tests for the ErrorLogBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def error_log_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the ErrorLogManager class.
         """
         session_context = SessionContext(dict(), session)
         return ErrorLogManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def error_log_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the ErrorLogBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return ErrorLogBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_error_log(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the ErrorLog class.
         """
         # Use the ErrorLogFactory to create a new error_log instance
         # Assuming ErrorLogFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestErrorLogBusObj:
         error_log_bus_obj: ErrorLogBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new error_log.
         """
         # Test creating a new error_log
         assert error_log_bus_obj.error_log_id == 0
@@ -77,7 +77,7 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-            #TODO add comment
+        Test case for loading data from a error_log object instance.
         """
         await error_log_bus_obj.load_from_obj_instance(new_error_log)
         assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
@@ -89,7 +89,7 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-            #TODO add comment
+        Test case for loading data from a error_log ID.
         """
         new_error_log_error_log_id = new_error_log.error_log_id
         await error_log_bus_obj.load_from_id(new_error_log_error_log_id)
@@ -102,7 +102,7 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-            #TODO add comment
+        Test case for loading data from a error_log code.
         """
         await error_log_bus_obj.load_from_code(new_error_log.code)
         assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
@@ -114,7 +114,7 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-            #TODO add comment
+        Test case for loading data from a error_log JSON.
         """
         error_log_json = error_log_manager.to_json(new_error_log)
         await error_log_bus_obj.load_from_json(error_log_json)
@@ -127,7 +127,7 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-            #TODO add comment
+        Test case for loading data from a error_log dictionary.
         """
         logger.info("test_load_with_error_log_dict 1")
         error_log_dict = error_log_manager.to_dict(new_error_log)
@@ -142,7 +142,7 @@ class TestErrorLogBusObj:
         error_log_bus_obj: ErrorLogBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent error_log.
         """
         # Test retrieving a nonexistent error_log raises an exception
         await error_log_bus_obj.load_from_id(-1)
@@ -156,7 +156,7 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-            #TODO add comment
+        Test case for updating a error_log's data.
         """
         # Test updating a error_log's data
         new_error_log_error_log_id_value = new_error_log.error_log_id
@@ -179,7 +179,7 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-            #TODO add comment
+        Test case for deleting a error_log.
         """
         assert new_error_log.error_log_id is not None
         assert error_log_bus_obj.error_log_id == 0

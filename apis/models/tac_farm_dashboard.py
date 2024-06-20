@@ -1,6 +1,10 @@
 # apis/models/tac_farm_dashboard.py
 """
-    #TODO add comment
+This module contains the models for the Tac Farm Dashboard API.
+- TacFarmDashboardGetModelRequest: Represents the
+    request model for getting the tac Farm Dashboard.
+- TacFarmDashboardGetModelResponseItem: Represents the
+    response model item for the tac Farm Dashboard.
 """
 import json
 import logging
@@ -20,7 +24,7 @@ from reports.report_request_validation_error import \
 from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
 class TacFarmDashboardGetModelRequest(CamelModel):
     """
-        #TODO add comment
+    Represents the request model for getting the tac Farm Dashboard.
     """
     page_number: int = Field(
         default=0,
@@ -33,7 +37,7 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         description="Order By Column Name")
     order_by_descending: bool = Field(
         default=False,
-        description="Order By Decending")
+        description="Order By Descending")
     force_error_message: str = Field(
         default="",
         description="Force Error Message")
@@ -41,38 +45,43 @@ class TacFarmDashboardGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-            #TODO add comment
+        Configuration class for the TacFarmDashboard model.
+        Attributes:
+            json_encoders (dict): A dictionary mapping data
+            types to custom JSON encoder functions.
         """
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
     def to_dict_snake_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return data
     def to_dict_camel(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class TacFarmDashboardGetModelResponseItem(CamelModel):
     """
-        #TODO add comment
+    Represents the response model item for the tac Farm Dashboard.
     """
     field_one_plant_list_link_land_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -90,7 +99,11 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
 # endset
     def load_report_item(self, data: ReportItemTacFarmDashboard):
         """
-            #TODO add comment
+        Loads the data from a ReportItemTacFarmDashboard
+        object into the response model item.
+        Args:
+            data (ReportItemTacFarmDashboard): The
+                ReportItemTacFarmDashboard object to load the data from.
         """
         self.field_one_plant_list_link_land_code = (
             data.field_one_plant_list_link_land_code)
@@ -103,7 +116,9 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemTacFarmDashboard:
         """
-            #TODO add comment
+        Builds a ReportItemTacFarmDashboard object from the response model item.
+        Returns:
+            ReportItemTacFarmDashboard: The built ReportItemTacFarmDashboard object.
         """
         data = ReportItemTacFarmDashboard()
         data.field_one_plant_list_link_land_code = (
@@ -116,7 +131,12 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
 # endset
 class TacFarmDashboardGetModelResponse(ListModel):
     """
-        #TODO add comment
+    Represents the response model for the TacFarmDashboardGetModel API.
+    Attributes:
+        request (TacFarmDashboardGetModelRequest):
+            The request model for the API.
+        items (List[TacFarmDashboardGetModelResponseItem]):
+            The list of response items.
     """
     request: TacFarmDashboardGetModelRequest = TacFarmDashboardGetModelRequest()
     items: List[TacFarmDashboardGetModelResponseItem] = Field(
@@ -128,7 +148,16 @@ class TacFarmDashboardGetModelResponse(ListModel):
         request: TacFarmDashboardGetModelRequest
     ):
         """
-            #TODO add comment
+        Processes the API request and generates the response items.
+        Args:
+            session_context (SessionContext): The session context.
+            tac_code (uuid.UUID): The tac code.
+            request (TacFarmDashboardGetModelRequest): The request model.
+        Raises:
+            ReportRequestValidationError: If there is
+                a validation error in the request.
+        Returns:
+            None
         """
         try:
             logging.info("loading model...TacFarmDashboardGetModelResponse")
@@ -164,6 +193,8 @@ class TacFarmDashboardGetModelResponse(ListModel):
             self.message = ','.join(error_messages)
     def to_json(self):
         """
-            #TODO add comment
+        Converts the response model to JSON.
+        Returns:
+            str: The JSON representation of the response model.
         """
         return self.model_dump_json()

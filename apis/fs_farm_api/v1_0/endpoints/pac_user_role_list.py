@@ -6,7 +6,7 @@ The PacUserRoleListRouter provides the following endpoints:
     - GET /api/v1_0/pac-user-role-list/{pac_code}/init:
         Get the initialization data for the Pac User Role List page.
     - GET /api/v1_0/pac-user-role-list/{pac_code}:
-        Get the pac plant list report for a specific pac code.
+        Get the Pac User Role List Report for a specific pac code.
     - GET /api/v1_0/pac-user-role-list/{pac_code}/to-csv:
         Retrieve the Pac User Role List Report as a CSV file.
 """
@@ -134,7 +134,7 @@ class PacUserRoleListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the pac plant list report for a specific pac code.
+        Get the Pac User Role List Report for a specific pac code.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserRoleListGetModelRequest):
@@ -143,7 +143,7 @@ class PacUserRoleListRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.PacUserRoleListGetModelResponse: The response
-                model containing the pac plant list report.
+                model containing the Pac User Role List Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """

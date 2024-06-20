@@ -21,7 +21,7 @@ class TriStateFilterNotFoundError(Exception):
     """
     Exception raised when a specified tri_state_filter is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="TriStateFilter not found"):
         self.message = message
@@ -29,7 +29,8 @@ class TriStateFilterNotFoundError(Exception):
 
 class TriStateFilterEnum(Enum):
     """
-    #TODO add comment
+    Represents an enumeration of
+    Tri State Filter options.
     """
     UNKNOWN = 'Unknown'
     YES = 'Yes'
@@ -37,18 +38,28 @@ class TriStateFilterEnum(Enum):
 
 class TriStateFilterManager:
     """
-    #TODO add comment
+    The TriStateFilterManager class is responsible for managing tri_state_filters in the system.
+    It provides methods for adding, updating, deleting, and retrieving tri_state_filters.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the TriStateFilterManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
@@ -59,7 +70,15 @@ class TriStateFilterManager:
         return item
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the TriStateFilterManager.
+        This method initializes the TriStateFilterManager
+        by adding predefined filter items to the database.
+        If the filter items do not already exist in the database,
+        they are created and added.
+        Returns:
+            None
+        Raises:
+            None
         """
         logging.info("TriStateFilterManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
@@ -102,9 +121,16 @@ class TriStateFilterManager:
         enum_val: TriStateFilterEnum
     ) -> TriStateFilter:
         """
-            #TODO add comment
+        Returns a TriStateFilter object
+        based on the provided enum value.
+        Args:
+            enum_val (TriStateFilterEnum):
+                The enum value representing the filter.
+        Returns:
+            TriStateFilter:
+                The TriStateFilter object
+                matching the enum value.
         """
-        # return self.get(lookup_enum_name=enum_val.value)
         query_filter = (
             TriStateFilter._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
@@ -112,13 +138,21 @@ class TriStateFilterManager:
 
     async def build(self, **kwargs) -> TriStateFilter:
         """
-            #TODO add comment
+        Builds a new TriStateFilter object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the tri_state_filter.
+        Returns:
+            TriStateFilter: The newly created TriStateFilter object.
         """
         logging.info("TriStateFilterManager.build")
         return TriStateFilter(**kwargs)
     async def add(self, tri_state_filter: TriStateFilter) -> TriStateFilter:
         """
-            #TODO add comment
+        Adds a new tri_state_filter to the system.
+        Args:
+            tri_state_filter (TriStateFilter): The tri_state_filter to add.
+        Returns:
+            TriStateFilter: The added tri_state_filter.
         """
         logging.info("TriStateFilterManager.add")
         tri_state_filter.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -130,7 +164,9 @@ class TriStateFilterManager:
         return tri_state_filter
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving tri_state_filters.
+        Returns:
+            The base query for retrieving tri_state_filters.
         """
         logging.info("TriStateFilterManager._build_query")
         query = select(
@@ -147,7 +183,11 @@ class TriStateFilterManager:
         return query
     async def _run_query(self, query_filter) -> List[TriStateFilter]:
         """
-            #TODO add comment
+        Runs the query to retrieve tri_state_filters from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[TriStateFilter]: The list of tri_state_filters that match the query.
         """
         logging.info("TriStateFilterManager._run_query")
         tri_state_filter_query_all = self._build_query()
@@ -176,14 +216,14 @@ class TriStateFilterManager:
         tri_state_filter_list: List['TriStateFilter']
     ) -> Optional['TriStateFilter']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            tri_state_filter_list (List[TriStateFilter]):
-                The list to retrieve the first element from.
+            tri_state_filter_list (List[TriStateFilter]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[TriStateFilter]: The first element
-                of the list if it exists, otherwise None.
+            Optional[TriStateFilter]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             tri_state_filter_list[0]
@@ -192,7 +232,11 @@ class TriStateFilterManager:
         )
     async def get_by_id(self, tri_state_filter_id: int) -> Optional[TriStateFilter]:
         """
-            #TODO add comment
+        Retrieves a tri_state_filter by its ID.
+        Args:
+            tri_state_filter_id (int): The ID of the tri_state_filter to retrieve.
+        Returns:
+            Optional[TriStateFilter]: The retrieved tri_state_filter, or None if not found.
         """
         logging.info(
             "TriStateFilterManager.get_by_id start tri_state_filter_id: %s",
@@ -207,7 +251,11 @@ class TriStateFilterManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[TriStateFilter]:
         """
-            #TODO add comment
+        Retrieves a tri_state_filter by its code.
+        Args:
+            code (uuid.UUID): The code of the tri_state_filter to retrieve.
+        Returns:
+            Optional[TriStateFilter]: The retrieved tri_state_filter, or None if not found.
         """
         logging.info("TriStateFilterManager.get_by_code %s", code)
         query_filter = TriStateFilter._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -215,7 +263,14 @@ class TriStateFilterManager:
         return self._first_or_none(query_results)
     async def update(self, tri_state_filter: TriStateFilter, **kwargs) -> Optional[TriStateFilter]:
         """
-            #TODO add comment
+        Updates a tri_state_filter with the specified attributes.
+        Args:
+            tri_state_filter (TriStateFilter): The tri_state_filter to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[TriStateFilter]: The updated tri_state_filter, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("TriStateFilterManager.update")
         property_list = TriStateFilter.property_list()
@@ -230,7 +285,13 @@ class TriStateFilterManager:
         return tri_state_filter
     async def delete(self, tri_state_filter_id: int):
         """
-            #TODO add comment
+        Deletes a tri_state_filter by its ID.
+        Args:
+            tri_state_filter_id (int): The ID of the tri_state_filter to delete.
+        Raises:
+            TypeError: If the tri_state_filter_id is not an integer.
+            TriStateFilterNotFoundError: If the tri_state_filter with the
+                specified ID is not found.
         """
         logging.info("TriStateFilterManager.delete %s", tri_state_filter_id)
         if not isinstance(tri_state_filter_id, int):
@@ -245,14 +306,20 @@ class TriStateFilterManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[TriStateFilter]:
         """
-            #TODO add comment
+        Retrieves a list of all tri_state_filters.
+        Returns:
+            List[TriStateFilter]: The list of tri_state_filters.
         """
         logging.info("TriStateFilterManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, tri_state_filter: TriStateFilter) -> str:
         """
-        Serialize the TriStateFilter object to a JSON string using the TriStateFilterSchema.
+        Serializes a TriStateFilter object to a JSON string.
+        Args:
+            tri_state_filter (TriStateFilter): The tri_state_filter to serialize.
+        Returns:
+            str: The JSON string representation of the tri_state_filter.
         """
         logging.info("TriStateFilterManager.to_json")
         schema = TriStateFilterSchema()
@@ -260,7 +327,11 @@ class TriStateFilterManager:
         return json.dumps(tri_state_filter_data)
     def to_dict(self, tri_state_filter: TriStateFilter) -> Dict[str, Any]:
         """
-        Serialize the TriStateFilter object to a JSON string using the TriStateFilterSchema.
+        Serializes a TriStateFilter object to a dictionary.
+        Args:
+            tri_state_filter (TriStateFilter): The tri_state_filter to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the tri_state_filter.
         """
         logging.info("TriStateFilterManager.to_dict")
         schema = TriStateFilterSchema()
@@ -269,7 +340,7 @@ class TriStateFilterManager:
         return tri_state_filter_data
     def from_json(self, json_str: str) -> TriStateFilter:
         """
-        Deserializes a JSON string into a TriStateFilter object using the TriStateFilterSchema.
+        Deserializes a JSON string into a TriStateFilter object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -285,8 +356,8 @@ class TriStateFilterManager:
         """
         Creates a TriStateFilter instance from a dictionary of attributes.
         Args:
-            tri_state_filter_dict (Dict[str, Any]): A dictionary containing
-                tri_state_filter attributes.
+            tri_state_filter_dict (Dict[str, Any]): A dictionary
+                containing tri_state_filter attributes.
         Returns:
             TriStateFilter: A new TriStateFilter instance created from the given dictionary.
         """
@@ -299,11 +370,11 @@ class TriStateFilterManager:
         return new_tri_state_filter
     async def add_bulk(self, tri_state_filters: List[TriStateFilter]) -> List[TriStateFilter]:
         """
-        Adds multiple tri_state_filters at once.
+        Adds multiple tri_state_filters to the system.
         Args:
             tri_state_filters (List[TriStateFilter]): The list of tri_state_filters to add.
         Returns:
-            List[TriStateFilter]: The list of added tri_state_filters.
+            List[TriStateFilter]: The added tri_state_filters.
         """
         logging.info("TriStateFilterManager.add_bulk")
         for tri_state_filter in tri_state_filters:
@@ -325,7 +396,16 @@ class TriStateFilterManager:
         tri_state_filter_updates: List[Dict[str, Any]]
     ) -> List[TriStateFilter]:
         """
-        #TODO add comment
+        Update multiple tri_state_filters with the provided updates.
+        Args:
+            tri_state_filter_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each tri_state_filter.
+        Returns:
+            List[TriStateFilter]: A list of updated TriStateFilter objects.
+        Raises:
+            TypeError: If the tri_state_filter_id is not an integer.
+            TriStateFilterNotFoundError: If a tri_state_filter with the
+                provided tri_state_filter_id is not found.
         """
         logging.info("TriStateFilterManager.update_bulk start")
         updated_tri_state_filters = []
@@ -417,7 +497,15 @@ class TriStateFilterManager:
         return bool(tri_state_filter)
     def is_equal(self, tri_state_filter1: TriStateFilter, tri_state_filter2: TriStateFilter) -> bool:
         """
-        #TODO add comment
+        Check if two TriStateFilter objects are equal.
+        Args:
+            tri_state_filter1 (TriStateFilter): The first TriStateFilter object.
+            tri_state_filter2 (TriStateFilter): The second TriStateFilter object.
+        Returns:
+            bool: True if the two TriStateFilter objects are equal, False otherwise.
+        Raises:
+            TypeError: If either tri_state_filter1 or tri_state_filter2
+                is not provided or is not an instance of TriStateFilter.
         """
         if not tri_state_filter1:
             raise TypeError("TriStateFilter1 required.")
@@ -433,7 +521,12 @@ class TriStateFilterManager:
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[TriStateFilter]:  # PacID
         """
-        #TODO add comment
+        Retrieve a list of tri_state_filters by pac ID.
+        Args:
+            pac_id (int): The ID of the pac.
+        Returns:
+            List[TriStateFilter]: A list of tri_state_filters associated
+            with the specified pac ID.
         """
         logging.info("TriStateFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):

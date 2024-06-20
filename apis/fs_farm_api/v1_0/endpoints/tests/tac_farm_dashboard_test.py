@@ -2,8 +2,6 @@
 # pylint: disable=unused-import
 """
 This module contains unit tests for the `tac_farm_dashboard` endpoint.
-The `tac_farm_dashboard` endpoint is responsible for handling requests related to
-the list of plants in a tac.
 """
 import logging
 import uuid
@@ -28,7 +26,7 @@ async def test_init_success(
     api_key_fixture: str
 ):
     """
-    Test the successful initialization of the tac plant list.
+    Test the successful initialization endpoint.
     """
     tac = await model_factorys.TacFactory.create_async(overridden_get_db)
     tac_code = tac.code
@@ -175,7 +173,7 @@ async def test_get_success(
     api_key_fixture: str
 ):
     """
-    Test the successful retrieval of the tac plant list.
+    Test the successful retrieval of the `tac_farm_dashboard` get endpoint.
     """
     async def mock_process_request(
         session,

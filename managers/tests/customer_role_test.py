@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `CustomerRoleManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import CustomerRoleFactory
 from models.serialization_schema.customer_role import CustomerRoleSchema
 class TestCustomerRoleManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `CustomerRoleManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `CustomerRoleManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `CustomerRoleManager`.
         """
         # Define mock data for our customer_role
         mock_data = {
@@ -55,7 +59,8 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `CustomerRoleManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `CustomerRoleManager` that checks if a
+        customer_role is correctly added to the database.
         """
         test_customer_role = await CustomerRoleFactory.build_async(session)
         assert test_customer_role.customer_role_id == 0
@@ -103,7 +110,9 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `CustomerRoleManager` that checks if the
+        correct customer_role object is returned.
         """
         # Create a test customer_role using the CustomerRoleFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `CustomerRoleManager`.
         """
         test_customer_role = await CustomerRoleFactory.create_async(session)
         customer_role = await customer_role_manager.get_by_id(test_customer_role.customer_role_id)
@@ -141,7 +151,8 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `CustomerRoleManager` when the customer_role is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_customer_role = await customer_role_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `CustomerRoleManager` that checks if a customer_role is
+        returned by its code.
         """
         test_customer_role = await CustomerRoleFactory.create_async(session)
         customer_role = await customer_role_manager.get_by_code(test_customer_role.code)
@@ -166,7 +179,8 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `CustomerRoleManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any CustomerRole in the database
@@ -180,7 +194,8 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerRoleManager`
+        that checks if a customer_role is correctly updated.
         """
         test_customer_role = await CustomerRoleFactory.create_async(session)
         test_customer_role.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerRoleManager`
+        that checks if a customer_role is correctly updated using a dictionary.
         """
         test_customer_role = await CustomerRoleFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerRoleManager`
+        with an invalid customer_role.
         """
         # None customer_role
         customer_role = None
@@ -251,7 +268,8 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerRoleManager`
+        with a nonexistent attribute.
         """
         test_customer_role = await CustomerRoleFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `CustomerRoleManager`.
         """
         customer_role_data = await CustomerRoleFactory.create_async(session)
         result = await session.execute(
@@ -764,7 +782,25 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_customer_id` method when a customer_role with
+        a specific customer_id exists.
+        Steps:
+        1. Create a customer_role using the CustomerRoleFactory.
+        2. Fetch the customer_role using the
+            `get_by_customer_id` method of the customer_role_manager.
+        3. Assert that the fetched customer_roles list contains
+            only one customer_role.
+        4. Assert that the fetched customer_role is an instance
+            of the CustomerRole class.
+        5. Assert that the code of the fetched customer_role
+            matches the code of the created customer_role.
+        6. Fetch the corresponding customer object
+            using the customer_id of the created customer_role.
+        7. Assert that the fetched customer object is
+            an instance of the Customer class.
+        8. Assert that the customer_code_peek of the fetched
+            customer_role matches the code of the fetched customer.
         """
         # Add a customer_role with a specific customer_id
         customer_role1 = await CustomerRoleFactory.create_async(session=session)
@@ -785,7 +821,11 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_customer_id method when the customer ID does not exist.
+        This test case ensures that when a non-existent
+        customer ID is provided to the get_by_customer_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_customer_roles = await customer_role_manager.get_by_customer_id(non_existent_id)
@@ -797,7 +837,18 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_customer_id` method when an invalid customer ID is provided.
+        Args:
+            customer_role_manager (CustomerRoleManager): An
+                instance of the CustomerRoleManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_customer_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
@@ -835,7 +886,19 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_by_role_id' method
+        when the provided foreign key ID does
+        not exist in the database.
+        This test ensures that when a non-existent
+        foreign key ID is passed to the
+        'get_by_role_id' method, it
+        returns an empty list.
+        Steps:
+        1. Set a non-existent foreign key ID.
+        2. Call the 'get_by_role_id'
+            method with the non-existent ID.
+        3. Assert that the returned list of fetched customer_roles is empty.
         """
         non_existent_id = 999
         fetched_customer_roles = (
@@ -848,7 +911,18 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_role_id` method
+        when an invalid foreign key ID type is provided.
+        It ensures that an exception is raised
+        when an invalid ID is passed to the method.
+        Args:
+            customer_role_manager (CustomerRoleManager): The
+                instance of the CustomerRoleManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not
+                raised when an invalid ID is passed.
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

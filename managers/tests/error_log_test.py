@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `ErrorLogManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import ErrorLogFactory
 from models.serialization_schema.error_log import ErrorLogSchema
 class TestErrorLogManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `ErrorLogManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def error_log_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `ErrorLogManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `ErrorLogManager`.
         """
         # Define mock data for our error_log
         mock_data = {
@@ -55,7 +59,8 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `ErrorLogManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `ErrorLogManager` that checks if a
+        error_log is correctly added to the database.
         """
         test_error_log = await ErrorLogFactory.build_async(session)
         assert test_error_log.error_log_id == 0
@@ -103,7 +110,9 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `ErrorLogManager` that checks if the
+        correct error_log object is returned.
         """
         # Create a test error_log using the ErrorLogFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `ErrorLogManager`.
         """
         test_error_log = await ErrorLogFactory.create_async(session)
         error_log = await error_log_manager.get_by_id(test_error_log.error_log_id)
@@ -141,7 +151,8 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `ErrorLogManager` when the error_log is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_error_log = await error_log_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `ErrorLogManager` that checks if a error_log is
+        returned by its code.
         """
         test_error_log = await ErrorLogFactory.create_async(session)
         error_log = await error_log_manager.get_by_code(test_error_log.code)
@@ -166,7 +179,8 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `ErrorLogManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any ErrorLog in the database
@@ -180,7 +194,8 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `ErrorLogManager`
+        that checks if a error_log is correctly updated.
         """
         test_error_log = await ErrorLogFactory.create_async(session)
         test_error_log.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `ErrorLogManager`
+        that checks if a error_log is correctly updated using a dictionary.
         """
         test_error_log = await ErrorLogFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `ErrorLogManager`
+        with an invalid error_log.
         """
         # None error_log
         error_log = None
@@ -251,7 +268,8 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `ErrorLogManager`
+        with a nonexistent attribute.
         """
         test_error_log = await ErrorLogFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `ErrorLogManager`.
         """
         error_log_data = await ErrorLogFactory.create_async(session)
         result = await session.execute(
@@ -770,7 +788,25 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when a error_log with
+        a specific pac_id exists.
+        Steps:
+        1. Create a error_log using the ErrorLogFactory.
+        2. Fetch the error_log using the
+            `get_by_pac_id` method of the error_log_manager.
+        3. Assert that the fetched error_logs list contains
+            only one error_log.
+        4. Assert that the fetched error_log is an instance
+            of the ErrorLog class.
+        5. Assert that the code of the fetched error_log
+            matches the code of the created error_log.
+        6. Fetch the corresponding pac object
+            using the pac_id of the created error_log.
+        7. Assert that the fetched pac object is
+            an instance of the Pac class.
+        8. Assert that the pac_code_peek of the fetched
+            error_log matches the code of the fetched pac.
         """
         # Add a error_log with a specific pac_id
         error_log1 = await ErrorLogFactory.create_async(session=session)
@@ -791,7 +827,11 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_pac_id method when the pac ID does not exist.
+        This test case ensures that when a non-existent
+        pac ID is provided to the get_by_pac_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_error_logs = await error_log_manager.get_by_pac_id(non_existent_id)
@@ -803,7 +843,18 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when an invalid pac ID is provided.
+        Args:
+            error_log_manager (ErrorLogManager): An
+                instance of the ErrorLogManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_pac_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

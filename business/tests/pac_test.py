@@ -1,7 +1,7 @@
 # business/tests/pac_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the PacBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestPacBusObj:
     """
-        #TODO add comment
+    Unit tests for the PacBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the PacManager class.
         """
         session_context = SessionContext(dict(), session)
         return PacManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def pac_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the PacBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return PacBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_pac(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the Pac class.
         """
         # Use the PacFactory to create a new pac instance
         # Assuming PacFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestPacBusObj:
         pac_bus_obj: PacBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new pac.
         """
         # Test creating a new pac
         assert pac_bus_obj.pac_id == 0
@@ -72,7 +72,7 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a pac object instance.
         """
         await pac_bus_obj.load_from_obj_instance(new_pac)
         assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
@@ -84,7 +84,7 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a pac ID.
         """
         new_pac_pac_id = new_pac.pac_id
         await pac_bus_obj.load_from_id(new_pac_pac_id)
@@ -97,7 +97,7 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a pac code.
         """
         await pac_bus_obj.load_from_code(new_pac.code)
         assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
@@ -109,7 +109,7 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a pac JSON.
         """
         pac_json = pac_manager.to_json(new_pac)
         await pac_bus_obj.load_from_json(pac_json)
@@ -122,7 +122,7 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a pac dictionary.
         """
         logger.info("test_load_with_pac_dict 1")
         pac_dict = pac_manager.to_dict(new_pac)
@@ -137,7 +137,7 @@ class TestPacBusObj:
         pac_bus_obj: PacBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent pac.
         """
         # Test retrieving a nonexistent pac raises an exception
         await pac_bus_obj.load_from_id(-1)
@@ -151,7 +151,7 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-            #TODO add comment
+        Test case for updating a pac's data.
         """
         # Test updating a pac's data
         new_pac_pac_id_value = new_pac.pac_id
@@ -174,7 +174,7 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-            #TODO add comment
+        Test case for deleting a pac.
         """
         assert new_pac.pac_id is not None
         assert pac_bus_obj.pac_id == 0

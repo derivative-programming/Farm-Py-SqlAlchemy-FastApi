@@ -1,6 +1,10 @@
 # apis/models/pac_user_tac_list.py
 """
-    #TODO add comment
+This module contains the models for the Pac User Tac List API.
+- PacUserTacListGetModelRequest: Represents the
+    request model for getting the pac Pac User Tac List Report.
+- PacUserTacListGetModelResponseItem: Represents the
+    response model item for the pac Pac User Tac List Report.
 """
 import json
 import logging
@@ -20,7 +24,7 @@ from reports.report_request_validation_error import \
 from reports.row_models.pac_user_tac_list import ReportItemPacUserTacList
 class PacUserTacListGetModelRequest(CamelModel):
     """
-        #TODO add comment
+    Represents the request model for getting the pac Pac User Tac List Report.
     """
     page_number: int = Field(
         default=0,
@@ -33,7 +37,7 @@ class PacUserTacListGetModelRequest(CamelModel):
         description="Order By Column Name")
     order_by_descending: bool = Field(
         default=False,
-        description="Order By Decending")
+        description="Order By Descending")
     force_error_message: str = Field(
         default="",
         description="Force Error Message")
@@ -41,38 +45,43 @@ class PacUserTacListGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-            #TODO add comment
+        Configuration class for the PacUserTacList model.
+        Attributes:
+            json_encoders (dict): A dictionary mapping data
+            types to custom JSON encoder functions.
         """
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
     def to_dict_snake(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
     def to_dict_snake_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return data
     def to_dict_camel(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
     def to_dict_camel_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserTacListGetModelResponseItem(CamelModel):
     """
-        #TODO add comment
+    Represents the response model item for the pac Pac User Tac List Report.
     """
     tac_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -100,7 +109,11 @@ class PacUserTacListGetModelResponseItem(CamelModel):
 # endset
     def load_report_item(self, data: ReportItemPacUserTacList):
         """
-            #TODO add comment
+        Loads the data from a ReportItemPacUserTacList
+        object into the response model item.
+        Args:
+            data (ReportItemPacUserTacList): The
+                ReportItemPacUserTacList object to load the data from.
         """
         self.tac_code = (
             data.tac_code)
@@ -121,7 +134,9 @@ class PacUserTacListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemPacUserTacList:
         """
-            #TODO add comment
+        Builds a ReportItemPacUserTacList object from the response model item.
+        Returns:
+            ReportItemPacUserTacList: The built ReportItemPacUserTacList object.
         """
         data = ReportItemPacUserTacList()
         data.tac_code = (
@@ -142,7 +157,12 @@ class PacUserTacListGetModelResponseItem(CamelModel):
 # endset
 class PacUserTacListGetModelResponse(ListModel):
     """
-        #TODO add comment
+    Represents the response model for the PacUserTacListGetModel API.
+    Attributes:
+        request (PacUserTacListGetModelRequest):
+            The request model for the API.
+        items (List[PacUserTacListGetModelResponseItem]):
+            The list of response items.
     """
     request: PacUserTacListGetModelRequest = PacUserTacListGetModelRequest()
     items: List[PacUserTacListGetModelResponseItem] = Field(
@@ -154,7 +174,16 @@ class PacUserTacListGetModelResponse(ListModel):
         request: PacUserTacListGetModelRequest
     ):
         """
-            #TODO add comment
+        Processes the API request and generates the response items.
+        Args:
+            session_context (SessionContext): The session context.
+            pac_code (uuid.UUID): The pac code.
+            request (PacUserTacListGetModelRequest): The request model.
+        Raises:
+            ReportRequestValidationError: If there is
+                a validation error in the request.
+        Returns:
+            None
         """
         try:
             logging.info("loading model...PacUserTacListGetModelResponse")
@@ -190,6 +219,8 @@ class PacUserTacListGetModelResponse(ListModel):
             self.message = ','.join(error_messages)
     def to_json(self):
         """
-            #TODO add comment
+        Converts the response model to JSON.
+        Returns:
+            str: The JSON representation of the response model.
         """
         return self.model_dump_json()

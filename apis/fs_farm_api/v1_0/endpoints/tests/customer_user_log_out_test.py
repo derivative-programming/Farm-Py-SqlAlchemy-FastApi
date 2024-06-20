@@ -2,8 +2,6 @@
 # pylint: disable=unused-import
 """
 This module contains unit tests for the `customer_user_log_out` endpoint.
-The `customer_user_log_out` endpoint is responsible for handling requests related to
-the list of plants in a customer.
 """
 import logging
 import uuid
@@ -28,7 +26,7 @@ async def test_init_success(
     api_key_fixture: str
 ):
     """
-    Test the successful initialization of the customer plant list.
+    Test the successful initialization endpoint.
     """
     customer = await model_factorys.CustomerFactory.create_async(overridden_get_db)
     customer_code = customer.code

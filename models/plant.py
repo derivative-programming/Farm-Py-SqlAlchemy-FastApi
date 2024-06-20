@@ -21,7 +21,8 @@ from .base import Base, EncryptedType  # noqa: F401
 class Plant(Base):
     """
     The Plant model represents a plant in the farm.
-    It inherits from the Base model and is mapped to the 'farm_Plant' table in the database.
+    It inherits from the Base model and is mapped to the
+    'farm_Plant' table in the database.
     """
 
     __tablename__ = 'farm_' + snake_case('Plant')
@@ -324,17 +325,25 @@ class Plant(Base):
     @property
     def code(self):
         """
-            #TODO add comment
-        """
+        Get the code of the plant.
 
+        Returns:
+            UUID: The code of the plant.
+        """
         return uuid.UUID(str(self._code))
 
     @code.setter
     def code(self, value: uuid.UUID):
         """
-            #TODO add comment
-        """
+        Set the code of the plant.
 
+        Args:
+            value (uuid.UUID): The code to set for the plant.
+
+        Raises:
+            TypeError: If the value is not of type uuid.UUID.
+
+        """
         if isinstance(value, uuid.UUID):
             self._code = value
         else:
@@ -344,9 +353,11 @@ class Plant(Base):
     @property
     def plant_id(self) -> int:
         """
-            #TODO add comment
-        """
+        Get the ID of the plant.
 
+        Returns:
+            int: The ID of the plant.
+        """
         return getattr(self, '_plant_id', 0) or 0
 
     @plant_id.setter
@@ -360,9 +371,11 @@ class Plant(Base):
     @property
     def last_change_code(self) -> int:
         """
-            #TODO add comment
-        """
+        Returns the last change code of the plant.
 
+        :return: The last change code of the plant.
+        :rtype: int
+        """
         return getattr(self, '_last_change_code', 0) or 0
 
     @last_change_code.setter
@@ -376,9 +389,11 @@ class Plant(Base):
     @property
     def insert_user_id(self):
         """
-            #TODO add comment
-        """
+        Inserts the user ID into the plant object.
 
+        Returns:
+            UUID: The UUID of the inserted user ID.
+        """
         return uuid.UUID(str(self._insert_user_id))
 
     @insert_user_id.setter
@@ -392,9 +407,11 @@ class Plant(Base):
     @property
     def last_update_user_id(self):
         """
-            #TODO add comment
-        """
+        Returns the UUID of the last user who updated the plant.
 
+        :return: The UUID of the last update user.
+        :rtype: UUID
+        """
         return uuid.UUID(str(self._last_update_user_id))
 
     @last_update_user_id.setter
@@ -408,9 +425,11 @@ class Plant(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
-        """
+        Inserts the UTC date and time for the plant.
 
+        Returns:
+            datetime: The UTC date and time for the plant.
+        """
         return getattr(
             self,
             '_insert_utc_date_time',
@@ -428,9 +447,11 @@ class Plant(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
-        """
+        Returns the last update UTC date and time of the plant.
 
+        :return: A datetime object representing the
+            last update UTC date and time.
+        """
         return getattr(
             self,
             '_last_update_utc_date_time',
@@ -450,9 +471,11 @@ class Plant(Base):
     @property
     def is_delete_allowed(self) -> bool:
         """
-            #TODO add comment
-        """
+        Check if the delete operation is allowed for the plant.
 
+        Returns:
+            bool: True if delete is allowed, False otherwise.
+        """
         return getattr(self, '_is_delete_allowed', False) or False
 
     @is_delete_allowed.setter
@@ -467,9 +490,11 @@ class Plant(Base):
     @property
     def is_edit_allowed(self) -> bool:
         """
-            #TODO add comment
-        """
+        Checks if editing is allowed for the plant.
 
+        Returns:
+            bool: True if editing is allowed, False otherwise.
+        """
         return getattr(self, '_is_edit_allowed', False) or False
 
     @is_edit_allowed.setter
@@ -484,9 +509,11 @@ class Plant(Base):
     @property
     def other_flavor(self) -> str:
         """
-            #TODO add comment
-        """
+        Returns the other flavor of the plant.
 
+        :return: The other flavor of the plant.
+        :rtype: str
+        """
         return getattr(self, '_other_flavor', "") or ""
 
     @other_flavor.setter
@@ -501,9 +528,13 @@ class Plant(Base):
     @property
     def some_big_int_val(self) -> int:
         """
-            #TODO add comment
-        """
+        Returns the value of the '_some_big_int_val' attribute.
 
+        If the attribute is not set, it returns 0.
+
+        :return: The value of the '_some_big_int_val' attribute.
+        :rtype: int
+        """
         return getattr(self, '_some_big_int_val', 0) or 0
 
     @some_big_int_val.setter
@@ -518,9 +549,11 @@ class Plant(Base):
     @property
     def some_bit_val(self) -> bool:
         """
-            #TODO add comment
-        """
+        Returns the value of the '_some_bit_val' attribute.
 
+        :return: The value of the '_some_bit_val' attribute.
+        :rtype: bool
+        """
         return getattr(self, '_some_bit_val', False) or False
 
     @some_bit_val.setter
@@ -535,9 +568,13 @@ class Plant(Base):
     @property
     def some_decimal_val(self) -> Decimal:
         """
-            #TODO add comment
-        """
+        Returns the value of the 'some_decimal_val' attribute.
 
+        If the attribute is not set, it returns 0.
+
+        :return: The value of the 'some_decimal_val' attribute.
+        :rtype: Decimal
+        """
         return getattr(self, '_some_decimal_val', Decimal(0)) or Decimal(0)
 
     @some_decimal_val.setter
@@ -552,9 +589,10 @@ class Plant(Base):
     @property
     def some_email_address(self) -> str:
         """
-            #TODO add comment
-        """
+        Returns the email address associated with the plant.
 
+        :return: The email address as a string.
+        """
         return getattr(self, '_some_email_address', "") or ""
 
     @some_email_address.setter
@@ -569,9 +607,12 @@ class Plant(Base):
     @property
     def some_float_val(self) -> float:
         """
-            #TODO add comment
-        """
+        Returns the value of the '_some_float_val' attribute as a float.
+        If the attribute is not set, it returns 0.0.
 
+        :return: The value of the '_some_float_val' attribute as a float.
+        :rtype: float
+        """
         return getattr(self, '_some_float_val', float(0)) or float(0)
 
     @some_float_val.setter
@@ -586,9 +627,12 @@ class Plant(Base):
     @property
     def some_int_val(self) -> int:
         """
-            #TODO add comment
-        """
+        Returns the value of the '_some_int_val' attribute of the object.
+        If the attribute is not set, it returns 0.
 
+        :return: The value of the '_some_int_val' attribute or 0 if not set.
+        :rtype: int
+        """
         return getattr(self, '_some_int_val', 0) or 0
 
     @some_int_val.setter
@@ -603,9 +647,16 @@ class Plant(Base):
     @property
     def some_money_val(self) -> Decimal:
         """
-            #TODO add comment
-        """
+        Returns the value of the 'some_money_val'
+        attribute for the plant.
 
+        This method retrieves the value of the
+        'some_money_val' attribute from the plant object.
+        If the attribute is not set, it returns 0.
+
+        Returns:
+            Decimal: The value of the 'some_money_val' attribute.
+        """
         return getattr(self, '_some_money_val', Decimal(0)) or Decimal(0)
 
     @some_money_val.setter
@@ -620,9 +671,11 @@ class Plant(Base):
     @property
     def some_var_char_val(self) -> str:
         """
-            #TODO add comment
-        """
+        Returns the value of the _some_var_char_val attribute.
 
+        :return: The value of _some_var_char_val attribute.
+        :rtype: str
+        """
         return getattr(self, '_some_var_char_val', "") or ""
 
     @some_var_char_val.setter
@@ -637,9 +690,13 @@ class Plant(Base):
     @property
     def some_date_val(self) -> date:
         """
-            #TODO add comment
-        """
+        Returns the value of the '_some_date_val' attribute
+        if it exists, otherwise returns the default date of January 1, 1753.
 
+        :return: A date object representing the value of
+            '_some_date_val' attribute or the default date.
+        :rtype: date
+        """
         return getattr(
             self,
             '_some_date_val',

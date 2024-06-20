@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `OrgApiKeyManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import OrgApiKeyFactory
 from models.serialization_schema.org_api_key import OrgApiKeySchema
 class TestOrgApiKeyManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `OrgApiKeyManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def org_api_key_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `OrgApiKeyManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `OrgApiKeyManager`.
         """
         # Define mock data for our org_api_key
         mock_data = {
@@ -55,7 +59,8 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `OrgApiKeyManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `OrgApiKeyManager` that checks if a
+        org_api_key is correctly added to the database.
         """
         test_org_api_key = await OrgApiKeyFactory.build_async(session)
         assert test_org_api_key.org_api_key_id == 0
@@ -103,7 +110,9 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `OrgApiKeyManager` that checks if the
+        correct org_api_key object is returned.
         """
         # Create a test org_api_key using the OrgApiKeyFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `OrgApiKeyManager`.
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
         org_api_key = await org_api_key_manager.get_by_id(test_org_api_key.org_api_key_id)
@@ -141,7 +151,8 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `OrgApiKeyManager` when the org_api_key is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_org_api_key = await org_api_key_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `OrgApiKeyManager` that checks if a org_api_key is
+        returned by its code.
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
         org_api_key = await org_api_key_manager.get_by_code(test_org_api_key.code)
@@ -166,7 +179,8 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `OrgApiKeyManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any OrgApiKey in the database
@@ -180,7 +194,8 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrgApiKeyManager`
+        that checks if a org_api_key is correctly updated.
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
         test_org_api_key.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrgApiKeyManager`
+        that checks if a org_api_key is correctly updated using a dictionary.
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrgApiKeyManager`
+        with an invalid org_api_key.
         """
         # None org_api_key
         org_api_key = None
@@ -251,7 +268,8 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `OrgApiKeyManager`
+        with a nonexistent attribute.
         """
         test_org_api_key = await OrgApiKeyFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `OrgApiKeyManager`.
         """
         org_api_key_data = await OrgApiKeyFactory.create_async(session)
         result = await session.execute(
@@ -771,7 +789,25 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_organization_id` method when a org_api_key with
+        a specific organization_id exists.
+        Steps:
+        1. Create a org_api_key using the OrgApiKeyFactory.
+        2. Fetch the org_api_key using the
+            `get_by_organization_id` method of the org_api_key_manager.
+        3. Assert that the fetched org_api_keys list contains
+            only one org_api_key.
+        4. Assert that the fetched org_api_key is an instance
+            of the OrgApiKey class.
+        5. Assert that the code of the fetched org_api_key
+            matches the code of the created org_api_key.
+        6. Fetch the corresponding organization object
+            using the organization_id of the created org_api_key.
+        7. Assert that the fetched organization object is
+            an instance of the Organization class.
+        8. Assert that the organization_code_peek of the fetched
+            org_api_key matches the code of the fetched organization.
         """
         # Add a org_api_key with a specific organization_id
         org_api_key1 = await OrgApiKeyFactory.create_async(session=session)
@@ -792,7 +828,11 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_organization_id method when the organization ID does not exist.
+        This test case ensures that when a non-existent
+        organization ID is provided to the get_by_organization_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_org_api_keys = await org_api_key_manager.get_by_organization_id(non_existent_id)
@@ -804,7 +844,18 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_organization_id` method when an invalid organization ID is provided.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): An
+                instance of the OrgApiKeyManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_organization_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
@@ -840,7 +891,19 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        'get_by_org_customer_id' method
+        when the provided foreign key ID does
+        not exist in the database.
+        This test ensures that when a non-existent
+        foreign key ID is passed to the
+        'get_by_org_customer_id' method, it
+        returns an empty list.
+        Steps:
+        1. Set a non-existent foreign key ID.
+        2. Call the 'get_by_org_customer_id'
+            method with the non-existent ID.
+        3. Assert that the returned list of fetched org_api_keys is empty.
         """
         non_existent_id = 999
         fetched_org_api_keys = (
@@ -853,7 +916,18 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_org_customer_id` method
+        when an invalid foreign key ID type is provided.
+        It ensures that an exception is raised
+        when an invalid ID is passed to the method.
+        Args:
+            org_api_key_manager (OrgApiKeyManager): The
+                instance of the OrgApiKeyManager class.
+            session (AsyncSession): The instance of the AsyncSession class.
+        Raises:
+            Exception: If an exception is not
+                raised when an invalid ID is passed.
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

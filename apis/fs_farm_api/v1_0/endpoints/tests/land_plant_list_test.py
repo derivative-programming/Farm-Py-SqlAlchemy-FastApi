@@ -3,9 +3,6 @@
 
 """
 This module contains unit tests for the `land_plant_list` endpoint.
-
-The `land_plant_list` endpoint is responsible for handling requests related to
-the list of plants in a land.
 """
 
 import logging
@@ -38,7 +35,7 @@ async def test_init_success(
     api_key_fixture: str
 ):
     """
-    Test the successful initialization of the land plant list.
+    Test the successful initialization endpoint.
     """
 
     land = await model_factorys.LandFactory.create_async(overridden_get_db)
@@ -231,7 +228,7 @@ async def test_get_success(
     api_key_fixture: str
 ):
     """
-    Test the successful retrieval of the land plant list.
+    Test the successful retrieval of the `land_plant_list` get endpoint.
     """
 
     async def mock_process_request(

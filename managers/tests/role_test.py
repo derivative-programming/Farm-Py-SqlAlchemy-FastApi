@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `RoleManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import RoleFactory
 from models.serialization_schema.role import RoleSchema
 class TestRoleManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `RoleManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def role_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `RoleManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `RoleManager`.
         """
         # Define mock data for our role
         mock_data = {
@@ -55,7 +59,8 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `RoleManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `RoleManager` that checks if a
+        role is correctly added to the database.
         """
         test_role = await RoleFactory.build_async(session)
         assert test_role.role_id == 0
@@ -103,7 +110,9 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `RoleManager` that checks if the
+        correct role object is returned.
         """
         # Create a test role using the RoleFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `RoleManager`.
         """
         test_role = await RoleFactory.create_async(session)
         role = await role_manager.get_by_id(test_role.role_id)
@@ -141,7 +151,8 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `RoleManager` when the role is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_role = await role_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `RoleManager` that checks if a role is
+        returned by its code.
         """
         test_role = await RoleFactory.create_async(session)
         role = await role_manager.get_by_code(test_role.code)
@@ -166,7 +179,8 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `RoleManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any Role in the database
@@ -180,7 +194,8 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `RoleManager`
+        that checks if a role is correctly updated.
         """
         test_role = await RoleFactory.create_async(session)
         test_role.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `RoleManager`
+        that checks if a role is correctly updated using a dictionary.
         """
         test_role = await RoleFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `RoleManager`
+        with an invalid role.
         """
         # None role
         role = None
@@ -251,7 +268,8 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `RoleManager`
+        with a nonexistent attribute.
         """
         test_role = await RoleFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `RoleManager`.
         """
         role_data = await RoleFactory.create_async(session)
         result = await session.execute(
@@ -769,7 +787,25 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when a role with
+        a specific pac_id exists.
+        Steps:
+        1. Create a role using the RoleFactory.
+        2. Fetch the role using the
+            `get_by_pac_id` method of the role_manager.
+        3. Assert that the fetched roles list contains
+            only one role.
+        4. Assert that the fetched role is an instance
+            of the Role class.
+        5. Assert that the code of the fetched role
+            matches the code of the created role.
+        6. Fetch the corresponding pac object
+            using the pac_id of the created role.
+        7. Assert that the fetched pac object is
+            an instance of the Pac class.
+        8. Assert that the pac_code_peek of the fetched
+            role matches the code of the fetched pac.
         """
         # Add a role with a specific pac_id
         role1 = await RoleFactory.create_async(session=session)
@@ -790,7 +826,11 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_pac_id method when the pac ID does not exist.
+        This test case ensures that when a non-existent
+        pac ID is provided to the get_by_pac_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_roles = await role_manager.get_by_pac_id(non_existent_id)
@@ -802,7 +842,18 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when an invalid pac ID is provided.
+        Args:
+            role_manager (RoleManager): An
+                instance of the RoleManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_pac_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

@@ -2,7 +2,7 @@
 # pylint: disable=unused-import
 
 """
-    #TODO add comment
+This module contains unit tests for the PlantBusObj class.
 """
 
 from decimal import Decimal
@@ -25,13 +25,13 @@ logger = get_logger(__name__)
 
 class TestPlantBusObj:
     """
-        #TODO add comment
+    Unit tests for the PlantBusObj class.
     """
 
     @pytest_asyncio.fixture(scope="function")
     async def plant_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the PlantManager class.
         """
         session_context = SessionContext(dict(), session)
         return PlantManager(session_context)
@@ -39,7 +39,7 @@ class TestPlantBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def plant_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the PlantBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return PlantBusObj(session_context)
@@ -47,7 +47,7 @@ class TestPlantBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_plant(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the Plant class.
         """
         # Use the PlantFactory to create a new plant instance
         # Assuming PlantFactory.create() is an async function
@@ -59,7 +59,7 @@ class TestPlantBusObj:
         plant_bus_obj: PlantBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new plant.
         """
         # Test creating a new plant
 
@@ -103,7 +103,7 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-            #TODO add comment
+        Test case for loading data from a plant object instance.
         """
 
         await plant_bus_obj.load_from_obj_instance(new_plant)
@@ -118,7 +118,7 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-            #TODO add comment
+        Test case for loading data from a plant ID.
         """
 
         new_plant_plant_id = new_plant.plant_id
@@ -135,7 +135,7 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-            #TODO add comment
+        Test case for loading data from a plant code.
         """
 
         await plant_bus_obj.load_from_code(new_plant.code)
@@ -150,7 +150,7 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-            #TODO add comment
+        Test case for loading data from a plant JSON.
         """
 
         plant_json = plant_manager.to_json(new_plant)
@@ -167,7 +167,7 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-            #TODO add comment
+        Test case for loading data from a plant dictionary.
         """
 
         logger.info("test_load_with_plant_dict 1")
@@ -188,7 +188,7 @@ class TestPlantBusObj:
         plant_bus_obj: PlantBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent plant.
         """
         # Test retrieving a nonexistent plant raises an exception
         await plant_bus_obj.load_from_id(-1)
@@ -204,7 +204,7 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-            #TODO add comment
+        Test case for updating a plant's data.
         """
         # Test updating a plant's data
 
@@ -238,7 +238,7 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-            #TODO add comment
+        Test case for deleting a plant.
         """
 
         assert new_plant.plant_id is not None

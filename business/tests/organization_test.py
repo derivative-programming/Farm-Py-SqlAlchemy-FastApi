@@ -1,7 +1,7 @@
 # business/tests/organization_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the OrganizationBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestOrganizationBusObj:
     """
-        #TODO add comment
+    Unit tests for the OrganizationBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the OrganizationManager class.
         """
         session_context = SessionContext(dict(), session)
         return OrganizationManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def organization_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the OrganizationBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return OrganizationBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_organization(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the Organization class.
         """
         # Use the OrganizationFactory to create a new organization instance
         # Assuming OrganizationFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestOrganizationBusObj:
         organization_bus_obj: OrganizationBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new organization.
         """
         # Test creating a new organization
         assert organization_bus_obj.organization_id == 0
@@ -69,7 +69,7 @@ class TestOrganizationBusObj:
         new_organization: Organization
     ):
         """
-            #TODO add comment
+        Test case for loading data from a organization object instance.
         """
         await organization_bus_obj.load_from_obj_instance(new_organization)
         assert organization_manager.is_equal(organization_bus_obj.organization, new_organization) is True
@@ -81,7 +81,7 @@ class TestOrganizationBusObj:
         new_organization: Organization
     ):
         """
-            #TODO add comment
+        Test case for loading data from a organization ID.
         """
         new_organization_organization_id = new_organization.organization_id
         await organization_bus_obj.load_from_id(new_organization_organization_id)
@@ -94,7 +94,7 @@ class TestOrganizationBusObj:
         new_organization: Organization
     ):
         """
-            #TODO add comment
+        Test case for loading data from a organization code.
         """
         await organization_bus_obj.load_from_code(new_organization.code)
         assert organization_manager.is_equal(organization_bus_obj.organization, new_organization) is True
@@ -106,7 +106,7 @@ class TestOrganizationBusObj:
         new_organization: Organization
     ):
         """
-            #TODO add comment
+        Test case for loading data from a organization JSON.
         """
         organization_json = organization_manager.to_json(new_organization)
         await organization_bus_obj.load_from_json(organization_json)
@@ -119,7 +119,7 @@ class TestOrganizationBusObj:
         new_organization: Organization
     ):
         """
-            #TODO add comment
+        Test case for loading data from a organization dictionary.
         """
         logger.info("test_load_with_organization_dict 1")
         organization_dict = organization_manager.to_dict(new_organization)
@@ -134,7 +134,7 @@ class TestOrganizationBusObj:
         organization_bus_obj: OrganizationBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent organization.
         """
         # Test retrieving a nonexistent organization raises an exception
         await organization_bus_obj.load_from_id(-1)
@@ -148,7 +148,7 @@ class TestOrganizationBusObj:
         new_organization: Organization
     ):
         """
-            #TODO add comment
+        Test case for updating a organization's data.
         """
         # Test updating a organization's data
         new_organization_organization_id_value = new_organization.organization_id
@@ -171,7 +171,7 @@ class TestOrganizationBusObj:
         new_organization: Organization
     ):
         """
-            #TODO add comment
+        Test case for deleting a organization.
         """
         assert new_organization.organization_id is not None
         assert organization_bus_obj.organization_id == 0

@@ -17,7 +17,9 @@ from utils.common_functions import snake_case
 from .base import Base, EncryptedType  # noqa: F401
 class Tac(Base):
     """
-    #TODO add comment
+    The Tac model represents a tac in the farm.
+    It inherits from the Base model and is mapped to the
+    'farm_Tac' table in the database.
     """
     __tablename__ = 'farm_' + snake_case('Tac')
     _tac_id = Column(
@@ -149,13 +151,19 @@ class Tac(Base):
     @property
     def code(self):
         """
-            #TODO add comment
+        Get the code of the tac.
+        Returns:
+            UUID: The code of the tac.
         """
         return uuid.UUID(str(self._code))
     @code.setter
     def code(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Set the code of the tac.
+        Args:
+            value (uuid.UUID): The code to set for the tac.
+        Raises:
+            TypeError: If the value is not of type uuid.UUID.
         """
         if isinstance(value, uuid.UUID):
             self._code = value
@@ -165,7 +173,9 @@ class Tac(Base):
     @property
     def tac_id(self) -> int:
         """
-            #TODO add comment
+        Get the ID of the tac.
+        Returns:
+            int: The ID of the tac.
         """
         return getattr(self, '_tac_id', 0) or 0
     @tac_id.setter
@@ -177,7 +187,9 @@ class Tac(Base):
     @property
     def last_change_code(self) -> int:
         """
-            #TODO add comment
+        Returns the last change code of the tac.
+        :return: The last change code of the tac.
+        :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
     @last_change_code.setter
@@ -189,7 +201,9 @@ class Tac(Base):
     @property
     def insert_user_id(self):
         """
-            #TODO add comment
+        Inserts the user ID into the tac object.
+        Returns:
+            UUID: The UUID of the inserted user ID.
         """
         return uuid.UUID(str(self._insert_user_id))
     @insert_user_id.setter
@@ -202,7 +216,9 @@ class Tac(Base):
     @property
     def last_update_user_id(self):
         """
-            #TODO add comment
+        Returns the UUID of the last user who updated the tac.
+        :return: The UUID of the last update user.
+        :rtype: UUID
         """
         return uuid.UUID(str(self._last_update_user_id))
     @last_update_user_id.setter
@@ -215,7 +231,9 @@ class Tac(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
+        Inserts the UTC date and time for the tac.
+        Returns:
+            datetime: The UTC date and time for the tac.
         """
         return getattr(
             self,
@@ -231,7 +249,9 @@ class Tac(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-            #TODO add comment
+        Returns the last update UTC date and time of the tac.
+        :return: A datetime object representing the
+            last update UTC date and time.
         """
         return getattr(
             self,
@@ -248,7 +268,9 @@ class Tac(Base):
     @property
     def description(self) -> str:
         """
-            #TODO add comment
+        Returns the Description of the tac.
+        :return: The Description of the tac.
+        :rtype: str
         """
         return getattr(self, '_description', "") or ""
     @description.setter
@@ -261,7 +283,10 @@ class Tac(Base):
     @property
     def display_order(self) -> int:
         """
-            #TODO add comment
+        Returns the value of the '_display_order' attribute of the object.
+        If the attribute is not set, it returns 0.
+        :return: The value of the '_display_order' attribute or 0 if not set.
+        :rtype: int
         """
         return getattr(self, '_display_order', 0) or 0
     @display_order.setter
@@ -274,7 +299,9 @@ class Tac(Base):
     @property
     def is_active(self) -> bool:
         """
-            #TODO add comment
+        Check if the delete operation is allowed for the tac.
+        Returns:
+            bool: True if delete is allowed, False otherwise.
         """
         return getattr(self, '_is_active', False) or False
     @is_active.setter
@@ -287,7 +314,9 @@ class Tac(Base):
     @property
     def lookup_enum_name(self) -> str:
         """
-            #TODO add comment
+        Returns the Lookup Enum Name of the tac.
+        :return: The Lookup Enum Name of the tac.
+        :rtype: str
         """
         return getattr(self, '_lookup_enum_name', "") or ""
     @lookup_enum_name.setter
@@ -300,7 +329,9 @@ class Tac(Base):
     @property
     def name(self) -> str:
         """
-            #TODO add comment
+        Returns the Name of the tac.
+        :return: The Name of the tac.
+        :rtype: str
         """
         return getattr(self, '_name', "") or ""
     @name.setter
@@ -315,7 +346,9 @@ class Tac(Base):
     @property
     def pac_id(self) -> int:
         """
-            #TODO add comment
+        Get the ID of the pac associated with this tac.
+        Returns:
+            int: The ID of the pac.
         """
         return getattr(self, '_pac_id', 0) or 0
     @pac_id.setter
@@ -328,7 +361,9 @@ class Tac(Base):
     @staticmethod
     def property_list():
         """
-            #TODO add comment
+        Returns a list of property names for the Tac model.
+        Returns:
+            list: A list of property names.
         """
         result = [
             "description",
@@ -348,7 +383,13 @@ def set_created_on(
     target
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Set the created on and last update timestamps for a Tac object.
+    Args:
+        mapper: The SQLAlchemy mapper.
+        connection: The SQLAlchemy connection.
+        target: The Tac object being inserted.
+    Returns:
+        None
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
@@ -359,6 +400,10 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-        #TODO add comment
+    Sets the 'last_update_utc_date_time' attribute of
+    the target object to the current UTC date and time.
+    :param mapper: The SQLAlchemy mapper object.
+    :param connection: The SQLAlchemy connection object.
+    :param target: The target object to update.
     """
     target.last_update_utc_date_time = datetime.utcnow()

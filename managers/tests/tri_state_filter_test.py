@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `TriStateFilterManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import TriStateFilterFactory
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
 class TestTriStateFilterManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `TriStateFilterManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `TriStateFilterManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `TriStateFilterManager`.
         """
         # Define mock data for our tri_state_filter
         mock_data = {
@@ -55,7 +59,8 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `TriStateFilterManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `TriStateFilterManager` that checks if a
+        tri_state_filter is correctly added to the database.
         """
         test_tri_state_filter = await TriStateFilterFactory.build_async(session)
         assert test_tri_state_filter.tri_state_filter_id == 0
@@ -103,7 +110,9 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `TriStateFilterManager` that checks if the
+        correct tri_state_filter object is returned.
         """
         # Create a test tri_state_filter using the TriStateFilterFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `TriStateFilterManager`.
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
         tri_state_filter = await tri_state_filter_manager.get_by_id(test_tri_state_filter.tri_state_filter_id)
@@ -141,7 +151,8 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `TriStateFilterManager` when the tri_state_filter is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_tri_state_filter = await tri_state_filter_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `TriStateFilterManager` that checks if a tri_state_filter is
+        returned by its code.
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
         tri_state_filter = await tri_state_filter_manager.get_by_code(test_tri_state_filter.code)
@@ -166,7 +179,8 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `TriStateFilterManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any TriStateFilter in the database
@@ -180,7 +194,8 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TriStateFilterManager`
+        that checks if a tri_state_filter is correctly updated.
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
         test_tri_state_filter.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TriStateFilterManager`
+        that checks if a tri_state_filter is correctly updated using a dictionary.
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TriStateFilterManager`
+        with an invalid tri_state_filter.
         """
         # None tri_state_filter
         tri_state_filter = None
@@ -251,7 +268,8 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `TriStateFilterManager`
+        with a nonexistent attribute.
         """
         test_tri_state_filter = await TriStateFilterFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `TriStateFilterManager`.
         """
         tri_state_filter_data = await TriStateFilterFactory.create_async(session)
         result = await session.execute(
@@ -769,7 +787,25 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when a tri_state_filter with
+        a specific pac_id exists.
+        Steps:
+        1. Create a tri_state_filter using the TriStateFilterFactory.
+        2. Fetch the tri_state_filter using the
+            `get_by_pac_id` method of the tri_state_filter_manager.
+        3. Assert that the fetched tri_state_filters list contains
+            only one tri_state_filter.
+        4. Assert that the fetched tri_state_filter is an instance
+            of the TriStateFilter class.
+        5. Assert that the code of the fetched tri_state_filter
+            matches the code of the created tri_state_filter.
+        6. Fetch the corresponding pac object
+            using the pac_id of the created tri_state_filter.
+        7. Assert that the fetched pac object is
+            an instance of the Pac class.
+        8. Assert that the pac_code_peek of the fetched
+            tri_state_filter matches the code of the fetched pac.
         """
         # Add a tri_state_filter with a specific pac_id
         tri_state_filter1 = await TriStateFilterFactory.create_async(session=session)
@@ -790,7 +826,11 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_pac_id method when the pac ID does not exist.
+        This test case ensures that when a non-existent
+        pac ID is provided to the get_by_pac_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_tri_state_filters = await tri_state_filter_manager.get_by_pac_id(non_existent_id)
@@ -802,7 +842,18 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_pac_id` method when an invalid pac ID is provided.
+        Args:
+            tri_state_filter_manager (TriStateFilterManager): An
+                instance of the TriStateFilterManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_pac_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

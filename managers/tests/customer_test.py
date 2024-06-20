@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `CustomerManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import CustomerFactory
 from models.serialization_schema.customer import CustomerSchema
 class TestCustomerManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `CustomerManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def customer_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `CustomerManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `CustomerManager`.
         """
         # Define mock data for our customer
         mock_data = {
@@ -55,7 +59,8 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `CustomerManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `CustomerManager` that checks if a
+        customer is correctly added to the database.
         """
         test_customer = await CustomerFactory.build_async(session)
         assert test_customer.customer_id == 0
@@ -103,7 +110,9 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `CustomerManager` that checks if the
+        correct customer object is returned.
         """
         # Create a test customer using the CustomerFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `CustomerManager`.
         """
         test_customer = await CustomerFactory.create_async(session)
         customer = await customer_manager.get_by_id(test_customer.customer_id)
@@ -141,7 +151,8 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `CustomerManager` when the customer is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_customer = await customer_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `CustomerManager` that checks if a customer is
+        returned by its code.
         """
         test_customer = await CustomerFactory.create_async(session)
         customer = await customer_manager.get_by_code(test_customer.code)
@@ -166,7 +179,8 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `CustomerManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any Customer in the database
@@ -180,7 +194,8 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerManager`
+        that checks if a customer is correctly updated.
         """
         test_customer = await CustomerFactory.create_async(session)
         test_customer.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerManager`
+        that checks if a customer is correctly updated using a dictionary.
         """
         test_customer = await CustomerFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerManager`
+        with an invalid customer.
         """
         # None customer
         customer = None
@@ -251,7 +268,8 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `CustomerManager`
+        with a nonexistent attribute.
         """
         test_customer = await CustomerFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `CustomerManager`.
         """
         customer_data = await CustomerFactory.create_async(session)
         result = await session.execute(
@@ -784,7 +802,25 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_tac_id` method when a customer with
+        a specific tac_id exists.
+        Steps:
+        1. Create a customer using the CustomerFactory.
+        2. Fetch the customer using the
+            `get_by_tac_id` method of the customer_manager.
+        3. Assert that the fetched customers list contains
+            only one customer.
+        4. Assert that the fetched customer is an instance
+            of the Customer class.
+        5. Assert that the code of the fetched customer
+            matches the code of the created customer.
+        6. Fetch the corresponding tac object
+            using the tac_id of the created customer.
+        7. Assert that the fetched tac object is
+            an instance of the Tac class.
+        8. Assert that the tac_code_peek of the fetched
+            customer matches the code of the fetched tac.
         """
         # Add a customer with a specific tac_id
         customer1 = await CustomerFactory.create_async(session=session)
@@ -805,7 +841,11 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        get_by_tac_id method when the tac ID does not exist.
+        This test case ensures that when a non-existent
+        tac ID is provided to the get_by_tac_id method,
+        an empty list is returned.
         """
         non_existent_id = 999
         fetched_customers = await customer_manager.get_by_tac_id(non_existent_id)
@@ -817,7 +857,18 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case to verify the behavior of the
+        `get_by_tac_id` method when an invalid tac ID is provided.
+        Args:
+            customer_manager (CustomerManager): An
+                instance of the CustomerManager class.
+            session (AsyncSession): An instance
+                of the AsyncSession class.
+        Raises:
+            Exception: If an exception is raised during
+            the execution of the `get_by_tac_id` method.
+        Returns:
+            None
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):

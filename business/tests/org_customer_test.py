@@ -1,7 +1,7 @@
 # business/tests/org_customer_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the OrgCustomerBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestOrgCustomerBusObj:
     """
-        #TODO add comment
+    Unit tests for the OrgCustomerBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the OrgCustomerManager class.
         """
         session_context = SessionContext(dict(), session)
         return OrgCustomerManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the OrgCustomerBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return OrgCustomerBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_org_customer(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the OrgCustomer class.
         """
         # Use the OrgCustomerFactory to create a new org_customer instance
         # Assuming OrgCustomerFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestOrgCustomerBusObj:
         org_customer_bus_obj: OrgCustomerBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new org_customer.
         """
         # Test creating a new org_customer
         assert org_customer_bus_obj.org_customer_id == 0
@@ -70,7 +70,7 @@ class TestOrgCustomerBusObj:
         new_org_customer: OrgCustomer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_customer object instance.
         """
         await org_customer_bus_obj.load_from_obj_instance(new_org_customer)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer, new_org_customer) is True
@@ -82,7 +82,7 @@ class TestOrgCustomerBusObj:
         new_org_customer: OrgCustomer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_customer ID.
         """
         new_org_customer_org_customer_id = new_org_customer.org_customer_id
         await org_customer_bus_obj.load_from_id(new_org_customer_org_customer_id)
@@ -95,7 +95,7 @@ class TestOrgCustomerBusObj:
         new_org_customer: OrgCustomer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_customer code.
         """
         await org_customer_bus_obj.load_from_code(new_org_customer.code)
         assert org_customer_manager.is_equal(org_customer_bus_obj.org_customer, new_org_customer) is True
@@ -107,7 +107,7 @@ class TestOrgCustomerBusObj:
         new_org_customer: OrgCustomer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_customer JSON.
         """
         org_customer_json = org_customer_manager.to_json(new_org_customer)
         await org_customer_bus_obj.load_from_json(org_customer_json)
@@ -120,7 +120,7 @@ class TestOrgCustomerBusObj:
         new_org_customer: OrgCustomer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a org_customer dictionary.
         """
         logger.info("test_load_with_org_customer_dict 1")
         org_customer_dict = org_customer_manager.to_dict(new_org_customer)
@@ -135,7 +135,7 @@ class TestOrgCustomerBusObj:
         org_customer_bus_obj: OrgCustomerBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent org_customer.
         """
         # Test retrieving a nonexistent org_customer raises an exception
         await org_customer_bus_obj.load_from_id(-1)
@@ -149,7 +149,7 @@ class TestOrgCustomerBusObj:
         new_org_customer: OrgCustomer
     ):
         """
-            #TODO add comment
+        Test case for updating a org_customer's data.
         """
         # Test updating a org_customer's data
         new_org_customer_org_customer_id_value = new_org_customer.org_customer_id
@@ -172,7 +172,7 @@ class TestOrgCustomerBusObj:
         new_org_customer: OrgCustomer
     ):
         """
-            #TODO add comment
+        Test case for deleting a org_customer.
         """
         assert new_org_customer.org_customer_id is not None
         assert org_customer_bus_obj.org_customer_id == 0

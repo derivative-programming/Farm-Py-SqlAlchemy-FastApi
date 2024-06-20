@@ -143,7 +143,7 @@ class LandAddPlantPostModelResponse(PostResponse):
         description="Output Flavor Code")
     output_other_flavor: str = Field(
         default="",
-        description="Output Some Other Flavor")
+        description="Output Other Flavor")
     output_some_int_val: int = Field(
         default=0,
         description="Output Some Int Val")

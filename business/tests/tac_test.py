@@ -1,7 +1,7 @@
 # business/tests/tac_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the TacBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestTacBusObj:
     """
-        #TODO add comment
+    Unit tests for the TacBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the TacManager class.
         """
         session_context = SessionContext(dict(), session)
         return TacManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def tac_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the TacBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return TacBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_tac(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the Tac class.
         """
         # Use the TacFactory to create a new tac instance
         # Assuming TacFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestTacBusObj:
         tac_bus_obj: TacBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new tac.
         """
         # Test creating a new tac
         assert tac_bus_obj.tac_id == 0
@@ -73,7 +73,7 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tac object instance.
         """
         await tac_bus_obj.load_from_obj_instance(new_tac)
         assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
@@ -85,7 +85,7 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tac ID.
         """
         new_tac_tac_id = new_tac.tac_id
         await tac_bus_obj.load_from_id(new_tac_tac_id)
@@ -98,7 +98,7 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tac code.
         """
         await tac_bus_obj.load_from_code(new_tac.code)
         assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
@@ -110,7 +110,7 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tac JSON.
         """
         tac_json = tac_manager.to_json(new_tac)
         await tac_bus_obj.load_from_json(tac_json)
@@ -123,7 +123,7 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tac dictionary.
         """
         logger.info("test_load_with_tac_dict 1")
         tac_dict = tac_manager.to_dict(new_tac)
@@ -138,7 +138,7 @@ class TestTacBusObj:
         tac_bus_obj: TacBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent tac.
         """
         # Test retrieving a nonexistent tac raises an exception
         await tac_bus_obj.load_from_id(-1)
@@ -152,7 +152,7 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-            #TODO add comment
+        Test case for updating a tac's data.
         """
         # Test updating a tac's data
         new_tac_tac_id_value = new_tac.tac_id
@@ -175,7 +175,7 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-            #TODO add comment
+        Test case for deleting a tac.
         """
         assert new_tac.tac_id is not None
         assert tac_bus_obj.tac_id == 0

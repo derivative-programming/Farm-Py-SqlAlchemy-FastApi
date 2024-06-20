@@ -21,7 +21,7 @@ class OrganizationNotFoundError(Exception):
     """
     Exception raised when a specified organization is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="Organization not found"):
         self.message = message
@@ -29,37 +29,55 @@ class OrganizationNotFoundError(Exception):
 
 class OrganizationManager:
     """
-    #TODO add comment
+    The OrganizationManager class is responsible for managing organizations in the system.
+    It provides methods for adding, updating, deleting, and retrieving organizations.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the OrganizationManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
 
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the OrganizationManager.
         """
         logging.info("OrganizationManager.Initialize")
 
     async def build(self, **kwargs) -> Organization:
         """
-            #TODO add comment
+        Builds a new Organization object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the organization.
+        Returns:
+            Organization: The newly created Organization object.
         """
         logging.info("OrganizationManager.build")
         return Organization(**kwargs)
     async def add(self, organization: Organization) -> Organization:
         """
-            #TODO add comment
+        Adds a new organization to the system.
+        Args:
+            organization (Organization): The organization to add.
+        Returns:
+            Organization: The added organization.
         """
         logging.info("OrganizationManager.add")
         organization.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -71,7 +89,9 @@ class OrganizationManager:
         return organization
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving organizations.
+        Returns:
+            The base query for retrieving organizations.
         """
         logging.info("OrganizationManager._build_query")
         query = select(
@@ -88,7 +108,11 @@ class OrganizationManager:
         return query
     async def _run_query(self, query_filter) -> List[Organization]:
         """
-            #TODO add comment
+        Runs the query to retrieve organizations from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[Organization]: The list of organizations that match the query.
         """
         logging.info("OrganizationManager._run_query")
         organization_query_all = self._build_query()
@@ -117,14 +141,14 @@ class OrganizationManager:
         organization_list: List['Organization']
     ) -> Optional['Organization']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            organization_list (List[Organization]):
-                The list to retrieve the first element from.
+            organization_list (List[Organization]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[Organization]: The first element
-                of the list if it exists, otherwise None.
+            Optional[Organization]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             organization_list[0]
@@ -133,7 +157,11 @@ class OrganizationManager:
         )
     async def get_by_id(self, organization_id: int) -> Optional[Organization]:
         """
-            #TODO add comment
+        Retrieves a organization by its ID.
+        Args:
+            organization_id (int): The ID of the organization to retrieve.
+        Returns:
+            Optional[Organization]: The retrieved organization, or None if not found.
         """
         logging.info(
             "OrganizationManager.get_by_id start organization_id: %s",
@@ -148,7 +176,11 @@ class OrganizationManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Organization]:
         """
-            #TODO add comment
+        Retrieves a organization by its code.
+        Args:
+            code (uuid.UUID): The code of the organization to retrieve.
+        Returns:
+            Optional[Organization]: The retrieved organization, or None if not found.
         """
         logging.info("OrganizationManager.get_by_code %s", code)
         query_filter = Organization._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -156,7 +188,14 @@ class OrganizationManager:
         return self._first_or_none(query_results)
     async def update(self, organization: Organization, **kwargs) -> Optional[Organization]:
         """
-            #TODO add comment
+        Updates a organization with the specified attributes.
+        Args:
+            organization (Organization): The organization to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[Organization]: The updated organization, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("OrganizationManager.update")
         property_list = Organization.property_list()
@@ -171,7 +210,13 @@ class OrganizationManager:
         return organization
     async def delete(self, organization_id: int):
         """
-            #TODO add comment
+        Deletes a organization by its ID.
+        Args:
+            organization_id (int): The ID of the organization to delete.
+        Raises:
+            TypeError: If the organization_id is not an integer.
+            OrganizationNotFoundError: If the organization with the
+                specified ID is not found.
         """
         logging.info("OrganizationManager.delete %s", organization_id)
         if not isinstance(organization_id, int):
@@ -186,14 +231,20 @@ class OrganizationManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[Organization]:
         """
-            #TODO add comment
+        Retrieves a list of all organizations.
+        Returns:
+            List[Organization]: The list of organizations.
         """
         logging.info("OrganizationManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, organization: Organization) -> str:
         """
-        Serialize the Organization object to a JSON string using the OrganizationSchema.
+        Serializes a Organization object to a JSON string.
+        Args:
+            organization (Organization): The organization to serialize.
+        Returns:
+            str: The JSON string representation of the organization.
         """
         logging.info("OrganizationManager.to_json")
         schema = OrganizationSchema()
@@ -201,7 +252,11 @@ class OrganizationManager:
         return json.dumps(organization_data)
     def to_dict(self, organization: Organization) -> Dict[str, Any]:
         """
-        Serialize the Organization object to a JSON string using the OrganizationSchema.
+        Serializes a Organization object to a dictionary.
+        Args:
+            organization (Organization): The organization to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the organization.
         """
         logging.info("OrganizationManager.to_dict")
         schema = OrganizationSchema()
@@ -210,7 +265,7 @@ class OrganizationManager:
         return organization_data
     def from_json(self, json_str: str) -> Organization:
         """
-        Deserializes a JSON string into a Organization object using the OrganizationSchema.
+        Deserializes a JSON string into a Organization object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -226,8 +281,8 @@ class OrganizationManager:
         """
         Creates a Organization instance from a dictionary of attributes.
         Args:
-            organization_dict (Dict[str, Any]): A dictionary containing
-                organization attributes.
+            organization_dict (Dict[str, Any]): A dictionary
+                containing organization attributes.
         Returns:
             Organization: A new Organization instance created from the given dictionary.
         """
@@ -240,11 +295,11 @@ class OrganizationManager:
         return new_organization
     async def add_bulk(self, organizations: List[Organization]) -> List[Organization]:
         """
-        Adds multiple organizations at once.
+        Adds multiple organizations to the system.
         Args:
             organizations (List[Organization]): The list of organizations to add.
         Returns:
-            List[Organization]: The list of added organizations.
+            List[Organization]: The added organizations.
         """
         logging.info("OrganizationManager.add_bulk")
         for organization in organizations:
@@ -266,7 +321,16 @@ class OrganizationManager:
         organization_updates: List[Dict[str, Any]]
     ) -> List[Organization]:
         """
-        #TODO add comment
+        Update multiple organizations with the provided updates.
+        Args:
+            organization_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each organization.
+        Returns:
+            List[Organization]: A list of updated Organization objects.
+        Raises:
+            TypeError: If the organization_id is not an integer.
+            OrganizationNotFoundError: If a organization with the
+                provided organization_id is not found.
         """
         logging.info("OrganizationManager.update_bulk start")
         updated_organizations = []
@@ -358,7 +422,15 @@ class OrganizationManager:
         return bool(organization)
     def is_equal(self, organization1: Organization, organization2: Organization) -> bool:
         """
-        #TODO add comment
+        Check if two Organization objects are equal.
+        Args:
+            organization1 (Organization): The first Organization object.
+            organization2 (Organization): The second Organization object.
+        Returns:
+            bool: True if the two Organization objects are equal, False otherwise.
+        Raises:
+            TypeError: If either organization1 or organization2
+                is not provided or is not an instance of Organization.
         """
         if not organization1:
             raise TypeError("Organization1 required.")
@@ -374,7 +446,12 @@ class OrganizationManager:
 # endset
     async def get_by_tac_id(self, tac_id: int) -> List[Organization]:  # TacID
         """
-        #TODO add comment
+        Retrieve a list of organizations by tac ID.
+        Args:
+            tac_id (int): The ID of the tac.
+        Returns:
+            List[Organization]: A list of organizations associated
+            with the specified tac ID.
         """
         logging.info("OrganizationManager.get_by_tac_id")
         if not isinstance(tac_id, int):

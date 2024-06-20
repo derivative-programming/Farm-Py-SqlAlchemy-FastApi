@@ -1,7 +1,7 @@
 # business/tests/customer_role_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the CustomerRoleBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestCustomerRoleBusObj:
     """
-        #TODO add comment
+    Unit tests for the CustomerRoleBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the CustomerRoleManager class.
         """
         session_context = SessionContext(dict(), session)
         return CustomerRoleManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the CustomerRoleBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return CustomerRoleBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_customer_role(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the CustomerRole class.
         """
         # Use the CustomerRoleFactory to create a new customer_role instance
         # Assuming CustomerRoleFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestCustomerRoleBusObj:
         customer_role_bus_obj: CustomerRoleBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new customer_role.
         """
         # Test creating a new customer_role
         assert customer_role_bus_obj.customer_role_id == 0
@@ -71,7 +71,7 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer_role object instance.
         """
         await customer_role_bus_obj.load_from_obj_instance(new_customer_role)
         assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
@@ -83,7 +83,7 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer_role ID.
         """
         new_customer_role_customer_role_id = new_customer_role.customer_role_id
         await customer_role_bus_obj.load_from_id(new_customer_role_customer_role_id)
@@ -96,7 +96,7 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer_role code.
         """
         await customer_role_bus_obj.load_from_code(new_customer_role.code)
         assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
@@ -108,7 +108,7 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer_role JSON.
         """
         customer_role_json = customer_role_manager.to_json(new_customer_role)
         await customer_role_bus_obj.load_from_json(customer_role_json)
@@ -121,7 +121,7 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer_role dictionary.
         """
         logger.info("test_load_with_customer_role_dict 1")
         customer_role_dict = customer_role_manager.to_dict(new_customer_role)
@@ -136,7 +136,7 @@ class TestCustomerRoleBusObj:
         customer_role_bus_obj: CustomerRoleBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent customer_role.
         """
         # Test retrieving a nonexistent customer_role raises an exception
         await customer_role_bus_obj.load_from_id(-1)
@@ -150,7 +150,7 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-            #TODO add comment
+        Test case for updating a customer_role's data.
         """
         # Test updating a customer_role's data
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
@@ -173,7 +173,7 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-            #TODO add comment
+        Test case for deleting a customer_role.
         """
         assert new_customer_role.customer_role_id is not None
         assert customer_role_bus_obj.customer_role_id == 0

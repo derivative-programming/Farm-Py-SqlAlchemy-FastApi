@@ -2,9 +2,10 @@
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 """
-    #TODO add comment
-    #TODO file too big. split into separate test files
+    This class contains unit tests for the
+    `PacManager` class.
 """
+# TODO file too big. split into separate test files
 import logging
 from typing import List
 import uuid
@@ -20,12 +21,14 @@ from models.factory import PacFactory
 from models.serialization_schema.pac import PacSchema
 class TestPacManager:
     """
-    #TODO add comment
+    This class contains unit tests for the
+    `PacManager` class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of
+        `PacManager` for testing.
         """
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
@@ -36,7 +39,8 @@ class TestPacManager:
         pac_manager: PacManager
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `PacManager`.
         """
         # Define mock data for our pac
         mock_data = {
@@ -55,7 +59,8 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `build` method of
+        `PacManager` with missing data.
         """
         # Define mock data with a missing key
         mock_data = {
@@ -73,7 +78,9 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `PacManager` that checks if a
+        pac is correctly added to the database.
         """
         test_pac = await PacFactory.build_async(session)
         assert test_pac.pac_id == 0
@@ -103,7 +110,9 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `add` method of
+        `PacManager` that checks if the
+        correct pac object is returned.
         """
         # Create a test pac using the PacFactory
         # without persisting it to the database
@@ -128,7 +137,8 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `PacManager`.
         """
         test_pac = await PacFactory.create_async(session)
         pac = await pac_manager.get_by_id(test_pac.pac_id)
@@ -141,7 +151,8 @@ class TestPacManager:
         pac_manager: PacManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_id` method of
+        `PacManager` when the pac is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
         retrieved_pac = await pac_manager.get_by_id(non_existent_id)
@@ -153,7 +164,9 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `PacManager` that checks if a pac is
+        returned by its code.
         """
         test_pac = await PacFactory.create_async(session)
         pac = await pac_manager.get_by_code(test_pac.code)
@@ -166,7 +179,8 @@ class TestPacManager:
         pac_manager: PacManager
     ):
         """
-            #TODO add comment
+        Test case for the `get_by_code` method of
+        `PacManager` when the code does not exist.
         """
         # Generate a random UUID that doesn't correspond to
         # any Pac in the database
@@ -180,7 +194,8 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `PacManager`
+        that checks if a pac is correctly updated.
         """
         test_pac = await PacFactory.create_async(session)
         test_pac.code = uuid.uuid4()
@@ -206,7 +221,8 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `PacManager`
+        that checks if a pac is correctly updated using a dictionary.
         """
         test_pac = await PacFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -235,7 +251,8 @@ class TestPacManager:
         pac_manager: PacManager
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `PacManager`
+        with an invalid pac.
         """
         # None pac
         pac = None
@@ -251,7 +268,8 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `update` method of `PacManager`
+        with a nonexistent attribute.
         """
         test_pac = await PacFactory.create_async(session)
         new_code = uuid.uuid4()
@@ -268,7 +286,7 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-            #TODO add comment
+        Test case for the `delete` method of `PacManager`.
         """
         pac_data = await PacFactory.create_async(session)
         result = await session.execute(

@@ -6,7 +6,7 @@ The ErrorLogConfigResolveErrorLogRouter provides the following endpoints:
     - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/init:
         Get the initialization data for the Error Log Config Resolve Error Log page.
     - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}:
-        Get the  plant list report for a specific  code.
+        Get the Error Log Config Resolve Error Log Report for a specific  code.
     - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/to-csv:
         Retrieve the Error Log Config Resolve Error Log Report as a CSV file.
 """

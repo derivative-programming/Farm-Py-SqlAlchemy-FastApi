@@ -1,7 +1,7 @@
 # business/tests/tri_state_filter_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the TriStateFilterBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestTriStateFilterBusObj:
     """
-        #TODO add comment
+    Unit tests for the TriStateFilterBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the TriStateFilterManager class.
         """
         session_context = SessionContext(dict(), session)
         return TriStateFilterManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def tri_state_filter_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the TriStateFilterBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return TriStateFilterBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_tri_state_filter(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the TriStateFilter class.
         """
         # Use the TriStateFilterFactory to create a new tri_state_filter instance
         # Assuming TriStateFilterFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestTriStateFilterBusObj:
         tri_state_filter_bus_obj: TriStateFilterBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new tri_state_filter.
         """
         # Test creating a new tri_state_filter
         assert tri_state_filter_bus_obj.tri_state_filter_id == 0
@@ -74,7 +74,7 @@ class TestTriStateFilterBusObj:
         new_tri_state_filter: TriStateFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tri_state_filter object instance.
         """
         await tri_state_filter_bus_obj.load_from_obj_instance(new_tri_state_filter)
         assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter, new_tri_state_filter) is True
@@ -86,7 +86,7 @@ class TestTriStateFilterBusObj:
         new_tri_state_filter: TriStateFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tri_state_filter ID.
         """
         new_tri_state_filter_tri_state_filter_id = new_tri_state_filter.tri_state_filter_id
         await tri_state_filter_bus_obj.load_from_id(new_tri_state_filter_tri_state_filter_id)
@@ -99,7 +99,7 @@ class TestTriStateFilterBusObj:
         new_tri_state_filter: TriStateFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tri_state_filter code.
         """
         await tri_state_filter_bus_obj.load_from_code(new_tri_state_filter.code)
         assert tri_state_filter_manager.is_equal(tri_state_filter_bus_obj.tri_state_filter, new_tri_state_filter) is True
@@ -111,7 +111,7 @@ class TestTriStateFilterBusObj:
         new_tri_state_filter: TriStateFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tri_state_filter JSON.
         """
         tri_state_filter_json = tri_state_filter_manager.to_json(new_tri_state_filter)
         await tri_state_filter_bus_obj.load_from_json(tri_state_filter_json)
@@ -124,7 +124,7 @@ class TestTriStateFilterBusObj:
         new_tri_state_filter: TriStateFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a tri_state_filter dictionary.
         """
         logger.info("test_load_with_tri_state_filter_dict 1")
         tri_state_filter_dict = tri_state_filter_manager.to_dict(new_tri_state_filter)
@@ -139,7 +139,7 @@ class TestTriStateFilterBusObj:
         tri_state_filter_bus_obj: TriStateFilterBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent tri_state_filter.
         """
         # Test retrieving a nonexistent tri_state_filter raises an exception
         await tri_state_filter_bus_obj.load_from_id(-1)
@@ -153,7 +153,7 @@ class TestTriStateFilterBusObj:
         new_tri_state_filter: TriStateFilter
     ):
         """
-            #TODO add comment
+        Test case for updating a tri_state_filter's data.
         """
         # Test updating a tri_state_filter's data
         new_tri_state_filter_tri_state_filter_id_value = new_tri_state_filter.tri_state_filter_id
@@ -176,7 +176,7 @@ class TestTriStateFilterBusObj:
         new_tri_state_filter: TriStateFilter
     ):
         """
-            #TODO add comment
+        Test case for deleting a tri_state_filter.
         """
         assert new_tri_state_filter.tri_state_filter_id is not None
         assert tri_state_filter_bus_obj.tri_state_filter_id == 0

@@ -6,7 +6,7 @@ The CustomerUserLogOutRouter provides the following endpoints:
     - GET /api/v1_0/customer-user-log-out/{customer_code}/init:
         Get the initialization data for the Customer User Log Out page.
     - GET /api/v1_0/customer-user-log-out/{customer_code}:
-        Get the customer plant list report for a specific customer code.
+        Get the Customer User Log Out Report for a specific customer code.
     - GET /api/v1_0/customer-user-log-out/{customer_code}/to-csv:
         Retrieve the Customer User Log Out Report as a CSV file.
 """

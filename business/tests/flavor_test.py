@@ -1,7 +1,7 @@
 # business/tests/flavor_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the FlavorBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestFlavorBusObj:
     """
-        #TODO add comment
+    Unit tests for the FlavorBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def flavor_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the FlavorManager class.
         """
         session_context = SessionContext(dict(), session)
         return FlavorManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def flavor_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the FlavorBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return FlavorBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_flavor(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the Flavor class.
         """
         # Use the FlavorFactory to create a new flavor instance
         # Assuming FlavorFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestFlavorBusObj:
         flavor_bus_obj: FlavorBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new flavor.
         """
         # Test creating a new flavor
         assert flavor_bus_obj.flavor_id == 0
@@ -73,7 +73,7 @@ class TestFlavorBusObj:
         new_flavor: Flavor
     ):
         """
-            #TODO add comment
+        Test case for loading data from a flavor object instance.
         """
         await flavor_bus_obj.load_from_obj_instance(new_flavor)
         assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
@@ -85,7 +85,7 @@ class TestFlavorBusObj:
         new_flavor: Flavor
     ):
         """
-            #TODO add comment
+        Test case for loading data from a flavor ID.
         """
         new_flavor_flavor_id = new_flavor.flavor_id
         await flavor_bus_obj.load_from_id(new_flavor_flavor_id)
@@ -98,7 +98,7 @@ class TestFlavorBusObj:
         new_flavor: Flavor
     ):
         """
-            #TODO add comment
+        Test case for loading data from a flavor code.
         """
         await flavor_bus_obj.load_from_code(new_flavor.code)
         assert flavor_manager.is_equal(flavor_bus_obj.flavor, new_flavor) is True
@@ -110,7 +110,7 @@ class TestFlavorBusObj:
         new_flavor: Flavor
     ):
         """
-            #TODO add comment
+        Test case for loading data from a flavor JSON.
         """
         flavor_json = flavor_manager.to_json(new_flavor)
         await flavor_bus_obj.load_from_json(flavor_json)
@@ -123,7 +123,7 @@ class TestFlavorBusObj:
         new_flavor: Flavor
     ):
         """
-            #TODO add comment
+        Test case for loading data from a flavor dictionary.
         """
         logger.info("test_load_with_flavor_dict 1")
         flavor_dict = flavor_manager.to_dict(new_flavor)
@@ -138,7 +138,7 @@ class TestFlavorBusObj:
         flavor_bus_obj: FlavorBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent flavor.
         """
         # Test retrieving a nonexistent flavor raises an exception
         await flavor_bus_obj.load_from_id(-1)
@@ -152,7 +152,7 @@ class TestFlavorBusObj:
         new_flavor: Flavor
     ):
         """
-            #TODO add comment
+        Test case for updating a flavor's data.
         """
         # Test updating a flavor's data
         new_flavor_flavor_id_value = new_flavor.flavor_id
@@ -175,7 +175,7 @@ class TestFlavorBusObj:
         new_flavor: Flavor
     ):
         """
-            #TODO add comment
+        Test case for deleting a flavor.
         """
         assert new_flavor.flavor_id is not None
         assert flavor_bus_obj.flavor_id == 0

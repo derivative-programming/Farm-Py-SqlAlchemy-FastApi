@@ -1,7 +1,7 @@
 # business/tests/customer_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the CustomerBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestCustomerBusObj:
     """
-        #TODO add comment
+    Unit tests for the CustomerBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def customer_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the CustomerManager class.
         """
         session_context = SessionContext(dict(), session)
         return CustomerManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def customer_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the CustomerBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return CustomerBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_customer(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the Customer class.
         """
         # Use the CustomerFactory to create a new customer instance
         # Assuming CustomerFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestCustomerBusObj:
         customer_bus_obj: CustomerBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new customer.
         """
         # Test creating a new customer
         assert customer_bus_obj.customer_id == 0
@@ -91,7 +91,7 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer object instance.
         """
         await customer_bus_obj.load_from_obj_instance(new_customer)
         assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
@@ -103,7 +103,7 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer ID.
         """
         new_customer_customer_id = new_customer.customer_id
         await customer_bus_obj.load_from_id(new_customer_customer_id)
@@ -116,7 +116,7 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer code.
         """
         await customer_bus_obj.load_from_code(new_customer.code)
         assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
@@ -128,7 +128,7 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer JSON.
         """
         customer_json = customer_manager.to_json(new_customer)
         await customer_bus_obj.load_from_json(customer_json)
@@ -141,7 +141,7 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-            #TODO add comment
+        Test case for loading data from a customer dictionary.
         """
         logger.info("test_load_with_customer_dict 1")
         customer_dict = customer_manager.to_dict(new_customer)
@@ -156,7 +156,7 @@ class TestCustomerBusObj:
         customer_bus_obj: CustomerBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent customer.
         """
         # Test retrieving a nonexistent customer raises an exception
         await customer_bus_obj.load_from_id(-1)
@@ -170,7 +170,7 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-            #TODO add comment
+        Test case for updating a customer's data.
         """
         # Test updating a customer's data
         new_customer_customer_id_value = new_customer.customer_id
@@ -193,7 +193,7 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-            #TODO add comment
+        Test case for deleting a customer.
         """
         assert new_customer.customer_id is not None
         assert customer_bus_obj.customer_id == 0

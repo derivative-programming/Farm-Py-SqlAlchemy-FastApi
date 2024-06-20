@@ -21,7 +21,7 @@ class RoleNotFoundError(Exception):
     """
     Exception raised when a specified role is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="Role not found"):
         self.message = message
@@ -29,7 +29,8 @@ class RoleNotFoundError(Exception):
 
 class RoleEnum(Enum):
     """
-    #TODO add comment
+    Represents an enumeration of
+    Role options.
     """
     UNKNOWN = 'Unknown'
     ADMIN = 'Admin'
@@ -38,18 +39,28 @@ class RoleEnum(Enum):
 
 class RoleManager:
     """
-    #TODO add comment
+    The RoleManager class is responsible for managing roles in the system.
+    It provides methods for adding, updating, deleting, and retrieving roles.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the RoleManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
@@ -60,7 +71,15 @@ class RoleManager:
         return item
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the RoleManager.
+        This method initializes the RoleManager
+        by adding predefined filter items to the database.
+        If the filter items do not already exist in the database,
+        they are created and added.
+        Returns:
+            None
+        Raises:
+            None
         """
         logging.info("RoleManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
@@ -113,9 +132,16 @@ class RoleManager:
         enum_val: RoleEnum
     ) -> Role:
         """
-            #TODO add comment
+        Returns a Role object
+        based on the provided enum value.
+        Args:
+            enum_val (RoleEnum):
+                The enum value representing the filter.
+        Returns:
+            Role:
+                The Role object
+                matching the enum value.
         """
-        # return self.get(lookup_enum_name=enum_val.value)
         query_filter = (
             Role._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
@@ -123,13 +149,21 @@ class RoleManager:
 
     async def build(self, **kwargs) -> Role:
         """
-            #TODO add comment
+        Builds a new Role object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the role.
+        Returns:
+            Role: The newly created Role object.
         """
         logging.info("RoleManager.build")
         return Role(**kwargs)
     async def add(self, role: Role) -> Role:
         """
-            #TODO add comment
+        Adds a new role to the system.
+        Args:
+            role (Role): The role to add.
+        Returns:
+            Role: The added role.
         """
         logging.info("RoleManager.add")
         role.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -141,7 +175,9 @@ class RoleManager:
         return role
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving roles.
+        Returns:
+            The base query for retrieving roles.
         """
         logging.info("RoleManager._build_query")
         query = select(
@@ -158,7 +194,11 @@ class RoleManager:
         return query
     async def _run_query(self, query_filter) -> List[Role]:
         """
-            #TODO add comment
+        Runs the query to retrieve roles from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[Role]: The list of roles that match the query.
         """
         logging.info("RoleManager._run_query")
         role_query_all = self._build_query()
@@ -187,14 +227,14 @@ class RoleManager:
         role_list: List['Role']
     ) -> Optional['Role']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            role_list (List[Role]):
-                The list to retrieve the first element from.
+            role_list (List[Role]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[Role]: The first element
-                of the list if it exists, otherwise None.
+            Optional[Role]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             role_list[0]
@@ -203,7 +243,11 @@ class RoleManager:
         )
     async def get_by_id(self, role_id: int) -> Optional[Role]:
         """
-            #TODO add comment
+        Retrieves a role by its ID.
+        Args:
+            role_id (int): The ID of the role to retrieve.
+        Returns:
+            Optional[Role]: The retrieved role, or None if not found.
         """
         logging.info(
             "RoleManager.get_by_id start role_id: %s",
@@ -218,7 +262,11 @@ class RoleManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Role]:
         """
-            #TODO add comment
+        Retrieves a role by its code.
+        Args:
+            code (uuid.UUID): The code of the role to retrieve.
+        Returns:
+            Optional[Role]: The retrieved role, or None if not found.
         """
         logging.info("RoleManager.get_by_code %s", code)
         query_filter = Role._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -226,7 +274,14 @@ class RoleManager:
         return self._first_or_none(query_results)
     async def update(self, role: Role, **kwargs) -> Optional[Role]:
         """
-            #TODO add comment
+        Updates a role with the specified attributes.
+        Args:
+            role (Role): The role to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[Role]: The updated role, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("RoleManager.update")
         property_list = Role.property_list()
@@ -241,7 +296,13 @@ class RoleManager:
         return role
     async def delete(self, role_id: int):
         """
-            #TODO add comment
+        Deletes a role by its ID.
+        Args:
+            role_id (int): The ID of the role to delete.
+        Raises:
+            TypeError: If the role_id is not an integer.
+            RoleNotFoundError: If the role with the
+                specified ID is not found.
         """
         logging.info("RoleManager.delete %s", role_id)
         if not isinstance(role_id, int):
@@ -256,14 +317,20 @@ class RoleManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[Role]:
         """
-            #TODO add comment
+        Retrieves a list of all roles.
+        Returns:
+            List[Role]: The list of roles.
         """
         logging.info("RoleManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, role: Role) -> str:
         """
-        Serialize the Role object to a JSON string using the RoleSchema.
+        Serializes a Role object to a JSON string.
+        Args:
+            role (Role): The role to serialize.
+        Returns:
+            str: The JSON string representation of the role.
         """
         logging.info("RoleManager.to_json")
         schema = RoleSchema()
@@ -271,7 +338,11 @@ class RoleManager:
         return json.dumps(role_data)
     def to_dict(self, role: Role) -> Dict[str, Any]:
         """
-        Serialize the Role object to a JSON string using the RoleSchema.
+        Serializes a Role object to a dictionary.
+        Args:
+            role (Role): The role to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the role.
         """
         logging.info("RoleManager.to_dict")
         schema = RoleSchema()
@@ -280,7 +351,7 @@ class RoleManager:
         return role_data
     def from_json(self, json_str: str) -> Role:
         """
-        Deserializes a JSON string into a Role object using the RoleSchema.
+        Deserializes a JSON string into a Role object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -296,8 +367,8 @@ class RoleManager:
         """
         Creates a Role instance from a dictionary of attributes.
         Args:
-            role_dict (Dict[str, Any]): A dictionary containing
-                role attributes.
+            role_dict (Dict[str, Any]): A dictionary
+                containing role attributes.
         Returns:
             Role: A new Role instance created from the given dictionary.
         """
@@ -310,11 +381,11 @@ class RoleManager:
         return new_role
     async def add_bulk(self, roles: List[Role]) -> List[Role]:
         """
-        Adds multiple roles at once.
+        Adds multiple roles to the system.
         Args:
             roles (List[Role]): The list of roles to add.
         Returns:
-            List[Role]: The list of added roles.
+            List[Role]: The added roles.
         """
         logging.info("RoleManager.add_bulk")
         for role in roles:
@@ -336,7 +407,16 @@ class RoleManager:
         role_updates: List[Dict[str, Any]]
     ) -> List[Role]:
         """
-        #TODO add comment
+        Update multiple roles with the provided updates.
+        Args:
+            role_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each role.
+        Returns:
+            List[Role]: A list of updated Role objects.
+        Raises:
+            TypeError: If the role_id is not an integer.
+            RoleNotFoundError: If a role with the
+                provided role_id is not found.
         """
         logging.info("RoleManager.update_bulk start")
         updated_roles = []
@@ -428,7 +508,15 @@ class RoleManager:
         return bool(role)
     def is_equal(self, role1: Role, role2: Role) -> bool:
         """
-        #TODO add comment
+        Check if two Role objects are equal.
+        Args:
+            role1 (Role): The first Role object.
+            role2 (Role): The second Role object.
+        Returns:
+            bool: True if the two Role objects are equal, False otherwise.
+        Raises:
+            TypeError: If either role1 or role2
+                is not provided or is not an instance of Role.
         """
         if not role1:
             raise TypeError("Role1 required.")
@@ -444,7 +532,12 @@ class RoleManager:
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Role]:  # PacID
         """
-        #TODO add comment
+        Retrieve a list of roles by pac ID.
+        Args:
+            pac_id (int): The ID of the pac.
+        Returns:
+            List[Role]: A list of roles associated
+            with the specified pac ID.
         """
         logging.info("RoleManager.get_by_pac_id")
         if not isinstance(pac_id, int):

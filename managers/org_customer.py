@@ -22,7 +22,7 @@ class OrgCustomerNotFoundError(Exception):
     """
     Exception raised when a specified org_customer is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="OrgCustomer not found"):
         self.message = message
@@ -30,37 +30,55 @@ class OrgCustomerNotFoundError(Exception):
 
 class OrgCustomerManager:
     """
-    #TODO add comment
+    The OrgCustomerManager class is responsible for managing org_customers in the system.
+    It provides methods for adding, updating, deleting, and retrieving org_customers.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the OrgCustomerManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
 
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the OrgCustomerManager.
         """
         logging.info("OrgCustomerManager.Initialize")
 
     async def build(self, **kwargs) -> OrgCustomer:
         """
-            #TODO add comment
+        Builds a new OrgCustomer object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the org_customer.
+        Returns:
+            OrgCustomer: The newly created OrgCustomer object.
         """
         logging.info("OrgCustomerManager.build")
         return OrgCustomer(**kwargs)
     async def add(self, org_customer: OrgCustomer) -> OrgCustomer:
         """
-            #TODO add comment
+        Adds a new org_customer to the system.
+        Args:
+            org_customer (OrgCustomer): The org_customer to add.
+        Returns:
+            OrgCustomer: The added org_customer.
         """
         logging.info("OrgCustomerManager.add")
         org_customer.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -72,7 +90,9 @@ class OrgCustomerManager:
         return org_customer
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving org_customers.
+        Returns:
+            The base query for retrieving org_customers.
         """
         logging.info("OrgCustomerManager._build_query")
         query = select(
@@ -95,7 +115,11 @@ class OrgCustomerManager:
         return query
     async def _run_query(self, query_filter) -> List[OrgCustomer]:
         """
-            #TODO add comment
+        Runs the query to retrieve org_customers from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[OrgCustomer]: The list of org_customers that match the query.
         """
         logging.info("OrgCustomerManager._run_query")
         org_customer_query_all = self._build_query()
@@ -128,14 +152,14 @@ class OrgCustomerManager:
         org_customer_list: List['OrgCustomer']
     ) -> Optional['OrgCustomer']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            org_customer_list (List[OrgCustomer]):
-                The list to retrieve the first element from.
+            org_customer_list (List[OrgCustomer]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[OrgCustomer]: The first element
-                of the list if it exists, otherwise None.
+            Optional[OrgCustomer]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             org_customer_list[0]
@@ -144,7 +168,11 @@ class OrgCustomerManager:
         )
     async def get_by_id(self, org_customer_id: int) -> Optional[OrgCustomer]:
         """
-            #TODO add comment
+        Retrieves a org_customer by its ID.
+        Args:
+            org_customer_id (int): The ID of the org_customer to retrieve.
+        Returns:
+            Optional[OrgCustomer]: The retrieved org_customer, or None if not found.
         """
         logging.info(
             "OrgCustomerManager.get_by_id start org_customer_id: %s",
@@ -159,7 +187,11 @@ class OrgCustomerManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgCustomer]:
         """
-            #TODO add comment
+        Retrieves a org_customer by its code.
+        Args:
+            code (uuid.UUID): The code of the org_customer to retrieve.
+        Returns:
+            Optional[OrgCustomer]: The retrieved org_customer, or None if not found.
         """
         logging.info("OrgCustomerManager.get_by_code %s", code)
         query_filter = OrgCustomer._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -167,7 +199,14 @@ class OrgCustomerManager:
         return self._first_or_none(query_results)
     async def update(self, org_customer: OrgCustomer, **kwargs) -> Optional[OrgCustomer]:
         """
-            #TODO add comment
+        Updates a org_customer with the specified attributes.
+        Args:
+            org_customer (OrgCustomer): The org_customer to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[OrgCustomer]: The updated org_customer, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("OrgCustomerManager.update")
         property_list = OrgCustomer.property_list()
@@ -182,7 +221,13 @@ class OrgCustomerManager:
         return org_customer
     async def delete(self, org_customer_id: int):
         """
-            #TODO add comment
+        Deletes a org_customer by its ID.
+        Args:
+            org_customer_id (int): The ID of the org_customer to delete.
+        Raises:
+            TypeError: If the org_customer_id is not an integer.
+            OrgCustomerNotFoundError: If the org_customer with the
+                specified ID is not found.
         """
         logging.info("OrgCustomerManager.delete %s", org_customer_id)
         if not isinstance(org_customer_id, int):
@@ -197,14 +242,20 @@ class OrgCustomerManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[OrgCustomer]:
         """
-            #TODO add comment
+        Retrieves a list of all org_customers.
+        Returns:
+            List[OrgCustomer]: The list of org_customers.
         """
         logging.info("OrgCustomerManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, org_customer: OrgCustomer) -> str:
         """
-        Serialize the OrgCustomer object to a JSON string using the OrgCustomerSchema.
+        Serializes a OrgCustomer object to a JSON string.
+        Args:
+            org_customer (OrgCustomer): The org_customer to serialize.
+        Returns:
+            str: The JSON string representation of the org_customer.
         """
         logging.info("OrgCustomerManager.to_json")
         schema = OrgCustomerSchema()
@@ -212,7 +263,11 @@ class OrgCustomerManager:
         return json.dumps(org_customer_data)
     def to_dict(self, org_customer: OrgCustomer) -> Dict[str, Any]:
         """
-        Serialize the OrgCustomer object to a JSON string using the OrgCustomerSchema.
+        Serializes a OrgCustomer object to a dictionary.
+        Args:
+            org_customer (OrgCustomer): The org_customer to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the org_customer.
         """
         logging.info("OrgCustomerManager.to_dict")
         schema = OrgCustomerSchema()
@@ -221,7 +276,7 @@ class OrgCustomerManager:
         return org_customer_data
     def from_json(self, json_str: str) -> OrgCustomer:
         """
-        Deserializes a JSON string into a OrgCustomer object using the OrgCustomerSchema.
+        Deserializes a JSON string into a OrgCustomer object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -237,8 +292,8 @@ class OrgCustomerManager:
         """
         Creates a OrgCustomer instance from a dictionary of attributes.
         Args:
-            org_customer_dict (Dict[str, Any]): A dictionary containing
-                org_customer attributes.
+            org_customer_dict (Dict[str, Any]): A dictionary
+                containing org_customer attributes.
         Returns:
             OrgCustomer: A new OrgCustomer instance created from the given dictionary.
         """
@@ -251,11 +306,11 @@ class OrgCustomerManager:
         return new_org_customer
     async def add_bulk(self, org_customers: List[OrgCustomer]) -> List[OrgCustomer]:
         """
-        Adds multiple org_customers at once.
+        Adds multiple org_customers to the system.
         Args:
             org_customers (List[OrgCustomer]): The list of org_customers to add.
         Returns:
-            List[OrgCustomer]: The list of added org_customers.
+            List[OrgCustomer]: The added org_customers.
         """
         logging.info("OrgCustomerManager.add_bulk")
         for org_customer in org_customers:
@@ -277,7 +332,16 @@ class OrgCustomerManager:
         org_customer_updates: List[Dict[str, Any]]
     ) -> List[OrgCustomer]:
         """
-        #TODO add comment
+        Update multiple org_customers with the provided updates.
+        Args:
+            org_customer_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each org_customer.
+        Returns:
+            List[OrgCustomer]: A list of updated OrgCustomer objects.
+        Raises:
+            TypeError: If the org_customer_id is not an integer.
+            OrgCustomerNotFoundError: If a org_customer with the
+                provided org_customer_id is not found.
         """
         logging.info("OrgCustomerManager.update_bulk start")
         updated_org_customers = []
@@ -369,7 +433,15 @@ class OrgCustomerManager:
         return bool(org_customer)
     def is_equal(self, org_customer1: OrgCustomer, org_customer2: OrgCustomer) -> bool:
         """
-        #TODO add comment
+        Check if two OrgCustomer objects are equal.
+        Args:
+            org_customer1 (OrgCustomer): The first OrgCustomer object.
+            org_customer2 (OrgCustomer): The second OrgCustomer object.
+        Returns:
+            bool: True if the two OrgCustomer objects are equal, False otherwise.
+        Raises:
+            TypeError: If either org_customer1 or org_customer2
+                is not provided or is not an instance of OrgCustomer.
         """
         if not org_customer1:
             raise TypeError("OrgCustomer1 required.")
@@ -388,7 +460,14 @@ class OrgCustomerManager:
         customer_id: int
     ) -> List[OrgCustomer]:  # CustomerID
         """
-        #TODO add comment
+        Retrieve a list of org_customers based on the
+            given customer foreign key ID.
+        Args:
+            customer_id (int): The
+                customer foreign key ID to filter the org_customers.
+        Returns:
+            List[OrgCustomer]: A list of OrgCustomer objects
+                matching the given customer foreign key ID.
         """
         logging.info("OrgCustomerManager.get_by_customer_id")
         if not isinstance(customer_id, int):
@@ -401,7 +480,12 @@ class OrgCustomerManager:
         return query_results
     async def get_by_organization_id(self, organization_id: int) -> List[OrgCustomer]:  # OrganizationID
         """
-        #TODO add comment
+        Retrieve a list of org_customers by organization ID.
+        Args:
+            organization_id (int): The ID of the organization.
+        Returns:
+            List[OrgCustomer]: A list of org_customers associated
+            with the specified organization ID.
         """
         logging.info("OrgCustomerManager.get_by_organization_id")
         if not isinstance(organization_id, int):

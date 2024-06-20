@@ -1,7 +1,12 @@
 # apis/models/land_plant_list.py
 
 """
-    #TODO add comment
+This module contains the models for the Land Plant List API.
+
+- LandPlantListGetModelRequest: Represents the
+    request model for getting the land plant list.
+- LandPlantListGetModelResponseItem: Represents the
+    response model item for the land plant list.
 """
 
 import json
@@ -26,8 +31,10 @@ from reports.row_models.land_plant_list import ReportItemLandPlantList
 
 class LandPlantListGetModelRequest(CamelModel):
     """
-        #TODO add comment
+    Represents the request model for getting the land plant list.
+
     """
+
     page_number: int = Field(
         default=0,
         description="Page Number")
@@ -39,7 +46,7 @@ class LandPlantListGetModelRequest(CamelModel):
         description="Order By Column Name")
     order_by_descending: bool = Field(
         default=False,
-        description="Order By Decending")
+        description="Order By Descending")
     force_error_message: str = Field(
         default="",
         description="Force Error Message")
@@ -97,7 +104,11 @@ class LandPlantListGetModelRequest(CamelModel):
 
     class Config:
         """
-            #TODO add comment
+        Configuration class for the LandPlantList model.
+
+        Attributes:
+            json_encoders (dict): A dictionary mapping data
+            types to custom JSON encoder functions.
         """
         json_encoders = {
             datetime: lambda v: v.isoformat()
@@ -105,28 +116,30 @@ class LandPlantListGetModelRequest(CamelModel):
 
     def to_dict_snake(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
 
     def to_dict_snake_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with snake_case
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return data
 
     def to_dict_camel(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
 
     def to_dict_camel_serialized(self):
         """
-            #TODO add comment
+        Convert the model to a dictionary with camelCase
+        keys and serialized values.
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
@@ -134,8 +147,10 @@ class LandPlantListGetModelRequest(CamelModel):
 
 class LandPlantListGetModelResponseItem(CamelModel):
     """
-        #TODO add comment
+    Represents the response model item for the land plant list.
+
     """
+
     plant_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
@@ -219,7 +234,12 @@ class LandPlantListGetModelResponseItem(CamelModel):
 
     def load_report_item(self, data: ReportItemLandPlantList):
         """
-            #TODO add comment
+        Loads the data from a ReportItemLandPlantList
+        object into the response model item.
+
+        Args:
+            data (ReportItemLandPlantList): The
+                ReportItemLandPlantList object to load the data from.
         """
         self.plant_code = (
             data.plant_code)
@@ -273,7 +293,10 @@ class LandPlantListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemLandPlantList:
         """
-            #TODO add comment
+        Builds a ReportItemLandPlantList object from the response model item.
+
+        Returns:
+            ReportItemLandPlantList: The built ReportItemLandPlantList object.
         """
 
         data = ReportItemLandPlantList()
@@ -331,8 +354,15 @@ class LandPlantListGetModelResponseItem(CamelModel):
 
 class LandPlantListGetModelResponse(ListModel):
     """
-        #TODO add comment
+    Represents the response model for the LandPlantListGetModel API.
+
+    Attributes:
+        request (LandPlantListGetModelRequest):
+            The request model for the API.
+        items (List[LandPlantListGetModelResponseItem]):
+            The list of response items.
     """
+
     request: LandPlantListGetModelRequest = LandPlantListGetModelRequest()
     items: List[LandPlantListGetModelResponseItem] = Field(
         default_factory=list)
@@ -344,7 +374,19 @@ class LandPlantListGetModelResponse(ListModel):
         request: LandPlantListGetModelRequest
     ):
         """
-            #TODO add comment
+        Processes the API request and generates the response items.
+
+        Args:
+            session_context (SessionContext): The session context.
+            land_code (uuid.UUID): The land code.
+            request (LandPlantListGetModelRequest): The request model.
+
+        Raises:
+            ReportRequestValidationError: If there is
+                a validation error in the request.
+
+        Returns:
+            None
         """
         try:
             logging.info("loading model...LandPlantListGetModelResponse")
@@ -399,6 +441,9 @@ class LandPlantListGetModelResponse(ListModel):
 
     def to_json(self):
         """
-            #TODO add comment
+        Converts the response model to JSON.
+
+        Returns:
+            str: The JSON representation of the response model.
         """
         return self.model_dump_json()

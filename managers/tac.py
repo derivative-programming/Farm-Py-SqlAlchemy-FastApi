@@ -21,7 +21,7 @@ class TacNotFoundError(Exception):
     """
     Exception raised when a specified tac is not found.
     Attributes:
-        message (str):Explanation of the error.
+        message (str): Explanation of the error.
     """
     def __init__(self, message="Tac not found"):
         self.message = message
@@ -29,25 +29,36 @@ class TacNotFoundError(Exception):
 
 class TacEnum(Enum):
     """
-    #TODO add comment
+    Represents an enumeration of
+    Tac options.
     """
     UNKNOWN = 'Unknown'
     PRIMARY = 'Primary'
 
 class TacManager:
     """
-    #TODO add comment
+    The TacManager class is responsible for managing tacs in the system.
+    It provides methods for adding, updating, deleting, and retrieving tacs.
     """
     def __init__(self, session_context: SessionContext):
         """
-            #TODO add comment
+        Initializes a new instance of the TacManager class.
+        Args:
+            session_context (SessionContext): The session context object.
+                Must contain a valid session.
+        Raises:
+            ValueError: If the session is not provided.
         """
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
     def convert_uuid_to_model_uuid(self, value: uuid.UUID):
         """
-            #TODO add comment
+        Converts a UUID value to a model UUID.
+        Args:
+            value (uuid.UUID): The UUID value to convert.
+        Returns:
+            The converted UUID value.
         """
         # Conditionally set the UUID column type
         return value
@@ -58,7 +69,15 @@ class TacManager:
         return item
     async def initialize(self):
         """
-            #TODO add comment
+        Initializes the TacManager.
+        This method initializes the TacManager
+        by adding predefined filter items to the database.
+        If the filter items do not already exist in the database,
+        they are created and added.
+        Returns:
+            None
+        Raises:
+            None
         """
         logging.info("TacManager.Initialize start")
         pac_result = await self._session_context.session.execute(select(Pac))
@@ -91,9 +110,16 @@ class TacManager:
         enum_val: TacEnum
     ) -> Tac:
         """
-            #TODO add comment
+        Returns a Tac object
+        based on the provided enum value.
+        Args:
+            enum_val (TacEnum):
+                The enum value representing the filter.
+        Returns:
+            Tac:
+                The Tac object
+                matching the enum value.
         """
-        # return self.get(lookup_enum_name=enum_val.value)
         query_filter = (
             Tac._lookup_enum_name == enum_val.value)
         query_results = await self._run_query(query_filter)
@@ -101,13 +127,21 @@ class TacManager:
 
     async def build(self, **kwargs) -> Tac:
         """
-            #TODO add comment
+        Builds a new Tac object with the specified attributes.
+        Args:
+            **kwargs: The attributes of the tac.
+        Returns:
+            Tac: The newly created Tac object.
         """
         logging.info("TacManager.build")
         return Tac(**kwargs)
     async def add(self, tac: Tac) -> Tac:
         """
-            #TODO add comment
+        Adds a new tac to the system.
+        Args:
+            tac (Tac): The tac to add.
+        Returns:
+            Tac: The added tac.
         """
         logging.info("TacManager.add")
         tac.insert_user_id = self.convert_uuid_to_model_uuid(
@@ -119,7 +153,9 @@ class TacManager:
         return tac
     def _build_query(self):
         """
-            #TODO add comment
+        Builds the base query for retrieving tacs.
+        Returns:
+            The base query for retrieving tacs.
         """
         logging.info("TacManager._build_query")
         query = select(
@@ -136,7 +172,11 @@ class TacManager:
         return query
     async def _run_query(self, query_filter) -> List[Tac]:
         """
-            #TODO add comment
+        Runs the query to retrieve tacs from the database.
+        Args:
+            query_filter: The filter to apply to the query.
+        Returns:
+            List[Tac]: The list of tacs that match the query.
         """
         logging.info("TacManager._run_query")
         tac_query_all = self._build_query()
@@ -165,14 +205,14 @@ class TacManager:
         tac_list: List['Tac']
     ) -> Optional['Tac']:
         """
-        Return the first element of the list if it exists,
-        otherwise return None.
+        Returns the first element of the list if it exists,
+        otherwise returns None.
         Args:
-            tac_list (List[Tac]):
-                The list to retrieve the first element from.
+            tac_list (List[Tac]): The list to retrieve
+                the first element from.
         Returns:
-            Optional[Tac]: The first element
-                of the list if it exists, otherwise None.
+            Optional[Tac]: The first element of the list
+                if it exists, otherwise None.
         """
         return (
             tac_list[0]
@@ -181,7 +221,11 @@ class TacManager:
         )
     async def get_by_id(self, tac_id: int) -> Optional[Tac]:
         """
-            #TODO add comment
+        Retrieves a tac by its ID.
+        Args:
+            tac_id (int): The ID of the tac to retrieve.
+        Returns:
+            Optional[Tac]: The retrieved tac, or None if not found.
         """
         logging.info(
             "TacManager.get_by_id start tac_id: %s",
@@ -196,7 +240,11 @@ class TacManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
         """
-            #TODO add comment
+        Retrieves a tac by its code.
+        Args:
+            code (uuid.UUID): The code of the tac to retrieve.
+        Returns:
+            Optional[Tac]: The retrieved tac, or None if not found.
         """
         logging.info("TacManager.get_by_code %s", code)
         query_filter = Tac._code == str(code)  # pylint: disable=protected-access  # noqa: E501
@@ -204,7 +252,14 @@ class TacManager:
         return self._first_or_none(query_results)
     async def update(self, tac: Tac, **kwargs) -> Optional[Tac]:
         """
-            #TODO add comment
+        Updates a tac with the specified attributes.
+        Args:
+            tac (Tac): The tac to update.
+            **kwargs: The attributes to update.
+        Returns:
+            Optional[Tac]: The updated tac, or None if not found.
+        Raises:
+            ValueError: If an invalid property is provided.
         """
         logging.info("TacManager.update")
         property_list = Tac.property_list()
@@ -219,7 +274,13 @@ class TacManager:
         return tac
     async def delete(self, tac_id: int):
         """
-            #TODO add comment
+        Deletes a tac by its ID.
+        Args:
+            tac_id (int): The ID of the tac to delete.
+        Raises:
+            TypeError: If the tac_id is not an integer.
+            TacNotFoundError: If the tac with the
+                specified ID is not found.
         """
         logging.info("TacManager.delete %s", tac_id)
         if not isinstance(tac_id, int):
@@ -234,14 +295,20 @@ class TacManager:
         await self._session_context.session.flush()
     async def get_list(self) -> List[Tac]:
         """
-            #TODO add comment
+        Retrieves a list of all tacs.
+        Returns:
+            List[Tac]: The list of tacs.
         """
         logging.info("TacManager.get_list")
         query_results = await self._run_query(None)
         return query_results
     def to_json(self, tac: Tac) -> str:
         """
-        Serialize the Tac object to a JSON string using the TacSchema.
+        Serializes a Tac object to a JSON string.
+        Args:
+            tac (Tac): The tac to serialize.
+        Returns:
+            str: The JSON string representation of the tac.
         """
         logging.info("TacManager.to_json")
         schema = TacSchema()
@@ -249,7 +316,11 @@ class TacManager:
         return json.dumps(tac_data)
     def to_dict(self, tac: Tac) -> Dict[str, Any]:
         """
-        Serialize the Tac object to a JSON string using the TacSchema.
+        Serializes a Tac object to a dictionary.
+        Args:
+            tac (Tac): The tac to serialize.
+        Returns:
+            Dict[str, Any]: The dictionary representation of the tac.
         """
         logging.info("TacManager.to_dict")
         schema = TacSchema()
@@ -258,7 +329,7 @@ class TacManager:
         return tac_data
     def from_json(self, json_str: str) -> Tac:
         """
-        Deserializes a JSON string into a Tac object using the TacSchema.
+        Deserializes a JSON string into a Tac object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
@@ -274,8 +345,8 @@ class TacManager:
         """
         Creates a Tac instance from a dictionary of attributes.
         Args:
-            tac_dict (Dict[str, Any]): A dictionary containing
-                tac attributes.
+            tac_dict (Dict[str, Any]): A dictionary
+                containing tac attributes.
         Returns:
             Tac: A new Tac instance created from the given dictionary.
         """
@@ -288,11 +359,11 @@ class TacManager:
         return new_tac
     async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
         """
-        Adds multiple tacs at once.
+        Adds multiple tacs to the system.
         Args:
             tacs (List[Tac]): The list of tacs to add.
         Returns:
-            List[Tac]: The list of added tacs.
+            List[Tac]: The added tacs.
         """
         logging.info("TacManager.add_bulk")
         for tac in tacs:
@@ -314,7 +385,16 @@ class TacManager:
         tac_updates: List[Dict[str, Any]]
     ) -> List[Tac]:
         """
-        #TODO add comment
+        Update multiple tacs with the provided updates.
+        Args:
+            tac_updates (List[Dict[str, Any]]): A list of
+            dictionaries containing the updates for each tac.
+        Returns:
+            List[Tac]: A list of updated Tac objects.
+        Raises:
+            TypeError: If the tac_id is not an integer.
+            TacNotFoundError: If a tac with the
+                provided tac_id is not found.
         """
         logging.info("TacManager.update_bulk start")
         updated_tacs = []
@@ -406,7 +486,15 @@ class TacManager:
         return bool(tac)
     def is_equal(self, tac1: Tac, tac2: Tac) -> bool:
         """
-        #TODO add comment
+        Check if two Tac objects are equal.
+        Args:
+            tac1 (Tac): The first Tac object.
+            tac2 (Tac): The second Tac object.
+        Returns:
+            bool: True if the two Tac objects are equal, False otherwise.
+        Raises:
+            TypeError: If either tac1 or tac2
+                is not provided or is not an instance of Tac.
         """
         if not tac1:
             raise TypeError("Tac1 required.")
@@ -422,7 +510,12 @@ class TacManager:
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Tac]:  # PacID
         """
-        #TODO add comment
+        Retrieve a list of tacs by pac ID.
+        Args:
+            pac_id (int): The ID of the pac.
+        Returns:
+            List[Tac]: A list of tacs associated
+            with the specified pac ID.
         """
         logging.info("TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):

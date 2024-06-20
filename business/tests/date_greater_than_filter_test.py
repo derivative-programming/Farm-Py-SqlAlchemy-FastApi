@@ -1,7 +1,7 @@
 # business/tests/date_greater_than_filter_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the DateGreaterThanFilterBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestDateGreaterThanFilterBusObj:
     """
-        #TODO add comment
+    Unit tests for the DateGreaterThanFilterBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def date_greater_than_filter_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the DateGreaterThanFilterManager class.
         """
         session_context = SessionContext(dict(), session)
         return DateGreaterThanFilterManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def date_greater_than_filter_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the DateGreaterThanFilterBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return DateGreaterThanFilterBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_date_greater_than_filter(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the DateGreaterThanFilter class.
         """
         # Use the DateGreaterThanFilterFactory to create a new date_greater_than_filter instance
         # Assuming DateGreaterThanFilterFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestDateGreaterThanFilterBusObj:
         date_greater_than_filter_bus_obj: DateGreaterThanFilterBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new date_greater_than_filter.
         """
         # Test creating a new date_greater_than_filter
         assert date_greater_than_filter_bus_obj.date_greater_than_filter_id == 0
@@ -74,7 +74,7 @@ class TestDateGreaterThanFilterBusObj:
         new_date_greater_than_filter: DateGreaterThanFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a date_greater_than_filter object instance.
         """
         await date_greater_than_filter_bus_obj.load_from_obj_instance(new_date_greater_than_filter)
         assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
@@ -86,7 +86,7 @@ class TestDateGreaterThanFilterBusObj:
         new_date_greater_than_filter: DateGreaterThanFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a date_greater_than_filter ID.
         """
         new_date_greater_than_filter_date_greater_than_filter_id = new_date_greater_than_filter.date_greater_than_filter_id
         await date_greater_than_filter_bus_obj.load_from_id(new_date_greater_than_filter_date_greater_than_filter_id)
@@ -99,7 +99,7 @@ class TestDateGreaterThanFilterBusObj:
         new_date_greater_than_filter: DateGreaterThanFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a date_greater_than_filter code.
         """
         await date_greater_than_filter_bus_obj.load_from_code(new_date_greater_than_filter.code)
         assert date_greater_than_filter_manager.is_equal(date_greater_than_filter_bus_obj.date_greater_than_filter, new_date_greater_than_filter) is True
@@ -111,7 +111,7 @@ class TestDateGreaterThanFilterBusObj:
         new_date_greater_than_filter: DateGreaterThanFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a date_greater_than_filter JSON.
         """
         date_greater_than_filter_json = date_greater_than_filter_manager.to_json(new_date_greater_than_filter)
         await date_greater_than_filter_bus_obj.load_from_json(date_greater_than_filter_json)
@@ -124,7 +124,7 @@ class TestDateGreaterThanFilterBusObj:
         new_date_greater_than_filter: DateGreaterThanFilter
     ):
         """
-            #TODO add comment
+        Test case for loading data from a date_greater_than_filter dictionary.
         """
         logger.info("test_load_with_date_greater_than_filter_dict 1")
         date_greater_than_filter_dict = date_greater_than_filter_manager.to_dict(new_date_greater_than_filter)
@@ -139,7 +139,7 @@ class TestDateGreaterThanFilterBusObj:
         date_greater_than_filter_bus_obj: DateGreaterThanFilterBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent date_greater_than_filter.
         """
         # Test retrieving a nonexistent date_greater_than_filter raises an exception
         await date_greater_than_filter_bus_obj.load_from_id(-1)
@@ -153,7 +153,7 @@ class TestDateGreaterThanFilterBusObj:
         new_date_greater_than_filter: DateGreaterThanFilter
     ):
         """
-            #TODO add comment
+        Test case for updating a date_greater_than_filter's data.
         """
         # Test updating a date_greater_than_filter's data
         new_date_greater_than_filter_date_greater_than_filter_id_value = new_date_greater_than_filter.date_greater_than_filter_id
@@ -176,7 +176,7 @@ class TestDateGreaterThanFilterBusObj:
         new_date_greater_than_filter: DateGreaterThanFilter
     ):
         """
-            #TODO add comment
+        Test case for deleting a date_greater_than_filter.
         """
         assert new_date_greater_than_filter.date_greater_than_filter_id is not None
         assert date_greater_than_filter_bus_obj.date_greater_than_filter_id == 0

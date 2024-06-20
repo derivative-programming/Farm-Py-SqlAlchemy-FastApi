@@ -17,6 +17,7 @@ from managers.org_customer import OrgCustomerManager
 from .base_flow import BaseFlow
 class BaseFlowPacUserFlavorListInitReport(BaseFlow):
     """
+    Base class for PacUserFlavorListInitReport flow. Contains some validaiton and security check logic
     """
     def __init__(self, session_context: SessionContext):
         """

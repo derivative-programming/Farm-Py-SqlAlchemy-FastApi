@@ -1,7 +1,7 @@
 # business/tests/land_test.py
 # pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains unit tests for the LandBusObj class.
 """
 from decimal import Decimal
 import uuid
@@ -20,26 +20,26 @@ import current_runtime  # noqa: F401
 logger = get_logger(__name__)
 class TestLandBusObj:
     """
-        #TODO add comment
+    Unit tests for the LandBusObj class.
     """
     @pytest_asyncio.fixture(scope="function")
     async def land_manager(self, session: AsyncSession):
         """
-            #TODO add comment
+        Fixture that returns an instance of the LandManager class.
         """
         session_context = SessionContext(dict(), session)
         return LandManager(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def land_bus_obj(self, session):
         """
-            #TODO add comment
+        Fixture that returns an instance of the LandBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return LandBusObj(session_context)
     @pytest_asyncio.fixture(scope="function")
     async def new_land(self, session):
         """
-            #TODO add comment
+        Fixture that returns a new instance of the Land class.
         """
         # Use the LandFactory to create a new land instance
         # Assuming LandFactory.create() is an async function
@@ -50,7 +50,7 @@ class TestLandBusObj:
         land_bus_obj: LandBusObj
     ):
         """
-            #TODO add comment
+        Test case for creating a new land.
         """
         # Test creating a new land
         assert land_bus_obj.land_id == 0
@@ -73,7 +73,7 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-            #TODO add comment
+        Test case for loading data from a land object instance.
         """
         await land_bus_obj.load_from_obj_instance(new_land)
         assert land_manager.is_equal(land_bus_obj.land, new_land) is True
@@ -85,7 +85,7 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-            #TODO add comment
+        Test case for loading data from a land ID.
         """
         new_land_land_id = new_land.land_id
         await land_bus_obj.load_from_id(new_land_land_id)
@@ -98,7 +98,7 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-            #TODO add comment
+        Test case for loading data from a land code.
         """
         await land_bus_obj.load_from_code(new_land.code)
         assert land_manager.is_equal(land_bus_obj.land, new_land) is True
@@ -110,7 +110,7 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-            #TODO add comment
+        Test case for loading data from a land JSON.
         """
         land_json = land_manager.to_json(new_land)
         await land_bus_obj.load_from_json(land_json)
@@ -123,7 +123,7 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-            #TODO add comment
+        Test case for loading data from a land dictionary.
         """
         logger.info("test_load_with_land_dict 1")
         land_dict = land_manager.to_dict(new_land)
@@ -138,7 +138,7 @@ class TestLandBusObj:
         land_bus_obj: LandBusObj
     ):
         """
-            #TODO add comment
+        Test case for retrieving a nonexistent land.
         """
         # Test retrieving a nonexistent land raises an exception
         await land_bus_obj.load_from_id(-1)
@@ -152,7 +152,7 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-            #TODO add comment
+        Test case for updating a land's data.
         """
         # Test updating a land's data
         new_land_land_id_value = new_land.land_id
@@ -175,7 +175,7 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-            #TODO add comment
+        Test case for deleting a land.
         """
         assert new_land.land_id is not None
         assert land_bus_obj.land_id == 0

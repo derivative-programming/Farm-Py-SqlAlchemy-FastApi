@@ -6,7 +6,7 @@ The PlantUserDetailsRouter provides the following endpoints:
     - GET /api/v1_0/plant-user-details/{plant_code}/init:
         Get the initialization data for the Plant User Details page.
     - GET /api/v1_0/plant-user-details/{plant_code}:
-        Get the plant plant list report for a specific plant code.
+        Get the Plant User Details Report for a specific plant code.
     - GET /api/v1_0/plant-user-details/{plant_code}/to-csv:
         Retrieve the Plant User Details Report as a CSV file.
 """
@@ -134,7 +134,7 @@ class PlantUserDetailsRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the plant plant list report for a specific plant code.
+        Get the Plant User Details Report for a specific plant code.
         Args:
             plant_code (uuid.UUID): The unique identifier for the plant.
             request_model (api_models.PlantUserDetailsGetModelRequest):
@@ -143,7 +143,7 @@ class PlantUserDetailsRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.PlantUserDetailsGetModelResponse: The response
-                model containing the plant plant list report.
+                model containing the Plant User Details Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """
