@@ -570,30 +570,6 @@ class PlantManager:
             select(Plant))
         return len(list(result.scalars().all()))
 
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[Plant]:
-        """
-        Retrieve plants
-        sorted by a particular attribute.
-        """
-
-        if sort_by == "plant_id":
-            sort_by = "_plant_id"
-
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(Plant).order_by(
-                    getattr(Plant, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(Plant).order_by(
-                    getattr(Plant, sort_by).desc()))
-        return list(result.scalars().all())
-
     async def refresh(
         self,
         plant: Plant
