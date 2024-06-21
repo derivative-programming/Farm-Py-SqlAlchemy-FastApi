@@ -524,27 +524,6 @@ class TriStateFilterManager:
         result = await self._session_context.session.execute(
             select(TriStateFilter))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[TriStateFilter]:
-        """
-        Retrieve tri_state_filters
-        sorted by a particular attribute.
-        """
-        if sort_by == "tri_state_filter_id":
-            sort_by = "_tri_state_filter_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(TriStateFilter).order_by(
-                    getattr(TriStateFilter, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(TriStateFilter).order_by(
-                    getattr(TriStateFilter, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         tri_state_filter: TriStateFilter

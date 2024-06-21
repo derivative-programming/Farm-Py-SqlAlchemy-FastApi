@@ -513,27 +513,6 @@ class TacManager:
         result = await self._session_context.session.execute(
             select(Tac))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[Tac]:
-        """
-        Retrieve tacs
-        sorted by a particular attribute.
-        """
-        if sort_by == "tac_id":
-            sort_by = "_tac_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(Tac).order_by(
-                    getattr(Tac, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(Tac).order_by(
-                    getattr(Tac, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         tac: Tac

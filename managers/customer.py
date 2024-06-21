@@ -449,27 +449,6 @@ class CustomerManager:
         result = await self._session_context.session.execute(
             select(Customer))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[Customer]:
-        """
-        Retrieve customers
-        sorted by a particular attribute.
-        """
-        if sort_by == "customer_id":
-            sort_by = "_customer_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(Customer).order_by(
-                    getattr(Customer, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(Customer).order_by(
-                    getattr(Customer, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         customer: Customer

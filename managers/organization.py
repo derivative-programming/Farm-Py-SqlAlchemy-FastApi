@@ -449,27 +449,6 @@ class OrganizationManager:
         result = await self._session_context.session.execute(
             select(Organization))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[Organization]:
-        """
-        Retrieve organizations
-        sorted by a particular attribute.
-        """
-        if sort_by == "organization_id":
-            sort_by = "_organization_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(Organization).order_by(
-                    getattr(Organization, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(Organization).order_by(
-                    getattr(Organization, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         organization: Organization

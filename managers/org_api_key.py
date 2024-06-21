@@ -460,27 +460,6 @@ class OrgApiKeyManager:
         result = await self._session_context.session.execute(
             select(OrgApiKey))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[OrgApiKey]:
-        """
-        Retrieve org_api_keys
-        sorted by a particular attribute.
-        """
-        if sort_by == "org_api_key_id":
-            sort_by = "_org_api_key_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(OrgApiKey).order_by(
-                    getattr(OrgApiKey, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(OrgApiKey).order_by(
-                    getattr(OrgApiKey, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         org_api_key: OrgApiKey

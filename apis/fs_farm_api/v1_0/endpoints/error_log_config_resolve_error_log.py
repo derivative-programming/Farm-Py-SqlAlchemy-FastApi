@@ -77,7 +77,8 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
         - response: JSON response with the result of the operation.
         """
         logging.info(
-            "ErrorLogConfigResolveErrorLogRouter.request_post_with_id start. errorLogCode: %s",
+            "ErrorLogConfigResolveErrorLogRouter."
+            "request_post_with_id start. errorLogCode: %s",
             error_log_code
         )
         auth_dict = BaseRouter.implementation_check(

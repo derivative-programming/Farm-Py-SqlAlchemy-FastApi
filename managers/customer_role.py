@@ -460,27 +460,6 @@ class CustomerRoleManager:
         result = await self._session_context.session.execute(
             select(CustomerRole))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[CustomerRole]:
-        """
-        Retrieve customer_roles
-        sorted by a particular attribute.
-        """
-        if sort_by == "customer_role_id":
-            sort_by = "_customer_role_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(CustomerRole).order_by(
-                    getattr(CustomerRole, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(CustomerRole).order_by(
-                    getattr(CustomerRole, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         customer_role: CustomerRole

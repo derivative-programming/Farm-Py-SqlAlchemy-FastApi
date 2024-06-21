@@ -77,7 +77,8 @@ class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
         - response: JSON response with the result of the operation.
         """
         logging.info(
-            "LandUserPlantMultiSelectToEditableRouter.request_post_with_id start. landCode: %s",
+            "LandUserPlantMultiSelectToEditableRouter."
+            "request_post_with_id start. landCode: %s",
             land_code
         )
         auth_dict = BaseRouter.implementation_check(

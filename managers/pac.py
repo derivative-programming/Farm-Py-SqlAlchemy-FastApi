@@ -496,27 +496,6 @@ class PacManager:
         result = await self._session_context.session.execute(
             select(Pac))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[Pac]:
-        """
-        Retrieve pacs
-        sorted by a particular attribute.
-        """
-        if sort_by == "pac_id":
-            sort_by = "_pac_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(Pac).order_by(
-                    getattr(Pac, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(Pac).order_by(
-                    getattr(Pac, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         pac: Pac

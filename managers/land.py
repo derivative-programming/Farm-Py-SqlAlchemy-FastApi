@@ -513,27 +513,6 @@ class LandManager:
         result = await self._session_context.session.execute(
             select(Land))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[Land]:
-        """
-        Retrieve lands
-        sorted by a particular attribute.
-        """
-        if sort_by == "land_id":
-            sort_by = "_land_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(Land).order_by(
-                    getattr(Land, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(Land).order_by(
-                    getattr(Land, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         land: Land

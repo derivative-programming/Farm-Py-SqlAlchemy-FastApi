@@ -155,7 +155,8 @@ class CustomerUserLogOutRouter(BaseRouter):
         - response: JSON response with the result of the operation.
         """
         logging.info(
-            "CustomerUserLogOutRouter.request_post_with_id start. customerCode: %s",
+            "CustomerUserLogOutRouter."
+            "request_post_with_id start. customerCode: %s",
             customer_code
         )
         auth_dict = BaseRouter.implementation_check(

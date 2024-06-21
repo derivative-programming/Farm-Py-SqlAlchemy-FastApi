@@ -155,7 +155,8 @@ class TacLoginRouter(BaseRouter):
         - response: JSON response with the result of the operation.
         """
         logging.info(
-            "TacLoginRouter.request_post_with_id start. tacCode: %s",
+            "TacLoginRouter."
+            "request_post_with_id start. tacCode: %s",
             tac_code
         )
         auth_dict = BaseRouter.implementation_check(

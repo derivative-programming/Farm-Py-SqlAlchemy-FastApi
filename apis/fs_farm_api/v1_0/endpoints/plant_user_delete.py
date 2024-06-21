@@ -77,7 +77,8 @@ class PlantUserDeleteRouter(BaseRouter):
         - response: JSON response with the result of the operation.
         """
         logging.info(
-            "PlantUserDeleteRouter.request_post_with_id start. plantCode: %s",
+            "PlantUserDeleteRouter."
+            "request_post_with_id start. plantCode: %s",
             plant_code
         )
         auth_dict = BaseRouter.implementation_check(

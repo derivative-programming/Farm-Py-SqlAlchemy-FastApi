@@ -449,27 +449,6 @@ class ErrorLogManager:
         result = await self._session_context.session.execute(
             select(ErrorLog))
         return len(list(result.scalars().all()))
-    #TODO fix. needs to populate peek props. use getall and sort List
-    async def get_sorted_list(
-        self,
-        sort_by: str,
-        order: Optional[str] = "asc"
-    ) -> List[ErrorLog]:
-        """
-        Retrieve error_logs
-        sorted by a particular attribute.
-        """
-        if sort_by == "error_log_id":
-            sort_by = "_error_log_id"
-        if order == "asc":
-            result = await self._session_context.session.execute(
-                select(ErrorLog).order_by(
-                    getattr(ErrorLog, sort_by).asc()))
-        else:
-            result = await self._session_context.session.execute(
-                select(ErrorLog).order_by(
-                    getattr(ErrorLog, sort_by).desc()))
-        return list(result.scalars().all())
     async def refresh(
         self,
         error_log: ErrorLog
