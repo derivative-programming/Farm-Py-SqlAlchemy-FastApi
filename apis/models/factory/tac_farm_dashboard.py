@@ -30,8 +30,9 @@ class TacFarmDashboardGetModelRequestFactory(
     def _build(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> TacFarmDashboardGetModelRequest:
         """
         Build a TacFarmDashboardGetModelRequest instance.
@@ -59,8 +60,9 @@ class TacFarmDashboardGetModelRequestFactory(
     def _create(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> TacFarmDashboardGetModelRequest:
         """
         Create a TacFarmDashboardGetModelRequest instance.

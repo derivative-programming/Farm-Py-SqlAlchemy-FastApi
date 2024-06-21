@@ -41,7 +41,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> DateGreaterThanFilter:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> DateGreaterThanFilter:
         """
             Builds and returns an instance
             of the DateGreaterThanFilter model.
@@ -76,7 +76,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> DateGreaterThanFilter:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> DateGreaterThanFilter:
         """
         Create a new DateGreaterThanFilter object
         and save it to the database.
@@ -90,6 +90,10 @@ class DateGreaterThanFilterFactory(factory.Factory):
                 DateGreaterThanFilter object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         pac_id_pac_instance = (  # PacID
             PacFactory.create(session=session))
 # endset

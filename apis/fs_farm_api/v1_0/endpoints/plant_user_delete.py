@@ -31,6 +31,7 @@ from .base_router import BaseRouter
 PLANT_CODE = "Plant Code"
 TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+API_LOG_ERROR_FORMAT = "response.message: %s"
 class PlantUserDeleteRouterConfig():
     """
     Configuration class for the PlantUserDeleteRouter.
@@ -107,7 +108,7 @@ class PlantUserDeleteRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__)
                 )
                 response.message = f"{te} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
@@ -115,7 +116,7 @@ class PlantUserDeleteRouter(BaseRouter):
                     traceback.format_tb(e.__traceback__)
                 )
                 response.message = f"{e} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             finally:
                 if response.success is True:
                     await session.commit()

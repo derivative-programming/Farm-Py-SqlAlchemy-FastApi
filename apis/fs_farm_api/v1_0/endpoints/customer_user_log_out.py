@@ -31,6 +31,7 @@ from .base_router import BaseRouter
 CUSTOMER_CODE = "Customer Code"
 TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+API_LOG_ERROR_FORMAT = "response.message: %s"
 class CustomerUserLogOutRouterConfig():
     """
     Configuration class for the CustomerUserLogOutRouter.
@@ -185,7 +186,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__)
                 )
                 response.message = f"{te} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
@@ -193,7 +194,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     traceback.format_tb(e.__traceback__)
                 )
                 response.message = f"{e} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             finally:
                 if response.success is True:
                     await session.commit()

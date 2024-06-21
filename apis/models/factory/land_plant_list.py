@@ -70,8 +70,9 @@ class LandPlantListGetModelRequestFactory(
     def _build(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> LandPlantListGetModelRequest:
         """
         Build a LandPlantListGetModelRequest instance.
@@ -109,8 +110,9 @@ class LandPlantListGetModelRequestFactory(
     def _create(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> LandPlantListGetModelRequest:
         """
         Create a LandPlantListGetModelRequest instance.

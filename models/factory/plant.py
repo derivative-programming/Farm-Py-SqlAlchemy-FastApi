@@ -78,7 +78,7 @@ class PlantFactory(factory.Factory):
 # endset
 
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Plant:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> Plant:
         """
             Builds and returns an instance
             of the Plant model.
@@ -136,7 +136,7 @@ class PlantFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Plant:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> Plant:
         """
         Create a new Plant object
         and save it to the database.
@@ -154,6 +154,12 @@ class PlantFactory(factory.Factory):
         """
 
         logger.info("factory create")
+
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
+
         land_id_land_instance = (  # LandID
             LandFactory.create(session=session))
 

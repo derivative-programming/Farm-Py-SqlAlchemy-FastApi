@@ -31,6 +31,7 @@ from .base_router import BaseRouter
 ERROR_LOG_CODE = "Error Log Code"
 TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+API_LOG_ERROR_FORMAT = "response.message: %s"
 class ErrorLogConfigResolveErrorLogRouterConfig():
     """
     Configuration class for the ErrorLogConfigResolveErrorLogRouter.
@@ -107,7 +108,7 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__)
                 )
                 response.message = f"{te} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
@@ -115,7 +116,7 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
                     traceback.format_tb(e.__traceback__)
                 )
                 response.message = f"{e} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             finally:
                 if response.success is True:
                     await session.commit()

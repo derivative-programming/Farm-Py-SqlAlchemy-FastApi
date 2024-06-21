@@ -40,7 +40,7 @@ class LandFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Land:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> Land:
         """
             Builds and returns an instance
             of the Land model.
@@ -75,7 +75,7 @@ class LandFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Land:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> Land:
         """
         Create a new Land object
         and save it to the database.
@@ -89,6 +89,10 @@ class LandFactory(factory.Factory):
                 Land object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         pac_id_pac_instance = (  # PacID
             PacFactory.create(session=session))
 # endset

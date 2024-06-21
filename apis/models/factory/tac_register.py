@@ -42,7 +42,7 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
 # endset
     @classmethod
     def _build(
-        cls, model_class, session=None, *args, **kwargs
+        cls, model_class, *args, session=None, **kwargs
     ) -> TacRegisterPostModelRequest:
         """
         Build method for the factory. If a session is provided,
@@ -69,7 +69,7 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
         return obj
     @classmethod
     def _create(
-        cls, model_class, session=None, *args, **kwargs
+        cls, model_class, *args, session=None, **kwargs
     ) -> TacRegisterPostModelRequest:
         """
         Create method for the factory. Uses the session to

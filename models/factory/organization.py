@@ -36,7 +36,7 @@ class OrganizationFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Organization:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> Organization:
         """
             Builds and returns an instance
             of the Organization model.
@@ -71,7 +71,7 @@ class OrganizationFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Organization:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> Organization:
         """
         Create a new Organization object
         and save it to the database.
@@ -85,6 +85,10 @@ class OrganizationFactory(factory.Factory):
                 Organization object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         tac_id_tac_instance = (  # TacID
             TacFactory.create(session=session))
 # endset

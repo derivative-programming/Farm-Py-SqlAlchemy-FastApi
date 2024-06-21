@@ -57,7 +57,7 @@ class CustomerFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Customer:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> Customer:
         """
             Builds and returns an instance
             of the Customer model.
@@ -92,7 +92,7 @@ class CustomerFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Customer:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> Customer:
         """
         Create a new Customer object
         and save it to the database.
@@ -106,6 +106,10 @@ class CustomerFactory(factory.Factory):
                 Customer object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         tac_id_tac_instance = (  # TacID
             TacFactory.create(session=session))
 # endset

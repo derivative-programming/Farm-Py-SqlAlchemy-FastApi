@@ -4,20 +4,20 @@
 This module contains unit tests for the asynchronous
 operations of the OrganizationFactory class.
 """
-import uuid
 import asyncio
-import time
 import math
+import time
+import uuid
+from datetime import date, datetime, timedelta
 from decimal import Decimal
-from datetime import datetime, date, timedelta
-from typing import AsyncGenerator
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from typing import AsyncGenerator, Generator
 import pytest
 import pytest_asyncio
+from sqlalchemy import event
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.future import select
+from sqlalchemy.orm import sessionmaker
 from models import Base, Organization
 from models.factory import OrganizationFactory
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -27,7 +27,7 @@ class TestOrganizationFactoryAsync:
     operations of the OrganizationFactory class.
     """
     @pytest.fixture(scope="function")
-    def event_loop(self) -> asyncio.AbstractEventLoop:
+    def event_loop(self) -> Generator[asyncio.AbstractEventLoop, None, None]:
         """
         Fixture that returns an asyncio event loop for the test functions.
         """

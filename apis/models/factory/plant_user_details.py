@@ -30,8 +30,9 @@ class PlantUserDetailsGetModelRequestFactory(
     def _build(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PlantUserDetailsGetModelRequest:
         """
         Build a PlantUserDetailsGetModelRequest instance.
@@ -59,8 +60,9 @@ class PlantUserDetailsGetModelRequestFactory(
     def _create(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PlantUserDetailsGetModelRequest:
         """
         Create a PlantUserDetailsGetModelRequest instance.

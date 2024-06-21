@@ -41,7 +41,7 @@ class TriStateFilterFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> TriStateFilter:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> TriStateFilter:
         """
             Builds and returns an instance
             of the TriStateFilter model.
@@ -76,7 +76,7 @@ class TriStateFilterFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> TriStateFilter:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> TriStateFilter:
         """
         Create a new TriStateFilter object
         and save it to the database.
@@ -90,6 +90,10 @@ class TriStateFilterFactory(factory.Factory):
                 TriStateFilter object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         pac_id_pac_instance = (  # PacID
             PacFactory.create(session=session))
 # endset

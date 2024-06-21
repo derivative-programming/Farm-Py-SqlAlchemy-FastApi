@@ -47,7 +47,7 @@ class OrgApiKeyFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> OrgApiKey:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> OrgApiKey:
         """
             Builds and returns an instance
             of the OrgApiKey model.
@@ -92,7 +92,7 @@ class OrgApiKeyFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> OrgApiKey:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> OrgApiKey:
         """
         Create a new OrgApiKey object
         and save it to the database.
@@ -106,6 +106,10 @@ class OrgApiKeyFactory(factory.Factory):
                 OrgApiKey object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         organization_id_organization_instance = (  # OrganizationID
             OrganizationFactory.create(session=session))
         org_customer_id_org_customer_instance = (  # OrgCustomerID

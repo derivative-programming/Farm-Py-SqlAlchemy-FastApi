@@ -31,9 +31,7 @@ class EncryptedType(TypeDecorator):
         Returns:
             The encrypted value.
         """
-        if value is not None:
-            value = encrypt_message(value)
-        return value
+        return encrypt_message(value) if value is not None else None
 
     def process_result_value(self, value, dialect):
         """
@@ -46,6 +44,28 @@ class EncryptedType(TypeDecorator):
         Returns:
             The decrypted value.
         """
-        if value is not None:
-            value = decrypt_message(value)
+        return decrypt_message(value) if value is not None else None
+
+    def process_literal_param(self, value, dialect):
+        """
+        Processes a literal parameter value.
+
+        Args:
+            value: The literal parameter value.
+            dialect: The SQLAlchemy dialect.
+
+        Returns:
+            The processed value.
+        """
+        # Implement as needed or remove if not required
         return value
+
+    @property
+    def python_type(self):
+        """
+        Returns the Python type for this type decorator.
+
+        Returns:
+            The Python type.
+        """
+        return bytes

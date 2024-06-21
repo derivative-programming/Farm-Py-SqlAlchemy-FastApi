@@ -40,7 +40,7 @@ class TacFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Tac:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> Tac:
         """
             Builds and returns an instance
             of the Tac model.
@@ -75,7 +75,7 @@ class TacFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Tac:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> Tac:
         """
         Create a new Tac object
         and save it to the database.
@@ -89,6 +89,10 @@ class TacFactory(factory.Factory):
                 Tac object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         pac_id_pac_instance = (  # PacID
             PacFactory.create(session=session))
 # endset

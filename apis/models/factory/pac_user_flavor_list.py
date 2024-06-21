@@ -30,8 +30,9 @@ class PacUserFlavorListGetModelRequestFactory(
     def _build(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PacUserFlavorListGetModelRequest:
         """
         Build a PacUserFlavorListGetModelRequest instance.
@@ -59,8 +60,9 @@ class PacUserFlavorListGetModelRequestFactory(
     def _create(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PacUserFlavorListGetModelRequest:
         """
         Create a PacUserFlavorListGetModelRequest instance.

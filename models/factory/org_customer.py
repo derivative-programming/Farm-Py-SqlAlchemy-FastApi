@@ -41,7 +41,7 @@ class OrgCustomerFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> OrgCustomer:
         """
             Builds and returns an instance
             of the OrgCustomer model.
@@ -86,7 +86,7 @@ class OrgCustomerFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> OrgCustomer:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> OrgCustomer:
         """
         Create a new OrgCustomer object
         and save it to the database.
@@ -100,6 +100,10 @@ class OrgCustomerFactory(factory.Factory):
                 OrgCustomer object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         customer_id_customer_instance = (  # CustomerID
             CustomerFactory.create(session=session))
         organization_id_organization_instance = (  # OrganizationID

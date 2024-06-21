@@ -71,7 +71,7 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
 
     @classmethod
     def _build(
-        cls, model_class, session=None, *args, **kwargs
+        cls, model_class, *args, session=None, **kwargs
     ) -> LandAddPlantPostModelRequest:
         """
         Build method for the factory. If a session is provided,
@@ -111,7 +111,7 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
 
     @classmethod
     def _create(
-        cls, model_class, session=None, *args, **kwargs
+        cls, model_class, *args, session=None, **kwargs
     ) -> LandAddPlantPostModelRequest:
         """
         Create method for the factory. Uses the session to

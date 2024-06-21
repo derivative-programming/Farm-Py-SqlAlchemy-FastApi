@@ -30,8 +30,9 @@ class PacUserLandListGetModelRequestFactory(
     def _build(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PacUserLandListGetModelRequest:
         """
         Build a PacUserLandListGetModelRequest instance.
@@ -59,8 +60,9 @@ class PacUserLandListGetModelRequestFactory(
     def _create(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PacUserLandListGetModelRequest:
         """
         Create a PacUserLandListGetModelRequest instance.

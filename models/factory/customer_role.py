@@ -42,7 +42,7 @@ class CustomerRoleFactory(factory.Factory):
     )
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> CustomerRole:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> CustomerRole:
         """
             Builds and returns an instance
             of the CustomerRole model.
@@ -87,7 +87,7 @@ class CustomerRoleFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> CustomerRole:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> CustomerRole:
         """
         Create a new CustomerRole object
         and save it to the database.
@@ -101,6 +101,10 @@ class CustomerRoleFactory(factory.Factory):
                 CustomerRole object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
         customer_id_customer_instance = (  # CustomerID
             CustomerFactory.create(session=session))
         role_id_role_instance = (  # RoleID

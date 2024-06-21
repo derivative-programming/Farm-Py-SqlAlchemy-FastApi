@@ -31,6 +31,7 @@ from .base_router import BaseRouter
 PLANT_CODE = "Plant Code"
 TRACEBACK = " traceback:"
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+API_LOG_ERROR_FORMAT = "response.message: %s"
 class PlantUserDetailsRouterConfig():
     """
     Configuration class for the PlantUserDetailsRouter.

@@ -37,7 +37,7 @@ class PacFactory(factory.Factory):
 
 # endset
     @classmethod
-    def _build(cls, model_class, session=None, *args, **kwargs) -> Pac:
+    def _build(cls, model_class, *args, session=None, **kwargs) -> Pac:
         """
             Builds and returns an instance
             of the Pac model.
@@ -69,7 +69,7 @@ class PacFactory(factory.Factory):
         # session.commit()
         return obj
     @classmethod
-    def _create(cls, model_class, session, *args, **kwargs) -> Pac:
+    def _create(cls, model_class, *args, session=None, **kwargs) -> Pac:
         """
         Create a new Pac object
         and save it to the database.
@@ -83,6 +83,10 @@ class PacFactory(factory.Factory):
                 Pac object.
         """
         logger.info("factory create")
+        if not session:
+            raise AttributeError(
+                "Session not available"
+            )
 
 # endset
 

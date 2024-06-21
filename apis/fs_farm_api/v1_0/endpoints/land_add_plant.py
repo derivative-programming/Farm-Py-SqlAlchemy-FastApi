@@ -20,6 +20,8 @@ from helpers import SessionContext, api_key_header
 
 from .base_router import BaseRouter
 
+API_LOG_ERROR_FORMAT = "response.message: %s"
+
 
 class LandAddPlantRouterConfig():
     """
@@ -103,7 +105,7 @@ class LandAddPlantRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
                 response.message = f"{te} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
@@ -111,7 +113,7 @@ class LandAddPlantRouter(BaseRouter):
                     traceback.format_tb(e.__traceback__)
                 )
                 response.message = f"{e} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             finally:
                 if response.success is True:
                     await session.commit()
@@ -150,7 +152,8 @@ class LandAddPlantRouter(BaseRouter):
         - response: JSON response with the result of the operation.
         """
         logging.info(
-            "LandAddPlantRouter.request_post_with_id start. landCode: %s",
+            "LandAddPlantRouter."
+            "request_post_with_id start. landCode: %s",
             land_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -185,7 +188,7 @@ class LandAddPlantRouter(BaseRouter):
                     traceback.format_tb(te.__traceback__)
                 )
                 response.message = f"{te} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
@@ -193,7 +196,7 @@ class LandAddPlantRouter(BaseRouter):
                     traceback.format_tb(e.__traceback__)
                 )
                 response.message = f"{e} traceback: {traceback_string}"
-                logging.info("response.message: %s", response.message)
+                logging.info(API_LOG_ERROR_FORMAT, response.message)
             finally:
                 if response.success is True:
                     await session.commit()

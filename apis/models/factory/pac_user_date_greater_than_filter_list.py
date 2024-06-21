@@ -30,8 +30,9 @@ class PacUserDateGreaterThanFilterListGetModelRequestFactory(
     def _build(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PacUserDateGreaterThanFilterListGetModelRequest:
         """
         Build a PacUserDateGreaterThanFilterListGetModelRequest instance.
@@ -59,8 +60,9 @@ class PacUserDateGreaterThanFilterListGetModelRequestFactory(
     def _create(
         cls,
         model_class,
+        *args,
         session=None,
-        *args, **kwargs
+        **kwargs
     ) -> PacUserDateGreaterThanFilterListGetModelRequest:
         """
         Create a PacUserDateGreaterThanFilterListGetModelRequest instance.
