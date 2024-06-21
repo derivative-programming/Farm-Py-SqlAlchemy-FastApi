@@ -1,14 +1,13 @@
 # business/plant_base.py
 
 """
-This module contains the PlantBusObj class,
-which represents the business object for a Plant.
+This module contains the PlantBaseBusObj class,
+which represents the base business object for a Plant.
 """
 
 from decimal import Decimal
 import random
 import uuid
-from typing import List
 from datetime import datetime, date
 from helpers.session_context import SessionContext
 from managers import PlantManager
@@ -16,7 +15,6 @@ from models import Plant
 import models
 import managers as managers_and_enums
 from .base_bus_obj import BaseBusObj
-##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "Plant object is not initialized")
@@ -277,7 +275,7 @@ class PlantBaseBusObj(BaseBusObj):
             raise ValueError("is_delete_allowed must be a boolean.")
 
         self.plant.is_delete_allowed = value
- 
+
     # isEditAllowed
     @property
     def is_edit_allowed(self):
@@ -316,7 +314,7 @@ class PlantBaseBusObj(BaseBusObj):
 
         assert isinstance(value, bool), "is_edit_allowed must be a boolean"
         self.plant.is_edit_allowed = value
- 
+
     # otherFlavor
     @property
     def other_flavor(self):
@@ -358,7 +356,7 @@ class PlantBaseBusObj(BaseBusObj):
 
         assert isinstance(value, str), "other_flavor must be a string"
         self.plant.other_flavor = value
- 
+
     # someBigIntVal
     @property
     def some_big_int_val(self):
@@ -397,7 +395,7 @@ class PlantBaseBusObj(BaseBusObj):
 
         assert isinstance(value, int), "some_big_int_val must be an integer"
         self.plant.some_big_int_val = value
- 
+
     # someBitVal
     @property
     def some_bit_val(self):
@@ -1796,37 +1794,3 @@ class PlantBaseBusObj(BaseBusObj):
     # someUniqueidentifierVal,
     # someVarCharVal,
 # endset
-
-    @staticmethod
-    async def to_bus_obj_list(
-        session_context: SessionContext,
-        obj_list: List[Plant]
-    ):
-        """
-        Convert a list of Plant
-        objects to a list of
-        PlantBusObj objects.
-
-        Args:
-            session_context (SessionContext): The session context.
-            obj_list (List[Plant]): The
-                list of Plant objects to convert.
-
-        Returns:
-            List[PlantBusObj]: The
-                list of converted PlantBusObj
-                objects.
-        """
-        result = list()
-
-        for plant in obj_list:
-            plant_bus_obj = PlantBusObj(session_context)
-
-            await plant_bus_obj.load_from_obj_instance(
-                plant)
-
-            result.append(plant_bus_obj)
-
-        return result
-
-    ##GENINCLUDEFILE[GENVALPascalName.bottom.include.*]

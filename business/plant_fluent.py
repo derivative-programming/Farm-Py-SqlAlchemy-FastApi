@@ -1,8 +1,8 @@
 # business/plant_fluent.py
 
 """
-This module contains the PlantBusObj class,
-which represents the business object for a Plant.
+This module contains the PlantFluentBusObj class,
+which adds fluent properties to the business object for a Plant.
 """
 
 from decimal import Decimal
