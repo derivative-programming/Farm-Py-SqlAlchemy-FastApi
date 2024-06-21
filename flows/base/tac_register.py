@@ -1,7 +1,8 @@
 # flows/base/tac_register.py
 """
 This module contains the implementation
-of the BaseFlow Tac Register class
+of the BaseFlow
+Tac Register class
 """
 import uuid
 from datetime import date, datetime

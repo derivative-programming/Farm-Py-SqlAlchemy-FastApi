@@ -48,35 +48,40 @@ class TestOrgApiKeyFactory:
         """
         Test case for creating a org_api_key.
         """
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         assert org_api_key.org_api_key_id is not None
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         assert isinstance(org_api_key.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        org_api_key: OrgApiKey = OrgApiKeyFactory.build(session=session)
+        org_api_key: OrgApiKey = OrgApiKeyFactory.build(
+            session=session)
         assert org_api_key.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        org_api_key: OrgApiKey = OrgApiKeyFactory.create(session=session)
+        org_api_key: OrgApiKey = OrgApiKeyFactory.create(
+            session=session)
         assert org_api_key.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         initial_code = org_api_key.last_change_code
         org_api_key.code = uuid.uuid4()
         session.commit()
@@ -86,17 +91,21 @@ class TestOrgApiKeyFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        org_api_key = OrgApiKeyFactory.build(session=session)
+        org_api_key = OrgApiKeyFactory.build(
+            session=session)
         assert org_api_key.insert_utc_date_time is not None
-        assert isinstance(org_api_key.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        org_api_key = OrgApiKeyFactory.build(session=session)
+        org_api_key = OrgApiKeyFactory.build(
+            session=session)
         assert org_api_key.insert_utc_date_time is not None
-        assert isinstance(org_api_key.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_api_key.code = uuid.uuid4()
         session.add(org_api_key)
@@ -107,9 +116,11 @@ class TestOrgApiKeyFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        org_api_key = OrgApiKeyFactory(session=session)
+        org_api_key = OrgApiKeyFactory(
+            session=session)
         assert org_api_key.insert_utc_date_time is not None
-        assert isinstance(org_api_key.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.insert_utc_date_time, datetime)
         initial_time = org_api_key.insert_utc_date_time
         org_api_key.code = uuid.uuid4()
         time.sleep(1)
@@ -120,17 +131,21 @@ class TestOrgApiKeyFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        org_api_key = OrgApiKeyFactory.build(session=session)
+        org_api_key = OrgApiKeyFactory.build(
+            session=session)
         assert org_api_key.last_update_utc_date_time is not None
-        assert isinstance(org_api_key.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        org_api_key = OrgApiKeyFactory.build(session=session)
+        org_api_key = OrgApiKeyFactory.build(
+            session=session)
         assert org_api_key.last_update_utc_date_time is not None
-        assert isinstance(org_api_key.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_api_key.code = uuid.uuid4()
         session.add(org_api_key)
@@ -141,9 +156,11 @@ class TestOrgApiKeyFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        org_api_key = OrgApiKeyFactory(session=session)
+        org_api_key = OrgApiKeyFactory(
+            session=session)
         assert org_api_key.last_update_utc_date_time is not None
-        assert isinstance(org_api_key.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.last_update_utc_date_time, datetime)
         initial_time = org_api_key.last_update_utc_date_time
         org_api_key.code = uuid.uuid4()
         time.sleep(1)
@@ -151,9 +168,11 @@ class TestOrgApiKeyFactory:
         assert org_api_key.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        Test case for deleting a org_api_key model.
+        Test case for deleting a
+        org_api_key model.
         """
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         session.delete(org_api_key)
         session.commit()
         deleted_org_api_key = session.query(OrgApiKey).filter_by(
@@ -161,9 +180,11 @@ class TestOrgApiKeyFactory:
         assert deleted_org_api_key is None
     def test_data_types(self, session):
         """
-        Test case for checking the data types of the org_api_key attributes.
+        Test case for checking the data types of
+        the org_api_key attributes.
         """
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         assert isinstance(org_api_key.org_api_key_id, int)
         assert isinstance(org_api_key.code, uuid.UUID)
         assert isinstance(org_api_key.last_change_code, int)
@@ -210,7 +231,8 @@ class TestOrgApiKeyFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        Test case for checking the default values of the org_api_key fields.
+        Test case for checking the default values of
+        the org_api_key fields.
         """
         org_api_key = OrgApiKey()
         assert org_api_key.code is not None
@@ -248,12 +270,14 @@ class TestOrgApiKeyFactory:
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
-        last_change_code in the OrgApiKey model.
+        last_change_code in the OrgApiKey
+        model.
         This test case checks if the last_change_code
-        of a OrgApiKey object is updated correctly
+        of a OrgApiKey object is
+        updated correctly
         when multiple changes are made concurrently.
-        It creates a OrgApiKey object, retrieves it
-        from the database, and updates its code
+        It creates a OrgApiKey object,
+        retrieves it from the database, and updates its code
         attribute twice in separate transactions.
         Finally, it asserts that the last_change_code
         of the second retrieved OrgApiKey object
@@ -263,7 +287,8 @@ class TestOrgApiKeyFactory:
         Returns:
             None
         """
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         original_last_change_code = org_api_key.last_change_code
         org_api_key_1 = session.query(OrgApiKey).filter_by(
             _org_api_key_id=org_api_key.org_api_key_id).first()
@@ -298,7 +323,8 @@ class TestOrgApiKeyFactory:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
         """
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         org_api_key.organization_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
@@ -319,7 +345,8 @@ class TestOrgApiKeyFactory:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
         """
-        org_api_key = OrgApiKeyFactory.create(session=session)
+        org_api_key = OrgApiKeyFactory.create(
+            session=session)
         org_api_key.org_customer_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()

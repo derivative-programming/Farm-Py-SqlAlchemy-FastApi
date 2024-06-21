@@ -1,7 +1,8 @@
 # flows/base/customer_user_log_out.py
 """
 This module contains the implementation
-of the BaseFlow Customer User Log Out class
+of the BaseFlow
+Customer User Log Out class
 """
 import uuid
 from datetime import date, datetime

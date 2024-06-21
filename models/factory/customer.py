@@ -1,7 +1,9 @@
 # models/factory/customer.py
 """
-This module contains the CustomerFactory class, which is responsible
-for creating instances of the Customer model using the Factory pattern.
+This module contains the CustomerFactory
+class, which is responsible
+for creating instances of the Customer
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -13,7 +15,8 @@ from .tac import TacFactory  # tac_id
 logger = get_logger(__name__)
 class CustomerFactory(factory.Factory):
     """
-    Factory class for creating instances of the Customer model.
+    Factory class for creating instances of
+    the Customer model.
     """
     class Meta:
         """
@@ -56,7 +59,8 @@ class CustomerFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Customer:
         """
-            Builds and returns an instance of the Customer model.
+            Builds and returns an instance
+            of the Customer model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -64,7 +68,8 @@ class CustomerFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                Customer: An instance of the Customer model.
+                Customer: An instance of the
+                    Customer model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -89,14 +94,16 @@ class CustomerFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> Customer:
         """
-        Create a new Customer object and save it to the database.
+        Create a new Customer object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            Customer: The created Customer object.
+            Customer: The created
+                Customer object.
         """
         logger.info("factory create")
         tac_id_tac_instance = (  # TacID
@@ -119,7 +126,8 @@ class CustomerFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Customer:
         """
-        Create a new Customer object asynchronously.
+        Create a new Customer object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -147,7 +155,8 @@ class CustomerFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Customer:
         """
-        Build a new Customer object asynchronously.
+        Build a new Customer object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.

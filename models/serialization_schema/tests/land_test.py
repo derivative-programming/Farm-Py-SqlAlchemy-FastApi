@@ -1,20 +1,34 @@
 # land_test.py
 # pylint: disable=redefined-outer-name
 """
-This module contains tests for the Land serialization schema.
-The Land serialization schema is responsible for serializing and deserializing
-Land instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
-The tests in this module cover the serialization and deserialization of Land
-instances using the LandSchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+This module contains tests for the
+Land serialization schema.
+The Land serialization schema
+is responsible for serializing and deserializing
+Land instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
+The tests in this module cover the serialization
+and deserialization of Land
+instances using the LandSchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a Land instance.
-The LandSchema class is used to define the serialization and deserialization
-rules for Land instances. It specifies how each attribute of a Land instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a Land instance.
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The LandSchema class is used to define
+the serialization and deserialization
+rules for Land instances. It
+specifies how each attribute of a
+Land instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a Land
+instance.
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 """
 import json
@@ -29,20 +43,27 @@ from models.serialization_schema import LandSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def land(session) -> Land:
+def land(
+    session
+) -> Land:
     """
-    Fixture to create and return a Land instance using the LandFactory.
+    Fixture to create and return a Land
+    instance using the
+    LandFactory.
     Args:
         session: The database session.
     Returns:
-        Land: A newly created Land instance.
+        Land: A newly created
+            Land instance.
     """
     return LandFactory.create(session=session)
 class TestLandSchema:
     """
-    Tests for the Land serialization schema.
+    Tests for the Land
+    serialization schema.
     """
-    # Sample data for a Land instance
+    # Sample data for a Land
+    # instance
     sample_data = {
         "land_id": 1,
         "code":
@@ -70,9 +91,13 @@ class TestLandSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_land_serialization(self, land: Land):
+    def test_land_serialization(
+        self,
+        land: Land
+    ):
         """
-        Test the serialization of a Land instance using
+        Test the serialization of a
+        Land instance using
         LandSchema.
         Args:
             land (Land):
@@ -113,9 +138,12 @@ class TestLandSchema:
 # endset
     def test_land_deserialization(self, land):
         """
-        Test the deserialization of a Land object using the LandSchema.
+        Test the deserialization of a
+        Land object using the
+        LandSchema.
         Args:
-            land (Land): The Land object to be deserialized.
+            land (Land): The
+                Land object to be deserialized.
         Raises:
             AssertionError: If any of the assertions fail.
         Returns:
@@ -124,7 +152,8 @@ class TestLandSchema:
         schema = LandSchema()
         serialized_data = schema.dump(land)
         deserialized_data = schema.load(serialized_data)
-        assert deserialized_data['code'] == land.code
+        assert deserialized_data['code'] == \
+            land.code
         assert deserialized_data['last_change_code'] == (
             land.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -150,16 +179,22 @@ class TestLandSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             land.last_update_utc_date_time.isoformat())
 # endset
-        assert deserialized_data['pac_code_peek'] == (  # PacID
+        assert deserialized_data[(  # PacID
+            'pac_code_peek')] == (
             land.pac_code_peek)
 # endset
         new_land = Land(**deserialized_data)
         assert isinstance(new_land, Land)
-        # Now compare the new_land attributes with the land attributes
-        assert new_land.code == land.code
-        assert new_land.last_change_code == land.last_change_code
-        assert new_land.insert_user_id == land.insert_user_id
-        assert new_land.last_update_user_id == land.last_update_user_id
+        # Now compare the new_land attributes with
+        # the land attributes
+        assert new_land.code == \
+            land.code
+        assert new_land.last_change_code == \
+            land.last_change_code
+        assert new_land.insert_user_id == \
+            land.insert_user_id
+        assert new_land.last_update_user_id == \
+            land.last_update_user_id
 # endset
         assert new_land.description == (
             land.description)
@@ -186,12 +221,14 @@ class TestLandSchema:
         """
         Test the `from_json` method of the LandSchema class.
         This method tests the deserialization of
-        a JSON string to a Land object.
+        a JSON string to a
+        Land object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a Land
         object. Finally, it asserts the
-        equality of the deserialized Land object
+        equality of the deserialized
+        Land object
         with the sample data.
         Returns:
             None
@@ -229,29 +266,39 @@ class TestLandSchema:
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
-        assert str(deserialized_data['pac_code_peek']) == (  # PacID
+        assert str(deserialized_data[(  # PacID
+            'pac_code_peek')]) == (
             str(self.sample_data['pac_code_peek']))
 # endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
         new_land = Land(**deserialized_data)
         assert isinstance(new_land, Land)
-    def test_to_json(self, land: Land):
+    def test_to_json(
+        self,
+        land: Land
+    ):
         """
-        Test the conversion of a Land instance to JSON.
+        Test the conversion of a
+        Land instance to JSON.
         Args:
-            land (Land): The Land instance to convert.
+            land (Land): The
+            Land instance to convert.
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
-        # Convert the Land instance to JSON using the schema
+        # Convert the Land instance
+        # to JSON using the schema
         land_schema = LandSchema()
-        land_dict = land_schema.dump(land)
+        land_dict = land_schema.dump(
+            land)
         # Convert the land_dict to JSON string
-        land_json = json.dumps(land_dict)
+        land_json = json.dumps(
+            land_dict)
         # Convert the JSON strings back to dictionaries
-        land_dict_from_json = json.loads(land_json)
+        land_dict_from_json = json.loads(
+            land_json)
         # sample_dict_from_json = json.loads(self.sample_data)
         logging.info(
             "land_dict_from_json.keys() %s",
@@ -263,7 +310,8 @@ class TestLandSchema:
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(land_dict_from_json.keys())}"
         )
-        assert land_dict_from_json['code'] == str(land.code), (
+        assert land_dict_from_json['code'] == \
+            str(land.code), (
             "failed on code"
         )
         assert land_dict_from_json['last_change_code'] == (
@@ -313,7 +361,8 @@ class TestLandSchema:
             "failed on last_update_utc_date_time"
         )
 # endset
-        assert land_dict_from_json['pac_code_peek'] == (  # PacID
+        assert land_dict_from_json[(  # PacID
+            'pac_code_peek')] == (
             str(land.pac_code_peek)), (
             "failed on pac_code_peek"
         )

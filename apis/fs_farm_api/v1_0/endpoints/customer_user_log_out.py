@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/customer_user_log_out.py
 """
-This module contains the implementation of the CustomerUserLogOutRouter,
-which handles the API endpoints related to the Customer User Log Out.
+This module contains the implementation of the
+CustomerUserLogOutRouter,
+which handles the API endpoints related to the
+Customer User Log Out.
 The CustomerUserLogOutRouter provides the following endpoints:
     - GET /api/v1_0/customer-user-log-out/{customer_code}/init:
-        Get the initialization data for the Customer User Log Out page.
+        Get the initialization data for the
+        Customer User Log Out page.
     - GET /api/v1_0/customer-user-log-out/{customer_code}:
-        Get the Customer User Log Out Report for a specific customer code.
+        Get the Customer User Log Out Report
+        for a specific customer code.
     - GET /api/v1_0/customer-user-log-out/{customer_code}/to-csv:
-        Retrieve the Customer User Log Out Report as a CSV file.
+        Retrieve the Customer User Log Out
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class CustomerUserLogOutRouterConfig():
     is_public: bool = False
 class CustomerUserLogOutRouter(BaseRouter):
     """
-    Router class for the Customer User Log Out API endpoints.
+    Router class for the
+    Customer User Log Out
+    API endpoints.
     """
     router = APIRouter(tags=["CustomerUserLogOut"])
 
@@ -59,14 +66,16 @@ class CustomerUserLogOutRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the initialization data for the Customer User Log Out page.
+        Get the initialization data for the
+        Customer User Log Out page.
         Args:
             customer_code (uuid.UUID): The UUID of the customer.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
             CustomerUserLogOutInitObjWFGetInitModelResponse:
-                The initialization data for the Customer User Log Out page.
+                The initialization data for the
+                Customer User Log Out page.
         """
         logging.info(
             'CustomerUserLogOutRouter.request_get_init start. customerCode:%s',
@@ -175,16 +184,16 @@ class CustomerUserLogOutRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

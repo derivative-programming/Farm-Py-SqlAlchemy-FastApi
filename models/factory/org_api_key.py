@@ -1,7 +1,9 @@
 # models/factory/org_api_key.py
 """
-This module contains the OrgApiKeyFactory class, which is responsible
-for creating instances of the OrgApiKey model using the Factory pattern.
+This module contains the OrgApiKeyFactory
+class, which is responsible
+for creating instances of the OrgApiKey
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -14,7 +16,8 @@ from .org_customer import OrgCustomerFactory  # org_customer_id
 logger = get_logger(__name__)
 class OrgApiKeyFactory(factory.Factory):
     """
-    Factory class for creating instances of the OrgApiKey model.
+    Factory class for creating instances of
+    the OrgApiKey model.
     """
     class Meta:
         """
@@ -46,7 +49,8 @@ class OrgApiKeyFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> OrgApiKey:
         """
-            Builds and returns an instance of the OrgApiKey model.
+            Builds and returns an instance
+            of the OrgApiKey model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -54,7 +58,8 @@ class OrgApiKeyFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                OrgApiKey: An instance of the OrgApiKey model.
+                OrgApiKey: An instance of the
+                    OrgApiKey model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -89,14 +94,16 @@ class OrgApiKeyFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> OrgApiKey:
         """
-        Create a new OrgApiKey object and save it to the database.
+        Create a new OrgApiKey object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            OrgApiKey: The created OrgApiKey object.
+            OrgApiKey: The created
+                OrgApiKey object.
         """
         logger.info("factory create")
         organization_id_organization_instance = (  # OrganizationID
@@ -129,7 +136,8 @@ class OrgApiKeyFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> OrgApiKey:
         """
-        Create a new OrgApiKey object asynchronously.
+        Create a new OrgApiKey object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -167,7 +175,8 @@ class OrgApiKeyFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> OrgApiKey:
         """
-        Build a new OrgApiKey object asynchronously.
+        Build a new OrgApiKey object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.

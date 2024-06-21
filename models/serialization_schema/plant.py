@@ -1,8 +1,10 @@
 # models/serialization_schema/plant.py
 
 """
-This module contains the PlantSchema class, which is responsible
-for serializing and deserializing Plant objects.
+This module contains the PlantSchema
+class, which is responsible
+for serializing and deserializing
+Plant objects.
 """
 
 from marshmallow import fields
@@ -12,7 +14,8 @@ from models import Plant
 
 class PlantSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing Plant objects.
+    Schema class for serializing and deserializing
+    Plant objects.
     """
 
     class Meta:

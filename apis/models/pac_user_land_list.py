@@ -1,10 +1,13 @@
 # apis/models/pac_user_land_list.py
 """
-This module contains the models for the Pac User Land List API.
+This module contains the models for the
+Pac User Land List API.
 - PacUserLandListGetModelRequest: Represents the
-    request model for getting the pac Pac User Land List Report.
+    request model for getting the
+    pac Pac User Land List Report.
 - PacUserLandListGetModelResponseItem: Represents the
-    response model item for the pac Pac User Land List Report.
+    response model item for the
+    pac Pac User Land List Report.
 """
 import json
 import logging
@@ -24,7 +27,8 @@ from reports.report_request_validation_error import \
 from reports.row_models.pac_user_land_list import ReportItemPacUserLandList
 class PacUserLandListGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the pac Pac User Land List Report.
+    Represents the request model for getting the
+    pac Pac User Land List Report.
     """
     page_number: int = Field(
         default=0,
@@ -45,7 +49,8 @@ class PacUserLandListGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-        Configuration class for the PacUserLandList model.
+        Configuration class for the
+        PacUserLandList model.
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -81,7 +86,8 @@ class PacUserLandListGetModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserLandListGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the pac Pac User Land List Report.
+    Represents the response model item for the
+    pac Pac User Land List Report.
     """
     land_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -134,9 +140,11 @@ class PacUserLandListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemPacUserLandList:
         """
-        Builds a ReportItemPacUserLandList object from the response model item.
+        Builds a ReportItemPacUserLandList object
+        from the response model item.
         Returns:
-            ReportItemPacUserLandList: The built ReportItemPacUserLandList object.
+            ReportItemPacUserLandList: The built
+            ReportItemPacUserLandList object.
         """
         data = ReportItemPacUserLandList()
         data.land_code = (
@@ -157,7 +165,8 @@ class PacUserLandListGetModelResponseItem(CamelModel):
 # endset
 class PacUserLandListGetModelResponse(ListModel):
     """
-    Represents the response model for the PacUserLandListGetModel API.
+    Represents the response model for the
+    PacUserLandListGetModel API.
     Attributes:
         request (PacUserLandListGetModelRequest):
             The request model for the API.

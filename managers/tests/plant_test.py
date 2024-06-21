@@ -55,12 +55,15 @@ class TestPlantManager:
         }
 
         # Call the build function of the manager
-        plant = await plant_manager.build(**mock_data)
+        plant = await plant_manager.build(
+            **mock_data)
 
         # Assert that the returned object is an instance of Plant
-        assert isinstance(plant, Plant)
+        assert isinstance(
+            plant, Plant)
 
-        # Assert that the attributes of the plant match our mock data
+        # Assert that the attributes of the
+        # plant match our mock data
         assert plant.code == mock_data["code"]
 
     @pytest.mark.asyncio
@@ -96,12 +99,15 @@ class TestPlantManager:
         `PlantManager` that checks if a
         plant is correctly added to the database.
         """
-        test_plant = await PlantFactory.build_async(session)
+        test_plant = await PlantFactory.build_async(
+            session)
 
         assert test_plant.plant_id == 0
 
-        # Add the plant using the manager's add method
-        added_plant = await plant_manager.add(plant=test_plant)
+        # Add the plant using the
+        # manager's add method
+        added_plant = await plant_manager.add(
+            plant=test_plant)
 
         assert isinstance(added_plant, Plant)
 
@@ -112,7 +118,8 @@ class TestPlantManager:
 
         assert added_plant.plant_id > 0
 
-        # Fetch the plant from the database directly
+        # Fetch the plant from
+        # the database directly
         result = await session.execute(
             select(Plant).filter(
                 Plant._plant_id == added_plant.plant_id  # type: ignore
@@ -120,7 +127,9 @@ class TestPlantManager:
         )
         fetched_plant = result.scalars().first()
 
-        # Assert that the fetched plant is not None and matches the added plant
+        # Assert that the fetched plant
+        # is not None and matches the
+        # added plant
         assert fetched_plant is not None
         assert isinstance(fetched_plant, Plant)
         assert fetched_plant.plant_id == added_plant.plant_id
@@ -136,16 +145,20 @@ class TestPlantManager:
         `PlantManager` that checks if the
         correct plant object is returned.
         """
-        # Create a test plant using the PlantFactory
+        # Create a test plant
+        # using the PlantFactory
         # without persisting it to the database
-        test_plant = await PlantFactory.build_async(session)
+        test_plant = await PlantFactory.build_async(
+            session)
 
         assert test_plant.plant_id == 0
 
         test_plant.code = uuid.uuid4()
 
-        # Add the plant using the manager's add method
-        added_plant = await plant_manager.add(plant=test_plant)
+        # Add the plant using
+        # the manager's add method
+        added_plant = await plant_manager.add(
+            plant=test_plant)
 
         assert isinstance(added_plant, Plant)
 
@@ -156,9 +169,13 @@ class TestPlantManager:
 
         assert added_plant.plant_id > 0
 
-        # Assert that the returned plant matches the test plant
-        assert added_plant.plant_id == test_plant.plant_id
-        assert added_plant.code == test_plant.code
+        # Assert that the returned
+        # plant matches the
+        # test plant
+        assert added_plant.plant_id == \
+            test_plant.plant_id
+        assert added_plant.code == \
+            test_plant.code
 
     @pytest.mark.asyncio
     async def test_get_by_id(
@@ -170,14 +187,19 @@ class TestPlantManager:
         Test case for the `get_by_id` method of
         `PlantManager`.
         """
-        test_plant = await PlantFactory.create_async(session)
+        test_plant = await PlantFactory.create_async(
+            session)
 
-        plant = await plant_manager.get_by_id(test_plant.plant_id)
+        plant = await plant_manager.get_by_id(
+            test_plant.plant_id)
 
-        assert isinstance(plant, Plant)
+        assert isinstance(
+            plant, Plant)
 
-        assert test_plant.plant_id == plant.plant_id
-        assert test_plant.code == plant.code
+        assert test_plant.plant_id == \
+            plant.plant_id
+        assert test_plant.code == \
+            plant.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
@@ -186,12 +208,14 @@ class TestPlantManager:
     ):
         """
         Test case for the `get_by_id` method of
-        `PlantManager` when the plant is not found.
+        `PlantManager` when the
+        plant is not found.
         """
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_plant = await plant_manager.get_by_id(non_existent_id)
+        retrieved_plant = await plant_manager.get_by_id(
+            non_existent_id)
 
         assert retrieved_plant is None
 
@@ -203,18 +227,24 @@ class TestPlantManager:
     ):
         """
         Test case for the `get_by_code` method of
-        `PlantManager` that checks if a plant is
+        `PlantManager` that checks if
+        a plant is
         returned by its code.
         """
 
-        test_plant = await PlantFactory.create_async(session)
+        test_plant = await PlantFactory.create_async(
+            session)
 
-        plant = await plant_manager.get_by_code(test_plant.code)
+        plant = await plant_manager.get_by_code(
+            test_plant.code)
 
-        assert isinstance(plant, Plant)
+        assert isinstance(
+            plant, Plant)
 
-        assert test_plant.plant_id == plant.plant_id
-        assert test_plant.code == plant.code
+        assert test_plant.plant_id == \
+            plant.plant_id
+        assert test_plant.code == \
+            plant.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
@@ -229,7 +259,8 @@ class TestPlantManager:
         # any Plant in the database
         random_code = uuid.uuid4()
 
-        plant = await plant_manager.get_by_code(random_code)
+        plant = await plant_manager.get_by_code(
+            random_code)
 
         assert plant is None
 
@@ -240,22 +271,28 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `PlantManager`
-        that checks if a plant is correctly updated.
+        Test case for the `update` method
+        of `PlantManager`
+        that checks if a plant
+        is correctly updated.
         """
-        test_plant = await PlantFactory.create_async(session)
+        test_plant = await PlantFactory.create_async(
+            session)
 
         test_plant.code = uuid.uuid4()
 
-        updated_plant = await plant_manager.update(plant=test_plant)
+        updated_plant = await plant_manager.update(
+            plant=test_plant)
 
         assert isinstance(updated_plant, Plant)
 
         assert str(updated_plant.last_update_user_id) == str(
             plant_manager._session_context.customer_code)
 
-        assert updated_plant.plant_id == test_plant.plant_id
-        assert updated_plant.code == test_plant.code
+        assert updated_plant.plant_id == \
+            test_plant.plant_id
+        assert updated_plant.code == \
+            test_plant.code
 
         result = await session.execute(
             select(Plant).filter(
@@ -264,11 +301,15 @@ class TestPlantManager:
 
         fetched_plant = result.scalars().first()
 
-        assert updated_plant.plant_id == fetched_plant.plant_id
-        assert updated_plant.code == fetched_plant.code
+        assert updated_plant.plant_id == \
+            fetched_plant.plant_id
+        assert updated_plant.code == \
+            fetched_plant.code
 
-        assert test_plant.plant_id == fetched_plant.plant_id
-        assert test_plant.code == fetched_plant.code
+        assert test_plant.plant_id == \
+            fetched_plant.plant_id
+        assert test_plant.code == \
+            fetched_plant.code
 
     @pytest.mark.asyncio
     async def test_update_via_dict(
@@ -277,10 +318,13 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `PlantManager`
-        that checks if a plant is correctly updated using a dictionary.
+        Test case for the `update` method
+        of `PlantManager`
+        that checks if a plant is
+        correctly updated using a dictionary.
         """
-        test_plant = await PlantFactory.create_async(session)
+        test_plant = await PlantFactory.create_async(
+            session)
 
         new_code = uuid.uuid4()
 
@@ -295,7 +339,8 @@ class TestPlantManager:
             plant_manager._session_context.customer_code
         )
 
-        assert updated_plant.plant_id == test_plant.plant_id
+        assert updated_plant.plant_id == \
+            test_plant.plant_id
         assert updated_plant.code == new_code
 
         result = await session.execute(
@@ -305,11 +350,15 @@ class TestPlantManager:
 
         fetched_plant = result.scalars().first()
 
-        assert updated_plant.plant_id == fetched_plant.plant_id
-        assert updated_plant.code == fetched_plant.code
+        assert updated_plant.plant_id == \
+            fetched_plant.plant_id
+        assert updated_plant.code == \
+            fetched_plant.code
 
-        assert test_plant.plant_id == fetched_plant.plant_id
-        assert new_code == fetched_plant.code
+        assert test_plant.plant_id == \
+            fetched_plant.plant_id
+        assert new_code == \
+            fetched_plant.code
 
     @pytest.mark.asyncio
     async def test_update_invalid_plant(
@@ -327,7 +376,8 @@ class TestPlantManager:
         new_code = uuid.uuid4()
 
         updated_plant = await (
-            plant_manager.update(plant, code=new_code))  # type: ignore
+            plant_manager.update(
+                plant, code=new_code))  # type: ignore
 
         # Assertions
         assert updated_plant is None
@@ -342,7 +392,8 @@ class TestPlantManager:
         Test case for the `update` method of `PlantManager`
         with a nonexistent attribute.
         """
-        test_plant = await PlantFactory.create_async(session)
+        test_plant = await PlantFactory.create_async(
+            session)
 
         new_code = uuid.uuid4()
 
@@ -363,7 +414,8 @@ class TestPlantManager:
         """
         Test case for the `delete` method of `PlantManager`.
         """
-        plant_data = await PlantFactory.create_async(session)
+        plant_data = await PlantFactory.create_async(
+            session)
 
         result = await session.execute(
             select(Plant).filter(
@@ -373,7 +425,8 @@ class TestPlantManager:
 
         assert isinstance(fetched_plant, Plant)
 
-        assert fetched_plant.plant_id == plant_data.plant_id
+        assert fetched_plant.plant_id == \
+            plant_data.plant_id
 
         await plant_manager.delete(
             plant_id=plant_data.plant_id)
@@ -425,7 +478,8 @@ class TestPlantManager:
         the test case will fail.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager): An
+                instance of the
                 `PlantManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -480,7 +534,8 @@ class TestPlantManager:
         plants = await plant_manager.get_list()
 
         assert len(plants) == 5
-        assert all(isinstance(plant, Plant) for plant in plants)
+        assert all(isinstance(
+            plant, Plant) for plant in plants)
 
     @pytest.mark.asyncio
     async def test_to_json(
@@ -492,7 +547,8 @@ class TestPlantManager:
         Test the 'to_json' method of the PlantManager class.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager): An
+                instance of the
                 PlantManager class.
             session (AsyncSession): An instance of the AsyncSession class.
 
@@ -502,9 +558,11 @@ class TestPlantManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        plant = await PlantFactory.build_async(session)
+        plant = await PlantFactory.build_async(
+            session)
 
-        json_data = plant_manager.to_json(plant)
+        json_data = plant_manager.to_json(
+            plant)
 
         assert json_data is not None
 
@@ -518,16 +576,19 @@ class TestPlantManager:
         Test the to_dict method of the PlantManager class.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager): An
+                instance of the
                 PlantManager class.
             session (AsyncSession): An instance of the AsyncSession class.
 
         Returns:
             None
         """
-        plant = await PlantFactory.build_async(session)
+        plant = await PlantFactory.build_async(
+            session)
 
-        dict_data = plant_manager.to_dict(plant)
+        dict_data = plant_manager.to_dict(
+            plant)
 
         assert dict_data is not None
 
@@ -542,29 +603,35 @@ class TestPlantManager:
 
         This method tests the functionality of the
         `from_json` method of the `PlantManager` class.
-        It creates a plant using the `PlantFactory`
+        It creates a plant using
+        the `PlantFactory`
         and converts it to JSON using the `to_json` method.
         Then, it deserializes the JSON data using the
         `from_json` method and asserts that the deserialized
-        plant is an instance of the `Plant` class and has
+        plant is an instance of the
+        `Plant` class and has
         the same code as the original plant.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager): An
+            instance of the
                 `PlantManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        plant = await PlantFactory.create_async(session)
+        plant = await PlantFactory.create_async(
+            session)
 
-        json_data = plant_manager.to_json(plant)
+        json_data = plant_manager.to_json(
+            plant)
 
         deserialized_plant = plant_manager.from_json(json_data)
 
         assert isinstance(deserialized_plant, Plant)
-        assert deserialized_plant.code == plant.code
+        assert deserialized_plant.code == \
+            plant.code
 
     @pytest.mark.asyncio
     async def test_from_dict(
@@ -578,7 +645,8 @@ class TestPlantManager:
 
         This method tests the functionality of the
         `from_dict` method, which is used to deserialize
-        a dictionary representation of a plant object.
+        a dictionary representation of a
+        plant object.
 
         Args:
             plant_manager (PlantManager): An instance
@@ -591,7 +659,8 @@ class TestPlantManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        plant = await PlantFactory.create_async(session)
+        plant = await PlantFactory.create_async(
+            session)
 
         schema = PlantSchema()
 
@@ -599,11 +668,13 @@ class TestPlantManager:
 
         assert isinstance(plant_data, dict)
 
-        deserialized_plant = plant_manager.from_dict(plant_data)
+        deserialized_plant = plant_manager.from_dict(
+            plant_data)
 
         assert isinstance(deserialized_plant, Plant)
 
-        assert deserialized_plant.code == plant.code
+        assert deserialized_plant.code == \
+            plant.code
 
     @pytest.mark.asyncio
     async def test_add_bulk(
@@ -622,24 +693,32 @@ class TestPlantManager:
         1. Generate a list of plant data using the
             `PlantFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `plant_manager` instance, passing in the generated plant data.
-        3. Verify that the number of plants returned is
+            `plant_manager` instance,
+            passing in the
+            generated plant data.
+        3. Verify that the number of plants
+            returned is
             equal to the number of plants added.
         4. For each updated plant, fetch the corresponding
             plant from the database.
-        5. Verify that the fetched plant is an instance of the
+        5. Verify that the fetched plant
+            is an instance of the
             `Plant` class.
         6. Verify that the insert_user_id and
-            last_update_user_id of the fetched plant match the
+            last_update_user_id of the fetched
+            plant match the
             customer code of the session context.
         7. Verify that the plant_id of the fetched
-            plant matches the plant_id of the updated plant.
+            plant matches the
+            plant_id of the updated
+            plant.
 
         """
         plants_data = [
             await PlantFactory.build_async(session) for _ in range(5)]
 
-        plants = await plant_manager.add_bulk(plants_data)
+        plants = await plant_manager.add_bulk(
+            plants_data)
 
         assert len(plants) == 5
 
@@ -658,7 +737,8 @@ class TestPlantManager:
             assert str(fetched_plant.last_update_user_id) == (
                 str(plant_manager._session_context.customer_code))
 
-            assert fetched_plant.plant_id == updated_plant.plant_id
+            assert fetched_plant.plant_id == \
+                updated_plant.plant_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
@@ -671,7 +751,8 @@ class TestPlantManager:
 
         This test case verifies the functionality of the
         `update_bulk` method in the `PlantManager` class.
-        It creates two plant instances, updates their codes
+        It creates two plant instances,
+        updates their codes
         using the `update_bulk` method, and then verifies
         that the updates were successful by checking the
         updated codes in the database.
@@ -693,8 +774,10 @@ class TestPlantManager:
             None
         """
         # Mocking plant instances
-        plant1 = await PlantFactory.create_async(session=session)
-        plant2 = await PlantFactory.create_async(session=session)
+        plant1 = await PlantFactory.create_async(
+            session=session)
+        plant2 = await PlantFactory.create_async(
+            session=session)
         logging.info(plant1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -713,7 +796,8 @@ class TestPlantManager:
                 "code": code_updated2
             }
         ]
-        updated_plants = await plant_manager.update_bulk(updates)
+        updated_plants = await plant_manager.update_bulk(
+            updates)
 
         logging.info('bulk update results')
         # Assertions
@@ -736,7 +820,8 @@ class TestPlantManager:
             str(plant_manager._session_context.customer_code))
 
         result = await session.execute(
-            select(Plant).filter(Plant._plant_id == 1)  # type: ignore
+            select(Plant).filter(
+                Plant._plant_id == 1)  # type: ignore
         )
         fetched_plant = result.scalars().first()
 
@@ -745,7 +830,8 @@ class TestPlantManager:
         assert fetched_plant.code == code_updated1
 
         result = await session.execute(
-            select(Plant).filter(Plant._plant_id == 2)  # type: ignore
+            select(Plant).filter(
+                Plant._plant_id == 2)  # type: ignore
         )
         fetched_plant = result.scalars().first()
 
@@ -793,7 +879,8 @@ class TestPlantManager:
         method when a plant is not found.
 
         This test case performs the following steps:
-        1. Defines a list of plant updates, where each update
+        1. Defines a list of plant updates,
+            where each update
             contains a plant_id and a code.
         2. Calls the update_bulk method of the
             plant_manager with the list of updates.
@@ -802,7 +889,8 @@ class TestPlantManager:
         4. Rolls back the session to undo any changes made during the test.
 
         Note: This test assumes that the update_bulk method
-        throws an exception when a plant is not found.
+        throws an exception when a
+        plant is not found.
 
         """
 
@@ -856,8 +944,10 @@ class TestPlantManager:
         from the database.
 
         Steps:
-        1. Create two plant objects using the PlantFactory.
-        2. Delete the plants using the delete_bulk method
+        1. Create two plant objects
+            using the PlantFactory.
+        2. Delete the plants using the
+            delete_bulk method
             of the plant_manager.
         3. Verify that the delete operation was successful by
             checking if the plants no longer exist in the database.
@@ -869,13 +959,16 @@ class TestPlantManager:
 
         """
 
-        plant1 = await PlantFactory.create_async(session=session)
+        plant1 = await PlantFactory.create_async(
+            session=session)
 
-        plant2 = await PlantFactory.create_async(session=session)
+        plant2 = await PlantFactory.create_async(
+            session=session)
 
         # Delete plants
         plant_ids = [plant1.plant_id, plant2.plant_id]
-        result = await plant_manager.delete_bulk(plant_ids)
+        result = await plant_manager.delete_bulk(
+            plant_ids)
 
         assert result is True
 
@@ -899,8 +992,10 @@ class TestPlantManager:
         plants when some plants are not found.
 
         Steps:
-        1. Create a plant using the PlantFactory.
-        2. Assert that the created plant is an instance of the
+        1. Create a plant using the
+            PlantFactory.
+        2. Assert that the created plant
+            is an instance of the
             Plant class.
         3. Define a list of plant IDs to delete.
         4. Use pytest.raises to assert that an exception is
@@ -912,7 +1007,8 @@ class TestPlantManager:
         when some plants with the specified IDs are
         not found in the database.
         """
-        plant1 = await PlantFactory.create_async(session=session)
+        plant1 = await PlantFactory.create_async(
+            session=session)
 
         assert isinstance(plant1, Plant)
 
@@ -920,7 +1016,8 @@ class TestPlantManager:
         plant_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await plant_manager.delete_bulk(plant_ids)
+            await plant_manager.delete_bulk(
+                plant_ids)
 
         await session.rollback()
 
@@ -934,7 +1031,8 @@ class TestPlantManager:
         plants with an empty list.
 
         Args:
-            plant_manager (PlantManager): The instance of the
+            plant_manager (PlantManager): The
+                instance of the
                 PlantManager class.
 
         Returns:
@@ -946,7 +1044,8 @@ class TestPlantManager:
 
         # Delete plants with an empty list
         plant_ids = []
-        result = await plant_manager.delete_bulk(plant_ids)
+        result = await plant_manager.delete_bulk(
+            plant_ids)
 
         # Assertions
         assert result is True
@@ -962,7 +1061,8 @@ class TestPlantManager:
         method when invalid plant IDs are provided.
 
         Args:
-            plant_manager (PlantManager): The instance of the
+            plant_manager (PlantManager): The
+                instance of the
                 PlantManager class.
             session (AsyncSession): The async session object.
 
@@ -977,7 +1077,8 @@ class TestPlantManager:
         plant_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await plant_manager.delete_bulk(plant_ids)
+            await plant_manager.delete_bulk(
+                plant_ids)
 
         await session.rollback()
 
@@ -991,12 +1092,15 @@ class TestPlantManager:
         Test the basic functionality of the count method
         in the PlantManager class.
 
-        This test case creates 5 plant objects using the
+        This test case creates 5 plant
+        objects using the
         PlantFactory and checks if the count method
-        returns the correct count of plants.
+        returns the correct count of
+        plants.
 
         Steps:
-        1. Create 5 plant objects using the PlantFactory.
+        1. Create 5 plant objects using
+            the PlantFactory.
         2. Call the count method of the plant_manager.
         3. Assert that the count is equal to 5.
 
@@ -1022,7 +1126,8 @@ class TestPlantManager:
         PlantManager class returns 0 when the database is empty.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager): An
+                instance of the
                 PlantManager class.
 
         Returns:
@@ -1109,7 +1214,8 @@ class TestPlantManager:
         sorting the list by an invalid attribute.
 
         Args:
-            plant_manager (PlantManager): The instance of the
+            plant_manager (PlantManager): The
+                instance of the
                 PlantManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 
@@ -1121,7 +1227,8 @@ class TestPlantManager:
         """
 
         with pytest.raises(AttributeError):
-            await plant_manager.get_sorted_list(sort_by="invalid_attribute")
+            await plant_manager.get_sorted_list(
+                sort_by="invalid_attribute")
 
         await session.rollback()
 
@@ -1138,14 +1245,16 @@ class TestPlantManager:
         `get_sorted_list` method returns an empty list.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager): An
+                instance of the
                 PlantManager class.
 
         Returns:
             None
         """
 
-        sorted_plants = await plant_manager.get_sorted_list(sort_by="plant_id")
+        sorted_plants = await plant_manager.get_sorted_list(
+            sort_by="plant_id")
 
         assert len(sorted_plants) == 0
 
@@ -1156,23 +1265,29 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-        Test the basic functionality of refreshing a plant instance.
+        Test the basic functionality of refreshing
+        a plant instance.
 
         This test performs the following steps:
-        1. Creates a plant instance using the PlantFactory.
-        2. Retrieves the plant from the database to ensure
+        1. Creates a plant instance using
+            the PlantFactory.
+        2. Retrieves the plant from th
+            database to ensure
             it was added correctly.
         3. Updates the plant's code and verifies the update.
-        4. Refreshes the original plant instance and checks if
+        4. Refreshes the original plant instance
+            and checks if
             it reflects the updated code.
 
         Args:
-            plant_manager (PlantManager): The manager responsible
+            plant_manager (PlantManager): The
+                manager responsible
                 for plant operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a plant
-        plant1 = await PlantFactory.create_async(session=session)
+        plant1 = await PlantFactory.create_async(
+            session=session)
 
         # Retrieve the plant from the database
         result = await session.execute(
@@ -1181,24 +1296,30 @@ class TestPlantManager:
         )  # type: ignore
         plant2 = result.scalars().first()
 
-        # Verify that the retrieved plant matches the added plant
-        assert plant1.code == plant2.code
+        # Verify that the retrieved plant
+        # matches the added plant
+        assert plant1.code == \
+            plant2.code
 
         # Update the plant's code
         updated_code1 = uuid.uuid4()
         plant1.code = updated_code1
-        updated_plant1 = await plant_manager.update(plant1)
+        updated_plant1 = await plant_manager.update(
+            plant1)
 
-        # Verify that the updated plant is of type Plant
+        # Verify that the updated plant
+        # is of type Plant
         # and has the updated code
         assert isinstance(updated_plant1, Plant)
 
         assert updated_plant1.code == updated_code1
 
         # Refresh the original plant instance
-        refreshed_plant2 = await plant_manager.refresh(plant2)
+        refreshed_plant2 = await plant_manager.refresh(
+            plant2)
 
-        # Verify that the refreshed plant reflects the updated code
+        # Verify that the refreshed plant
+        # reflects the updated code
         assert refreshed_plant2.code == updated_code1
 
     @pytest.mark.asyncio
@@ -1211,20 +1332,24 @@ class TestPlantManager:
         Test case to verify the behavior of refreshing a nonexistent plant.
 
         Args:
-            plant_manager (PlantManager): The instance of the
+            plant_manager (PlantManager): The
+                instance of the
                 PlantManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 
         Raises:
-            Exception: If the plant refresh operation raises an exception.
+            Exception: If the plant
+            refresh operation raises an exception.
 
         Returns:
             None
         """
-        plant = Plant(plant_id=999)
+        plant = Plant(
+            plant_id=999)
 
         with pytest.raises(Exception):
-            await plant_manager.refresh(plant)
+            await plant_manager.refresh(
+                plant)
 
         await session.rollback()
 
@@ -1235,20 +1360,25 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-        Test case to check if a plant exists using the manager function.
+        Test case to check if a plant
+        exists using the manager function.
 
         Args:
-            plant_manager (PlantManager): The plant manager instance.
+            plant_manager (PlantManager): The
+                plant manager instance.
             session (AsyncSession): The async session object.
 
         Returns:
             None
         """
         # Add a plant
-        plant1 = await PlantFactory.create_async(session=session)
+        plant1 = await PlantFactory.create_async(
+            session=session)
 
-        # Check if the plant exists using the manager function
-        assert await plant_manager.exists(plant1.plant_id) is True
+        # Check if the plant exists
+        # using the manager function
+        assert await plant_manager.exists(
+            plant1.plant_id) is True
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_plant(
@@ -1261,7 +1391,8 @@ class TestPlantManager:
         PlantManager class correctly compares two plants.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager): An
+                instance of the
                 PlantManager class.
             session (AsyncSession): An instance of the AsyncSession class.
 
@@ -1269,17 +1400,23 @@ class TestPlantManager:
             None
         """
         # Add a plant
-        plant1 = await PlantFactory.create_async(session=session)
+        plant1 = await PlantFactory.create_async(
+            session=session)
 
-        plant2 = await plant_manager.get_by_id(plant_id=plant1.plant_id)
+        plant2 = await plant_manager.get_by_id(
+            plant_id=plant1.plant_id)
 
-        assert plant_manager.is_equal(plant1, plant2) is True
+        assert plant_manager.is_equal(
+            plant1, plant2) is True
 
-        plant1_dict = plant_manager.to_dict(plant1)
+        plant1_dict = plant_manager.to_dict(
+            plant1)
 
-        plant3 = plant_manager.from_dict(plant1_dict)
+        plant3 = plant_manager.from_dict(
+            plant1_dict)
 
-        assert plant_manager.is_equal(plant1, plant3) is True
+        assert plant_manager.is_equal(
+            plant1, plant3) is True
 
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_plant(
@@ -1295,7 +1432,8 @@ class TestPlantManager:
                 instance of the PlantManager class.
 
         Returns:
-            bool: True if the plant exists, False otherwise.
+            bool: True if the plant exists,
+                False otherwise.
         """
         non_existent_id = 999
 
@@ -1353,33 +1491,45 @@ class TestPlantManager:
         """
         Test case to verify the behavior of the
         `get_by_flvr_foreign_key_id` method
-        when a plant with a specific flvr_foreign_key_id exists.
+        when a plant with a
+        specific flvr_foreign_key_id exists.
 
         Steps:
-        1. Create a plant using the PlantFactory.
+        1. Create a plant using the
+            PlantFactory.
         2. Fetch the plant using the
-            `get_by_flvr_foreign_key_id` method of the plant_manager.
+            `get_by_flvr_foreign_key_id`
+            method of the plant_manager.
         3. Assert that the fetched plants list has a length of 1.
         4. Assert that the first element in the fetched
-            plants list is an instance of the Plant class.
-        5. Assert that the code of the fetched plant
+            plants list is an instance of the
+            Plant class.
+        5. Assert that the code of the fetched
+            plant
             matches the code of the created plant.
         6. Execute a select statement to fetch the
-            Flavor object associated with the flvr_foreign_key_id.
-        7. Assert that the fetched flavor is an instance of the Flavor class.
+            Flavor object associated with the
+            flvr_foreign_key_id.
+        7. Assert that the fetched flavor is an
+            instance of the Flavor class.
         8. Assert that the flvr_foreign_key_code_peek
-            of the fetched plant matches the code of the fetched flavor.
+            of the fetched plant matches
+            the code of the fetched flavor.
         """
-        # Add a plant with a specific flvr_foreign_key_id
-        plant1 = await PlantFactory.create_async(session=session)
+        # Add a plant with a specific
+        # flvr_foreign_key_id
+        plant1 = await PlantFactory.create_async(
+            session=session)
 
-        # Fetch the plant using the manager function
+        # Fetch the plant using the
+        # manager function
 
         fetched_plants = await plant_manager.get_by_flvr_foreign_key_id(
             plant1.flvr_foreign_key_id)
         assert len(fetched_plants) == 1
         assert isinstance(fetched_plants[0], Plant)
-        assert fetched_plants[0].code == plant1.code
+        assert fetched_plants[0].code == \
+            plant1.code
 
         stmt = select(models.Flavor).where(
             models.Flavor._flavor_id == plant1.flvr_foreign_key_id)  # type: ignore  # noqa: E501
@@ -1416,7 +1566,8 @@ class TestPlantManager:
         non_existent_id = 999
 
         fetched_plants = (
-            await plant_manager.get_by_flvr_foreign_key_id(non_existent_id))
+            await plant_manager.get_by_flvr_foreign_key_id(
+                non_existent_id))
         assert len(fetched_plants) == 0
 
     @pytest.mark.asyncio
@@ -1446,7 +1597,8 @@ class TestPlantManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.get_by_flvr_foreign_key_id(invalid_id)  # type: ignore  # noqa: E501
+            await plant_manager.get_by_flvr_foreign_key_id(
+                invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
 
@@ -1459,16 +1611,19 @@ class TestPlantManager:
     ):
         """
         Test case to verify the behavior of the
-        `get_by_land_id` method when a plant with
+        `get_by_land_id` method when
+        a plant with
         a specific land_id exists.
 
         Steps:
-        1. Create a plant using the PlantFactory.
+        1. Create a plant using the
+            PlantFactory.
         2. Fetch the plant using the
             `get_by_land_id` method of the plant_manager.
         3. Assert that the fetched plants list contains
             only one plant.
-        4. Assert that the fetched plant is an instance
+        4. Assert that the fetched plant
+            is an instance
             of the Plant class.
         5. Assert that the code of the fetched plant
             matches the code of the created plant.
@@ -1477,18 +1632,24 @@ class TestPlantManager:
         7. Assert that the fetched land object is
             an instance of the Land class.
         8. Assert that the land_code_peek of the fetched
-            plant matches the code of the fetched land.
+            plant matches the
+            code of the fetched land.
 
         """
-        # Add a plant with a specific land_id
-        plant1 = await PlantFactory.create_async(session=session)
+        # Add a plant with a specific
+        # land_id
+        plant1 = await PlantFactory.create_async(
+            session=session)
 
-        # Fetch the plant using the manager function
+        # Fetch the plant using
+        # the manager function
 
-        fetched_plants = await plant_manager.get_by_land_id(plant1.land_id)
+        fetched_plants = await plant_manager.get_by_land_id(
+            plant1.land_id)
         assert len(fetched_plants) == 1
         assert isinstance(fetched_plants[0], Plant)
-        assert fetched_plants[0].code == plant1.code
+        assert fetched_plants[0].code == \
+            plant1.code
 
         stmt = select(models.Land).where(
             models.Land._land_id == plant1.land_id)  # type: ignore  # noqa: E501
@@ -1515,7 +1676,8 @@ class TestPlantManager:
 
         non_existent_id = 999
 
-        fetched_plants = await plant_manager.get_by_land_id(non_existent_id)
+        fetched_plants = await plant_manager.get_by_land_id(
+            non_existent_id)
         assert len(fetched_plants) == 0
 
     @pytest.mark.asyncio
@@ -1545,7 +1707,8 @@ class TestPlantManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.get_by_land_id(invalid_id)  # type: ignore
+            await plant_manager.get_by_land_id(
+                invalid_id)  # type: ignore
 
         await session.rollback()
     # somePhoneNumber,

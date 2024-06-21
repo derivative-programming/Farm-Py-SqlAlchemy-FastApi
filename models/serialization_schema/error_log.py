@@ -1,14 +1,17 @@
 # models/serialization_schema/error_log.py
 """
-This module contains the ErrorLogSchema class, which is responsible
-for serializing and deserializing ErrorLog objects.
+This module contains the ErrorLogSchema
+class, which is responsible
+for serializing and deserializing
+ErrorLog objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import ErrorLog
 class ErrorLogSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing ErrorLog objects.
+    Schema class for serializing and deserializing
+    ErrorLog objects.
     """
     class Meta:
         """

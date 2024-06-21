@@ -47,10 +47,13 @@ class TestPacManager:
             "code": uuid.uuid4()
         }
         # Call the build function of the manager
-        pac = await pac_manager.build(**mock_data)
+        pac = await pac_manager.build(
+            **mock_data)
         # Assert that the returned object is an instance of Pac
-        assert isinstance(pac, Pac)
-        # Assert that the attributes of the pac match our mock data
+        assert isinstance(
+            pac, Pac)
+        # Assert that the attributes of the
+        # pac match our mock data
         assert pac.code == mock_data["code"]
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
@@ -82,24 +85,30 @@ class TestPacManager:
         `PacManager` that checks if a
         pac is correctly added to the database.
         """
-        test_pac = await PacFactory.build_async(session)
+        test_pac = await PacFactory.build_async(
+            session)
         assert test_pac.pac_id == 0
-        # Add the pac using the manager's add method
-        added_pac = await pac_manager.add(pac=test_pac)
+        # Add the pac using the
+        # manager's add method
+        added_pac = await pac_manager.add(
+            pac=test_pac)
         assert isinstance(added_pac, Pac)
         assert str(added_pac.insert_user_id) == (
             str(pac_manager._session_context.customer_code))
         assert str(added_pac.last_update_user_id) == (
             str(pac_manager._session_context.customer_code))
         assert added_pac.pac_id > 0
-        # Fetch the pac from the database directly
+        # Fetch the pac from
+        # the database directly
         result = await session.execute(
             select(Pac).filter(
                 Pac._pac_id == added_pac.pac_id  # type: ignore
             )
         )
         fetched_pac = result.scalars().first()
-        # Assert that the fetched pac is not None and matches the added pac
+        # Assert that the fetched pac
+        # is not None and matches the
+        # added pac
         assert fetched_pac is not None
         assert isinstance(fetched_pac, Pac)
         assert fetched_pac.pac_id == added_pac.pac_id
@@ -114,22 +123,30 @@ class TestPacManager:
         `PacManager` that checks if the
         correct pac object is returned.
         """
-        # Create a test pac using the PacFactory
+        # Create a test pac
+        # using the PacFactory
         # without persisting it to the database
-        test_pac = await PacFactory.build_async(session)
+        test_pac = await PacFactory.build_async(
+            session)
         assert test_pac.pac_id == 0
         test_pac.code = uuid.uuid4()
-        # Add the pac using the manager's add method
-        added_pac = await pac_manager.add(pac=test_pac)
+        # Add the pac using
+        # the manager's add method
+        added_pac = await pac_manager.add(
+            pac=test_pac)
         assert isinstance(added_pac, Pac)
         assert str(added_pac.insert_user_id) == (
             str(pac_manager._session_context.customer_code))
         assert str(added_pac.last_update_user_id) == (
             str(pac_manager._session_context.customer_code))
         assert added_pac.pac_id > 0
-        # Assert that the returned pac matches the test pac
-        assert added_pac.pac_id == test_pac.pac_id
-        assert added_pac.code == test_pac.code
+        # Assert that the returned
+        # pac matches the
+        # test pac
+        assert added_pac.pac_id == \
+            test_pac.pac_id
+        assert added_pac.code == \
+            test_pac.code
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
@@ -140,11 +157,16 @@ class TestPacManager:
         Test case for the `get_by_id` method of
         `PacManager`.
         """
-        test_pac = await PacFactory.create_async(session)
-        pac = await pac_manager.get_by_id(test_pac.pac_id)
-        assert isinstance(pac, Pac)
-        assert test_pac.pac_id == pac.pac_id
-        assert test_pac.code == pac.code
+        test_pac = await PacFactory.create_async(
+            session)
+        pac = await pac_manager.get_by_id(
+            test_pac.pac_id)
+        assert isinstance(
+            pac, Pac)
+        assert test_pac.pac_id == \
+            pac.pac_id
+        assert test_pac.code == \
+            pac.code
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
@@ -152,10 +174,12 @@ class TestPacManager:
     ):
         """
         Test case for the `get_by_id` method of
-        `PacManager` when the pac is not found.
+        `PacManager` when the
+        pac is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_pac = await pac_manager.get_by_id(non_existent_id)
+        retrieved_pac = await pac_manager.get_by_id(
+            non_existent_id)
         assert retrieved_pac is None
     @pytest.mark.asyncio
     async def test_get_by_code_returns_pac(
@@ -165,14 +189,20 @@ class TestPacManager:
     ):
         """
         Test case for the `get_by_code` method of
-        `PacManager` that checks if a pac is
+        `PacManager` that checks if
+        a pac is
         returned by its code.
         """
-        test_pac = await PacFactory.create_async(session)
-        pac = await pac_manager.get_by_code(test_pac.code)
-        assert isinstance(pac, Pac)
-        assert test_pac.pac_id == pac.pac_id
-        assert test_pac.code == pac.code
+        test_pac = await PacFactory.create_async(
+            session)
+        pac = await pac_manager.get_by_code(
+            test_pac.code)
+        assert isinstance(
+            pac, Pac)
+        assert test_pac.pac_id == \
+            pac.pac_id
+        assert test_pac.code == \
+            pac.code
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
@@ -185,7 +215,8 @@ class TestPacManager:
         # Generate a random UUID that doesn't correspond to
         # any Pac in the database
         random_code = uuid.uuid4()
-        pac = await pac_manager.get_by_code(random_code)
+        pac = await pac_manager.get_by_code(
+            random_code)
         assert pac is None
     @pytest.mark.asyncio
     async def test_update(
@@ -194,26 +225,36 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `PacManager`
-        that checks if a pac is correctly updated.
+        Test case for the `update` method
+        of `PacManager`
+        that checks if a pac
+        is correctly updated.
         """
-        test_pac = await PacFactory.create_async(session)
+        test_pac = await PacFactory.create_async(
+            session)
         test_pac.code = uuid.uuid4()
-        updated_pac = await pac_manager.update(pac=test_pac)
+        updated_pac = await pac_manager.update(
+            pac=test_pac)
         assert isinstance(updated_pac, Pac)
         assert str(updated_pac.last_update_user_id) == str(
             pac_manager._session_context.customer_code)
-        assert updated_pac.pac_id == test_pac.pac_id
-        assert updated_pac.code == test_pac.code
+        assert updated_pac.pac_id == \
+            test_pac.pac_id
+        assert updated_pac.code == \
+            test_pac.code
         result = await session.execute(
             select(Pac).filter(
                 Pac._pac_id == test_pac.pac_id)  # type: ignore
         )
         fetched_pac = result.scalars().first()
-        assert updated_pac.pac_id == fetched_pac.pac_id
-        assert updated_pac.code == fetched_pac.code
-        assert test_pac.pac_id == fetched_pac.pac_id
-        assert test_pac.code == fetched_pac.code
+        assert updated_pac.pac_id == \
+            fetched_pac.pac_id
+        assert updated_pac.code == \
+            fetched_pac.code
+        assert test_pac.pac_id == \
+            fetched_pac.pac_id
+        assert test_pac.code == \
+            fetched_pac.code
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
@@ -221,10 +262,13 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `PacManager`
-        that checks if a pac is correctly updated using a dictionary.
+        Test case for the `update` method
+        of `PacManager`
+        that checks if a pac is
+        correctly updated using a dictionary.
         """
-        test_pac = await PacFactory.create_async(session)
+        test_pac = await PacFactory.create_async(
+            session)
         new_code = uuid.uuid4()
         updated_pac = await pac_manager.update(
             pac=test_pac,
@@ -234,17 +278,22 @@ class TestPacManager:
         assert str(updated_pac.last_update_user_id) == str(
             pac_manager._session_context.customer_code
         )
-        assert updated_pac.pac_id == test_pac.pac_id
+        assert updated_pac.pac_id == \
+            test_pac.pac_id
         assert updated_pac.code == new_code
         result = await session.execute(
             select(Pac).filter(
                 Pac._pac_id == test_pac.pac_id)  # type: ignore
         )
         fetched_pac = result.scalars().first()
-        assert updated_pac.pac_id == fetched_pac.pac_id
-        assert updated_pac.code == fetched_pac.code
-        assert test_pac.pac_id == fetched_pac.pac_id
-        assert new_code == fetched_pac.code
+        assert updated_pac.pac_id == \
+            fetched_pac.pac_id
+        assert updated_pac.code == \
+            fetched_pac.code
+        assert test_pac.pac_id == \
+            fetched_pac.pac_id
+        assert new_code == \
+            fetched_pac.code
     @pytest.mark.asyncio
     async def test_update_invalid_pac(
         self,
@@ -258,7 +307,8 @@ class TestPacManager:
         pac = None
         new_code = uuid.uuid4()
         updated_pac = await (
-            pac_manager.update(pac, code=new_code))  # type: ignore
+            pac_manager.update(
+                pac, code=new_code))  # type: ignore
         # Assertions
         assert updated_pac is None
     @pytest.mark.asyncio
@@ -271,7 +321,8 @@ class TestPacManager:
         Test case for the `update` method of `PacManager`
         with a nonexistent attribute.
         """
-        test_pac = await PacFactory.create_async(session)
+        test_pac = await PacFactory.create_async(
+            session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             await pac_manager.update(
@@ -288,14 +339,16 @@ class TestPacManager:
         """
         Test case for the `delete` method of `PacManager`.
         """
-        pac_data = await PacFactory.create_async(session)
+        pac_data = await PacFactory.create_async(
+            session)
         result = await session.execute(
             select(Pac).filter(
                 Pac._pac_id == pac_data.pac_id)  # type: ignore
         )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
-        assert fetched_pac.pac_id == pac_data.pac_id
+        assert fetched_pac.pac_id == \
+            pac_data.pac_id
         await pac_manager.delete(
             pac_id=pac_data.pac_id)
         result = await session.execute(
@@ -337,7 +390,8 @@ class TestPacManager:
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager): An
+                instance of the
                 `PacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
         Returns:
@@ -379,7 +433,8 @@ class TestPacManager:
         assert isinstance(pacs_data, List)
         pacs = await pac_manager.get_list()
         assert len(pacs) == 5
-        assert all(isinstance(pac, Pac) for pac in pacs)
+        assert all(isinstance(
+            pac, Pac) for pac in pacs)
     @pytest.mark.asyncio
     async def test_to_json(
         self,
@@ -389,7 +444,8 @@ class TestPacManager:
         """
         Test the 'to_json' method of the PacManager class.
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager): An
+                instance of the
                 PacManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
@@ -397,8 +453,10 @@ class TestPacManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        pac = await PacFactory.build_async(session)
-        json_data = pac_manager.to_json(pac)
+        pac = await PacFactory.build_async(
+            session)
+        json_data = pac_manager.to_json(
+            pac)
         assert json_data is not None
     @pytest.mark.asyncio
     async def test_to_dict(
@@ -409,14 +467,17 @@ class TestPacManager:
         """
         Test the to_dict method of the PacManager class.
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager): An
+                instance of the
                 PacManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
             None
         """
-        pac = await PacFactory.build_async(session)
-        dict_data = pac_manager.to_dict(pac)
+        pac = await PacFactory.build_async(
+            session)
+        dict_data = pac_manager.to_dict(
+            pac)
         assert dict_data is not None
     @pytest.mark.asyncio
     async def test_from_json(
@@ -428,24 +489,30 @@ class TestPacManager:
         Test the `from_json` method of the `PacManager` class.
         This method tests the functionality of the
         `from_json` method of the `PacManager` class.
-        It creates a pac using the `PacFactory`
+        It creates a pac using
+        the `PacFactory`
         and converts it to JSON using the `to_json` method.
         Then, it deserializes the JSON data using the
         `from_json` method and asserts that the deserialized
-        pac is an instance of the `Pac` class and has
+        pac is an instance of the
+        `Pac` class and has
         the same code as the original pac.
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager): An
+            instance of the
                 `PacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
         Returns:
             None
         """
-        pac = await PacFactory.create_async(session)
-        json_data = pac_manager.to_json(pac)
+        pac = await PacFactory.create_async(
+            session)
+        json_data = pac_manager.to_json(
+            pac)
         deserialized_pac = pac_manager.from_json(json_data)
         assert isinstance(deserialized_pac, Pac)
-        assert deserialized_pac.code == pac.code
+        assert deserialized_pac.code == \
+            pac.code
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
@@ -457,7 +524,8 @@ class TestPacManager:
         `PacManager` class.
         This method tests the functionality of the
         `from_dict` method, which is used to deserialize
-        a dictionary representation of a pac object.
+        a dictionary representation of a
+        pac object.
         Args:
             pac_manager (PacManager): An instance
                 of the `PacManager` class.
@@ -467,13 +535,16 @@ class TestPacManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        pac = await PacFactory.create_async(session)
+        pac = await PacFactory.create_async(
+            session)
         schema = PacSchema()
         pac_data = schema.dump(pac)
         assert isinstance(pac_data, dict)
-        deserialized_pac = pac_manager.from_dict(pac_data)
+        deserialized_pac = pac_manager.from_dict(
+            pac_data)
         assert isinstance(deserialized_pac, Pac)
-        assert deserialized_pac.code == pac.code
+        assert deserialized_pac.code == \
+            pac.code
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
@@ -489,22 +560,30 @@ class TestPacManager:
         1. Generate a list of pac data using the
             `PacFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `pac_manager` instance, passing in the generated pac data.
-        3. Verify that the number of pacs returned is
+            `pac_manager` instance,
+            passing in the
+            generated pac data.
+        3. Verify that the number of pacs
+            returned is
             equal to the number of pacs added.
         4. For each updated pac, fetch the corresponding
             pac from the database.
-        5. Verify that the fetched pac is an instance of the
+        5. Verify that the fetched pac
+            is an instance of the
             `Pac` class.
         6. Verify that the insert_user_id and
-            last_update_user_id of the fetched pac match the
+            last_update_user_id of the fetched
+            pac match the
             customer code of the session context.
         7. Verify that the pac_id of the fetched
-            pac matches the pac_id of the updated pac.
+            pac matches the
+            pac_id of the updated
+            pac.
         """
         pacs_data = [
             await PacFactory.build_async(session) for _ in range(5)]
-        pacs = await pac_manager.add_bulk(pacs_data)
+        pacs = await pac_manager.add_bulk(
+            pacs_data)
         assert len(pacs) == 5
         for updated_pac in pacs:
             result = await session.execute(
@@ -518,7 +597,8 @@ class TestPacManager:
                 str(pac_manager._session_context.customer_code))
             assert str(fetched_pac.last_update_user_id) == (
                 str(pac_manager._session_context.customer_code))
-            assert fetched_pac.pac_id == updated_pac.pac_id
+            assert fetched_pac.pac_id == \
+                updated_pac.pac_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
@@ -529,7 +609,8 @@ class TestPacManager:
         Test case for bulk update of pacs.
         This test case verifies the functionality of the
         `update_bulk` method in the `PacManager` class.
-        It creates two pac instances, updates their codes
+        It creates two pac instances,
+        updates their codes
         using the `update_bulk` method, and then verifies
         that the updates were successful by checking the
         updated codes in the database.
@@ -548,8 +629,10 @@ class TestPacManager:
             None
         """
         # Mocking pac instances
-        pac1 = await PacFactory.create_async(session=session)
-        pac2 = await PacFactory.create_async(session=session)
+        pac1 = await PacFactory.create_async(
+            session=session)
+        pac2 = await PacFactory.create_async(
+            session=session)
         logging.info(pac1.__dict__)
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -566,7 +649,8 @@ class TestPacManager:
                 "code": code_updated2
             }
         ]
-        updated_pacs = await pac_manager.update_bulk(updates)
+        updated_pacs = await pac_manager.update_bulk(
+            updates)
         logging.info('bulk update results')
         # Assertions
         assert len(updated_pacs) == 2
@@ -583,13 +667,15 @@ class TestPacManager:
         assert str(updated_pacs[1].last_update_user_id) == (
             str(pac_manager._session_context.customer_code))
         result = await session.execute(
-            select(Pac).filter(Pac._pac_id == 1)  # type: ignore
+            select(Pac).filter(
+                Pac._pac_id == 1)  # type: ignore
         )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
         assert fetched_pac.code == code_updated1
         result = await session.execute(
-            select(Pac).filter(Pac._pac_id == 2)  # type: ignore
+            select(Pac).filter(
+                Pac._pac_id == 2)  # type: ignore
         )
         fetched_pac = result.scalars().first()
         assert isinstance(fetched_pac, Pac)
@@ -627,7 +713,8 @@ class TestPacManager:
         Test case to verify the behavior of the update_bulk
         method when a pac is not found.
         This test case performs the following steps:
-        1. Defines a list of pac updates, where each update
+        1. Defines a list of pac updates,
+            where each update
             contains a pac_id and a code.
         2. Calls the update_bulk method of the
             pac_manager with the list of updates.
@@ -635,7 +722,8 @@ class TestPacManager:
             the pac was not found.
         4. Rolls back the session to undo any changes made during the test.
         Note: This test assumes that the update_bulk method
-        throws an exception when a pac is not found.
+        throws an exception when a
+        pac is not found.
         """
         # Update pacs
         updates = [{"pac_id": 1, "code": uuid.uuid4()}]
@@ -676,8 +764,10 @@ class TestPacManager:
         successfully deletes multiple pacs
         from the database.
         Steps:
-        1. Create two pac objects using the PacFactory.
-        2. Delete the pacs using the delete_bulk method
+        1. Create two pac objects
+            using the PacFactory.
+        2. Delete the pacs using the
+            delete_bulk method
             of the pac_manager.
         3. Verify that the delete operation was successful by
             checking if the pacs no longer exist in the database.
@@ -686,11 +776,14 @@ class TestPacManager:
             that the delete operation was successful.
         - The pacs should no longer exist in the database.
         """
-        pac1 = await PacFactory.create_async(session=session)
-        pac2 = await PacFactory.create_async(session=session)
+        pac1 = await PacFactory.create_async(
+            session=session)
+        pac2 = await PacFactory.create_async(
+            session=session)
         # Delete pacs
         pac_ids = [pac1.pac_id, pac2.pac_id]
-        result = await pac_manager.delete_bulk(pac_ids)
+        result = await pac_manager.delete_bulk(
+            pac_ids)
         assert result is True
         for pac_id in pac_ids:
             execute_result = await session.execute(
@@ -709,8 +802,10 @@ class TestPacManager:
         Test case to verify the behavior of deleting bulk
         pacs when some pacs are not found.
         Steps:
-        1. Create a pac using the PacFactory.
-        2. Assert that the created pac is an instance of the
+        1. Create a pac using the
+            PacFactory.
+        2. Assert that the created pac
+            is an instance of the
             Pac class.
         3. Define a list of pac IDs to delete.
         4. Use pytest.raises to assert that an exception is
@@ -721,12 +816,14 @@ class TestPacManager:
         when some pacs with the specified IDs are
         not found in the database.
         """
-        pac1 = await PacFactory.create_async(session=session)
+        pac1 = await PacFactory.create_async(
+            session=session)
         assert isinstance(pac1, Pac)
         # Delete pacs
         pac_ids = [1, 2]
         with pytest.raises(Exception):
-            await pac_manager.delete_bulk(pac_ids)
+            await pac_manager.delete_bulk(
+                pac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -737,7 +834,8 @@ class TestPacManager:
         Test case to verify the behavior of deleting
         pacs with an empty list.
         Args:
-            pac_manager (PacManager): The instance of the
+            pac_manager (PacManager): The
+                instance of the
                 PacManager class.
         Returns:
             None
@@ -746,7 +844,8 @@ class TestPacManager:
         """
         # Delete pacs with an empty list
         pac_ids = []
-        result = await pac_manager.delete_bulk(pac_ids)
+        result = await pac_manager.delete_bulk(
+            pac_ids)
         # Assertions
         assert result is True
     @pytest.mark.asyncio
@@ -759,7 +858,8 @@ class TestPacManager:
         Test case to verify the behavior of the delete_bulk
         method when invalid pac IDs are provided.
         Args:
-            pac_manager (PacManager): The instance of the
+            pac_manager (PacManager): The
+                instance of the
                 PacManager class.
             session (AsyncSession): The async session object.
         Raises:
@@ -770,7 +870,8 @@ class TestPacManager:
         """
         pac_ids = ["1", 2]
         with pytest.raises(Exception):
-            await pac_manager.delete_bulk(pac_ids)
+            await pac_manager.delete_bulk(
+                pac_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -781,11 +882,14 @@ class TestPacManager:
         """
         Test the basic functionality of the count method
         in the PacManager class.
-        This test case creates 5 pac objects using the
+        This test case creates 5 pac
+        objects using the
         PacFactory and checks if the count method
-        returns the correct count of pacs.
+        returns the correct count of
+        pacs.
         Steps:
-        1. Create 5 pac objects using the PacFactory.
+        1. Create 5 pac objects using
+            the PacFactory.
         2. Call the count method of the pac_manager.
         3. Assert that the count is equal to 5.
         """
@@ -804,7 +908,8 @@ class TestPacManager:
         This test case checks if the count method of the
         PacManager class returns 0 when the database is empty.
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager): An
+                instance of the
                 PacManager class.
         Returns:
             None
@@ -873,7 +978,8 @@ class TestPacManager:
         Test case to check if an AttributeError is raised when
         sorting the list by an invalid attribute.
         Args:
-            pac_manager (PacManager): The instance of the
+            pac_manager (PacManager): The
+                instance of the
                 PacManager class.
             session (AsyncSession): The instance of the AsyncSession class.
         Raises:
@@ -882,7 +988,8 @@ class TestPacManager:
             None
         """
         with pytest.raises(AttributeError):
-            await pac_manager.get_sorted_list(sort_by="invalid_attribute")
+            await pac_manager.get_sorted_list(
+                sort_by="invalid_attribute")
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_sorted_list_empty_database(
@@ -895,12 +1002,14 @@ class TestPacManager:
         This test ensures that when the database is empty, the
         `get_sorted_list` method returns an empty list.
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager): An
+                instance of the
                 PacManager class.
         Returns:
             None
         """
-        sorted_pacs = await pac_manager.get_sorted_list(sort_by="pac_id")
+        sorted_pacs = await pac_manager.get_sorted_list(
+            sort_by="pac_id")
         assert len(sorted_pacs) == 0
     @pytest.mark.asyncio
     async def test_refresh_basic(
@@ -909,40 +1018,52 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-        Test the basic functionality of refreshing a pac instance.
+        Test the basic functionality of refreshing
+        a pac instance.
         This test performs the following steps:
-        1. Creates a pac instance using the PacFactory.
-        2. Retrieves the pac from the database to ensure
+        1. Creates a pac instance using
+            the PacFactory.
+        2. Retrieves the pac from th
+            database to ensure
             it was added correctly.
         3. Updates the pac's code and verifies the update.
-        4. Refreshes the original pac instance and checks if
+        4. Refreshes the original pac instance
+            and checks if
             it reflects the updated code.
         Args:
-            pac_manager (PacManager): The manager responsible
+            pac_manager (PacManager): The
+                manager responsible
                 for pac operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a pac
-        pac1 = await PacFactory.create_async(session=session)
+        pac1 = await PacFactory.create_async(
+            session=session)
         # Retrieve the pac from the database
         result = await session.execute(
             select(Pac).filter(
                 Pac._pac_id == pac1.pac_id)  # type: ignore
         )  # type: ignore
         pac2 = result.scalars().first()
-        # Verify that the retrieved pac matches the added pac
-        assert pac1.code == pac2.code
+        # Verify that the retrieved pac
+        # matches the added pac
+        assert pac1.code == \
+            pac2.code
         # Update the pac's code
         updated_code1 = uuid.uuid4()
         pac1.code = updated_code1
-        updated_pac1 = await pac_manager.update(pac1)
-        # Verify that the updated pac is of type Pac
+        updated_pac1 = await pac_manager.update(
+            pac1)
+        # Verify that the updated pac
+        # is of type Pac
         # and has the updated code
         assert isinstance(updated_pac1, Pac)
         assert updated_pac1.code == updated_code1
         # Refresh the original pac instance
-        refreshed_pac2 = await pac_manager.refresh(pac2)
-        # Verify that the refreshed pac reflects the updated code
+        refreshed_pac2 = await pac_manager.refresh(
+            pac2)
+        # Verify that the refreshed pac
+        # reflects the updated code
         assert refreshed_pac2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_pac(
@@ -953,17 +1074,21 @@ class TestPacManager:
         """
         Test case to verify the behavior of refreshing a nonexistent pac.
         Args:
-            pac_manager (PacManager): The instance of the
+            pac_manager (PacManager): The
+                instance of the
                 PacManager class.
             session (AsyncSession): The instance of the AsyncSession class.
         Raises:
-            Exception: If the pac refresh operation raises an exception.
+            Exception: If the pac
+            refresh operation raises an exception.
         Returns:
             None
         """
-        pac = Pac(pac_id=999)
+        pac = Pac(
+            pac_id=999)
         with pytest.raises(Exception):
-            await pac_manager.refresh(pac)
+            await pac_manager.refresh(
+                pac)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_exists_with_existing_pac(
@@ -972,17 +1097,22 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-        Test case to check if a pac exists using the manager function.
+        Test case to check if a pac
+        exists using the manager function.
         Args:
-            pac_manager (PacManager): The pac manager instance.
+            pac_manager (PacManager): The
+                pac manager instance.
             session (AsyncSession): The async session object.
         Returns:
             None
         """
         # Add a pac
-        pac1 = await PacFactory.create_async(session=session)
-        # Check if the pac exists using the manager function
-        assert await pac_manager.exists(pac1.pac_id) is True
+        pac1 = await PacFactory.create_async(
+            session=session)
+        # Check if the pac exists
+        # using the manager function
+        assert await pac_manager.exists(
+            pac1.pac_id) is True
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_pac(
         self,
@@ -993,19 +1123,26 @@ class TestPacManager:
         Test if the is_equal method of the
         PacManager class correctly compares two pacs.
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager): An
+                instance of the
                 PacManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
             None
         """
         # Add a pac
-        pac1 = await PacFactory.create_async(session=session)
-        pac2 = await pac_manager.get_by_id(pac_id=pac1.pac_id)
-        assert pac_manager.is_equal(pac1, pac2) is True
-        pac1_dict = pac_manager.to_dict(pac1)
-        pac3 = pac_manager.from_dict(pac1_dict)
-        assert pac_manager.is_equal(pac1, pac3) is True
+        pac1 = await PacFactory.create_async(
+            session=session)
+        pac2 = await pac_manager.get_by_id(
+            pac_id=pac1.pac_id)
+        assert pac_manager.is_equal(
+            pac1, pac2) is True
+        pac1_dict = pac_manager.to_dict(
+            pac1)
+        pac3 = pac_manager.from_dict(
+            pac1_dict)
+        assert pac_manager.is_equal(
+            pac1, pac3) is True
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_pac(
         self,
@@ -1018,7 +1155,8 @@ class TestPacManager:
             pac_manager (PacManager): The
                 instance of the PacManager class.
         Returns:
-            bool: True if the pac exists, False otherwise.
+            bool: True if the pac exists,
+                False otherwise.
         """
         non_existent_id = 999
         assert await pac_manager.exists(non_existent_id) is False

@@ -1,14 +1,17 @@
 # models/serialization_schema/flavor.py
 """
-This module contains the FlavorSchema class, which is responsible
-for serializing and deserializing Flavor objects.
+This module contains the FlavorSchema
+class, which is responsible
+for serializing and deserializing
+Flavor objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Flavor
 class FlavorSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing Flavor objects.
+    Schema class for serializing and deserializing
+    Flavor objects.
     """
     class Meta:
         """

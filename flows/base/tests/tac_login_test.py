@@ -23,7 +23,8 @@ class TestBaseFlowTacLogin():
         Test case for the _process_validation_rules method
         of the BaseFlowTacLogin class.
         This method tests the validation rules for the request
-        parameters of the tac Log In flow.
+        parameters of the
+        tac Log In flow.
         Args:
             session: The session object for the test.
         Returns:

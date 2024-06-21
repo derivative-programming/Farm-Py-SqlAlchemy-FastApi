@@ -1,6 +1,7 @@
 # reports/row_models/tests/pac_user_land_list_test.py
 """
-This module contains unit tests for the `ReportItemPacUserLandList` class.
+This module contains unit tests for the
+`ReportItemPacUserLandList` class.
 The `ReportItemPacUserLandList` class represents a
 report item for a pac Pac User Land List Report.
 It contains various fields with default values and

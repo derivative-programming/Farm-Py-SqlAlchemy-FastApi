@@ -1,6 +1,7 @@
 # apis/models/tac_login.py
 """
-This module contains the models for the Tac Login API.
+This module contains the models for the
+Tac Login API.
 """
 import json
 import logging
@@ -18,7 +19,8 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class TacLoginPostModelRequest(CamelModel):
     """
-    Represents the request model for the Tac Login API.
+    Represents the request model for the
+    Tac Login API.
     """
     force_error_message: str = Field(
         default="",
@@ -65,7 +67,8 @@ class TacLoginPostModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class TacLoginPostModelResponse(PostResponse):
     """
-    Represents the response model for the Tac Login API.
+    Represents the response model for the
+    Tac Login API.
     """
     customer_code: UUID4 = Field(
         default=uuid.UUID(int=0),

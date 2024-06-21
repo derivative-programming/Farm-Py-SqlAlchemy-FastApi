@@ -1,7 +1,9 @@
 # models/factory/organization.py
 """
-This module contains the OrganizationFactory class, which is responsible
-for creating instances of the Organization model using the Factory pattern.
+This module contains the OrganizationFactory
+class, which is responsible
+for creating instances of the Organization
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -13,7 +15,8 @@ from .tac import TacFactory  # tac_id
 logger = get_logger(__name__)
 class OrganizationFactory(factory.Factory):
     """
-    Factory class for creating instances of the Organization model.
+    Factory class for creating instances of
+    the Organization model.
     """
     class Meta:
         """
@@ -35,7 +38,8 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Organization:
         """
-            Builds and returns an instance of the Organization model.
+            Builds and returns an instance
+            of the Organization model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -43,7 +47,8 @@ class OrganizationFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                Organization: An instance of the Organization model.
+                Organization: An instance of the
+                    Organization model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -68,14 +73,16 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> Organization:
         """
-        Create a new Organization object and save it to the database.
+        Create a new Organization object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            Organization: The created Organization object.
+            Organization: The created
+                Organization object.
         """
         logger.info("factory create")
         tac_id_tac_instance = (  # TacID
@@ -98,7 +105,8 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Organization:
         """
-        Create a new Organization object asynchronously.
+        Create a new Organization object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -126,7 +134,8 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Organization:
         """
-        Build a new Organization object asynchronously.
+        Build a new Organization object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.

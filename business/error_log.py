@@ -1,6 +1,7 @@
 # business/error_log.py
 """
-This module contains the ErrorLogBusObj class, which represents the business object for a ErrorLog.
+This module contains the ErrorLogBusObj class,
+which represents the business object for a ErrorLog.
 """
 from decimal import Decimal
 import random
@@ -18,7 +19,9 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "ErrorLog object is not initialized")
 class ErrorLogInvalidInitError(Exception):
     """
-    Exception raised when the ErrorLog object is not initialized properly.
+    Exception raised when the
+    ErrorLog object
+    is not initialized properly.
     """
 class ErrorLogBusObj(BaseBusObj):
     """
@@ -27,7 +30,8 @@ class ErrorLogBusObj(BaseBusObj):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ErrorLogBusObj class.
+        Initializes a new instance of the
+        ErrorLogBusObj class.
         :param session_context: The session context.
         :raises ValueError: If the session is not provided.
         """
@@ -38,9 +42,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def error_log_id(self) -> int:
         """
-        Get the error_log ID from the ErrorLog object.
+        Get the error_log ID from the
+        ErrorLog object.
         :return: The error_log ID.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -51,9 +57,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        Get the code from the ErrorLog object.
+        Get the code from the
+        ErrorLog object.
         :return: The code.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -65,7 +73,8 @@ class ErrorLogBusObj(BaseBusObj):
         """
         Set the code for the ErrorLog object.
         :param value: The code value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises ValueError: If the code is not a UUID.
         """
         if not self.error_log:
@@ -79,9 +88,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        Get the last change code from the ErrorLog object.
+        Get the last change code from the
+        ErrorLog object.
         :return: The last change code.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -91,9 +102,11 @@ class ErrorLogBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        Set the last change code for the ErrorLog object.
+        Set the last change code for the
+        ErrorLog object.
         :param value: The last change code value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises ValueError: If the last change code is not an integer.
         """
         if not self.error_log:
@@ -107,9 +120,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        Get the insert user ID from the ErrorLog object.
+        Get the insert user ID from the
+        ErrorLog object.
         :return: The insert user ID.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -119,9 +134,11 @@ class ErrorLogBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        Set the insert user ID for the ErrorLog object.
+        Set the insert user ID for the
+        ErrorLog object.
         :param value: The insert user ID value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.error_log:
@@ -135,9 +152,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        Get the last update user ID from the ErrorLog object.
+        Get the last update user ID from the
+        ErrorLog object.
         :return: The last update user ID.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -147,9 +166,11 @@ class ErrorLogBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        Set the last update user ID for the ErrorLog object.
+        Set the last update user ID for the
+        ErrorLog object.
         :param value: The last update user ID value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.error_log:
@@ -164,7 +185,15 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def browser_code(self):
         """
-        #TODO add comment
+        Returns the value of the
+        some unique identifier for the
+        error_log.
+        Raises:
+            AttributeError: If the
+                error_log is not initialized.
+        Returns:
+            The value of the some unique identifier for the
+            error_log.
         """
         if not self.error_log:
             raise AttributeError(
@@ -174,7 +203,16 @@ class ErrorLogBusObj(BaseBusObj):
     @browser_code.setter
     def browser_code(self, value):
         """
-        #TODO add comment
+        Sets the value of the
+        'browser_code'
+        attribute for the
+        error_log.
+        Args:
+            value (uuid.UUID): The UUID value to set for
+                'browser_code'.
+        Raises:
+            AttributeError: If the
+                error_log is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -185,7 +223,12 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.browser_code = value
     def set_prop_browser_code(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the value of the
+        'browser_code' property.
+        Args:
+            value (uuid.UUID): The value to set.
+        Returns:
+            self: The current instance of the class.
         """
         self.browser_code = value
         return self
@@ -193,7 +236,15 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def context_code(self):
         """
-        #TODO add comment
+        Returns the value of the
+        some unique identifier for the
+        error_log.
+        Raises:
+            AttributeError: If the
+                error_log is not initialized.
+        Returns:
+            The value of the some unique identifier for the
+            error_log.
         """
         if not self.error_log:
             raise AttributeError(
@@ -203,7 +254,16 @@ class ErrorLogBusObj(BaseBusObj):
     @context_code.setter
     def context_code(self, value):
         """
-        #TODO add comment
+        Sets the value of the
+        'context_code'
+        attribute for the
+        error_log.
+        Args:
+            value (uuid.UUID): The UUID value to set for
+                'context_code'.
+        Raises:
+            AttributeError: If the
+                error_log is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -214,7 +274,12 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.context_code = value
     def set_prop_context_code(self, value: uuid.UUID):
         """
-        #TODO add comment
+        Set the value of the
+        'context_code' property.
+        Args:
+            value (uuid.UUID): The value to set.
+        Returns:
+            self: The current instance of the class.
         """
         self.context_code = value
         return self
@@ -222,7 +287,16 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def created_utc_date_time(self):
         """
-        #TODO add comment
+        Returns the value of
+        created_utc_date_time attribute of the
+        error_log.
+        Raises:
+            AttributeError: If the
+                error_log is not initialized.
+        Returns:
+            The value of
+            created_utc_date_time
+            attribute.
         """
         if not self.error_log:
             raise AttributeError(
@@ -232,7 +306,14 @@ class ErrorLogBusObj(BaseBusObj):
     @created_utc_date_time.setter
     def created_utc_date_time(self, value):
         """
-        #TODO add comment
+        Sets the value of
+        created_utc_date_time attribute
+        for the error_log.
+        Args:
+            value (datetime): The datetime value to be set.
+        Raises:
+            AttributeError: If the
+                error_log is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -243,7 +324,12 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.created_utc_date_time = value
     def set_prop_created_utc_date_time(self, value: datetime):
         """
-        #TODO add comment
+        Sets the value of the
+        'created_utc_date_time' property.
+        Args:
+            value (datetime): The datetime value to set.
+        Returns:
+            self: The current instance of the class.
         """
         self.created_utc_date_time = value
         return self
@@ -251,9 +337,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def description(self):
         """
-        Get the Description from the ErrorLog object.
+        Get the Description from the
+        ErrorLog object.
         :return: The Description.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -265,9 +353,11 @@ class ErrorLogBusObj(BaseBusObj):
     @description.setter
     def description(self, value):
         """
-        Set the Description for the ErrorLog object.
+        Set the Description for the
+        ErrorLog object.
         :param value: The Description value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises AssertionError: If the Description is not a string.
         """
         if not self.error_log:
@@ -278,9 +368,11 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.description = value
     def set_prop_description(self, value: str):
         """
-        Set the Description for the ErrorLog object.
+        Set the Description for the
+        ErrorLog object.
         :param value: The Description value.
-        :return: The updated ErrorLogBusObj instance.
+        :return: The updated
+            ErrorLogBusObj instance.
         """
         self.description = value
         return self
@@ -288,9 +380,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def is_client_side_error(self):
         """
-        Get the Is Client Side Error flag from the ErrorLog object.
+        Get the Is Client Side Error flag from the
+        ErrorLog object.
         :return: The Is Client Side Error flag.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -300,9 +394,11 @@ class ErrorLogBusObj(BaseBusObj):
     @is_client_side_error.setter
     def is_client_side_error(self, value: bool):
         """
-        Set the Is Client Side Error flag for the ErrorLog object.
+        Set the Is Client Side Error flag for the
+        ErrorLog object.
         :param value: The Is Client Side Error flag value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises ValueError: If the Is Client Side Error flag is not a boolean.
         """
         if not self.error_log:
@@ -314,9 +410,11 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.is_client_side_error = value
     def set_prop_is_client_side_error(self, value: bool):
         """
-        Set the Is Client Side Error flag for the ErrorLog object.
+        Set the Is Client Side Error flag for the
+        ErrorLog object.
         :param value: The Is Client Side Error flag value.
-        :return: The updated ErrorLogBusObj instance.
+        :return: The updated
+            ErrorLogBusObj instance.
         """
         self.is_client_side_error = value
         return self
@@ -324,9 +422,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def is_resolved(self):
         """
-        Get the Is Resolved flag from the ErrorLog object.
+        Get the Is Resolved flag from the
+        ErrorLog object.
         :return: The Is Resolved flag.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -336,9 +436,11 @@ class ErrorLogBusObj(BaseBusObj):
     @is_resolved.setter
     def is_resolved(self, value: bool):
         """
-        Set the Is Resolved flag for the ErrorLog object.
+        Set the Is Resolved flag for the
+        ErrorLog object.
         :param value: The Is Resolved flag value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises ValueError: If the Is Resolved flag is not a boolean.
         """
         if not self.error_log:
@@ -350,9 +452,11 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.is_resolved = value
     def set_prop_is_resolved(self, value: bool):
         """
-        Set the Is Resolved flag for the ErrorLog object.
+        Set the Is Resolved flag for the
+        ErrorLog object.
         :param value: The Is Resolved flag value.
-        :return: The updated ErrorLogBusObj instance.
+        :return: The updated
+            ErrorLogBusObj instance.
         """
         self.is_resolved = value
         return self
@@ -361,9 +465,11 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def url(self):
         """
-        Get the Url from the ErrorLog object.
+        Get the Url from the
+        ErrorLog object.
         :return: The Url.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -375,9 +481,11 @@ class ErrorLogBusObj(BaseBusObj):
     @url.setter
     def url(self, value):
         """
-        Set the Url for the ErrorLog object.
+        Set the Url for the
+        ErrorLog object.
         :param value: The Url value.
-        :raises AttributeError: If the ErrorLog object is not initialized.
+        :raises AttributeError: If the
+            ErrorLog object is not initialized.
         :raises AssertionError: If the Url is not a string.
         """
         if not self.error_log:
@@ -388,9 +496,11 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.url = value
     def set_prop_url(self, value: str):
         """
-        Set the Url for the ErrorLog object.
+        Set the Url for the
+        ErrorLog object.
         :param value: The Url value.
-        :return: The updated ErrorLogBusObj instance.
+        :return: The updated
+            ErrorLogBusObj instance.
         """
         self.url = value
         return self
@@ -405,9 +515,12 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def pac_id(self):
         """
-        Returns the pac ID associated with the error_log.
+        Returns the pac ID
+        associated with the
+        error_log.
         Raises:
-            AttributeError: If the error_log is not initialized.
+            AttributeError: If the
+                error_log is not initialized.
         Returns:
             int: The pac ID of the error_log.
         """
@@ -419,12 +532,15 @@ class ErrorLogBusObj(BaseBusObj):
     @pac_id.setter
     def pac_id(self, value):
         """
-        Sets the pac ID for the error_log.
+        Sets the pac ID
+        for the error_log.
         Args:
-            value (int or None): The pac ID to be set.
+            value (int or None): The
+                pac ID to be set.
                 Must be an integer or None.
         Raises:
-            AttributeError: If the error_log is not initialized.
+            AttributeError: If the
+                error_log is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -435,22 +551,27 @@ class ErrorLogBusObj(BaseBusObj):
         self.error_log.pac_id = value
     def set_prop_pac_id(self, value: int):
         """
-        Set the pac ID for the error_log.
+        Set the pac ID for the
+        error_log.
         Args:
-            value (int): The ID of the pac.
+            value (int): The pac id value.
         Returns:
-            ErrorLog: The updated ErrorLog object.
+            ErrorLog: The updated
+                ErrorLog object.
         """
         self.pac_id = value
         return self
     @property
     def pac_code_peek(self) -> uuid.UUID:
         """
-        Returns the pac code peek of the error_log.
+        Returns the pac id code peek
+        of the error_log.
         Raises:
-            AttributeError: If the error_log is not initialized.
+            AttributeError: If the
+            error_log is not initialized.
         Returns:
-            uuid.UUID: The pac code peek of the error_log.
+            uuid.UUID: The pac id code peek
+            of the error_log.
         """
         if not self.error_log:
             raise AttributeError(
@@ -468,11 +589,14 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        Inserts the UTC date and time into the error_log object.
+        Inserts the UTC date and time into
+        the error_log object.
         Raises:
-            AttributeError: If the error_log object is not initialized.
+            AttributeError: If the
+                error_log object is not initialized.
         Returns:
-            The UTC date and time inserted into the error_log object.
+            The UTC date and time inserted into the
+            error_log object.
         """
         if not self.error_log:
             raise AttributeError(
@@ -482,12 +606,14 @@ class ErrorLogBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        Inserts the UTC date and time for the error_log.
+        Inserts the UTC date and time for the
+        error_log.
         Args:
             value (datetime): The UTC date and time to be inserted.
                 It should be a datetime object or None.
         Raises:
-            AttributeError: If the error_log is not initialized.
+            AttributeError: If the
+                error_log is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -500,11 +626,14 @@ class ErrorLogBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        Returns the last update UTC date and time of the error_log.
+        Returns the last update UTC date and time
+        of the error_log.
         Raises:
-            AttributeError: If the error_log is not initialized.
+            AttributeError: If the
+                error_log is not initialized.
         Returns:
-            datetime: The last update UTC date and time of the error_log.
+            datetime: The last update UTC date and time
+                of the error_log.
         """
         if not self.error_log:
             raise AttributeError(
@@ -514,13 +643,15 @@ class ErrorLogBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        Sets the last update UTC date and time for the error_log.
+        Sets the last update UTC date and time
+        for the error_log.
         Args:
             value (datetime): The datetime object
                 representing the last update UTC date and time.
                 Pass None to unset the value.
         Raises:
-            AttributeError: If the error_log is not initialized.
+            AttributeError: If the
+                error_log is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -534,14 +665,18 @@ class ErrorLogBusObj(BaseBusObj):
         json_data: str
     ):
         """
-        Load error_log data from JSON string.
-        :param json_data: JSON string containing error_log data.
+        Load error_log data
+        from JSON string.
+        :param json_data: JSON string containing
+            error_log data.
         :raises ValueError: If json_data is not a string
-            or if no error_log data is found.
+            or if no error_log
+            data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
-        error_log_manager = ErrorLogManager(self._session_context)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
         self.error_log = error_log_manager.from_json(json_data)
         return self
     async def load_from_code(
@@ -549,14 +684,19 @@ class ErrorLogBusObj(BaseBusObj):
         code: uuid.UUID
     ):
         """
-        Load error_log data from UUID code.
-        :param code: UUID code for loading a specific error_log.
-        :raises ValueError: If code is not a UUID or if no error_log data is found.
+        Load error_log
+        data from UUID code.
+        :param code: UUID code for loading a specific
+            error_log.
+        :raises ValueError: If code is not a UUID or if no
+            error_log data is found.
         """
         if not isinstance(code, uuid.UUID):
             raise ValueError("code must be a UUID")
-        error_log_manager = ErrorLogManager(self._session_context)
-        error_log_obj = await error_log_manager.get_by_code(code)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
+        error_log_obj = await error_log_manager.get_by_code(
+            code)
         self.error_log = error_log_obj
         return self
     async def load_from_id(
@@ -564,15 +704,21 @@ class ErrorLogBusObj(BaseBusObj):
         error_log_id: int
     ):
         """
-        Load error_log data from error_log ID.
-        :param error_log_id: Integer ID for loading a specific error_log.
-        :raises ValueError: If error_log_id is not an integer or
-            if no error_log data is found.
+        Load error_log data from
+        error_log ID.
+        :param error_log_id: Integer ID for loading a specific
+            error_log.
+        :raises ValueError: If error_log_id
+            is not an integer or
+            if no error_log
+            data is found.
         """
         if not isinstance(error_log_id, int):
             raise ValueError("error_log_id must be an integer")
-        error_log_manager = ErrorLogManager(self._session_context)
-        error_log_obj = await error_log_manager.get_by_id(error_log_id)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
+        error_log_obj = await error_log_manager.get_by_id(
+            error_log_id)
         self.error_log = error_log_obj
         return self
     async def load_from_obj_instance(
@@ -580,13 +726,19 @@ class ErrorLogBusObj(BaseBusObj):
         error_log_obj_instance: ErrorLog
     ):
         """
-        Use the provided ErrorLog instance.
-        :param error_log_obj_instance: Instance of the ErrorLog class.
-        :raises ValueError: If error_log_obj_instance is not an instance of ErrorLog.
+        Use the provided
+        ErrorLog instance.
+        :param error_log_obj_instance: Instance of the
+            ErrorLog class.
+        :raises ValueError: If error_log_obj_instance
+            is not an instance of
+            ErrorLog.
         """
-        if not isinstance(error_log_obj_instance, ErrorLog):
+        if not isinstance(error_log_obj_instance,
+                          ErrorLog):
             raise ValueError("error_log_obj_instance must be an instance of ErrorLog")
-        error_log_manager = ErrorLogManager(self._session_context)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
         error_log_obj_instance_error_log_id = error_log_obj_instance.error_log_id
         error_log_obj = await error_log_manager.get_by_id(
             error_log_obj_instance_error_log_id
@@ -598,15 +750,21 @@ class ErrorLogBusObj(BaseBusObj):
         error_log_dict: dict
     ):
         """
-        Load error_log data from dictionary.
-        :param error_log_dict: Dictionary containing error_log data.
-        :raises ValueError: If error_log_dict is not a
-            dictionary or if no error_log data is found.
+        Load error_log data
+        from dictionary.
+        :param error_log_dict: Dictionary containing
+            error_log data.
+        :raises ValueError: If error_log_dict
+            is not a
+            dictionary or if no
+            error_log data is found.
         """
         if not isinstance(error_log_dict, dict):
             raise ValueError("error_log_dict must be a dictionary")
-        error_log_manager = ErrorLogManager(self._session_context)
-        self.error_log = error_log_manager.from_dict(error_log_dict)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
+        self.error_log = error_log_manager.from_dict(
+            error_log_dict)
         return self
 
     def get_session_context(self):
@@ -618,82 +776,116 @@ class ErrorLogBusObj(BaseBusObj):
         return self._session_context
     async def refresh(self):
         """
-        Refreshes the error_log object by fetching
+        Refreshes the error_log
+        object by fetching
         the latest data from the database.
         Returns:
-            The updated error_log object.
+            The updated
+            error_log object.
         """
-        error_log_manager = ErrorLogManager(self._session_context)
-        self.error_log = await error_log_manager.refresh(self.error_log)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
+        self.error_log = await error_log_manager.refresh(
+            self.error_log)
         return self
     def is_valid(self):
         """
-        Check if the error_log is valid.
+        Check if the error_log
+        is valid.
         Returns:
-            bool: True if the error_log is valid, False otherwise.
+            bool: True if the error_log
+                is valid, False otherwise.
         """
         return self.error_log is not None
     def to_dict(self):
         """
-        Converts the ErrorLog object to a dictionary representation.
+        Converts the ErrorLog
+        object to a dictionary representation.
         Returns:
-            dict: A dictionary representation of the ErrorLog object.
+            dict: A dictionary representation of the
+                ErrorLog object.
         """
-        error_log_manager = ErrorLogManager(self._session_context)
-        return error_log_manager.to_dict(self.error_log)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
+        return error_log_manager.to_dict(
+            self.error_log)
     def to_json(self):
         """
-        Converts the error_log object to a JSON representation.
+        Converts the error_log
+        object to a JSON representation.
         Returns:
-            str: The JSON representation of the error_log object.
+            str: The JSON representation of the
+                error_log object.
         """
-        error_log_manager = ErrorLogManager(self._session_context)
-        return error_log_manager.to_json(self.error_log)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
+        return error_log_manager.to_json(
+            self.error_log)
     async def save(self):
         """
-        Saves the error_log object to the database.
-        If the error_log object is not initialized, an AttributeError is raised.
-        If the error_log_id is greater than 0, the error_log is
+        Saves the error_log object
+        to the database.
+        If the error_log object
+        is not initialized, an AttributeError is raised.
+        If the error_log_id
+        is greater than 0, the
+        error_log is
         updated in the database.
-        If the error_log_id is 0, the error_log is added to the database.
+        If the error_log_id is 0,
+        the error_log is
+        added to the database.
         Returns:
-            The updated or added error_log object.
+            The updated or added
+            error_log object.
         Raises:
-            AttributeError: If the error_log object is not initialized.
+            AttributeError: If the error_log
+            object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
         error_log_id = self.error_log.error_log_id
         if error_log_id > 0:
-            error_log_manager = ErrorLogManager(self._session_context)
-            self.error_log = await error_log_manager.update(self.error_log)
+            error_log_manager = ErrorLogManager(
+                self._session_context)
+            self.error_log = await error_log_manager.update(
+                self.error_log)
         if error_log_id == 0:
-            error_log_manager = ErrorLogManager(self._session_context)
-            self.error_log = await error_log_manager.add(self.error_log)
+            error_log_manager = ErrorLogManager(
+                self._session_context)
+            self.error_log = await error_log_manager.add(
+                self.error_log)
         return self
     async def delete(self):
         """
-        Deletes the error_log from the database.
+        Deletes the error_log
+        from the database.
         Raises:
-            AttributeError: If the error_log is not initialized.
+            AttributeError: If the error_log
+                is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.error_log.error_log_id > 0:
-            error_log_manager = ErrorLogManager(self._session_context)
-            await error_log_manager.delete(self.error_log.error_log_id)
+            error_log_manager = ErrorLogManager(
+                self._session_context)
+            await error_log_manager.delete(
+                self.error_log.error_log_id)
             self.error_log = None
     async def randomize_properties(self):
         """
-        Randomizes the properties of the error_log object.
+        Randomizes the properties of the
+        error_log object.
         This method generates random values for various
-        properties of the error_log object
+        properties of the error_log
+        object
         Returns:
-            self: The current instance of the ErrorLog class.
+            self: The current instance of the
+                ErrorLog class.
         Raises:
-            AttributeError: If the error_log object is not initialized.
+            AttributeError: If the error_log
+                object is not initialized.
         """
         if not self.error_log:
             raise AttributeError(
@@ -718,28 +910,39 @@ class ErrorLogBusObj(BaseBusObj):
         return self
     def get_error_log_obj(self) -> ErrorLog:
         """
-        Returns the error_log object.
+        Returns the error_log
+        object.
         Raises:
-            AttributeError: If the error_log object is not initialized.
+            AttributeError: If the error_log
+                object is not initialized.
         Returns:
-            ErrorLog: The error_log object.
+            ErrorLog: The error_log
+                object.
         """
         if not self.error_log:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.error_log
-    def is_equal(self, error_log: ErrorLog) -> bool:
+    def is_equal(
+        self,
+        error_log: ErrorLog
+    ) -> bool:
         """
-        Checks if the current error_log is equal to the given error_log.
+        Checks if the current error_log
+        is equal to the given error_log.
         Args:
-            error_log (ErrorLog): The error_log to compare with.
+            error_log (ErrorLog): The
+                error_log to compare with.
         Returns:
-            bool: True if the error_logs are equal, False otherwise.
+            bool: True if the error_logs
+                are equal, False otherwise.
         """
-        error_log_manager = ErrorLogManager(self._session_context)
+        error_log_manager = ErrorLogManager(
+            self._session_context)
         my_error_log = self.get_error_log_obj()
-        return error_log_manager.is_equal(error_log, my_error_log)
+        return error_log_manager.is_equal(
+            error_log, my_error_log)
 # endset
     # browserCode,
     # contextCode,
@@ -750,9 +953,11 @@ class ErrorLogBusObj(BaseBusObj):
     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         """
-        Retrieves the related Pac object based on the pac_id.
+        Retrieves the related Pac object based
+        on the pac_id.
         Returns:
-            An instance of the Pac model representing the related pac.
+            An instance of the Pac model
+            representing the related pac.
         """
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -798,15 +1003,19 @@ class ErrorLogBusObj(BaseBusObj):
         """
         Get the parent code of the error_log.
         Returns:
-            The parent code of the error_log as a UUID.
+            The parent code of the error_log
+            as a UUID.
         """
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         """
-        Get the parent object of the current error_log.
+        Get the parent object of the current
+        error_log.
         Returns:
-            The parent object of the current error_log,
-            which is an instance of the Pac model.
+            The parent object of the current
+            error_log,
+            which is an instance of the
+            Pac model.
         """
         pac = await self.get_pac_id_rel_obj()
         return pac
@@ -818,17 +1027,23 @@ class ErrorLogBusObj(BaseBusObj):
         obj_list: List[ErrorLog]
     ):
         """
-        Convert a list of ErrorLog objects to a list of ErrorLogBusObj objects.
+        Convert a list of ErrorLog
+        objects to a list of
+        ErrorLogBusObj objects.
         Args:
             session_context (SessionContext): The session context.
-            obj_list (List[ErrorLog]): The list of ErrorLog objects to convert.
+            obj_list (List[ErrorLog]): The
+                list of ErrorLog objects to convert.
         Returns:
-            List[ErrorLogBusObj]: The list of converted ErrorLogBusObj objects.
+            List[ErrorLogBusObj]: The
+                list of converted ErrorLogBusObj
+                objects.
         """
         result = list()
         for error_log in obj_list:
             error_log_bus_obj = ErrorLogBusObj(session_context)
-            await error_log_bus_obj.load_from_obj_instance(error_log)
+            await error_log_bus_obj.load_from_obj_instance(
+                error_log)
             result.append(error_log_bus_obj)
         return result
 

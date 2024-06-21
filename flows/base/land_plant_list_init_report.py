@@ -1,7 +1,8 @@
 # flows/base/land_plant_list_init_report.py
 """
 This module contains the implementation
-of the BaseFlow Land Plant List Init Report class
+of the BaseFlow
+Land Plant List Init Report class
 """
 import uuid
 from datetime import date, datetime

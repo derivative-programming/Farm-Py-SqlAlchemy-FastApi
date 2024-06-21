@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-The Plant model inherits from the Base model and is mapped to the
+The Plant model inherits from
+the Base model and is mapped to the
 'farm_Plant' table in the database.
 """
 from decimal import Decimal
@@ -20,7 +21,8 @@ from .base import Base, EncryptedType  # noqa: F401
 
 class Plant(Base):
     """
-    The Plant model represents a plant in the farm.
+    The Plant model represents a
+    plant in the farm.
     It inherits from the Base model and is mapped to the
     'farm_Plant' table in the database.
     """
@@ -389,7 +391,8 @@ class Plant(Base):
     @property
     def insert_user_id(self):
         """
-        Inserts the user ID into the plant object.
+        Inserts the user ID into the
+        plant object.
 
         Returns:
             UUID: The UUID of the inserted user ID.
@@ -651,7 +654,8 @@ class Plant(Base):
         attribute for the plant.
 
         This method retrieves the value of the
-        'some_money_val' attribute from the plant object.
+        'some_money_val' attribute from
+        the plant object.
         If the attribute is not set, it returns 0.
 
         Returns:
@@ -879,7 +883,8 @@ class Plant(Base):
     @staticmethod
     def property_list():
         """
-        Returns a list of property names for the Plant model.
+        Returns a list of property names for
+        the Plant model.
 
         Returns:
             list: A list of property names.
@@ -918,12 +923,14 @@ def set_created_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Set the created on and last update timestamps for a Plant object.
+    Set the created on and last update timestamps
+    for a Plant object.
 
     Args:
         mapper: The SQLAlchemy mapper.
         connection: The SQLAlchemy connection.
-        target: The Plant object being inserted.
+        target: The Plant object
+        being inserted.
 
     Returns:
         None

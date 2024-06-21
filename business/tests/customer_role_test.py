@@ -39,11 +39,11 @@ class TestCustomerRoleBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_customer_role(self, session):
         """
-        Fixture that returns a new instance of the CustomerRole class.
+        Fixture that returns a new instance of
+        the CustomerRole class.
         """
-        # Use the CustomerRoleFactory to create a new customer_role instance
-        # Assuming CustomerRoleFactory.create() is an async function
-        return await CustomerRoleFactory.create_async(session)
+        return await CustomerRoleFactory.create_async(
+            session)
     @pytest.mark.asyncio
     async def test_create_customer_role(
         self,
@@ -55,8 +55,10 @@ class TestCustomerRoleBusObj:
         # Test creating a new customer_role
         assert customer_role_bus_obj.customer_role_id == 0
         # assert isinstance(customer_role_bus_obj.customer_role_id, int)
-        assert isinstance(customer_role_bus_obj.code, uuid.UUID)
-        assert isinstance(customer_role_bus_obj.last_change_code, int)
+        assert isinstance(
+            customer_role_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            customer_role_bus_obj.last_change_code, int)
         assert customer_role_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert customer_role_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(customer_role_bus_obj.customer_id, int)
@@ -71,10 +73,13 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-        Test case for loading data from a customer_role object instance.
+        Test case for loading data from a
+        customer_role object instance.
         """
-        await customer_role_bus_obj.load_from_obj_instance(new_customer_role)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
+        await customer_role_bus_obj.load_from_obj_instance(
+            new_customer_role)
+        assert customer_role_manager.is_equal(
+            customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_id(
         self,
@@ -83,11 +88,14 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-        Test case for loading data from a customer_role ID.
+        Test case for loading data from a
+        customer_role ID.
         """
         new_customer_role_customer_role_id = new_customer_role.customer_role_id
-        await customer_role_bus_obj.load_from_id(new_customer_role_customer_role_id)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
+        await customer_role_bus_obj.load_from_id(
+            new_customer_role_customer_role_id)
+        assert customer_role_manager.is_equal(
+            customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_code(
         self,
@@ -96,10 +104,13 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-        Test case for loading data from a customer_role code.
+        Test case for loading data from a
+        customer_role code.
         """
-        await customer_role_bus_obj.load_from_code(new_customer_role.code)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
+        await customer_role_bus_obj.load_from_code(
+            new_customer_role.code)
+        assert customer_role_manager.is_equal(
+            customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_json(
         self,
@@ -108,11 +119,14 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-        Test case for loading data from a customer_role JSON.
+        Test case for loading data from a
+        customer_role JSON.
         """
         customer_role_json = customer_role_manager.to_json(new_customer_role)
-        await customer_role_bus_obj.load_from_json(customer_role_json)
-        assert customer_role_manager.is_equal(customer_role_bus_obj.customer_role, new_customer_role) is True
+        await customer_role_bus_obj.load_from_json(
+            customer_role_json)
+        assert customer_role_manager.is_equal(
+            customer_role_bus_obj.customer_role, new_customer_role) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_role_dict(
         self,
@@ -121,12 +135,14 @@ class TestCustomerRoleBusObj:
         new_customer_role: CustomerRole
     ):
         """
-        Test case for loading data from a customer_role dictionary.
+        Test case for loading data from a
+        customer_role dictionary.
         """
         logger.info("test_load_with_customer_role_dict 1")
         customer_role_dict = customer_role_manager.to_dict(new_customer_role)
         logger.info(customer_role_dict)
-        await customer_role_bus_obj.load_from_dict(customer_role_dict)
+        await customer_role_bus_obj.load_from_dict(
+            customer_role_dict)
         assert customer_role_manager.is_equal(
             customer_role_bus_obj.customer_role,
             new_customer_role) is True
@@ -138,7 +154,8 @@ class TestCustomerRoleBusObj:
         """
         Test case for retrieving a nonexistent customer_role.
         """
-        # Test retrieving a nonexistent customer_role raises an exception
+        # Test retrieving a nonexistent
+        # customer_role raises an exception
         await customer_role_bus_obj.load_from_id(-1)
         # Assuming -1 is an id that wouldn't exist
         assert customer_role_bus_obj.is_valid() is False
@@ -154,14 +171,17 @@ class TestCustomerRoleBusObj:
         """
         # Test updating a customer_role's data
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
-        new_customer_role = await customer_role_manager.get_by_id(new_customer_role_customer_role_id_value)
+        new_customer_role = await customer_role_manager.get_by_id(
+            new_customer_role_customer_role_id_value)
         assert isinstance(new_customer_role, CustomerRole)
         new_code = uuid.uuid4()
-        await customer_role_bus_obj.load_from_obj_instance(new_customer_role)
+        await customer_role_bus_obj.load_from_obj_instance(
+            new_customer_role)
         customer_role_bus_obj.code = new_code
         await customer_role_bus_obj.save()
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
-        new_customer_role = await customer_role_manager.get_by_id(new_customer_role_customer_role_id_value)
+        new_customer_role = await customer_role_manager.get_by_id(
+            new_customer_role_customer_role_id_value)
         assert customer_role_manager.is_equal(
             customer_role_bus_obj.customer_role,
             new_customer_role) is True
@@ -178,10 +198,12 @@ class TestCustomerRoleBusObj:
         assert new_customer_role.customer_role_id is not None
         assert customer_role_bus_obj.customer_role_id == 0
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
-        await customer_role_bus_obj.load_from_id(new_customer_role_customer_role_id_value)
+        await customer_role_bus_obj.load_from_id(
+            new_customer_role_customer_role_id_value)
         assert customer_role_bus_obj.customer_role_id is not None
         await customer_role_bus_obj.delete()
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
-        new_customer_role = await customer_role_manager.get_by_id(new_customer_role_customer_role_id_value)
+        new_customer_role = await customer_role_manager.get_by_id(
+            new_customer_role_customer_role_id_value)
         assert new_customer_role is None
 

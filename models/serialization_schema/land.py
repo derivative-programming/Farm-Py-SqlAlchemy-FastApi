@@ -1,14 +1,17 @@
 # models/serialization_schema/land.py
 """
-This module contains the LandSchema class, which is responsible
-for serializing and deserializing Land objects.
+This module contains the LandSchema
+class, which is responsible
+for serializing and deserializing
+Land objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Land
 class LandSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing Land objects.
+    Schema class for serializing and deserializing
+    Land objects.
     """
     class Meta:
         """

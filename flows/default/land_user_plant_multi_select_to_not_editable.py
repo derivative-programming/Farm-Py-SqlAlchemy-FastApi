@@ -1,7 +1,10 @@
 # flows/default/land_user_plant_multi_select_to_not_editable.py
 """
-This module contains the FlowLandUserPlantMultiSelectToNotEditable class and related classes
-that handle the addition of a  to a specific land in the flow process.
+This module contains the
+FlowLandUserPlantMultiSelectToNotEditable class and related classes
+that handle the addition of a
+ to a specific
+land in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowLandUserPlantMultiSelectToNotEditableResult():
     """
-    Represents the result of the FlowLandUserPlantMultiSelectToNotEditable process.
+    Represents the result of the
+    FlowLandUserPlantMultiSelectToNotEditable process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowLandUserPlantMultiSelectToNotEditableResult class.
+        Initializes a new instance of the
+        FlowLandUserPlantMultiSelectToNotEditableResult class.
         """
     def to_json(self):
         """
-        Converts the FlowLandUserPlantMultiSelectToNotEditableResult instance to a JSON string.
+        Converts the FlowLandUserPlantMultiSelectToNotEditableResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -40,7 +46,8 @@ class FlowLandUserPlantMultiSelectToNotEditableResult():
         return json.dumps(data)
 class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelectToNotEditable):
     """
-    FlowLandUserPlantMultiSelectToNotEditable handles the addition of a  to
+    FlowLandUserPlantMultiSelectToNotEditable handles the addition of
+    a  to
     a specific land in the flow process.
     This class extends the BaseFlowLandUserPlantMultiSelectToNotEditable class and
     initializes it with the provided session context.
@@ -60,9 +67,11 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
 # endset  # noqa: E122
     ) -> FlowLandUserPlantMultiSelectToNotEditableResult:
         """
-        Processes the addition of a  to a specific land.
+        Processes the addition of a
+         to a specific land.
         Returns:
-            FlowLandUserPlantMultiSelectToNotEditableResult: The result of the FlowLandUserPlantMultiSelectToNotEditable process.
+            FlowLandUserPlantMultiSelectToNotEditableResult: The result of the
+                FlowLandUserPlantMultiSelectToNotEditable process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

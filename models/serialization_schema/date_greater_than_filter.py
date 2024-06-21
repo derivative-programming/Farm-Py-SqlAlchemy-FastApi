@@ -1,14 +1,17 @@
 # models/serialization_schema/date_greater_than_filter.py
 """
-This module contains the DateGreaterThanFilterSchema class, which is responsible
-for serializing and deserializing DateGreaterThanFilter objects.
+This module contains the DateGreaterThanFilterSchema
+class, which is responsible
+for serializing and deserializing
+DateGreaterThanFilter objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import DateGreaterThanFilter
 class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing DateGreaterThanFilter objects.
+    Schema class for serializing and deserializing
+    DateGreaterThanFilter objects.
     """
     class Meta:
         """

@@ -1,7 +1,10 @@
 # flows/default/tac_farm_dashboard_init_report.py
 """
-This module contains the FlowTacFarmDashboardInitReport class and related classes
-that handle the addition of a  to a specific tac in the flow process.
+This module contains the
+FlowTacFarmDashboardInitReport class and related classes
+that handle the addition of a
+ to a specific
+tac in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacFarmDashboardInitReportResult():
     """
-    Represents the result of the FlowTacFarmDashboardInitReport process.
+    Represents the result of the
+    FlowTacFarmDashboardInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     customer_code: uuid.UUID = uuid.UUID(int=0)
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowTacFarmDashboardInitReportResult class.
+        Initializes a new instance of the
+        FlowTacFarmDashboardInitReportResult class.
         """
     def to_json(self):
         """
-        Converts the FlowTacFarmDashboardInitReportResult instance to a JSON string.
+        Converts the FlowTacFarmDashboardInitReportResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -41,7 +47,8 @@ class FlowTacFarmDashboardInitReportResult():
         return json.dumps(data)
 class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
     """
-    FlowTacFarmDashboardInitReport handles the addition of a  to
+    FlowTacFarmDashboardInitReport handles the addition of
+    a  to
     a specific tac in the flow process.
     This class extends the BaseFlowTacFarmDashboardInitReport class and
     initializes it with the provided session context.
@@ -61,9 +68,11 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
 # endset  # noqa: E122
     ) -> FlowTacFarmDashboardInitReportResult:
         """
-        Processes the addition of a  to a specific tac.
+        Processes the addition of a
+         to a specific tac.
         Returns:
-            FlowTacFarmDashboardInitReportResult: The result of the FlowTacFarmDashboardInitReport process.
+            FlowTacFarmDashboardInitReportResult: The result of the
+                FlowTacFarmDashboardInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

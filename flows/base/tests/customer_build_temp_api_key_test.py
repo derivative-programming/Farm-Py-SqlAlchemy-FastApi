@@ -23,7 +23,8 @@ class TestBaseFlowCustomerBuildTempApiKey():
         Test case for the _process_validation_rules method
         of the BaseFlowCustomerBuildTempApiKey class.
         This method tests the validation rules for the request
-        parameters of the customer  flow.
+        parameters of the
+        customer  flow.
         Args:
             session: The session object for the test.
         Returns:

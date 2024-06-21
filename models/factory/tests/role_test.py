@@ -48,35 +48,40 @@ class TestRoleFactory:
         """
         Test case for creating a role.
         """
-        role = RoleFactory.create(session=session)
+        role = RoleFactory.create(
+            session=session)
         assert role.role_id is not None
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        role = RoleFactory.create(session=session)
+        role = RoleFactory.create(
+            session=session)
         assert isinstance(role.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        role: Role = RoleFactory.build(session=session)
+        role: Role = RoleFactory.build(
+            session=session)
         assert role.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        role: Role = RoleFactory.create(session=session)
+        role: Role = RoleFactory.create(
+            session=session)
         assert role.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        role = RoleFactory.create(session=session)
+        role = RoleFactory.create(
+            session=session)
         initial_code = role.last_change_code
         role.code = uuid.uuid4()
         session.commit()
@@ -86,17 +91,21 @@ class TestRoleFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        role = RoleFactory.build(session=session)
+        role = RoleFactory.build(
+            session=session)
         assert role.insert_utc_date_time is not None
-        assert isinstance(role.insert_utc_date_time, datetime)
+        assert isinstance(
+            role.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        role = RoleFactory.build(session=session)
+        role = RoleFactory.build(
+            session=session)
         assert role.insert_utc_date_time is not None
-        assert isinstance(role.insert_utc_date_time, datetime)
+        assert isinstance(
+            role.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         role.code = uuid.uuid4()
         session.add(role)
@@ -107,9 +116,11 @@ class TestRoleFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        role = RoleFactory(session=session)
+        role = RoleFactory(
+            session=session)
         assert role.insert_utc_date_time is not None
-        assert isinstance(role.insert_utc_date_time, datetime)
+        assert isinstance(
+            role.insert_utc_date_time, datetime)
         initial_time = role.insert_utc_date_time
         role.code = uuid.uuid4()
         time.sleep(1)
@@ -120,17 +131,21 @@ class TestRoleFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        role = RoleFactory.build(session=session)
+        role = RoleFactory.build(
+            session=session)
         assert role.last_update_utc_date_time is not None
-        assert isinstance(role.last_update_utc_date_time, datetime)
+        assert isinstance(
+            role.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        role = RoleFactory.build(session=session)
+        role = RoleFactory.build(
+            session=session)
         assert role.last_update_utc_date_time is not None
-        assert isinstance(role.last_update_utc_date_time, datetime)
+        assert isinstance(
+            role.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         role.code = uuid.uuid4()
         session.add(role)
@@ -141,9 +156,11 @@ class TestRoleFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        role = RoleFactory(session=session)
+        role = RoleFactory(
+            session=session)
         assert role.last_update_utc_date_time is not None
-        assert isinstance(role.last_update_utc_date_time, datetime)
+        assert isinstance(
+            role.last_update_utc_date_time, datetime)
         initial_time = role.last_update_utc_date_time
         role.code = uuid.uuid4()
         time.sleep(1)
@@ -151,9 +168,11 @@ class TestRoleFactory:
         assert role.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        Test case for deleting a role model.
+        Test case for deleting a
+        role model.
         """
-        role = RoleFactory.create(session=session)
+        role = RoleFactory.create(
+            session=session)
         session.delete(role)
         session.commit()
         deleted_role = session.query(Role).filter_by(
@@ -161,9 +180,11 @@ class TestRoleFactory:
         assert deleted_role is None
     def test_data_types(self, session):
         """
-        Test case for checking the data types of the role attributes.
+        Test case for checking the data types of
+        the role attributes.
         """
-        role = RoleFactory.create(session=session)
+        role = RoleFactory.create(
+            session=session)
         assert isinstance(role.role_id, int)
         assert isinstance(role.code, uuid.UUID)
         assert isinstance(role.last_change_code, int)
@@ -202,7 +223,8 @@ class TestRoleFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        Test case for checking the default values of the role fields.
+        Test case for checking the default values of
+        the role fields.
         """
         role = Role()
         assert role.code is not None
@@ -232,12 +254,14 @@ class TestRoleFactory:
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
-        last_change_code in the Role model.
+        last_change_code in the Role
+        model.
         This test case checks if the last_change_code
-        of a Role object is updated correctly
+        of a Role object is
+        updated correctly
         when multiple changes are made concurrently.
-        It creates a Role object, retrieves it
-        from the database, and updates its code
+        It creates a Role object,
+        retrieves it from the database, and updates its code
         attribute twice in separate transactions.
         Finally, it asserts that the last_change_code
         of the second retrieved Role object
@@ -247,7 +271,8 @@ class TestRoleFactory:
         Returns:
             None
         """
-        role = RoleFactory.create(session=session)
+        role = RoleFactory.create(
+            session=session)
         original_last_change_code = role.last_change_code
         role_1 = session.query(Role).filter_by(
             _role_id=role.role_id).first()
@@ -280,7 +305,8 @@ class TestRoleFactory:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
         """
-        role = RoleFactory.create(session=session)
+        role = RoleFactory.create(
+            session=session)
         role.pac_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()

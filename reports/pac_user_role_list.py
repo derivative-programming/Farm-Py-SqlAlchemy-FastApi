@@ -1,6 +1,7 @@
 # pac_user_role_list.py
 """
-This module is the manager for report 'Pac User Role List'
+This module is the manager for report
+'Pac User Role List'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.pac_user_role_list import ReportItemPacUserRoleList
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPacUserRoleList():
     """
-    This class is the manager of report 'Pac User Role List'
+    This class is the manager of report
+    'Pac User Role List'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerPacUserRoleList():
         order_by_descending: bool = False,
     ) -> List[ReportItemPacUserRoleList]:
         """
-        Generate the 'Pac User Role List' report.
+        Generate the
+        'Pac User Role List' report.
         Returns:
-            List[ReportItemPacUserRoleList]: The list of report items.
+            List[ReportItemPacUserRoleList]: The
+                list of report items.
         """
         logging.info('ReportManagerPacUserRoleList.generate Start')
         role_required = ""
@@ -81,7 +85,8 @@ class ReportManagerPacUserRoleList():
                         file_name: str,
                         data_list: List[ReportItemPacUserRoleList]):
         """
-        Build a CSV file for the 'Pac User Role List' report.
+        Build a CSV file for the
+        'Pac User Role List' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemPacUserRoleList]):

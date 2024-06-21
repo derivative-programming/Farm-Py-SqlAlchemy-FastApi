@@ -1,7 +1,10 @@
 # flows/default/tac_register.py
 """
-This module contains the FlowTacRegister class and related classes
-that handle the addition of a customer to a specific tac in the flow process.
+This module contains the
+FlowTacRegister class and related classes
+that handle the addition of a
+customer to a specific
+tac in the flow process.
 """
 import uuid
 import json
@@ -14,7 +17,8 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacRegisterResult():
     """
-    Represents the result of the FlowTacRegister process.
+    Represents the result of the
+    FlowTacRegister process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     customer_code: uuid.UUID = uuid.UUID(int=0)
@@ -26,11 +30,13 @@ class FlowTacRegisterResult():
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowTacRegisterResult class.
+        Initializes a new instance of the
+        FlowTacRegisterResult class.
         """
     def to_json(self):
         """
-        Converts the FlowTacRegisterResult instance to a JSON string.
+        Converts the FlowTacRegisterResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -56,7 +62,8 @@ class FlowTacRegisterResult():
         return json.dumps(data)
 class FlowTacRegister(BaseFlowTacRegister):
     """
-    FlowTacRegister handles the addition of a customer to
+    FlowTacRegister handles the addition of
+    a customer to
     a specific tac in the flow process.
     This class extends the BaseFlowTacRegister class and
     initializes it with the provided session context.
@@ -80,9 +87,11 @@ class FlowTacRegister(BaseFlowTacRegister):
 # endset  # noqa: E122
     ) -> FlowTacRegisterResult:
         """
-        Processes the addition of a customer to a specific tac.
+        Processes the addition of a
+        customer to a specific tac.
         Returns:
-            FlowTacRegisterResult: The result of the FlowTacRegister process.
+            FlowTacRegisterResult: The result of the
+                FlowTacRegister process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

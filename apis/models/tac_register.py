@@ -1,6 +1,7 @@
 # apis/models/tac_register.py
 """
-This module contains the models for the Tac Register API.
+This module contains the models for the
+Tac Register API.
 """
 import json
 import logging
@@ -18,7 +19,8 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class TacRegisterPostModelRequest(CamelModel):
     """
-    Represents the request model for the Tac Register API.
+    Represents the request model for the
+    Tac Register API.
     """
     force_error_message: str = Field(
         default="",
@@ -74,7 +76,8 @@ class TacRegisterPostModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class TacRegisterPostModelResponse(PostResponse):
     """
-    Represents the response model for the Tac Register API.
+    Represents the response model for the
+    Tac Register API.
     """
     customer_code: UUID4 = Field(
         default=uuid.UUID(int=0),

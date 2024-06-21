@@ -1,6 +1,7 @@
 # apis/models/error_log_config_resolve_error_log.py
 """
-This module contains the models for the Error Log Config Resolve Error Log API.
+This module contains the models for the
+Error Log Config Resolve Error Log API.
 """
 import json
 import logging
@@ -18,7 +19,8 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class ErrorLogConfigResolveErrorLogPostModelRequest(CamelModel):
     """
-    Represents the request model for the Error Log Config Resolve Error Log API.
+    Represents the request model for the
+    Error Log Config Resolve Error Log API.
     """
     force_error_message: str = Field(
         default="",
@@ -60,7 +62,8 @@ class ErrorLogConfigResolveErrorLogPostModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
     """
-    Represents the response model for the Error Log Config Resolve Error Log API.
+    Represents the response model for the
+    Error Log Config Resolve Error Log API.
     """
 
 # endset

@@ -1,7 +1,9 @@
 # models/factory/date_greater_than_filter.py
 """
-This module contains the DateGreaterThanFilterFactory class, which is responsible
-for creating instances of the DateGreaterThanFilter model using the Factory pattern.
+This module contains the DateGreaterThanFilterFactory
+class, which is responsible
+for creating instances of the DateGreaterThanFilter
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -13,7 +15,8 @@ from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class DateGreaterThanFilterFactory(factory.Factory):
     """
-    Factory class for creating instances of the DateGreaterThanFilter model.
+    Factory class for creating instances of
+    the DateGreaterThanFilter model.
     """
     class Meta:
         """
@@ -40,7 +43,8 @@ class DateGreaterThanFilterFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> DateGreaterThanFilter:
         """
-            Builds and returns an instance of the DateGreaterThanFilter model.
+            Builds and returns an instance
+            of the DateGreaterThanFilter model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -48,7 +52,8 @@ class DateGreaterThanFilterFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                DateGreaterThanFilter: An instance of the DateGreaterThanFilter model.
+                DateGreaterThanFilter: An instance of the
+                    DateGreaterThanFilter model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -73,14 +78,16 @@ class DateGreaterThanFilterFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> DateGreaterThanFilter:
         """
-        Create a new DateGreaterThanFilter object and save it to the database.
+        Create a new DateGreaterThanFilter object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            DateGreaterThanFilter: The created DateGreaterThanFilter object.
+            DateGreaterThanFilter: The created
+                DateGreaterThanFilter object.
         """
         logger.info("factory create")
         pac_id_pac_instance = (  # PacID
@@ -103,7 +110,8 @@ class DateGreaterThanFilterFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> DateGreaterThanFilter:
         """
-        Create a new DateGreaterThanFilter object asynchronously.
+        Create a new DateGreaterThanFilter object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -131,7 +139,8 @@ class DateGreaterThanFilterFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> DateGreaterThanFilter:
         """
-        Build a new DateGreaterThanFilter object asynchronously.
+        Build a new DateGreaterThanFilter object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.

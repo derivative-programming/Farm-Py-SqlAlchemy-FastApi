@@ -1,7 +1,8 @@
 # flows/base/error_log_config_resolve_error_log.py
 """
 This module contains the implementation
-of the BaseFlow Error Log Config Resolve Error Log class
+of the BaseFlow
+Error Log Config Resolve Error Log class
 """
 import uuid
 from datetime import date, datetime

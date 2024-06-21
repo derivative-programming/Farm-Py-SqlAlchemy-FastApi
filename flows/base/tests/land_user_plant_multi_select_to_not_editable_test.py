@@ -23,7 +23,8 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
         Test case for the _process_validation_rules method
         of the BaseFlowLandUserPlantMultiSelectToNotEditable class.
         This method tests the validation rules for the request
-        parameters of the land  flow.
+        parameters of the
+        land  flow.
         Args:
             session: The session object for the test.
         Returns:

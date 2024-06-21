@@ -1,10 +1,13 @@
 # apis/models/pac_user_tac_list.py
 """
-This module contains the models for the Pac User Tac List API.
+This module contains the models for the
+Pac User Tac List API.
 - PacUserTacListGetModelRequest: Represents the
-    request model for getting the pac Pac User Tac List Report.
+    request model for getting the
+    pac Pac User Tac List Report.
 - PacUserTacListGetModelResponseItem: Represents the
-    response model item for the pac Pac User Tac List Report.
+    response model item for the
+    pac Pac User Tac List Report.
 """
 import json
 import logging
@@ -24,7 +27,8 @@ from reports.report_request_validation_error import \
 from reports.row_models.pac_user_tac_list import ReportItemPacUserTacList
 class PacUserTacListGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the pac Pac User Tac List Report.
+    Represents the request model for getting the
+    pac Pac User Tac List Report.
     """
     page_number: int = Field(
         default=0,
@@ -45,7 +49,8 @@ class PacUserTacListGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-        Configuration class for the PacUserTacList model.
+        Configuration class for the
+        PacUserTacList model.
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -81,7 +86,8 @@ class PacUserTacListGetModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserTacListGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the pac Pac User Tac List Report.
+    Represents the response model item for the
+    pac Pac User Tac List Report.
     """
     tac_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -134,9 +140,11 @@ class PacUserTacListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemPacUserTacList:
         """
-        Builds a ReportItemPacUserTacList object from the response model item.
+        Builds a ReportItemPacUserTacList object
+        from the response model item.
         Returns:
-            ReportItemPacUserTacList: The built ReportItemPacUserTacList object.
+            ReportItemPacUserTacList: The built
+            ReportItemPacUserTacList object.
         """
         data = ReportItemPacUserTacList()
         data.tac_code = (
@@ -157,7 +165,8 @@ class PacUserTacListGetModelResponseItem(CamelModel):
 # endset
 class PacUserTacListGetModelResponse(ListModel):
     """
-    Represents the response model for the PacUserTacListGetModel API.
+    Represents the response model for the
+    PacUserTacListGetModel API.
     Attributes:
         request (PacUserTacListGetModelRequest):
             The request model for the API.

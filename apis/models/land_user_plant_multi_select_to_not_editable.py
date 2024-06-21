@@ -1,6 +1,7 @@
 # apis/models/land_user_plant_multi_select_to_not_editable.py
 """
-This module contains the models for the Land User Plant Multi Select To Not Editable API.
+This module contains the models for the
+Land User Plant Multi Select To Not Editable API.
 """
 import json
 import logging
@@ -18,7 +19,8 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class LandUserPlantMultiSelectToNotEditablePostModelRequest(CamelModel):
     """
-    Represents the request model for the Land User Plant Multi Select To Not Editable API.
+    Represents the request model for the
+    Land User Plant Multi Select To Not Editable API.
     """
     force_error_message: str = Field(
         default="",
@@ -62,7 +64,8 @@ class LandUserPlantMultiSelectToNotEditablePostModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
     """
-    Represents the response model for the Land User Plant Multi Select To Not Editable API.
+    Represents the response model for the
+    Land User Plant Multi Select To Not Editable API.
     """
 
 # endset

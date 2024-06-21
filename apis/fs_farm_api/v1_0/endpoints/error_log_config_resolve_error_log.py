@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/error_log_config_resolve_error_log.py
 """
-This module contains the implementation of the ErrorLogConfigResolveErrorLogRouter,
-which handles the API endpoints related to the Error Log Config Resolve Error Log.
+This module contains the implementation of the
+ErrorLogConfigResolveErrorLogRouter,
+which handles the API endpoints related to the
+Error Log Config Resolve Error Log.
 The ErrorLogConfigResolveErrorLogRouter provides the following endpoints:
     - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/init:
-        Get the initialization data for the Error Log Config Resolve Error Log page.
+        Get the initialization data for the
+        Error Log Config Resolve Error Log page.
     - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}:
-        Get the Error Log Config Resolve Error Log Report for a specific  code.
+        Get the Error Log Config Resolve Error Log Report
+        for a specific  code.
     - GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/to-csv:
-        Retrieve the Error Log Config Resolve Error Log Report as a CSV file.
+        Retrieve the Error Log Config Resolve Error Log
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class ErrorLogConfigResolveErrorLogRouterConfig():
     is_public: bool = False
 class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
     """
-    Router class for the Error Log Config Resolve Error Log API endpoints.
+    Router class for the
+    Error Log Config Resolve Error Log
+    API endpoints.
     """
     router = APIRouter(tags=["ErrorLogConfigResolveErrorLog"])
 
@@ -99,16 +106,16 @@ class ErrorLogConfigResolveErrorLogRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

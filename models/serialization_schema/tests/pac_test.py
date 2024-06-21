@@ -1,20 +1,34 @@
 # pac_test.py
 # pylint: disable=redefined-outer-name
 """
-This module contains tests for the Pac serialization schema.
-The Pac serialization schema is responsible for serializing and deserializing
-Pac instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
-The tests in this module cover the serialization and deserialization of Pac
-instances using the PacSchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+This module contains tests for the
+Pac serialization schema.
+The Pac serialization schema
+is responsible for serializing and deserializing
+Pac instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
+The tests in this module cover the serialization
+and deserialization of Pac
+instances using the PacSchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a Pac instance.
-The PacSchema class is used to define the serialization and deserialization
-rules for Pac instances. It specifies how each attribute of a Pac instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a Pac instance.
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The PacSchema class is used to define
+the serialization and deserialization
+rules for Pac instances. It
+specifies how each attribute of a
+Pac instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a Pac
+instance.
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 """
 import json
@@ -29,20 +43,27 @@ from models.serialization_schema import PacSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def pac(session) -> Pac:
+def pac(
+    session
+) -> Pac:
     """
-    Fixture to create and return a Pac instance using the PacFactory.
+    Fixture to create and return a Pac
+    instance using the
+    PacFactory.
     Args:
         session: The database session.
     Returns:
-        Pac: A newly created Pac instance.
+        Pac: A newly created
+            Pac instance.
     """
     return PacFactory.create(session=session)
 class TestPacSchema:
     """
-    Tests for the Pac serialization schema.
+    Tests for the Pac
+    serialization schema.
     """
-    # Sample data for a Pac instance
+    # Sample data for a Pac
+    # instance
     sample_data = {
         "pac_id": 1,
         "code":
@@ -68,9 +89,13 @@ class TestPacSchema:
 
 # endset  # noqa: E122
     }
-    def test_pac_serialization(self, pac: Pac):
+    def test_pac_serialization(
+        self,
+        pac: Pac
+    ):
         """
-        Test the serialization of a Pac instance using
+        Test the serialization of a
+        Pac instance using
         PacSchema.
         Args:
             pac (Pac):
@@ -108,9 +133,12 @@ class TestPacSchema:
 # endset
     def test_pac_deserialization(self, pac):
         """
-        Test the deserialization of a Pac object using the PacSchema.
+        Test the deserialization of a
+        Pac object using the
+        PacSchema.
         Args:
-            pac (Pac): The Pac object to be deserialized.
+            pac (Pac): The
+                Pac object to be deserialized.
         Raises:
             AssertionError: If any of the assertions fail.
         Returns:
@@ -119,7 +147,8 @@ class TestPacSchema:
         schema = PacSchema()
         serialized_data = schema.dump(pac)
         deserialized_data = schema.load(serialized_data)
-        assert deserialized_data['code'] == pac.code
+        assert deserialized_data['code'] == \
+            pac.code
         assert deserialized_data['last_change_code'] == (
             pac.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -147,11 +176,16 @@ class TestPacSchema:
 # endset
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
-        # Now compare the new_pac attributes with the pac attributes
-        assert new_pac.code == pac.code
-        assert new_pac.last_change_code == pac.last_change_code
-        assert new_pac.insert_user_id == pac.insert_user_id
-        assert new_pac.last_update_user_id == pac.last_update_user_id
+        # Now compare the new_pac attributes with
+        # the pac attributes
+        assert new_pac.code == \
+            pac.code
+        assert new_pac.last_change_code == \
+            pac.last_change_code
+        assert new_pac.insert_user_id == \
+            pac.insert_user_id
+        assert new_pac.last_update_user_id == \
+            pac.last_update_user_id
 # endset
         assert new_pac.description == (
             pac.description)
@@ -175,12 +209,14 @@ class TestPacSchema:
         """
         Test the `from_json` method of the PacSchema class.
         This method tests the deserialization of
-        a JSON string to a Pac object.
+        a JSON string to a
+        Pac object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a Pac
         object. Finally, it asserts the
-        equality of the deserialized Pac object
+        equality of the deserialized
+        Pac object
         with the sample data.
         Returns:
             None
@@ -222,22 +258,31 @@ class TestPacSchema:
             self.sample_data['last_update_utc_date_time'])
         new_pac = Pac(**deserialized_data)
         assert isinstance(new_pac, Pac)
-    def test_to_json(self, pac: Pac):
+    def test_to_json(
+        self,
+        pac: Pac
+    ):
         """
-        Test the conversion of a Pac instance to JSON.
+        Test the conversion of a
+        Pac instance to JSON.
         Args:
-            pac (Pac): The Pac instance to convert.
+            pac (Pac): The
+            Pac instance to convert.
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
-        # Convert the Pac instance to JSON using the schema
+        # Convert the Pac instance
+        # to JSON using the schema
         pac_schema = PacSchema()
-        pac_dict = pac_schema.dump(pac)
+        pac_dict = pac_schema.dump(
+            pac)
         # Convert the pac_dict to JSON string
-        pac_json = json.dumps(pac_dict)
+        pac_json = json.dumps(
+            pac_dict)
         # Convert the JSON strings back to dictionaries
-        pac_dict_from_json = json.loads(pac_json)
+        pac_dict_from_json = json.loads(
+            pac_json)
         # sample_dict_from_json = json.loads(self.sample_data)
         logging.info(
             "pac_dict_from_json.keys() %s",
@@ -249,7 +294,8 @@ class TestPacSchema:
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(pac_dict_from_json.keys())}"
         )
-        assert pac_dict_from_json['code'] == str(pac.code), (
+        assert pac_dict_from_json['code'] == \
+            str(pac.code), (
             "failed on code"
         )
         assert pac_dict_from_json['last_change_code'] == (

@@ -1,6 +1,7 @@
 # plant_user_details.py
 """
-This module is the manager for report 'Plant User Details'
+This module is the manager for report
+'Plant User Details'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPlantUserDetails():
     """
-    This class is the manager of report 'Plant User Details'
+    This class is the manager of report
+    'Plant User Details'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerPlantUserDetails():
         order_by_descending: bool = False,
     ) -> List[ReportItemPlantUserDetails]:
         """
-        Generate the 'Plant User Details' report.
+        Generate the
+        'Plant User Details' report.
         Returns:
-            List[ReportItemPlantUserDetails]: The list of report items.
+            List[ReportItemPlantUserDetails]: The
+                list of report items.
         """
         logging.info('ReportManagerPlantUserDetails.generate Start')
         role_required = "User"
@@ -81,7 +85,8 @@ class ReportManagerPlantUserDetails():
                         file_name: str,
                         data_list: List[ReportItemPlantUserDetails]):
         """
-        Build a CSV file for the 'Plant User Details' report.
+        Build a CSV file for the
+        'Plant User Details' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemPlantUserDetails]):

@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/pac_user_land_list.py
 """
-This module contains the implementation of the PacUserLandListRouter,
-which handles the API endpoints related to the Pac User Land List.
+This module contains the implementation of the
+PacUserLandListRouter,
+which handles the API endpoints related to the
+Pac User Land List.
 The PacUserLandListRouter provides the following endpoints:
     - GET /api/v1_0/pac-user-land-list/{pac_code}/init:
-        Get the initialization data for the Pac User Land List page.
+        Get the initialization data for the
+        Pac User Land List page.
     - GET /api/v1_0/pac-user-land-list/{pac_code}:
-        Get the Pac User Land List Report for a specific pac code.
+        Get the Pac User Land List Report
+        for a specific pac code.
     - GET /api/v1_0/pac-user-land-list/{pac_code}/to-csv:
-        Retrieve the Pac User Land List Report as a CSV file.
+        Retrieve the Pac User Land List
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class PacUserLandListRouterConfig():
     is_public: bool = False
 class PacUserLandListRouter(BaseRouter):
     """
-    Router class for the Pac User Land List API endpoints.
+    Router class for the
+    Pac User Land List
+    API endpoints.
     """
     router = APIRouter(tags=["PacUserLandList"])
 
@@ -59,14 +66,16 @@ class PacUserLandListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the initialization data for the Pac User Land List page.
+        Get the initialization data for the
+        Pac User Land List page.
         Args:
             pac_code (uuid.UUID): The UUID of the pac.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
             PacUserLandListInitReportGetInitModelResponse:
-                The initialization data for the Pac User Land List page.
+                The initialization data for the
+                Pac User Land List page.
         """
         logging.info(
             'PacUserLandListRouter.request_get_init start. pacCode:%s',
@@ -134,7 +143,8 @@ class PacUserLandListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the Pac User Land List Report for a specific pac code.
+        Get the Pac User Land List
+        Report for a specific pac code.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserLandListGetModelRequest):
@@ -143,7 +153,8 @@ class PacUserLandListRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.PacUserLandListGetModelResponse: The response
-                model containing the Pac User Land List Report.
+                model containing the
+                Pac User Land List Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """
@@ -208,7 +219,8 @@ class PacUserLandListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Retrieve the Pac User Land List Report as a CSV file.
+        Retrieve the Pac User Land List
+        Report as a CSV file.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserLandListGetModelRequest):
@@ -216,7 +228,8 @@ class PacUserLandListRouter(BaseRouter):
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
-            FileResponse: The CSV file containing the Pac User Land List Report.
+            FileResponse: The CSV file containing the
+            Pac User Land List Report.
         """
         logging.info(
             "PacUserLandListRouter.request_get_with_id_to_csv"

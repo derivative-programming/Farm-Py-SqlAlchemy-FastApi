@@ -1,7 +1,8 @@
 # reports/row_models/tests/land_plant_list_test.py
 
 """
-This module contains unit tests for the `ReportItemLandPlantList` class.
+This module contains unit tests for the
+`ReportItemLandPlantList` class.
 
 The `ReportItemLandPlantList` class represents a
 report item for a land plant list.

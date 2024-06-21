@@ -1,7 +1,8 @@
 # models/date_greater_than_filter.py
 # pylint: disable=unused-import
 """
-The DateGreaterThanFilter model inherits from the Base model and is mapped to the
+The DateGreaterThanFilter model inherits from
+the Base model and is mapped to the
 'farm_DateGreaterThanFilter' table in the database.
 """
 from decimal import Decimal
@@ -17,7 +18,8 @@ from utils.common_functions import snake_case
 from .base import Base, EncryptedType  # noqa: F401
 class DateGreaterThanFilter(Base):
     """
-    The DateGreaterThanFilter model represents a date_greater_than_filter in the farm.
+    The DateGreaterThanFilter model represents a
+    date_greater_than_filter in the farm.
     It inherits from the Base model and is mapped to the
     'farm_DateGreaterThanFilter' table in the database.
     """
@@ -212,7 +214,8 @@ class DateGreaterThanFilter(Base):
     @property
     def insert_user_id(self):
         """
-        Inserts the user ID into the date_greater_than_filter object.
+        Inserts the user ID into the
+        date_greater_than_filter object.
         Returns:
             UUID: The UUID of the inserted user ID.
         """
@@ -388,7 +391,8 @@ class DateGreaterThanFilter(Base):
     @staticmethod
     def property_list():
         """
-        Returns a list of property names for the DateGreaterThanFilter model.
+        Returns a list of property names for
+        the DateGreaterThanFilter model.
         Returns:
             list: A list of property names.
         """
@@ -411,11 +415,13 @@ def set_created_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Set the created on and last update timestamps for a DateGreaterThanFilter object.
+    Set the created on and last update timestamps
+    for a DateGreaterThanFilter object.
     Args:
         mapper: The SQLAlchemy mapper.
         connection: The SQLAlchemy connection.
-        target: The DateGreaterThanFilter object being inserted.
+        target: The DateGreaterThanFilter object
+        being inserted.
     Returns:
         None
     """

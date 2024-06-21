@@ -1,7 +1,10 @@
 # flows/default/plant_user_details_init_report.py
 """
-This module contains the FlowPlantUserDetailsInitReport class and related classes
-that handle the addition of a  to a specific plant in the flow process.
+This module contains the
+FlowPlantUserDetailsInitReport class and related classes
+that handle the addition of a
+ to a specific
+plant in the flow process.
 """
 import uuid
 import json
@@ -14,7 +17,8 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPlantUserDetailsInitReportResult():
     """
-    Represents the result of the FlowPlantUserDetailsInitReport process.
+    Represents the result of the
+    FlowPlantUserDetailsInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     land_code: uuid.UUID = uuid.UUID(int=0)
@@ -22,11 +26,13 @@ class FlowPlantUserDetailsInitReportResult():
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowPlantUserDetailsInitReportResult class.
+        Initializes a new instance of the
+        FlowPlantUserDetailsInitReportResult class.
         """
     def to_json(self):
         """
-        Converts the FlowPlantUserDetailsInitReportResult instance to a JSON string.
+        Converts the FlowPlantUserDetailsInitReportResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -44,7 +50,8 @@ class FlowPlantUserDetailsInitReportResult():
         return json.dumps(data)
 class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
     """
-    FlowPlantUserDetailsInitReport handles the addition of a  to
+    FlowPlantUserDetailsInitReport handles the addition of
+    a  to
     a specific plant in the flow process.
     This class extends the BaseFlowPlantUserDetailsInitReport class and
     initializes it with the provided session context.
@@ -64,9 +71,11 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
 # endset  # noqa: E122
     ) -> FlowPlantUserDetailsInitReportResult:
         """
-        Processes the addition of a  to a specific plant.
+        Processes the addition of a
+         to a specific plant.
         Returns:
-            FlowPlantUserDetailsInitReportResult: The result of the FlowPlantUserDetailsInitReport process.
+            FlowPlantUserDetailsInitReportResult: The result of the
+                FlowPlantUserDetailsInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

@@ -1,6 +1,7 @@
 # apis/models/customer_user_log_out.py
 """
-This module contains the models for the Customer User Log Out API.
+This module contains the models for the
+Customer User Log Out API.
 """
 import json
 import logging
@@ -18,7 +19,8 @@ from helpers.pydantic_serialization import CamelModel
 from .post_reponse import PostResponse
 class CustomerUserLogOutPostModelRequest(CamelModel):
     """
-    Represents the request model for the Customer User Log Out API.
+    Represents the request model for the
+    Customer User Log Out API.
     """
     force_error_message: str = Field(
         default="",
@@ -60,7 +62,8 @@ class CustomerUserLogOutPostModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class CustomerUserLogOutPostModelResponse(PostResponse):
     """
-    Represents the response model for the Customer User Log Out API.
+    Represents the response model for the
+    Customer User Log Out API.
     """
 
 # endset

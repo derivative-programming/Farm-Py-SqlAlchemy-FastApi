@@ -1,6 +1,7 @@
 # reports/row_models/tests/pac_user_tri_state_filter_list_test.py
 """
-This module contains unit tests for the `ReportItemPacUserTriStateFilterList` class.
+This module contains unit tests for the
+`ReportItemPacUserTriStateFilterList` class.
 The `ReportItemPacUserTriStateFilterList` class represents a
 report item for a pac Pac User Tri State Filter List Report.
 It contains various fields with default values and

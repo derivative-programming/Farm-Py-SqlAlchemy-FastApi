@@ -1,6 +1,7 @@
 # pac_user_date_greater_than_filter_list.py
 """
-This module is the manager for report 'Pac User Date Greater Than Filter List'
+This module is the manager for report
+'Pac User Date Greater Than Filter List'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.pac_user_date_greater_than_filter_list import ReportItem
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPacUserDateGreaterThanFilterList():
     """
-    This class is the manager of report 'Pac User Date Greater Than Filter List'
+    This class is the manager of report
+    'Pac User Date Greater Than Filter List'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerPacUserDateGreaterThanFilterList():
         order_by_descending: bool = False,
     ) -> List[ReportItemPacUserDateGreaterThanFilterList]:
         """
-        Generate the 'Pac User Date Greater Than Filter List' report.
+        Generate the
+        'Pac User Date Greater Than Filter List' report.
         Returns:
-            List[ReportItemPacUserDateGreaterThanFilterList]: The list of report items.
+            List[ReportItemPacUserDateGreaterThanFilterList]: The
+                list of report items.
         """
         logging.info('ReportManagerPacUserDateGreaterThanFilterList.generate Start')
         role_required = ""
@@ -81,7 +85,8 @@ class ReportManagerPacUserDateGreaterThanFilterList():
                         file_name: str,
                         data_list: List[ReportItemPacUserDateGreaterThanFilterList]):
         """
-        Build a CSV file for the 'Pac User Date Greater Than Filter List' report.
+        Build a CSV file for the
+        'Pac User Date Greater Than Filter List' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemPacUserDateGreaterThanFilterList]):

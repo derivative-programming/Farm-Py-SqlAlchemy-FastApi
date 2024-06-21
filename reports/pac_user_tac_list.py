@@ -1,6 +1,7 @@
 # pac_user_tac_list.py
 """
-This module is the manager for report 'Pac User Tac List'
+This module is the manager for report
+'Pac User Tac List'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.pac_user_tac_list import ReportItemPacUserTacList
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPacUserTacList():
     """
-    This class is the manager of report 'Pac User Tac List'
+    This class is the manager of report
+    'Pac User Tac List'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerPacUserTacList():
         order_by_descending: bool = False,
     ) -> List[ReportItemPacUserTacList]:
         """
-        Generate the 'Pac User Tac List' report.
+        Generate the
+        'Pac User Tac List' report.
         Returns:
-            List[ReportItemPacUserTacList]: The list of report items.
+            List[ReportItemPacUserTacList]: The
+                list of report items.
         """
         logging.info('ReportManagerPacUserTacList.generate Start')
         role_required = ""
@@ -81,7 +85,8 @@ class ReportManagerPacUserTacList():
                         file_name: str,
                         data_list: List[ReportItemPacUserTacList]):
         """
-        Build a CSV file for the 'Pac User Tac List' report.
+        Build a CSV file for the
+        'Pac User Tac List' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemPacUserTacList]):

@@ -1,7 +1,8 @@
 # land_plant_list.py
 
 """
-This module is the manager for report 'Land Plant List'
+This module is the manager for report
+'Land Plant List'
 """
 
 import json
@@ -19,7 +20,8 @@ from .report_request_validation_error import ReportRequestValidationError
 
 class ReportManagerLandPlantList():
     """
-    This class is the manager of report 'Land Plant List'
+    This class is the manager of report
+    'Land Plant List'
     """
 
     _session_context: SessionContext
@@ -74,10 +76,12 @@ class ReportManagerLandPlantList():
         order_by_descending: bool = False,
     ) -> List[ReportItemLandPlantList]:
         """
-        Generate the 'Land Plant List' report.
+        Generate the
+        'Land Plant List' report.
 
         Returns:
-            List[ReportItemLandPlantList]: The list of report items.
+            List[ReportItemLandPlantList]: The
+                list of report items.
         """
         logging.info('ReportManagerLandPlantList.generate Start')
 
@@ -146,7 +150,8 @@ class ReportManagerLandPlantList():
                         file_name: str,
                         data_list: List[ReportItemLandPlantList]):
         """
-        Build a CSV file for the 'Land Plant List' report.
+        Build a CSV file for the
+        'Land Plant List' report.
 
         Args:
             file_name (str): The name of the CSV file.

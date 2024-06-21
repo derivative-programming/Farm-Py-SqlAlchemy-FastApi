@@ -1,7 +1,8 @@
 # flows/base/tac_login.py
 """
 This module contains the implementation
-of the BaseFlow Tac Login class
+of the BaseFlow
+Tac Login class
 """
 import uuid
 from datetime import date, datetime

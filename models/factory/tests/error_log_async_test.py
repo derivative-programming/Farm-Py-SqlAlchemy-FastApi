@@ -76,15 +76,18 @@ class TestErrorLogFactoryAsync:
     @pytest.mark.asyncio
     async def test_error_log_creation(self, session):
         """
-        Test case for creating a error_log asynchronously.
+        Test case for creating a error_log
+        asynchronously.
         Args:
             session: The database session to use.
         Returns:
             None
         Raises:
-            AssertionError: If the error_log ID is None after creation.
+            AssertionError: If the error_log ID
+                is None after creation.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         assert error_log.error_log_id is not None
     @pytest.mark.asyncio
     async def test_code_default(self, session):
@@ -98,7 +101,8 @@ class TestErrorLogFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         assert isinstance(error_log.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
@@ -112,7 +116,8 @@ class TestErrorLogFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        error_log: ErrorLog = await ErrorLogFactory.build_async(session=session)
+        error_log: ErrorLog = await ErrorLogFactory.build_async(
+            session=session)
         assert error_log.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
@@ -126,7 +131,8 @@ class TestErrorLogFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        error_log: ErrorLog = await ErrorLogFactory.create_async(session=session)
+        error_log: ErrorLog = await ErrorLogFactory.create_async(
+            session=session)
         assert error_log.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -140,7 +146,8 @@ class TestErrorLogFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         initial_code = error_log.last_change_code
         error_log.code = uuid.uuid4()
         await session.commit()
@@ -158,9 +165,11 @@ class TestErrorLogFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        error_log = await ErrorLogFactory.build_async(session=session)
+        error_log = await ErrorLogFactory.build_async(
+            session=session)
         assert error_log.insert_utc_date_time is not None
-        assert isinstance(error_log.insert_utc_date_time, datetime)
+        assert isinstance(
+            error_log.insert_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_inserted_on_initial_save(self, session):
         """
@@ -174,9 +183,11 @@ class TestErrorLogFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        error_log = await ErrorLogFactory.build_async(session=session)
+        error_log = await ErrorLogFactory.build_async(
+            session=session)
         assert error_log.insert_utc_date_time is not None
-        assert isinstance(error_log.insert_utc_date_time, datetime)
+        assert isinstance(
+            error_log.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         error_log.code = uuid.uuid4()
         session.add(error_log)
@@ -195,9 +206,11 @@ class TestErrorLogFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         assert error_log.insert_utc_date_time is not None
-        assert isinstance(error_log.insert_utc_date_time, datetime)
+        assert isinstance(
+            error_log.insert_utc_date_time, datetime)
         initial_time = error_log.insert_utc_date_time
         error_log.code = uuid.uuid4()
         time.sleep(1)
@@ -217,9 +230,11 @@ class TestErrorLogFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        error_log = await ErrorLogFactory.build_async(session=session)
+        error_log = await ErrorLogFactory.build_async(
+            session=session)
         assert error_log.last_update_utc_date_time is not None
-        assert isinstance(error_log.last_update_utc_date_time, datetime)
+        assert isinstance(
+            error_log.last_update_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_updated_on_initial_save(self, session):
         """
@@ -233,9 +248,11 @@ class TestErrorLogFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        error_log = await ErrorLogFactory.build_async(session=session)
+        error_log = await ErrorLogFactory.build_async(
+            session=session)
         assert error_log.last_update_utc_date_time is not None
-        assert isinstance(error_log.last_update_utc_date_time, datetime)
+        assert isinstance(
+            error_log.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         error_log.code = uuid.uuid4()
         session.add(error_log)
@@ -254,9 +271,11 @@ class TestErrorLogFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         assert error_log.last_update_utc_date_time is not None
-        assert isinstance(error_log.last_update_utc_date_time, datetime)
+        assert isinstance(
+            error_log.last_update_utc_date_time, datetime)
         initial_time = error_log.last_update_utc_date_time
         error_log.code = uuid.uuid4()
         time.sleep(1)
@@ -265,16 +284,19 @@ class TestErrorLogFactoryAsync:
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
         """
-        Test case for deleting a error_log from the database.
+        Test case for deleting a error_log
+        from the database.
         Args:
             session: The database session to use.
         Returns:
             None
         Raises:
-            AssertionError: If the deleted error_log is still
+            AssertionError: If the deleted
+            error_log is still
             found in the database.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         await session.delete(error_log)
         await session.commit()
         # Construct the select statement
@@ -288,7 +310,8 @@ class TestErrorLogFactoryAsync:
     @pytest.mark.asyncio
     async def test_data_types(self, session):
         """
-        Test case for checking the data types of the error_log attributes.
+        Test case for checking the data types of
+        the error_log attributes.
         Args:
             session: The database session to use.
         Returns:
@@ -296,7 +319,8 @@ class TestErrorLogFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         assert isinstance(error_log.error_log_id, int)
         assert isinstance(error_log.code, uuid.UUID)
         assert isinstance(error_log.last_change_code, int)
@@ -328,8 +352,10 @@ class TestErrorLogFactoryAsync:
     async def test_unique_code_constraint(self, session):
         """
         Test case to check the unique code constraint for error_logs.
-        This test creates two error_log instances using
-        the ErrorLogFactoryand assigns the same code to both error_logs.
+        This test creates two error_log
+        instances using
+        the ErrorLogFactoryand assigns
+        the same code to both error_logs.
         Then it adds both error_logs to the session and
         attempts to commit the changes.
         The test expects an exception to be raised,
@@ -339,8 +365,10 @@ class TestErrorLogFactoryAsync:
         Note: This test assumes that the
         ErrorLogFactory.create_async() method creates unique codes for each error_log.
         """
-        error_log_1 = await ErrorLogFactory.create_async(session=session)
-        error_log_2 = await ErrorLogFactory.create_async(session=session)
+        error_log_1 = await ErrorLogFactory.create_async(
+            session=session)
+        error_log_2 = await ErrorLogFactory.create_async(
+            session=session)
         error_log_2.code = error_log_1.code
         session.add_all([error_log_1, error_log_2])
         with pytest.raises(Exception):
@@ -352,7 +380,8 @@ class TestErrorLogFactoryAsync:
         Test case to verify the default values of
         the fields in the ErrorLog model.
         This test case checks that the default values
-        of various fields in the ErrorLog model are set correctly.
+        of various fields in the ErrorLog
+        model are set correctly.
         It asserts that the default values are not None
         or empty, and that the data types of certain fields are correct.
         """
@@ -386,19 +415,24 @@ class TestErrorLogFactoryAsync:
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
         """
-        Test the concurrency of last_change_code in the ErrorLog model.
+        Test the concurrency of last_change_code
+        in the ErrorLog model.
         This test verifies that the last_change_code
         attribute of a ErrorLog object
         is updated correctly when multiple instances
         of the object are modified
         concurrently.
         Steps:
-        1. Create a new ErrorLog object using the ErrorLogFactory.
+        1. Create a new ErrorLog object using
+            the ErrorLogFactory.
         2. Get the original value of the last_change_code attribute.
-        3. Query the database for the ErrorLog object using the error_log_id.
-        4. Modify the code attribute of the retrieved ErrorLog object.
+        3. Query the database for the ErrorLog
+            object using the error_log_id.
+        4. Modify the code attribute of the
+            retrieved ErrorLog object.
         5. Commit the changes to the database.
-        6. Query the database again for the ErrorLog object using the error_log_id.
+        6. Query the database again for the
+            ErrorLog object using the error_log_id.
         7. Get the modified ErrorLog object.
         8. Verify that the last_change_code attribute
             of the modified ErrorLog object
@@ -408,7 +442,8 @@ class TestErrorLogFactoryAsync:
                             of the modified ErrorLog
                             object is the same as the original value.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         original_last_change_code = error_log.last_change_code
         stmt = select(ErrorLog).where(
             ErrorLog._error_log_id == error_log.error_log_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
@@ -449,7 +484,8 @@ class TestErrorLogFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        error_log = await ErrorLogFactory.create_async(session=session)
+        error_log = await ErrorLogFactory.create_async(
+            session=session)
         error_log.pac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

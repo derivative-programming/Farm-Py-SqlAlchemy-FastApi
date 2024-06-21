@@ -1,6 +1,7 @@
 # business/role.py
 """
-This module contains the RoleBusObj class, which represents the business object for a Role.
+This module contains the RoleBusObj class,
+which represents the business object for a Role.
 """
 from decimal import Decimal
 import random
@@ -18,7 +19,9 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Role object is not initialized")
 class RoleInvalidInitError(Exception):
     """
-    Exception raised when the Role object is not initialized properly.
+    Exception raised when the
+    Role object
+    is not initialized properly.
     """
 class RoleBusObj(BaseBusObj):
     """
@@ -27,7 +30,8 @@ class RoleBusObj(BaseBusObj):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the RoleBusObj class.
+        Initializes a new instance of the
+        RoleBusObj class.
         :param session_context: The session context.
         :raises ValueError: If the session is not provided.
         """
@@ -38,9 +42,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def role_id(self) -> int:
         """
-        Get the role ID from the Role object.
+        Get the role ID from the
+        Role object.
         :return: The role ID.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -51,9 +57,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        Get the code from the Role object.
+        Get the code from the
+        Role object.
         :return: The code.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -65,7 +73,8 @@ class RoleBusObj(BaseBusObj):
         """
         Set the code for the Role object.
         :param value: The code value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises ValueError: If the code is not a UUID.
         """
         if not self.role:
@@ -79,9 +88,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        Get the last change code from the Role object.
+        Get the last change code from the
+        Role object.
         :return: The last change code.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -91,9 +102,11 @@ class RoleBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        Set the last change code for the Role object.
+        Set the last change code for the
+        Role object.
         :param value: The last change code value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises ValueError: If the last change code is not an integer.
         """
         if not self.role:
@@ -107,9 +120,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        Get the insert user ID from the Role object.
+        Get the insert user ID from the
+        Role object.
         :return: The insert user ID.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -119,9 +134,11 @@ class RoleBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        Set the insert user ID for the Role object.
+        Set the insert user ID for the
+        Role object.
         :param value: The insert user ID value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.role:
@@ -135,9 +152,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        Get the last update user ID from the Role object.
+        Get the last update user ID from the
+        Role object.
         :return: The last update user ID.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -147,9 +166,11 @@ class RoleBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        Set the last update user ID for the Role object.
+        Set the last update user ID for the
+        Role object.
         :param value: The last update user ID value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.role:
@@ -164,9 +185,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def description(self):
         """
-        Get the Description from the Role object.
+        Get the Description from the
+        Role object.
         :return: The Description.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -178,9 +201,11 @@ class RoleBusObj(BaseBusObj):
     @description.setter
     def description(self, value):
         """
-        Set the Description for the Role object.
+        Set the Description for the
+        Role object.
         :param value: The Description value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises AssertionError: If the Description is not a string.
         """
         if not self.role:
@@ -191,9 +216,11 @@ class RoleBusObj(BaseBusObj):
         self.role.description = value
     def set_prop_description(self, value: str):
         """
-        Set the Description for the Role object.
+        Set the Description for the
+        Role object.
         :param value: The Description value.
-        :return: The updated RoleBusObj instance.
+        :return: The updated
+            RoleBusObj instance.
         """
         self.description = value
         return self
@@ -201,7 +228,15 @@ class RoleBusObj(BaseBusObj):
     @property
     def display_order(self):
         """
-        #TODO add comment
+        Returns the value of
+        display_order attribute of the
+        role.
+        Raises:
+            AttributeError: If the
+                role is not initialized.
+        Returns:
+            int: The value of
+                display_order attribute.
         """
         if not self.role:
             raise AttributeError(
@@ -211,7 +246,15 @@ class RoleBusObj(BaseBusObj):
     @display_order.setter
     def display_order(self, value):
         """
-        #TODO add comment
+        Sets the value of
+        display_order for the
+        role.
+        Args:
+            value (int): The integer value to set for
+                display_order.
+        Raises:
+            AttributeError: If the
+                role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -222,7 +265,13 @@ class RoleBusObj(BaseBusObj):
         self.role.display_order = value
     def set_prop_display_order(self, value: int):
         """
-        #TODO add comment
+        Set the value of
+        display_order property.
+        Args:
+            value (int): The value to set for
+                display_order.
+        Returns:
+            self: Returns the instance of the class.
         """
         self.display_order = value
         return self
@@ -230,9 +279,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def is_active(self):
         """
-        Get the Is Active flag from the Role object.
+        Get the Is Active flag from the
+        Role object.
         :return: The Is Active flag.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -242,9 +293,11 @@ class RoleBusObj(BaseBusObj):
     @is_active.setter
     def is_active(self, value: bool):
         """
-        Set the Is Active flag for the Role object.
+        Set the Is Active flag for the
+        Role object.
         :param value: The Is Active flag value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises ValueError: If the Is Active flag is not a boolean.
         """
         if not self.role:
@@ -256,9 +309,11 @@ class RoleBusObj(BaseBusObj):
         self.role.is_active = value
     def set_prop_is_active(self, value: bool):
         """
-        Set the Is Active flag for the Role object.
+        Set the Is Active flag for the
+        Role object.
         :param value: The Is Active flag value.
-        :return: The updated RoleBusObj instance.
+        :return: The updated
+            RoleBusObj instance.
         """
         self.is_active = value
         return self
@@ -266,9 +321,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def lookup_enum_name(self):
         """
-        Get the Lookup Enum Name from the Role object.
+        Get the Lookup Enum Name from the
+        Role object.
         :return: The Lookup Enum Name.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -280,9 +337,11 @@ class RoleBusObj(BaseBusObj):
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
         """
-        Set the Lookup Enum Name for the Role object.
+        Set the Lookup Enum Name for the
+        Role object.
         :param value: The Lookup Enum Name value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises AssertionError: If the Lookup Enum Name is not a string.
         """
         if not self.role:
@@ -293,9 +352,11 @@ class RoleBusObj(BaseBusObj):
         self.role.lookup_enum_name = value
     def set_prop_lookup_enum_name(self, value: str):
         """
-        Set the Lookup Enum Name for the Role object.
+        Set the Lookup Enum Name for the
+        Role object.
         :param value: The Lookup Enum Name value.
-        :return: The updated RoleBusObj instance.
+        :return: The updated
+            RoleBusObj instance.
         """
         self.lookup_enum_name = value
         return self
@@ -303,9 +364,11 @@ class RoleBusObj(BaseBusObj):
     @property
     def name(self):
         """
-        Get the Name from the Role object.
+        Get the Name from the
+        Role object.
         :return: The Name.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -317,9 +380,11 @@ class RoleBusObj(BaseBusObj):
     @name.setter
     def name(self, value):
         """
-        Set the Name for the Role object.
+        Set the Name for the
+        Role object.
         :param value: The Name value.
-        :raises AttributeError: If the Role object is not initialized.
+        :raises AttributeError: If the
+            Role object is not initialized.
         :raises AssertionError: If the Name is not a string.
         """
         if not self.role:
@@ -330,9 +395,11 @@ class RoleBusObj(BaseBusObj):
         self.role.name = value
     def set_prop_name(self, value: str):
         """
-        Set the Name for the Role object.
+        Set the Name for the
+        Role object.
         :param value: The Name value.
-        :return: The updated RoleBusObj instance.
+        :return: The updated
+            RoleBusObj instance.
         """
         self.name = value
         return self
@@ -347,9 +414,12 @@ class RoleBusObj(BaseBusObj):
     @property
     def pac_id(self):
         """
-        Returns the pac ID associated with the role.
+        Returns the pac ID
+        associated with the
+        role.
         Raises:
-            AttributeError: If the role is not initialized.
+            AttributeError: If the
+                role is not initialized.
         Returns:
             int: The pac ID of the role.
         """
@@ -361,12 +431,15 @@ class RoleBusObj(BaseBusObj):
     @pac_id.setter
     def pac_id(self, value):
         """
-        Sets the pac ID for the role.
+        Sets the pac ID
+        for the role.
         Args:
-            value (int or None): The pac ID to be set.
+            value (int or None): The
+                pac ID to be set.
                 Must be an integer or None.
         Raises:
-            AttributeError: If the role is not initialized.
+            AttributeError: If the
+                role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -377,22 +450,27 @@ class RoleBusObj(BaseBusObj):
         self.role.pac_id = value
     def set_prop_pac_id(self, value: int):
         """
-        Set the pac ID for the role.
+        Set the pac ID for the
+        role.
         Args:
-            value (int): The ID of the pac.
+            value (int): The pac id value.
         Returns:
-            Role: The updated Role object.
+            Role: The updated
+                Role object.
         """
         self.pac_id = value
         return self
     @property
     def pac_code_peek(self) -> uuid.UUID:
         """
-        Returns the pac code peek of the role.
+        Returns the pac id code peek
+        of the role.
         Raises:
-            AttributeError: If the role is not initialized.
+            AttributeError: If the
+            role is not initialized.
         Returns:
-            uuid.UUID: The pac code peek of the role.
+            uuid.UUID: The pac id code peek
+            of the role.
         """
         if not self.role:
             raise AttributeError(
@@ -409,11 +487,14 @@ class RoleBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        Inserts the UTC date and time into the role object.
+        Inserts the UTC date and time into
+        the role object.
         Raises:
-            AttributeError: If the role object is not initialized.
+            AttributeError: If the
+                role object is not initialized.
         Returns:
-            The UTC date and time inserted into the role object.
+            The UTC date and time inserted into the
+            role object.
         """
         if not self.role:
             raise AttributeError(
@@ -423,12 +504,14 @@ class RoleBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        Inserts the UTC date and time for the role.
+        Inserts the UTC date and time for the
+        role.
         Args:
             value (datetime): The UTC date and time to be inserted.
                 It should be a datetime object or None.
         Raises:
-            AttributeError: If the role is not initialized.
+            AttributeError: If the
+                role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -441,11 +524,14 @@ class RoleBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        Returns the last update UTC date and time of the role.
+        Returns the last update UTC date and time
+        of the role.
         Raises:
-            AttributeError: If the role is not initialized.
+            AttributeError: If the
+                role is not initialized.
         Returns:
-            datetime: The last update UTC date and time of the role.
+            datetime: The last update UTC date and time
+                of the role.
         """
         if not self.role:
             raise AttributeError(
@@ -455,13 +541,15 @@ class RoleBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        Sets the last update UTC date and time for the role.
+        Sets the last update UTC date and time
+        for the role.
         Args:
             value (datetime): The datetime object
                 representing the last update UTC date and time.
                 Pass None to unset the value.
         Raises:
-            AttributeError: If the role is not initialized.
+            AttributeError: If the
+                role is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -475,14 +563,18 @@ class RoleBusObj(BaseBusObj):
         json_data: str
     ):
         """
-        Load role data from JSON string.
-        :param json_data: JSON string containing role data.
+        Load role data
+        from JSON string.
+        :param json_data: JSON string containing
+            role data.
         :raises ValueError: If json_data is not a string
-            or if no role data is found.
+            or if no role
+            data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
-        role_manager = RoleManager(self._session_context)
+        role_manager = RoleManager(
+            self._session_context)
         self.role = role_manager.from_json(json_data)
         return self
     async def load_from_code(
@@ -490,14 +582,19 @@ class RoleBusObj(BaseBusObj):
         code: uuid.UUID
     ):
         """
-        Load role data from UUID code.
-        :param code: UUID code for loading a specific role.
-        :raises ValueError: If code is not a UUID or if no role data is found.
+        Load role
+        data from UUID code.
+        :param code: UUID code for loading a specific
+            role.
+        :raises ValueError: If code is not a UUID or if no
+            role data is found.
         """
         if not isinstance(code, uuid.UUID):
             raise ValueError("code must be a UUID")
-        role_manager = RoleManager(self._session_context)
-        role_obj = await role_manager.get_by_code(code)
+        role_manager = RoleManager(
+            self._session_context)
+        role_obj = await role_manager.get_by_code(
+            code)
         self.role = role_obj
         return self
     async def load_from_id(
@@ -505,15 +602,21 @@ class RoleBusObj(BaseBusObj):
         role_id: int
     ):
         """
-        Load role data from role ID.
-        :param role_id: Integer ID for loading a specific role.
-        :raises ValueError: If role_id is not an integer or
-            if no role data is found.
+        Load role data from
+        role ID.
+        :param role_id: Integer ID for loading a specific
+            role.
+        :raises ValueError: If role_id
+            is not an integer or
+            if no role
+            data is found.
         """
         if not isinstance(role_id, int):
             raise ValueError("role_id must be an integer")
-        role_manager = RoleManager(self._session_context)
-        role_obj = await role_manager.get_by_id(role_id)
+        role_manager = RoleManager(
+            self._session_context)
+        role_obj = await role_manager.get_by_id(
+            role_id)
         self.role = role_obj
         return self
     async def load_from_obj_instance(
@@ -521,13 +624,19 @@ class RoleBusObj(BaseBusObj):
         role_obj_instance: Role
     ):
         """
-        Use the provided Role instance.
-        :param role_obj_instance: Instance of the Role class.
-        :raises ValueError: If role_obj_instance is not an instance of Role.
+        Use the provided
+        Role instance.
+        :param role_obj_instance: Instance of the
+            Role class.
+        :raises ValueError: If role_obj_instance
+            is not an instance of
+            Role.
         """
-        if not isinstance(role_obj_instance, Role):
+        if not isinstance(role_obj_instance,
+                          Role):
             raise ValueError("role_obj_instance must be an instance of Role")
-        role_manager = RoleManager(self._session_context)
+        role_manager = RoleManager(
+            self._session_context)
         role_obj_instance_role_id = role_obj_instance.role_id
         role_obj = await role_manager.get_by_id(
             role_obj_instance_role_id
@@ -539,15 +648,21 @@ class RoleBusObj(BaseBusObj):
         role_dict: dict
     ):
         """
-        Load role data from dictionary.
-        :param role_dict: Dictionary containing role data.
-        :raises ValueError: If role_dict is not a
-            dictionary or if no role data is found.
+        Load role data
+        from dictionary.
+        :param role_dict: Dictionary containing
+            role data.
+        :raises ValueError: If role_dict
+            is not a
+            dictionary or if no
+            role data is found.
         """
         if not isinstance(role_dict, dict):
             raise ValueError("role_dict must be a dictionary")
-        role_manager = RoleManager(self._session_context)
-        self.role = role_manager.from_dict(role_dict)
+        role_manager = RoleManager(
+            self._session_context)
+        self.role = role_manager.from_dict(
+            role_dict)
         return self
 
     @property
@@ -606,82 +721,116 @@ class RoleBusObj(BaseBusObj):
         return self._session_context
     async def refresh(self):
         """
-        Refreshes the role object by fetching
+        Refreshes the role
+        object by fetching
         the latest data from the database.
         Returns:
-            The updated role object.
+            The updated
+            role object.
         """
-        role_manager = RoleManager(self._session_context)
-        self.role = await role_manager.refresh(self.role)
+        role_manager = RoleManager(
+            self._session_context)
+        self.role = await role_manager.refresh(
+            self.role)
         return self
     def is_valid(self):
         """
-        Check if the role is valid.
+        Check if the role
+        is valid.
         Returns:
-            bool: True if the role is valid, False otherwise.
+            bool: True if the role
+                is valid, False otherwise.
         """
         return self.role is not None
     def to_dict(self):
         """
-        Converts the Role object to a dictionary representation.
+        Converts the Role
+        object to a dictionary representation.
         Returns:
-            dict: A dictionary representation of the Role object.
+            dict: A dictionary representation of the
+                Role object.
         """
-        role_manager = RoleManager(self._session_context)
-        return role_manager.to_dict(self.role)
+        role_manager = RoleManager(
+            self._session_context)
+        return role_manager.to_dict(
+            self.role)
     def to_json(self):
         """
-        Converts the role object to a JSON representation.
+        Converts the role
+        object to a JSON representation.
         Returns:
-            str: The JSON representation of the role object.
+            str: The JSON representation of the
+                role object.
         """
-        role_manager = RoleManager(self._session_context)
-        return role_manager.to_json(self.role)
+        role_manager = RoleManager(
+            self._session_context)
+        return role_manager.to_json(
+            self.role)
     async def save(self):
         """
-        Saves the role object to the database.
-        If the role object is not initialized, an AttributeError is raised.
-        If the role_id is greater than 0, the role is
+        Saves the role object
+        to the database.
+        If the role object
+        is not initialized, an AttributeError is raised.
+        If the role_id
+        is greater than 0, the
+        role is
         updated in the database.
-        If the role_id is 0, the role is added to the database.
+        If the role_id is 0,
+        the role is
+        added to the database.
         Returns:
-            The updated or added role object.
+            The updated or added
+            role object.
         Raises:
-            AttributeError: If the role object is not initialized.
+            AttributeError: If the role
+            object is not initialized.
         """
         if not self.role:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
         role_id = self.role.role_id
         if role_id > 0:
-            role_manager = RoleManager(self._session_context)
-            self.role = await role_manager.update(self.role)
+            role_manager = RoleManager(
+                self._session_context)
+            self.role = await role_manager.update(
+                self.role)
         if role_id == 0:
-            role_manager = RoleManager(self._session_context)
-            self.role = await role_manager.add(self.role)
+            role_manager = RoleManager(
+                self._session_context)
+            self.role = await role_manager.add(
+                self.role)
         return self
     async def delete(self):
         """
-        Deletes the role from the database.
+        Deletes the role
+        from the database.
         Raises:
-            AttributeError: If the role is not initialized.
+            AttributeError: If the role
+                is not initialized.
         """
         if not self.role:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.role.role_id > 0:
-            role_manager = RoleManager(self._session_context)
-            await role_manager.delete(self.role.role_id)
+            role_manager = RoleManager(
+                self._session_context)
+            await role_manager.delete(
+                self.role.role_id)
             self.role = None
     async def randomize_properties(self):
         """
-        Randomizes the properties of the role object.
+        Randomizes the properties of the
+        role object.
         This method generates random values for various
-        properties of the role object
+        properties of the role
+        object
         Returns:
-            self: The current instance of the Role class.
+            self: The current instance of the
+                Role class.
         Raises:
-            AttributeError: If the role object is not initialized.
+            AttributeError: If the role
+                object is not initialized.
         """
         if not self.role:
             raise AttributeError(
@@ -702,28 +851,39 @@ class RoleBusObj(BaseBusObj):
         return self
     def get_role_obj(self) -> Role:
         """
-        Returns the role object.
+        Returns the role
+        object.
         Raises:
-            AttributeError: If the role object is not initialized.
+            AttributeError: If the role
+                object is not initialized.
         Returns:
-            Role: The role object.
+            Role: The role
+                object.
         """
         if not self.role:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.role
-    def is_equal(self, role: Role) -> bool:
+    def is_equal(
+        self,
+        role: Role
+    ) -> bool:
         """
-        Checks if the current role is equal to the given role.
+        Checks if the current role
+        is equal to the given role.
         Args:
-            role (Role): The role to compare with.
+            role (Role): The
+                role to compare with.
         Returns:
-            bool: True if the roles are equal, False otherwise.
+            bool: True if the roles
+                are equal, False otherwise.
         """
-        role_manager = RoleManager(self._session_context)
+        role_manager = RoleManager(
+            self._session_context)
         my_role = self.get_role_obj()
-        return role_manager.is_equal(role, my_role)
+        return role_manager.is_equal(
+            role, my_role)
 # endset
     # description,
     # displayOrder,
@@ -733,9 +893,11 @@ class RoleBusObj(BaseBusObj):
     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         """
-        Retrieves the related Pac object based on the pac_id.
+        Retrieves the related Pac object based
+        on the pac_id.
         Returns:
-            An instance of the Pac model representing the related pac.
+            An instance of the Pac model
+            representing the related pac.
         """
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -779,15 +941,19 @@ class RoleBusObj(BaseBusObj):
         """
         Get the parent code of the role.
         Returns:
-            The parent code of the role as a UUID.
+            The parent code of the role
+            as a UUID.
         """
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         """
-        Get the parent object of the current role.
+        Get the parent object of the current
+        role.
         Returns:
-            The parent object of the current role,
-            which is an instance of the Pac model.
+            The parent object of the current
+            role,
+            which is an instance of the
+            Pac model.
         """
         pac = await self.get_pac_id_rel_obj()
         return pac
@@ -798,17 +964,23 @@ class RoleBusObj(BaseBusObj):
         obj_list: List[Role]
     ):
         """
-        Convert a list of Role objects to a list of RoleBusObj objects.
+        Convert a list of Role
+        objects to a list of
+        RoleBusObj objects.
         Args:
             session_context (SessionContext): The session context.
-            obj_list (List[Role]): The list of Role objects to convert.
+            obj_list (List[Role]): The
+                list of Role objects to convert.
         Returns:
-            List[RoleBusObj]: The list of converted RoleBusObj objects.
+            List[RoleBusObj]: The
+                list of converted RoleBusObj
+                objects.
         """
         result = list()
         for role in obj_list:
             role_bus_obj = RoleBusObj(session_context)
-            await role_bus_obj.load_from_obj_instance(role)
+            await role_bus_obj.load_from_obj_instance(
+                role)
             result.append(role_bus_obj)
         return result
 

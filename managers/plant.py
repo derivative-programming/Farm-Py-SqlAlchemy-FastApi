@@ -2,8 +2,10 @@
 # pylint: disable=unused-import
 
 """
-This module contains the PlantManager class, which is
-responsible for managing plants in the system.
+This module contains the
+PlantManager class, which is
+responsible for managing
+plants in the system.
 """
 
 import json
@@ -25,7 +27,8 @@ logger = get_logger(__name__)
 
 class PlantNotFoundError(Exception):
     """
-    Exception raised when a specified plant is not found.
+    Exception raised when a specified
+    plant is not found.
 
     Attributes:
         message (str): Explanation of the error.
@@ -42,13 +45,17 @@ class PlantNotFoundError(Exception):
 
 class PlantManager:
     """
-    The PlantManager class is responsible for managing plants in the system.
-    It provides methods for adding, updating, deleting, and retrieving plants.
+    The PlantManager class
+    is responsible for managing
+    plants in the system.
+    It provides methods for adding, updating, deleting,
+    and retrieving plants.
     """
 
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the PlantManager class.
+        Initializes a new instance of the
+        PlantManager class.
 
         Args:
             session_context (SessionContext): The session context object.
@@ -60,19 +67,6 @@ class PlantManager:
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-
-    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
-        """
-        Converts a UUID value to a model UUID.
-
-        Args:
-            value (uuid.UUID): The UUID value to convert.
-
-        Returns:
-            The converted UUID value.
-        """
-        # Conditionally set the UUID column type
-        return value
 
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=false]Start
@@ -88,42 +82,51 @@ class PlantManager:
 
     async def build(self, **kwargs) -> Plant:
         """
-        Builds a new Plant object with the specified attributes.
+        Builds a new Plant
+        object with the specified attributes.
 
         Args:
-            **kwargs: The attributes of the plant.
+            **kwargs: The attributes of the
+                plant.
 
         Returns:
-            Plant: The newly created Plant object.
+            Plant: The newly created
+                Plant object.
         """
         logging.info("PlantManager.build")
         return Plant(**kwargs)
 
-    async def add(self, plant: Plant) -> Plant:
+    async def add(
+        self,
+        plant: Plant
+    ) -> Plant:
         """
         Adds a new plant to the system.
 
         Args:
-            plant (Plant): The plant to add.
+            plant (Plant): The
+                plant to add.
 
         Returns:
-            Plant: The added plant.
+            Plant: The added
+                plant.
         """
         logging.info("PlantManager.add")
-        plant.insert_user_id = self.convert_uuid_to_model_uuid(
-            self._session_context.customer_code)
-        plant.last_update_user_id = self.convert_uuid_to_model_uuid(
-            self._session_context.customer_code)
-        self._session_context.session.add(plant)
+        plant.insert_user_id = self._session_context.customer_code
+        plant.last_update_user_id = self._session_context.customer_code
+        self._session_context.session.add(
+            plant)
         await self._session_context.session.flush()
         return plant
 
     def _build_query(self):
         """
-        Builds the base query for retrieving plants.
+        Builds the base query for retrieving
+        plants.
 
         Returns:
-            The base query for retrieving plants.
+            The base query for retrieving
+            plants.
         """
         logging.info("PlantManager._build_query")
 
@@ -147,15 +150,20 @@ class PlantManager:
 
         return query
 
-    async def _run_query(self, query_filter) -> List[Plant]:
+    async def _run_query(
+        self,
+        query_filter
+    ) -> List[Plant]:
         """
-        Runs the query to retrieve plants from the database.
+        Runs the query to retrieve
+        plants from the database.
 
         Args:
             query_filter: The filter to apply to the query.
 
         Returns:
-            List[Plant]: The list of plants that match the query.
+            List[Plant]: The list of
+                plants that match the query.
         """
         logging.info("PlantManager._run_query")
         plant_query_all = self._build_query()
@@ -199,11 +207,13 @@ class PlantManager:
         otherwise returns None.
 
         Args:
-            plant_list (List[Plant]): The list to retrieve
+            plant_list (List[Plant]):
+                The list to retrieve
                 the first element from.
 
         Returns:
-            Optional[Plant]: The first element of the list
+            Optional[Plant]: The
+                first element of the list
                 if it exists, otherwise None.
         """
         return (
@@ -217,10 +227,12 @@ class PlantManager:
         Retrieves a plant by its ID.
 
         Args:
-            plant_id (int): The ID of the plant to retrieve.
+            plant_id (int): The ID of the
+                plant to retrieve.
 
         Returns:
-            Optional[Plant]: The retrieved plant, or None if not found.
+            Optional[Plant]: The retrieved
+                plant, or None if not found.
         """
         logging.info(
             "PlantManager.get_by_id start plant_id: %s",
@@ -239,13 +251,16 @@ class PlantManager:
 
     async def get_by_code(self, code: uuid.UUID) -> Optional[Plant]:
         """
-        Retrieves a plant by its code.
+        Retrieves a plant
+        by its code.
 
         Args:
-            code (uuid.UUID): The code of the plant to retrieve.
+            code (uuid.UUID): The code of the
+                plant to retrieve.
 
         Returns:
-            Optional[Plant]: The retrieved plant, or None if not found.
+            Optional[Plant]: The retrieved
+                plant, or None if not found.
         """
         logging.info("PlantManager.get_by_code %s", code)
 
@@ -255,16 +270,22 @@ class PlantManager:
 
         return self._first_or_none(query_results)
 
-    async def update(self, plant: Plant, **kwargs) -> Optional[Plant]:
+    async def update(
+        self,
+        plant: Plant, **kwargs
+    ) -> Optional[Plant]:
         """
-        Updates a plant with the specified attributes.
+        Updates a plant with
+        the specified attributes.
 
         Args:
-            plant (Plant): The plant to update.
+            plant (Plant): The
+                plant to update.
             **kwargs: The attributes to update.
 
         Returns:
-            Optional[Plant]: The updated plant, or None if not found.
+            Optional[Plant]: The updated
+                plant, or None if not found.
 
         Raises:
             ValueError: If an invalid property is provided.
@@ -272,8 +293,7 @@ class PlantManager:
         logging.info("PlantManager.update")
         property_list = Plant.property_list()
         if plant:
-            plant.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            plant.last_update_user_id = self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -286,11 +306,14 @@ class PlantManager:
         Deletes a plant by its ID.
 
         Args:
-            plant_id (int): The ID of the plant to delete.
+            plant_id (int): The ID of the
+                plant to delete.
 
         Raises:
-            TypeError: If the plant_id is not an integer.
-            PlantNotFoundError: If the plant with the
+            TypeError: If the plant_id
+                is not an integer.
+            PlantNotFoundError: If the
+                plant with the
                 specified ID is not found.
         """
         logging.info("PlantManager.delete %s", plant_id)
@@ -299,20 +322,25 @@ class PlantManager:
                 f"The plant_id must be an integer, "
                 f"got {type(plant_id)} instead."
             )
-        plant = await self.get_by_id(plant_id)
+        plant = await self.get_by_id(
+            plant_id)
         if not plant:
             raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")
 
-        await self._session_context.session.delete(plant)
+        await self._session_context.session.delete(
+            plant)
 
         await self._session_context.session.flush()
 
-    async def get_list(self) -> List[Plant]:
+    async def get_list(
+        self
+    ) -> List[Plant]:
         """
         Retrieves a list of all plants.
 
         Returns:
-            List[Plant]: The list of plants.
+            List[Plant]: The list of
+                plants.
         """
         logging.info("PlantManager.get_list")
 
@@ -320,30 +348,41 @@ class PlantManager:
 
         return query_results
 
-    def to_json(self, plant: Plant) -> str:
+    def to_json(
+            self,
+            plant: Plant) -> str:
         """
-        Serializes a Plant object to a JSON string.
+        Serializes a Plant object
+        to a JSON string.
 
         Args:
-            plant (Plant): The plant to serialize.
+            plant (Plant): The
+                plant to serialize.
 
         Returns:
-            str: The JSON string representation of the plant.
+            str: The JSON string representation of the
+                plant.
         """
         logging.info("PlantManager.to_json")
         schema = PlantSchema()
         plant_data = schema.dump(plant)
         return json.dumps(plant_data)
 
-    def to_dict(self, plant: Plant) -> Dict[str, Any]:
+    def to_dict(
+        self,
+        plant: Plant
+    ) -> Dict[str, Any]:
         """
-        Serializes a Plant object to a dictionary.
+        Serializes a Plant
+        object to a dictionary.
 
         Args:
-            plant (Plant): The plant to serialize.
+            plant (Plant): The
+                plant to serialize.
 
         Returns:
-            Dict[str, Any]: The dictionary representation of the plant.
+            Dict[str, Any]: The dictionary representation of the
+                plant.
         """
         logging.info("PlantManager.to_dict")
         schema = PlantSchema()
@@ -355,13 +394,15 @@ class PlantManager:
 
     def from_json(self, json_str: str) -> Plant:
         """
-        Deserializes a JSON string into a Plant object.
+        Deserializes a JSON string into a
+        Plant object.
 
         Args:
             json_str (str): The JSON string to deserialize.
 
         Returns:
-            Plant: The deserialized Plant object.
+            Plant: The deserialized
+                Plant object.
         """
         logging.info("PlantManager.from_json")
         schema = PlantSchema()
@@ -374,34 +415,47 @@ class PlantManager:
 
     def from_dict(self, plant_dict: Dict[str, Any]) -> Plant:
         """
-        Creates a Plant instance from a dictionary of attributes.
+        Creates a Plant
+        instance from a dictionary of attributes.
 
         Args:
             plant_dict (Dict[str, Any]): A dictionary
-                containing plant attributes.
+                containing plant
+                attributes.
 
         Returns:
-            Plant: A new Plant instance created from the given dictionary.
+            Plant: A new
+                Plant instance
+                created from the given
+                dictionary.
         """
         logging.info("PlantManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = PlantSchema()
-        plant_dict_converted = schema.load(plant_dict)
+        plant_dict_converted = schema.load(
+            plant_dict)
 
-        # Create a new Plant instance using the validated data
+        # Create a new Plant instance
+        # using the validated data
         new_plant = Plant(**plant_dict_converted)
         return new_plant
 
-    async def add_bulk(self, plants: List[Plant]) -> List[Plant]:
+    async def add_bulk(
+        self,
+        plants: List[Plant]
+    ) -> List[Plant]:
         """
-        Adds multiple plants to the system.
+        Adds multiple plants
+        to the system.
 
         Args:
-            plants (List[Plant]): The list of plants to add.
+            plants (List[Plant]): The list of
+                plants to add.
 
         Returns:
-            List[Plant]: The added plants.
+            List[Plant]: The added
+                plants.
         """
         logging.info("PlantManager.add_bulk")
         for plant in plants:
@@ -409,12 +463,11 @@ class PlantManager:
             code = plant.code
             if plant.plant_id is not None and plant.plant_id > 0:
                 raise ValueError(
-                    f"Plant is already added: {str(code)} {str(plant_id)}"
+                    "Plant is already added"
+                    f": {str(code)} {str(plant_id)}"
                 )
-            plant.insert_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
-            plant.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            plant.insert_user_id = self._session_context.customer_code
+            plant.last_update_user_id = self._session_context.customer_code
         self._session_context.session.add_all(plants)
         await self._session_context.session.flush()
         return plants
@@ -424,18 +477,22 @@ class PlantManager:
         plant_updates: List[Dict[str, Any]]
     ) -> List[Plant]:
         """
-        Update multiple plants with the provided updates.
+        Update multiple plants
+        with the provided updates.
 
         Args:
             plant_updates (List[Dict[str, Any]]): A list of
-            dictionaries containing the updates for each plant.
+            dictionaries containing the updates for each
+            plant.
 
         Returns:
-            List[Plant]: A list of updated Plant objects.
+            List[Plant]: A list of updated
+                Plant objects.
 
         Raises:
             TypeError: If the plant_id is not an integer.
-            PlantNotFoundError: If a plant with the
+            PlantNotFoundError: If a
+                plant with the
                 provided plant_id is not found.
         """
 
@@ -453,7 +510,8 @@ class PlantManager:
 
             logging.info("PlantManager.update_bulk plant_id:%s", plant_id)
 
-            plant = await self.get_by_id(plant_id)
+            plant = await self.get_by_id(
+                plant_id)
 
             if not plant:
                 raise PlantNotFoundError(
@@ -463,8 +521,7 @@ class PlantManager:
                 if key != "plant_id":
                     setattr(plant, key, value)
 
-            plant.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            plant.last_update_user_id = self._session_context.customer_code
 
             updated_plants.append(plant)
 
@@ -476,7 +533,8 @@ class PlantManager:
 
     async def delete_bulk(self, plant_ids: List[int]) -> bool:
         """
-        Delete multiple plants by their IDs.
+        Delete multiple plants
+        by their IDs.
         """
         logging.info("PlantManager.delete_bulk")
 
@@ -487,14 +545,16 @@ class PlantManager:
                     f"got {type(plant_id)} instead."
                 )
 
-            plant = await self.get_by_id(plant_id)
+            plant = await self.get_by_id(
+                plant_id)
             if not plant:
                 raise PlantNotFoundError(
                     f"Plant with ID {plant_id} not found!"
                 )
 
             if plant:
-                await self._session_context.session.delete(plant)
+                await self._session_context.session.delete(
+                    plant)
 
         await self._session_context.session.flush()
 
@@ -502,19 +562,23 @@ class PlantManager:
 
     async def count(self) -> int:
         """
-        return the total number of plants.
+        return the total number of
+        plants.
         """
         logging.info("PlantManager.count")
-        result = await self._session_context.session.execute(select(Plant))
-        return len(result.scalars().all())
+        result = await self._session_context.session.execute(
+            select(Plant))
+        return len(list(result.scalars().all()))
 
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(
-            self,
-            sort_by: str,
-            order: Optional[str] = "asc") -> List[Plant]:
+        self,
+        sort_by: str,
+        order: Optional[str] = "asc"
+    ) -> List[Plant]:
         """
-        Retrieve plants sorted by a particular attribute.
+        Retrieve plants
+        sorted by a particular attribute.
         """
 
         if sort_by == "plant_id":
@@ -522,15 +586,22 @@ class PlantManager:
 
         if order == "asc":
             result = await self._session_context.session.execute(
-                select(Plant).order_by(getattr(Plant, sort_by).asc()))
+                select(Plant).order_by(
+                    getattr(Plant, sort_by).asc()))
         else:
             result = await self._session_context.session.execute(
-                select(Plant).order_by(getattr(Plant, sort_by).desc()))
-        return result.scalars().all()
+                select(Plant).order_by(
+                    getattr(Plant, sort_by).desc()))
+        return list(result.scalars().all())
 
-    async def refresh(self, plant: Plant) -> Plant:
+    async def refresh(
+        self,
+        plant: Plant
+    ) -> Plant:
         """
-        Refresh the state of a given plant instance from the database.
+        Refresh the state of a given
+        plant instance
+        from the database.
         """
 
         logging.info("PlantManager.refresh")
@@ -541,7 +612,8 @@ class PlantManager:
 
     async def exists(self, plant_id: int) -> bool:
         """
-        Check if a plant with the given ID exists.
+        Check if a plant
+        with the given ID exists.
         """
         logging.info("PlantManager.exists %s", plant_id)
         if not isinstance(plant_id, int):
@@ -549,23 +621,34 @@ class PlantManager:
                 f"The plant_id must be an integer, "
                 f"got {type(plant_id)} instead."
             )
-        plant = await self.get_by_id(plant_id)
+        plant = await self.get_by_id(
+            plant_id)
         return bool(plant)
 
-    def is_equal(self, plant1: Plant, plant2: Plant) -> bool:
+    def is_equal(
+        self,
+        plant1: Plant,
+        plant2: Plant
+    ) -> bool:
         """
-        Check if two Plant objects are equal.
+        Check if two Plant
+        objects are equal.
 
         Args:
-            plant1 (Plant): The first Plant object.
-            plant2 (Plant): The second Plant object.
+            plant1 (Plant): The first
+                Plant object.
+            plant2 (Plant): The second
+                Plant object.
 
         Returns:
-            bool: True if the two Plant objects are equal, False otherwise.
+            bool: True if the two Plant
+                objects are equal, False otherwise.
 
         Raises:
-            TypeError: If either plant1 or plant2
-                is not provided or is not an instance of Plant.
+            TypeError: If either plant1
+                or plant2
+                is not provided or is not an instance of
+                Plant.
         """
         if not plant1:
             raise TypeError("Plant1 required.")
@@ -574,10 +657,12 @@ class PlantManager:
             raise TypeError("Plant2 required.")
 
         if not isinstance(plant1, Plant):
-            raise TypeError("The plant1 must be an Plant instance.")
+            raise TypeError("The plant1 must be an "
+                            "Plant instance.")
 
         if not isinstance(plant2, Plant):
-            raise TypeError("The plant2 must be an Plant instance.")
+            raise TypeError("The plant2 must be an "
+                            "Plant instance.")
 
         dict1 = self.to_dict(plant1)
         dict2 = self.to_dict(plant2)
@@ -590,16 +675,21 @@ class PlantManager:
         flvr_foreign_key_id: int
     ) -> List[Plant]:  # FlvrForeignKeyID
         """
-        Retrieve a list of plants based on the
-            given flavor foreign key ID.
+        Retrieve a list of plants
+            based on the
+            given flvr_foreign_key_id.
 
         Args:
             flvr_foreign_key_id (int): The
-                flavor foreign key ID to filter the plants.
+                flvr_foreign_key_id
+                to filter the
+                plants.
 
         Returns:
-            List[Plant]: A list of Plant objects
-                matching the given flavor foreign key ID.
+            List[Plant]: A list of Plant
+                objects
+                matching the given
+                flvr_foreign_key_id.
         """
 
         logging.info("PlantManager.get_by_flvr_foreign_key_id")
@@ -617,14 +707,16 @@ class PlantManager:
 
     async def get_by_land_id(self, land_id: int) -> List[Plant]:  # LandID
         """
-        Retrieve a list of plants by land ID.
+        Retrieve a list of plants by
+        land ID.
 
         Args:
             land_id (int): The ID of the land.
 
         Returns:
-            List[Plant]: A list of plants associated
-            with the specified land ID.
+            List[Plant]: A list of
+                plants associated
+                with the specified land ID.
         """
 
         logging.info("PlantManager.get_by_land_id")

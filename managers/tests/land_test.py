@@ -47,10 +47,13 @@ class TestLandManager:
             "code": uuid.uuid4()
         }
         # Call the build function of the manager
-        land = await land_manager.build(**mock_data)
+        land = await land_manager.build(
+            **mock_data)
         # Assert that the returned object is an instance of Land
-        assert isinstance(land, Land)
-        # Assert that the attributes of the land match our mock data
+        assert isinstance(
+            land, Land)
+        # Assert that the attributes of the
+        # land match our mock data
         assert land.code == mock_data["code"]
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
@@ -82,24 +85,30 @@ class TestLandManager:
         `LandManager` that checks if a
         land is correctly added to the database.
         """
-        test_land = await LandFactory.build_async(session)
+        test_land = await LandFactory.build_async(
+            session)
         assert test_land.land_id == 0
-        # Add the land using the manager's add method
-        added_land = await land_manager.add(land=test_land)
+        # Add the land using the
+        # manager's add method
+        added_land = await land_manager.add(
+            land=test_land)
         assert isinstance(added_land, Land)
         assert str(added_land.insert_user_id) == (
             str(land_manager._session_context.customer_code))
         assert str(added_land.last_update_user_id) == (
             str(land_manager._session_context.customer_code))
         assert added_land.land_id > 0
-        # Fetch the land from the database directly
+        # Fetch the land from
+        # the database directly
         result = await session.execute(
             select(Land).filter(
                 Land._land_id == added_land.land_id  # type: ignore
             )
         )
         fetched_land = result.scalars().first()
-        # Assert that the fetched land is not None and matches the added land
+        # Assert that the fetched land
+        # is not None and matches the
+        # added land
         assert fetched_land is not None
         assert isinstance(fetched_land, Land)
         assert fetched_land.land_id == added_land.land_id
@@ -114,22 +123,30 @@ class TestLandManager:
         `LandManager` that checks if the
         correct land object is returned.
         """
-        # Create a test land using the LandFactory
+        # Create a test land
+        # using the LandFactory
         # without persisting it to the database
-        test_land = await LandFactory.build_async(session)
+        test_land = await LandFactory.build_async(
+            session)
         assert test_land.land_id == 0
         test_land.code = uuid.uuid4()
-        # Add the land using the manager's add method
-        added_land = await land_manager.add(land=test_land)
+        # Add the land using
+        # the manager's add method
+        added_land = await land_manager.add(
+            land=test_land)
         assert isinstance(added_land, Land)
         assert str(added_land.insert_user_id) == (
             str(land_manager._session_context.customer_code))
         assert str(added_land.last_update_user_id) == (
             str(land_manager._session_context.customer_code))
         assert added_land.land_id > 0
-        # Assert that the returned land matches the test land
-        assert added_land.land_id == test_land.land_id
-        assert added_land.code == test_land.code
+        # Assert that the returned
+        # land matches the
+        # test land
+        assert added_land.land_id == \
+            test_land.land_id
+        assert added_land.code == \
+            test_land.code
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
@@ -140,11 +157,16 @@ class TestLandManager:
         Test case for the `get_by_id` method of
         `LandManager`.
         """
-        test_land = await LandFactory.create_async(session)
-        land = await land_manager.get_by_id(test_land.land_id)
-        assert isinstance(land, Land)
-        assert test_land.land_id == land.land_id
-        assert test_land.code == land.code
+        test_land = await LandFactory.create_async(
+            session)
+        land = await land_manager.get_by_id(
+            test_land.land_id)
+        assert isinstance(
+            land, Land)
+        assert test_land.land_id == \
+            land.land_id
+        assert test_land.code == \
+            land.code
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
@@ -152,10 +174,12 @@ class TestLandManager:
     ):
         """
         Test case for the `get_by_id` method of
-        `LandManager` when the land is not found.
+        `LandManager` when the
+        land is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_land = await land_manager.get_by_id(non_existent_id)
+        retrieved_land = await land_manager.get_by_id(
+            non_existent_id)
         assert retrieved_land is None
     @pytest.mark.asyncio
     async def test_get_by_code_returns_land(
@@ -165,14 +189,20 @@ class TestLandManager:
     ):
         """
         Test case for the `get_by_code` method of
-        `LandManager` that checks if a land is
+        `LandManager` that checks if
+        a land is
         returned by its code.
         """
-        test_land = await LandFactory.create_async(session)
-        land = await land_manager.get_by_code(test_land.code)
-        assert isinstance(land, Land)
-        assert test_land.land_id == land.land_id
-        assert test_land.code == land.code
+        test_land = await LandFactory.create_async(
+            session)
+        land = await land_manager.get_by_code(
+            test_land.code)
+        assert isinstance(
+            land, Land)
+        assert test_land.land_id == \
+            land.land_id
+        assert test_land.code == \
+            land.code
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
@@ -185,7 +215,8 @@ class TestLandManager:
         # Generate a random UUID that doesn't correspond to
         # any Land in the database
         random_code = uuid.uuid4()
-        land = await land_manager.get_by_code(random_code)
+        land = await land_manager.get_by_code(
+            random_code)
         assert land is None
     @pytest.mark.asyncio
     async def test_update(
@@ -194,26 +225,36 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `LandManager`
-        that checks if a land is correctly updated.
+        Test case for the `update` method
+        of `LandManager`
+        that checks if a land
+        is correctly updated.
         """
-        test_land = await LandFactory.create_async(session)
+        test_land = await LandFactory.create_async(
+            session)
         test_land.code = uuid.uuid4()
-        updated_land = await land_manager.update(land=test_land)
+        updated_land = await land_manager.update(
+            land=test_land)
         assert isinstance(updated_land, Land)
         assert str(updated_land.last_update_user_id) == str(
             land_manager._session_context.customer_code)
-        assert updated_land.land_id == test_land.land_id
-        assert updated_land.code == test_land.code
+        assert updated_land.land_id == \
+            test_land.land_id
+        assert updated_land.code == \
+            test_land.code
         result = await session.execute(
             select(Land).filter(
                 Land._land_id == test_land.land_id)  # type: ignore
         )
         fetched_land = result.scalars().first()
-        assert updated_land.land_id == fetched_land.land_id
-        assert updated_land.code == fetched_land.code
-        assert test_land.land_id == fetched_land.land_id
-        assert test_land.code == fetched_land.code
+        assert updated_land.land_id == \
+            fetched_land.land_id
+        assert updated_land.code == \
+            fetched_land.code
+        assert test_land.land_id == \
+            fetched_land.land_id
+        assert test_land.code == \
+            fetched_land.code
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
@@ -221,10 +262,13 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `LandManager`
-        that checks if a land is correctly updated using a dictionary.
+        Test case for the `update` method
+        of `LandManager`
+        that checks if a land is
+        correctly updated using a dictionary.
         """
-        test_land = await LandFactory.create_async(session)
+        test_land = await LandFactory.create_async(
+            session)
         new_code = uuid.uuid4()
         updated_land = await land_manager.update(
             land=test_land,
@@ -234,17 +278,22 @@ class TestLandManager:
         assert str(updated_land.last_update_user_id) == str(
             land_manager._session_context.customer_code
         )
-        assert updated_land.land_id == test_land.land_id
+        assert updated_land.land_id == \
+            test_land.land_id
         assert updated_land.code == new_code
         result = await session.execute(
             select(Land).filter(
                 Land._land_id == test_land.land_id)  # type: ignore
         )
         fetched_land = result.scalars().first()
-        assert updated_land.land_id == fetched_land.land_id
-        assert updated_land.code == fetched_land.code
-        assert test_land.land_id == fetched_land.land_id
-        assert new_code == fetched_land.code
+        assert updated_land.land_id == \
+            fetched_land.land_id
+        assert updated_land.code == \
+            fetched_land.code
+        assert test_land.land_id == \
+            fetched_land.land_id
+        assert new_code == \
+            fetched_land.code
     @pytest.mark.asyncio
     async def test_update_invalid_land(
         self,
@@ -258,7 +307,8 @@ class TestLandManager:
         land = None
         new_code = uuid.uuid4()
         updated_land = await (
-            land_manager.update(land, code=new_code))  # type: ignore
+            land_manager.update(
+                land, code=new_code))  # type: ignore
         # Assertions
         assert updated_land is None
     @pytest.mark.asyncio
@@ -271,7 +321,8 @@ class TestLandManager:
         Test case for the `update` method of `LandManager`
         with a nonexistent attribute.
         """
-        test_land = await LandFactory.create_async(session)
+        test_land = await LandFactory.create_async(
+            session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             await land_manager.update(
@@ -288,14 +339,16 @@ class TestLandManager:
         """
         Test case for the `delete` method of `LandManager`.
         """
-        land_data = await LandFactory.create_async(session)
+        land_data = await LandFactory.create_async(
+            session)
         result = await session.execute(
             select(Land).filter(
                 Land._land_id == land_data.land_id)  # type: ignore
         )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
-        assert fetched_land.land_id == land_data.land_id
+        assert fetched_land.land_id == \
+            land_data.land_id
         await land_manager.delete(
             land_id=land_data.land_id)
         result = await session.execute(
@@ -337,7 +390,8 @@ class TestLandManager:
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager): An
+                instance of the
                 `LandManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
         Returns:
@@ -379,7 +433,8 @@ class TestLandManager:
         assert isinstance(lands_data, List)
         lands = await land_manager.get_list()
         assert len(lands) == 5
-        assert all(isinstance(land, Land) for land in lands)
+        assert all(isinstance(
+            land, Land) for land in lands)
     @pytest.mark.asyncio
     async def test_to_json(
         self,
@@ -389,7 +444,8 @@ class TestLandManager:
         """
         Test the 'to_json' method of the LandManager class.
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager): An
+                instance of the
                 LandManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
@@ -397,8 +453,10 @@ class TestLandManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        land = await LandFactory.build_async(session)
-        json_data = land_manager.to_json(land)
+        land = await LandFactory.build_async(
+            session)
+        json_data = land_manager.to_json(
+            land)
         assert json_data is not None
     @pytest.mark.asyncio
     async def test_to_dict(
@@ -409,14 +467,17 @@ class TestLandManager:
         """
         Test the to_dict method of the LandManager class.
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager): An
+                instance of the
                 LandManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
             None
         """
-        land = await LandFactory.build_async(session)
-        dict_data = land_manager.to_dict(land)
+        land = await LandFactory.build_async(
+            session)
+        dict_data = land_manager.to_dict(
+            land)
         assert dict_data is not None
     @pytest.mark.asyncio
     async def test_from_json(
@@ -428,24 +489,30 @@ class TestLandManager:
         Test the `from_json` method of the `LandManager` class.
         This method tests the functionality of the
         `from_json` method of the `LandManager` class.
-        It creates a land using the `LandFactory`
+        It creates a land using
+        the `LandFactory`
         and converts it to JSON using the `to_json` method.
         Then, it deserializes the JSON data using the
         `from_json` method and asserts that the deserialized
-        land is an instance of the `Land` class and has
+        land is an instance of the
+        `Land` class and has
         the same code as the original land.
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager): An
+            instance of the
                 `LandManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
         Returns:
             None
         """
-        land = await LandFactory.create_async(session)
-        json_data = land_manager.to_json(land)
+        land = await LandFactory.create_async(
+            session)
+        json_data = land_manager.to_json(
+            land)
         deserialized_land = land_manager.from_json(json_data)
         assert isinstance(deserialized_land, Land)
-        assert deserialized_land.code == land.code
+        assert deserialized_land.code == \
+            land.code
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
@@ -457,7 +524,8 @@ class TestLandManager:
         `LandManager` class.
         This method tests the functionality of the
         `from_dict` method, which is used to deserialize
-        a dictionary representation of a land object.
+        a dictionary representation of a
+        land object.
         Args:
             land_manager (LandManager): An instance
                 of the `LandManager` class.
@@ -467,13 +535,16 @@ class TestLandManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        land = await LandFactory.create_async(session)
+        land = await LandFactory.create_async(
+            session)
         schema = LandSchema()
         land_data = schema.dump(land)
         assert isinstance(land_data, dict)
-        deserialized_land = land_manager.from_dict(land_data)
+        deserialized_land = land_manager.from_dict(
+            land_data)
         assert isinstance(deserialized_land, Land)
-        assert deserialized_land.code == land.code
+        assert deserialized_land.code == \
+            land.code
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
@@ -489,22 +560,30 @@ class TestLandManager:
         1. Generate a list of land data using the
             `LandFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `land_manager` instance, passing in the generated land data.
-        3. Verify that the number of lands returned is
+            `land_manager` instance,
+            passing in the
+            generated land data.
+        3. Verify that the number of lands
+            returned is
             equal to the number of lands added.
         4. For each updated land, fetch the corresponding
             land from the database.
-        5. Verify that the fetched land is an instance of the
+        5. Verify that the fetched land
+            is an instance of the
             `Land` class.
         6. Verify that the insert_user_id and
-            last_update_user_id of the fetched land match the
+            last_update_user_id of the fetched
+            land match the
             customer code of the session context.
         7. Verify that the land_id of the fetched
-            land matches the land_id of the updated land.
+            land matches the
+            land_id of the updated
+            land.
         """
         lands_data = [
             await LandFactory.build_async(session) for _ in range(5)]
-        lands = await land_manager.add_bulk(lands_data)
+        lands = await land_manager.add_bulk(
+            lands_data)
         assert len(lands) == 5
         for updated_land in lands:
             result = await session.execute(
@@ -518,7 +597,8 @@ class TestLandManager:
                 str(land_manager._session_context.customer_code))
             assert str(fetched_land.last_update_user_id) == (
                 str(land_manager._session_context.customer_code))
-            assert fetched_land.land_id == updated_land.land_id
+            assert fetched_land.land_id == \
+                updated_land.land_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
@@ -529,7 +609,8 @@ class TestLandManager:
         Test case for bulk update of lands.
         This test case verifies the functionality of the
         `update_bulk` method in the `LandManager` class.
-        It creates two land instances, updates their codes
+        It creates two land instances,
+        updates their codes
         using the `update_bulk` method, and then verifies
         that the updates were successful by checking the
         updated codes in the database.
@@ -548,8 +629,10 @@ class TestLandManager:
             None
         """
         # Mocking land instances
-        land1 = await LandFactory.create_async(session=session)
-        land2 = await LandFactory.create_async(session=session)
+        land1 = await LandFactory.create_async(
+            session=session)
+        land2 = await LandFactory.create_async(
+            session=session)
         logging.info(land1.__dict__)
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -566,7 +649,8 @@ class TestLandManager:
                 "code": code_updated2
             }
         ]
-        updated_lands = await land_manager.update_bulk(updates)
+        updated_lands = await land_manager.update_bulk(
+            updates)
         logging.info('bulk update results')
         # Assertions
         assert len(updated_lands) == 2
@@ -583,13 +667,15 @@ class TestLandManager:
         assert str(updated_lands[1].last_update_user_id) == (
             str(land_manager._session_context.customer_code))
         result = await session.execute(
-            select(Land).filter(Land._land_id == 1)  # type: ignore
+            select(Land).filter(
+                Land._land_id == 1)  # type: ignore
         )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
         assert fetched_land.code == code_updated1
         result = await session.execute(
-            select(Land).filter(Land._land_id == 2)  # type: ignore
+            select(Land).filter(
+                Land._land_id == 2)  # type: ignore
         )
         fetched_land = result.scalars().first()
         assert isinstance(fetched_land, Land)
@@ -627,7 +713,8 @@ class TestLandManager:
         Test case to verify the behavior of the update_bulk
         method when a land is not found.
         This test case performs the following steps:
-        1. Defines a list of land updates, where each update
+        1. Defines a list of land updates,
+            where each update
             contains a land_id and a code.
         2. Calls the update_bulk method of the
             land_manager with the list of updates.
@@ -635,7 +722,8 @@ class TestLandManager:
             the land was not found.
         4. Rolls back the session to undo any changes made during the test.
         Note: This test assumes that the update_bulk method
-        throws an exception when a land is not found.
+        throws an exception when a
+        land is not found.
         """
         # Update lands
         updates = [{"land_id": 1, "code": uuid.uuid4()}]
@@ -676,8 +764,10 @@ class TestLandManager:
         successfully deletes multiple lands
         from the database.
         Steps:
-        1. Create two land objects using the LandFactory.
-        2. Delete the lands using the delete_bulk method
+        1. Create two land objects
+            using the LandFactory.
+        2. Delete the lands using the
+            delete_bulk method
             of the land_manager.
         3. Verify that the delete operation was successful by
             checking if the lands no longer exist in the database.
@@ -686,11 +776,14 @@ class TestLandManager:
             that the delete operation was successful.
         - The lands should no longer exist in the database.
         """
-        land1 = await LandFactory.create_async(session=session)
-        land2 = await LandFactory.create_async(session=session)
+        land1 = await LandFactory.create_async(
+            session=session)
+        land2 = await LandFactory.create_async(
+            session=session)
         # Delete lands
         land_ids = [land1.land_id, land2.land_id]
-        result = await land_manager.delete_bulk(land_ids)
+        result = await land_manager.delete_bulk(
+            land_ids)
         assert result is True
         for land_id in land_ids:
             execute_result = await session.execute(
@@ -709,8 +802,10 @@ class TestLandManager:
         Test case to verify the behavior of deleting bulk
         lands when some lands are not found.
         Steps:
-        1. Create a land using the LandFactory.
-        2. Assert that the created land is an instance of the
+        1. Create a land using the
+            LandFactory.
+        2. Assert that the created land
+            is an instance of the
             Land class.
         3. Define a list of land IDs to delete.
         4. Use pytest.raises to assert that an exception is
@@ -721,12 +816,14 @@ class TestLandManager:
         when some lands with the specified IDs are
         not found in the database.
         """
-        land1 = await LandFactory.create_async(session=session)
+        land1 = await LandFactory.create_async(
+            session=session)
         assert isinstance(land1, Land)
         # Delete lands
         land_ids = [1, 2]
         with pytest.raises(Exception):
-            await land_manager.delete_bulk(land_ids)
+            await land_manager.delete_bulk(
+                land_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -737,7 +834,8 @@ class TestLandManager:
         Test case to verify the behavior of deleting
         lands with an empty list.
         Args:
-            land_manager (LandManager): The instance of the
+            land_manager (LandManager): The
+                instance of the
                 LandManager class.
         Returns:
             None
@@ -746,7 +844,8 @@ class TestLandManager:
         """
         # Delete lands with an empty list
         land_ids = []
-        result = await land_manager.delete_bulk(land_ids)
+        result = await land_manager.delete_bulk(
+            land_ids)
         # Assertions
         assert result is True
     @pytest.mark.asyncio
@@ -759,7 +858,8 @@ class TestLandManager:
         Test case to verify the behavior of the delete_bulk
         method when invalid land IDs are provided.
         Args:
-            land_manager (LandManager): The instance of the
+            land_manager (LandManager): The
+                instance of the
                 LandManager class.
             session (AsyncSession): The async session object.
         Raises:
@@ -770,7 +870,8 @@ class TestLandManager:
         """
         land_ids = ["1", 2]
         with pytest.raises(Exception):
-            await land_manager.delete_bulk(land_ids)
+            await land_manager.delete_bulk(
+                land_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -781,11 +882,14 @@ class TestLandManager:
         """
         Test the basic functionality of the count method
         in the LandManager class.
-        This test case creates 5 land objects using the
+        This test case creates 5 land
+        objects using the
         LandFactory and checks if the count method
-        returns the correct count of lands.
+        returns the correct count of
+        lands.
         Steps:
-        1. Create 5 land objects using the LandFactory.
+        1. Create 5 land objects using
+            the LandFactory.
         2. Call the count method of the land_manager.
         3. Assert that the count is equal to 5.
         """
@@ -804,7 +908,8 @@ class TestLandManager:
         This test case checks if the count method of the
         LandManager class returns 0 when the database is empty.
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager): An
+                instance of the
                 LandManager class.
         Returns:
             None
@@ -873,7 +978,8 @@ class TestLandManager:
         Test case to check if an AttributeError is raised when
         sorting the list by an invalid attribute.
         Args:
-            land_manager (LandManager): The instance of the
+            land_manager (LandManager): The
+                instance of the
                 LandManager class.
             session (AsyncSession): The instance of the AsyncSession class.
         Raises:
@@ -882,7 +988,8 @@ class TestLandManager:
             None
         """
         with pytest.raises(AttributeError):
-            await land_manager.get_sorted_list(sort_by="invalid_attribute")
+            await land_manager.get_sorted_list(
+                sort_by="invalid_attribute")
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_sorted_list_empty_database(
@@ -895,12 +1002,14 @@ class TestLandManager:
         This test ensures that when the database is empty, the
         `get_sorted_list` method returns an empty list.
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager): An
+                instance of the
                 LandManager class.
         Returns:
             None
         """
-        sorted_lands = await land_manager.get_sorted_list(sort_by="land_id")
+        sorted_lands = await land_manager.get_sorted_list(
+            sort_by="land_id")
         assert len(sorted_lands) == 0
     @pytest.mark.asyncio
     async def test_refresh_basic(
@@ -909,40 +1018,52 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-        Test the basic functionality of refreshing a land instance.
+        Test the basic functionality of refreshing
+        a land instance.
         This test performs the following steps:
-        1. Creates a land instance using the LandFactory.
-        2. Retrieves the land from the database to ensure
+        1. Creates a land instance using
+            the LandFactory.
+        2. Retrieves the land from th
+            database to ensure
             it was added correctly.
         3. Updates the land's code and verifies the update.
-        4. Refreshes the original land instance and checks if
+        4. Refreshes the original land instance
+            and checks if
             it reflects the updated code.
         Args:
-            land_manager (LandManager): The manager responsible
+            land_manager (LandManager): The
+                manager responsible
                 for land operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a land
-        land1 = await LandFactory.create_async(session=session)
+        land1 = await LandFactory.create_async(
+            session=session)
         # Retrieve the land from the database
         result = await session.execute(
             select(Land).filter(
                 Land._land_id == land1.land_id)  # type: ignore
         )  # type: ignore
         land2 = result.scalars().first()
-        # Verify that the retrieved land matches the added land
-        assert land1.code == land2.code
+        # Verify that the retrieved land
+        # matches the added land
+        assert land1.code == \
+            land2.code
         # Update the land's code
         updated_code1 = uuid.uuid4()
         land1.code = updated_code1
-        updated_land1 = await land_manager.update(land1)
-        # Verify that the updated land is of type Land
+        updated_land1 = await land_manager.update(
+            land1)
+        # Verify that the updated land
+        # is of type Land
         # and has the updated code
         assert isinstance(updated_land1, Land)
         assert updated_land1.code == updated_code1
         # Refresh the original land instance
-        refreshed_land2 = await land_manager.refresh(land2)
-        # Verify that the refreshed land reflects the updated code
+        refreshed_land2 = await land_manager.refresh(
+            land2)
+        # Verify that the refreshed land
+        # reflects the updated code
         assert refreshed_land2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_land(
@@ -953,17 +1074,21 @@ class TestLandManager:
         """
         Test case to verify the behavior of refreshing a nonexistent land.
         Args:
-            land_manager (LandManager): The instance of the
+            land_manager (LandManager): The
+                instance of the
                 LandManager class.
             session (AsyncSession): The instance of the AsyncSession class.
         Raises:
-            Exception: If the land refresh operation raises an exception.
+            Exception: If the land
+            refresh operation raises an exception.
         Returns:
             None
         """
-        land = Land(land_id=999)
+        land = Land(
+            land_id=999)
         with pytest.raises(Exception):
-            await land_manager.refresh(land)
+            await land_manager.refresh(
+                land)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_exists_with_existing_land(
@@ -972,17 +1097,22 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-        Test case to check if a land exists using the manager function.
+        Test case to check if a land
+        exists using the manager function.
         Args:
-            land_manager (LandManager): The land manager instance.
+            land_manager (LandManager): The
+                land manager instance.
             session (AsyncSession): The async session object.
         Returns:
             None
         """
         # Add a land
-        land1 = await LandFactory.create_async(session=session)
-        # Check if the land exists using the manager function
-        assert await land_manager.exists(land1.land_id) is True
+        land1 = await LandFactory.create_async(
+            session=session)
+        # Check if the land exists
+        # using the manager function
+        assert await land_manager.exists(
+            land1.land_id) is True
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_land(
         self,
@@ -993,19 +1123,26 @@ class TestLandManager:
         Test if the is_equal method of the
         LandManager class correctly compares two lands.
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager): An
+                instance of the
                 LandManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
             None
         """
         # Add a land
-        land1 = await LandFactory.create_async(session=session)
-        land2 = await land_manager.get_by_id(land_id=land1.land_id)
-        assert land_manager.is_equal(land1, land2) is True
-        land1_dict = land_manager.to_dict(land1)
-        land3 = land_manager.from_dict(land1_dict)
-        assert land_manager.is_equal(land1, land3) is True
+        land1 = await LandFactory.create_async(
+            session=session)
+        land2 = await land_manager.get_by_id(
+            land_id=land1.land_id)
+        assert land_manager.is_equal(
+            land1, land2) is True
+        land1_dict = land_manager.to_dict(
+            land1)
+        land3 = land_manager.from_dict(
+            land1_dict)
+        assert land_manager.is_equal(
+            land1, land3) is True
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_land(
         self,
@@ -1018,7 +1155,8 @@ class TestLandManager:
             land_manager (LandManager): The
                 instance of the LandManager class.
         Returns:
-            bool: True if the land exists, False otherwise.
+            bool: True if the land exists,
+                False otherwise.
         """
         non_existent_id = 999
         assert await land_manager.exists(non_existent_id) is False
@@ -1059,15 +1197,18 @@ class TestLandManager:
     ):
         """
         Test case to verify the behavior of the
-        `get_by_pac_id` method when a land with
+        `get_by_pac_id` method when
+        a land with
         a specific pac_id exists.
         Steps:
-        1. Create a land using the LandFactory.
+        1. Create a land using the
+            LandFactory.
         2. Fetch the land using the
             `get_by_pac_id` method of the land_manager.
         3. Assert that the fetched lands list contains
             only one land.
-        4. Assert that the fetched land is an instance
+        4. Assert that the fetched land
+            is an instance
             of the Land class.
         5. Assert that the code of the fetched land
             matches the code of the created land.
@@ -1076,15 +1217,21 @@ class TestLandManager:
         7. Assert that the fetched pac object is
             an instance of the Pac class.
         8. Assert that the pac_code_peek of the fetched
-            land matches the code of the fetched pac.
+            land matches the
+            code of the fetched pac.
         """
-        # Add a land with a specific pac_id
-        land1 = await LandFactory.create_async(session=session)
-        # Fetch the land using the manager function
-        fetched_lands = await land_manager.get_by_pac_id(land1.pac_id)
+        # Add a land with a specific
+        # pac_id
+        land1 = await LandFactory.create_async(
+            session=session)
+        # Fetch the land using
+        # the manager function
+        fetched_lands = await land_manager.get_by_pac_id(
+            land1.pac_id)
         assert len(fetched_lands) == 1
         assert isinstance(fetched_lands[0], Land)
-        assert fetched_lands[0].code == land1.code
+        assert fetched_lands[0].code == \
+            land1.code
         stmt = select(models.Pac).where(
             models.Pac._pac_id == land1.pac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
@@ -1104,7 +1251,8 @@ class TestLandManager:
         an empty list is returned.
         """
         non_existent_id = 999
-        fetched_lands = await land_manager.get_by_pac_id(non_existent_id)
+        fetched_lands = await land_manager.get_by_pac_id(
+            non_existent_id)
         assert len(fetched_lands) == 0
     @pytest.mark.asyncio
     async def test_get_by_pac_id_invalid_type(
@@ -1128,6 +1276,7 @@ class TestLandManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await land_manager.get_by_pac_id(invalid_id)  # type: ignore
+            await land_manager.get_by_pac_id(
+                invalid_id)  # type: ignore
         await session.rollback()
 # endset

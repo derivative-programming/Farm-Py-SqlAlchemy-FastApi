@@ -1,14 +1,17 @@
 # models/serialization_schema/organization.py
 """
-This module contains the OrganizationSchema class, which is responsible
-for serializing and deserializing Organization objects.
+This module contains the OrganizationSchema
+class, which is responsible
+for serializing and deserializing
+Organization objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Organization
 class OrganizationSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing Organization objects.
+    Schema class for serializing and deserializing
+    Organization objects.
     """
     class Meta:
         """

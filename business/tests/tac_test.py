@@ -39,11 +39,11 @@ class TestTacBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_tac(self, session):
         """
-        Fixture that returns a new instance of the Tac class.
+        Fixture that returns a new instance of
+        the Tac class.
         """
-        # Use the TacFactory to create a new tac instance
-        # Assuming TacFactory.create() is an async function
-        return await TacFactory.create_async(session)
+        return await TacFactory.create_async(
+            session)
     @pytest.mark.asyncio
     async def test_create_tac(
         self,
@@ -55,8 +55,10 @@ class TestTacBusObj:
         # Test creating a new tac
         assert tac_bus_obj.tac_id == 0
         # assert isinstance(tac_bus_obj.tac_id, int)
-        assert isinstance(tac_bus_obj.code, uuid.UUID)
-        assert isinstance(tac_bus_obj.last_change_code, int)
+        assert isinstance(
+            tac_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            tac_bus_obj.last_change_code, int)
         assert tac_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert tac_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(tac_bus_obj.description, str)
@@ -73,10 +75,13 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-        Test case for loading data from a tac object instance.
+        Test case for loading data from a
+        tac object instance.
         """
-        await tac_bus_obj.load_from_obj_instance(new_tac)
-        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
+        await tac_bus_obj.load_from_obj_instance(
+            new_tac)
+        assert tac_manager.is_equal(
+            tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_id(
         self,
@@ -85,11 +90,14 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-        Test case for loading data from a tac ID.
+        Test case for loading data from a
+        tac ID.
         """
         new_tac_tac_id = new_tac.tac_id
-        await tac_bus_obj.load_from_id(new_tac_tac_id)
-        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
+        await tac_bus_obj.load_from_id(
+            new_tac_tac_id)
+        assert tac_manager.is_equal(
+            tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_code(
         self,
@@ -98,10 +106,13 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-        Test case for loading data from a tac code.
+        Test case for loading data from a
+        tac code.
         """
-        await tac_bus_obj.load_from_code(new_tac.code)
-        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
+        await tac_bus_obj.load_from_code(
+            new_tac.code)
+        assert tac_manager.is_equal(
+            tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_json(
         self,
@@ -110,11 +121,14 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-        Test case for loading data from a tac JSON.
+        Test case for loading data from a
+        tac JSON.
         """
         tac_json = tac_manager.to_json(new_tac)
-        await tac_bus_obj.load_from_json(tac_json)
-        assert tac_manager.is_equal(tac_bus_obj.tac, new_tac) is True
+        await tac_bus_obj.load_from_json(
+            tac_json)
+        assert tac_manager.is_equal(
+            tac_bus_obj.tac, new_tac) is True
     @pytest.mark.asyncio
     async def test_load_with_tac_dict(
         self,
@@ -123,12 +137,14 @@ class TestTacBusObj:
         new_tac: Tac
     ):
         """
-        Test case for loading data from a tac dictionary.
+        Test case for loading data from a
+        tac dictionary.
         """
         logger.info("test_load_with_tac_dict 1")
         tac_dict = tac_manager.to_dict(new_tac)
         logger.info(tac_dict)
-        await tac_bus_obj.load_from_dict(tac_dict)
+        await tac_bus_obj.load_from_dict(
+            tac_dict)
         assert tac_manager.is_equal(
             tac_bus_obj.tac,
             new_tac) is True
@@ -140,7 +156,8 @@ class TestTacBusObj:
         """
         Test case for retrieving a nonexistent tac.
         """
-        # Test retrieving a nonexistent tac raises an exception
+        # Test retrieving a nonexistent
+        # tac raises an exception
         await tac_bus_obj.load_from_id(-1)
         # Assuming -1 is an id that wouldn't exist
         assert tac_bus_obj.is_valid() is False
@@ -156,14 +173,17 @@ class TestTacBusObj:
         """
         # Test updating a tac's data
         new_tac_tac_id_value = new_tac.tac_id
-        new_tac = await tac_manager.get_by_id(new_tac_tac_id_value)
+        new_tac = await tac_manager.get_by_id(
+            new_tac_tac_id_value)
         assert isinstance(new_tac, Tac)
         new_code = uuid.uuid4()
-        await tac_bus_obj.load_from_obj_instance(new_tac)
+        await tac_bus_obj.load_from_obj_instance(
+            new_tac)
         tac_bus_obj.code = new_code
         await tac_bus_obj.save()
         new_tac_tac_id_value = new_tac.tac_id
-        new_tac = await tac_manager.get_by_id(new_tac_tac_id_value)
+        new_tac = await tac_manager.get_by_id(
+            new_tac_tac_id_value)
         assert tac_manager.is_equal(
             tac_bus_obj.tac,
             new_tac) is True
@@ -180,11 +200,13 @@ class TestTacBusObj:
         assert new_tac.tac_id is not None
         assert tac_bus_obj.tac_id == 0
         new_tac_tac_id_value = new_tac.tac_id
-        await tac_bus_obj.load_from_id(new_tac_tac_id_value)
+        await tac_bus_obj.load_from_id(
+            new_tac_tac_id_value)
         assert tac_bus_obj.tac_id is not None
         await tac_bus_obj.delete()
         new_tac_tac_id_value = new_tac.tac_id
-        new_tac = await tac_manager.get_by_id(new_tac_tac_id_value)
+        new_tac = await tac_manager.get_by_id(
+            new_tac_tac_id_value)
         assert new_tac is None
 
     @pytest.mark.asyncio

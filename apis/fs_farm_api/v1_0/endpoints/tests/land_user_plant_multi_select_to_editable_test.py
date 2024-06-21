@@ -30,10 +30,12 @@ async def test_submit_success(overridden_get_db):
     1. Create a mock process_request function.
     2. Patch the `process_request` method of
         `LandUserPlantMultiSelectToEditablePostModelResponse` with the mock function.
-    3. Create a land using the `LandFactory`.
+    3. Create a land using the
+        `LandFactory`.
     4. Generate an API key for the land.
     5. Send a POST request to the `land-user-plant-multi-select-to-editable`
-        endpoint with the land code and API key.
+        endpoint with the land
+        code and API key.
     6. Assert that the response status code is 200 and
         the 'success' field in the response JSON is False.
     7. Assert that the `process_request` method was called.
@@ -59,7 +61,8 @@ async def test_submit_success(overridden_get_db):
             overridden_get_db
         )
         land_code = land.code
-        api_dict = {'LandCode': str(land_code)}
+        api_dict = {'LandCode': str(
+            land_code)}
         test_api_key = ApiToken.create_token(api_dict, 1)
         async with AsyncClient(
             app=app, base_url=test_constants.TEST_DOMAIN
@@ -81,19 +84,24 @@ async def test_submit_request_validation_error(overridden_get_db):
     This test ensures that a delete request with
     incorrect data results in a validation error.
     Steps:
-    1. Create a land using the `LandFactory`.
+    1. Create a land using the
+        `LandFactory`.
     2. Generate an API key for the land.
-    3. Send a POST request to the `land-user-plant-multi-select-to-editable`
-    endpoint with the land code, invalid data, and API key.
+    3. Send a POST request to the
+        `land-user-plant-multi-select-to-editable`
+        endpoint with the land code,
+        invalid data, and API key.
     4. Assert that the response status code is 400 (validation error).
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await model_factorys.LandFactory.create_async(
+        overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
+    api_dict = {'LandCode': str(
+        land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -118,7 +126,8 @@ async def test_submit_authorization_failure_bad_api_key(
     Test case to verify the behavior when submitting a
     request with a bad API key for authorization failure.
     Steps:
-    1. Create a land using the LandFactory.
+    1. Create a land using the
+        LandFactory.
     2. Get the land code.
     3. Send a POST request to the
         '/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}'
@@ -129,7 +138,8 @@ async def test_submit_authorization_failure_bad_api_key(
     the expected response status code is 200.
     Otherwise, the expected response status code is 401.
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await model_factorys.LandFactory.create_async(
+        overridden_get_db)
     land_code = land.code
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -161,7 +171,8 @@ async def test_submit_authorization_failure_empty_header_key(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await model_factorys.LandFactory.create_async(
+        overridden_get_db)
     land_code = land.code
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -193,7 +204,8 @@ async def test_submit_authorization_failure_no_header(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await model_factorys.LandFactory.create_async(
+        overridden_get_db)
     land_code = land.code
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -222,9 +234,11 @@ async def test_submit_endpoint_url_failure(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await model_factorys.LandFactory.create_async(
+        overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
+    api_dict = {'LandCode': str(
+        land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -241,13 +255,16 @@ async def test_submit_endpoint_invalid_code_failure(
     overridden_get_db: AsyncSession
 ):
     """
-    Test case for the submit endpoint when an invalid land code is provided.
-    This test case verifies that when an invalid land code is provided,
+    Test case for the submit endpoint when an invalid
+    land code is provided.
+    This test case verifies that when an invalid
+    land code is provided,
     the API returns a failure response with a status code of 200 and
     the 'success' field in the response JSON is set to False.
     """
     land_code = uuid.UUID(int=0)
-    api_dict = {'LandCode': str(land_code)}
+    api_dict = {'LandCode': str(
+        land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -268,7 +285,8 @@ async def test_submit_endpoint_method_failure(
     Test the failure of the submit endpoint method.
     This test case checks the behavior of the submit
     endpoint method when it fails to delete a land user.
-    It creates a land using the LandFactory, generates
+    It creates a land using the
+    LandFactory, generates
     an API token, and sends a GET request to the
     '/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}' endpoint
     with the API key in the headers. The expected
@@ -280,9 +298,11 @@ async def test_submit_endpoint_method_failure(
     Raises:
         AssertionError: If the response status code is not 405.
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await model_factorys.LandFactory.create_async(
+        overridden_get_db)
     land_code = land.code
-    api_dict = {'LandCode': str(land_code)}
+    api_dict = {'LandCode': str(
+        land_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN

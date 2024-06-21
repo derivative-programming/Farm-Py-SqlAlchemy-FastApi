@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/customer_build_temp_api_key.py
 """
-This module contains the implementation of the CustomerBuildTempApiKeyRouter,
-which handles the API endpoints related to the Customer Build Temp Api Key.
+This module contains the implementation of the
+CustomerBuildTempApiKeyRouter,
+which handles the API endpoints related to the
+Customer Build Temp Api Key.
 The CustomerBuildTempApiKeyRouter provides the following endpoints:
     - GET /api/v1_0/customer-build-temp-api-key/{customer_code}/init:
-        Get the initialization data for the Customer Build Temp Api Key page.
+        Get the initialization data for the
+        Customer Build Temp Api Key page.
     - GET /api/v1_0/customer-build-temp-api-key/{customer_code}:
-        Get the Customer Build Temp Api Key Report for a specific  code.
+        Get the Customer Build Temp Api Key Report
+        for a specific  code.
     - GET /api/v1_0/customer-build-temp-api-key/{customer_code}/to-csv:
-        Retrieve the Customer Build Temp Api Key Report as a CSV file.
+        Retrieve the Customer Build Temp Api Key
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class CustomerBuildTempApiKeyRouterConfig():
     is_public: bool = False
 class CustomerBuildTempApiKeyRouter(BaseRouter):
     """
-    Router class for the Customer Build Temp Api Key API endpoints.
+    Router class for the
+    Customer Build Temp Api Key
+    API endpoints.
     """
     router = APIRouter(tags=["CustomerBuildTempApiKey"])
 
@@ -99,16 +106,16 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

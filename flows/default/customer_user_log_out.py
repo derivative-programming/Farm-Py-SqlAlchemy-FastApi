@@ -1,7 +1,10 @@
 # flows/default/customer_user_log_out.py
 """
-This module contains the FlowCustomerUserLogOut class and related classes
-that handle the addition of a  to a specific customer in the flow process.
+This module contains the
+FlowCustomerUserLogOut class and related classes
+that handle the addition of a
+ to a specific
+customer in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowCustomerUserLogOutResult():
     """
-    Represents the result of the FlowCustomerUserLogOut process.
+    Represents the result of the
+    FlowCustomerUserLogOut process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowCustomerUserLogOutResult class.
+        Initializes a new instance of the
+        FlowCustomerUserLogOutResult class.
         """
     def to_json(self):
         """
-        Converts the FlowCustomerUserLogOutResult instance to a JSON string.
+        Converts the FlowCustomerUserLogOutResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -40,7 +46,8 @@ class FlowCustomerUserLogOutResult():
         return json.dumps(data)
 class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
     """
-    FlowCustomerUserLogOut handles the addition of a  to
+    FlowCustomerUserLogOut handles the addition of
+    a  to
     a specific customer in the flow process.
     This class extends the BaseFlowCustomerUserLogOut class and
     initializes it with the provided session context.
@@ -60,9 +67,11 @@ class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
 # endset  # noqa: E122
     ) -> FlowCustomerUserLogOutResult:
         """
-        Processes the addition of a  to a specific customer.
+        Processes the addition of a
+         to a specific customer.
         Returns:
-            FlowCustomerUserLogOutResult: The result of the FlowCustomerUserLogOut process.
+            FlowCustomerUserLogOutResult: The result of the
+                FlowCustomerUserLogOut process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

@@ -39,11 +39,11 @@ class TestErrorLogBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_error_log(self, session):
         """
-        Fixture that returns a new instance of the ErrorLog class.
+        Fixture that returns a new instance of
+        the ErrorLog class.
         """
-        # Use the ErrorLogFactory to create a new error_log instance
-        # Assuming ErrorLogFactory.create() is an async function
-        return await ErrorLogFactory.create_async(session)
+        return await ErrorLogFactory.create_async(
+            session)
     @pytest.mark.asyncio
     async def test_create_error_log(
         self,
@@ -55,8 +55,10 @@ class TestErrorLogBusObj:
         # Test creating a new error_log
         assert error_log_bus_obj.error_log_id == 0
         # assert isinstance(error_log_bus_obj.error_log_id, int)
-        assert isinstance(error_log_bus_obj.code, uuid.UUID)
-        assert isinstance(error_log_bus_obj.last_change_code, int)
+        assert isinstance(
+            error_log_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            error_log_bus_obj.last_change_code, int)
         assert error_log_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert error_log_bus_obj.last_update_user_id == uuid.UUID(int=0)
         # browser_code
@@ -77,10 +79,13 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-        Test case for loading data from a error_log object instance.
+        Test case for loading data from a
+        error_log object instance.
         """
-        await error_log_bus_obj.load_from_obj_instance(new_error_log)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
+        await error_log_bus_obj.load_from_obj_instance(
+            new_error_log)
+        assert error_log_manager.is_equal(
+            error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_id(
         self,
@@ -89,11 +94,14 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-        Test case for loading data from a error_log ID.
+        Test case for loading data from a
+        error_log ID.
         """
         new_error_log_error_log_id = new_error_log.error_log_id
-        await error_log_bus_obj.load_from_id(new_error_log_error_log_id)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
+        await error_log_bus_obj.load_from_id(
+            new_error_log_error_log_id)
+        assert error_log_manager.is_equal(
+            error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_code(
         self,
@@ -102,10 +110,13 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-        Test case for loading data from a error_log code.
+        Test case for loading data from a
+        error_log code.
         """
-        await error_log_bus_obj.load_from_code(new_error_log.code)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
+        await error_log_bus_obj.load_from_code(
+            new_error_log.code)
+        assert error_log_manager.is_equal(
+            error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_json(
         self,
@@ -114,11 +125,14 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-        Test case for loading data from a error_log JSON.
+        Test case for loading data from a
+        error_log JSON.
         """
         error_log_json = error_log_manager.to_json(new_error_log)
-        await error_log_bus_obj.load_from_json(error_log_json)
-        assert error_log_manager.is_equal(error_log_bus_obj.error_log, new_error_log) is True
+        await error_log_bus_obj.load_from_json(
+            error_log_json)
+        assert error_log_manager.is_equal(
+            error_log_bus_obj.error_log, new_error_log) is True
     @pytest.mark.asyncio
     async def test_load_with_error_log_dict(
         self,
@@ -127,12 +141,14 @@ class TestErrorLogBusObj:
         new_error_log: ErrorLog
     ):
         """
-        Test case for loading data from a error_log dictionary.
+        Test case for loading data from a
+        error_log dictionary.
         """
         logger.info("test_load_with_error_log_dict 1")
         error_log_dict = error_log_manager.to_dict(new_error_log)
         logger.info(error_log_dict)
-        await error_log_bus_obj.load_from_dict(error_log_dict)
+        await error_log_bus_obj.load_from_dict(
+            error_log_dict)
         assert error_log_manager.is_equal(
             error_log_bus_obj.error_log,
             new_error_log) is True
@@ -144,7 +160,8 @@ class TestErrorLogBusObj:
         """
         Test case for retrieving a nonexistent error_log.
         """
-        # Test retrieving a nonexistent error_log raises an exception
+        # Test retrieving a nonexistent
+        # error_log raises an exception
         await error_log_bus_obj.load_from_id(-1)
         # Assuming -1 is an id that wouldn't exist
         assert error_log_bus_obj.is_valid() is False
@@ -160,14 +177,17 @@ class TestErrorLogBusObj:
         """
         # Test updating a error_log's data
         new_error_log_error_log_id_value = new_error_log.error_log_id
-        new_error_log = await error_log_manager.get_by_id(new_error_log_error_log_id_value)
+        new_error_log = await error_log_manager.get_by_id(
+            new_error_log_error_log_id_value)
         assert isinstance(new_error_log, ErrorLog)
         new_code = uuid.uuid4()
-        await error_log_bus_obj.load_from_obj_instance(new_error_log)
+        await error_log_bus_obj.load_from_obj_instance(
+            new_error_log)
         error_log_bus_obj.code = new_code
         await error_log_bus_obj.save()
         new_error_log_error_log_id_value = new_error_log.error_log_id
-        new_error_log = await error_log_manager.get_by_id(new_error_log_error_log_id_value)
+        new_error_log = await error_log_manager.get_by_id(
+            new_error_log_error_log_id_value)
         assert error_log_manager.is_equal(
             error_log_bus_obj.error_log,
             new_error_log) is True
@@ -184,10 +204,12 @@ class TestErrorLogBusObj:
         assert new_error_log.error_log_id is not None
         assert error_log_bus_obj.error_log_id == 0
         new_error_log_error_log_id_value = new_error_log.error_log_id
-        await error_log_bus_obj.load_from_id(new_error_log_error_log_id_value)
+        await error_log_bus_obj.load_from_id(
+            new_error_log_error_log_id_value)
         assert error_log_bus_obj.error_log_id is not None
         await error_log_bus_obj.delete()
         new_error_log_error_log_id_value = new_error_log.error_log_id
-        new_error_log = await error_log_manager.get_by_id(new_error_log_error_log_id_value)
+        new_error_log = await error_log_manager.get_by_id(
+            new_error_log_error_log_id_value)
         assert new_error_log is None
 

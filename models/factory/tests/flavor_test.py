@@ -48,35 +48,40 @@ class TestFlavorFactory:
         """
         Test case for creating a flavor.
         """
-        flavor = FlavorFactory.create(session=session)
+        flavor = FlavorFactory.create(
+            session=session)
         assert flavor.flavor_id is not None
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        flavor = FlavorFactory.create(session=session)
+        flavor = FlavorFactory.create(
+            session=session)
         assert isinstance(flavor.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        flavor: Flavor = FlavorFactory.build(session=session)
+        flavor: Flavor = FlavorFactory.build(
+            session=session)
         assert flavor.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        flavor: Flavor = FlavorFactory.create(session=session)
+        flavor: Flavor = FlavorFactory.create(
+            session=session)
         assert flavor.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        flavor = FlavorFactory.create(session=session)
+        flavor = FlavorFactory.create(
+            session=session)
         initial_code = flavor.last_change_code
         flavor.code = uuid.uuid4()
         session.commit()
@@ -86,17 +91,21 @@ class TestFlavorFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        flavor = FlavorFactory.build(session=session)
+        flavor = FlavorFactory.build(
+            session=session)
         assert flavor.insert_utc_date_time is not None
-        assert isinstance(flavor.insert_utc_date_time, datetime)
+        assert isinstance(
+            flavor.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        flavor = FlavorFactory.build(session=session)
+        flavor = FlavorFactory.build(
+            session=session)
         assert flavor.insert_utc_date_time is not None
-        assert isinstance(flavor.insert_utc_date_time, datetime)
+        assert isinstance(
+            flavor.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         flavor.code = uuid.uuid4()
         session.add(flavor)
@@ -107,9 +116,11 @@ class TestFlavorFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        flavor = FlavorFactory(session=session)
+        flavor = FlavorFactory(
+            session=session)
         assert flavor.insert_utc_date_time is not None
-        assert isinstance(flavor.insert_utc_date_time, datetime)
+        assert isinstance(
+            flavor.insert_utc_date_time, datetime)
         initial_time = flavor.insert_utc_date_time
         flavor.code = uuid.uuid4()
         time.sleep(1)
@@ -120,17 +131,21 @@ class TestFlavorFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        flavor = FlavorFactory.build(session=session)
+        flavor = FlavorFactory.build(
+            session=session)
         assert flavor.last_update_utc_date_time is not None
-        assert isinstance(flavor.last_update_utc_date_time, datetime)
+        assert isinstance(
+            flavor.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        flavor = FlavorFactory.build(session=session)
+        flavor = FlavorFactory.build(
+            session=session)
         assert flavor.last_update_utc_date_time is not None
-        assert isinstance(flavor.last_update_utc_date_time, datetime)
+        assert isinstance(
+            flavor.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         flavor.code = uuid.uuid4()
         session.add(flavor)
@@ -141,9 +156,11 @@ class TestFlavorFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        flavor = FlavorFactory(session=session)
+        flavor = FlavorFactory(
+            session=session)
         assert flavor.last_update_utc_date_time is not None
-        assert isinstance(flavor.last_update_utc_date_time, datetime)
+        assert isinstance(
+            flavor.last_update_utc_date_time, datetime)
         initial_time = flavor.last_update_utc_date_time
         flavor.code = uuid.uuid4()
         time.sleep(1)
@@ -151,9 +168,11 @@ class TestFlavorFactory:
         assert flavor.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        Test case for deleting a flavor model.
+        Test case for deleting a
+        flavor model.
         """
-        flavor = FlavorFactory.create(session=session)
+        flavor = FlavorFactory.create(
+            session=session)
         session.delete(flavor)
         session.commit()
         deleted_flavor = session.query(Flavor).filter_by(
@@ -161,9 +180,11 @@ class TestFlavorFactory:
         assert deleted_flavor is None
     def test_data_types(self, session):
         """
-        Test case for checking the data types of the flavor attributes.
+        Test case for checking the data types of
+        the flavor attributes.
         """
-        flavor = FlavorFactory.create(session=session)
+        flavor = FlavorFactory.create(
+            session=session)
         assert isinstance(flavor.flavor_id, int)
         assert isinstance(flavor.code, uuid.UUID)
         assert isinstance(flavor.last_change_code, int)
@@ -202,7 +223,8 @@ class TestFlavorFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        Test case for checking the default values of the flavor fields.
+        Test case for checking the default values of
+        the flavor fields.
         """
         flavor = Flavor()
         assert flavor.code is not None
@@ -232,12 +254,14 @@ class TestFlavorFactory:
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
-        last_change_code in the Flavor model.
+        last_change_code in the Flavor
+        model.
         This test case checks if the last_change_code
-        of a Flavor object is updated correctly
+        of a Flavor object is
+        updated correctly
         when multiple changes are made concurrently.
-        It creates a Flavor object, retrieves it
-        from the database, and updates its code
+        It creates a Flavor object,
+        retrieves it from the database, and updates its code
         attribute twice in separate transactions.
         Finally, it asserts that the last_change_code
         of the second retrieved Flavor object
@@ -247,7 +271,8 @@ class TestFlavorFactory:
         Returns:
             None
         """
-        flavor = FlavorFactory.create(session=session)
+        flavor = FlavorFactory.create(
+            session=session)
         original_last_change_code = flavor.last_change_code
         flavor_1 = session.query(Flavor).filter_by(
             _flavor_id=flavor.flavor_id).first()
@@ -280,7 +305,8 @@ class TestFlavorFactory:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
         """
-        flavor = FlavorFactory.create(session=session)
+        flavor = FlavorFactory.create(
+            session=session)
         flavor.pac_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()

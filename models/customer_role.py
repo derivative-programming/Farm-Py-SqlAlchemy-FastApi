@@ -1,7 +1,8 @@
 # models/customer_role.py
 # pylint: disable=unused-import
 """
-The CustomerRole model inherits from the Base model and is mapped to the
+The CustomerRole model inherits from
+the Base model and is mapped to the
 'farm_CustomerRole' table in the database.
 """
 from decimal import Decimal
@@ -17,7 +18,8 @@ from utils.common_functions import snake_case
 from .base import Base, EncryptedType  # noqa: F401
 class CustomerRole(Base):
     """
-    The CustomerRole model represents a customer_role in the farm.
+    The CustomerRole model represents a
+    customer_role in the farm.
     It inherits from the Base model and is mapped to the
     'farm_CustomerRole' table in the database.
     """
@@ -176,7 +178,8 @@ class CustomerRole(Base):
     @property
     def insert_user_id(self):
         """
-        Inserts the user ID into the customer_role object.
+        Inserts the user ID into the
+        customer_role object.
         Returns:
             UUID: The UUID of the inserted user ID.
         """
@@ -306,7 +309,8 @@ class CustomerRole(Base):
     @staticmethod
     def property_list():
         """
-        Returns a list of property names for the CustomerRole model.
+        Returns a list of property names for
+        the CustomerRole model.
         Returns:
             list: A list of property names.
         """
@@ -326,11 +330,13 @@ def set_created_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Set the created on and last update timestamps for a CustomerRole object.
+    Set the created on and last update timestamps
+    for a CustomerRole object.
     Args:
         mapper: The SQLAlchemy mapper.
         connection: The SQLAlchemy connection.
-        target: The CustomerRole object being inserted.
+        target: The CustomerRole object
+        being inserted.
     Returns:
         None
     """

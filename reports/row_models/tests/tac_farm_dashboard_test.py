@@ -1,6 +1,7 @@
 # reports/row_models/tests/tac_farm_dashboard_test.py
 """
-This module contains unit tests for the `ReportItemTacFarmDashboard` class.
+This module contains unit tests for the
+`ReportItemTacFarmDashboard` class.
 The `ReportItemTacFarmDashboard` class represents a
 report item for a tac Farm Dashboard.
 It contains various fields with default values and

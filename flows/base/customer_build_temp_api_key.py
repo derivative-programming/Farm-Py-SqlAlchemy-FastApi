@@ -1,7 +1,8 @@
 # flows/base/customer_build_temp_api_key.py
 """
 This module contains the implementation
-of the BaseFlow Customer Build Temp Api Key class
+of the BaseFlow
+Customer Build Temp Api Key class
 """
 import uuid
 from datetime import date, datetime

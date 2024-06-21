@@ -1,10 +1,13 @@
 # apis/models/pac_user_date_greater_than_filter_list.py
 """
-This module contains the models for the Pac User Date Greater Than Filter List API.
+This module contains the models for the
+Pac User Date Greater Than Filter List API.
 - PacUserDateGreaterThanFilterListGetModelRequest: Represents the
-    request model for getting the pac Pac User Date Greater Than Filter List Report.
+    request model for getting the
+    pac Pac User Date Greater Than Filter List Report.
 - PacUserDateGreaterThanFilterListGetModelResponseItem: Represents the
-    response model item for the pac Pac User Date Greater Than Filter List Report.
+    response model item for the
+    pac Pac User Date Greater Than Filter List Report.
 """
 import json
 import logging
@@ -24,7 +27,8 @@ from reports.report_request_validation_error import \
 from reports.row_models.pac_user_date_greater_than_filter_list import ReportItemPacUserDateGreaterThanFilterList
 class PacUserDateGreaterThanFilterListGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the pac Pac User Date Greater Than Filter List Report.
+    Represents the request model for getting the
+    pac Pac User Date Greater Than Filter List Report.
     """
     page_number: int = Field(
         default=0,
@@ -45,7 +49,8 @@ class PacUserDateGreaterThanFilterListGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-        Configuration class for the PacUserDateGreaterThanFilterList model.
+        Configuration class for the
+        PacUserDateGreaterThanFilterList model.
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -81,7 +86,8 @@ class PacUserDateGreaterThanFilterListGetModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the pac Pac User Date Greater Than Filter List Report.
+    Represents the response model item for the
+    pac Pac User Date Greater Than Filter List Report.
     """
     date_greater_than_filter_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -134,9 +140,11 @@ class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemPacUserDateGreaterThanFilterList:
         """
-        Builds a ReportItemPacUserDateGreaterThanFilterList object from the response model item.
+        Builds a ReportItemPacUserDateGreaterThanFilterList object
+        from the response model item.
         Returns:
-            ReportItemPacUserDateGreaterThanFilterList: The built ReportItemPacUserDateGreaterThanFilterList object.
+            ReportItemPacUserDateGreaterThanFilterList: The built
+            ReportItemPacUserDateGreaterThanFilterList object.
         """
         data = ReportItemPacUserDateGreaterThanFilterList()
         data.date_greater_than_filter_code = (
@@ -157,7 +165,8 @@ class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
 # endset
 class PacUserDateGreaterThanFilterListGetModelResponse(ListModel):
     """
-    Represents the response model for the PacUserDateGreaterThanFilterListGetModel API.
+    Represents the response model for the
+    PacUserDateGreaterThanFilterListGetModel API.
     Attributes:
         request (PacUserDateGreaterThanFilterListGetModelRequest):
             The request model for the API.

@@ -1,6 +1,7 @@
 # business/flavor.py
 """
-This module contains the FlavorBusObj class, which represents the business object for a Flavor.
+This module contains the FlavorBusObj class,
+which represents the business object for a Flavor.
 """
 from decimal import Decimal
 import random
@@ -18,7 +19,9 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Flavor object is not initialized")
 class FlavorInvalidInitError(Exception):
     """
-    Exception raised when the Flavor object is not initialized properly.
+    Exception raised when the
+    Flavor object
+    is not initialized properly.
     """
 class FlavorBusObj(BaseBusObj):
     """
@@ -27,7 +30,8 @@ class FlavorBusObj(BaseBusObj):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the FlavorBusObj class.
+        Initializes a new instance of the
+        FlavorBusObj class.
         :param session_context: The session context.
         :raises ValueError: If the session is not provided.
         """
@@ -38,9 +42,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def flavor_id(self) -> int:
         """
-        Get the flavor ID from the Flavor object.
+        Get the flavor ID from the
+        Flavor object.
         :return: The flavor ID.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -51,9 +57,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        Get the code from the Flavor object.
+        Get the code from the
+        Flavor object.
         :return: The code.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -65,7 +73,8 @@ class FlavorBusObj(BaseBusObj):
         """
         Set the code for the Flavor object.
         :param value: The code value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises ValueError: If the code is not a UUID.
         """
         if not self.flavor:
@@ -79,9 +88,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        Get the last change code from the Flavor object.
+        Get the last change code from the
+        Flavor object.
         :return: The last change code.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -91,9 +102,11 @@ class FlavorBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        Set the last change code for the Flavor object.
+        Set the last change code for the
+        Flavor object.
         :param value: The last change code value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises ValueError: If the last change code is not an integer.
         """
         if not self.flavor:
@@ -107,9 +120,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        Get the insert user ID from the Flavor object.
+        Get the insert user ID from the
+        Flavor object.
         :return: The insert user ID.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -119,9 +134,11 @@ class FlavorBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        Set the insert user ID for the Flavor object.
+        Set the insert user ID for the
+        Flavor object.
         :param value: The insert user ID value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.flavor:
@@ -135,9 +152,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        Get the last update user ID from the Flavor object.
+        Get the last update user ID from the
+        Flavor object.
         :return: The last update user ID.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -147,9 +166,11 @@ class FlavorBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        Set the last update user ID for the Flavor object.
+        Set the last update user ID for the
+        Flavor object.
         :param value: The last update user ID value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.flavor:
@@ -164,9 +185,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def description(self):
         """
-        Get the Description from the Flavor object.
+        Get the Description from the
+        Flavor object.
         :return: The Description.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -178,9 +201,11 @@ class FlavorBusObj(BaseBusObj):
     @description.setter
     def description(self, value):
         """
-        Set the Description for the Flavor object.
+        Set the Description for the
+        Flavor object.
         :param value: The Description value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises AssertionError: If the Description is not a string.
         """
         if not self.flavor:
@@ -191,9 +216,11 @@ class FlavorBusObj(BaseBusObj):
         self.flavor.description = value
     def set_prop_description(self, value: str):
         """
-        Set the Description for the Flavor object.
+        Set the Description for the
+        Flavor object.
         :param value: The Description value.
-        :return: The updated FlavorBusObj instance.
+        :return: The updated
+            FlavorBusObj instance.
         """
         self.description = value
         return self
@@ -201,7 +228,15 @@ class FlavorBusObj(BaseBusObj):
     @property
     def display_order(self):
         """
-        #TODO add comment
+        Returns the value of
+        display_order attribute of the
+        flavor.
+        Raises:
+            AttributeError: If the
+                flavor is not initialized.
+        Returns:
+            int: The value of
+                display_order attribute.
         """
         if not self.flavor:
             raise AttributeError(
@@ -211,7 +246,15 @@ class FlavorBusObj(BaseBusObj):
     @display_order.setter
     def display_order(self, value):
         """
-        #TODO add comment
+        Sets the value of
+        display_order for the
+        flavor.
+        Args:
+            value (int): The integer value to set for
+                display_order.
+        Raises:
+            AttributeError: If the
+                flavor is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -222,7 +265,13 @@ class FlavorBusObj(BaseBusObj):
         self.flavor.display_order = value
     def set_prop_display_order(self, value: int):
         """
-        #TODO add comment
+        Set the value of
+        display_order property.
+        Args:
+            value (int): The value to set for
+                display_order.
+        Returns:
+            self: Returns the instance of the class.
         """
         self.display_order = value
         return self
@@ -230,9 +279,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def is_active(self):
         """
-        Get the Is Active flag from the Flavor object.
+        Get the Is Active flag from the
+        Flavor object.
         :return: The Is Active flag.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -242,9 +293,11 @@ class FlavorBusObj(BaseBusObj):
     @is_active.setter
     def is_active(self, value: bool):
         """
-        Set the Is Active flag for the Flavor object.
+        Set the Is Active flag for the
+        Flavor object.
         :param value: The Is Active flag value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises ValueError: If the Is Active flag is not a boolean.
         """
         if not self.flavor:
@@ -256,9 +309,11 @@ class FlavorBusObj(BaseBusObj):
         self.flavor.is_active = value
     def set_prop_is_active(self, value: bool):
         """
-        Set the Is Active flag for the Flavor object.
+        Set the Is Active flag for the
+        Flavor object.
         :param value: The Is Active flag value.
-        :return: The updated FlavorBusObj instance.
+        :return: The updated
+            FlavorBusObj instance.
         """
         self.is_active = value
         return self
@@ -266,9 +321,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def lookup_enum_name(self):
         """
-        Get the Lookup Enum Name from the Flavor object.
+        Get the Lookup Enum Name from the
+        Flavor object.
         :return: The Lookup Enum Name.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -280,9 +337,11 @@ class FlavorBusObj(BaseBusObj):
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
         """
-        Set the Lookup Enum Name for the Flavor object.
+        Set the Lookup Enum Name for the
+        Flavor object.
         :param value: The Lookup Enum Name value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises AssertionError: If the Lookup Enum Name is not a string.
         """
         if not self.flavor:
@@ -293,9 +352,11 @@ class FlavorBusObj(BaseBusObj):
         self.flavor.lookup_enum_name = value
     def set_prop_lookup_enum_name(self, value: str):
         """
-        Set the Lookup Enum Name for the Flavor object.
+        Set the Lookup Enum Name for the
+        Flavor object.
         :param value: The Lookup Enum Name value.
-        :return: The updated FlavorBusObj instance.
+        :return: The updated
+            FlavorBusObj instance.
         """
         self.lookup_enum_name = value
         return self
@@ -303,9 +364,11 @@ class FlavorBusObj(BaseBusObj):
     @property
     def name(self):
         """
-        Get the Name from the Flavor object.
+        Get the Name from the
+        Flavor object.
         :return: The Name.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -317,9 +380,11 @@ class FlavorBusObj(BaseBusObj):
     @name.setter
     def name(self, value):
         """
-        Set the Name for the Flavor object.
+        Set the Name for the
+        Flavor object.
         :param value: The Name value.
-        :raises AttributeError: If the Flavor object is not initialized.
+        :raises AttributeError: If the
+            Flavor object is not initialized.
         :raises AssertionError: If the Name is not a string.
         """
         if not self.flavor:
@@ -330,9 +395,11 @@ class FlavorBusObj(BaseBusObj):
         self.flavor.name = value
     def set_prop_name(self, value: str):
         """
-        Set the Name for the Flavor object.
+        Set the Name for the
+        Flavor object.
         :param value: The Name value.
-        :return: The updated FlavorBusObj instance.
+        :return: The updated
+            FlavorBusObj instance.
         """
         self.name = value
         return self
@@ -347,9 +414,12 @@ class FlavorBusObj(BaseBusObj):
     @property
     def pac_id(self):
         """
-        Returns the pac ID associated with the flavor.
+        Returns the pac ID
+        associated with the
+        flavor.
         Raises:
-            AttributeError: If the flavor is not initialized.
+            AttributeError: If the
+                flavor is not initialized.
         Returns:
             int: The pac ID of the flavor.
         """
@@ -361,12 +431,15 @@ class FlavorBusObj(BaseBusObj):
     @pac_id.setter
     def pac_id(self, value):
         """
-        Sets the pac ID for the flavor.
+        Sets the pac ID
+        for the flavor.
         Args:
-            value (int or None): The pac ID to be set.
+            value (int or None): The
+                pac ID to be set.
                 Must be an integer or None.
         Raises:
-            AttributeError: If the flavor is not initialized.
+            AttributeError: If the
+                flavor is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -377,22 +450,27 @@ class FlavorBusObj(BaseBusObj):
         self.flavor.pac_id = value
     def set_prop_pac_id(self, value: int):
         """
-        Set the pac ID for the flavor.
+        Set the pac ID for the
+        flavor.
         Args:
-            value (int): The ID of the pac.
+            value (int): The pac id value.
         Returns:
-            Flavor: The updated Flavor object.
+            Flavor: The updated
+                Flavor object.
         """
         self.pac_id = value
         return self
     @property
     def pac_code_peek(self) -> uuid.UUID:
         """
-        Returns the pac code peek of the flavor.
+        Returns the pac id code peek
+        of the flavor.
         Raises:
-            AttributeError: If the flavor is not initialized.
+            AttributeError: If the
+            flavor is not initialized.
         Returns:
-            uuid.UUID: The pac code peek of the flavor.
+            uuid.UUID: The pac id code peek
+            of the flavor.
         """
         if not self.flavor:
             raise AttributeError(
@@ -409,11 +487,14 @@ class FlavorBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        Inserts the UTC date and time into the flavor object.
+        Inserts the UTC date and time into
+        the flavor object.
         Raises:
-            AttributeError: If the flavor object is not initialized.
+            AttributeError: If the
+                flavor object is not initialized.
         Returns:
-            The UTC date and time inserted into the flavor object.
+            The UTC date and time inserted into the
+            flavor object.
         """
         if not self.flavor:
             raise AttributeError(
@@ -423,12 +504,14 @@ class FlavorBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        Inserts the UTC date and time for the flavor.
+        Inserts the UTC date and time for the
+        flavor.
         Args:
             value (datetime): The UTC date and time to be inserted.
                 It should be a datetime object or None.
         Raises:
-            AttributeError: If the flavor is not initialized.
+            AttributeError: If the
+                flavor is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -441,11 +524,14 @@ class FlavorBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        Returns the last update UTC date and time of the flavor.
+        Returns the last update UTC date and time
+        of the flavor.
         Raises:
-            AttributeError: If the flavor is not initialized.
+            AttributeError: If the
+                flavor is not initialized.
         Returns:
-            datetime: The last update UTC date and time of the flavor.
+            datetime: The last update UTC date and time
+                of the flavor.
         """
         if not self.flavor:
             raise AttributeError(
@@ -455,13 +541,15 @@ class FlavorBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        Sets the last update UTC date and time for the flavor.
+        Sets the last update UTC date and time
+        for the flavor.
         Args:
             value (datetime): The datetime object
                 representing the last update UTC date and time.
                 Pass None to unset the value.
         Raises:
-            AttributeError: If the flavor is not initialized.
+            AttributeError: If the
+                flavor is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -475,14 +563,18 @@ class FlavorBusObj(BaseBusObj):
         json_data: str
     ):
         """
-        Load flavor data from JSON string.
-        :param json_data: JSON string containing flavor data.
+        Load flavor data
+        from JSON string.
+        :param json_data: JSON string containing
+            flavor data.
         :raises ValueError: If json_data is not a string
-            or if no flavor data is found.
+            or if no flavor
+            data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
-        flavor_manager = FlavorManager(self._session_context)
+        flavor_manager = FlavorManager(
+            self._session_context)
         self.flavor = flavor_manager.from_json(json_data)
         return self
     async def load_from_code(
@@ -490,14 +582,19 @@ class FlavorBusObj(BaseBusObj):
         code: uuid.UUID
     ):
         """
-        Load flavor data from UUID code.
-        :param code: UUID code for loading a specific flavor.
-        :raises ValueError: If code is not a UUID or if no flavor data is found.
+        Load flavor
+        data from UUID code.
+        :param code: UUID code for loading a specific
+            flavor.
+        :raises ValueError: If code is not a UUID or if no
+            flavor data is found.
         """
         if not isinstance(code, uuid.UUID):
             raise ValueError("code must be a UUID")
-        flavor_manager = FlavorManager(self._session_context)
-        flavor_obj = await flavor_manager.get_by_code(code)
+        flavor_manager = FlavorManager(
+            self._session_context)
+        flavor_obj = await flavor_manager.get_by_code(
+            code)
         self.flavor = flavor_obj
         return self
     async def load_from_id(
@@ -505,15 +602,21 @@ class FlavorBusObj(BaseBusObj):
         flavor_id: int
     ):
         """
-        Load flavor data from flavor ID.
-        :param flavor_id: Integer ID for loading a specific flavor.
-        :raises ValueError: If flavor_id is not an integer or
-            if no flavor data is found.
+        Load flavor data from
+        flavor ID.
+        :param flavor_id: Integer ID for loading a specific
+            flavor.
+        :raises ValueError: If flavor_id
+            is not an integer or
+            if no flavor
+            data is found.
         """
         if not isinstance(flavor_id, int):
             raise ValueError("flavor_id must be an integer")
-        flavor_manager = FlavorManager(self._session_context)
-        flavor_obj = await flavor_manager.get_by_id(flavor_id)
+        flavor_manager = FlavorManager(
+            self._session_context)
+        flavor_obj = await flavor_manager.get_by_id(
+            flavor_id)
         self.flavor = flavor_obj
         return self
     async def load_from_obj_instance(
@@ -521,13 +624,19 @@ class FlavorBusObj(BaseBusObj):
         flavor_obj_instance: Flavor
     ):
         """
-        Use the provided Flavor instance.
-        :param flavor_obj_instance: Instance of the Flavor class.
-        :raises ValueError: If flavor_obj_instance is not an instance of Flavor.
+        Use the provided
+        Flavor instance.
+        :param flavor_obj_instance: Instance of the
+            Flavor class.
+        :raises ValueError: If flavor_obj_instance
+            is not an instance of
+            Flavor.
         """
-        if not isinstance(flavor_obj_instance, Flavor):
+        if not isinstance(flavor_obj_instance,
+                          Flavor):
             raise ValueError("flavor_obj_instance must be an instance of Flavor")
-        flavor_manager = FlavorManager(self._session_context)
+        flavor_manager = FlavorManager(
+            self._session_context)
         flavor_obj_instance_flavor_id = flavor_obj_instance.flavor_id
         flavor_obj = await flavor_manager.get_by_id(
             flavor_obj_instance_flavor_id
@@ -539,15 +648,21 @@ class FlavorBusObj(BaseBusObj):
         flavor_dict: dict
     ):
         """
-        Load flavor data from dictionary.
-        :param flavor_dict: Dictionary containing flavor data.
-        :raises ValueError: If flavor_dict is not a
-            dictionary or if no flavor data is found.
+        Load flavor data
+        from dictionary.
+        :param flavor_dict: Dictionary containing
+            flavor data.
+        :raises ValueError: If flavor_dict
+            is not a
+            dictionary or if no
+            flavor data is found.
         """
         if not isinstance(flavor_dict, dict):
             raise ValueError("flavor_dict must be a dictionary")
-        flavor_manager = FlavorManager(self._session_context)
-        self.flavor = flavor_manager.from_dict(flavor_dict)
+        flavor_manager = FlavorManager(
+            self._session_context)
+        self.flavor = flavor_manager.from_dict(
+            flavor_dict)
         return self
 
     @property
@@ -606,82 +721,116 @@ class FlavorBusObj(BaseBusObj):
         return self._session_context
     async def refresh(self):
         """
-        Refreshes the flavor object by fetching
+        Refreshes the flavor
+        object by fetching
         the latest data from the database.
         Returns:
-            The updated flavor object.
+            The updated
+            flavor object.
         """
-        flavor_manager = FlavorManager(self._session_context)
-        self.flavor = await flavor_manager.refresh(self.flavor)
+        flavor_manager = FlavorManager(
+            self._session_context)
+        self.flavor = await flavor_manager.refresh(
+            self.flavor)
         return self
     def is_valid(self):
         """
-        Check if the flavor is valid.
+        Check if the flavor
+        is valid.
         Returns:
-            bool: True if the flavor is valid, False otherwise.
+            bool: True if the flavor
+                is valid, False otherwise.
         """
         return self.flavor is not None
     def to_dict(self):
         """
-        Converts the Flavor object to a dictionary representation.
+        Converts the Flavor
+        object to a dictionary representation.
         Returns:
-            dict: A dictionary representation of the Flavor object.
+            dict: A dictionary representation of the
+                Flavor object.
         """
-        flavor_manager = FlavorManager(self._session_context)
-        return flavor_manager.to_dict(self.flavor)
+        flavor_manager = FlavorManager(
+            self._session_context)
+        return flavor_manager.to_dict(
+            self.flavor)
     def to_json(self):
         """
-        Converts the flavor object to a JSON representation.
+        Converts the flavor
+        object to a JSON representation.
         Returns:
-            str: The JSON representation of the flavor object.
+            str: The JSON representation of the
+                flavor object.
         """
-        flavor_manager = FlavorManager(self._session_context)
-        return flavor_manager.to_json(self.flavor)
+        flavor_manager = FlavorManager(
+            self._session_context)
+        return flavor_manager.to_json(
+            self.flavor)
     async def save(self):
         """
-        Saves the flavor object to the database.
-        If the flavor object is not initialized, an AttributeError is raised.
-        If the flavor_id is greater than 0, the flavor is
+        Saves the flavor object
+        to the database.
+        If the flavor object
+        is not initialized, an AttributeError is raised.
+        If the flavor_id
+        is greater than 0, the
+        flavor is
         updated in the database.
-        If the flavor_id is 0, the flavor is added to the database.
+        If the flavor_id is 0,
+        the flavor is
+        added to the database.
         Returns:
-            The updated or added flavor object.
+            The updated or added
+            flavor object.
         Raises:
-            AttributeError: If the flavor object is not initialized.
+            AttributeError: If the flavor
+            object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
         flavor_id = self.flavor.flavor_id
         if flavor_id > 0:
-            flavor_manager = FlavorManager(self._session_context)
-            self.flavor = await flavor_manager.update(self.flavor)
+            flavor_manager = FlavorManager(
+                self._session_context)
+            self.flavor = await flavor_manager.update(
+                self.flavor)
         if flavor_id == 0:
-            flavor_manager = FlavorManager(self._session_context)
-            self.flavor = await flavor_manager.add(self.flavor)
+            flavor_manager = FlavorManager(
+                self._session_context)
+            self.flavor = await flavor_manager.add(
+                self.flavor)
         return self
     async def delete(self):
         """
-        Deletes the flavor from the database.
+        Deletes the flavor
+        from the database.
         Raises:
-            AttributeError: If the flavor is not initialized.
+            AttributeError: If the flavor
+                is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.flavor.flavor_id > 0:
-            flavor_manager = FlavorManager(self._session_context)
-            await flavor_manager.delete(self.flavor.flavor_id)
+            flavor_manager = FlavorManager(
+                self._session_context)
+            await flavor_manager.delete(
+                self.flavor.flavor_id)
             self.flavor = None
     async def randomize_properties(self):
         """
-        Randomizes the properties of the flavor object.
+        Randomizes the properties of the
+        flavor object.
         This method generates random values for various
-        properties of the flavor object
+        properties of the flavor
+        object
         Returns:
-            self: The current instance of the Flavor class.
+            self: The current instance of the
+                Flavor class.
         Raises:
-            AttributeError: If the flavor object is not initialized.
+            AttributeError: If the flavor
+                object is not initialized.
         """
         if not self.flavor:
             raise AttributeError(
@@ -702,28 +851,39 @@ class FlavorBusObj(BaseBusObj):
         return self
     def get_flavor_obj(self) -> Flavor:
         """
-        Returns the flavor object.
+        Returns the flavor
+        object.
         Raises:
-            AttributeError: If the flavor object is not initialized.
+            AttributeError: If the flavor
+                object is not initialized.
         Returns:
-            Flavor: The flavor object.
+            Flavor: The flavor
+                object.
         """
         if not self.flavor:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.flavor
-    def is_equal(self, flavor: Flavor) -> bool:
+    def is_equal(
+        self,
+        flavor: Flavor
+    ) -> bool:
         """
-        Checks if the current flavor is equal to the given flavor.
+        Checks if the current flavor
+        is equal to the given flavor.
         Args:
-            flavor (Flavor): The flavor to compare with.
+            flavor (Flavor): The
+                flavor to compare with.
         Returns:
-            bool: True if the flavors are equal, False otherwise.
+            bool: True if the flavors
+                are equal, False otherwise.
         """
-        flavor_manager = FlavorManager(self._session_context)
+        flavor_manager = FlavorManager(
+            self._session_context)
         my_flavor = self.get_flavor_obj()
-        return flavor_manager.is_equal(flavor, my_flavor)
+        return flavor_manager.is_equal(
+            flavor, my_flavor)
 # endset
     # description,
     # displayOrder,
@@ -733,9 +893,11 @@ class FlavorBusObj(BaseBusObj):
     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         """
-        Retrieves the related Pac object based on the pac_id.
+        Retrieves the related Pac object based
+        on the pac_id.
         Returns:
-            An instance of the Pac model representing the related pac.
+            An instance of the Pac model
+            representing the related pac.
         """
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -779,15 +941,19 @@ class FlavorBusObj(BaseBusObj):
         """
         Get the parent code of the flavor.
         Returns:
-            The parent code of the flavor as a UUID.
+            The parent code of the flavor
+            as a UUID.
         """
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         """
-        Get the parent object of the current flavor.
+        Get the parent object of the current
+        flavor.
         Returns:
-            The parent object of the current flavor,
-            which is an instance of the Pac model.
+            The parent object of the current
+            flavor,
+            which is an instance of the
+            Pac model.
         """
         pac = await self.get_pac_id_rel_obj()
         return pac
@@ -798,17 +964,23 @@ class FlavorBusObj(BaseBusObj):
         obj_list: List[Flavor]
     ):
         """
-        Convert a list of Flavor objects to a list of FlavorBusObj objects.
+        Convert a list of Flavor
+        objects to a list of
+        FlavorBusObj objects.
         Args:
             session_context (SessionContext): The session context.
-            obj_list (List[Flavor]): The list of Flavor objects to convert.
+            obj_list (List[Flavor]): The
+                list of Flavor objects to convert.
         Returns:
-            List[FlavorBusObj]: The list of converted FlavorBusObj objects.
+            List[FlavorBusObj]: The
+                list of converted FlavorBusObj
+                objects.
         """
         result = list()
         for flavor in obj_list:
             flavor_bus_obj = FlavorBusObj(session_context)
-            await flavor_bus_obj.load_from_obj_instance(flavor)
+            await flavor_bus_obj.load_from_obj_instance(
+                flavor)
             result.append(flavor_bus_obj)
         return result
 

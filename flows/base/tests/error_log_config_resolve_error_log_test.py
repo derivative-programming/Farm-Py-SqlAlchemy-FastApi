@@ -23,7 +23,8 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         Test case for the _process_validation_rules method
         of the BaseFlowErrorLogConfigResolveErrorLog class.
         This method tests the validation rules for the request
-        parameters of the error_log  flow.
+        parameters of the
+        error_log  flow.
         Args:
             session: The session object for the test.
         Returns:

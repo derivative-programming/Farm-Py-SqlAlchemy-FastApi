@@ -21,10 +21,14 @@ class TestReportProviderPlantUserDetails:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
-        This test case verifies the generation of a Plant Details report.
-        It creates a session context, initializes the runtime, and generates
-        a Plant Details report using the ReportProviderPlantUserDetails class.
-        The generated report is then checked for the expected format.
+        This test case verifies the generation of
+        a Plant Details report.
+        It creates a session context, initializes
+        the runtime, and generates
+        a Plant Details report using
+        the ReportProviderPlantUserDetails class.
+        The generated report is then
+        checked for the expected format.
         """
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)

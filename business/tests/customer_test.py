@@ -39,11 +39,11 @@ class TestCustomerBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_customer(self, session):
         """
-        Fixture that returns a new instance of the Customer class.
+        Fixture that returns a new instance of
+        the Customer class.
         """
-        # Use the CustomerFactory to create a new customer instance
-        # Assuming CustomerFactory.create() is an async function
-        return await CustomerFactory.create_async(session)
+        return await CustomerFactory.create_async(
+            session)
     @pytest.mark.asyncio
     async def test_create_customer(
         self,
@@ -55,8 +55,10 @@ class TestCustomerBusObj:
         # Test creating a new customer
         assert customer_bus_obj.customer_id == 0
         # assert isinstance(customer_bus_obj.customer_id, int)
-        assert isinstance(customer_bus_obj.code, uuid.UUID)
-        assert isinstance(customer_bus_obj.last_change_code, int)
+        assert isinstance(
+            customer_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            customer_bus_obj.last_change_code, int)
         assert customer_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert customer_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(customer_bus_obj.active_organization_id, int)
@@ -91,10 +93,13 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-        Test case for loading data from a customer object instance.
+        Test case for loading data from a
+        customer object instance.
         """
-        await customer_bus_obj.load_from_obj_instance(new_customer)
-        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
+        await customer_bus_obj.load_from_obj_instance(
+            new_customer)
+        assert customer_manager.is_equal(
+            customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_id(
         self,
@@ -103,11 +108,14 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-        Test case for loading data from a customer ID.
+        Test case for loading data from a
+        customer ID.
         """
         new_customer_customer_id = new_customer.customer_id
-        await customer_bus_obj.load_from_id(new_customer_customer_id)
-        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
+        await customer_bus_obj.load_from_id(
+            new_customer_customer_id)
+        assert customer_manager.is_equal(
+            customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_code(
         self,
@@ -116,10 +124,13 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-        Test case for loading data from a customer code.
+        Test case for loading data from a
+        customer code.
         """
-        await customer_bus_obj.load_from_code(new_customer.code)
-        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
+        await customer_bus_obj.load_from_code(
+            new_customer.code)
+        assert customer_manager.is_equal(
+            customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_json(
         self,
@@ -128,11 +139,14 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-        Test case for loading data from a customer JSON.
+        Test case for loading data from a
+        customer JSON.
         """
         customer_json = customer_manager.to_json(new_customer)
-        await customer_bus_obj.load_from_json(customer_json)
-        assert customer_manager.is_equal(customer_bus_obj.customer, new_customer) is True
+        await customer_bus_obj.load_from_json(
+            customer_json)
+        assert customer_manager.is_equal(
+            customer_bus_obj.customer, new_customer) is True
     @pytest.mark.asyncio
     async def test_load_with_customer_dict(
         self,
@@ -141,12 +155,14 @@ class TestCustomerBusObj:
         new_customer: Customer
     ):
         """
-        Test case for loading data from a customer dictionary.
+        Test case for loading data from a
+        customer dictionary.
         """
         logger.info("test_load_with_customer_dict 1")
         customer_dict = customer_manager.to_dict(new_customer)
         logger.info(customer_dict)
-        await customer_bus_obj.load_from_dict(customer_dict)
+        await customer_bus_obj.load_from_dict(
+            customer_dict)
         assert customer_manager.is_equal(
             customer_bus_obj.customer,
             new_customer) is True
@@ -158,7 +174,8 @@ class TestCustomerBusObj:
         """
         Test case for retrieving a nonexistent customer.
         """
-        # Test retrieving a nonexistent customer raises an exception
+        # Test retrieving a nonexistent
+        # customer raises an exception
         await customer_bus_obj.load_from_id(-1)
         # Assuming -1 is an id that wouldn't exist
         assert customer_bus_obj.is_valid() is False
@@ -174,14 +191,17 @@ class TestCustomerBusObj:
         """
         # Test updating a customer's data
         new_customer_customer_id_value = new_customer.customer_id
-        new_customer = await customer_manager.get_by_id(new_customer_customer_id_value)
+        new_customer = await customer_manager.get_by_id(
+            new_customer_customer_id_value)
         assert isinstance(new_customer, Customer)
         new_code = uuid.uuid4()
-        await customer_bus_obj.load_from_obj_instance(new_customer)
+        await customer_bus_obj.load_from_obj_instance(
+            new_customer)
         customer_bus_obj.code = new_code
         await customer_bus_obj.save()
         new_customer_customer_id_value = new_customer.customer_id
-        new_customer = await customer_manager.get_by_id(new_customer_customer_id_value)
+        new_customer = await customer_manager.get_by_id(
+            new_customer_customer_id_value)
         assert customer_manager.is_equal(
             customer_bus_obj.customer,
             new_customer) is True
@@ -198,11 +218,13 @@ class TestCustomerBusObj:
         assert new_customer.customer_id is not None
         assert customer_bus_obj.customer_id == 0
         new_customer_customer_id_value = new_customer.customer_id
-        await customer_bus_obj.load_from_id(new_customer_customer_id_value)
+        await customer_bus_obj.load_from_id(
+            new_customer_customer_id_value)
         assert customer_bus_obj.customer_id is not None
         await customer_bus_obj.delete()
         new_customer_customer_id_value = new_customer.customer_id
-        new_customer = await customer_manager.get_by_id(new_customer_customer_id_value)
+        new_customer = await customer_manager.get_by_id(
+            new_customer_customer_id_value)
         assert new_customer is None
 
     @pytest.mark.asyncio

@@ -1,6 +1,7 @@
 # pac_user_flavor_list.py
 """
-This module is the manager for report 'Pac User Flavor List'
+This module is the manager for report
+'Pac User Flavor List'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPacUserFlavorList():
     """
-    This class is the manager of report 'Pac User Flavor List'
+    This class is the manager of report
+    'Pac User Flavor List'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerPacUserFlavorList():
         order_by_descending: bool = False,
     ) -> List[ReportItemPacUserFlavorList]:
         """
-        Generate the 'Pac User Flavor List' report.
+        Generate the
+        'Pac User Flavor List' report.
         Returns:
-            List[ReportItemPacUserFlavorList]: The list of report items.
+            List[ReportItemPacUserFlavorList]: The
+                list of report items.
         """
         logging.info('ReportManagerPacUserFlavorList.generate Start')
         role_required = ""
@@ -81,7 +85,8 @@ class ReportManagerPacUserFlavorList():
                         file_name: str,
                         data_list: List[ReportItemPacUserFlavorList]):
         """
-        Build a CSV file for the 'Pac User Flavor List' report.
+        Build a CSV file for the
+        'Pac User Flavor List' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemPacUserFlavorList]):

@@ -27,7 +27,8 @@ class TestBaseFlowLandAddPlant():
         of the BaseFlowLandAddPlant class.
 
         This method tests the validation rules for the request
-        parameters of the land add plant flow.
+        parameters of the
+        land add plant flow.
 
         Args:
             session: The session object for the test.

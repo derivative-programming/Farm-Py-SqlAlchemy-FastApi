@@ -1,7 +1,8 @@
 # flows/base/customer_user_log_out_init_obj_wf.py
 """
 This module contains the implementation
-of the BaseFlow Customer User Log Out Init Obj WF class
+of the BaseFlow
+Customer User Log Out Init Obj WF class
 """
 import uuid
 from datetime import date, datetime

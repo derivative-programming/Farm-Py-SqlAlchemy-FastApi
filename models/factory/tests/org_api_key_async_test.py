@@ -76,15 +76,18 @@ class TestOrgApiKeyFactoryAsync:
     @pytest.mark.asyncio
     async def test_org_api_key_creation(self, session):
         """
-        Test case for creating a org_api_key asynchronously.
+        Test case for creating a org_api_key
+        asynchronously.
         Args:
             session: The database session to use.
         Returns:
             None
         Raises:
-            AssertionError: If the org_api_key ID is None after creation.
+            AssertionError: If the org_api_key ID
+                is None after creation.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         assert org_api_key.org_api_key_id is not None
     @pytest.mark.asyncio
     async def test_code_default(self, session):
@@ -98,7 +101,8 @@ class TestOrgApiKeyFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         assert isinstance(org_api_key.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
@@ -112,7 +116,8 @@ class TestOrgApiKeyFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        org_api_key: OrgApiKey = await OrgApiKeyFactory.build_async(session=session)
+        org_api_key: OrgApiKey = await OrgApiKeyFactory.build_async(
+            session=session)
         assert org_api_key.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
@@ -126,7 +131,8 @@ class TestOrgApiKeyFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        org_api_key: OrgApiKey = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key: OrgApiKey = await OrgApiKeyFactory.create_async(
+            session=session)
         assert org_api_key.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -140,7 +146,8 @@ class TestOrgApiKeyFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         initial_code = org_api_key.last_change_code
         org_api_key.code = uuid.uuid4()
         await session.commit()
@@ -158,9 +165,11 @@ class TestOrgApiKeyFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        org_api_key = await OrgApiKeyFactory.build_async(session=session)
+        org_api_key = await OrgApiKeyFactory.build_async(
+            session=session)
         assert org_api_key.insert_utc_date_time is not None
-        assert isinstance(org_api_key.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.insert_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_inserted_on_initial_save(self, session):
         """
@@ -174,9 +183,11 @@ class TestOrgApiKeyFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        org_api_key = await OrgApiKeyFactory.build_async(session=session)
+        org_api_key = await OrgApiKeyFactory.build_async(
+            session=session)
         assert org_api_key.insert_utc_date_time is not None
-        assert isinstance(org_api_key.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_api_key.code = uuid.uuid4()
         session.add(org_api_key)
@@ -195,9 +206,11 @@ class TestOrgApiKeyFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         assert org_api_key.insert_utc_date_time is not None
-        assert isinstance(org_api_key.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.insert_utc_date_time, datetime)
         initial_time = org_api_key.insert_utc_date_time
         org_api_key.code = uuid.uuid4()
         time.sleep(1)
@@ -217,9 +230,11 @@ class TestOrgApiKeyFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        org_api_key = await OrgApiKeyFactory.build_async(session=session)
+        org_api_key = await OrgApiKeyFactory.build_async(
+            session=session)
         assert org_api_key.last_update_utc_date_time is not None
-        assert isinstance(org_api_key.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.last_update_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_updated_on_initial_save(self, session):
         """
@@ -233,9 +248,11 @@ class TestOrgApiKeyFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        org_api_key = await OrgApiKeyFactory.build_async(session=session)
+        org_api_key = await OrgApiKeyFactory.build_async(
+            session=session)
         assert org_api_key.last_update_utc_date_time is not None
-        assert isinstance(org_api_key.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_api_key.code = uuid.uuid4()
         session.add(org_api_key)
@@ -254,9 +271,11 @@ class TestOrgApiKeyFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         assert org_api_key.last_update_utc_date_time is not None
-        assert isinstance(org_api_key.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_api_key.last_update_utc_date_time, datetime)
         initial_time = org_api_key.last_update_utc_date_time
         org_api_key.code = uuid.uuid4()
         time.sleep(1)
@@ -265,16 +284,19 @@ class TestOrgApiKeyFactoryAsync:
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
         """
-        Test case for deleting a org_api_key from the database.
+        Test case for deleting a org_api_key
+        from the database.
         Args:
             session: The database session to use.
         Returns:
             None
         Raises:
-            AssertionError: If the deleted org_api_key is still
+            AssertionError: If the deleted
+            org_api_key is still
             found in the database.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         await session.delete(org_api_key)
         await session.commit()
         # Construct the select statement
@@ -288,7 +310,8 @@ class TestOrgApiKeyFactoryAsync:
     @pytest.mark.asyncio
     async def test_data_types(self, session):
         """
-        Test case for checking the data types of the org_api_key attributes.
+        Test case for checking the data types of
+        the org_api_key attributes.
         Args:
             session: The database session to use.
         Returns:
@@ -296,7 +319,8 @@ class TestOrgApiKeyFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         assert isinstance(org_api_key.org_api_key_id, int)
         assert isinstance(org_api_key.code, uuid.UUID)
         assert isinstance(org_api_key.last_change_code, int)
@@ -331,8 +355,10 @@ class TestOrgApiKeyFactoryAsync:
     async def test_unique_code_constraint(self, session):
         """
         Test case to check the unique code constraint for org_api_keys.
-        This test creates two org_api_key instances using
-        the OrgApiKeyFactoryand assigns the same code to both org_api_keys.
+        This test creates two org_api_key
+        instances using
+        the OrgApiKeyFactoryand assigns
+        the same code to both org_api_keys.
         Then it adds both org_api_keys to the session and
         attempts to commit the changes.
         The test expects an exception to be raised,
@@ -342,8 +368,10 @@ class TestOrgApiKeyFactoryAsync:
         Note: This test assumes that the
         OrgApiKeyFactory.create_async() method creates unique codes for each org_api_key.
         """
-        org_api_key_1 = await OrgApiKeyFactory.create_async(session=session)
-        org_api_key_2 = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key_1 = await OrgApiKeyFactory.create_async(
+            session=session)
+        org_api_key_2 = await OrgApiKeyFactory.create_async(
+            session=session)
         org_api_key_2.code = org_api_key_1.code
         session.add_all([org_api_key_1, org_api_key_2])
         with pytest.raises(Exception):
@@ -355,7 +383,8 @@ class TestOrgApiKeyFactoryAsync:
         Test case to verify the default values of
         the fields in the OrgApiKey model.
         This test case checks that the default values
-        of various fields in the OrgApiKey model are set correctly.
+        of various fields in the OrgApiKey
+        model are set correctly.
         It asserts that the default values are not None
         or empty, and that the data types of certain fields are correct.
         """
@@ -392,19 +421,24 @@ class TestOrgApiKeyFactoryAsync:
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
         """
-        Test the concurrency of last_change_code in the OrgApiKey model.
+        Test the concurrency of last_change_code
+        in the OrgApiKey model.
         This test verifies that the last_change_code
         attribute of a OrgApiKey object
         is updated correctly when multiple instances
         of the object are modified
         concurrently.
         Steps:
-        1. Create a new OrgApiKey object using the OrgApiKeyFactory.
+        1. Create a new OrgApiKey object using
+            the OrgApiKeyFactory.
         2. Get the original value of the last_change_code attribute.
-        3. Query the database for the OrgApiKey object using the org_api_key_id.
-        4. Modify the code attribute of the retrieved OrgApiKey object.
+        3. Query the database for the OrgApiKey
+            object using the org_api_key_id.
+        4. Modify the code attribute of the
+            retrieved OrgApiKey object.
         5. Commit the changes to the database.
-        6. Query the database again for the OrgApiKey object using the org_api_key_id.
+        6. Query the database again for the
+            OrgApiKey object using the org_api_key_id.
         7. Get the modified OrgApiKey object.
         8. Verify that the last_change_code attribute
             of the modified OrgApiKey object
@@ -414,7 +448,8 @@ class TestOrgApiKeyFactoryAsync:
                             of the modified OrgApiKey
                             object is the same as the original value.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         original_last_change_code = org_api_key.last_change_code
         stmt = select(OrgApiKey).where(
             OrgApiKey._org_api_key_id == org_api_key.org_api_key_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
@@ -456,7 +491,8 @@ class TestOrgApiKeyFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         org_api_key.organization_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()
@@ -476,7 +512,8 @@ class TestOrgApiKeyFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(session=session)
+        org_api_key = await OrgApiKeyFactory.create_async(
+            session=session)
         org_api_key.org_customer_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

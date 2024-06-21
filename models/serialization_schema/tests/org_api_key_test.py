@@ -1,20 +1,34 @@
 # org_api_key_test.py
 # pylint: disable=redefined-outer-name
 """
-This module contains tests for the OrgApiKey serialization schema.
-The OrgApiKey serialization schema is responsible for serializing and deserializing
-OrgApiKey instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
-The tests in this module cover the serialization and deserialization of OrgApiKey
-instances using the OrgApiKeySchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+This module contains tests for the
+OrgApiKey serialization schema.
+The OrgApiKey serialization schema
+is responsible for serializing and deserializing
+OrgApiKey instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
+The tests in this module cover the serialization
+and deserialization of OrgApiKey
+instances using the OrgApiKeySchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a OrgApiKey instance.
-The OrgApiKeySchema class is used to define the serialization and deserialization
-rules for OrgApiKey instances. It specifies how each attribute of a OrgApiKey instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a OrgApiKey instance.
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The OrgApiKeySchema class is used to define
+the serialization and deserialization
+rules for OrgApiKey instances. It
+specifies how each attribute of a
+OrgApiKey instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a OrgApiKey
+instance.
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 """
 import json
@@ -29,20 +43,27 @@ from models.serialization_schema import OrgApiKeySchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def org_api_key(session) -> OrgApiKey:
+def org_api_key(
+    session
+) -> OrgApiKey:
     """
-    Fixture to create and return a OrgApiKey instance using the OrgApiKeyFactory.
+    Fixture to create and return a OrgApiKey
+    instance using the
+    OrgApiKeyFactory.
     Args:
         session: The database session.
     Returns:
-        OrgApiKey: A newly created OrgApiKey instance.
+        OrgApiKey: A newly created
+            OrgApiKey instance.
     """
     return OrgApiKeyFactory.create(session=session)
 class TestOrgApiKeySchema:
     """
-    Tests for the OrgApiKey serialization schema.
+    Tests for the OrgApiKey
+    serialization schema.
     """
-    # Sample data for a OrgApiKey instance
+    # Sample data for a OrgApiKey
+    # instance
     sample_data = {
         "org_api_key_id": 1,
         "code":
@@ -79,9 +100,13 @@ class TestOrgApiKeySchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_org_api_key_serialization(self, org_api_key: OrgApiKey):
+    def test_org_api_key_serialization(
+        self,
+        org_api_key: OrgApiKey
+    ):
         """
-        Test the serialization of a OrgApiKey instance using
+        Test the serialization of a
+        OrgApiKey instance using
         OrgApiKeySchema.
         Args:
             org_api_key (OrgApiKey):
@@ -130,9 +155,12 @@ class TestOrgApiKeySchema:
 # endset
     def test_org_api_key_deserialization(self, org_api_key):
         """
-        Test the deserialization of a OrgApiKey object using the OrgApiKeySchema.
+        Test the deserialization of a
+        OrgApiKey object using the
+        OrgApiKeySchema.
         Args:
-            org_api_key (OrgApiKey): The OrgApiKey object to be deserialized.
+            org_api_key (OrgApiKey): The
+                OrgApiKey object to be deserialized.
         Raises:
             AssertionError: If any of the assertions fail.
         Returns:
@@ -141,7 +169,8 @@ class TestOrgApiKeySchema:
         schema = OrgApiKeySchema()
         serialized_data = schema.dump(org_api_key)
         deserialized_data = schema.load(serialized_data)
-        assert deserialized_data['code'] == org_api_key.code
+        assert deserialized_data['code'] == \
+            org_api_key.code
         assert deserialized_data['last_change_code'] == (
             org_api_key.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -173,18 +202,25 @@ class TestOrgApiKeySchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             org_api_key.last_update_utc_date_time.isoformat())
 # endset
-        assert deserialized_data['organization_code_peek'] == (  # OrganizationID
+        assert deserialized_data[(  # OrganizationID
+            'organization_code_peek')] == (
             org_api_key.organization_code_peek)
-        assert deserialized_data['org_customer_code_peek'] == (  # OrgCustomerID
+        assert deserialized_data[(  # OrgCustomerID
+            'org_customer_code_peek')] == (
             org_api_key.org_customer_code_peek)
 # endset
         new_org_api_key = OrgApiKey(**deserialized_data)
         assert isinstance(new_org_api_key, OrgApiKey)
-        # Now compare the new_org_api_key attributes with the org_api_key attributes
-        assert new_org_api_key.code == org_api_key.code
-        assert new_org_api_key.last_change_code == org_api_key.last_change_code
-        assert new_org_api_key.insert_user_id == org_api_key.insert_user_id
-        assert new_org_api_key.last_update_user_id == org_api_key.last_update_user_id
+        # Now compare the new_org_api_key attributes with
+        # the org_api_key attributes
+        assert new_org_api_key.code == \
+            org_api_key.code
+        assert new_org_api_key.last_change_code == \
+            org_api_key.last_change_code
+        assert new_org_api_key.insert_user_id == \
+            org_api_key.insert_user_id
+        assert new_org_api_key.last_update_user_id == \
+            org_api_key.last_update_user_id
 # endset
         assert new_org_api_key.api_key_value == (
             org_api_key.api_key_value)
@@ -219,12 +255,14 @@ class TestOrgApiKeySchema:
         """
         Test the `from_json` method of the OrgApiKeySchema class.
         This method tests the deserialization of
-        a JSON string to a OrgApiKey object.
+        a JSON string to a
+        OrgApiKey object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a OrgApiKey
         object. Finally, it asserts the
-        equality of the deserialized OrgApiKey object
+        equality of the deserialized
+        OrgApiKey object
         with the sample data.
         Returns:
             None
@@ -268,31 +306,42 @@ class TestOrgApiKeySchema:
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
-        assert str(deserialized_data['organization_code_peek']) == (  # OrganizationID
+        assert str(deserialized_data[(  # OrganizationID
+            'organization_code_peek')]) == (
             str(self.sample_data['organization_code_peek']))
-        assert str(deserialized_data['org_customer_code_peek']) == (  # OrgCustomerID
+        assert str(deserialized_data[(  # OrgCustomerID
+            'org_customer_code_peek')]) == (
             str(self.sample_data['org_customer_code_peek']))
 # endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
         new_org_api_key = OrgApiKey(**deserialized_data)
         assert isinstance(new_org_api_key, OrgApiKey)
-    def test_to_json(self, org_api_key: OrgApiKey):
+    def test_to_json(
+        self,
+        org_api_key: OrgApiKey
+    ):
         """
-        Test the conversion of a OrgApiKey instance to JSON.
+        Test the conversion of a
+        OrgApiKey instance to JSON.
         Args:
-            org_api_key (OrgApiKey): The OrgApiKey instance to convert.
+            org_api_key (OrgApiKey): The
+            OrgApiKey instance to convert.
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
-        # Convert the OrgApiKey instance to JSON using the schema
+        # Convert the OrgApiKey instance
+        # to JSON using the schema
         org_api_key_schema = OrgApiKeySchema()
-        org_api_key_dict = org_api_key_schema.dump(org_api_key)
+        org_api_key_dict = org_api_key_schema.dump(
+            org_api_key)
         # Convert the org_api_key_dict to JSON string
-        org_api_key_json = json.dumps(org_api_key_dict)
+        org_api_key_json = json.dumps(
+            org_api_key_dict)
         # Convert the JSON strings back to dictionaries
-        org_api_key_dict_from_json = json.loads(org_api_key_json)
+        org_api_key_dict_from_json = json.loads(
+            org_api_key_json)
         # sample_dict_from_json = json.loads(self.sample_data)
         logging.info(
             "org_api_key_dict_from_json.keys() %s",
@@ -304,7 +353,8 @@ class TestOrgApiKeySchema:
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(org_api_key_dict_from_json.keys())}"
         )
-        assert org_api_key_dict_from_json['code'] == str(org_api_key.code), (
+        assert org_api_key_dict_from_json['code'] == \
+            str(org_api_key.code), (
             "failed on code"
         )
         assert org_api_key_dict_from_json['last_change_code'] == (
@@ -366,11 +416,13 @@ class TestOrgApiKeySchema:
             "failed on last_update_utc_date_time"
         )
 # endset
-        assert org_api_key_dict_from_json['organization_code_peek'] == (  # OrganizationID
+        assert org_api_key_dict_from_json[(  # OrganizationID
+            'organization_code_peek')] == (
             str(org_api_key.organization_code_peek)), (
             "failed on organization_code_peek"
         )
-        assert org_api_key_dict_from_json['org_customer_code_peek'] == (  # OrgCustomerID
+        assert org_api_key_dict_from_json[(  # OrgCustomerID
+            'org_customer_code_peek')] == (
             str(org_api_key.org_customer_code_peek)), (
             "failed on org_customer_code_peek"
         )

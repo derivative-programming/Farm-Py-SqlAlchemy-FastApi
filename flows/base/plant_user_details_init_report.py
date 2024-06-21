@@ -1,7 +1,8 @@
 # flows/base/plant_user_details_init_report.py
 """
 This module contains the implementation
-of the BaseFlow Plant User Details Init Report class
+of the BaseFlow
+Plant User Details Init Report class
 """
 import uuid
 from datetime import date, datetime

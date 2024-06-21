@@ -76,15 +76,18 @@ class TestOrganizationFactoryAsync:
     @pytest.mark.asyncio
     async def test_organization_creation(self, session):
         """
-        Test case for creating a organization asynchronously.
+        Test case for creating a organization
+        asynchronously.
         Args:
             session: The database session to use.
         Returns:
             None
         Raises:
-            AssertionError: If the organization ID is None after creation.
+            AssertionError: If the organization ID
+                is None after creation.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         assert organization.organization_id is not None
     @pytest.mark.asyncio
     async def test_code_default(self, session):
@@ -98,7 +101,8 @@ class TestOrganizationFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         assert isinstance(organization.code, uuid.UUID)
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_build(self, session):
@@ -112,7 +116,8 @@ class TestOrganizationFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        organization: Organization = await OrganizationFactory.build_async(session=session)
+        organization: Organization = await OrganizationFactory.build_async(
+            session=session)
         assert organization.last_change_code == 0
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_creation(self, session):
@@ -126,7 +131,8 @@ class TestOrganizationFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        organization: Organization = await OrganizationFactory.create_async(session=session)
+        organization: Organization = await OrganizationFactory.create_async(
+            session=session)
         assert organization.last_change_code == 1
     @pytest.mark.asyncio
     async def test_last_change_code_default_on_update(self, session):
@@ -140,7 +146,8 @@ class TestOrganizationFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         initial_code = organization.last_change_code
         organization.code = uuid.uuid4()
         await session.commit()
@@ -158,9 +165,11 @@ class TestOrganizationFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        organization = await OrganizationFactory.build_async(session=session)
+        organization = await OrganizationFactory.build_async(
+            session=session)
         assert organization.insert_utc_date_time is not None
-        assert isinstance(organization.insert_utc_date_time, datetime)
+        assert isinstance(
+            organization.insert_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_inserted_on_initial_save(self, session):
         """
@@ -174,9 +183,11 @@ class TestOrganizationFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        organization = await OrganizationFactory.build_async(session=session)
+        organization = await OrganizationFactory.build_async(
+            session=session)
         assert organization.insert_utc_date_time is not None
-        assert isinstance(organization.insert_utc_date_time, datetime)
+        assert isinstance(
+            organization.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = uuid.uuid4()
         session.add(organization)
@@ -195,9 +206,11 @@ class TestOrganizationFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         assert organization.insert_utc_date_time is not None
-        assert isinstance(organization.insert_utc_date_time, datetime)
+        assert isinstance(
+            organization.insert_utc_date_time, datetime)
         initial_time = organization.insert_utc_date_time
         organization.code = uuid.uuid4()
         time.sleep(1)
@@ -217,9 +230,11 @@ class TestOrganizationFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        organization = await OrganizationFactory.build_async(session=session)
+        organization = await OrganizationFactory.build_async(
+            session=session)
         assert organization.last_update_utc_date_time is not None
-        assert isinstance(organization.last_update_utc_date_time, datetime)
+        assert isinstance(
+            organization.last_update_utc_date_time, datetime)
     @pytest.mark.asyncio
     async def test_date_updated_on_initial_save(self, session):
         """
@@ -233,9 +248,11 @@ class TestOrganizationFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        organization = await OrganizationFactory.build_async(session=session)
+        organization = await OrganizationFactory.build_async(
+            session=session)
         assert organization.last_update_utc_date_time is not None
-        assert isinstance(organization.last_update_utc_date_time, datetime)
+        assert isinstance(
+            organization.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         organization.code = uuid.uuid4()
         session.add(organization)
@@ -254,9 +271,11 @@ class TestOrganizationFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         assert organization.last_update_utc_date_time is not None
-        assert isinstance(organization.last_update_utc_date_time, datetime)
+        assert isinstance(
+            organization.last_update_utc_date_time, datetime)
         initial_time = organization.last_update_utc_date_time
         organization.code = uuid.uuid4()
         time.sleep(1)
@@ -265,16 +284,19 @@ class TestOrganizationFactoryAsync:
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
         """
-        Test case for deleting a organization from the database.
+        Test case for deleting a organization
+        from the database.
         Args:
             session: The database session to use.
         Returns:
             None
         Raises:
-            AssertionError: If the deleted organization is still
+            AssertionError: If the deleted
+            organization is still
             found in the database.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         await session.delete(organization)
         await session.commit()
         # Construct the select statement
@@ -288,7 +310,8 @@ class TestOrganizationFactoryAsync:
     @pytest.mark.asyncio
     async def test_data_types(self, session):
         """
-        Test case for checking the data types of the organization attributes.
+        Test case for checking the data types of
+        the organization attributes.
         Args:
             session: The database session to use.
         Returns:
@@ -296,7 +319,8 @@ class TestOrganizationFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         assert isinstance(organization.organization_id, int)
         assert isinstance(organization.code, uuid.UUID)
         assert isinstance(organization.last_change_code, int)
@@ -316,8 +340,10 @@ class TestOrganizationFactoryAsync:
     async def test_unique_code_constraint(self, session):
         """
         Test case to check the unique code constraint for organizations.
-        This test creates two organization instances using
-        the OrganizationFactoryand assigns the same code to both organizations.
+        This test creates two organization
+        instances using
+        the OrganizationFactoryand assigns
+        the same code to both organizations.
         Then it adds both organizations to the session and
         attempts to commit the changes.
         The test expects an exception to be raised,
@@ -327,8 +353,10 @@ class TestOrganizationFactoryAsync:
         Note: This test assumes that the
         OrganizationFactory.create_async() method creates unique codes for each organization.
         """
-        organization_1 = await OrganizationFactory.create_async(session=session)
-        organization_2 = await OrganizationFactory.create_async(session=session)
+        organization_1 = await OrganizationFactory.create_async(
+            session=session)
+        organization_2 = await OrganizationFactory.create_async(
+            session=session)
         organization_2.code = organization_1.code
         session.add_all([organization_1, organization_2])
         with pytest.raises(Exception):
@@ -340,7 +368,8 @@ class TestOrganizationFactoryAsync:
         Test case to verify the default values of
         the fields in the Organization model.
         This test case checks that the default values
-        of various fields in the Organization model are set correctly.
+        of various fields in the Organization
+        model are set correctly.
         It asserts that the default values are not None
         or empty, and that the data types of certain fields are correct.
         """
@@ -362,19 +391,24 @@ class TestOrganizationFactoryAsync:
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
         """
-        Test the concurrency of last_change_code in the Organization model.
+        Test the concurrency of last_change_code
+        in the Organization model.
         This test verifies that the last_change_code
         attribute of a Organization object
         is updated correctly when multiple instances
         of the object are modified
         concurrently.
         Steps:
-        1. Create a new Organization object using the OrganizationFactory.
+        1. Create a new Organization object using
+            the OrganizationFactory.
         2. Get the original value of the last_change_code attribute.
-        3. Query the database for the Organization object using the organization_id.
-        4. Modify the code attribute of the retrieved Organization object.
+        3. Query the database for the Organization
+            object using the organization_id.
+        4. Modify the code attribute of the
+            retrieved Organization object.
         5. Commit the changes to the database.
-        6. Query the database again for the Organization object using the organization_id.
+        6. Query the database again for the
+            Organization object using the organization_id.
         7. Get the modified Organization object.
         8. Verify that the last_change_code attribute
             of the modified Organization object
@@ -384,7 +418,8 @@ class TestOrganizationFactoryAsync:
                             of the modified Organization
                             object is the same as the original value.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         original_last_change_code = organization.last_change_code
         stmt = select(Organization).where(
             Organization._organization_id == organization.organization_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
@@ -420,7 +455,8 @@ class TestOrganizationFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        organization = await OrganizationFactory.create_async(session=session)
+        organization = await OrganizationFactory.create_async(
+            session=session)
         organization.tac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

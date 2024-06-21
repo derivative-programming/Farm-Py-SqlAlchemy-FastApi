@@ -1,7 +1,10 @@
 # flows/default/tac_login_init_obj_wf.py
 """
-This module contains the FlowTacLoginInitObjWF class and related classes
-that handle the addition of a  to a specific tac in the flow process.
+This module contains the
+FlowTacLoginInitObjWF class and related classes
+that handle the addition of a
+ to a specific
+tac in the flow process.
 """
 import uuid
 import json
@@ -14,7 +17,8 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacLoginInitObjWFResult():
     """
-    Represents the result of the FlowTacLoginInitObjWF process.
+    Represents the result of the
+    FlowTacLoginInitObjWF process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
@@ -22,11 +26,13 @@ class FlowTacLoginInitObjWFResult():
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowTacLoginInitObjWFResult class.
+        Initializes a new instance of the
+        FlowTacLoginInitObjWFResult class.
         """
     def to_json(self):
         """
-        Converts the FlowTacLoginInitObjWFResult instance to a JSON string.
+        Converts the FlowTacLoginInitObjWFResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -44,7 +50,8 @@ class FlowTacLoginInitObjWFResult():
         return json.dumps(data)
 class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
     """
-    FlowTacLoginInitObjWF handles the addition of a  to
+    FlowTacLoginInitObjWF handles the addition of
+    a  to
     a specific tac in the flow process.
     This class extends the BaseFlowTacLoginInitObjWF class and
     initializes it with the provided session context.
@@ -64,9 +71,11 @@ class FlowTacLoginInitObjWF(BaseFlowTacLoginInitObjWF):
 # endset  # noqa: E122
     ) -> FlowTacLoginInitObjWFResult:
         """
-        Processes the addition of a  to a specific tac.
+        Processes the addition of a
+         to a specific tac.
         Returns:
-            FlowTacLoginInitObjWFResult: The result of the FlowTacLoginInitObjWF process.
+            FlowTacLoginInitObjWFResult: The result of the
+                FlowTacLoginInitObjWF process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

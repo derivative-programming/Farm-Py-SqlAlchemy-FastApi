@@ -1,20 +1,34 @@
 # customer_test.py
 # pylint: disable=redefined-outer-name
 """
-This module contains tests for the Customer serialization schema.
-The Customer serialization schema is responsible for serializing and deserializing
-Customer instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
-The tests in this module cover the serialization and deserialization of Customer
-instances using the CustomerSchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+This module contains tests for the
+Customer serialization schema.
+The Customer serialization schema
+is responsible for serializing and deserializing
+Customer instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
+The tests in this module cover the serialization
+and deserialization of Customer
+instances using the CustomerSchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a Customer instance.
-The CustomerSchema class is used to define the serialization and deserialization
-rules for Customer instances. It specifies how each attribute of a Customer instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a Customer instance.
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The CustomerSchema class is used to define
+the serialization and deserialization
+rules for Customer instances. It
+specifies how each attribute of a
+Customer instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a Customer
+instance.
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 """
 import json
@@ -29,20 +43,27 @@ from models.serialization_schema import CustomerSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def customer(session) -> Customer:
+def customer(
+    session
+) -> Customer:
     """
-    Fixture to create and return a Customer instance using the CustomerFactory.
+    Fixture to create and return a Customer
+    instance using the
+    CustomerFactory.
     Args:
         session: The database session.
     Returns:
-        Customer: A newly created Customer instance.
+        Customer: A newly created
+            Customer instance.
     """
     return CustomerFactory.create(session=session)
 class TestCustomerSchema:
     """
-    Tests for the Customer serialization schema.
+    Tests for the Customer
+    serialization schema.
     """
-    # Sample data for a Customer instance
+    # Sample data for a Customer
+    # instance
     sample_data = {
         "customer_id": 1,
         "code":
@@ -96,9 +117,13 @@ class TestCustomerSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_customer_serialization(self, customer: Customer):
+    def test_customer_serialization(
+        self,
+        customer: Customer
+    ):
         """
-        Test the serialization of a Customer instance using
+        Test the serialization of a
+        Customer instance using
         CustomerSchema.
         Args:
             customer (Customer):
@@ -173,9 +198,12 @@ class TestCustomerSchema:
 # endset
     def test_customer_deserialization(self, customer):
         """
-        Test the deserialization of a Customer object using the CustomerSchema.
+        Test the deserialization of a
+        Customer object using the
+        CustomerSchema.
         Args:
-            customer (Customer): The Customer object to be deserialized.
+            customer (Customer): The
+                Customer object to be deserialized.
         Raises:
             AssertionError: If any of the assertions fail.
         Returns:
@@ -184,7 +212,8 @@ class TestCustomerSchema:
         schema = CustomerSchema()
         serialized_data = schema.dump(customer)
         deserialized_data = schema.load(serialized_data)
-        assert deserialized_data['code'] == customer.code
+        assert deserialized_data['code'] == \
+            customer.code
         assert deserialized_data['last_change_code'] == (
             customer.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -244,16 +273,22 @@ class TestCustomerSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             customer.last_update_utc_date_time.isoformat())
 # endset
-        assert deserialized_data['tac_code_peek'] == (  # TacID
+        assert deserialized_data[(  # TacID
+            'tac_code_peek')] == (
             customer.tac_code_peek)
 # endset
         new_customer = Customer(**deserialized_data)
         assert isinstance(new_customer, Customer)
-        # Now compare the new_customer attributes with the customer attributes
-        assert new_customer.code == customer.code
-        assert new_customer.last_change_code == customer.last_change_code
-        assert new_customer.insert_user_id == customer.insert_user_id
-        assert new_customer.last_update_user_id == customer.last_update_user_id
+        # Now compare the new_customer attributes with
+        # the customer attributes
+        assert new_customer.code == \
+            customer.code
+        assert new_customer.last_change_code == \
+            customer.last_change_code
+        assert new_customer.insert_user_id == \
+            customer.insert_user_id
+        assert new_customer.last_update_user_id == \
+            customer.last_update_user_id
 # endset
         assert new_customer.active_organization_id == (
             customer.active_organization_id)
@@ -314,12 +349,14 @@ class TestCustomerSchema:
         """
         Test the `from_json` method of the CustomerSchema class.
         This method tests the deserialization of
-        a JSON string to a Customer object.
+        a JSON string to a
+        Customer object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a Customer
         object. Finally, it asserts the
-        equality of the deserialized Customer object
+        equality of the deserialized
+        Customer object
         with the sample data.
         Returns:
             None
@@ -391,29 +428,39 @@ class TestCustomerSchema:
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
-        assert str(deserialized_data['tac_code_peek']) == (  # TacID
+        assert str(deserialized_data[(  # TacID
+            'tac_code_peek')]) == (
             str(self.sample_data['tac_code_peek']))
 # endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
         new_customer = Customer(**deserialized_data)
         assert isinstance(new_customer, Customer)
-    def test_to_json(self, customer: Customer):
+    def test_to_json(
+        self,
+        customer: Customer
+    ):
         """
-        Test the conversion of a Customer instance to JSON.
+        Test the conversion of a
+        Customer instance to JSON.
         Args:
-            customer (Customer): The Customer instance to convert.
+            customer (Customer): The
+            Customer instance to convert.
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
-        # Convert the Customer instance to JSON using the schema
+        # Convert the Customer instance
+        # to JSON using the schema
         customer_schema = CustomerSchema()
-        customer_dict = customer_schema.dump(customer)
+        customer_dict = customer_schema.dump(
+            customer)
         # Convert the customer_dict to JSON string
-        customer_json = json.dumps(customer_dict)
+        customer_json = json.dumps(
+            customer_dict)
         # Convert the JSON strings back to dictionaries
-        customer_dict_from_json = json.loads(customer_json)
+        customer_dict_from_json = json.loads(
+            customer_json)
         # sample_dict_from_json = json.loads(self.sample_data)
         logging.info(
             "customer_dict_from_json.keys() %s",
@@ -425,7 +472,8 @@ class TestCustomerSchema:
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(customer_dict_from_json.keys())}"
         )
-        assert customer_dict_from_json['code'] == str(customer.code), (
+        assert customer_dict_from_json['code'] == \
+            str(customer.code), (
             "failed on code"
         )
         assert customer_dict_from_json['last_change_code'] == (
@@ -543,7 +591,8 @@ class TestCustomerSchema:
             "failed on last_update_utc_date_time"
         )
 # endset
-        assert customer_dict_from_json['tac_code_peek'] == (  # TacID
+        assert customer_dict_from_json[(  # TacID
+            'tac_code_peek')] == (
             str(customer.tac_code_peek)), (
             "failed on tac_code_peek"
         )

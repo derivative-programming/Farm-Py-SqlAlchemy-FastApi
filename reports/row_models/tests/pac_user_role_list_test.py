@@ -1,6 +1,7 @@
 # reports/row_models/tests/pac_user_role_list_test.py
 """
-This module contains unit tests for the `ReportItemPacUserRoleList` class.
+This module contains unit tests for the
+`ReportItemPacUserRoleList` class.
 The `ReportItemPacUserRoleList` class represents a
 report item for a pac Pac User Role List Report.
 It contains various fields with default values and

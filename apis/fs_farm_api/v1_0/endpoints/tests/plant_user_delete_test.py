@@ -41,10 +41,12 @@ async def test_submit_success(overridden_get_db):
     1. Create a mock process_request function.
     2. Patch the `process_request` method of
         `PlantUserDeletePostModelResponse` with the mock function.
-    3. Create a plant using the `PlantFactory`.
+    3. Create a plant using the
+        `PlantFactory`.
     4. Generate an API key for the plant.
     5. Send a POST request to the `plant-user-delete`
-        endpoint with the plant code and API key.
+        endpoint with the plant
+        code and API key.
     6. Assert that the response status code is 200 and
         the 'success' field in the response JSON is False.
     7. Assert that the `process_request` method was called.
@@ -73,7 +75,8 @@ async def test_submit_success(overridden_get_db):
             overridden_get_db
         )
         plant_code = plant.code
-        api_dict = {'PlantCode': str(plant_code)}
+        api_dict = {'PlantCode': str(
+            plant_code)}
         test_api_key = ApiToken.create_token(api_dict, 1)
         async with AsyncClient(
             app=app, base_url=test_constants.TEST_DOMAIN
@@ -100,10 +103,13 @@ async def test_submit_request_validation_error(overridden_get_db):
     incorrect data results in a validation error.
 
     Steps:
-    1. Create a plant using the `PlantFactory`.
+    1. Create a plant using the
+        `PlantFactory`.
     2. Generate an API key for the plant.
-    3. Send a POST request to the `plant-user-delete`
-    endpoint with the plant code, invalid data, and API key.
+    3. Send a POST request to the
+        `plant-user-delete`
+        endpoint with the plant code,
+        invalid data, and API key.
     4. Assert that the response status code is 400 (validation error).
 
     Args:
@@ -112,9 +118,11 @@ async def test_submit_request_validation_error(overridden_get_db):
     Returns:
         None
     """
-    plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
+    plant = await model_factorys.PlantFactory.create_async(
+        overridden_get_db)
     plant_code = plant.code
-    api_dict = {'PlantCode': str(plant_code)}
+    api_dict = {'PlantCode': str(
+        plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -142,7 +150,8 @@ async def test_submit_authorization_failure_bad_api_key(
     request with a bad API key for authorization failure.
 
     Steps:
-    1. Create a plant using the PlantFactory.
+    1. Create a plant using the
+        PlantFactory.
     2. Get the plant code.
     3. Send a POST request to the
         '/api/v1_0/plant-user-delete/{plant_code}'
@@ -154,7 +163,8 @@ async def test_submit_authorization_failure_bad_api_key(
     the expected response status code is 200.
     Otherwise, the expected response status code is 401.
     """
-    plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
+    plant = await model_factorys.PlantFactory.create_async(
+        overridden_get_db)
     plant_code = plant.code
 
     async with AsyncClient(
@@ -194,7 +204,8 @@ async def test_submit_authorization_failure_empty_header_key(
         None
     """
 
-    plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
+    plant = await model_factorys.PlantFactory.create_async(
+        overridden_get_db)
     plant_code = plant.code
 
     async with AsyncClient(
@@ -233,7 +244,8 @@ async def test_submit_authorization_failure_no_header(
     Returns:
         None
     """
-    plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
+    plant = await model_factorys.PlantFactory.create_async(
+        overridden_get_db)
     plant_code = plant.code
 
     async with AsyncClient(
@@ -269,9 +281,11 @@ async def test_submit_endpoint_url_failure(
     Returns:
         None
     """
-    plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
+    plant = await model_factorys.PlantFactory.create_async(
+        overridden_get_db)
     plant_code = plant.code
-    api_dict = {'PlantCode': str(plant_code)}
+    api_dict = {'PlantCode': str(
+        plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -291,14 +305,17 @@ async def test_submit_endpoint_invalid_code_failure(
     overridden_get_db: AsyncSession
 ):
     """
-    Test case for the submit endpoint when an invalid plant code is provided.
-    This test case verifies that when an invalid plant code is provided,
+    Test case for the submit endpoint when an invalid
+    plant code is provided.
+    This test case verifies that when an invalid
+    plant code is provided,
     the API returns a failure response with a status code of 200 and
     the 'success' field in the response JSON is set to False.
     """
 
     plant_code = uuid.UUID(int=0)
-    api_dict = {'PlantCode': str(plant_code)}
+    api_dict = {'PlantCode': str(
+        plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -323,7 +340,8 @@ async def test_submit_endpoint_method_failure(
 
     This test case checks the behavior of the submit
     endpoint method when it fails to delete a plant user.
-    It creates a plant using the PlantFactory, generates
+    It creates a plant using the
+    PlantFactory, generates
     an API token, and sends a GET request to the
     '/api/v1_0/plant-user-delete/{plant_code}' endpoint
     with the API key in the headers. The expected
@@ -339,9 +357,11 @@ async def test_submit_endpoint_method_failure(
         AssertionError: If the response status code is not 405.
 
     """
-    plant = await model_factorys.PlantFactory.create_async(overridden_get_db)
+    plant = await model_factorys.PlantFactory.create_async(
+        overridden_get_db)
     plant_code = plant.code
-    api_dict = {'PlantCode': str(plant_code)}
+    api_dict = {'PlantCode': str(
+        plant_code)}
     test_api_key = ApiToken.create_token(api_dict, 1)
     async with AsyncClient(
         app=app, base_url=test_constants.TEST_DOMAIN
@@ -361,7 +381,8 @@ def teardown_module(module):  # pylint: disable=unused-argument
     """
     Teardown function for the module.
 
-    This function is called after all the tests in the module have been executed.
+    This function is called after all the tests
+    in the module have been executed.
     It clears the dependency overrides in the app.
 
     Args:

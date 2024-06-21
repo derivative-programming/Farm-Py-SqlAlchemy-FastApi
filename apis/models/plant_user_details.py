@@ -1,10 +1,13 @@
 # apis/models/plant_user_details.py
 """
-This module contains the models for the Plant User Details API.
+This module contains the models for the
+Plant User Details API.
 - PlantUserDetailsGetModelRequest: Represents the
-    request model for getting the plant Plant Details.
+    request model for getting the
+    plant Plant Details.
 - PlantUserDetailsGetModelResponseItem: Represents the
-    response model item for the plant Plant Details.
+    response model item for the
+    plant Plant Details.
 """
 import json
 import logging
@@ -24,7 +27,8 @@ from reports.report_request_validation_error import \
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 class PlantUserDetailsGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the plant Plant Details.
+    Represents the request model for getting the
+    plant Plant Details.
     """
     page_number: int = Field(
         default=0,
@@ -45,7 +49,8 @@ class PlantUserDetailsGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-        Configuration class for the PlantUserDetails model.
+        Configuration class for the
+        PlantUserDetails model.
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -81,7 +86,8 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class PlantUserDetailsGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the plant Plant Details.
+    Represents the response model item for the
+    plant Plant Details.
     """
     flavor_name: str = Field(
         default="",
@@ -220,9 +226,11 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemPlantUserDetails:
         """
-        Builds a ReportItemPlantUserDetails object from the response model item.
+        Builds a ReportItemPlantUserDetails object
+        from the response model item.
         Returns:
-            ReportItemPlantUserDetails: The built ReportItemPlantUserDetails object.
+            ReportItemPlantUserDetails: The built
+            ReportItemPlantUserDetails object.
         """
         data = ReportItemPlantUserDetails()
         data.flavor_name = (
@@ -275,7 +283,8 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
 # endset
 class PlantUserDetailsGetModelResponse(ListModel):
     """
-    Represents the response model for the PlantUserDetailsGetModel API.
+    Represents the response model for the
+    PlantUserDetailsGetModel API.
     Attributes:
         request (PlantUserDetailsGetModelRequest):
             The request model for the API.

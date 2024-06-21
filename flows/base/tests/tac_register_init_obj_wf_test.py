@@ -23,7 +23,8 @@ class TestBaseFlowTacRegisterInitObjWF():
         Test case for the _process_validation_rules method
         of the BaseFlowTacRegisterInitObjWF class.
         This method tests the validation rules for the request
-        parameters of the tac  flow.
+        parameters of the
+        tac  flow.
         Args:
             session: The session object for the test.
         Returns:

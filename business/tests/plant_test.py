@@ -47,11 +47,12 @@ class TestPlantBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_plant(self, session):
         """
-        Fixture that returns a new instance of the Plant class.
+        Fixture that returns a new instance of
+        the Plant class.
         """
-        # Use the PlantFactory to create a new plant instance
-        # Assuming PlantFactory.create() is an async function
-        return await PlantFactory.create_async(session)
+
+        return await PlantFactory.create_async(
+            session)
 
     @pytest.mark.asyncio
     async def test_create_plant(
@@ -66,9 +67,11 @@ class TestPlantBusObj:
         assert plant_bus_obj.plant_id == 0
 
         # assert isinstance(plant_bus_obj.plant_id, int)
-        assert isinstance(plant_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            plant_bus_obj.code, uuid.UUID)
 
-        assert isinstance(plant_bus_obj.last_change_code, int)
+        assert isinstance(
+            plant_bus_obj.last_change_code, int)
 
         assert plant_bus_obj.insert_user_id == uuid.UUID(int=0)
 
@@ -103,12 +106,15 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-        Test case for loading data from a plant object instance.
+        Test case for loading data from a
+        plant object instance.
         """
 
-        await plant_bus_obj.load_from_obj_instance(new_plant)
+        await plant_bus_obj.load_from_obj_instance(
+            new_plant)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
+        assert plant_manager.is_equal(
+            plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_id(
@@ -118,14 +124,17 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-        Test case for loading data from a plant ID.
+        Test case for loading data from a
+        plant ID.
         """
 
         new_plant_plant_id = new_plant.plant_id
 
-        await plant_bus_obj.load_from_id(new_plant_plant_id)
+        await plant_bus_obj.load_from_id(
+            new_plant_plant_id)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
+        assert plant_manager.is_equal(
+            plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_code(
@@ -135,12 +144,15 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-        Test case for loading data from a plant code.
+        Test case for loading data from a
+        plant code.
         """
 
-        await plant_bus_obj.load_from_code(new_plant.code)
+        await plant_bus_obj.load_from_code(
+            new_plant.code)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
+        assert plant_manager.is_equal(
+            plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_json(
@@ -150,14 +162,17 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-        Test case for loading data from a plant JSON.
+        Test case for loading data from a
+        plant JSON.
         """
 
         plant_json = plant_manager.to_json(new_plant)
 
-        await plant_bus_obj.load_from_json(plant_json)
+        await plant_bus_obj.load_from_json(
+            plant_json)
 
-        assert plant_manager.is_equal(plant_bus_obj.plant, new_plant) is True
+        assert plant_manager.is_equal(
+            plant_bus_obj.plant, new_plant) is True
 
     @pytest.mark.asyncio
     async def test_load_with_plant_dict(
@@ -167,7 +182,8 @@ class TestPlantBusObj:
         new_plant: Plant
     ):
         """
-        Test case for loading data from a plant dictionary.
+        Test case for loading data from a
+        plant dictionary.
         """
 
         logger.info("test_load_with_plant_dict 1")
@@ -176,7 +192,8 @@ class TestPlantBusObj:
 
         logger.info(plant_dict)
 
-        await plant_bus_obj.load_from_dict(plant_dict)
+        await plant_bus_obj.load_from_dict(
+            plant_dict)
 
         assert plant_manager.is_equal(
             plant_bus_obj.plant,
@@ -190,7 +207,8 @@ class TestPlantBusObj:
         """
         Test case for retrieving a nonexistent plant.
         """
-        # Test retrieving a nonexistent plant raises an exception
+        # Test retrieving a nonexistent
+        # plant raises an exception
         await plant_bus_obj.load_from_id(-1)
 
         # Assuming -1 is an id that wouldn't exist
@@ -210,13 +228,15 @@ class TestPlantBusObj:
 
         new_plant_plant_id_value = new_plant.plant_id
 
-        new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)
+        new_plant = await plant_manager.get_by_id(
+            new_plant_plant_id_value)
 
         assert isinstance(new_plant, Plant)
 
         new_code = uuid.uuid4()
 
-        await plant_bus_obj.load_from_obj_instance(new_plant)
+        await plant_bus_obj.load_from_obj_instance(
+            new_plant)
 
         plant_bus_obj.code = new_code
 
@@ -224,7 +244,8 @@ class TestPlantBusObj:
 
         new_plant_plant_id_value = new_plant.plant_id
 
-        new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)
+        new_plant = await plant_manager.get_by_id(
+            new_plant_plant_id_value)
 
         assert plant_manager.is_equal(
             plant_bus_obj.plant,
@@ -247,7 +268,8 @@ class TestPlantBusObj:
 
         new_plant_plant_id_value = new_plant.plant_id
 
-        await plant_bus_obj.load_from_id(new_plant_plant_id_value)
+        await plant_bus_obj.load_from_id(
+            new_plant_plant_id_value)
 
         assert plant_bus_obj.plant_id is not None
 
@@ -255,7 +277,8 @@ class TestPlantBusObj:
 
         new_plant_plant_id_value = new_plant.plant_id
 
-        new_plant = await plant_manager.get_by_id(new_plant_plant_id_value)
+        new_plant = await plant_manager.get_by_id(
+            new_plant_plant_id_value)
 
         assert new_plant is None
 

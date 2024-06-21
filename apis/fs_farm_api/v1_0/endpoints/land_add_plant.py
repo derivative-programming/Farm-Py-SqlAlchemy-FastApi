@@ -102,16 +102,16 @@ class LandAddPlantRouter(BaseRouter):
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
-                response.message = str(te) + "  traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()
@@ -184,16 +184,16 @@ class LandAddPlantRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

@@ -1,7 +1,10 @@
 # flows/default/tac_register_init_obj_wf.py
 """
-This module contains the FlowTacRegisterInitObjWF class and related classes
-that handle the addition of a  to a specific tac in the flow process.
+This module contains the
+FlowTacRegisterInitObjWF class and related classes
+that handle the addition of a
+ to a specific
+tac in the flow process.
 """
 import uuid
 import json
@@ -14,7 +17,8 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacRegisterInitObjWFResult():
     """
-    Represents the result of the FlowTacRegisterInitObjWF process.
+    Represents the result of the
+    FlowTacRegisterInitObjWF process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
@@ -25,11 +29,13 @@ class FlowTacRegisterInitObjWFResult():
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowTacRegisterInitObjWFResult class.
+        Initializes a new instance of the
+        FlowTacRegisterInitObjWFResult class.
         """
     def to_json(self):
         """
-        Converts the FlowTacRegisterInitObjWFResult instance to a JSON string.
+        Converts the FlowTacRegisterInitObjWFResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -53,7 +59,8 @@ class FlowTacRegisterInitObjWFResult():
         return json.dumps(data)
 class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
     """
-    FlowTacRegisterInitObjWF handles the addition of a  to
+    FlowTacRegisterInitObjWF handles the addition of
+    a  to
     a specific tac in the flow process.
     This class extends the BaseFlowTacRegisterInitObjWF class and
     initializes it with the provided session context.
@@ -73,9 +80,11 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
 # endset  # noqa: E122
     ) -> FlowTacRegisterInitObjWFResult:
         """
-        Processes the addition of a  to a specific tac.
+        Processes the addition of a
+         to a specific tac.
         Returns:
-            FlowTacRegisterInitObjWFResult: The result of the FlowTacRegisterInitObjWF process.
+            FlowTacRegisterInitObjWFResult: The result of the
+                FlowTacRegisterInitObjWF process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

@@ -2,24 +2,38 @@
 # pylint: disable=redefined-outer-name
 
 """
-This module contains tests for the Plant serialization schema.
+This module contains tests for the
+Plant serialization schema.
 
-The Plant serialization schema is responsible for serializing and deserializing
-Plant instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
+The Plant serialization schema
+is responsible for serializing and deserializing
+Plant instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
 
-The tests in this module cover the serialization and deserialization of Plant
-instances using the PlantSchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+The tests in this module cover the serialization
+and deserialization of Plant
+instances using the PlantSchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a Plant instance.
 
-The PlantSchema class is used to define the serialization and deserialization
-rules for Plant instances. It specifies how each attribute of a Plant instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a Plant instance.
+The PlantSchema class is used to define
+the serialization and deserialization
+rules for Plant instances. It
+specifies how each attribute of a
+Plant instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a Plant
+instance.
 
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 
 """
@@ -41,15 +55,20 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def plant(session) -> Plant:
+def plant(
+    session
+) -> Plant:
     """
-    Fixture to create and return a Plant instance using the PlantFactory.
+    Fixture to create and return a Plant
+    instance using the
+    PlantFactory.
 
     Args:
         session: The database session.
 
     Returns:
-        Plant: A newly created Plant instance.
+        Plant: A newly created
+            Plant instance.
     """
 
     return PlantFactory.create(session=session)
@@ -57,10 +76,12 @@ def plant(session) -> Plant:
 
 class TestPlantSchema:
     """
-    Tests for the Plant serialization schema.
+    Tests for the Plant
+    serialization schema.
     """
 
-    # Sample data for a Plant instance
+    # Sample data for a Plant
+    # instance
     sample_data = {
         "plant_id": 1,
         "code":
@@ -107,9 +128,13 @@ class TestPlantSchema:
 # endset  # noqa: E122
     }
 
-    def test_plant_serialization(self, plant: Plant):
+    def test_plant_serialization(
+        self,
+        plant: Plant
+    ):
         """
-        Test the serialization of a Plant instance using
+        Test the serialization of a
+        Plant instance using
         PlantSchema.
 
         Args:
@@ -185,10 +210,13 @@ class TestPlantSchema:
 
     def test_plant_deserialization(self, plant):
         """
-        Test the deserialization of a Plant object using the PlantSchema.
+        Test the deserialization of a
+        Plant object using the
+        PlantSchema.
 
         Args:
-            plant (Plant): The Plant object to be deserialized.
+            plant (Plant): The
+                Plant object to be deserialized.
 
         Raises:
             AssertionError: If any of the assertions fail.
@@ -201,7 +229,8 @@ class TestPlantSchema:
         serialized_data = schema.dump(plant)
         deserialized_data = schema.load(serialized_data)
 
-        assert deserialized_data['code'] == plant.code
+        assert deserialized_data['code'] == \
+            plant.code
         assert deserialized_data['last_change_code'] == (
             plant.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -254,9 +283,11 @@ class TestPlantSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             plant.last_update_utc_date_time.isoformat())
 # endset
-        assert deserialized_data['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
+        assert deserialized_data[(  # FlvrForeignKeyID
+            'flvr_foreign_key_code_peek')] == (
             plant.flvr_foreign_key_code_peek)
-        assert deserialized_data['land_code_peek'] == (  # LandID
+        assert deserialized_data[(  # LandID
+            'land_code_peek')] == (
             plant.land_code_peek)
 # endset
 
@@ -264,11 +295,16 @@ class TestPlantSchema:
 
         assert isinstance(new_plant, Plant)
 
-        # Now compare the new_plant attributes with the plant attributes
-        assert new_plant.code == plant.code
-        assert new_plant.last_change_code == plant.last_change_code
-        assert new_plant.insert_user_id == plant.insert_user_id
-        assert new_plant.last_update_user_id == plant.last_update_user_id
+        # Now compare the new_plant attributes with
+        # the plant attributes
+        assert new_plant.code == \
+            plant.code
+        assert new_plant.last_change_code == \
+            plant.last_change_code
+        assert new_plant.insert_user_id == \
+            plant.insert_user_id
+        assert new_plant.last_update_user_id == \
+            plant.last_update_user_id
 # endset
 
         assert new_plant.is_delete_allowed == (
@@ -328,12 +364,14 @@ class TestPlantSchema:
         Test the `from_json` method of the PlantSchema class.
 
         This method tests the deserialization of
-        a JSON string to a Plant object.
+        a JSON string to a
+        Plant object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a Plant
         object. Finally, it asserts the
-        equality of the deserialized Plant object
+        equality of the deserialized
+        Plant object
         with the sample data.
 
         Returns:
@@ -403,9 +441,11 @@ class TestPlantSchema:
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
-        assert str(deserialized_data['flvr_foreign_key_code_peek']) == (  # FlvrForeignKeyID
+        assert str(deserialized_data[(  # FlvrForeignKeyID
+            'flvr_foreign_key_code_peek')]) == (
             str(self.sample_data['flvr_foreign_key_code_peek']))
-        assert str(deserialized_data['land_code_peek']) == (  # LandID
+        assert str(deserialized_data[(  # LandID
+            'land_code_peek')]) == (
             str(self.sample_data['land_code_peek']))
 # endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
@@ -415,27 +455,36 @@ class TestPlantSchema:
 
         assert isinstance(new_plant, Plant)
 
-    def test_to_json(self, plant: Plant):
+    def test_to_json(
+        self,
+        plant: Plant
+    ):
         """
-        Test the conversion of a Plant instance to JSON.
+        Test the conversion of a
+        Plant instance to JSON.
 
         Args:
-            plant (Plant): The Plant instance to convert.
+            plant (Plant): The
+            Plant instance to convert.
 
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
 
-        # Convert the Plant instance to JSON using the schema
+        # Convert the Plant instance
+        # to JSON using the schema
         plant_schema = PlantSchema()
-        plant_dict = plant_schema.dump(plant)
+        plant_dict = plant_schema.dump(
+            plant)
 
         # Convert the plant_dict to JSON string
-        plant_json = json.dumps(plant_dict)
+        plant_json = json.dumps(
+            plant_dict)
 
         # Convert the JSON strings back to dictionaries
-        plant_dict_from_json = json.loads(plant_json)
+        plant_dict_from_json = json.loads(
+            plant_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
@@ -451,7 +500,8 @@ class TestPlantSchema:
             f"Got: {set(plant_dict_from_json.keys())}"
         )
 
-        assert plant_dict_from_json['code'] == str(plant.code), (
+        assert plant_dict_from_json['code'] == \
+            str(plant.code), (
             "failed on code"
         )
         assert plant_dict_from_json['last_change_code'] == (
@@ -554,11 +604,13 @@ class TestPlantSchema:
             "failed on last_update_utc_date_time"
         )
 # endset
-        assert plant_dict_from_json['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
+        assert plant_dict_from_json[(  # FlvrForeignKeyID
+            'flvr_foreign_key_code_peek')] == (
             str(plant.flvr_foreign_key_code_peek)), (
             "failed on flvr_foreign_key_code_peek"
         )
-        assert plant_dict_from_json['land_code_peek'] == (  # LandID
+        assert plant_dict_from_json[(  # LandID
+            'land_code_peek')] == (
             str(plant.land_code_peek)), (
             "failed on land_code_peek"
         )

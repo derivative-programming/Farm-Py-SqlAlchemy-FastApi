@@ -1,14 +1,17 @@
 # models/serialization_schema/customer_role.py
 """
-This module contains the CustomerRoleSchema class, which is responsible
-for serializing and deserializing CustomerRole objects.
+This module contains the CustomerRoleSchema
+class, which is responsible
+for serializing and deserializing
+CustomerRole objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import CustomerRole
 class CustomerRoleSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing CustomerRole objects.
+    Schema class for serializing and deserializing
+    CustomerRole objects.
     """
     class Meta:
         """

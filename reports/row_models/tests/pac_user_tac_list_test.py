@@ -1,6 +1,7 @@
 # reports/row_models/tests/pac_user_tac_list_test.py
 """
-This module contains unit tests for the `ReportItemPacUserTacList` class.
+This module contains unit tests for the
+`ReportItemPacUserTacList` class.
 The `ReportItemPacUserTacList` class represents a
 report item for a pac Pac User Tac List Report.
 It contains various fields with default values and

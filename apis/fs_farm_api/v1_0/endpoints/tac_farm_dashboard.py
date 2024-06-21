@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_farm_dashboard.py
 """
-This module contains the implementation of the TacFarmDashboardRouter,
-which handles the API endpoints related to the Tac Farm Dashboard.
+This module contains the implementation of the
+TacFarmDashboardRouter,
+which handles the API endpoints related to the
+Tac Farm Dashboard.
 The TacFarmDashboardRouter provides the following endpoints:
     - GET /api/v1_0/tac-farm-dashboard/{tac_code}/init:
-        Get the initialization data for the Tac Farm Dashboard page.
+        Get the initialization data for the
+        Tac Farm Dashboard page.
     - GET /api/v1_0/tac-farm-dashboard/{tac_code}:
-        Get the Tac Farm Dashboard Report for a specific tac code.
+        Get the Tac Farm Dashboard Report
+        for a specific tac code.
     - GET /api/v1_0/tac-farm-dashboard/{tac_code}/to-csv:
-        Retrieve the Tac Farm Dashboard Report as a CSV file.
+        Retrieve the Tac Farm Dashboard
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class TacFarmDashboardRouterConfig():
     is_public: bool = False
 class TacFarmDashboardRouter(BaseRouter):
     """
-    Router class for the Tac Farm Dashboard API endpoints.
+    Router class for the
+    Tac Farm Dashboard
+    API endpoints.
     """
     router = APIRouter(tags=["TacFarmDashboard"])
 
@@ -59,14 +66,16 @@ class TacFarmDashboardRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the initialization data for the Tac Farm Dashboard page.
+        Get the initialization data for the
+        Tac Farm Dashboard page.
         Args:
             tac_code (uuid.UUID): The UUID of the tac.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
             TacFarmDashboardInitReportGetInitModelResponse:
-                The initialization data for the Tac Farm Dashboard page.
+                The initialization data for the
+                Tac Farm Dashboard page.
         """
         logging.info(
             'TacFarmDashboardRouter.request_get_init start. tacCode:%s',
@@ -134,7 +143,8 @@ class TacFarmDashboardRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the Tac Farm Dashboard Report for a specific tac code.
+        Get the Tac Farm Dashboard
+        Report for a specific tac code.
         Args:
             tac_code (uuid.UUID): The unique identifier for the tac.
             request_model (api_models.TacFarmDashboardGetModelRequest):
@@ -143,7 +153,8 @@ class TacFarmDashboardRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.TacFarmDashboardGetModelResponse: The response
-                model containing the Tac Farm Dashboard Report.
+                model containing the
+                Tac Farm Dashboard Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """
@@ -208,7 +219,8 @@ class TacFarmDashboardRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Retrieve the Tac Farm Dashboard Report as a CSV file.
+        Retrieve the Tac Farm Dashboard
+        Report as a CSV file.
         Args:
             tac_code (uuid.UUID): The unique identifier for the tac.
             request_model (api_models.TacFarmDashboardGetModelRequest):
@@ -216,7 +228,8 @@ class TacFarmDashboardRouter(BaseRouter):
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
-            FileResponse: The CSV file containing the Tac Farm Dashboard Report.
+            FileResponse: The CSV file containing the
+            Tac Farm Dashboard Report.
         """
         logging.info(
             "TacFarmDashboardRouter.request_get_with_id_to_csv"

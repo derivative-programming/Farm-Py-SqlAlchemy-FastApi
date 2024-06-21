@@ -1,7 +1,9 @@
 # models/factory/tri_state_filter.py
 """
-This module contains the TriStateFilterFactory class, which is responsible
-for creating instances of the TriStateFilter model using the Factory pattern.
+This module contains the TriStateFilterFactory
+class, which is responsible
+for creating instances of the TriStateFilter
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -13,7 +15,8 @@ from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class TriStateFilterFactory(factory.Factory):
     """
-    Factory class for creating instances of the TriStateFilter model.
+    Factory class for creating instances of
+    the TriStateFilter model.
     """
     class Meta:
         """
@@ -40,7 +43,8 @@ class TriStateFilterFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> TriStateFilter:
         """
-            Builds and returns an instance of the TriStateFilter model.
+            Builds and returns an instance
+            of the TriStateFilter model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -48,7 +52,8 @@ class TriStateFilterFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                TriStateFilter: An instance of the TriStateFilter model.
+                TriStateFilter: An instance of the
+                    TriStateFilter model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -73,14 +78,16 @@ class TriStateFilterFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> TriStateFilter:
         """
-        Create a new TriStateFilter object and save it to the database.
+        Create a new TriStateFilter object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            TriStateFilter: The created TriStateFilter object.
+            TriStateFilter: The created
+                TriStateFilter object.
         """
         logger.info("factory create")
         pac_id_pac_instance = (  # PacID
@@ -103,7 +110,8 @@ class TriStateFilterFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> TriStateFilter:
         """
-        Create a new TriStateFilter object asynchronously.
+        Create a new TriStateFilter object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -131,7 +139,8 @@ class TriStateFilterFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> TriStateFilter:
         """
-        Build a new TriStateFilter object asynchronously.
+        Build a new TriStateFilter object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.

@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_login.py
 """
-This module contains the implementation of the TacLoginRouter,
-which handles the API endpoints related to the Tac Login.
+This module contains the implementation of the
+TacLoginRouter,
+which handles the API endpoints related to the
+Tac Login.
 The TacLoginRouter provides the following endpoints:
     - GET /api/v1_0/tac-login/{tac_code}/init:
-        Get the initialization data for the Tac Login page.
+        Get the initialization data for the
+        Tac Login page.
     - GET /api/v1_0/tac-login/{tac_code}:
-        Get the Tac Login Report for a specific tac code.
+        Get the Tac Login Report
+        for a specific tac code.
     - GET /api/v1_0/tac-login/{tac_code}/to-csv:
-        Retrieve the Tac Login Report as a CSV file.
+        Retrieve the Tac Login
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class TacLoginRouterConfig():
     is_public: bool = True
 class TacLoginRouter(BaseRouter):
     """
-    Router class for the Tac Login API endpoints.
+    Router class for the
+    Tac Login
+    API endpoints.
     """
     router = APIRouter(tags=["TacLogin"])
 
@@ -59,14 +66,16 @@ class TacLoginRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the initialization data for the Tac Login page.
+        Get the initialization data for the
+        Tac Login page.
         Args:
             tac_code (uuid.UUID): The UUID of the tac.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
             TacLoginInitObjWFGetInitModelResponse:
-                The initialization data for the Tac Login page.
+                The initialization data for the
+                Tac Login page.
         """
         logging.info(
             'TacLoginRouter.request_get_init start. tacCode:%s',
@@ -175,16 +184,16 @@ class TacLoginRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

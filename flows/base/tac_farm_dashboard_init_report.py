@@ -1,7 +1,8 @@
 # flows/base/tac_farm_dashboard_init_report.py
 """
 This module contains the implementation
-of the BaseFlow Tac Farm Dashboard Init Report class
+of the BaseFlow
+Tac Farm Dashboard Init Report class
 """
 import uuid
 from datetime import date, datetime

@@ -1,6 +1,7 @@
 # reports/row_models/tests/pac_user_flavor_list_test.py
 """
-This module contains unit tests for the `ReportItemPacUserFlavorList` class.
+This module contains unit tests for the
+`ReportItemPacUserFlavorList` class.
 The `ReportItemPacUserFlavorList` class represents a
 report item for a pac Pac User Flavor List Report.
 It contains various fields with default values and

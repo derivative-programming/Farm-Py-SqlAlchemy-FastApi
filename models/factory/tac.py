@@ -1,7 +1,9 @@
 # models/factory/tac.py
 """
-This module contains the TacFactory class, which is responsible
-for creating instances of the Tac model using the Factory pattern.
+This module contains the TacFactory
+class, which is responsible
+for creating instances of the Tac
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -13,7 +15,8 @@ from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class TacFactory(factory.Factory):
     """
-    Factory class for creating instances of the Tac model.
+    Factory class for creating instances of
+    the Tac model.
     """
     class Meta:
         """
@@ -39,7 +42,8 @@ class TacFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> Tac:
         """
-            Builds and returns an instance of the Tac model.
+            Builds and returns an instance
+            of the Tac model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -47,7 +51,8 @@ class TacFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                Tac: An instance of the Tac model.
+                Tac: An instance of the
+                    Tac model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -72,14 +77,16 @@ class TacFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> Tac:
         """
-        Create a new Tac object and save it to the database.
+        Create a new Tac object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            Tac: The created Tac object.
+            Tac: The created
+                Tac object.
         """
         logger.info("factory create")
         pac_id_pac_instance = (  # PacID
@@ -102,7 +109,8 @@ class TacFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> Tac:
         """
-        Create a new Tac object asynchronously.
+        Create a new Tac object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -130,7 +138,8 @@ class TacFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> Tac:
         """
-        Build a new Tac object asynchronously.
+        Build a new Tac object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.

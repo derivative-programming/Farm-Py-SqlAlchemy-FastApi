@@ -1,7 +1,8 @@
 # flows/base/land_add_plant_init_obj_wf.py
 """
 This module contains the implementation
-of the BaseFlow Land Add Plant Init Obj WF class
+of the BaseFlow
+Land Add Plant Init Obj WF class
 """
 import uuid
 from datetime import date, datetime

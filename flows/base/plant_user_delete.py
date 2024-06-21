@@ -1,7 +1,8 @@
 # flows/base/plant_user_delete.py
 """
 This module contains the implementation
-of the BaseFlow Plant User Delete class
+of the BaseFlow
+Plant User Delete class
 """
 import uuid
 from datetime import date, datetime

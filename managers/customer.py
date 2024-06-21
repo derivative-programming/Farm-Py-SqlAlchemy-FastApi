@@ -1,8 +1,10 @@
 # models/managers/customer.py
 # pylint: disable=unused-import
 """
-This module contains the CustomerManager class, which is
-responsible for managing customers in the system.
+This module contains the
+CustomerManager class, which is
+responsible for managing
+customers in the system.
 """
 import json
 import logging
@@ -19,7 +21,8 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 class CustomerNotFoundError(Exception):
     """
-    Exception raised when a specified customer is not found.
+    Exception raised when a specified
+    customer is not found.
     Attributes:
         message (str): Explanation of the error.
     """
@@ -29,12 +32,16 @@ class CustomerNotFoundError(Exception):
 
 class CustomerManager:
     """
-    The CustomerManager class is responsible for managing customers in the system.
-    It provides methods for adding, updating, deleting, and retrieving customers.
+    The CustomerManager class
+    is responsible for managing
+    customers in the system.
+    It provides methods for adding, updating, deleting,
+    and retrieving customers.
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the CustomerManager class.
+        Initializes a new instance of the
+        CustomerManager class.
         Args:
             session_context (SessionContext): The session context object.
                 Must contain a valid session.
@@ -44,16 +51,6 @@ class CustomerManager:
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
-        """
-        Converts a UUID value to a model UUID.
-        Args:
-            value (uuid.UUID): The UUID value to convert.
-        Returns:
-            The converted UUID value.
-        """
-        # Conditionally set the UUID column type
-        return value
 
     async def initialize(self):
         """
@@ -63,35 +60,44 @@ class CustomerManager:
 
     async def build(self, **kwargs) -> Customer:
         """
-        Builds a new Customer object with the specified attributes.
+        Builds a new Customer
+        object with the specified attributes.
         Args:
-            **kwargs: The attributes of the customer.
+            **kwargs: The attributes of the
+                customer.
         Returns:
-            Customer: The newly created Customer object.
+            Customer: The newly created
+                Customer object.
         """
         logging.info("CustomerManager.build")
         return Customer(**kwargs)
-    async def add(self, customer: Customer) -> Customer:
+    async def add(
+        self,
+        customer: Customer
+    ) -> Customer:
         """
         Adds a new customer to the system.
         Args:
-            customer (Customer): The customer to add.
+            customer (Customer): The
+                customer to add.
         Returns:
-            Customer: The added customer.
+            Customer: The added
+                customer.
         """
         logging.info("CustomerManager.add")
-        customer.insert_user_id = self.convert_uuid_to_model_uuid(
-            self._session_context.customer_code)
-        customer.last_update_user_id = self.convert_uuid_to_model_uuid(
-            self._session_context.customer_code)
-        self._session_context.session.add(customer)
+        customer.insert_user_id = self._session_context.customer_code
+        customer.last_update_user_id = self._session_context.customer_code
+        self._session_context.session.add(
+            customer)
         await self._session_context.session.flush()
         return customer
     def _build_query(self):
         """
-        Builds the base query for retrieving customers.
+        Builds the base query for retrieving
+        customers.
         Returns:
-            The base query for retrieving customers.
+            The base query for retrieving
+            customers.
         """
         logging.info("CustomerManager._build_query")
         query = select(
@@ -106,13 +112,18 @@ class CustomerManager:
         )
 # endset
         return query
-    async def _run_query(self, query_filter) -> List[Customer]:
+    async def _run_query(
+        self,
+        query_filter
+    ) -> List[Customer]:
         """
-        Runs the query to retrieve customers from the database.
+        Runs the query to retrieve
+        customers from the database.
         Args:
             query_filter: The filter to apply to the query.
         Returns:
-            List[Customer]: The list of customers that match the query.
+            List[Customer]: The list of
+                customers that match the query.
         """
         logging.info("CustomerManager._run_query")
         customer_query_all = self._build_query()
@@ -144,10 +155,12 @@ class CustomerManager:
         Returns the first element of the list if it exists,
         otherwise returns None.
         Args:
-            customer_list (List[Customer]): The list to retrieve
+            customer_list (List[Customer]):
+                The list to retrieve
                 the first element from.
         Returns:
-            Optional[Customer]: The first element of the list
+            Optional[Customer]: The
+                first element of the list
                 if it exists, otherwise None.
         """
         return (
@@ -159,9 +172,11 @@ class CustomerManager:
         """
         Retrieves a customer by its ID.
         Args:
-            customer_id (int): The ID of the customer to retrieve.
+            customer_id (int): The ID of the
+                customer to retrieve.
         Returns:
-            Optional[Customer]: The retrieved customer, or None if not found.
+            Optional[Customer]: The retrieved
+                customer, or None if not found.
         """
         logging.info(
             "CustomerManager.get_by_id start customer_id: %s",
@@ -176,32 +191,40 @@ class CustomerManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Customer]:
         """
-        Retrieves a customer by its code.
+        Retrieves a customer
+        by its code.
         Args:
-            code (uuid.UUID): The code of the customer to retrieve.
+            code (uuid.UUID): The code of the
+                customer to retrieve.
         Returns:
-            Optional[Customer]: The retrieved customer, or None if not found.
+            Optional[Customer]: The retrieved
+                customer, or None if not found.
         """
         logging.info("CustomerManager.get_by_code %s", code)
         query_filter = Customer._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
-    async def update(self, customer: Customer, **kwargs) -> Optional[Customer]:
+    async def update(
+        self,
+        customer: Customer, **kwargs
+    ) -> Optional[Customer]:
         """
-        Updates a customer with the specified attributes.
+        Updates a customer with
+        the specified attributes.
         Args:
-            customer (Customer): The customer to update.
+            customer (Customer): The
+                customer to update.
             **kwargs: The attributes to update.
         Returns:
-            Optional[Customer]: The updated customer, or None if not found.
+            Optional[Customer]: The updated
+                customer, or None if not found.
         Raises:
             ValueError: If an invalid property is provided.
         """
         logging.info("CustomerManager.update")
         property_list = Customer.property_list()
         if customer:
-            customer.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            customer.last_update_user_id = self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -212,10 +235,13 @@ class CustomerManager:
         """
         Deletes a customer by its ID.
         Args:
-            customer_id (int): The ID of the customer to delete.
+            customer_id (int): The ID of the
+                customer to delete.
         Raises:
-            TypeError: If the customer_id is not an integer.
-            CustomerNotFoundError: If the customer with the
+            TypeError: If the customer_id
+                is not an integer.
+            CustomerNotFoundError: If the
+                customer with the
                 specified ID is not found.
         """
         logging.info("CustomerManager.delete %s", customer_id)
@@ -224,39 +250,55 @@ class CustomerManager:
                 f"The customer_id must be an integer, "
                 f"got {type(customer_id)} instead."
             )
-        customer = await self.get_by_id(customer_id)
+        customer = await self.get_by_id(
+            customer_id)
         if not customer:
             raise CustomerNotFoundError(f"Customer with ID {customer_id} not found!")
-        await self._session_context.session.delete(customer)
+        await self._session_context.session.delete(
+            customer)
         await self._session_context.session.flush()
-    async def get_list(self) -> List[Customer]:
+    async def get_list(
+        self
+    ) -> List[Customer]:
         """
         Retrieves a list of all customers.
         Returns:
-            List[Customer]: The list of customers.
+            List[Customer]: The list of
+                customers.
         """
         logging.info("CustomerManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, customer: Customer) -> str:
+    def to_json(
+            self,
+            customer: Customer) -> str:
         """
-        Serializes a Customer object to a JSON string.
+        Serializes a Customer object
+        to a JSON string.
         Args:
-            customer (Customer): The customer to serialize.
+            customer (Customer): The
+                customer to serialize.
         Returns:
-            str: The JSON string representation of the customer.
+            str: The JSON string representation of the
+                customer.
         """
         logging.info("CustomerManager.to_json")
         schema = CustomerSchema()
         customer_data = schema.dump(customer)
         return json.dumps(customer_data)
-    def to_dict(self, customer: Customer) -> Dict[str, Any]:
+    def to_dict(
+        self,
+        customer: Customer
+    ) -> Dict[str, Any]:
         """
-        Serializes a Customer object to a dictionary.
+        Serializes a Customer
+        object to a dictionary.
         Args:
-            customer (Customer): The customer to serialize.
+            customer (Customer): The
+                customer to serialize.
         Returns:
-            Dict[str, Any]: The dictionary representation of the customer.
+            Dict[str, Any]: The dictionary representation of the
+                customer.
         """
         logging.info("CustomerManager.to_dict")
         schema = CustomerSchema()
@@ -265,11 +307,13 @@ class CustomerManager:
         return customer_data
     def from_json(self, json_str: str) -> Customer:
         """
-        Deserializes a JSON string into a Customer object.
+        Deserializes a JSON string into a
+        Customer object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
-            Customer: The deserialized Customer object.
+            Customer: The deserialized
+                Customer object.
         """
         logging.info("CustomerManager.from_json")
         schema = CustomerSchema()
@@ -279,27 +323,40 @@ class CustomerManager:
         return new_customer
     def from_dict(self, customer_dict: Dict[str, Any]) -> Customer:
         """
-        Creates a Customer instance from a dictionary of attributes.
+        Creates a Customer
+        instance from a dictionary of attributes.
         Args:
             customer_dict (Dict[str, Any]): A dictionary
-                containing customer attributes.
+                containing customer
+                attributes.
         Returns:
-            Customer: A new Customer instance created from the given dictionary.
+            Customer: A new
+                Customer instance
+                created from the given
+                dictionary.
         """
         logging.info("CustomerManager.from_dict")
         # Deserialize the dictionary into a validated schema object
         schema = CustomerSchema()
-        customer_dict_converted = schema.load(customer_dict)
-        # Create a new Customer instance using the validated data
+        customer_dict_converted = schema.load(
+            customer_dict)
+        # Create a new Customer instance
+        # using the validated data
         new_customer = Customer(**customer_dict_converted)
         return new_customer
-    async def add_bulk(self, customers: List[Customer]) -> List[Customer]:
+    async def add_bulk(
+        self,
+        customers: List[Customer]
+    ) -> List[Customer]:
         """
-        Adds multiple customers to the system.
+        Adds multiple customers
+        to the system.
         Args:
-            customers (List[Customer]): The list of customers to add.
+            customers (List[Customer]): The list of
+                customers to add.
         Returns:
-            List[Customer]: The added customers.
+            List[Customer]: The added
+                customers.
         """
         logging.info("CustomerManager.add_bulk")
         for customer in customers:
@@ -307,12 +364,11 @@ class CustomerManager:
             code = customer.code
             if customer.customer_id is not None and customer.customer_id > 0:
                 raise ValueError(
-                    f"Customer is already added: {str(code)} {str(customer_id)}"
+                    "Customer is already added"
+                    f": {str(code)} {str(customer_id)}"
                 )
-            customer.insert_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
-            customer.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            customer.insert_user_id = self._session_context.customer_code
+            customer.last_update_user_id = self._session_context.customer_code
         self._session_context.session.add_all(customers)
         await self._session_context.session.flush()
         return customers
@@ -321,15 +377,19 @@ class CustomerManager:
         customer_updates: List[Dict[str, Any]]
     ) -> List[Customer]:
         """
-        Update multiple customers with the provided updates.
+        Update multiple customers
+        with the provided updates.
         Args:
             customer_updates (List[Dict[str, Any]]): A list of
-            dictionaries containing the updates for each customer.
+            dictionaries containing the updates for each
+            customer.
         Returns:
-            List[Customer]: A list of updated Customer objects.
+            List[Customer]: A list of updated
+                Customer objects.
         Raises:
             TypeError: If the customer_id is not an integer.
-            CustomerNotFoundError: If a customer with the
+            CustomerNotFoundError: If a
+                customer with the
                 provided customer_id is not found.
         """
         logging.info("CustomerManager.update_bulk start")
@@ -344,22 +404,23 @@ class CustomerManager:
             if not customer_id:
                 continue
             logging.info("CustomerManager.update_bulk customer_id:%s", customer_id)
-            customer = await self.get_by_id(customer_id)
+            customer = await self.get_by_id(
+                customer_id)
             if not customer:
                 raise CustomerNotFoundError(
                     f"Customer with ID {customer_id} not found!")
             for key, value in update.items():
                 if key != "customer_id":
                     setattr(customer, key, value)
-            customer.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            customer.last_update_user_id = self._session_context.customer_code
             updated_customers.append(customer)
         await self._session_context.session.flush()
         logging.info("CustomerManager.update_bulk end")
         return updated_customers
     async def delete_bulk(self, customer_ids: List[int]) -> bool:
         """
-        Delete multiple customers by their IDs.
+        Delete multiple customers
+        by their IDs.
         """
         logging.info("CustomerManager.delete_bulk")
         for customer_id in customer_ids:
@@ -368,49 +429,63 @@ class CustomerManager:
                     f"The customer_id must be an integer, "
                     f"got {type(customer_id)} instead."
                 )
-            customer = await self.get_by_id(customer_id)
+            customer = await self.get_by_id(
+                customer_id)
             if not customer:
                 raise CustomerNotFoundError(
                     f"Customer with ID {customer_id} not found!"
                 )
             if customer:
-                await self._session_context.session.delete(customer)
+                await self._session_context.session.delete(
+                    customer)
         await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         """
-        return the total number of customers.
+        return the total number of
+        customers.
         """
         logging.info("CustomerManager.count")
-        result = await self._session_context.session.execute(select(Customer))
-        return len(result.scalars().all())
+        result = await self._session_context.session.execute(
+            select(Customer))
+        return len(list(result.scalars().all()))
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(
-            self,
-            sort_by: str,
-            order: Optional[str] = "asc") -> List[Customer]:
+        self,
+        sort_by: str,
+        order: Optional[str] = "asc"
+    ) -> List[Customer]:
         """
-        Retrieve customers sorted by a particular attribute.
+        Retrieve customers
+        sorted by a particular attribute.
         """
         if sort_by == "customer_id":
             sort_by = "_customer_id"
         if order == "asc":
             result = await self._session_context.session.execute(
-                select(Customer).order_by(getattr(Customer, sort_by).asc()))
+                select(Customer).order_by(
+                    getattr(Customer, sort_by).asc()))
         else:
             result = await self._session_context.session.execute(
-                select(Customer).order_by(getattr(Customer, sort_by).desc()))
-        return result.scalars().all()
-    async def refresh(self, customer: Customer) -> Customer:
+                select(Customer).order_by(
+                    getattr(Customer, sort_by).desc()))
+        return list(result.scalars().all())
+    async def refresh(
+        self,
+        customer: Customer
+    ) -> Customer:
         """
-        Refresh the state of a given customer instance from the database.
+        Refresh the state of a given
+        customer instance
+        from the database.
         """
         logging.info("CustomerManager.refresh")
         await self._session_context.session.refresh(customer)
         return customer
     async def exists(self, customer_id: int) -> bool:
         """
-        Check if a customer with the given ID exists.
+        Check if a customer
+        with the given ID exists.
         """
         logging.info("CustomerManager.exists %s", customer_id)
         if not isinstance(customer_id, int):
@@ -418,40 +493,55 @@ class CustomerManager:
                 f"The customer_id must be an integer, "
                 f"got {type(customer_id)} instead."
             )
-        customer = await self.get_by_id(customer_id)
+        customer = await self.get_by_id(
+            customer_id)
         return bool(customer)
-    def is_equal(self, customer1: Customer, customer2: Customer) -> bool:
+    def is_equal(
+        self,
+        customer1: Customer,
+        customer2: Customer
+    ) -> bool:
         """
-        Check if two Customer objects are equal.
+        Check if two Customer
+        objects are equal.
         Args:
-            customer1 (Customer): The first Customer object.
-            customer2 (Customer): The second Customer object.
+            customer1 (Customer): The first
+                Customer object.
+            customer2 (Customer): The second
+                Customer object.
         Returns:
-            bool: True if the two Customer objects are equal, False otherwise.
+            bool: True if the two Customer
+                objects are equal, False otherwise.
         Raises:
-            TypeError: If either customer1 or customer2
-                is not provided or is not an instance of Customer.
+            TypeError: If either customer1
+                or customer2
+                is not provided or is not an instance of
+                Customer.
         """
         if not customer1:
             raise TypeError("Customer1 required.")
         if not customer2:
             raise TypeError("Customer2 required.")
         if not isinstance(customer1, Customer):
-            raise TypeError("The customer1 must be an Customer instance.")
+            raise TypeError("The customer1 must be an "
+                            "Customer instance.")
         if not isinstance(customer2, Customer):
-            raise TypeError("The customer2 must be an Customer instance.")
+            raise TypeError("The customer2 must be an "
+                            "Customer instance.")
         dict1 = self.to_dict(customer1)
         dict2 = self.to_dict(customer2)
         return dict1 == dict2
 # endset
     async def get_by_tac_id(self, tac_id: int) -> List[Customer]:  # TacID
         """
-        Retrieve a list of customers by tac ID.
+        Retrieve a list of customers by
+        tac ID.
         Args:
             tac_id (int): The ID of the tac.
         Returns:
-            List[Customer]: A list of customers associated
-            with the specified tac ID.
+            List[Customer]: A list of
+                customers associated
+                with the specified tac ID.
         """
         logging.info("CustomerManager.get_by_tac_id")
         if not isinstance(tac_id, int):

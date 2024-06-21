@@ -1,20 +1,34 @@
 # organization_test.py
 # pylint: disable=redefined-outer-name
 """
-This module contains tests for the Organization serialization schema.
-The Organization serialization schema is responsible for serializing and deserializing
-Organization instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
-The tests in this module cover the serialization and deserialization of Organization
-instances using the OrganizationSchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+This module contains tests for the
+Organization serialization schema.
+The Organization serialization schema
+is responsible for serializing and deserializing
+Organization instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
+The tests in this module cover the serialization
+and deserialization of Organization
+instances using the OrganizationSchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a Organization instance.
-The OrganizationSchema class is used to define the serialization and deserialization
-rules for Organization instances. It specifies how each attribute of a Organization instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a Organization instance.
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The OrganizationSchema class is used to define
+the serialization and deserialization
+rules for Organization instances. It
+specifies how each attribute of a
+Organization instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a Organization
+instance.
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 """
 import json
@@ -29,20 +43,27 @@ from models.serialization_schema import OrganizationSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def organization(session) -> Organization:
+def organization(
+    session
+) -> Organization:
     """
-    Fixture to create and return a Organization instance using the OrganizationFactory.
+    Fixture to create and return a Organization
+    instance using the
+    OrganizationFactory.
     Args:
         session: The database session.
     Returns:
-        Organization: A newly created Organization instance.
+        Organization: A newly created
+            Organization instance.
     """
     return OrganizationFactory.create(session=session)
 class TestOrganizationSchema:
     """
-    Tests for the Organization serialization schema.
+    Tests for the Organization
+    serialization schema.
     """
-    # Sample data for a Organization instance
+    # Sample data for a Organization
+    # instance
     sample_data = {
         "organization_id": 1,
         "code":
@@ -66,9 +87,13 @@ class TestOrganizationSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_organization_serialization(self, organization: Organization):
+    def test_organization_serialization(
+        self,
+        organization: Organization
+    ):
         """
-        Test the serialization of a Organization instance using
+        Test the serialization of a
+        Organization instance using
         OrganizationSchema.
         Args:
             organization (Organization):
@@ -101,9 +126,12 @@ class TestOrganizationSchema:
 # endset
     def test_organization_deserialization(self, organization):
         """
-        Test the deserialization of a Organization object using the OrganizationSchema.
+        Test the deserialization of a
+        Organization object using the
+        OrganizationSchema.
         Args:
-            organization (Organization): The Organization object to be deserialized.
+            organization (Organization): The
+                Organization object to be deserialized.
         Raises:
             AssertionError: If any of the assertions fail.
         Returns:
@@ -112,7 +140,8 @@ class TestOrganizationSchema:
         schema = OrganizationSchema()
         serialized_data = schema.dump(organization)
         deserialized_data = schema.load(serialized_data)
-        assert deserialized_data['code'] == organization.code
+        assert deserialized_data['code'] == \
+            organization.code
         assert deserialized_data['last_change_code'] == (
             organization.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -130,16 +159,22 @@ class TestOrganizationSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             organization.last_update_utc_date_time.isoformat())
 # endset
-        assert deserialized_data['tac_code_peek'] == (  # TacID
+        assert deserialized_data[(  # TacID
+            'tac_code_peek')] == (
             organization.tac_code_peek)
 # endset
         new_organization = Organization(**deserialized_data)
         assert isinstance(new_organization, Organization)
-        # Now compare the new_organization attributes with the organization attributes
-        assert new_organization.code == organization.code
-        assert new_organization.last_change_code == organization.last_change_code
-        assert new_organization.insert_user_id == organization.insert_user_id
-        assert new_organization.last_update_user_id == organization.last_update_user_id
+        # Now compare the new_organization attributes with
+        # the organization attributes
+        assert new_organization.code == \
+            organization.code
+        assert new_organization.last_change_code == \
+            organization.last_change_code
+        assert new_organization.insert_user_id == \
+            organization.insert_user_id
+        assert new_organization.last_update_user_id == \
+            organization.last_update_user_id
 # endset
         assert new_organization.name == (
             organization.name)
@@ -158,12 +193,14 @@ class TestOrganizationSchema:
         """
         Test the `from_json` method of the OrganizationSchema class.
         This method tests the deserialization of
-        a JSON string to a Organization object.
+        a JSON string to a
+        Organization object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a Organization
         object. Finally, it asserts the
-        equality of the deserialized Organization object
+        equality of the deserialized
+        Organization object
         with the sample data.
         Returns:
             None
@@ -193,29 +230,39 @@ class TestOrganizationSchema:
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
-        assert str(deserialized_data['tac_code_peek']) == (  # TacID
+        assert str(deserialized_data[(  # TacID
+            'tac_code_peek')]) == (
             str(self.sample_data['tac_code_peek']))
 # endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
         new_organization = Organization(**deserialized_data)
         assert isinstance(new_organization, Organization)
-    def test_to_json(self, organization: Organization):
+    def test_to_json(
+        self,
+        organization: Organization
+    ):
         """
-        Test the conversion of a Organization instance to JSON.
+        Test the conversion of a
+        Organization instance to JSON.
         Args:
-            organization (Organization): The Organization instance to convert.
+            organization (Organization): The
+            Organization instance to convert.
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
-        # Convert the Organization instance to JSON using the schema
+        # Convert the Organization instance
+        # to JSON using the schema
         organization_schema = OrganizationSchema()
-        organization_dict = organization_schema.dump(organization)
+        organization_dict = organization_schema.dump(
+            organization)
         # Convert the organization_dict to JSON string
-        organization_json = json.dumps(organization_dict)
+        organization_json = json.dumps(
+            organization_dict)
         # Convert the JSON strings back to dictionaries
-        organization_dict_from_json = json.loads(organization_json)
+        organization_dict_from_json = json.loads(
+            organization_json)
         # sample_dict_from_json = json.loads(self.sample_data)
         logging.info(
             "organization_dict_from_json.keys() %s",
@@ -227,7 +274,8 @@ class TestOrganizationSchema:
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(organization_dict_from_json.keys())}"
         )
-        assert organization_dict_from_json['code'] == str(organization.code), (
+        assert organization_dict_from_json['code'] == \
+            str(organization.code), (
             "failed on code"
         )
         assert organization_dict_from_json['last_change_code'] == (
@@ -261,7 +309,8 @@ class TestOrganizationSchema:
             "failed on last_update_utc_date_time"
         )
 # endset
-        assert organization_dict_from_json['tac_code_peek'] == (  # TacID
+        assert organization_dict_from_json[(  # TacID
+            'tac_code_peek')] == (
             str(organization.tac_code_peek)), (
             "failed on tac_code_peek"
         )

@@ -39,11 +39,11 @@ class TestPacBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_pac(self, session):
         """
-        Fixture that returns a new instance of the Pac class.
+        Fixture that returns a new instance of
+        the Pac class.
         """
-        # Use the PacFactory to create a new pac instance
-        # Assuming PacFactory.create() is an async function
-        return await PacFactory.create_async(session)
+        return await PacFactory.create_async(
+            session)
     @pytest.mark.asyncio
     async def test_create_pac(
         self,
@@ -55,8 +55,10 @@ class TestPacBusObj:
         # Test creating a new pac
         assert pac_bus_obj.pac_id == 0
         # assert isinstance(pac_bus_obj.pac_id, int)
-        assert isinstance(pac_bus_obj.code, uuid.UUID)
-        assert isinstance(pac_bus_obj.last_change_code, int)
+        assert isinstance(
+            pac_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            pac_bus_obj.last_change_code, int)
         assert pac_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert pac_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(pac_bus_obj.description, str)
@@ -72,10 +74,13 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-        Test case for loading data from a pac object instance.
+        Test case for loading data from a
+        pac object instance.
         """
-        await pac_bus_obj.load_from_obj_instance(new_pac)
-        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
+        await pac_bus_obj.load_from_obj_instance(
+            new_pac)
+        assert pac_manager.is_equal(
+            pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_id(
         self,
@@ -84,11 +89,14 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-        Test case for loading data from a pac ID.
+        Test case for loading data from a
+        pac ID.
         """
         new_pac_pac_id = new_pac.pac_id
-        await pac_bus_obj.load_from_id(new_pac_pac_id)
-        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
+        await pac_bus_obj.load_from_id(
+            new_pac_pac_id)
+        assert pac_manager.is_equal(
+            pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_code(
         self,
@@ -97,10 +105,13 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-        Test case for loading data from a pac code.
+        Test case for loading data from a
+        pac code.
         """
-        await pac_bus_obj.load_from_code(new_pac.code)
-        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
+        await pac_bus_obj.load_from_code(
+            new_pac.code)
+        assert pac_manager.is_equal(
+            pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_json(
         self,
@@ -109,11 +120,14 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-        Test case for loading data from a pac JSON.
+        Test case for loading data from a
+        pac JSON.
         """
         pac_json = pac_manager.to_json(new_pac)
-        await pac_bus_obj.load_from_json(pac_json)
-        assert pac_manager.is_equal(pac_bus_obj.pac, new_pac) is True
+        await pac_bus_obj.load_from_json(
+            pac_json)
+        assert pac_manager.is_equal(
+            pac_bus_obj.pac, new_pac) is True
     @pytest.mark.asyncio
     async def test_load_with_pac_dict(
         self,
@@ -122,12 +136,14 @@ class TestPacBusObj:
         new_pac: Pac
     ):
         """
-        Test case for loading data from a pac dictionary.
+        Test case for loading data from a
+        pac dictionary.
         """
         logger.info("test_load_with_pac_dict 1")
         pac_dict = pac_manager.to_dict(new_pac)
         logger.info(pac_dict)
-        await pac_bus_obj.load_from_dict(pac_dict)
+        await pac_bus_obj.load_from_dict(
+            pac_dict)
         assert pac_manager.is_equal(
             pac_bus_obj.pac,
             new_pac) is True
@@ -139,7 +155,8 @@ class TestPacBusObj:
         """
         Test case for retrieving a nonexistent pac.
         """
-        # Test retrieving a nonexistent pac raises an exception
+        # Test retrieving a nonexistent
+        # pac raises an exception
         await pac_bus_obj.load_from_id(-1)
         # Assuming -1 is an id that wouldn't exist
         assert pac_bus_obj.is_valid() is False
@@ -155,14 +172,17 @@ class TestPacBusObj:
         """
         # Test updating a pac's data
         new_pac_pac_id_value = new_pac.pac_id
-        new_pac = await pac_manager.get_by_id(new_pac_pac_id_value)
+        new_pac = await pac_manager.get_by_id(
+            new_pac_pac_id_value)
         assert isinstance(new_pac, Pac)
         new_code = uuid.uuid4()
-        await pac_bus_obj.load_from_obj_instance(new_pac)
+        await pac_bus_obj.load_from_obj_instance(
+            new_pac)
         pac_bus_obj.code = new_code
         await pac_bus_obj.save()
         new_pac_pac_id_value = new_pac.pac_id
-        new_pac = await pac_manager.get_by_id(new_pac_pac_id_value)
+        new_pac = await pac_manager.get_by_id(
+            new_pac_pac_id_value)
         assert pac_manager.is_equal(
             pac_bus_obj.pac,
             new_pac) is True
@@ -179,11 +199,13 @@ class TestPacBusObj:
         assert new_pac.pac_id is not None
         assert pac_bus_obj.pac_id == 0
         new_pac_pac_id_value = new_pac.pac_id
-        await pac_bus_obj.load_from_id(new_pac_pac_id_value)
+        await pac_bus_obj.load_from_id(
+            new_pac_pac_id_value)
         assert pac_bus_obj.pac_id is not None
         await pac_bus_obj.delete()
         new_pac_pac_id_value = new_pac.pac_id
-        new_pac = await pac_manager.get_by_id(new_pac_pac_id_value)
+        new_pac = await pac_manager.get_by_id(
+            new_pac_pac_id_value)
         assert new_pac is None
 
     @pytest.mark.asyncio

@@ -1,12 +1,15 @@
 # apis/models/land_plant_list.py
 
 """
-This module contains the models for the Land Plant List API.
+This module contains the models for the
+Land Plant List API.
 
 - LandPlantListGetModelRequest: Represents the
-    request model for getting the land plant list.
+    request model for getting the
+    land plant list.
 - LandPlantListGetModelResponseItem: Represents the
-    response model item for the land plant list.
+    response model item for the
+    land plant list.
 """
 
 import json
@@ -31,7 +34,8 @@ from reports.row_models.land_plant_list import ReportItemLandPlantList
 
 class LandPlantListGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the land plant list.
+    Represents the request model for getting the
+    land plant list.
 
     """
 
@@ -104,7 +108,8 @@ class LandPlantListGetModelRequest(CamelModel):
 
     class Config:
         """
-        Configuration class for the LandPlantList model.
+        Configuration class for the
+        LandPlantList model.
 
         Attributes:
             json_encoders (dict): A dictionary mapping data
@@ -147,7 +152,8 @@ class LandPlantListGetModelRequest(CamelModel):
 
 class LandPlantListGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the land plant list.
+    Represents the response model item for the
+    land plant list.
 
     """
 
@@ -293,10 +299,12 @@ class LandPlantListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemLandPlantList:
         """
-        Builds a ReportItemLandPlantList object from the response model item.
+        Builds a ReportItemLandPlantList object
+        from the response model item.
 
         Returns:
-            ReportItemLandPlantList: The built ReportItemLandPlantList object.
+            ReportItemLandPlantList: The built
+            ReportItemLandPlantList object.
         """
 
         data = ReportItemLandPlantList()
@@ -354,7 +362,8 @@ class LandPlantListGetModelResponseItem(CamelModel):
 
 class LandPlantListGetModelResponse(ListModel):
     """
-    Represents the response model for the LandPlantListGetModel API.
+    Represents the response model for the
+    LandPlantListGetModel API.
 
     Attributes:
         request (LandPlantListGetModelRequest):

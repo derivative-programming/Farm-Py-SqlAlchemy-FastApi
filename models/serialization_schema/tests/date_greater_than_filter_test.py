@@ -1,20 +1,34 @@
 # date_greater_than_filter_test.py
 # pylint: disable=redefined-outer-name
 """
-This module contains tests for the DateGreaterThanFilter serialization schema.
-The DateGreaterThanFilter serialization schema is responsible for serializing and deserializing
-DateGreaterThanFilter instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
-The tests in this module cover the serialization and deserialization of DateGreaterThanFilter
-instances using the DateGreaterThanFilterSchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+This module contains tests for the
+DateGreaterThanFilter serialization schema.
+The DateGreaterThanFilter serialization schema
+is responsible for serializing and deserializing
+DateGreaterThanFilter instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
+The tests in this module cover the serialization
+and deserialization of DateGreaterThanFilter
+instances using the DateGreaterThanFilterSchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a DateGreaterThanFilter instance.
-The DateGreaterThanFilterSchema class is used to define the serialization and deserialization
-rules for DateGreaterThanFilter instances. It specifies how each attribute of a DateGreaterThanFilter instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a DateGreaterThanFilter instance.
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The DateGreaterThanFilterSchema class is used to define
+the serialization and deserialization
+rules for DateGreaterThanFilter instances. It
+specifies how each attribute of a
+DateGreaterThanFilter instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a DateGreaterThanFilter
+instance.
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 """
 import json
@@ -29,20 +43,27 @@ from models.serialization_schema import DateGreaterThanFilterSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def date_greater_than_filter(session) -> DateGreaterThanFilter:
+def date_greater_than_filter(
+    session
+) -> DateGreaterThanFilter:
     """
-    Fixture to create and return a DateGreaterThanFilter instance using the DateGreaterThanFilterFactory.
+    Fixture to create and return a DateGreaterThanFilter
+    instance using the
+    DateGreaterThanFilterFactory.
     Args:
         session: The database session.
     Returns:
-        DateGreaterThanFilter: A newly created DateGreaterThanFilter instance.
+        DateGreaterThanFilter: A newly created
+            DateGreaterThanFilter instance.
     """
     return DateGreaterThanFilterFactory.create(session=session)
 class TestDateGreaterThanFilterSchema:
     """
-    Tests for the DateGreaterThanFilter serialization schema.
+    Tests for the DateGreaterThanFilter
+    serialization schema.
     """
-    # Sample data for a DateGreaterThanFilter instance
+    # Sample data for a DateGreaterThanFilter
+    # instance
     sample_data = {
         "date_greater_than_filter_id": 1,
         "code":
@@ -71,9 +92,13 @@ class TestDateGreaterThanFilterSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_date_greater_than_filter_serialization(self, date_greater_than_filter: DateGreaterThanFilter):
+    def test_date_greater_than_filter_serialization(
+        self,
+        date_greater_than_filter: DateGreaterThanFilter
+    ):
         """
-        Test the serialization of a DateGreaterThanFilter instance using
+        Test the serialization of a
+        DateGreaterThanFilter instance using
         DateGreaterThanFilterSchema.
         Args:
             date_greater_than_filter (DateGreaterThanFilter):
@@ -116,9 +141,12 @@ class TestDateGreaterThanFilterSchema:
 # endset
     def test_date_greater_than_filter_deserialization(self, date_greater_than_filter):
         """
-        Test the deserialization of a DateGreaterThanFilter object using the DateGreaterThanFilterSchema.
+        Test the deserialization of a
+        DateGreaterThanFilter object using the
+        DateGreaterThanFilterSchema.
         Args:
-            date_greater_than_filter (DateGreaterThanFilter): The DateGreaterThanFilter object to be deserialized.
+            date_greater_than_filter (DateGreaterThanFilter): The
+                DateGreaterThanFilter object to be deserialized.
         Raises:
             AssertionError: If any of the assertions fail.
         Returns:
@@ -127,7 +155,8 @@ class TestDateGreaterThanFilterSchema:
         schema = DateGreaterThanFilterSchema()
         serialized_data = schema.dump(date_greater_than_filter)
         deserialized_data = schema.load(serialized_data)
-        assert deserialized_data['code'] == date_greater_than_filter.code
+        assert deserialized_data['code'] == \
+            date_greater_than_filter.code
         assert deserialized_data['last_change_code'] == (
             date_greater_than_filter.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -155,16 +184,22 @@ class TestDateGreaterThanFilterSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             date_greater_than_filter.last_update_utc_date_time.isoformat())
 # endset
-        assert deserialized_data['pac_code_peek'] == (  # PacID
+        assert deserialized_data[(  # PacID
+            'pac_code_peek')] == (
             date_greater_than_filter.pac_code_peek)
 # endset
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
-        # Now compare the new_date_greater_than_filter attributes with the date_greater_than_filter attributes
-        assert new_date_greater_than_filter.code == date_greater_than_filter.code
-        assert new_date_greater_than_filter.last_change_code == date_greater_than_filter.last_change_code
-        assert new_date_greater_than_filter.insert_user_id == date_greater_than_filter.insert_user_id
-        assert new_date_greater_than_filter.last_update_user_id == date_greater_than_filter.last_update_user_id
+        # Now compare the new_date_greater_than_filter attributes with
+        # the date_greater_than_filter attributes
+        assert new_date_greater_than_filter.code == \
+            date_greater_than_filter.code
+        assert new_date_greater_than_filter.last_change_code == \
+            date_greater_than_filter.last_change_code
+        assert new_date_greater_than_filter.insert_user_id == \
+            date_greater_than_filter.insert_user_id
+        assert new_date_greater_than_filter.last_update_user_id == \
+            date_greater_than_filter.last_update_user_id
 # endset
         assert new_date_greater_than_filter.day_count == (
             date_greater_than_filter.day_count)
@@ -193,12 +228,14 @@ class TestDateGreaterThanFilterSchema:
         """
         Test the `from_json` method of the DateGreaterThanFilterSchema class.
         This method tests the deserialization of
-        a JSON string to a DateGreaterThanFilter object.
+        a JSON string to a
+        DateGreaterThanFilter object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a DateGreaterThanFilter
         object. Finally, it asserts the
-        equality of the deserialized DateGreaterThanFilter object
+        equality of the deserialized
+        DateGreaterThanFilter object
         with the sample data.
         Returns:
             None
@@ -238,29 +275,39 @@ class TestDateGreaterThanFilterSchema:
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
-        assert str(deserialized_data['pac_code_peek']) == (  # PacID
+        assert str(deserialized_data[(  # PacID
+            'pac_code_peek')]) == (
             str(self.sample_data['pac_code_peek']))
 # endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
         new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
-    def test_to_json(self, date_greater_than_filter: DateGreaterThanFilter):
+    def test_to_json(
+        self,
+        date_greater_than_filter: DateGreaterThanFilter
+    ):
         """
-        Test the conversion of a DateGreaterThanFilter instance to JSON.
+        Test the conversion of a
+        DateGreaterThanFilter instance to JSON.
         Args:
-            date_greater_than_filter (DateGreaterThanFilter): The DateGreaterThanFilter instance to convert.
+            date_greater_than_filter (DateGreaterThanFilter): The
+            DateGreaterThanFilter instance to convert.
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
-        # Convert the DateGreaterThanFilter instance to JSON using the schema
+        # Convert the DateGreaterThanFilter instance
+        # to JSON using the schema
         date_greater_than_filter_schema = DateGreaterThanFilterSchema()
-        date_greater_than_filter_dict = date_greater_than_filter_schema.dump(date_greater_than_filter)
+        date_greater_than_filter_dict = date_greater_than_filter_schema.dump(
+            date_greater_than_filter)
         # Convert the date_greater_than_filter_dict to JSON string
-        date_greater_than_filter_json = json.dumps(date_greater_than_filter_dict)
+        date_greater_than_filter_json = json.dumps(
+            date_greater_than_filter_dict)
         # Convert the JSON strings back to dictionaries
-        date_greater_than_filter_dict_from_json = json.loads(date_greater_than_filter_json)
+        date_greater_than_filter_dict_from_json = json.loads(
+            date_greater_than_filter_json)
         # sample_dict_from_json = json.loads(self.sample_data)
         logging.info(
             "date_greater_than_filter_dict_from_json.keys() %s",
@@ -272,7 +319,8 @@ class TestDateGreaterThanFilterSchema:
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(date_greater_than_filter_dict_from_json.keys())}"
         )
-        assert date_greater_than_filter_dict_from_json['code'] == str(date_greater_than_filter.code), (
+        assert date_greater_than_filter_dict_from_json['code'] == \
+            str(date_greater_than_filter.code), (
             "failed on code"
         )
         assert date_greater_than_filter_dict_from_json['last_change_code'] == (
@@ -326,7 +374,8 @@ class TestDateGreaterThanFilterSchema:
             "failed on last_update_utc_date_time"
         )
 # endset
-        assert date_greater_than_filter_dict_from_json['pac_code_peek'] == (  # PacID
+        assert date_greater_than_filter_dict_from_json[(  # PacID
+            'pac_code_peek')] == (
             str(date_greater_than_filter.pac_code_peek)), (
             "failed on pac_code_peek"
         )

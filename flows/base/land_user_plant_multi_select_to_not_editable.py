@@ -1,7 +1,8 @@
 # flows/base/land_user_plant_multi_select_to_not_editable.py
 """
 This module contains the implementation
-of the BaseFlow Land User Plant Multi Select To Not Editable class
+of the BaseFlow
+Land User Plant Multi Select To Not Editable class
 """
 import uuid
 from datetime import date, datetime

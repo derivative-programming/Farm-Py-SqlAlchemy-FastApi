@@ -1,14 +1,17 @@
 # models/serialization_schema/role.py
 """
-This module contains the RoleSchema class, which is responsible
-for serializing and deserializing Role objects.
+This module contains the RoleSchema
+class, which is responsible
+for serializing and deserializing
+Role objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Role
 class RoleSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing Role objects.
+    Schema class for serializing and deserializing
+    Role objects.
     """
     class Meta:
         """

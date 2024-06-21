@@ -1,7 +1,9 @@
 # models/factory/org_customer.py
 """
-This module contains the OrgCustomerFactory class, which is responsible
-for creating instances of the OrgCustomer model using the Factory pattern.
+This module contains the OrgCustomerFactory
+class, which is responsible
+for creating instances of the OrgCustomer
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -14,7 +16,8 @@ from .organization import OrganizationFactory  # organization_id
 logger = get_logger(__name__)
 class OrgCustomerFactory(factory.Factory):
     """
-    Factory class for creating instances of the OrgCustomer model.
+    Factory class for creating instances of
+    the OrgCustomer model.
     """
     class Meta:
         """
@@ -40,7 +43,8 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> OrgCustomer:
         """
-            Builds and returns an instance of the OrgCustomer model.
+            Builds and returns an instance
+            of the OrgCustomer model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -48,7 +52,8 @@ class OrgCustomerFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                OrgCustomer: An instance of the OrgCustomer model.
+                OrgCustomer: An instance of the
+                    OrgCustomer model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -83,14 +88,16 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> OrgCustomer:
         """
-        Create a new OrgCustomer object and save it to the database.
+        Create a new OrgCustomer object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            OrgCustomer: The created OrgCustomer object.
+            OrgCustomer: The created
+                OrgCustomer object.
         """
         logger.info("factory create")
         customer_id_customer_instance = (  # CustomerID
@@ -123,7 +130,8 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> OrgCustomer:
         """
-        Create a new OrgCustomer object asynchronously.
+        Create a new OrgCustomer object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -161,7 +169,8 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> OrgCustomer:
         """
-        Build a new OrgCustomer object asynchronously.
+        Build a new OrgCustomer object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.

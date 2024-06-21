@@ -1,10 +1,13 @@
 # apis/models/pac_user_flavor_list.py
 """
-This module contains the models for the Pac User Flavor List API.
+This module contains the models for the
+Pac User Flavor List API.
 - PacUserFlavorListGetModelRequest: Represents the
-    request model for getting the pac Pac User Flavor List Report.
+    request model for getting the
+    pac Pac User Flavor List Report.
 - PacUserFlavorListGetModelResponseItem: Represents the
-    response model item for the pac Pac User Flavor List Report.
+    response model item for the
+    pac Pac User Flavor List Report.
 """
 import json
 import logging
@@ -24,7 +27,8 @@ from reports.report_request_validation_error import \
 from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
 class PacUserFlavorListGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the pac Pac User Flavor List Report.
+    Represents the request model for getting the
+    pac Pac User Flavor List Report.
     """
     page_number: int = Field(
         default=0,
@@ -45,7 +49,8 @@ class PacUserFlavorListGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-        Configuration class for the PacUserFlavorList model.
+        Configuration class for the
+        PacUserFlavorList model.
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -81,7 +86,8 @@ class PacUserFlavorListGetModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserFlavorListGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the pac Pac User Flavor List Report.
+    Represents the response model item for the
+    pac Pac User Flavor List Report.
     """
     flavor_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -134,9 +140,11 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemPacUserFlavorList:
         """
-        Builds a ReportItemPacUserFlavorList object from the response model item.
+        Builds a ReportItemPacUserFlavorList object
+        from the response model item.
         Returns:
-            ReportItemPacUserFlavorList: The built ReportItemPacUserFlavorList object.
+            ReportItemPacUserFlavorList: The built
+            ReportItemPacUserFlavorList object.
         """
         data = ReportItemPacUserFlavorList()
         data.flavor_code = (
@@ -157,7 +165,8 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
 # endset
 class PacUserFlavorListGetModelResponse(ListModel):
     """
-    Represents the response model for the PacUserFlavorListGetModel API.
+    Represents the response model for the
+    PacUserFlavorListGetModel API.
     Attributes:
         request (PacUserFlavorListGetModelRequest):
             The request model for the API.

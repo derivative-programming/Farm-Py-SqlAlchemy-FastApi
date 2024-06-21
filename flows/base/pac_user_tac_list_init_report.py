@@ -1,7 +1,8 @@
 # flows/base/pac_user_tac_list_init_report.py
 """
 This module contains the implementation
-of the BaseFlow Pac User Tac List Init Report class
+of the BaseFlow
+Pac User Tac List Init Report class
 """
 import uuid
 from datetime import date, datetime

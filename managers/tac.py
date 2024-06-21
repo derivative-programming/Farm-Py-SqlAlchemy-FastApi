@@ -1,8 +1,10 @@
 # models/managers/tac.py
 # pylint: disable=unused-import
 """
-This module contains the TacManager class, which is
-responsible for managing tacs in the system.
+This module contains the
+TacManager class, which is
+responsible for managing
+tacs in the system.
 """
 import json
 import logging
@@ -19,7 +21,8 @@ from services.logging_config import get_logger
 logger = get_logger(__name__)
 class TacNotFoundError(Exception):
     """
-    Exception raised when a specified tac is not found.
+    Exception raised when a specified
+    tac is not found.
     Attributes:
         message (str): Explanation of the error.
     """
@@ -37,12 +40,16 @@ class TacEnum(Enum):
 
 class TacManager:
     """
-    The TacManager class is responsible for managing tacs in the system.
-    It provides methods for adding, updating, deleting, and retrieving tacs.
+    The TacManager class
+    is responsible for managing
+    tacs in the system.
+    It provides methods for adding, updating, deleting,
+    and retrieving tacs.
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the TacManager class.
+        Initializes a new instance of the
+        TacManager class.
         Args:
             session_context (SessionContext): The session context object.
                 Must contain a valid session.
@@ -52,16 +59,6 @@ class TacManager:
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-    def convert_uuid_to_model_uuid(self, value: uuid.UUID):
-        """
-        Converts a UUID value to a model UUID.
-        Args:
-            value (uuid.UUID): The UUID value to convert.
-        Returns:
-            The converted UUID value.
-        """
-        # Conditionally set the UUID column type
-        return value
 
     async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
@@ -127,35 +124,44 @@ class TacManager:
 
     async def build(self, **kwargs) -> Tac:
         """
-        Builds a new Tac object with the specified attributes.
+        Builds a new Tac
+        object with the specified attributes.
         Args:
-            **kwargs: The attributes of the tac.
+            **kwargs: The attributes of the
+                tac.
         Returns:
-            Tac: The newly created Tac object.
+            Tac: The newly created
+                Tac object.
         """
         logging.info("TacManager.build")
         return Tac(**kwargs)
-    async def add(self, tac: Tac) -> Tac:
+    async def add(
+        self,
+        tac: Tac
+    ) -> Tac:
         """
         Adds a new tac to the system.
         Args:
-            tac (Tac): The tac to add.
+            tac (Tac): The
+                tac to add.
         Returns:
-            Tac: The added tac.
+            Tac: The added
+                tac.
         """
         logging.info("TacManager.add")
-        tac.insert_user_id = self.convert_uuid_to_model_uuid(
-            self._session_context.customer_code)
-        tac.last_update_user_id = self.convert_uuid_to_model_uuid(
-            self._session_context.customer_code)
-        self._session_context.session.add(tac)
+        tac.insert_user_id = self._session_context.customer_code
+        tac.last_update_user_id = self._session_context.customer_code
+        self._session_context.session.add(
+            tac)
         await self._session_context.session.flush()
         return tac
     def _build_query(self):
         """
-        Builds the base query for retrieving tacs.
+        Builds the base query for retrieving
+        tacs.
         Returns:
-            The base query for retrieving tacs.
+            The base query for retrieving
+            tacs.
         """
         logging.info("TacManager._build_query")
         query = select(
@@ -170,13 +176,18 @@ class TacManager:
         )
 # endset
         return query
-    async def _run_query(self, query_filter) -> List[Tac]:
+    async def _run_query(
+        self,
+        query_filter
+    ) -> List[Tac]:
         """
-        Runs the query to retrieve tacs from the database.
+        Runs the query to retrieve
+        tacs from the database.
         Args:
             query_filter: The filter to apply to the query.
         Returns:
-            List[Tac]: The list of tacs that match the query.
+            List[Tac]: The list of
+                tacs that match the query.
         """
         logging.info("TacManager._run_query")
         tac_query_all = self._build_query()
@@ -208,10 +219,12 @@ class TacManager:
         Returns the first element of the list if it exists,
         otherwise returns None.
         Args:
-            tac_list (List[Tac]): The list to retrieve
+            tac_list (List[Tac]):
+                The list to retrieve
                 the first element from.
         Returns:
-            Optional[Tac]: The first element of the list
+            Optional[Tac]: The
+                first element of the list
                 if it exists, otherwise None.
         """
         return (
@@ -223,9 +236,11 @@ class TacManager:
         """
         Retrieves a tac by its ID.
         Args:
-            tac_id (int): The ID of the tac to retrieve.
+            tac_id (int): The ID of the
+                tac to retrieve.
         Returns:
-            Optional[Tac]: The retrieved tac, or None if not found.
+            Optional[Tac]: The retrieved
+                tac, or None if not found.
         """
         logging.info(
             "TacManager.get_by_id start tac_id: %s",
@@ -240,32 +255,40 @@ class TacManager:
         return self._first_or_none(query_results)
     async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
         """
-        Retrieves a tac by its code.
+        Retrieves a tac
+        by its code.
         Args:
-            code (uuid.UUID): The code of the tac to retrieve.
+            code (uuid.UUID): The code of the
+                tac to retrieve.
         Returns:
-            Optional[Tac]: The retrieved tac, or None if not found.
+            Optional[Tac]: The retrieved
+                tac, or None if not found.
         """
         logging.info("TacManager.get_by_code %s", code)
         query_filter = Tac._code == str(code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
-    async def update(self, tac: Tac, **kwargs) -> Optional[Tac]:
+    async def update(
+        self,
+        tac: Tac, **kwargs
+    ) -> Optional[Tac]:
         """
-        Updates a tac with the specified attributes.
+        Updates a tac with
+        the specified attributes.
         Args:
-            tac (Tac): The tac to update.
+            tac (Tac): The
+                tac to update.
             **kwargs: The attributes to update.
         Returns:
-            Optional[Tac]: The updated tac, or None if not found.
+            Optional[Tac]: The updated
+                tac, or None if not found.
         Raises:
             ValueError: If an invalid property is provided.
         """
         logging.info("TacManager.update")
         property_list = Tac.property_list()
         if tac:
-            tac.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            tac.last_update_user_id = self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -276,10 +299,13 @@ class TacManager:
         """
         Deletes a tac by its ID.
         Args:
-            tac_id (int): The ID of the tac to delete.
+            tac_id (int): The ID of the
+                tac to delete.
         Raises:
-            TypeError: If the tac_id is not an integer.
-            TacNotFoundError: If the tac with the
+            TypeError: If the tac_id
+                is not an integer.
+            TacNotFoundError: If the
+                tac with the
                 specified ID is not found.
         """
         logging.info("TacManager.delete %s", tac_id)
@@ -288,39 +314,55 @@ class TacManager:
                 f"The tac_id must be an integer, "
                 f"got {type(tac_id)} instead."
             )
-        tac = await self.get_by_id(tac_id)
+        tac = await self.get_by_id(
+            tac_id)
         if not tac:
             raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
-        await self._session_context.session.delete(tac)
+        await self._session_context.session.delete(
+            tac)
         await self._session_context.session.flush()
-    async def get_list(self) -> List[Tac]:
+    async def get_list(
+        self
+    ) -> List[Tac]:
         """
         Retrieves a list of all tacs.
         Returns:
-            List[Tac]: The list of tacs.
+            List[Tac]: The list of
+                tacs.
         """
         logging.info("TacManager.get_list")
         query_results = await self._run_query(None)
         return query_results
-    def to_json(self, tac: Tac) -> str:
+    def to_json(
+            self,
+            tac: Tac) -> str:
         """
-        Serializes a Tac object to a JSON string.
+        Serializes a Tac object
+        to a JSON string.
         Args:
-            tac (Tac): The tac to serialize.
+            tac (Tac): The
+                tac to serialize.
         Returns:
-            str: The JSON string representation of the tac.
+            str: The JSON string representation of the
+                tac.
         """
         logging.info("TacManager.to_json")
         schema = TacSchema()
         tac_data = schema.dump(tac)
         return json.dumps(tac_data)
-    def to_dict(self, tac: Tac) -> Dict[str, Any]:
+    def to_dict(
+        self,
+        tac: Tac
+    ) -> Dict[str, Any]:
         """
-        Serializes a Tac object to a dictionary.
+        Serializes a Tac
+        object to a dictionary.
         Args:
-            tac (Tac): The tac to serialize.
+            tac (Tac): The
+                tac to serialize.
         Returns:
-            Dict[str, Any]: The dictionary representation of the tac.
+            Dict[str, Any]: The dictionary representation of the
+                tac.
         """
         logging.info("TacManager.to_dict")
         schema = TacSchema()
@@ -329,11 +371,13 @@ class TacManager:
         return tac_data
     def from_json(self, json_str: str) -> Tac:
         """
-        Deserializes a JSON string into a Tac object.
+        Deserializes a JSON string into a
+        Tac object.
         Args:
             json_str (str): The JSON string to deserialize.
         Returns:
-            Tac: The deserialized Tac object.
+            Tac: The deserialized
+                Tac object.
         """
         logging.info("TacManager.from_json")
         schema = TacSchema()
@@ -343,27 +387,40 @@ class TacManager:
         return new_tac
     def from_dict(self, tac_dict: Dict[str, Any]) -> Tac:
         """
-        Creates a Tac instance from a dictionary of attributes.
+        Creates a Tac
+        instance from a dictionary of attributes.
         Args:
             tac_dict (Dict[str, Any]): A dictionary
-                containing tac attributes.
+                containing tac
+                attributes.
         Returns:
-            Tac: A new Tac instance created from the given dictionary.
+            Tac: A new
+                Tac instance
+                created from the given
+                dictionary.
         """
         logging.info("TacManager.from_dict")
         # Deserialize the dictionary into a validated schema object
         schema = TacSchema()
-        tac_dict_converted = schema.load(tac_dict)
-        # Create a new Tac instance using the validated data
+        tac_dict_converted = schema.load(
+            tac_dict)
+        # Create a new Tac instance
+        # using the validated data
         new_tac = Tac(**tac_dict_converted)
         return new_tac
-    async def add_bulk(self, tacs: List[Tac]) -> List[Tac]:
+    async def add_bulk(
+        self,
+        tacs: List[Tac]
+    ) -> List[Tac]:
         """
-        Adds multiple tacs to the system.
+        Adds multiple tacs
+        to the system.
         Args:
-            tacs (List[Tac]): The list of tacs to add.
+            tacs (List[Tac]): The list of
+                tacs to add.
         Returns:
-            List[Tac]: The added tacs.
+            List[Tac]: The added
+                tacs.
         """
         logging.info("TacManager.add_bulk")
         for tac in tacs:
@@ -371,12 +428,11 @@ class TacManager:
             code = tac.code
             if tac.tac_id is not None and tac.tac_id > 0:
                 raise ValueError(
-                    f"Tac is already added: {str(code)} {str(tac_id)}"
+                    "Tac is already added"
+                    f": {str(code)} {str(tac_id)}"
                 )
-            tac.insert_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
-            tac.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            tac.insert_user_id = self._session_context.customer_code
+            tac.last_update_user_id = self._session_context.customer_code
         self._session_context.session.add_all(tacs)
         await self._session_context.session.flush()
         return tacs
@@ -385,15 +441,19 @@ class TacManager:
         tac_updates: List[Dict[str, Any]]
     ) -> List[Tac]:
         """
-        Update multiple tacs with the provided updates.
+        Update multiple tacs
+        with the provided updates.
         Args:
             tac_updates (List[Dict[str, Any]]): A list of
-            dictionaries containing the updates for each tac.
+            dictionaries containing the updates for each
+            tac.
         Returns:
-            List[Tac]: A list of updated Tac objects.
+            List[Tac]: A list of updated
+                Tac objects.
         Raises:
             TypeError: If the tac_id is not an integer.
-            TacNotFoundError: If a tac with the
+            TacNotFoundError: If a
+                tac with the
                 provided tac_id is not found.
         """
         logging.info("TacManager.update_bulk start")
@@ -408,22 +468,23 @@ class TacManager:
             if not tac_id:
                 continue
             logging.info("TacManager.update_bulk tac_id:%s", tac_id)
-            tac = await self.get_by_id(tac_id)
+            tac = await self.get_by_id(
+                tac_id)
             if not tac:
                 raise TacNotFoundError(
                     f"Tac with ID {tac_id} not found!")
             for key, value in update.items():
                 if key != "tac_id":
                     setattr(tac, key, value)
-            tac.last_update_user_id = self.convert_uuid_to_model_uuid(
-                self._session_context.customer_code)
+            tac.last_update_user_id = self._session_context.customer_code
             updated_tacs.append(tac)
         await self._session_context.session.flush()
         logging.info("TacManager.update_bulk end")
         return updated_tacs
     async def delete_bulk(self, tac_ids: List[int]) -> bool:
         """
-        Delete multiple tacs by their IDs.
+        Delete multiple tacs
+        by their IDs.
         """
         logging.info("TacManager.delete_bulk")
         for tac_id in tac_ids:
@@ -432,49 +493,63 @@ class TacManager:
                     f"The tac_id must be an integer, "
                     f"got {type(tac_id)} instead."
                 )
-            tac = await self.get_by_id(tac_id)
+            tac = await self.get_by_id(
+                tac_id)
             if not tac:
                 raise TacNotFoundError(
                     f"Tac with ID {tac_id} not found!"
                 )
             if tac:
-                await self._session_context.session.delete(tac)
+                await self._session_context.session.delete(
+                    tac)
         await self._session_context.session.flush()
         return True
     async def count(self) -> int:
         """
-        return the total number of tacs.
+        return the total number of
+        tacs.
         """
         logging.info("TacManager.count")
-        result = await self._session_context.session.execute(select(Tac))
-        return len(result.scalars().all())
+        result = await self._session_context.session.execute(
+            select(Tac))
+        return len(list(result.scalars().all()))
     #TODO fix. needs to populate peek props. use getall and sort List
     async def get_sorted_list(
-            self,
-            sort_by: str,
-            order: Optional[str] = "asc") -> List[Tac]:
+        self,
+        sort_by: str,
+        order: Optional[str] = "asc"
+    ) -> List[Tac]:
         """
-        Retrieve tacs sorted by a particular attribute.
+        Retrieve tacs
+        sorted by a particular attribute.
         """
         if sort_by == "tac_id":
             sort_by = "_tac_id"
         if order == "asc":
             result = await self._session_context.session.execute(
-                select(Tac).order_by(getattr(Tac, sort_by).asc()))
+                select(Tac).order_by(
+                    getattr(Tac, sort_by).asc()))
         else:
             result = await self._session_context.session.execute(
-                select(Tac).order_by(getattr(Tac, sort_by).desc()))
-        return result.scalars().all()
-    async def refresh(self, tac: Tac) -> Tac:
+                select(Tac).order_by(
+                    getattr(Tac, sort_by).desc()))
+        return list(result.scalars().all())
+    async def refresh(
+        self,
+        tac: Tac
+    ) -> Tac:
         """
-        Refresh the state of a given tac instance from the database.
+        Refresh the state of a given
+        tac instance
+        from the database.
         """
         logging.info("TacManager.refresh")
         await self._session_context.session.refresh(tac)
         return tac
     async def exists(self, tac_id: int) -> bool:
         """
-        Check if a tac with the given ID exists.
+        Check if a tac
+        with the given ID exists.
         """
         logging.info("TacManager.exists %s", tac_id)
         if not isinstance(tac_id, int):
@@ -482,40 +557,55 @@ class TacManager:
                 f"The tac_id must be an integer, "
                 f"got {type(tac_id)} instead."
             )
-        tac = await self.get_by_id(tac_id)
+        tac = await self.get_by_id(
+            tac_id)
         return bool(tac)
-    def is_equal(self, tac1: Tac, tac2: Tac) -> bool:
+    def is_equal(
+        self,
+        tac1: Tac,
+        tac2: Tac
+    ) -> bool:
         """
-        Check if two Tac objects are equal.
+        Check if two Tac
+        objects are equal.
         Args:
-            tac1 (Tac): The first Tac object.
-            tac2 (Tac): The second Tac object.
+            tac1 (Tac): The first
+                Tac object.
+            tac2 (Tac): The second
+                Tac object.
         Returns:
-            bool: True if the two Tac objects are equal, False otherwise.
+            bool: True if the two Tac
+                objects are equal, False otherwise.
         Raises:
-            TypeError: If either tac1 or tac2
-                is not provided or is not an instance of Tac.
+            TypeError: If either tac1
+                or tac2
+                is not provided or is not an instance of
+                Tac.
         """
         if not tac1:
             raise TypeError("Tac1 required.")
         if not tac2:
             raise TypeError("Tac2 required.")
         if not isinstance(tac1, Tac):
-            raise TypeError("The tac1 must be an Tac instance.")
+            raise TypeError("The tac1 must be an "
+                            "Tac instance.")
         if not isinstance(tac2, Tac):
-            raise TypeError("The tac2 must be an Tac instance.")
+            raise TypeError("The tac2 must be an "
+                            "Tac instance.")
         dict1 = self.to_dict(tac1)
         dict2 = self.to_dict(tac2)
         return dict1 == dict2
 # endset
     async def get_by_pac_id(self, pac_id: int) -> List[Tac]:  # PacID
         """
-        Retrieve a list of tacs by pac ID.
+        Retrieve a list of tacs by
+        pac ID.
         Args:
             pac_id (int): The ID of the pac.
         Returns:
-            List[Tac]: A list of tacs associated
-            with the specified pac ID.
+            List[Tac]: A list of
+                tacs associated
+                with the specified pac ID.
         """
         logging.info("TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):

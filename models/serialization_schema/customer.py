@@ -1,14 +1,17 @@
 # models/serialization_schema/customer.py
 """
-This module contains the CustomerSchema class, which is responsible
-for serializing and deserializing Customer objects.
+This module contains the CustomerSchema
+class, which is responsible
+for serializing and deserializing
+Customer objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Customer
 class CustomerSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing Customer objects.
+    Schema class for serializing and deserializing
+    Customer objects.
     """
     class Meta:
         """

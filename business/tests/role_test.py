@@ -39,11 +39,11 @@ class TestRoleBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_role(self, session):
         """
-        Fixture that returns a new instance of the Role class.
+        Fixture that returns a new instance of
+        the Role class.
         """
-        # Use the RoleFactory to create a new role instance
-        # Assuming RoleFactory.create() is an async function
-        return await RoleFactory.create_async(session)
+        return await RoleFactory.create_async(
+            session)
     @pytest.mark.asyncio
     async def test_create_role(
         self,
@@ -55,8 +55,10 @@ class TestRoleBusObj:
         # Test creating a new role
         assert role_bus_obj.role_id == 0
         # assert isinstance(role_bus_obj.role_id, int)
-        assert isinstance(role_bus_obj.code, uuid.UUID)
-        assert isinstance(role_bus_obj.last_change_code, int)
+        assert isinstance(
+            role_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            role_bus_obj.last_change_code, int)
         assert role_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert role_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(role_bus_obj.description, str)
@@ -73,10 +75,13 @@ class TestRoleBusObj:
         new_role: Role
     ):
         """
-        Test case for loading data from a role object instance.
+        Test case for loading data from a
+        role object instance.
         """
-        await role_bus_obj.load_from_obj_instance(new_role)
-        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
+        await role_bus_obj.load_from_obj_instance(
+            new_role)
+        assert role_manager.is_equal(
+            role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_id(
         self,
@@ -85,11 +90,14 @@ class TestRoleBusObj:
         new_role: Role
     ):
         """
-        Test case for loading data from a role ID.
+        Test case for loading data from a
+        role ID.
         """
         new_role_role_id = new_role.role_id
-        await role_bus_obj.load_from_id(new_role_role_id)
-        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
+        await role_bus_obj.load_from_id(
+            new_role_role_id)
+        assert role_manager.is_equal(
+            role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_code(
         self,
@@ -98,10 +106,13 @@ class TestRoleBusObj:
         new_role: Role
     ):
         """
-        Test case for loading data from a role code.
+        Test case for loading data from a
+        role code.
         """
-        await role_bus_obj.load_from_code(new_role.code)
-        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
+        await role_bus_obj.load_from_code(
+            new_role.code)
+        assert role_manager.is_equal(
+            role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_json(
         self,
@@ -110,11 +121,14 @@ class TestRoleBusObj:
         new_role: Role
     ):
         """
-        Test case for loading data from a role JSON.
+        Test case for loading data from a
+        role JSON.
         """
         role_json = role_manager.to_json(new_role)
-        await role_bus_obj.load_from_json(role_json)
-        assert role_manager.is_equal(role_bus_obj.role, new_role) is True
+        await role_bus_obj.load_from_json(
+            role_json)
+        assert role_manager.is_equal(
+            role_bus_obj.role, new_role) is True
     @pytest.mark.asyncio
     async def test_load_with_role_dict(
         self,
@@ -123,12 +137,14 @@ class TestRoleBusObj:
         new_role: Role
     ):
         """
-        Test case for loading data from a role dictionary.
+        Test case for loading data from a
+        role dictionary.
         """
         logger.info("test_load_with_role_dict 1")
         role_dict = role_manager.to_dict(new_role)
         logger.info(role_dict)
-        await role_bus_obj.load_from_dict(role_dict)
+        await role_bus_obj.load_from_dict(
+            role_dict)
         assert role_manager.is_equal(
             role_bus_obj.role,
             new_role) is True
@@ -140,7 +156,8 @@ class TestRoleBusObj:
         """
         Test case for retrieving a nonexistent role.
         """
-        # Test retrieving a nonexistent role raises an exception
+        # Test retrieving a nonexistent
+        # role raises an exception
         await role_bus_obj.load_from_id(-1)
         # Assuming -1 is an id that wouldn't exist
         assert role_bus_obj.is_valid() is False
@@ -156,14 +173,17 @@ class TestRoleBusObj:
         """
         # Test updating a role's data
         new_role_role_id_value = new_role.role_id
-        new_role = await role_manager.get_by_id(new_role_role_id_value)
+        new_role = await role_manager.get_by_id(
+            new_role_role_id_value)
         assert isinstance(new_role, Role)
         new_code = uuid.uuid4()
-        await role_bus_obj.load_from_obj_instance(new_role)
+        await role_bus_obj.load_from_obj_instance(
+            new_role)
         role_bus_obj.code = new_code
         await role_bus_obj.save()
         new_role_role_id_value = new_role.role_id
-        new_role = await role_manager.get_by_id(new_role_role_id_value)
+        new_role = await role_manager.get_by_id(
+            new_role_role_id_value)
         assert role_manager.is_equal(
             role_bus_obj.role,
             new_role) is True
@@ -180,10 +200,12 @@ class TestRoleBusObj:
         assert new_role.role_id is not None
         assert role_bus_obj.role_id == 0
         new_role_role_id_value = new_role.role_id
-        await role_bus_obj.load_from_id(new_role_role_id_value)
+        await role_bus_obj.load_from_id(
+            new_role_role_id_value)
         assert role_bus_obj.role_id is not None
         await role_bus_obj.delete()
         new_role_role_id_value = new_role.role_id
-        new_role = await role_manager.get_by_id(new_role_role_id_value)
+        new_role = await role_manager.get_by_id(
+            new_role_role_id_value)
         assert new_role is None
 

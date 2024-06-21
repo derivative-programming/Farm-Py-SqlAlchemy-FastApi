@@ -47,10 +47,13 @@ class TestErrorLogManager:
             "code": uuid.uuid4()
         }
         # Call the build function of the manager
-        error_log = await error_log_manager.build(**mock_data)
+        error_log = await error_log_manager.build(
+            **mock_data)
         # Assert that the returned object is an instance of ErrorLog
-        assert isinstance(error_log, ErrorLog)
-        # Assert that the attributes of the error_log match our mock data
+        assert isinstance(
+            error_log, ErrorLog)
+        # Assert that the attributes of the
+        # error_log match our mock data
         assert error_log.code == mock_data["code"]
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
@@ -82,24 +85,30 @@ class TestErrorLogManager:
         `ErrorLogManager` that checks if a
         error_log is correctly added to the database.
         """
-        test_error_log = await ErrorLogFactory.build_async(session)
+        test_error_log = await ErrorLogFactory.build_async(
+            session)
         assert test_error_log.error_log_id == 0
-        # Add the error_log using the manager's add method
-        added_error_log = await error_log_manager.add(error_log=test_error_log)
+        # Add the error_log using the
+        # manager's add method
+        added_error_log = await error_log_manager.add(
+            error_log=test_error_log)
         assert isinstance(added_error_log, ErrorLog)
         assert str(added_error_log.insert_user_id) == (
             str(error_log_manager._session_context.customer_code))
         assert str(added_error_log.last_update_user_id) == (
             str(error_log_manager._session_context.customer_code))
         assert added_error_log.error_log_id > 0
-        # Fetch the error_log from the database directly
+        # Fetch the error_log from
+        # the database directly
         result = await session.execute(
             select(ErrorLog).filter(
                 ErrorLog._error_log_id == added_error_log.error_log_id  # type: ignore
             )
         )
         fetched_error_log = result.scalars().first()
-        # Assert that the fetched error_log is not None and matches the added error_log
+        # Assert that the fetched error_log
+        # is not None and matches the
+        # added error_log
         assert fetched_error_log is not None
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.error_log_id == added_error_log.error_log_id
@@ -114,22 +123,30 @@ class TestErrorLogManager:
         `ErrorLogManager` that checks if the
         correct error_log object is returned.
         """
-        # Create a test error_log using the ErrorLogFactory
+        # Create a test error_log
+        # using the ErrorLogFactory
         # without persisting it to the database
-        test_error_log = await ErrorLogFactory.build_async(session)
+        test_error_log = await ErrorLogFactory.build_async(
+            session)
         assert test_error_log.error_log_id == 0
         test_error_log.code = uuid.uuid4()
-        # Add the error_log using the manager's add method
-        added_error_log = await error_log_manager.add(error_log=test_error_log)
+        # Add the error_log using
+        # the manager's add method
+        added_error_log = await error_log_manager.add(
+            error_log=test_error_log)
         assert isinstance(added_error_log, ErrorLog)
         assert str(added_error_log.insert_user_id) == (
             str(error_log_manager._session_context.customer_code))
         assert str(added_error_log.last_update_user_id) == (
             str(error_log_manager._session_context.customer_code))
         assert added_error_log.error_log_id > 0
-        # Assert that the returned error_log matches the test error_log
-        assert added_error_log.error_log_id == test_error_log.error_log_id
-        assert added_error_log.code == test_error_log.code
+        # Assert that the returned
+        # error_log matches the
+        # test error_log
+        assert added_error_log.error_log_id == \
+            test_error_log.error_log_id
+        assert added_error_log.code == \
+            test_error_log.code
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
@@ -140,11 +157,16 @@ class TestErrorLogManager:
         Test case for the `get_by_id` method of
         `ErrorLogManager`.
         """
-        test_error_log = await ErrorLogFactory.create_async(session)
-        error_log = await error_log_manager.get_by_id(test_error_log.error_log_id)
-        assert isinstance(error_log, ErrorLog)
-        assert test_error_log.error_log_id == error_log.error_log_id
-        assert test_error_log.code == error_log.code
+        test_error_log = await ErrorLogFactory.create_async(
+            session)
+        error_log = await error_log_manager.get_by_id(
+            test_error_log.error_log_id)
+        assert isinstance(
+            error_log, ErrorLog)
+        assert test_error_log.error_log_id == \
+            error_log.error_log_id
+        assert test_error_log.code == \
+            error_log.code
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
@@ -152,10 +174,12 @@ class TestErrorLogManager:
     ):
         """
         Test case for the `get_by_id` method of
-        `ErrorLogManager` when the error_log is not found.
+        `ErrorLogManager` when the
+        error_log is not found.
         """
         non_existent_id = 9999  # An ID that's not in the database
-        retrieved_error_log = await error_log_manager.get_by_id(non_existent_id)
+        retrieved_error_log = await error_log_manager.get_by_id(
+            non_existent_id)
         assert retrieved_error_log is None
     @pytest.mark.asyncio
     async def test_get_by_code_returns_error_log(
@@ -165,14 +189,20 @@ class TestErrorLogManager:
     ):
         """
         Test case for the `get_by_code` method of
-        `ErrorLogManager` that checks if a error_log is
+        `ErrorLogManager` that checks if
+        a error_log is
         returned by its code.
         """
-        test_error_log = await ErrorLogFactory.create_async(session)
-        error_log = await error_log_manager.get_by_code(test_error_log.code)
-        assert isinstance(error_log, ErrorLog)
-        assert test_error_log.error_log_id == error_log.error_log_id
-        assert test_error_log.code == error_log.code
+        test_error_log = await ErrorLogFactory.create_async(
+            session)
+        error_log = await error_log_manager.get_by_code(
+            test_error_log.code)
+        assert isinstance(
+            error_log, ErrorLog)
+        assert test_error_log.error_log_id == \
+            error_log.error_log_id
+        assert test_error_log.code == \
+            error_log.code
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
@@ -185,7 +215,8 @@ class TestErrorLogManager:
         # Generate a random UUID that doesn't correspond to
         # any ErrorLog in the database
         random_code = uuid.uuid4()
-        error_log = await error_log_manager.get_by_code(random_code)
+        error_log = await error_log_manager.get_by_code(
+            random_code)
         assert error_log is None
     @pytest.mark.asyncio
     async def test_update(
@@ -194,26 +225,36 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `ErrorLogManager`
-        that checks if a error_log is correctly updated.
+        Test case for the `update` method
+        of `ErrorLogManager`
+        that checks if a error_log
+        is correctly updated.
         """
-        test_error_log = await ErrorLogFactory.create_async(session)
+        test_error_log = await ErrorLogFactory.create_async(
+            session)
         test_error_log.code = uuid.uuid4()
-        updated_error_log = await error_log_manager.update(error_log=test_error_log)
+        updated_error_log = await error_log_manager.update(
+            error_log=test_error_log)
         assert isinstance(updated_error_log, ErrorLog)
         assert str(updated_error_log.last_update_user_id) == str(
             error_log_manager._session_context.customer_code)
-        assert updated_error_log.error_log_id == test_error_log.error_log_id
-        assert updated_error_log.code == test_error_log.code
+        assert updated_error_log.error_log_id == \
+            test_error_log.error_log_id
+        assert updated_error_log.code == \
+            test_error_log.code
         result = await session.execute(
             select(ErrorLog).filter(
                 ErrorLog._error_log_id == test_error_log.error_log_id)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
-        assert updated_error_log.error_log_id == fetched_error_log.error_log_id
-        assert updated_error_log.code == fetched_error_log.code
-        assert test_error_log.error_log_id == fetched_error_log.error_log_id
-        assert test_error_log.code == fetched_error_log.code
+        assert updated_error_log.error_log_id == \
+            fetched_error_log.error_log_id
+        assert updated_error_log.code == \
+            fetched_error_log.code
+        assert test_error_log.error_log_id == \
+            fetched_error_log.error_log_id
+        assert test_error_log.code == \
+            fetched_error_log.code
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
@@ -221,10 +262,13 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `ErrorLogManager`
-        that checks if a error_log is correctly updated using a dictionary.
+        Test case for the `update` method
+        of `ErrorLogManager`
+        that checks if a error_log is
+        correctly updated using a dictionary.
         """
-        test_error_log = await ErrorLogFactory.create_async(session)
+        test_error_log = await ErrorLogFactory.create_async(
+            session)
         new_code = uuid.uuid4()
         updated_error_log = await error_log_manager.update(
             error_log=test_error_log,
@@ -234,17 +278,22 @@ class TestErrorLogManager:
         assert str(updated_error_log.last_update_user_id) == str(
             error_log_manager._session_context.customer_code
         )
-        assert updated_error_log.error_log_id == test_error_log.error_log_id
+        assert updated_error_log.error_log_id == \
+            test_error_log.error_log_id
         assert updated_error_log.code == new_code
         result = await session.execute(
             select(ErrorLog).filter(
                 ErrorLog._error_log_id == test_error_log.error_log_id)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
-        assert updated_error_log.error_log_id == fetched_error_log.error_log_id
-        assert updated_error_log.code == fetched_error_log.code
-        assert test_error_log.error_log_id == fetched_error_log.error_log_id
-        assert new_code == fetched_error_log.code
+        assert updated_error_log.error_log_id == \
+            fetched_error_log.error_log_id
+        assert updated_error_log.code == \
+            fetched_error_log.code
+        assert test_error_log.error_log_id == \
+            fetched_error_log.error_log_id
+        assert new_code == \
+            fetched_error_log.code
     @pytest.mark.asyncio
     async def test_update_invalid_error_log(
         self,
@@ -258,7 +307,8 @@ class TestErrorLogManager:
         error_log = None
         new_code = uuid.uuid4()
         updated_error_log = await (
-            error_log_manager.update(error_log, code=new_code))  # type: ignore
+            error_log_manager.update(
+                error_log, code=new_code))  # type: ignore
         # Assertions
         assert updated_error_log is None
     @pytest.mark.asyncio
@@ -271,7 +321,8 @@ class TestErrorLogManager:
         Test case for the `update` method of `ErrorLogManager`
         with a nonexistent attribute.
         """
-        test_error_log = await ErrorLogFactory.create_async(session)
+        test_error_log = await ErrorLogFactory.create_async(
+            session)
         new_code = uuid.uuid4()
         with pytest.raises(ValueError):
             await error_log_manager.update(
@@ -288,14 +339,16 @@ class TestErrorLogManager:
         """
         Test case for the `delete` method of `ErrorLogManager`.
         """
-        error_log_data = await ErrorLogFactory.create_async(session)
+        error_log_data = await ErrorLogFactory.create_async(
+            session)
         result = await session.execute(
             select(ErrorLog).filter(
                 ErrorLog._error_log_id == error_log_data.error_log_id)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
-        assert fetched_error_log.error_log_id == error_log_data.error_log_id
+        assert fetched_error_log.error_log_id == \
+            error_log_data.error_log_id
         await error_log_manager.delete(
             error_log_id=error_log_data.error_log_id)
         result = await session.execute(
@@ -337,7 +390,8 @@ class TestErrorLogManager:
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager): An
+                instance of the
                 `ErrorLogManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
         Returns:
@@ -379,7 +433,8 @@ class TestErrorLogManager:
         assert isinstance(error_logs_data, List)
         error_logs = await error_log_manager.get_list()
         assert len(error_logs) == 5
-        assert all(isinstance(error_log, ErrorLog) for error_log in error_logs)
+        assert all(isinstance(
+            error_log, ErrorLog) for error_log in error_logs)
     @pytest.mark.asyncio
     async def test_to_json(
         self,
@@ -389,7 +444,8 @@ class TestErrorLogManager:
         """
         Test the 'to_json' method of the ErrorLogManager class.
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager): An
+                instance of the
                 ErrorLogManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
@@ -397,8 +453,10 @@ class TestErrorLogManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        error_log = await ErrorLogFactory.build_async(session)
-        json_data = error_log_manager.to_json(error_log)
+        error_log = await ErrorLogFactory.build_async(
+            session)
+        json_data = error_log_manager.to_json(
+            error_log)
         assert json_data is not None
     @pytest.mark.asyncio
     async def test_to_dict(
@@ -409,14 +467,17 @@ class TestErrorLogManager:
         """
         Test the to_dict method of the ErrorLogManager class.
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager): An
+                instance of the
                 ErrorLogManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
             None
         """
-        error_log = await ErrorLogFactory.build_async(session)
-        dict_data = error_log_manager.to_dict(error_log)
+        error_log = await ErrorLogFactory.build_async(
+            session)
+        dict_data = error_log_manager.to_dict(
+            error_log)
         assert dict_data is not None
     @pytest.mark.asyncio
     async def test_from_json(
@@ -428,24 +489,30 @@ class TestErrorLogManager:
         Test the `from_json` method of the `ErrorLogManager` class.
         This method tests the functionality of the
         `from_json` method of the `ErrorLogManager` class.
-        It creates a error_log using the `ErrorLogFactory`
+        It creates a error_log using
+        the `ErrorLogFactory`
         and converts it to JSON using the `to_json` method.
         Then, it deserializes the JSON data using the
         `from_json` method and asserts that the deserialized
-        error_log is an instance of the `ErrorLog` class and has
+        error_log is an instance of the
+        `ErrorLog` class and has
         the same code as the original error_log.
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager): An
+            instance of the
                 `ErrorLogManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
         Returns:
             None
         """
-        error_log = await ErrorLogFactory.create_async(session)
-        json_data = error_log_manager.to_json(error_log)
+        error_log = await ErrorLogFactory.create_async(
+            session)
+        json_data = error_log_manager.to_json(
+            error_log)
         deserialized_error_log = error_log_manager.from_json(json_data)
         assert isinstance(deserialized_error_log, ErrorLog)
-        assert deserialized_error_log.code == error_log.code
+        assert deserialized_error_log.code == \
+            error_log.code
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
@@ -457,7 +524,8 @@ class TestErrorLogManager:
         `ErrorLogManager` class.
         This method tests the functionality of the
         `from_dict` method, which is used to deserialize
-        a dictionary representation of a error_log object.
+        a dictionary representation of a
+        error_log object.
         Args:
             error_log_manager (ErrorLogManager): An instance
                 of the `ErrorLogManager` class.
@@ -467,13 +535,16 @@ class TestErrorLogManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        error_log = await ErrorLogFactory.create_async(session)
+        error_log = await ErrorLogFactory.create_async(
+            session)
         schema = ErrorLogSchema()
         error_log_data = schema.dump(error_log)
         assert isinstance(error_log_data, dict)
-        deserialized_error_log = error_log_manager.from_dict(error_log_data)
+        deserialized_error_log = error_log_manager.from_dict(
+            error_log_data)
         assert isinstance(deserialized_error_log, ErrorLog)
-        assert deserialized_error_log.code == error_log.code
+        assert deserialized_error_log.code == \
+            error_log.code
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
@@ -489,22 +560,30 @@ class TestErrorLogManager:
         1. Generate a list of error_log data using the
             `ErrorLogFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `error_log_manager` instance, passing in the generated error_log data.
-        3. Verify that the number of error_logs returned is
+            `error_log_manager` instance,
+            passing in the
+            generated error_log data.
+        3. Verify that the number of error_logs
+            returned is
             equal to the number of error_logs added.
         4. For each updated error_log, fetch the corresponding
             error_log from the database.
-        5. Verify that the fetched error_log is an instance of the
+        5. Verify that the fetched error_log
+            is an instance of the
             `ErrorLog` class.
         6. Verify that the insert_user_id and
-            last_update_user_id of the fetched error_log match the
+            last_update_user_id of the fetched
+            error_log match the
             customer code of the session context.
         7. Verify that the error_log_id of the fetched
-            error_log matches the error_log_id of the updated error_log.
+            error_log matches the
+            error_log_id of the updated
+            error_log.
         """
         error_logs_data = [
             await ErrorLogFactory.build_async(session) for _ in range(5)]
-        error_logs = await error_log_manager.add_bulk(error_logs_data)
+        error_logs = await error_log_manager.add_bulk(
+            error_logs_data)
         assert len(error_logs) == 5
         for updated_error_log in error_logs:
             result = await session.execute(
@@ -518,7 +597,8 @@ class TestErrorLogManager:
                 str(error_log_manager._session_context.customer_code))
             assert str(fetched_error_log.last_update_user_id) == (
                 str(error_log_manager._session_context.customer_code))
-            assert fetched_error_log.error_log_id == updated_error_log.error_log_id
+            assert fetched_error_log.error_log_id == \
+                updated_error_log.error_log_id
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
@@ -529,7 +609,8 @@ class TestErrorLogManager:
         Test case for bulk update of error_logs.
         This test case verifies the functionality of the
         `update_bulk` method in the `ErrorLogManager` class.
-        It creates two error_log instances, updates their codes
+        It creates two error_log instances,
+        updates their codes
         using the `update_bulk` method, and then verifies
         that the updates were successful by checking the
         updated codes in the database.
@@ -548,8 +629,10 @@ class TestErrorLogManager:
             None
         """
         # Mocking error_log instances
-        error_log1 = await ErrorLogFactory.create_async(session=session)
-        error_log2 = await ErrorLogFactory.create_async(session=session)
+        error_log1 = await ErrorLogFactory.create_async(
+            session=session)
+        error_log2 = await ErrorLogFactory.create_async(
+            session=session)
         logging.info(error_log1.__dict__)
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -566,7 +649,8 @@ class TestErrorLogManager:
                 "code": code_updated2
             }
         ]
-        updated_error_logs = await error_log_manager.update_bulk(updates)
+        updated_error_logs = await error_log_manager.update_bulk(
+            updates)
         logging.info('bulk update results')
         # Assertions
         assert len(updated_error_logs) == 2
@@ -583,13 +667,15 @@ class TestErrorLogManager:
         assert str(updated_error_logs[1].last_update_user_id) == (
             str(error_log_manager._session_context.customer_code))
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog._error_log_id == 1)  # type: ignore
+            select(ErrorLog).filter(
+                ErrorLog._error_log_id == 1)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
         assert fetched_error_log.code == code_updated1
         result = await session.execute(
-            select(ErrorLog).filter(ErrorLog._error_log_id == 2)  # type: ignore
+            select(ErrorLog).filter(
+                ErrorLog._error_log_id == 2)  # type: ignore
         )
         fetched_error_log = result.scalars().first()
         assert isinstance(fetched_error_log, ErrorLog)
@@ -627,7 +713,8 @@ class TestErrorLogManager:
         Test case to verify the behavior of the update_bulk
         method when a error_log is not found.
         This test case performs the following steps:
-        1. Defines a list of error_log updates, where each update
+        1. Defines a list of error_log updates,
+            where each update
             contains a error_log_id and a code.
         2. Calls the update_bulk method of the
             error_log_manager with the list of updates.
@@ -635,7 +722,8 @@ class TestErrorLogManager:
             the error_log was not found.
         4. Rolls back the session to undo any changes made during the test.
         Note: This test assumes that the update_bulk method
-        throws an exception when a error_log is not found.
+        throws an exception when a
+        error_log is not found.
         """
         # Update error_logs
         updates = [{"error_log_id": 1, "code": uuid.uuid4()}]
@@ -676,8 +764,10 @@ class TestErrorLogManager:
         successfully deletes multiple error_logs
         from the database.
         Steps:
-        1. Create two error_log objects using the ErrorLogFactory.
-        2. Delete the error_logs using the delete_bulk method
+        1. Create two error_log objects
+            using the ErrorLogFactory.
+        2. Delete the error_logs using the
+            delete_bulk method
             of the error_log_manager.
         3. Verify that the delete operation was successful by
             checking if the error_logs no longer exist in the database.
@@ -686,11 +776,14 @@ class TestErrorLogManager:
             that the delete operation was successful.
         - The error_logs should no longer exist in the database.
         """
-        error_log1 = await ErrorLogFactory.create_async(session=session)
-        error_log2 = await ErrorLogFactory.create_async(session=session)
+        error_log1 = await ErrorLogFactory.create_async(
+            session=session)
+        error_log2 = await ErrorLogFactory.create_async(
+            session=session)
         # Delete error_logs
         error_log_ids = [error_log1.error_log_id, error_log2.error_log_id]
-        result = await error_log_manager.delete_bulk(error_log_ids)
+        result = await error_log_manager.delete_bulk(
+            error_log_ids)
         assert result is True
         for error_log_id in error_log_ids:
             execute_result = await session.execute(
@@ -709,8 +802,10 @@ class TestErrorLogManager:
         Test case to verify the behavior of deleting bulk
         error_logs when some error_logs are not found.
         Steps:
-        1. Create a error_log using the ErrorLogFactory.
-        2. Assert that the created error_log is an instance of the
+        1. Create a error_log using the
+            ErrorLogFactory.
+        2. Assert that the created error_log
+            is an instance of the
             ErrorLog class.
         3. Define a list of error_log IDs to delete.
         4. Use pytest.raises to assert that an exception is
@@ -721,12 +816,14 @@ class TestErrorLogManager:
         when some error_logs with the specified IDs are
         not found in the database.
         """
-        error_log1 = await ErrorLogFactory.create_async(session=session)
+        error_log1 = await ErrorLogFactory.create_async(
+            session=session)
         assert isinstance(error_log1, ErrorLog)
         # Delete error_logs
         error_log_ids = [1, 2]
         with pytest.raises(Exception):
-            await error_log_manager.delete_bulk(error_log_ids)
+            await error_log_manager.delete_bulk(
+                error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
@@ -737,7 +834,8 @@ class TestErrorLogManager:
         Test case to verify the behavior of deleting
         error_logs with an empty list.
         Args:
-            error_log_manager (ErrorLogManager): The instance of the
+            error_log_manager (ErrorLogManager): The
+                instance of the
                 ErrorLogManager class.
         Returns:
             None
@@ -746,7 +844,8 @@ class TestErrorLogManager:
         """
         # Delete error_logs with an empty list
         error_log_ids = []
-        result = await error_log_manager.delete_bulk(error_log_ids)
+        result = await error_log_manager.delete_bulk(
+            error_log_ids)
         # Assertions
         assert result is True
     @pytest.mark.asyncio
@@ -759,7 +858,8 @@ class TestErrorLogManager:
         Test case to verify the behavior of the delete_bulk
         method when invalid error_log IDs are provided.
         Args:
-            error_log_manager (ErrorLogManager): The instance of the
+            error_log_manager (ErrorLogManager): The
+                instance of the
                 ErrorLogManager class.
             session (AsyncSession): The async session object.
         Raises:
@@ -770,7 +870,8 @@ class TestErrorLogManager:
         """
         error_log_ids = ["1", 2]
         with pytest.raises(Exception):
-            await error_log_manager.delete_bulk(error_log_ids)
+            await error_log_manager.delete_bulk(
+                error_log_ids)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
@@ -781,11 +882,14 @@ class TestErrorLogManager:
         """
         Test the basic functionality of the count method
         in the ErrorLogManager class.
-        This test case creates 5 error_log objects using the
+        This test case creates 5 error_log
+        objects using the
         ErrorLogFactory and checks if the count method
-        returns the correct count of error_logs.
+        returns the correct count of
+        error_logs.
         Steps:
-        1. Create 5 error_log objects using the ErrorLogFactory.
+        1. Create 5 error_log objects using
+            the ErrorLogFactory.
         2. Call the count method of the error_log_manager.
         3. Assert that the count is equal to 5.
         """
@@ -804,7 +908,8 @@ class TestErrorLogManager:
         This test case checks if the count method of the
         ErrorLogManager class returns 0 when the database is empty.
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager): An
+                instance of the
                 ErrorLogManager class.
         Returns:
             None
@@ -873,7 +978,8 @@ class TestErrorLogManager:
         Test case to check if an AttributeError is raised when
         sorting the list by an invalid attribute.
         Args:
-            error_log_manager (ErrorLogManager): The instance of the
+            error_log_manager (ErrorLogManager): The
+                instance of the
                 ErrorLogManager class.
             session (AsyncSession): The instance of the AsyncSession class.
         Raises:
@@ -882,7 +988,8 @@ class TestErrorLogManager:
             None
         """
         with pytest.raises(AttributeError):
-            await error_log_manager.get_sorted_list(sort_by="invalid_attribute")
+            await error_log_manager.get_sorted_list(
+                sort_by="invalid_attribute")
         await session.rollback()
     @pytest.mark.asyncio
     async def test_get_sorted_list_empty_database(
@@ -895,12 +1002,14 @@ class TestErrorLogManager:
         This test ensures that when the database is empty, the
         `get_sorted_list` method returns an empty list.
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager): An
+                instance of the
                 ErrorLogManager class.
         Returns:
             None
         """
-        sorted_error_logs = await error_log_manager.get_sorted_list(sort_by="error_log_id")
+        sorted_error_logs = await error_log_manager.get_sorted_list(
+            sort_by="error_log_id")
         assert len(sorted_error_logs) == 0
     @pytest.mark.asyncio
     async def test_refresh_basic(
@@ -909,40 +1018,52 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-        Test the basic functionality of refreshing a error_log instance.
+        Test the basic functionality of refreshing
+        a error_log instance.
         This test performs the following steps:
-        1. Creates a error_log instance using the ErrorLogFactory.
-        2. Retrieves the error_log from the database to ensure
+        1. Creates a error_log instance using
+            the ErrorLogFactory.
+        2. Retrieves the error_log from th
+            database to ensure
             it was added correctly.
         3. Updates the error_log's code and verifies the update.
-        4. Refreshes the original error_log instance and checks if
+        4. Refreshes the original error_log instance
+            and checks if
             it reflects the updated code.
         Args:
-            error_log_manager (ErrorLogManager): The manager responsible
+            error_log_manager (ErrorLogManager): The
+                manager responsible
                 for error_log operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a error_log
-        error_log1 = await ErrorLogFactory.create_async(session=session)
+        error_log1 = await ErrorLogFactory.create_async(
+            session=session)
         # Retrieve the error_log from the database
         result = await session.execute(
             select(ErrorLog).filter(
                 ErrorLog._error_log_id == error_log1.error_log_id)  # type: ignore
         )  # type: ignore
         error_log2 = result.scalars().first()
-        # Verify that the retrieved error_log matches the added error_log
-        assert error_log1.code == error_log2.code
+        # Verify that the retrieved error_log
+        # matches the added error_log
+        assert error_log1.code == \
+            error_log2.code
         # Update the error_log's code
         updated_code1 = uuid.uuid4()
         error_log1.code = updated_code1
-        updated_error_log1 = await error_log_manager.update(error_log1)
-        # Verify that the updated error_log is of type ErrorLog
+        updated_error_log1 = await error_log_manager.update(
+            error_log1)
+        # Verify that the updated error_log
+        # is of type ErrorLog
         # and has the updated code
         assert isinstance(updated_error_log1, ErrorLog)
         assert updated_error_log1.code == updated_code1
         # Refresh the original error_log instance
-        refreshed_error_log2 = await error_log_manager.refresh(error_log2)
-        # Verify that the refreshed error_log reflects the updated code
+        refreshed_error_log2 = await error_log_manager.refresh(
+            error_log2)
+        # Verify that the refreshed error_log
+        # reflects the updated code
         assert refreshed_error_log2.code == updated_code1
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_error_log(
@@ -953,17 +1074,21 @@ class TestErrorLogManager:
         """
         Test case to verify the behavior of refreshing a nonexistent error_log.
         Args:
-            error_log_manager (ErrorLogManager): The instance of the
+            error_log_manager (ErrorLogManager): The
+                instance of the
                 ErrorLogManager class.
             session (AsyncSession): The instance of the AsyncSession class.
         Raises:
-            Exception: If the error_log refresh operation raises an exception.
+            Exception: If the error_log
+            refresh operation raises an exception.
         Returns:
             None
         """
-        error_log = ErrorLog(error_log_id=999)
+        error_log = ErrorLog(
+            error_log_id=999)
         with pytest.raises(Exception):
-            await error_log_manager.refresh(error_log)
+            await error_log_manager.refresh(
+                error_log)
         await session.rollback()
     @pytest.mark.asyncio
     async def test_exists_with_existing_error_log(
@@ -972,17 +1097,22 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-        Test case to check if a error_log exists using the manager function.
+        Test case to check if a error_log
+        exists using the manager function.
         Args:
-            error_log_manager (ErrorLogManager): The error_log manager instance.
+            error_log_manager (ErrorLogManager): The
+                error_log manager instance.
             session (AsyncSession): The async session object.
         Returns:
             None
         """
         # Add a error_log
-        error_log1 = await ErrorLogFactory.create_async(session=session)
-        # Check if the error_log exists using the manager function
-        assert await error_log_manager.exists(error_log1.error_log_id) is True
+        error_log1 = await ErrorLogFactory.create_async(
+            session=session)
+        # Check if the error_log exists
+        # using the manager function
+        assert await error_log_manager.exists(
+            error_log1.error_log_id) is True
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_error_log(
         self,
@@ -993,19 +1123,26 @@ class TestErrorLogManager:
         Test if the is_equal method of the
         ErrorLogManager class correctly compares two error_logs.
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager): An
+                instance of the
                 ErrorLogManager class.
             session (AsyncSession): An instance of the AsyncSession class.
         Returns:
             None
         """
         # Add a error_log
-        error_log1 = await ErrorLogFactory.create_async(session=session)
-        error_log2 = await error_log_manager.get_by_id(error_log_id=error_log1.error_log_id)
-        assert error_log_manager.is_equal(error_log1, error_log2) is True
-        error_log1_dict = error_log_manager.to_dict(error_log1)
-        error_log3 = error_log_manager.from_dict(error_log1_dict)
-        assert error_log_manager.is_equal(error_log1, error_log3) is True
+        error_log1 = await ErrorLogFactory.create_async(
+            session=session)
+        error_log2 = await error_log_manager.get_by_id(
+            error_log_id=error_log1.error_log_id)
+        assert error_log_manager.is_equal(
+            error_log1, error_log2) is True
+        error_log1_dict = error_log_manager.to_dict(
+            error_log1)
+        error_log3 = error_log_manager.from_dict(
+            error_log1_dict)
+        assert error_log_manager.is_equal(
+            error_log1, error_log3) is True
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_error_log(
         self,
@@ -1018,7 +1155,8 @@ class TestErrorLogManager:
             error_log_manager (ErrorLogManager): The
                 instance of the ErrorLogManager class.
         Returns:
-            bool: True if the error_log exists, False otherwise.
+            bool: True if the error_log exists,
+                False otherwise.
         """
         non_existent_id = 999
         assert await error_log_manager.exists(non_existent_id) is False
@@ -1060,15 +1198,18 @@ class TestErrorLogManager:
     ):
         """
         Test case to verify the behavior of the
-        `get_by_pac_id` method when a error_log with
+        `get_by_pac_id` method when
+        a error_log with
         a specific pac_id exists.
         Steps:
-        1. Create a error_log using the ErrorLogFactory.
+        1. Create a error_log using the
+            ErrorLogFactory.
         2. Fetch the error_log using the
             `get_by_pac_id` method of the error_log_manager.
         3. Assert that the fetched error_logs list contains
             only one error_log.
-        4. Assert that the fetched error_log is an instance
+        4. Assert that the fetched error_log
+            is an instance
             of the ErrorLog class.
         5. Assert that the code of the fetched error_log
             matches the code of the created error_log.
@@ -1077,15 +1218,21 @@ class TestErrorLogManager:
         7. Assert that the fetched pac object is
             an instance of the Pac class.
         8. Assert that the pac_code_peek of the fetched
-            error_log matches the code of the fetched pac.
+            error_log matches the
+            code of the fetched pac.
         """
-        # Add a error_log with a specific pac_id
-        error_log1 = await ErrorLogFactory.create_async(session=session)
-        # Fetch the error_log using the manager function
-        fetched_error_logs = await error_log_manager.get_by_pac_id(error_log1.pac_id)
+        # Add a error_log with a specific
+        # pac_id
+        error_log1 = await ErrorLogFactory.create_async(
+            session=session)
+        # Fetch the error_log using
+        # the manager function
+        fetched_error_logs = await error_log_manager.get_by_pac_id(
+            error_log1.pac_id)
         assert len(fetched_error_logs) == 1
         assert isinstance(fetched_error_logs[0], ErrorLog)
-        assert fetched_error_logs[0].code == error_log1.code
+        assert fetched_error_logs[0].code == \
+            error_log1.code
         stmt = select(models.Pac).where(
             models.Pac._pac_id == error_log1.pac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
@@ -1105,7 +1252,8 @@ class TestErrorLogManager:
         an empty list is returned.
         """
         non_existent_id = 999
-        fetched_error_logs = await error_log_manager.get_by_pac_id(non_existent_id)
+        fetched_error_logs = await error_log_manager.get_by_pac_id(
+            non_existent_id)
         assert len(fetched_error_logs) == 0
     @pytest.mark.asyncio
     async def test_get_by_pac_id_invalid_type(
@@ -1129,7 +1277,8 @@ class TestErrorLogManager:
         """
         invalid_id = "invalid_id"
         with pytest.raises(Exception):
-            await error_log_manager.get_by_pac_id(invalid_id)  # type: ignore
+            await error_log_manager.get_by_pac_id(
+                invalid_id)  # type: ignore
         await session.rollback()
     # url,
 # endset

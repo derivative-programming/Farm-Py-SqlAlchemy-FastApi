@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_property_random_update.py
 """
-This module contains the implementation of the PlantUserPropertyRandomUpdateRouter,
-which handles the API endpoints related to the Plant User Property Random Update.
+This module contains the implementation of the
+PlantUserPropertyRandomUpdateRouter,
+which handles the API endpoints related to the
+Plant User Property Random Update.
 The PlantUserPropertyRandomUpdateRouter provides the following endpoints:
     - GET /api/v1_0/plant-user-property-random-update/{plant_code}/init:
-        Get the initialization data for the Plant User Property Random Update page.
+        Get the initialization data for the
+        Plant User Property Random Update page.
     - GET /api/v1_0/plant-user-property-random-update/{plant_code}:
-        Get the Plant User Property Random Update Report for a specific  code.
+        Get the Plant User Property Random Update Report
+        for a specific  code.
     - GET /api/v1_0/plant-user-property-random-update/{plant_code}/to-csv:
-        Retrieve the Plant User Property Random Update Report as a CSV file.
+        Retrieve the Plant User Property Random Update
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class PlantUserPropertyRandomUpdateRouterConfig():
     is_public: bool = False
 class PlantUserPropertyRandomUpdateRouter(BaseRouter):
     """
-    Router class for the Plant User Property Random Update API endpoints.
+    Router class for the
+    Plant User Property Random Update
+    API endpoints.
     """
     router = APIRouter(tags=["PlantUserPropertyRandomUpdate"])
 
@@ -99,16 +106,16 @@ class PlantUserPropertyRandomUpdateRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

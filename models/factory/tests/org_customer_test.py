@@ -48,35 +48,40 @@ class TestOrgCustomerFactory:
         """
         Test case for creating a org_customer.
         """
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         assert org_customer.org_customer_id is not None
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         assert isinstance(org_customer.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        org_customer: OrgCustomer = OrgCustomerFactory.build(session=session)
+        org_customer: OrgCustomer = OrgCustomerFactory.build(
+            session=session)
         assert org_customer.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        org_customer: OrgCustomer = OrgCustomerFactory.create(session=session)
+        org_customer: OrgCustomer = OrgCustomerFactory.create(
+            session=session)
         assert org_customer.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         initial_code = org_customer.last_change_code
         org_customer.code = uuid.uuid4()
         session.commit()
@@ -86,17 +91,21 @@ class TestOrgCustomerFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        org_customer = OrgCustomerFactory.build(session=session)
+        org_customer = OrgCustomerFactory.build(
+            session=session)
         assert org_customer.insert_utc_date_time is not None
-        assert isinstance(org_customer.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_customer.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        org_customer = OrgCustomerFactory.build(session=session)
+        org_customer = OrgCustomerFactory.build(
+            session=session)
         assert org_customer.insert_utc_date_time is not None
-        assert isinstance(org_customer.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_customer.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_customer.code = uuid.uuid4()
         session.add(org_customer)
@@ -107,9 +116,11 @@ class TestOrgCustomerFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        org_customer = OrgCustomerFactory(session=session)
+        org_customer = OrgCustomerFactory(
+            session=session)
         assert org_customer.insert_utc_date_time is not None
-        assert isinstance(org_customer.insert_utc_date_time, datetime)
+        assert isinstance(
+            org_customer.insert_utc_date_time, datetime)
         initial_time = org_customer.insert_utc_date_time
         org_customer.code = uuid.uuid4()
         time.sleep(1)
@@ -120,17 +131,21 @@ class TestOrgCustomerFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        org_customer = OrgCustomerFactory.build(session=session)
+        org_customer = OrgCustomerFactory.build(
+            session=session)
         assert org_customer.last_update_utc_date_time is not None
-        assert isinstance(org_customer.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_customer.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        org_customer = OrgCustomerFactory.build(session=session)
+        org_customer = OrgCustomerFactory.build(
+            session=session)
         assert org_customer.last_update_utc_date_time is not None
-        assert isinstance(org_customer.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_customer.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         org_customer.code = uuid.uuid4()
         session.add(org_customer)
@@ -141,9 +156,11 @@ class TestOrgCustomerFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        org_customer = OrgCustomerFactory(session=session)
+        org_customer = OrgCustomerFactory(
+            session=session)
         assert org_customer.last_update_utc_date_time is not None
-        assert isinstance(org_customer.last_update_utc_date_time, datetime)
+        assert isinstance(
+            org_customer.last_update_utc_date_time, datetime)
         initial_time = org_customer.last_update_utc_date_time
         org_customer.code = uuid.uuid4()
         time.sleep(1)
@@ -151,9 +168,11 @@ class TestOrgCustomerFactory:
         assert org_customer.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        Test case for deleting a org_customer model.
+        Test case for deleting a
+        org_customer model.
         """
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         session.delete(org_customer)
         session.commit()
         deleted_org_customer = session.query(OrgCustomer).filter_by(
@@ -161,9 +180,11 @@ class TestOrgCustomerFactory:
         assert deleted_org_customer is None
     def test_data_types(self, session):
         """
-        Test case for checking the data types of the org_customer attributes.
+        Test case for checking the data types of
+        the org_customer attributes.
         """
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         assert isinstance(org_customer.org_customer_id, int)
         assert isinstance(org_customer.code, uuid.UUID)
         assert isinstance(org_customer.last_change_code, int)
@@ -199,7 +220,8 @@ class TestOrgCustomerFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        Test case for checking the default values of the org_customer fields.
+        Test case for checking the default values of
+        the org_customer fields.
         """
         org_customer = OrgCustomer()
         assert org_customer.code is not None
@@ -225,12 +247,14 @@ class TestOrgCustomerFactory:
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
-        last_change_code in the OrgCustomer model.
+        last_change_code in the OrgCustomer
+        model.
         This test case checks if the last_change_code
-        of a OrgCustomer object is updated correctly
+        of a OrgCustomer object is
+        updated correctly
         when multiple changes are made concurrently.
-        It creates a OrgCustomer object, retrieves it
-        from the database, and updates its code
+        It creates a OrgCustomer object,
+        retrieves it from the database, and updates its code
         attribute twice in separate transactions.
         Finally, it asserts that the last_change_code
         of the second retrieved OrgCustomer object
@@ -240,7 +264,8 @@ class TestOrgCustomerFactory:
         Returns:
             None
         """
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         original_last_change_code = org_customer.last_change_code
         org_customer_1 = session.query(OrgCustomer).filter_by(
             _org_customer_id=org_customer.org_customer_id).first()
@@ -268,7 +293,8 @@ class TestOrgCustomerFactory:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
         """
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         org_customer.customer_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
@@ -290,7 +316,8 @@ class TestOrgCustomerFactory:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
         """
-        org_customer = OrgCustomerFactory.create(session=session)
+        org_customer = OrgCustomerFactory.create(
+            session=session)
         org_customer.organization_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()

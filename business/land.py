@@ -1,6 +1,7 @@
 # business/land.py
 """
-This module contains the LandBusObj class, which represents the business object for a Land.
+This module contains the LandBusObj class,
+which represents the business object for a Land.
 """
 from decimal import Decimal
 import random
@@ -20,7 +21,9 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Land object is not initialized")
 class LandInvalidInitError(Exception):
     """
-    Exception raised when the Land object is not initialized properly.
+    Exception raised when the
+    Land object
+    is not initialized properly.
     """
 class LandBusObj(BaseBusObj):
     """
@@ -29,7 +32,8 @@ class LandBusObj(BaseBusObj):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the LandBusObj class.
+        Initializes a new instance of the
+        LandBusObj class.
         :param session_context: The session context.
         :raises ValueError: If the session is not provided.
         """
@@ -40,9 +44,11 @@ class LandBusObj(BaseBusObj):
     @property
     def land_id(self) -> int:
         """
-        Get the land ID from the Land object.
+        Get the land ID from the
+        Land object.
         :return: The land ID.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -53,9 +59,11 @@ class LandBusObj(BaseBusObj):
     @property
     def code(self):
         """
-        Get the code from the Land object.
+        Get the code from the
+        Land object.
         :return: The code.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -67,7 +75,8 @@ class LandBusObj(BaseBusObj):
         """
         Set the code for the Land object.
         :param value: The code value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises ValueError: If the code is not a UUID.
         """
         if not self.land:
@@ -81,9 +90,11 @@ class LandBusObj(BaseBusObj):
     @property
     def last_change_code(self):
         """
-        Get the last change code from the Land object.
+        Get the last change code from the
+        Land object.
         :return: The last change code.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -93,9 +104,11 @@ class LandBusObj(BaseBusObj):
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
-        Set the last change code for the Land object.
+        Set the last change code for the
+        Land object.
         :param value: The last change code value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises ValueError: If the last change code is not an integer.
         """
         if not self.land:
@@ -109,9 +122,11 @@ class LandBusObj(BaseBusObj):
     @property
     def insert_user_id(self):
         """
-        Get the insert user ID from the Land object.
+        Get the insert user ID from the
+        Land object.
         :return: The insert user ID.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -121,9 +136,11 @@ class LandBusObj(BaseBusObj):
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
-        Set the insert user ID for the Land object.
+        Set the insert user ID for the
+        Land object.
         :param value: The insert user ID value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises ValueError: If the insert user ID is not a UUID.
         """
         if not self.land:
@@ -137,9 +154,11 @@ class LandBusObj(BaseBusObj):
     @property
     def last_update_user_id(self):
         """
-        Get the last update user ID from the Land object.
+        Get the last update user ID from the
+        Land object.
         :return: The last update user ID.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -149,9 +168,11 @@ class LandBusObj(BaseBusObj):
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
-        Set the last update user ID for the Land object.
+        Set the last update user ID for the
+        Land object.
         :param value: The last update user ID value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises ValueError: If the last update user ID is not a UUID.
         """
         if not self.land:
@@ -166,9 +187,11 @@ class LandBusObj(BaseBusObj):
     @property
     def description(self):
         """
-        Get the Description from the Land object.
+        Get the Description from the
+        Land object.
         :return: The Description.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -180,9 +203,11 @@ class LandBusObj(BaseBusObj):
     @description.setter
     def description(self, value):
         """
-        Set the Description for the Land object.
+        Set the Description for the
+        Land object.
         :param value: The Description value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises AssertionError: If the Description is not a string.
         """
         if not self.land:
@@ -193,9 +218,11 @@ class LandBusObj(BaseBusObj):
         self.land.description = value
     def set_prop_description(self, value: str):
         """
-        Set the Description for the Land object.
+        Set the Description for the
+        Land object.
         :param value: The Description value.
-        :return: The updated LandBusObj instance.
+        :return: The updated
+            LandBusObj instance.
         """
         self.description = value
         return self
@@ -203,7 +230,15 @@ class LandBusObj(BaseBusObj):
     @property
     def display_order(self):
         """
-        #TODO add comment
+        Returns the value of
+        display_order attribute of the
+        land.
+        Raises:
+            AttributeError: If the
+                land is not initialized.
+        Returns:
+            int: The value of
+                display_order attribute.
         """
         if not self.land:
             raise AttributeError(
@@ -213,7 +248,15 @@ class LandBusObj(BaseBusObj):
     @display_order.setter
     def display_order(self, value):
         """
-        #TODO add comment
+        Sets the value of
+        display_order for the
+        land.
+        Args:
+            value (int): The integer value to set for
+                display_order.
+        Raises:
+            AttributeError: If the
+                land is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -224,7 +267,13 @@ class LandBusObj(BaseBusObj):
         self.land.display_order = value
     def set_prop_display_order(self, value: int):
         """
-        #TODO add comment
+        Set the value of
+        display_order property.
+        Args:
+            value (int): The value to set for
+                display_order.
+        Returns:
+            self: Returns the instance of the class.
         """
         self.display_order = value
         return self
@@ -232,9 +281,11 @@ class LandBusObj(BaseBusObj):
     @property
     def is_active(self):
         """
-        Get the Is Active flag from the Land object.
+        Get the Is Active flag from the
+        Land object.
         :return: The Is Active flag.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -244,9 +295,11 @@ class LandBusObj(BaseBusObj):
     @is_active.setter
     def is_active(self, value: bool):
         """
-        Set the Is Active flag for the Land object.
+        Set the Is Active flag for the
+        Land object.
         :param value: The Is Active flag value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises ValueError: If the Is Active flag is not a boolean.
         """
         if not self.land:
@@ -258,9 +311,11 @@ class LandBusObj(BaseBusObj):
         self.land.is_active = value
     def set_prop_is_active(self, value: bool):
         """
-        Set the Is Active flag for the Land object.
+        Set the Is Active flag for the
+        Land object.
         :param value: The Is Active flag value.
-        :return: The updated LandBusObj instance.
+        :return: The updated
+            LandBusObj instance.
         """
         self.is_active = value
         return self
@@ -268,9 +323,11 @@ class LandBusObj(BaseBusObj):
     @property
     def lookup_enum_name(self):
         """
-        Get the Lookup Enum Name from the Land object.
+        Get the Lookup Enum Name from the
+        Land object.
         :return: The Lookup Enum Name.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -282,9 +339,11 @@ class LandBusObj(BaseBusObj):
     @lookup_enum_name.setter
     def lookup_enum_name(self, value):
         """
-        Set the Lookup Enum Name for the Land object.
+        Set the Lookup Enum Name for the
+        Land object.
         :param value: The Lookup Enum Name value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises AssertionError: If the Lookup Enum Name is not a string.
         """
         if not self.land:
@@ -295,9 +354,11 @@ class LandBusObj(BaseBusObj):
         self.land.lookup_enum_name = value
     def set_prop_lookup_enum_name(self, value: str):
         """
-        Set the Lookup Enum Name for the Land object.
+        Set the Lookup Enum Name for the
+        Land object.
         :param value: The Lookup Enum Name value.
-        :return: The updated LandBusObj instance.
+        :return: The updated
+            LandBusObj instance.
         """
         self.lookup_enum_name = value
         return self
@@ -305,9 +366,11 @@ class LandBusObj(BaseBusObj):
     @property
     def name(self):
         """
-        Get the Name from the Land object.
+        Get the Name from the
+        Land object.
         :return: The Name.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -319,9 +382,11 @@ class LandBusObj(BaseBusObj):
     @name.setter
     def name(self, value):
         """
-        Set the Name for the Land object.
+        Set the Name for the
+        Land object.
         :param value: The Name value.
-        :raises AttributeError: If the Land object is not initialized.
+        :raises AttributeError: If the
+            Land object is not initialized.
         :raises AssertionError: If the Name is not a string.
         """
         if not self.land:
@@ -332,9 +397,11 @@ class LandBusObj(BaseBusObj):
         self.land.name = value
     def set_prop_name(self, value: str):
         """
-        Set the Name for the Land object.
+        Set the Name for the
+        Land object.
         :param value: The Name value.
-        :return: The updated LandBusObj instance.
+        :return: The updated
+            LandBusObj instance.
         """
         self.name = value
         return self
@@ -349,9 +416,12 @@ class LandBusObj(BaseBusObj):
     @property
     def pac_id(self):
         """
-        Returns the pac ID associated with the land.
+        Returns the pac ID
+        associated with the
+        land.
         Raises:
-            AttributeError: If the land is not initialized.
+            AttributeError: If the
+                land is not initialized.
         Returns:
             int: The pac ID of the land.
         """
@@ -363,12 +433,15 @@ class LandBusObj(BaseBusObj):
     @pac_id.setter
     def pac_id(self, value):
         """
-        Sets the pac ID for the land.
+        Sets the pac ID
+        for the land.
         Args:
-            value (int or None): The pac ID to be set.
+            value (int or None): The
+                pac ID to be set.
                 Must be an integer or None.
         Raises:
-            AttributeError: If the land is not initialized.
+            AttributeError: If the
+                land is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -379,22 +452,27 @@ class LandBusObj(BaseBusObj):
         self.land.pac_id = value
     def set_prop_pac_id(self, value: int):
         """
-        Set the pac ID for the land.
+        Set the pac ID for the
+        land.
         Args:
-            value (int): The ID of the pac.
+            value (int): The pac id value.
         Returns:
-            Land: The updated Land object.
+            Land: The updated
+                Land object.
         """
         self.pac_id = value
         return self
     @property
     def pac_code_peek(self) -> uuid.UUID:
         """
-        Returns the pac code peek of the land.
+        Returns the pac id code peek
+        of the land.
         Raises:
-            AttributeError: If the land is not initialized.
+            AttributeError: If the
+            land is not initialized.
         Returns:
-            uuid.UUID: The pac code peek of the land.
+            uuid.UUID: The pac id code peek
+            of the land.
         """
         if not self.land:
             raise AttributeError(
@@ -411,11 +489,14 @@ class LandBusObj(BaseBusObj):
     @property
     def insert_utc_date_time(self):
         """
-        Inserts the UTC date and time into the land object.
+        Inserts the UTC date and time into
+        the land object.
         Raises:
-            AttributeError: If the land object is not initialized.
+            AttributeError: If the
+                land object is not initialized.
         Returns:
-            The UTC date and time inserted into the land object.
+            The UTC date and time inserted into the
+            land object.
         """
         if not self.land:
             raise AttributeError(
@@ -425,12 +506,14 @@ class LandBusObj(BaseBusObj):
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value):
         """
-        Inserts the UTC date and time for the land.
+        Inserts the UTC date and time for the
+        land.
         Args:
             value (datetime): The UTC date and time to be inserted.
                 It should be a datetime object or None.
         Raises:
-            AttributeError: If the land is not initialized.
+            AttributeError: If the
+                land is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -443,11 +526,14 @@ class LandBusObj(BaseBusObj):
     @property
     def last_update_utc_date_time(self):
         """
-        Returns the last update UTC date and time of the land.
+        Returns the last update UTC date and time
+        of the land.
         Raises:
-            AttributeError: If the land is not initialized.
+            AttributeError: If the
+                land is not initialized.
         Returns:
-            datetime: The last update UTC date and time of the land.
+            datetime: The last update UTC date and time
+                of the land.
         """
         if not self.land:
             raise AttributeError(
@@ -457,13 +543,15 @@ class LandBusObj(BaseBusObj):
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value):
         """
-        Sets the last update UTC date and time for the land.
+        Sets the last update UTC date and time
+        for the land.
         Args:
             value (datetime): The datetime object
                 representing the last update UTC date and time.
                 Pass None to unset the value.
         Raises:
-            AttributeError: If the land is not initialized.
+            AttributeError: If the
+                land is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -477,14 +565,18 @@ class LandBusObj(BaseBusObj):
         json_data: str
     ):
         """
-        Load land data from JSON string.
-        :param json_data: JSON string containing land data.
+        Load land data
+        from JSON string.
+        :param json_data: JSON string containing
+            land data.
         :raises ValueError: If json_data is not a string
-            or if no land data is found.
+            or if no land
+            data is found.
         """
         if not isinstance(json_data, str):
             raise ValueError("json_data must be a string")
-        land_manager = LandManager(self._session_context)
+        land_manager = LandManager(
+            self._session_context)
         self.land = land_manager.from_json(json_data)
         return self
     async def load_from_code(
@@ -492,14 +584,19 @@ class LandBusObj(BaseBusObj):
         code: uuid.UUID
     ):
         """
-        Load land data from UUID code.
-        :param code: UUID code for loading a specific land.
-        :raises ValueError: If code is not a UUID or if no land data is found.
+        Load land
+        data from UUID code.
+        :param code: UUID code for loading a specific
+            land.
+        :raises ValueError: If code is not a UUID or if no
+            land data is found.
         """
         if not isinstance(code, uuid.UUID):
             raise ValueError("code must be a UUID")
-        land_manager = LandManager(self._session_context)
-        land_obj = await land_manager.get_by_code(code)
+        land_manager = LandManager(
+            self._session_context)
+        land_obj = await land_manager.get_by_code(
+            code)
         self.land = land_obj
         return self
     async def load_from_id(
@@ -507,15 +604,21 @@ class LandBusObj(BaseBusObj):
         land_id: int
     ):
         """
-        Load land data from land ID.
-        :param land_id: Integer ID for loading a specific land.
-        :raises ValueError: If land_id is not an integer or
-            if no land data is found.
+        Load land data from
+        land ID.
+        :param land_id: Integer ID for loading a specific
+            land.
+        :raises ValueError: If land_id
+            is not an integer or
+            if no land
+            data is found.
         """
         if not isinstance(land_id, int):
             raise ValueError("land_id must be an integer")
-        land_manager = LandManager(self._session_context)
-        land_obj = await land_manager.get_by_id(land_id)
+        land_manager = LandManager(
+            self._session_context)
+        land_obj = await land_manager.get_by_id(
+            land_id)
         self.land = land_obj
         return self
     async def load_from_obj_instance(
@@ -523,13 +626,19 @@ class LandBusObj(BaseBusObj):
         land_obj_instance: Land
     ):
         """
-        Use the provided Land instance.
-        :param land_obj_instance: Instance of the Land class.
-        :raises ValueError: If land_obj_instance is not an instance of Land.
+        Use the provided
+        Land instance.
+        :param land_obj_instance: Instance of the
+            Land class.
+        :raises ValueError: If land_obj_instance
+            is not an instance of
+            Land.
         """
-        if not isinstance(land_obj_instance, Land):
+        if not isinstance(land_obj_instance,
+                          Land):
             raise ValueError("land_obj_instance must be an instance of Land")
-        land_manager = LandManager(self._session_context)
+        land_manager = LandManager(
+            self._session_context)
         land_obj_instance_land_id = land_obj_instance.land_id
         land_obj = await land_manager.get_by_id(
             land_obj_instance_land_id
@@ -541,15 +650,21 @@ class LandBusObj(BaseBusObj):
         land_dict: dict
     ):
         """
-        Load land data from dictionary.
-        :param land_dict: Dictionary containing land data.
-        :raises ValueError: If land_dict is not a
-            dictionary or if no land data is found.
+        Load land data
+        from dictionary.
+        :param land_dict: Dictionary containing
+            land data.
+        :raises ValueError: If land_dict
+            is not a
+            dictionary or if no
+            land data is found.
         """
         if not isinstance(land_dict, dict):
             raise ValueError("land_dict must be a dictionary")
-        land_manager = LandManager(self._session_context)
-        self.land = land_manager.from_dict(land_dict)
+        land_manager = LandManager(
+            self._session_context)
+        self.land = land_manager.from_dict(
+            land_dict)
         return self
 
     @property
@@ -608,82 +723,116 @@ class LandBusObj(BaseBusObj):
         return self._session_context
     async def refresh(self):
         """
-        Refreshes the land object by fetching
+        Refreshes the land
+        object by fetching
         the latest data from the database.
         Returns:
-            The updated land object.
+            The updated
+            land object.
         """
-        land_manager = LandManager(self._session_context)
-        self.land = await land_manager.refresh(self.land)
+        land_manager = LandManager(
+            self._session_context)
+        self.land = await land_manager.refresh(
+            self.land)
         return self
     def is_valid(self):
         """
-        Check if the land is valid.
+        Check if the land
+        is valid.
         Returns:
-            bool: True if the land is valid, False otherwise.
+            bool: True if the land
+                is valid, False otherwise.
         """
         return self.land is not None
     def to_dict(self):
         """
-        Converts the Land object to a dictionary representation.
+        Converts the Land
+        object to a dictionary representation.
         Returns:
-            dict: A dictionary representation of the Land object.
+            dict: A dictionary representation of the
+                Land object.
         """
-        land_manager = LandManager(self._session_context)
-        return land_manager.to_dict(self.land)
+        land_manager = LandManager(
+            self._session_context)
+        return land_manager.to_dict(
+            self.land)
     def to_json(self):
         """
-        Converts the land object to a JSON representation.
+        Converts the land
+        object to a JSON representation.
         Returns:
-            str: The JSON representation of the land object.
+            str: The JSON representation of the
+                land object.
         """
-        land_manager = LandManager(self._session_context)
-        return land_manager.to_json(self.land)
+        land_manager = LandManager(
+            self._session_context)
+        return land_manager.to_json(
+            self.land)
     async def save(self):
         """
-        Saves the land object to the database.
-        If the land object is not initialized, an AttributeError is raised.
-        If the land_id is greater than 0, the land is
+        Saves the land object
+        to the database.
+        If the land object
+        is not initialized, an AttributeError is raised.
+        If the land_id
+        is greater than 0, the
+        land is
         updated in the database.
-        If the land_id is 0, the land is added to the database.
+        If the land_id is 0,
+        the land is
+        added to the database.
         Returns:
-            The updated or added land object.
+            The updated or added
+            land object.
         Raises:
-            AttributeError: If the land object is not initialized.
+            AttributeError: If the land
+            object is not initialized.
         """
         if not self.land:
             raise AttributeError(NOT_INITIALIZED_ERROR_MESSAGE)
         land_id = self.land.land_id
         if land_id > 0:
-            land_manager = LandManager(self._session_context)
-            self.land = await land_manager.update(self.land)
+            land_manager = LandManager(
+                self._session_context)
+            self.land = await land_manager.update(
+                self.land)
         if land_id == 0:
-            land_manager = LandManager(self._session_context)
-            self.land = await land_manager.add(self.land)
+            land_manager = LandManager(
+                self._session_context)
+            self.land = await land_manager.add(
+                self.land)
         return self
     async def delete(self):
         """
-        Deletes the land from the database.
+        Deletes the land
+        from the database.
         Raises:
-            AttributeError: If the land is not initialized.
+            AttributeError: If the land
+                is not initialized.
         """
         if not self.land:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         if self.land.land_id > 0:
-            land_manager = LandManager(self._session_context)
-            await land_manager.delete(self.land.land_id)
+            land_manager = LandManager(
+                self._session_context)
+            await land_manager.delete(
+                self.land.land_id)
             self.land = None
     async def randomize_properties(self):
         """
-        Randomizes the properties of the land object.
+        Randomizes the properties of the
+        land object.
         This method generates random values for various
-        properties of the land object
+        properties of the land
+        object
         Returns:
-            self: The current instance of the Land class.
+            self: The current instance of the
+                Land class.
         Raises:
-            AttributeError: If the land object is not initialized.
+            AttributeError: If the land
+                object is not initialized.
         """
         if not self.land:
             raise AttributeError(
@@ -704,28 +853,39 @@ class LandBusObj(BaseBusObj):
         return self
     def get_land_obj(self) -> Land:
         """
-        Returns the land object.
+        Returns the land
+        object.
         Raises:
-            AttributeError: If the land object is not initialized.
+            AttributeError: If the land
+                object is not initialized.
         Returns:
-            Land: The land object.
+            Land: The land
+                object.
         """
         if not self.land:
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.land
-    def is_equal(self, land: Land) -> bool:
+    def is_equal(
+        self,
+        land: Land
+    ) -> bool:
         """
-        Checks if the current land is equal to the given land.
+        Checks if the current land
+        is equal to the given land.
         Args:
-            land (Land): The land to compare with.
+            land (Land): The
+                land to compare with.
         Returns:
-            bool: True if the lands are equal, False otherwise.
+            bool: True if the lands
+                are equal, False otherwise.
         """
-        land_manager = LandManager(self._session_context)
+        land_manager = LandManager(
+            self._session_context)
         my_land = self.get_land_obj()
-        return land_manager.is_equal(land, my_land)
+        return land_manager.is_equal(
+            land, my_land)
 # endset
     # description,
     # displayOrder,
@@ -735,9 +895,11 @@ class LandBusObj(BaseBusObj):
     # PacID
     async def get_pac_id_rel_obj(self) -> models.Pac:
         """
-        Retrieves the related Pac object based on the pac_id.
+        Retrieves the related Pac object based
+        on the pac_id.
         Returns:
-            An instance of the Pac model representing the related pac.
+            An instance of the Pac model
+            representing the related pac.
         """
         pac_manager = managers_and_enums.PacManager(self._session_context)
         pac_obj = await pac_manager.get_by_id(self.pac_id)
@@ -781,15 +943,19 @@ class LandBusObj(BaseBusObj):
         """
         Get the parent code of the land.
         Returns:
-            The parent code of the land as a UUID.
+            The parent code of the land
+            as a UUID.
         """
         return self.pac_code_peek
     async def get_parent_obj(self) -> models.Pac:
         """
-        Get the parent object of the current land.
+        Get the parent object of the current
+        land.
         Returns:
-            The parent object of the current land,
-            which is an instance of the Pac model.
+            The parent object of the current
+            land,
+            which is an instance of the
+            Pac model.
         """
         pac = await self.get_pac_id_rel_obj()
         return pac
@@ -800,17 +966,23 @@ class LandBusObj(BaseBusObj):
         obj_list: List[Land]
     ):
         """
-        Convert a list of Land objects to a list of LandBusObj objects.
+        Convert a list of Land
+        objects to a list of
+        LandBusObj objects.
         Args:
             session_context (SessionContext): The session context.
-            obj_list (List[Land]): The list of Land objects to convert.
+            obj_list (List[Land]): The
+                list of Land objects to convert.
         Returns:
-            List[LandBusObj]: The list of converted LandBusObj objects.
+            List[LandBusObj]: The
+                list of converted LandBusObj
+                objects.
         """
         result = list()
         for land in obj_list:
             land_bus_obj = LandBusObj(session_context)
-            await land_bus_obj.load_from_obj_instance(land)
+            await land_bus_obj.load_from_obj_instance(
+                land)
             result.append(land_bus_obj)
         return result
 

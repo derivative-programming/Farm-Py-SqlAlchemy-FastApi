@@ -1,6 +1,7 @@
 # reports/row_models/tests/plant_user_details_test.py
 """
-This module contains unit tests for the `ReportItemPlantUserDetails` class.
+This module contains unit tests for the
+`ReportItemPlantUserDetails` class.
 The `ReportItemPlantUserDetails` class represents a
 report item for a plant Plant Details.
 It contains various fields with default values and

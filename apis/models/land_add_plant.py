@@ -1,7 +1,8 @@
 # apis/models/land_add_plant.py
 
 """
-This module contains the models for the Land Add Plant API.
+This module contains the models for the
+Land Add Plant API.
 """
 
 import json
@@ -25,7 +26,8 @@ from .post_reponse import PostResponse
 
 class LandAddPlantPostModelRequest(CamelModel):
     """
-    Represents the request model for the Land Add Plant API.
+    Represents the request model for the
+    Land Add Plant API.
     """
 
     force_error_message: str = Field(
@@ -135,7 +137,8 @@ class LandAddPlantPostModelRequest(CamelModel):
 
 class LandAddPlantPostModelResponse(PostResponse):
     """
-    Represents the response model for the Land Add Plant API.
+    Represents the response model for the
+    Land Add Plant API.
     """
 
     output_flavor_code: UUID4 = Field(

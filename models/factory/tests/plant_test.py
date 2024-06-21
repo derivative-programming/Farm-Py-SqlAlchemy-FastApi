@@ -55,7 +55,8 @@ class TestPlantFactory:
         """
         Test case for creating a plant.
         """
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         assert plant.plant_id is not None
 
     def test_code_default(self, session):
@@ -63,7 +64,8 @@ class TestPlantFactory:
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         assert isinstance(plant.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
@@ -71,7 +73,8 @@ class TestPlantFactory:
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        plant: Plant = PlantFactory.build(session=session)
+        plant: Plant = PlantFactory.build(
+            session=session)
         assert plant.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
@@ -79,7 +82,8 @@ class TestPlantFactory:
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        plant: Plant = PlantFactory.create(session=session)
+        plant: Plant = PlantFactory.create(
+            session=session)
         assert plant.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
@@ -87,7 +91,8 @@ class TestPlantFactory:
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         initial_code = plant.last_change_code
         plant.code = uuid.uuid4()
         session.commit()
@@ -98,18 +103,22 @@ class TestPlantFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        plant = PlantFactory.build(session=session)
+        plant = PlantFactory.build(
+            session=session)
         assert plant.insert_utc_date_time is not None
-        assert isinstance(plant.insert_utc_date_time, datetime)
+        assert isinstance(
+            plant.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        plant = PlantFactory.build(session=session)
+        plant = PlantFactory.build(
+            session=session)
         assert plant.insert_utc_date_time is not None
-        assert isinstance(plant.insert_utc_date_time, datetime)
+        assert isinstance(
+            plant.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         plant.code = uuid.uuid4()
         session.add(plant)
@@ -121,9 +130,11 @@ class TestPlantFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        plant = PlantFactory(session=session)
+        plant = PlantFactory(
+            session=session)
         assert plant.insert_utc_date_time is not None
-        assert isinstance(plant.insert_utc_date_time, datetime)
+        assert isinstance(
+            plant.insert_utc_date_time, datetime)
         initial_time = plant.insert_utc_date_time
         plant.code = uuid.uuid4()
         time.sleep(1)
@@ -135,18 +146,22 @@ class TestPlantFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        plant = PlantFactory.build(session=session)
+        plant = PlantFactory.build(
+            session=session)
         assert plant.last_update_utc_date_time is not None
-        assert isinstance(plant.last_update_utc_date_time, datetime)
+        assert isinstance(
+            plant.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        plant = PlantFactory.build(session=session)
+        plant = PlantFactory.build(
+            session=session)
         assert plant.last_update_utc_date_time is not None
-        assert isinstance(plant.last_update_utc_date_time, datetime)
+        assert isinstance(
+            plant.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         plant.code = uuid.uuid4()
         session.add(plant)
@@ -158,9 +173,11 @@ class TestPlantFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        plant = PlantFactory(session=session)
+        plant = PlantFactory(
+            session=session)
         assert plant.last_update_utc_date_time is not None
-        assert isinstance(plant.last_update_utc_date_time, datetime)
+        assert isinstance(
+            plant.last_update_utc_date_time, datetime)
         initial_time = plant.last_update_utc_date_time
         plant.code = uuid.uuid4()
         time.sleep(1)
@@ -169,9 +186,11 @@ class TestPlantFactory:
 
     def test_model_deletion(self, session):
         """
-        Test case for deleting a plant model.
+        Test case for deleting a
+        plant model.
         """
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         session.delete(plant)
         session.commit()
         deleted_plant = session.query(Plant).filter_by(
@@ -180,9 +199,11 @@ class TestPlantFactory:
 
     def test_data_types(self, session):
         """
-        Test case for checking the data types of the plant attributes.
+        Test case for checking the data types of
+        the plant attributes.
         """
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         assert isinstance(plant.plant_id, int)
         assert isinstance(plant.code, uuid.UUID)
         assert isinstance(plant.last_change_code, int)
@@ -261,7 +282,8 @@ class TestPlantFactory:
 
     def test_fields_default(self):
         """
-        Test case for checking the default values of the plant fields.
+        Test case for checking the default values of
+        the plant fields.
         """
         plant = Plant()
         assert plant.code is not None
@@ -328,13 +350,15 @@ class TestPlantFactory:
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
-        last_change_code in the Plant model.
+        last_change_code in the Plant
+        model.
 
         This test case checks if the last_change_code
-        of a Plant object is updated correctly
+        of a Plant object is
+        updated correctly
         when multiple changes are made concurrently.
-        It creates a Plant object, retrieves it
-        from the database, and updates its code
+        It creates a Plant object,
+        retrieves it from the database, and updates its code
         attribute twice in separate transactions.
         Finally, it asserts that the last_change_code
         of the second retrieved Plant object
@@ -347,7 +371,8 @@ class TestPlantFactory:
             None
         """
 
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         original_last_change_code = plant.last_change_code
         plant_1 = session.query(Plant).filter_by(
             _plant_id=plant.plant_id).first()
@@ -393,7 +418,8 @@ class TestPlantFactory:
                 session violate any integrity constraints.
 
         """
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         plant.land_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
@@ -425,7 +451,8 @@ class TestPlantFactory:
         Returns:
             None
         """
-        plant = PlantFactory.create(session=session)
+        plant = PlantFactory.create(
+            session=session)
         plant.flvr_foreign_key_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()

@@ -1,10 +1,13 @@
 # apis/models/tac_farm_dashboard.py
 """
-This module contains the models for the Tac Farm Dashboard API.
+This module contains the models for the
+Tac Farm Dashboard API.
 - TacFarmDashboardGetModelRequest: Represents the
-    request model for getting the tac Farm Dashboard.
+    request model for getting the
+    tac Farm Dashboard.
 - TacFarmDashboardGetModelResponseItem: Represents the
-    response model item for the tac Farm Dashboard.
+    response model item for the
+    tac Farm Dashboard.
 """
 import json
 import logging
@@ -24,7 +27,8 @@ from reports.report_request_validation_error import \
 from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
 class TacFarmDashboardGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the tac Farm Dashboard.
+    Represents the request model for getting the
+    tac Farm Dashboard.
     """
     page_number: int = Field(
         default=0,
@@ -45,7 +49,8 @@ class TacFarmDashboardGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-        Configuration class for the TacFarmDashboard model.
+        Configuration class for the
+        TacFarmDashboard model.
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -81,7 +86,8 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class TacFarmDashboardGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the tac Farm Dashboard.
+    Represents the response model item for the
+    tac Farm Dashboard.
     """
     field_one_plant_list_link_land_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -116,9 +122,11 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemTacFarmDashboard:
         """
-        Builds a ReportItemTacFarmDashboard object from the response model item.
+        Builds a ReportItemTacFarmDashboard object
+        from the response model item.
         Returns:
-            ReportItemTacFarmDashboard: The built ReportItemTacFarmDashboard object.
+            ReportItemTacFarmDashboard: The built
+            ReportItemTacFarmDashboard object.
         """
         data = ReportItemTacFarmDashboard()
         data.field_one_plant_list_link_land_code = (
@@ -131,7 +139,8 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
 # endset
 class TacFarmDashboardGetModelResponse(ListModel):
     """
-    Represents the response model for the TacFarmDashboardGetModel API.
+    Represents the response model for the
+    TacFarmDashboardGetModel API.
     Attributes:
         request (TacFarmDashboardGetModelRequest):
             The request model for the API.

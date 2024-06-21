@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_details.py
 """
-This module contains the implementation of the PlantUserDetailsRouter,
-which handles the API endpoints related to the Plant User Details.
+This module contains the implementation of the
+PlantUserDetailsRouter,
+which handles the API endpoints related to the
+Plant User Details.
 The PlantUserDetailsRouter provides the following endpoints:
     - GET /api/v1_0/plant-user-details/{plant_code}/init:
-        Get the initialization data for the Plant User Details page.
+        Get the initialization data for the
+        Plant User Details page.
     - GET /api/v1_0/plant-user-details/{plant_code}:
-        Get the Plant User Details Report for a specific plant code.
+        Get the Plant User Details Report
+        for a specific plant code.
     - GET /api/v1_0/plant-user-details/{plant_code}/to-csv:
-        Retrieve the Plant User Details Report as a CSV file.
+        Retrieve the Plant User Details
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class PlantUserDetailsRouterConfig():
     is_public: bool = False
 class PlantUserDetailsRouter(BaseRouter):
     """
-    Router class for the Plant User Details API endpoints.
+    Router class for the
+    Plant User Details
+    API endpoints.
     """
     router = APIRouter(tags=["PlantUserDetails"])
 
@@ -59,14 +66,16 @@ class PlantUserDetailsRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the initialization data for the Plant User Details page.
+        Get the initialization data for the
+        Plant User Details page.
         Args:
             plant_code (uuid.UUID): The UUID of the plant.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
             PlantUserDetailsInitReportGetInitModelResponse:
-                The initialization data for the Plant User Details page.
+                The initialization data for the
+                Plant User Details page.
         """
         logging.info(
             'PlantUserDetailsRouter.request_get_init start. plantCode:%s',
@@ -134,7 +143,8 @@ class PlantUserDetailsRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the Plant User Details Report for a specific plant code.
+        Get the Plant User Details
+        Report for a specific plant code.
         Args:
             plant_code (uuid.UUID): The unique identifier for the plant.
             request_model (api_models.PlantUserDetailsGetModelRequest):
@@ -143,7 +153,8 @@ class PlantUserDetailsRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.PlantUserDetailsGetModelResponse: The response
-                model containing the Plant User Details Report.
+                model containing the
+                Plant User Details Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """
@@ -208,7 +219,8 @@ class PlantUserDetailsRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Retrieve the Plant User Details Report as a CSV file.
+        Retrieve the Plant User Details
+        Report as a CSV file.
         Args:
             plant_code (uuid.UUID): The unique identifier for the plant.
             request_model (api_models.PlantUserDetailsGetModelRequest):
@@ -216,7 +228,8 @@ class PlantUserDetailsRouter(BaseRouter):
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
-            FileResponse: The CSV file containing the Plant User Details Report.
+            FileResponse: The CSV file containing the
+            Plant User Details Report.
         """
         logging.info(
             "PlantUserDetailsRouter.request_get_with_id_to_csv"

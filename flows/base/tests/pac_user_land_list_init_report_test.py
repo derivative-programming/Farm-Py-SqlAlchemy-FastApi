@@ -23,7 +23,8 @@ class TestBaseFlowPacUserLandListInitReport():
         Test case for the _process_validation_rules method
         of the BaseFlowPacUserLandListInitReport class.
         This method tests the validation rules for the request
-        parameters of the pac  flow.
+        parameters of the
+        pac  flow.
         Args:
             session: The session object for the test.
         Returns:

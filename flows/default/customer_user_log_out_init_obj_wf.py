@@ -1,7 +1,10 @@
 # flows/default/customer_user_log_out_init_obj_wf.py
 """
-This module contains the FlowCustomerUserLogOutInitObjWF class and related classes
-that handle the addition of a  to a specific customer in the flow process.
+This module contains the
+FlowCustomerUserLogOutInitObjWF class and related classes
+that handle the addition of a
+ to a specific
+customer in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowCustomerUserLogOutInitObjWFResult():
     """
-    Represents the result of the FlowCustomerUserLogOutInitObjWF process.
+    Represents the result of the
+    FlowCustomerUserLogOutInitObjWF process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     tac_code: uuid.UUID = uuid.UUID(int=0)
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowCustomerUserLogOutInitObjWFResult class.
+        Initializes a new instance of the
+        FlowCustomerUserLogOutInitObjWFResult class.
         """
     def to_json(self):
         """
-        Converts the FlowCustomerUserLogOutInitObjWFResult instance to a JSON string.
+        Converts the FlowCustomerUserLogOutInitObjWFResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -41,7 +47,8 @@ class FlowCustomerUserLogOutInitObjWFResult():
         return json.dumps(data)
 class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
     """
-    FlowCustomerUserLogOutInitObjWF handles the addition of a  to
+    FlowCustomerUserLogOutInitObjWF handles the addition of
+    a  to
     a specific customer in the flow process.
     This class extends the BaseFlowCustomerUserLogOutInitObjWF class and
     initializes it with the provided session context.
@@ -61,9 +68,11 @@ class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
 # endset  # noqa: E122
     ) -> FlowCustomerUserLogOutInitObjWFResult:
         """
-        Processes the addition of a  to a specific customer.
+        Processes the addition of a
+         to a specific customer.
         Returns:
-            FlowCustomerUserLogOutInitObjWFResult: The result of the FlowCustomerUserLogOutInitObjWF process.
+            FlowCustomerUserLogOutInitObjWFResult: The result of the
+                FlowCustomerUserLogOutInitObjWF process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

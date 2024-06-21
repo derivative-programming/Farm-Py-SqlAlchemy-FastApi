@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/pac_user_tri_state_filter_list.py
 """
-This module contains the implementation of the PacUserTriStateFilterListRouter,
-which handles the API endpoints related to the Pac User Tri State Filter List.
+This module contains the implementation of the
+PacUserTriStateFilterListRouter,
+which handles the API endpoints related to the
+Pac User Tri State Filter List.
 The PacUserTriStateFilterListRouter provides the following endpoints:
     - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init:
-        Get the initialization data for the Pac User Tri State Filter List page.
+        Get the initialization data for the
+        Pac User Tri State Filter List page.
     - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}:
-        Get the Pac User Tri State Filter List Report for a specific pac code.
+        Get the Pac User Tri State Filter List Report
+        for a specific pac code.
     - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/to-csv:
-        Retrieve the Pac User Tri State Filter List Report as a CSV file.
+        Retrieve the Pac User Tri State Filter List
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class PacUserTriStateFilterListRouterConfig():
     is_public: bool = False
 class PacUserTriStateFilterListRouter(BaseRouter):
     """
-    Router class for the Pac User Tri State Filter List API endpoints.
+    Router class for the
+    Pac User Tri State Filter List
+    API endpoints.
     """
     router = APIRouter(tags=["PacUserTriStateFilterList"])
 
@@ -59,14 +66,16 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the initialization data for the Pac User Tri State Filter List page.
+        Get the initialization data for the
+        Pac User Tri State Filter List page.
         Args:
             pac_code (uuid.UUID): The UUID of the pac.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
             PacUserTriStateFilterListInitReportGetInitModelResponse:
-                The initialization data for the Pac User Tri State Filter List page.
+                The initialization data for the
+                Pac User Tri State Filter List page.
         """
         logging.info(
             'PacUserTriStateFilterListRouter.request_get_init start. pacCode:%s',
@@ -134,7 +143,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the Pac User Tri State Filter List Report for a specific pac code.
+        Get the Pac User Tri State Filter List
+        Report for a specific pac code.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserTriStateFilterListGetModelRequest):
@@ -143,7 +153,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.PacUserTriStateFilterListGetModelResponse: The response
-                model containing the Pac User Tri State Filter List Report.
+                model containing the
+                Pac User Tri State Filter List Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """
@@ -208,7 +219,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Retrieve the Pac User Tri State Filter List Report as a CSV file.
+        Retrieve the Pac User Tri State Filter List
+        Report as a CSV file.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserTriStateFilterListGetModelRequest):
@@ -216,7 +228,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
-            FileResponse: The CSV file containing the Pac User Tri State Filter List Report.
+            FileResponse: The CSV file containing the
+            Pac User Tri State Filter List Report.
         """
         logging.info(
             "PacUserTriStateFilterListRouter.request_get_with_id_to_csv"

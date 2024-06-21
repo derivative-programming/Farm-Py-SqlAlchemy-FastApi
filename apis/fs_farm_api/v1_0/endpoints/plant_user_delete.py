@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_delete.py
 """
-This module contains the implementation of the PlantUserDeleteRouter,
-which handles the API endpoints related to the Plant User Delete.
+This module contains the implementation of the
+PlantUserDeleteRouter,
+which handles the API endpoints related to the
+Plant User Delete.
 The PlantUserDeleteRouter provides the following endpoints:
     - GET /api/v1_0/plant-user-delete/{plant_code}/init:
-        Get the initialization data for the Plant User Delete page.
+        Get the initialization data for the
+        Plant User Delete page.
     - GET /api/v1_0/plant-user-delete/{plant_code}:
-        Get the Plant User Delete Report for a specific  code.
+        Get the Plant User Delete Report
+        for a specific  code.
     - GET /api/v1_0/plant-user-delete/{plant_code}/to-csv:
-        Retrieve the Plant User Delete Report as a CSV file.
+        Retrieve the Plant User Delete
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class PlantUserDeleteRouterConfig():
     is_public: bool = False
 class PlantUserDeleteRouter(BaseRouter):
     """
-    Router class for the Plant User Delete API endpoints.
+    Router class for the
+    Plant User Delete
+    API endpoints.
     """
     router = APIRouter(tags=["PlantUserDelete"])
 
@@ -99,16 +106,16 @@ class PlantUserDeleteRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

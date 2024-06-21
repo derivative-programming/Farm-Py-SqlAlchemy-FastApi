@@ -1,6 +1,7 @@
 # pac_user_tri_state_filter_list.py
 """
-This module is the manager for report 'Pac User Tri State Filter List'
+This module is the manager for report
+'Pac User Tri State Filter List'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserT
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPacUserTriStateFilterList():
     """
-    This class is the manager of report 'Pac User Tri State Filter List'
+    This class is the manager of report
+    'Pac User Tri State Filter List'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerPacUserTriStateFilterList():
         order_by_descending: bool = False,
     ) -> List[ReportItemPacUserTriStateFilterList]:
         """
-        Generate the 'Pac User Tri State Filter List' report.
+        Generate the
+        'Pac User Tri State Filter List' report.
         Returns:
-            List[ReportItemPacUserTriStateFilterList]: The list of report items.
+            List[ReportItemPacUserTriStateFilterList]: The
+                list of report items.
         """
         logging.info('ReportManagerPacUserTriStateFilterList.generate Start')
         role_required = ""
@@ -81,7 +85,8 @@ class ReportManagerPacUserTriStateFilterList():
                         file_name: str,
                         data_list: List[ReportItemPacUserTriStateFilterList]):
         """
-        Build a CSV file for the 'Pac User Tri State Filter List' report.
+        Build a CSV file for the
+        'Pac User Tri State Filter List' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemPacUserTriStateFilterList]):

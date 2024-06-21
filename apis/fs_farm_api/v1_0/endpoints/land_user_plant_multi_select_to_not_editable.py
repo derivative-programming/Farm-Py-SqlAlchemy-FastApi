@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/land_user_plant_multi_select_to_not_editable.py
 """
-This module contains the implementation of the LandUserPlantMultiSelectToNotEditableRouter,
-which handles the API endpoints related to the Land User Plant Multi Select To Not Editable.
+This module contains the implementation of the
+LandUserPlantMultiSelectToNotEditableRouter,
+which handles the API endpoints related to the
+Land User Plant Multi Select To Not Editable.
 The LandUserPlantMultiSelectToNotEditableRouter provides the following endpoints:
     - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/init:
-        Get the initialization data for the Land User Plant Multi Select To Not Editable page.
+        Get the initialization data for the
+        Land User Plant Multi Select To Not Editable page.
     - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}:
-        Get the Land User Plant Multi Select To Not Editable Report for a specific  code.
+        Get the Land User Plant Multi Select To Not Editable Report
+        for a specific  code.
     - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/to-csv:
-        Retrieve the Land User Plant Multi Select To Not Editable Report as a CSV file.
+        Retrieve the Land User Plant Multi Select To Not Editable
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class LandUserPlantMultiSelectToNotEditableRouterConfig():
     is_public: bool = False
 class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
     """
-    Router class for the Land User Plant Multi Select To Not Editable API endpoints.
+    Router class for the
+    Land User Plant Multi Select To Not Editable
+    API endpoints.
     """
     router = APIRouter(tags=["LandUserPlantMultiSelectToNotEditable"])
 
@@ -99,16 +106,16 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
                 )
-                response.message = str(te) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{te} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info("Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
                 )
-                response.message = str(e) + " traceback:" + traceback_string
-                logging.info("response.message:%s", response.message)
+                response.message = f"{e} traceback: {traceback_string}"
+                logging.info("response.message: %s", response.message)
             finally:
                 if response.success is True:
                     await session.commit()

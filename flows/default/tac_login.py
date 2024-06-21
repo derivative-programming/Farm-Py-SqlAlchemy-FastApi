@@ -1,7 +1,10 @@
 # flows/default/tac_login.py
 """
-This module contains the FlowTacLogin class and related classes
-that handle the addition of a  to a specific tac in the flow process.
+This module contains the
+FlowTacLogin class and related classes
+that handle the addition of a
+ to a specific
+tac in the flow process.
 """
 import uuid
 import json
@@ -14,7 +17,8 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowTacLoginResult():
     """
-    Represents the result of the FlowTacLogin process.
+    Represents the result of the
+    FlowTacLogin process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     customer_code: uuid.UUID = uuid.UUID(int=0)
@@ -26,11 +30,13 @@ class FlowTacLoginResult():
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowTacLoginResult class.
+        Initializes a new instance of the
+        FlowTacLoginResult class.
         """
     def to_json(self):
         """
-        Converts the FlowTacLoginResult instance to a JSON string.
+        Converts the FlowTacLoginResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -56,7 +62,8 @@ class FlowTacLoginResult():
         return json.dumps(data)
 class FlowTacLogin(BaseFlowTacLogin):
     """
-    FlowTacLogin handles the addition of a  to
+    FlowTacLogin handles the addition of
+    a  to
     a specific tac in the flow process.
     This class extends the BaseFlowTacLogin class and
     initializes it with the provided session context.
@@ -77,9 +84,11 @@ class FlowTacLogin(BaseFlowTacLogin):
 # endset  # noqa: E122
     ) -> FlowTacLoginResult:
         """
-        Processes the addition of a  to a specific tac.
+        Processes the addition of a
+         to a specific tac.
         Returns:
-            FlowTacLoginResult: The result of the FlowTacLogin process.
+            FlowTacLoginResult: The result of the
+                FlowTacLogin process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

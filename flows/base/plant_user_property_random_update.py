@@ -1,7 +1,8 @@
 # flows/base/plant_user_property_random_update.py
 """
 This module contains the implementation
-of the BaseFlow Plant User Property Random Update class
+of the BaseFlow
+Plant User Property Random Update class
 """
 import uuid
 from datetime import date, datetime

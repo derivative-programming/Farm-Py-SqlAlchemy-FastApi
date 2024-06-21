@@ -1,6 +1,7 @@
 # tac_farm_dashboard.py
 """
-This module is the manager for report 'Tac Farm Dashboard'
+This module is the manager for report
+'Tac Farm Dashboard'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerTacFarmDashboard():
     """
-    This class is the manager of report 'Tac Farm Dashboard'
+    This class is the manager of report
+    'Tac Farm Dashboard'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerTacFarmDashboard():
         order_by_descending: bool = False,
     ) -> List[ReportItemTacFarmDashboard]:
         """
-        Generate the 'Tac Farm Dashboard' report.
+        Generate the
+        'Tac Farm Dashboard' report.
         Returns:
-            List[ReportItemTacFarmDashboard]: The list of report items.
+            List[ReportItemTacFarmDashboard]: The
+                list of report items.
         """
         logging.info('ReportManagerTacFarmDashboard.generate Start')
         role_required = ""
@@ -81,7 +85,8 @@ class ReportManagerTacFarmDashboard():
                         file_name: str,
                         data_list: List[ReportItemTacFarmDashboard]):
         """
-        Build a CSV file for the 'Tac Farm Dashboard' report.
+        Build a CSV file for the
+        'Tac Farm Dashboard' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemTacFarmDashboard]):

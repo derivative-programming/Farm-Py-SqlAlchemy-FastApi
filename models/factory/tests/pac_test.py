@@ -48,35 +48,40 @@ class TestPacFactory:
         """
         Test case for creating a pac.
         """
-        pac = PacFactory.create(session=session)
+        pac = PacFactory.create(
+            session=session)
         assert pac.pac_id is not None
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        pac = PacFactory.create(session=session)
+        pac = PacFactory.create(
+            session=session)
         assert isinstance(pac.code, uuid.UUID)
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        pac: Pac = PacFactory.build(session=session)
+        pac: Pac = PacFactory.build(
+            session=session)
         assert pac.last_change_code == 0
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        pac: Pac = PacFactory.create(session=session)
+        pac: Pac = PacFactory.create(
+            session=session)
         assert pac.last_change_code == 1
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        pac = PacFactory.create(session=session)
+        pac = PacFactory.create(
+            session=session)
         initial_code = pac.last_change_code
         pac.code = uuid.uuid4()
         session.commit()
@@ -86,17 +91,21 @@ class TestPacFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        pac = PacFactory.build(session=session)
+        pac = PacFactory.build(
+            session=session)
         assert pac.insert_utc_date_time is not None
-        assert isinstance(pac.insert_utc_date_time, datetime)
+        assert isinstance(
+            pac.insert_utc_date_time, datetime)
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        pac = PacFactory.build(session=session)
+        pac = PacFactory.build(
+            session=session)
         assert pac.insert_utc_date_time is not None
-        assert isinstance(pac.insert_utc_date_time, datetime)
+        assert isinstance(
+            pac.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         pac.code = uuid.uuid4()
         session.add(pac)
@@ -107,9 +116,11 @@ class TestPacFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        pac = PacFactory(session=session)
+        pac = PacFactory(
+            session=session)
         assert pac.insert_utc_date_time is not None
-        assert isinstance(pac.insert_utc_date_time, datetime)
+        assert isinstance(
+            pac.insert_utc_date_time, datetime)
         initial_time = pac.insert_utc_date_time
         pac.code = uuid.uuid4()
         time.sleep(1)
@@ -120,17 +131,21 @@ class TestPacFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        pac = PacFactory.build(session=session)
+        pac = PacFactory.build(
+            session=session)
         assert pac.last_update_utc_date_time is not None
-        assert isinstance(pac.last_update_utc_date_time, datetime)
+        assert isinstance(
+            pac.last_update_utc_date_time, datetime)
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        pac = PacFactory.build(session=session)
+        pac = PacFactory.build(
+            session=session)
         assert pac.last_update_utc_date_time is not None
-        assert isinstance(pac.last_update_utc_date_time, datetime)
+        assert isinstance(
+            pac.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
         pac.code = uuid.uuid4()
         session.add(pac)
@@ -141,9 +156,11 @@ class TestPacFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        pac = PacFactory(session=session)
+        pac = PacFactory(
+            session=session)
         assert pac.last_update_utc_date_time is not None
-        assert isinstance(pac.last_update_utc_date_time, datetime)
+        assert isinstance(
+            pac.last_update_utc_date_time, datetime)
         initial_time = pac.last_update_utc_date_time
         pac.code = uuid.uuid4()
         time.sleep(1)
@@ -151,9 +168,11 @@ class TestPacFactory:
         assert pac.last_update_utc_date_time > initial_time
     def test_model_deletion(self, session):
         """
-        Test case for deleting a pac model.
+        Test case for deleting a
+        pac model.
         """
-        pac = PacFactory.create(session=session)
+        pac = PacFactory.create(
+            session=session)
         session.delete(pac)
         session.commit()
         deleted_pac = session.query(Pac).filter_by(
@@ -161,9 +180,11 @@ class TestPacFactory:
         assert deleted_pac is None
     def test_data_types(self, session):
         """
-        Test case for checking the data types of the pac attributes.
+        Test case for checking the data types of
+        the pac attributes.
         """
-        pac = PacFactory.create(session=session)
+        pac = PacFactory.create(
+            session=session)
         assert isinstance(pac.pac_id, int)
         assert isinstance(pac.code, uuid.UUID)
         assert isinstance(pac.last_change_code, int)
@@ -198,7 +219,8 @@ class TestPacFactory:
         session.rollback()
     def test_fields_default(self):
         """
-        Test case for checking the default values of the pac fields.
+        Test case for checking the default values of
+        the pac fields.
         """
         pac = Pac()
         assert pac.code is not None
@@ -224,12 +246,14 @@ class TestPacFactory:
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
-        last_change_code in the Pac model.
+        last_change_code in the Pac
+        model.
         This test case checks if the last_change_code
-        of a Pac object is updated correctly
+        of a Pac object is
+        updated correctly
         when multiple changes are made concurrently.
-        It creates a Pac object, retrieves it
-        from the database, and updates its code
+        It creates a Pac object,
+        retrieves it from the database, and updates its code
         attribute twice in separate transactions.
         Finally, it asserts that the last_change_code
         of the second retrieved Pac object
@@ -239,7 +263,8 @@ class TestPacFactory:
         Returns:
             None
         """
-        pac = PacFactory.create(session=session)
+        pac = PacFactory.create(
+            session=session)
         original_last_change_code = pac.last_change_code
         pac_1 = session.query(Pac).filter_by(
             _pac_id=pac.pac_id).first()

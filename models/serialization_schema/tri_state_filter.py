@@ -1,14 +1,17 @@
 # models/serialization_schema/tri_state_filter.py
 """
-This module contains the TriStateFilterSchema class, which is responsible
-for serializing and deserializing TriStateFilter objects.
+This module contains the TriStateFilterSchema
+class, which is responsible
+for serializing and deserializing
+TriStateFilter objects.
 """
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import TriStateFilter
 class TriStateFilterSchema(SQLAlchemyAutoSchema):
     """
-    Schema class for serializing and deserializing TriStateFilter objects.
+    Schema class for serializing and deserializing
+    TriStateFilter objects.
     """
     class Meta:
         """

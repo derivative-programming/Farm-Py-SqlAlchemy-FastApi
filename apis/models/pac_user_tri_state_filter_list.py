@@ -1,10 +1,13 @@
 # apis/models/pac_user_tri_state_filter_list.py
 """
-This module contains the models for the Pac User Tri State Filter List API.
+This module contains the models for the
+Pac User Tri State Filter List API.
 - PacUserTriStateFilterListGetModelRequest: Represents the
-    request model for getting the pac Pac User Tri State Filter List Report.
+    request model for getting the
+    pac Pac User Tri State Filter List Report.
 - PacUserTriStateFilterListGetModelResponseItem: Represents the
-    response model item for the pac Pac User Tri State Filter List Report.
+    response model item for the
+    pac Pac User Tri State Filter List Report.
 """
 import json
 import logging
@@ -24,7 +27,8 @@ from reports.report_request_validation_error import \
 from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
 class PacUserTriStateFilterListGetModelRequest(CamelModel):
     """
-    Represents the request model for getting the pac Pac User Tri State Filter List Report.
+    Represents the request model for getting the
+    pac Pac User Tri State Filter List Report.
     """
     page_number: int = Field(
         default=0,
@@ -45,7 +49,8 @@ class PacUserTriStateFilterListGetModelRequest(CamelModel):
 # endset
     class Config:
         """
-        Configuration class for the PacUserTriStateFilterList model.
+        Configuration class for the
+        PacUserTriStateFilterList model.
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -81,7 +86,8 @@ class PacUserTriStateFilterListGetModelRequest(CamelModel):
         return {snake_to_camel(k): v for k, v in data.items()}
 class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
     """
-    Represents the response model item for the pac Pac User Tri State Filter List Report.
+    Represents the response model item for the
+    pac Pac User Tri State Filter List Report.
     """
     tri_state_filter_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -134,9 +140,11 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
         self
     ) -> ReportItemPacUserTriStateFilterList:
         """
-        Builds a ReportItemPacUserTriStateFilterList object from the response model item.
+        Builds a ReportItemPacUserTriStateFilterList object
+        from the response model item.
         Returns:
-            ReportItemPacUserTriStateFilterList: The built ReportItemPacUserTriStateFilterList object.
+            ReportItemPacUserTriStateFilterList: The built
+            ReportItemPacUserTriStateFilterList object.
         """
         data = ReportItemPacUserTriStateFilterList()
         data.tri_state_filter_code = (
@@ -157,7 +165,8 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
 # endset
 class PacUserTriStateFilterListGetModelResponse(ListModel):
     """
-    Represents the response model for the PacUserTriStateFilterListGetModel API.
+    Represents the response model for the
+    PacUserTriStateFilterListGetModel API.
     Attributes:
         request (PacUserTriStateFilterListGetModelRequest):
             The request model for the API.

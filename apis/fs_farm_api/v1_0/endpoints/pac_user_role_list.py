@@ -1,14 +1,19 @@
 # apis/fs_farm_api/v1_0/endpoints/pac_user_role_list.py
 """
-This module contains the implementation of the PacUserRoleListRouter,
-which handles the API endpoints related to the Pac User Role List.
+This module contains the implementation of the
+PacUserRoleListRouter,
+which handles the API endpoints related to the
+Pac User Role List.
 The PacUserRoleListRouter provides the following endpoints:
     - GET /api/v1_0/pac-user-role-list/{pac_code}/init:
-        Get the initialization data for the Pac User Role List page.
+        Get the initialization data for the
+        Pac User Role List page.
     - GET /api/v1_0/pac-user-role-list/{pac_code}:
-        Get the Pac User Role List Report for a specific pac code.
+        Get the Pac User Role List Report
+        for a specific pac code.
     - GET /api/v1_0/pac-user-role-list/{pac_code}/to-csv:
-        Retrieve the Pac User Role List Report as a CSV file.
+        Retrieve the Pac User Role List
+        Report as a CSV file.
 """
 import logging
 import tempfile
@@ -42,7 +47,9 @@ class PacUserRoleListRouterConfig():
     is_public: bool = False
 class PacUserRoleListRouter(BaseRouter):
     """
-    Router class for the Pac User Role List API endpoints.
+    Router class for the
+    Pac User Role List
+    API endpoints.
     """
     router = APIRouter(tags=["PacUserRoleList"])
 
@@ -59,14 +66,16 @@ class PacUserRoleListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the initialization data for the Pac User Role List page.
+        Get the initialization data for the
+        Pac User Role List page.
         Args:
             pac_code (uuid.UUID): The UUID of the pac.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
             PacUserRoleListInitReportGetInitModelResponse:
-                The initialization data for the Pac User Role List page.
+                The initialization data for the
+                Pac User Role List page.
         """
         logging.info(
             'PacUserRoleListRouter.request_get_init start. pacCode:%s',
@@ -134,7 +143,8 @@ class PacUserRoleListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Get the Pac User Role List Report for a specific pac code.
+        Get the Pac User Role List
+        Report for a specific pac code.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserRoleListGetModelRequest):
@@ -143,7 +153,8 @@ class PacUserRoleListRouter(BaseRouter):
             api_key (str): The API key for authorization.
         Returns:
             api_models.PacUserRoleListGetModelResponse: The response
-                model containing the Pac User Role List Report.
+                model containing the
+                Pac User Role List Report.
         Raises:
             Exception: If an error occurs during the processing of the request.
         """
@@ -208,7 +219,8 @@ class PacUserRoleListRouter(BaseRouter):
         api_key: str = Depends(api_key_header)
     ):
         """
-        Retrieve the Pac User Role List Report as a CSV file.
+        Retrieve the Pac User Role List
+        Report as a CSV file.
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
             request_model (api_models.PacUserRoleListGetModelRequest):
@@ -216,7 +228,8 @@ class PacUserRoleListRouter(BaseRouter):
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
         Returns:
-            FileResponse: The CSV file containing the Pac User Role List Report.
+            FileResponse: The CSV file containing the
+            Pac User Role List Report.
         """
         logging.info(
             "PacUserRoleListRouter.request_get_with_id_to_csv"

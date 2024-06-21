@@ -21,10 +21,14 @@ class TestReportProviderPacUserFlavorList:
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
-        This test case verifies the generation of a Pac User Flavor List Report report.
-        It creates a session context, initializes the runtime, and generates
-        a Pac User Flavor List Report report using the ReportProviderPacUserFlavorList class.
-        The generated report is then checked for the expected format.
+        This test case verifies the generation of
+        a Pac User Flavor List Report report.
+        It creates a session context, initializes
+        the runtime, and generates
+        a Pac User Flavor List Report report using
+        the ReportProviderPacUserFlavorList class.
+        The generated report is then
+        checked for the expected format.
         """
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)

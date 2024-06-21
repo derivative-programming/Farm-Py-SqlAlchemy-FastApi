@@ -1,7 +1,10 @@
 # flows/default/pac_user_land_list_init_report.py
 """
-This module contains the FlowPacUserLandListInitReport class and related classes
-that handle the addition of a  to a specific pac in the flow process.
+This module contains the
+FlowPacUserLandListInitReport class and related classes
+that handle the addition of a
+ to a specific
+pac in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPacUserLandListInitReportResult():
     """
-    Represents the result of the FlowPacUserLandListInitReport process.
+    Represents the result of the
+    FlowPacUserLandListInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowPacUserLandListInitReportResult class.
+        Initializes a new instance of the
+        FlowPacUserLandListInitReportResult class.
         """
     def to_json(self):
         """
-        Converts the FlowPacUserLandListInitReportResult instance to a JSON string.
+        Converts the FlowPacUserLandListInitReportResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -40,7 +46,8 @@ class FlowPacUserLandListInitReportResult():
         return json.dumps(data)
 class FlowPacUserLandListInitReport(BaseFlowPacUserLandListInitReport):
     """
-    FlowPacUserLandListInitReport handles the addition of a  to
+    FlowPacUserLandListInitReport handles the addition of
+    a  to
     a specific pac in the flow process.
     This class extends the BaseFlowPacUserLandListInitReport class and
     initializes it with the provided session context.
@@ -60,9 +67,11 @@ class FlowPacUserLandListInitReport(BaseFlowPacUserLandListInitReport):
 # endset  # noqa: E122
     ) -> FlowPacUserLandListInitReportResult:
         """
-        Processes the addition of a  to a specific pac.
+        Processes the addition of a
+         to a specific pac.
         Returns:
-            FlowPacUserLandListInitReportResult: The result of the FlowPacUserLandListInitReport process.
+            FlowPacUserLandListInitReportResult: The result of the
+                FlowPacUserLandListInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

@@ -1,7 +1,10 @@
 # flows/default/pac_user_flavor_list_init_report.py
 """
-This module contains the FlowPacUserFlavorListInitReport class and related classes
-that handle the addition of a  to a specific pac in the flow process.
+This module contains the
+FlowPacUserFlavorListInitReport class and related classes
+that handle the addition of a
+ to a specific
+pac in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPacUserFlavorListInitReportResult():
     """
-    Represents the result of the FlowPacUserFlavorListInitReport process.
+    Represents the result of the
+    FlowPacUserFlavorListInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowPacUserFlavorListInitReportResult class.
+        Initializes a new instance of the
+        FlowPacUserFlavorListInitReportResult class.
         """
     def to_json(self):
         """
-        Converts the FlowPacUserFlavorListInitReportResult instance to a JSON string.
+        Converts the FlowPacUserFlavorListInitReportResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -40,7 +46,8 @@ class FlowPacUserFlavorListInitReportResult():
         return json.dumps(data)
 class FlowPacUserFlavorListInitReport(BaseFlowPacUserFlavorListInitReport):
     """
-    FlowPacUserFlavorListInitReport handles the addition of a  to
+    FlowPacUserFlavorListInitReport handles the addition of
+    a  to
     a specific pac in the flow process.
     This class extends the BaseFlowPacUserFlavorListInitReport class and
     initializes it with the provided session context.
@@ -60,9 +67,11 @@ class FlowPacUserFlavorListInitReport(BaseFlowPacUserFlavorListInitReport):
 # endset  # noqa: E122
     ) -> FlowPacUserFlavorListInitReportResult:
         """
-        Processes the addition of a  to a specific pac.
+        Processes the addition of a
+         to a specific pac.
         Returns:
-            FlowPacUserFlavorListInitReportResult: The result of the FlowPacUserFlavorListInitReport process.
+            FlowPacUserFlavorListInitReportResult: The result of the
+                FlowPacUserFlavorListInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

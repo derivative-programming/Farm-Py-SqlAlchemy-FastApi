@@ -1,20 +1,34 @@
 # flavor_test.py
 # pylint: disable=redefined-outer-name
 """
-This module contains tests for the Flavor serialization schema.
-The Flavor serialization schema is responsible for serializing and deserializing
-Flavor instances. It ensures that the data is properly formatted and can be
-stored or retrieved from a database or transmitted over a network.
-The tests in this module cover the serialization and deserialization of Flavor
-instances using the FlavorSchema class. They verify that the serialized data
-matches the expected format and that the deserialized data can be used to
+This module contains tests for the
+Flavor serialization schema.
+The Flavor serialization schema
+is responsible for serializing and deserializing
+Flavor instances. It ensures that the
+data is properly formatted and can be
+stored or retrieved from a database or
+transmitted over a network.
+The tests in this module cover the serialization
+and deserialization of Flavor
+instances using the FlavorSchema class. They verify
+that the serialized data
+matches the expected format and that the
+deserialized data can be used to
 reconstruct a Flavor instance.
-The FlavorSchema class is used to define the serialization and deserialization
-rules for Flavor instances. It specifies how each attribute of a Flavor instance
-should be converted to a serialized format and how the serialized data should
-be converted back to a Flavor instance.
-The tests in this module use the pytest framework to define test cases and
-assertions. They ensure that the serialization and deserialization process
+The FlavorSchema class is used to define
+the serialization and deserialization
+rules for Flavor instances. It
+specifies how each attribute of a
+Flavor instance
+should be converted to a serialized
+format and how the serialized data should
+be converted back to a Flavor
+instance.
+The tests in this module use the pytest
+framework to define test cases and
+assertions. They ensure that the serialization
+and deserialization process
 works correctly and produces the expected results.
 """
 import json
@@ -29,20 +43,27 @@ from models.serialization_schema import FlavorSchema
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 @pytest.fixture(scope="function")
-def flavor(session) -> Flavor:
+def flavor(
+    session
+) -> Flavor:
     """
-    Fixture to create and return a Flavor instance using the FlavorFactory.
+    Fixture to create and return a Flavor
+    instance using the
+    FlavorFactory.
     Args:
         session: The database session.
     Returns:
-        Flavor: A newly created Flavor instance.
+        Flavor: A newly created
+            Flavor instance.
     """
     return FlavorFactory.create(session=session)
 class TestFlavorSchema:
     """
-    Tests for the Flavor serialization schema.
+    Tests for the Flavor
+    serialization schema.
     """
-    # Sample data for a Flavor instance
+    # Sample data for a Flavor
+    # instance
     sample_data = {
         "flavor_id": 1,
         "code":
@@ -70,9 +91,13 @@ class TestFlavorSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
-    def test_flavor_serialization(self, flavor: Flavor):
+    def test_flavor_serialization(
+        self,
+        flavor: Flavor
+    ):
         """
-        Test the serialization of a Flavor instance using
+        Test the serialization of a
+        Flavor instance using
         FlavorSchema.
         Args:
             flavor (Flavor):
@@ -113,9 +138,12 @@ class TestFlavorSchema:
 # endset
     def test_flavor_deserialization(self, flavor):
         """
-        Test the deserialization of a Flavor object using the FlavorSchema.
+        Test the deserialization of a
+        Flavor object using the
+        FlavorSchema.
         Args:
-            flavor (Flavor): The Flavor object to be deserialized.
+            flavor (Flavor): The
+                Flavor object to be deserialized.
         Raises:
             AssertionError: If any of the assertions fail.
         Returns:
@@ -124,7 +152,8 @@ class TestFlavorSchema:
         schema = FlavorSchema()
         serialized_data = schema.dump(flavor)
         deserialized_data = schema.load(serialized_data)
-        assert deserialized_data['code'] == flavor.code
+        assert deserialized_data['code'] == \
+            flavor.code
         assert deserialized_data['last_change_code'] == (
             flavor.last_change_code)
         assert deserialized_data['insert_user_id'] == (
@@ -150,16 +179,22 @@ class TestFlavorSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             flavor.last_update_utc_date_time.isoformat())
 # endset
-        assert deserialized_data['pac_code_peek'] == (  # PacID
+        assert deserialized_data[(  # PacID
+            'pac_code_peek')] == (
             flavor.pac_code_peek)
 # endset
         new_flavor = Flavor(**deserialized_data)
         assert isinstance(new_flavor, Flavor)
-        # Now compare the new_flavor attributes with the flavor attributes
-        assert new_flavor.code == flavor.code
-        assert new_flavor.last_change_code == flavor.last_change_code
-        assert new_flavor.insert_user_id == flavor.insert_user_id
-        assert new_flavor.last_update_user_id == flavor.last_update_user_id
+        # Now compare the new_flavor attributes with
+        # the flavor attributes
+        assert new_flavor.code == \
+            flavor.code
+        assert new_flavor.last_change_code == \
+            flavor.last_change_code
+        assert new_flavor.insert_user_id == \
+            flavor.insert_user_id
+        assert new_flavor.last_update_user_id == \
+            flavor.last_update_user_id
 # endset
         assert new_flavor.description == (
             flavor.description)
@@ -186,12 +221,14 @@ class TestFlavorSchema:
         """
         Test the `from_json` method of the FlavorSchema class.
         This method tests the deserialization of
-        a JSON string to a Flavor object.
+        a JSON string to a
+        Flavor object.
         It converts the sample data to a JSON string,
         deserializes it to a dictionary,
         and then loads the dictionary to a Flavor
         object. Finally, it asserts the
-        equality of the deserialized Flavor object
+        equality of the deserialized
+        Flavor object
         with the sample data.
         Returns:
             None
@@ -229,29 +266,39 @@ class TestFlavorSchema:
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
-        assert str(deserialized_data['pac_code_peek']) == (  # PacID
+        assert str(deserialized_data[(  # PacID
+            'pac_code_peek')]) == (
             str(self.sample_data['pac_code_peek']))
 # endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
         new_flavor = Flavor(**deserialized_data)
         assert isinstance(new_flavor, Flavor)
-    def test_to_json(self, flavor: Flavor):
+    def test_to_json(
+        self,
+        flavor: Flavor
+    ):
         """
-        Test the conversion of a Flavor instance to JSON.
+        Test the conversion of a
+        Flavor instance to JSON.
         Args:
-            flavor (Flavor): The Flavor instance to convert.
+            flavor (Flavor): The
+            Flavor instance to convert.
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
-        # Convert the Flavor instance to JSON using the schema
+        # Convert the Flavor instance
+        # to JSON using the schema
         flavor_schema = FlavorSchema()
-        flavor_dict = flavor_schema.dump(flavor)
+        flavor_dict = flavor_schema.dump(
+            flavor)
         # Convert the flavor_dict to JSON string
-        flavor_json = json.dumps(flavor_dict)
+        flavor_json = json.dumps(
+            flavor_dict)
         # Convert the JSON strings back to dictionaries
-        flavor_dict_from_json = json.loads(flavor_json)
+        flavor_dict_from_json = json.loads(
+            flavor_json)
         # sample_dict_from_json = json.loads(self.sample_data)
         logging.info(
             "flavor_dict_from_json.keys() %s",
@@ -263,7 +310,8 @@ class TestFlavorSchema:
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(flavor_dict_from_json.keys())}"
         )
-        assert flavor_dict_from_json['code'] == str(flavor.code), (
+        assert flavor_dict_from_json['code'] == \
+            str(flavor.code), (
             "failed on code"
         )
         assert flavor_dict_from_json['last_change_code'] == (
@@ -313,7 +361,8 @@ class TestFlavorSchema:
             "failed on last_update_utc_date_time"
         )
 # endset
-        assert flavor_dict_from_json['pac_code_peek'] == (  # PacID
+        assert flavor_dict_from_json[(  # PacID
+            'pac_code_peek')] == (
             str(flavor.pac_code_peek)), (
             "failed on pac_code_peek"
         )

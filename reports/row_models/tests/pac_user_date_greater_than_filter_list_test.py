@@ -1,6 +1,7 @@
 # reports/row_models/tests/pac_user_date_greater_than_filter_list_test.py
 """
-This module contains unit tests for the `ReportItemPacUserDateGreaterThanFilterList` class.
+This module contains unit tests for the
+`ReportItemPacUserDateGreaterThanFilterList` class.
 The `ReportItemPacUserDateGreaterThanFilterList` class represents a
 report item for a pac Pac User Date Greater Than Filter List Report.
 It contains various fields with default values and

@@ -1,7 +1,10 @@
 # flows/default/pac_user_date_greater_than_filter_list_init_report.py
 """
-This module contains the FlowPacUserDateGreaterThanFilterListInitReport class and related classes
-that handle the addition of a  to a specific pac in the flow process.
+This module contains the
+FlowPacUserDateGreaterThanFilterListInitReport class and related classes
+that handle the addition of a
+ to a specific
+pac in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowPacUserDateGreaterThanFilterListInitReportResult():
     """
-    Represents the result of the FlowPacUserDateGreaterThanFilterListInitReport process.
+    Represents the result of the
+    FlowPacUserDateGreaterThanFilterListInitReport process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowPacUserDateGreaterThanFilterListInitReportResult class.
+        Initializes a new instance of the
+        FlowPacUserDateGreaterThanFilterListInitReportResult class.
         """
     def to_json(self):
         """
-        Converts the FlowPacUserDateGreaterThanFilterListInitReportResult instance to a JSON string.
+        Converts the FlowPacUserDateGreaterThanFilterListInitReportResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -40,7 +46,8 @@ class FlowPacUserDateGreaterThanFilterListInitReportResult():
         return json.dumps(data)
 class FlowPacUserDateGreaterThanFilterListInitReport(BaseFlowPacUserDateGreaterThanFilterListInitReport):
     """
-    FlowPacUserDateGreaterThanFilterListInitReport handles the addition of a  to
+    FlowPacUserDateGreaterThanFilterListInitReport handles the addition of
+    a  to
     a specific pac in the flow process.
     This class extends the BaseFlowPacUserDateGreaterThanFilterListInitReport class and
     initializes it with the provided session context.
@@ -60,9 +67,11 @@ class FlowPacUserDateGreaterThanFilterListInitReport(BaseFlowPacUserDateGreaterT
 # endset  # noqa: E122
     ) -> FlowPacUserDateGreaterThanFilterListInitReportResult:
         """
-        Processes the addition of a  to a specific pac.
+        Processes the addition of a
+         to a specific pac.
         Returns:
-            FlowPacUserDateGreaterThanFilterListInitReportResult: The result of the FlowPacUserDateGreaterThanFilterListInitReport process.
+            FlowPacUserDateGreaterThanFilterListInitReportResult: The result of the
+                FlowPacUserDateGreaterThanFilterListInitReport process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

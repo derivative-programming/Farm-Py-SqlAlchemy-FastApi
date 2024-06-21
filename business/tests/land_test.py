@@ -39,11 +39,11 @@ class TestLandBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def new_land(self, session):
         """
-        Fixture that returns a new instance of the Land class.
+        Fixture that returns a new instance of
+        the Land class.
         """
-        # Use the LandFactory to create a new land instance
-        # Assuming LandFactory.create() is an async function
-        return await LandFactory.create_async(session)
+        return await LandFactory.create_async(
+            session)
     @pytest.mark.asyncio
     async def test_create_land(
         self,
@@ -55,8 +55,10 @@ class TestLandBusObj:
         # Test creating a new land
         assert land_bus_obj.land_id == 0
         # assert isinstance(land_bus_obj.land_id, int)
-        assert isinstance(land_bus_obj.code, uuid.UUID)
-        assert isinstance(land_bus_obj.last_change_code, int)
+        assert isinstance(
+            land_bus_obj.code, uuid.UUID)
+        assert isinstance(
+            land_bus_obj.last_change_code, int)
         assert land_bus_obj.insert_user_id == uuid.UUID(int=0)
         assert land_bus_obj.last_update_user_id == uuid.UUID(int=0)
         assert isinstance(land_bus_obj.description, str)
@@ -73,10 +75,13 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-        Test case for loading data from a land object instance.
+        Test case for loading data from a
+        land object instance.
         """
-        await land_bus_obj.load_from_obj_instance(new_land)
-        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
+        await land_bus_obj.load_from_obj_instance(
+            new_land)
+        assert land_manager.is_equal(
+            land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_id(
         self,
@@ -85,11 +90,14 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-        Test case for loading data from a land ID.
+        Test case for loading data from a
+        land ID.
         """
         new_land_land_id = new_land.land_id
-        await land_bus_obj.load_from_id(new_land_land_id)
-        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
+        await land_bus_obj.load_from_id(
+            new_land_land_id)
+        assert land_manager.is_equal(
+            land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_code(
         self,
@@ -98,10 +106,13 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-        Test case for loading data from a land code.
+        Test case for loading data from a
+        land code.
         """
-        await land_bus_obj.load_from_code(new_land.code)
-        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
+        await land_bus_obj.load_from_code(
+            new_land.code)
+        assert land_manager.is_equal(
+            land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_json(
         self,
@@ -110,11 +121,14 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-        Test case for loading data from a land JSON.
+        Test case for loading data from a
+        land JSON.
         """
         land_json = land_manager.to_json(new_land)
-        await land_bus_obj.load_from_json(land_json)
-        assert land_manager.is_equal(land_bus_obj.land, new_land) is True
+        await land_bus_obj.load_from_json(
+            land_json)
+        assert land_manager.is_equal(
+            land_bus_obj.land, new_land) is True
     @pytest.mark.asyncio
     async def test_load_with_land_dict(
         self,
@@ -123,12 +137,14 @@ class TestLandBusObj:
         new_land: Land
     ):
         """
-        Test case for loading data from a land dictionary.
+        Test case for loading data from a
+        land dictionary.
         """
         logger.info("test_load_with_land_dict 1")
         land_dict = land_manager.to_dict(new_land)
         logger.info(land_dict)
-        await land_bus_obj.load_from_dict(land_dict)
+        await land_bus_obj.load_from_dict(
+            land_dict)
         assert land_manager.is_equal(
             land_bus_obj.land,
             new_land) is True
@@ -140,7 +156,8 @@ class TestLandBusObj:
         """
         Test case for retrieving a nonexistent land.
         """
-        # Test retrieving a nonexistent land raises an exception
+        # Test retrieving a nonexistent
+        # land raises an exception
         await land_bus_obj.load_from_id(-1)
         # Assuming -1 is an id that wouldn't exist
         assert land_bus_obj.is_valid() is False
@@ -156,14 +173,17 @@ class TestLandBusObj:
         """
         # Test updating a land's data
         new_land_land_id_value = new_land.land_id
-        new_land = await land_manager.get_by_id(new_land_land_id_value)
+        new_land = await land_manager.get_by_id(
+            new_land_land_id_value)
         assert isinstance(new_land, Land)
         new_code = uuid.uuid4()
-        await land_bus_obj.load_from_obj_instance(new_land)
+        await land_bus_obj.load_from_obj_instance(
+            new_land)
         land_bus_obj.code = new_code
         await land_bus_obj.save()
         new_land_land_id_value = new_land.land_id
-        new_land = await land_manager.get_by_id(new_land_land_id_value)
+        new_land = await land_manager.get_by_id(
+            new_land_land_id_value)
         assert land_manager.is_equal(
             land_bus_obj.land,
             new_land) is True
@@ -180,11 +200,13 @@ class TestLandBusObj:
         assert new_land.land_id is not None
         assert land_bus_obj.land_id == 0
         new_land_land_id_value = new_land.land_id
-        await land_bus_obj.load_from_id(new_land_land_id_value)
+        await land_bus_obj.load_from_id(
+            new_land_land_id_value)
         assert land_bus_obj.land_id is not None
         await land_bus_obj.delete()
         new_land_land_id_value = new_land.land_id
-        new_land = await land_manager.get_by_id(new_land_land_id_value)
+        new_land = await land_manager.get_by_id(
+            new_land_land_id_value)
         assert new_land is None
 
     @pytest.mark.asyncio

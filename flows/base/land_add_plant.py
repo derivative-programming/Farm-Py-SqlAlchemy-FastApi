@@ -2,7 +2,8 @@
 
 """
 This module contains the implementation
-of the BaseFlow Land Add Plant class
+of the BaseFlow
+Land Add Plant class
 """
 
 import uuid

@@ -1,6 +1,7 @@
 # pac_user_land_list.py
 """
-This module is the manager for report 'Pac User Land List'
+This module is the manager for report
+'Pac User Land List'
 """
 import json
 import csv
@@ -15,7 +16,8 @@ from reports.row_models.pac_user_land_list import ReportItemPacUserLandList
 from .report_request_validation_error import ReportRequestValidationError
 class ReportManagerPacUserLandList():
     """
-    This class is the manager of report 'Pac User Land List'
+    This class is the manager of report
+    'Pac User Land List'
     """
     _session_context: SessionContext
     def __init__(self, session_context: SessionContext):
@@ -36,9 +38,11 @@ class ReportManagerPacUserLandList():
         order_by_descending: bool = False,
     ) -> List[ReportItemPacUserLandList]:
         """
-        Generate the 'Pac User Land List' report.
+        Generate the
+        'Pac User Land List' report.
         Returns:
-            List[ReportItemPacUserLandList]: The list of report items.
+            List[ReportItemPacUserLandList]: The
+                list of report items.
         """
         logging.info('ReportManagerPacUserLandList.generate Start')
         role_required = ""
@@ -81,7 +85,8 @@ class ReportManagerPacUserLandList():
                         file_name: str,
                         data_list: List[ReportItemPacUserLandList]):
         """
-        Build a CSV file for the 'Pac User Land List' report.
+        Build a CSV file for the
+        'Pac User Land List' report.
         Args:
             file_name (str): The name of the CSV file.
             data_list (List[ReportItemPacUserLandList]):

@@ -1,7 +1,10 @@
 # flows/default/error_log_config_resolve_error_log.py
 """
-This module contains the FlowErrorLogConfigResolveErrorLog class and related classes
-that handle the addition of a  to a specific error_log in the flow process.
+This module contains the
+FlowErrorLogConfigResolveErrorLog class and related classes
+that handle the addition of a
+ to a specific
+error_log in the flow process.
 """
 import uuid
 import json
@@ -14,18 +17,21 @@ from helpers import SessionContext
 from helpers import TypeConversion
 class FlowErrorLogConfigResolveErrorLogResult():
     """
-    Represents the result of the FlowErrorLogConfigResolveErrorLog process.
+    Represents the result of the
+    FlowErrorLogConfigResolveErrorLog process.
     """
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
 # endset
     def __init__(self):
         """
-        Initializes a new instance of the FlowErrorLogConfigResolveErrorLogResult class.
+        Initializes a new instance of the
+        FlowErrorLogConfigResolveErrorLogResult class.
         """
     def to_json(self):
         """
-        Converts the FlowErrorLogConfigResolveErrorLogResult instance to a JSON string.
+        Converts the FlowErrorLogConfigResolveErrorLogResult
+        instance to a JSON string.
         Returns:
             str: The JSON representation of the instance.
         """
@@ -40,7 +46,8 @@ class FlowErrorLogConfigResolveErrorLogResult():
         return json.dumps(data)
 class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
     """
-    FlowErrorLogConfigResolveErrorLog handles the addition of a  to
+    FlowErrorLogConfigResolveErrorLog handles the addition of
+    a  to
     a specific error_log in the flow process.
     This class extends the BaseFlowErrorLogConfigResolveErrorLog class and
     initializes it with the provided session context.
@@ -60,9 +67,11 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
 # endset  # noqa: E122
     ) -> FlowErrorLogConfigResolveErrorLogResult:
         """
-        Processes the addition of a  to a specific error_log.
+        Processes the addition of a
+         to a specific error_log.
         Returns:
-            FlowErrorLogConfigResolveErrorLogResult: The result of the FlowErrorLogConfigResolveErrorLog process.
+            FlowErrorLogConfigResolveErrorLogResult: The result of the
+                FlowErrorLogConfigResolveErrorLog process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

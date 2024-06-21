@@ -1,7 +1,9 @@
 # models/factory/error_log.py
 """
-This module contains the ErrorLogFactory class, which is responsible
-for creating instances of the ErrorLog model using the Factory pattern.
+This module contains the ErrorLogFactory
+class, which is responsible
+for creating instances of the ErrorLog
+model using the Factory pattern.
 """
 from datetime import datetime
 import uuid
@@ -13,7 +15,8 @@ from .pac import PacFactory  # pac_id
 logger = get_logger(__name__)
 class ErrorLogFactory(factory.Factory):
     """
-    Factory class for creating instances of the ErrorLog model.
+    Factory class for creating instances of
+    the ErrorLog model.
     """
     class Meta:
         """
@@ -41,7 +44,8 @@ class ErrorLogFactory(factory.Factory):
     @classmethod
     def _build(cls, model_class, session=None, *args, **kwargs) -> ErrorLog:
         """
-            Builds and returns an instance of the ErrorLog model.
+            Builds and returns an instance
+            of the ErrorLog model.
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
@@ -49,7 +53,8 @@ class ErrorLogFactory(factory.Factory):
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
             Returns:
-                ErrorLog: An instance of the ErrorLog model.
+                ErrorLog: An instance of the
+                    ErrorLog model.
         """
         if session is None:
             obj2 = model_class(*args, **kwargs)
@@ -74,14 +79,16 @@ class ErrorLogFactory(factory.Factory):
     @classmethod
     def _create(cls, model_class, session, *args, **kwargs) -> ErrorLog:
         """
-        Create a new ErrorLog object and save it to the database.
+        Create a new ErrorLog object
+        and save it to the database.
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            ErrorLog: The created ErrorLog object.
+            ErrorLog: The created
+                ErrorLog object.
         """
         logger.info("factory create")
         pac_id_pac_instance = (  # PacID
@@ -104,7 +111,8 @@ class ErrorLogFactory(factory.Factory):
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> ErrorLog:
         """
-        Create a new ErrorLog object asynchronously.
+        Create a new ErrorLog object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
@@ -132,7 +140,8 @@ class ErrorLogFactory(factory.Factory):
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> ErrorLog:
         """
-        Build a new ErrorLog object asynchronously.
+        Build a new ErrorLog object
+        asynchronously.
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
