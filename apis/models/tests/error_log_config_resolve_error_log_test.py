@@ -14,8 +14,41 @@ from flows.error_log_config_resolve_error_log import FlowErrorLogConfigResolveEr
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.error_log import ErrorLogFactory
-from ...models.error_log_config_resolve_error_log import (ErrorLogConfigResolveErrorLogPostModelResponse)
+from ...models.error_log_config_resolve_error_log import (
+    ErrorLogConfigResolveErrorLogPostModelResponse,
+    ErrorLogConfigResolveErrorLogPostModelRequest)
 from ..factory.error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequestFactory
+class TestErrorLogConfigResolveErrorLogPostModelRequest:
+    def test_default_values(self):
+        model = ErrorLogConfigResolveErrorLogPostModelRequest()
+        assert model.force_error_message == ""
+# endset
+
+# endset
+    def test_to_dict_snake(self):
+        model = ErrorLogConfigResolveErrorLogPostModelRequest(
+            force_error_message="Test Error",
+# endset
+
+# endset
+        )
+        snake_case_dict = model.to_dict_snake()
+        assert snake_case_dict['force_error_message'] == "Test Error"
+# endset
+
+# endset
+    def test_to_dict_camel(self):
+        model = ErrorLogConfigResolveErrorLogPostModelRequest(
+            force_error_message="Test Error",
+# endset
+
+# endset
+        )
+        camel_case_dict = model.to_dict_camel()
+        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+# endset
+
+# endset
 class TestErrorLogConfigResolveErrorLogPostModelResponse:
     """
     This class contains unit tests for the

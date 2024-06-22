@@ -14,8 +14,46 @@ from flows.tac_login import FlowTacLogin, FlowTacLoginResult
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.tac import TacFactory
-from ...models.tac_login import (TacLoginPostModelResponse)
+from ...models.tac_login import (
+    TacLoginPostModelResponse,
+    TacLoginPostModelRequest)
 from ..factory.tac_login import TacLoginPostModelRequestFactory
+class TestTacLoginPostModelRequest:
+    def test_default_values(self):
+        model = TacLoginPostModelRequest()
+        assert model.force_error_message == ""
+# endset
+        assert model.email == ""
+        assert model.password == ""
+# endset
+    def test_to_dict_snake(self):
+        model = TacLoginPostModelRequest(
+            force_error_message="Test Error",
+# endset
+            email="test@example.com",
+            password="varchar",
+# endset
+        )
+        snake_case_dict = model.to_dict_snake()
+        assert snake_case_dict['force_error_message'] == "Test Error"
+# endset
+        assert snake_case_dict['email'] == "test@example.com"
+        assert snake_case_dict['password'] == "varchar"
+# endset
+    def test_to_dict_camel(self):
+        model = TacLoginPostModelRequest(
+            force_error_message="Test Error",
+# endset
+            email="test@example.com",
+            password="varchar",
+# endset
+        )
+        camel_case_dict = model.to_dict_camel()
+        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+# endset
+        assert camel_case_dict['email'] == "test@example.com"
+        assert camel_case_dict['password'] == "varchar"
+# endset
 class TestTacLoginPostModelResponse:
     """
     This class contains unit tests for the

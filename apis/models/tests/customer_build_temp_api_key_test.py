@@ -14,8 +14,41 @@ from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey, FlowC
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
-from ...models.customer_build_temp_api_key import (CustomerBuildTempApiKeyPostModelResponse)
+from ...models.customer_build_temp_api_key import (
+    CustomerBuildTempApiKeyPostModelResponse,
+    CustomerBuildTempApiKeyPostModelRequest)
 from ..factory.customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequestFactory
+class TestCustomerBuildTempApiKeyPostModelRequest:
+    def test_default_values(self):
+        model = CustomerBuildTempApiKeyPostModelRequest()
+        assert model.force_error_message == ""
+# endset
+
+# endset
+    def test_to_dict_snake(self):
+        model = CustomerBuildTempApiKeyPostModelRequest(
+            force_error_message="Test Error",
+# endset
+
+# endset
+        )
+        snake_case_dict = model.to_dict_snake()
+        assert snake_case_dict['force_error_message'] == "Test Error"
+# endset
+
+# endset
+    def test_to_dict_camel(self):
+        model = CustomerBuildTempApiKeyPostModelRequest(
+            force_error_message="Test Error",
+# endset
+
+# endset
+        )
+        camel_case_dict = model.to_dict_camel()
+        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+# endset
+
+# endset
 class TestCustomerBuildTempApiKeyPostModelResponse:
     """
     This class contains unit tests for the

@@ -18,8 +18,133 @@ from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
 
-from ...models.land_add_plant import (LandAddPlantPostModelResponse)
+from ...models.land_add_plant import (
+    LandAddPlantPostModelResponse,
+    LandAddPlantPostModelRequest)
 from ..factory.land_add_plant import LandAddPlantPostModelRequestFactory
+
+
+class TestLandAddPlantPostModelRequest:
+        
+    def test_default_values(self):
+        model = LandAddPlantPostModelRequest()
+        assert model.force_error_message == ""
+# endset
+        assert model.request_flavor_code == uuid.UUID('00000000-0000-0000-0000-000000000000')
+        assert model.request_other_flavor == ""
+        assert model.request_some_int_val == 0
+        assert model.request_some_big_int_val == 0
+        assert model.request_some_bit_val is False
+        assert model.request_is_edit_allowed is False
+        assert model.request_is_delete_allowed is False
+        assert model.request_some_float_val == 0.0
+        assert model.request_some_decimal_val == Decimal(0)
+        assert model.request_some_utc_date_time_val == TypeConversion.get_default_date_time()
+        assert model.request_some_date_val == TypeConversion.get_default_date()
+        assert model.request_some_money_val == Decimal(0)
+        assert model.request_some_n_var_char_val == ""
+        assert model.request_some_var_char_val == ""
+        assert model.request_some_text_val == ""
+        assert model.request_some_phone_number == ""
+        assert model.request_some_email_address == ""
+        assert model.request_sample_image_upload_file == ""
+# endset
+
+    def test_to_dict_snake(self):
+        model = LandAddPlantPostModelRequest(
+            force_error_message="Test Error",
+# endset
+            request_flavor_code=uuid.uuid4(),
+            request_other_flavor="Other Flavor",
+            request_some_int_val=42,
+            request_some_big_int_val=123456789,
+            request_some_bit_val=True,
+            request_is_edit_allowed=True,
+            request_is_delete_allowed=True,
+            request_some_float_val=3.14,
+            request_some_decimal_val=Decimal('99.99'),
+            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0),
+            request_some_date_val=date(2023, 1, 1),
+            request_some_money_val=Decimal('100.00'),
+            request_some_n_var_char_val="nvarchar",
+            request_some_var_char_val="varchar",
+            request_some_text_val="text",
+            request_some_phone_number="123-456-7890",
+            request_some_email_address="test@example.com",
+            request_sample_image_upload_file="image.png"
+# endset
+        )
+
+        snake_case_dict = model.to_dict_snake()
+        assert snake_case_dict['force_error_message'] == "Test Error"
+# endset
+        assert snake_case_dict['request_flavor_code'] == model.request_flavor_code
+        assert snake_case_dict['request_other_flavor'] == "Other Flavor"
+        assert snake_case_dict['request_some_int_val'] == 42
+        assert snake_case_dict['request_some_big_int_val'] == 123456789
+        assert snake_case_dict['request_some_bit_val'] is True
+        assert snake_case_dict['request_is_edit_allowed'] is True
+        assert snake_case_dict['request_is_delete_allowed'] is True
+        assert snake_case_dict['request_some_float_val'] == 3.14
+        assert snake_case_dict['request_some_decimal_val'] == Decimal('99.99')
+        assert snake_case_dict['request_some_utc_date_time_val'] == datetime(2023, 1, 1, 12, 0, 0)
+        assert snake_case_dict['request_some_date_val'] == date(2023, 1, 1)
+        assert snake_case_dict['request_some_money_val'] == Decimal('100.00')
+        assert snake_case_dict['request_some_n_var_char_val'] == "nvarchar"
+        assert snake_case_dict['request_some_var_char_val'] == "varchar"
+        assert snake_case_dict['request_some_text_val'] == "text"
+        assert snake_case_dict['request_some_phone_number'] == "123-456-7890"
+        assert snake_case_dict['request_some_email_address'] == "test@example.com"
+        assert snake_case_dict['request_sample_image_upload_file'] == "image.png"
+# endset
+
+    def test_to_dict_camel(self):
+        model = LandAddPlantPostModelRequest(
+            force_error_message="Test Error",
+# endset
+            request_flavor_code=uuid.uuid4(),
+            request_other_flavor="Other Flavor",
+            request_some_int_val=42,
+            request_some_big_int_val=123456789,
+            request_some_bit_val=True,
+            request_is_edit_allowed=True,
+            request_is_delete_allowed=True,
+            request_some_float_val=3.14,
+            request_some_decimal_val=Decimal('99.99'),
+            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0),
+            request_some_date_val=date(2023, 1, 1),
+            request_some_money_val=Decimal('100.00'),
+            request_some_n_var_char_val="nvarchar",
+            request_some_var_char_val="varchar",
+            request_some_text_val="text",
+            request_some_phone_number="123-456-7890",
+            request_some_email_address="test@example.com",
+            request_sample_image_upload_file="image.png"
+# endset
+        )
+
+        camel_case_dict = model.to_dict_camel()
+        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+# endset
+        assert camel_case_dict['requestFlavorCode'] == model.request_flavor_code
+        assert camel_case_dict['requestOtherFlavor'] == "Other Flavor"
+        assert camel_case_dict['requestSomeIntVal'] == 42
+        assert camel_case_dict['requestSomeBigIntVal'] == 123456789
+        assert camel_case_dict['requestSomeBitVal'] is True
+        assert camel_case_dict['requestIsEditAllowed'] is True
+        assert camel_case_dict['requestIsDeleteAllowed'] is True
+        assert camel_case_dict['requestSomeFloatVal'] == 3.14
+        assert camel_case_dict['requestSomeDecimalVal'] == Decimal('99.99')
+        # assert camel_case_dict['requestSomeUtcDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0).isoformat()
+        # assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1).isoformat()
+        assert camel_case_dict['requestSomeMoneyVal'] == Decimal('100.00')
+        assert camel_case_dict['requestSomeNVarCharVal'] == "nvarchar"
+        assert camel_case_dict['requestSomeVarCharVal'] == "varchar"
+        assert camel_case_dict['requestSomeTextVal'] == "text"
+        assert camel_case_dict['requestSomePhoneNumber'] == "123-456-7890"
+        assert camel_case_dict['requestSomeEmailAddress'] == "test@example.com"
+        assert camel_case_dict['requestSampleImageUploadFile'] == "image.png"
+# endset
 
 
 class TestLandAddPlantPostModelResponse:

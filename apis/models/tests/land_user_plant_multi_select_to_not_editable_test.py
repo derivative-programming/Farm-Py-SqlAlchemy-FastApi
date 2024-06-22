@@ -14,8 +14,41 @@ from flows.land_user_plant_multi_select_to_not_editable import FlowLandUserPlant
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
-from ...models.land_user_plant_multi_select_to_not_editable import (LandUserPlantMultiSelectToNotEditablePostModelResponse)
+from ...models.land_user_plant_multi_select_to_not_editable import (
+    LandUserPlantMultiSelectToNotEditablePostModelResponse,
+    LandUserPlantMultiSelectToNotEditablePostModelRequest)
 from ..factory.land_user_plant_multi_select_to_not_editable import LandUserPlantMultiSelectToNotEditablePostModelRequestFactory
+class TestLandUserPlantMultiSelectToNotEditablePostModelRequest:
+    def test_default_values(self):
+        model = LandUserPlantMultiSelectToNotEditablePostModelRequest()
+        assert model.force_error_message == ""
+# endset
+        assert model.plant_code_list_csv == ""
+# endset
+    def test_to_dict_snake(self):
+        model = LandUserPlantMultiSelectToNotEditablePostModelRequest(
+            force_error_message="Test Error",
+# endset
+            plant_code_list_csv="Plant Code List Csv",
+# endset
+        )
+        snake_case_dict = model.to_dict_snake()
+        assert snake_case_dict['force_error_message'] == "Test Error"
+# endset
+        assert snake_case_dict['plant_code_list_csv'] == "Plant Code List Csv"
+# endset
+    def test_to_dict_camel(self):
+        model = LandUserPlantMultiSelectToNotEditablePostModelRequest(
+            force_error_message="Test Error",
+# endset
+            plant_code_list_csv="Plant Code List Csv",
+# endset
+        )
+        camel_case_dict = model.to_dict_camel()
+        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+# endset
+        assert camel_case_dict['plantCodeListCsv'] == "Plant Code List Csv"
+# endset
 class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
     """
     This class contains unit tests for the

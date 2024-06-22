@@ -14,8 +14,41 @@ from flows.plant_user_property_random_update import FlowPlantUserPropertyRandomU
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.plant import PlantFactory
-from ...models.plant_user_property_random_update import (PlantUserPropertyRandomUpdatePostModelResponse)
+from ...models.plant_user_property_random_update import (
+    PlantUserPropertyRandomUpdatePostModelResponse,
+    PlantUserPropertyRandomUpdatePostModelRequest)
 from ..factory.plant_user_property_random_update import PlantUserPropertyRandomUpdatePostModelRequestFactory
+class TestPlantUserPropertyRandomUpdatePostModelRequest:
+    def test_default_values(self):
+        model = PlantUserPropertyRandomUpdatePostModelRequest()
+        assert model.force_error_message == ""
+# endset
+
+# endset
+    def test_to_dict_snake(self):
+        model = PlantUserPropertyRandomUpdatePostModelRequest(
+            force_error_message="Test Error",
+# endset
+
+# endset
+        )
+        snake_case_dict = model.to_dict_snake()
+        assert snake_case_dict['force_error_message'] == "Test Error"
+# endset
+
+# endset
+    def test_to_dict_camel(self):
+        model = PlantUserPropertyRandomUpdatePostModelRequest(
+            force_error_message="Test Error",
+# endset
+
+# endset
+        )
+        camel_case_dict = model.to_dict_camel()
+        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+# endset
+
+# endset
 class TestPlantUserPropertyRandomUpdatePostModelResponse:
     """
     This class contains unit tests for the
