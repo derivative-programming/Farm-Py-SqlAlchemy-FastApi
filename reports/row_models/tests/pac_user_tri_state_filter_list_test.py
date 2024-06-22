@@ -18,7 +18,8 @@ from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
 class TestReportItemPacUserTriStateFilterList:
     """
-    Test class for the ReportItemPacUserTriStateFilterList model.
+    Test class for the
+    ReportItemPacUserTriStateFilterList model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

@@ -17,11 +17,13 @@ from helpers.type_conversion import TypeConversion
 from models.factory.tac import TacFactory
 class TestTacRegisterPostModelResponse:
     """
-    This class contains unit tests for the `FlowTacRegisterResult` class.
+    This class contains unit tests for the
+    `FlowTacRegisterResult` class.
     """
     def test_flow_tac_register_result_to_json(self):
         """
-        Test the `to_json` method of the `FlowTacRegisterResult` class.
+        Test the `to_json` method of the
+        `FlowTacRegisterResult` class.
         """
         # Create an instance and set attributes
         result = FlowTacRegisterResult()
@@ -53,7 +55,6 @@ class TestTacRegisterPostModelResponse:
         assert data["api_key"] == (
             result.api_key)
 # endsets
-    #TODO finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """

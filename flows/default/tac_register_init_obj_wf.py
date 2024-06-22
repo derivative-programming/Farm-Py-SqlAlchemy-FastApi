@@ -1,4 +1,5 @@
 # flows/default/tac_register_init_obj_wf.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowTacRegisterInitObjWF class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.tac_register_init_obj_wf import BaseFlowTacRegisterInitObjWF
 from flows.base import LogSeverity
 from business.tac import TacBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowTacRegisterInitObjWFResult():
     """
@@ -57,7 +58,9 @@ class FlowTacRegisterInitObjWFResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
+class FlowTacRegisterInitObjWF(
+    BaseFlowTacRegisterInitObjWF
+):
     """
     FlowTacRegisterInitObjWF handles the addition of
     a  to
@@ -65,14 +68,6 @@ class FlowTacRegisterInitObjWF(BaseFlowTacRegisterInitObjWF):
     This class extends the BaseFlowTacRegisterInitObjWF class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowTacRegisterInitObjWF class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         tac_bus_obj: TacBusObj,

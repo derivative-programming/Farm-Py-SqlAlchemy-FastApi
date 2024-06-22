@@ -46,7 +46,8 @@ class TestPacBulkManager:
         `PacManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple pacs to the database.
+        method correctly adds multiple
+        pacs to the database.
 
         Steps:
         1. Generate a list of pac data using the
@@ -89,7 +90,8 @@ class TestPacBulkManager:
             )
             fetched_pac = result.scalars().first()
 
-            assert isinstance(fetched_pac, Pac)
+            assert isinstance(
+                fetched_pac, Pac)
 
             assert str(fetched_pac.insert_user_id) == (
                 str(pac_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestPacBulkManager:
         Test case for bulk update of pacs.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `PacManager` class.
+        `update_bulk` method in the
+        `PacManager` class.
         It creates two pac instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestPacBulkManager:
         1. Create two pac instances using the
             `PacFactory.create_async` method.
         2. Generate new codes for the pacs.
-        3. Update the pacs' codes using the `update_bulk` method.
+        3. Update the pacs' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            pac_manager (PacManager): An instance of the
+            pac_manager (PacManager):
+                An instance of the
                 `PacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestPacBulkManager:
             None
         """
         # Mocking pac instances
-        pac1 = await PacFactory.create_async(
-            session=session)
-        pac2 = await PacFactory.create_async(
-            session=session)
+        pac1 = await PacFactory. \
+            create_async(
+                session=session)
+        pac2 = await PacFactory. \
+            create_async(
+                session=session)
         logging.info(pac1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestPacBulkManager:
         # Update pacs
         updates = [
             {
-                "pac_id": pac1.pac_id,
+                "pac_id":
+                    pac1.pac_id,
                 "code": code_updated1
             },
             {
-                "pac_id": pac2.pac_id,
+                "pac_id":
+                    pac2.pac_id,
                 "code": code_updated2
             }
         ]

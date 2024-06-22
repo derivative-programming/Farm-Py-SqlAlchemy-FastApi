@@ -18,7 +18,8 @@ from helpers.type_conversion import TypeConversion
 from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
 class TestReportItemTacFarmDashboard:
     """
-    Test class for the ReportItemTacFarmDashboard model.
+    Test class for the
+    ReportItemTacFarmDashboard model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

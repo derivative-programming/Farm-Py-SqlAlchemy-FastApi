@@ -1,4 +1,5 @@
 # flows/default/land_plant_list_init_report.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowLandPlantListInitReport class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.land_plant_list_init_report import BaseFlowLandPlantListInitReport
 from flows.base import LogSeverity
 from business.land import LandBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowLandPlantListInitReportResult():
     """
@@ -101,7 +102,9 @@ class FlowLandPlantListInitReportResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
+class FlowLandPlantListInitReport(
+    BaseFlowLandPlantListInitReport
+):
     """
     FlowLandPlantListInitReport handles the addition of
     a  to
@@ -109,14 +112,6 @@ class FlowLandPlantListInitReport(BaseFlowLandPlantListInitReport):
     This class extends the BaseFlowLandPlantListInitReport class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowLandPlantListInitReport class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         land_bus_obj: LandBusObj,

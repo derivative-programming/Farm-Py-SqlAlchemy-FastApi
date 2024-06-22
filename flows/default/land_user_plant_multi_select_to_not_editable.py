@@ -1,4 +1,5 @@
 # flows/default/land_user_plant_multi_select_to_not_editable.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowLandUserPlantMultiSelectToNotEditable class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.land_user_plant_multi_select_to_not_editable import BaseFlowLandUserPlantMultiSelectToNotEditable
 from flows.base import LogSeverity
 from business.land import LandBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowLandUserPlantMultiSelectToNotEditableResult():
     """
@@ -44,7 +45,9 @@ class FlowLandUserPlantMultiSelectToNotEditableResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelectToNotEditable):
+class FlowLandUserPlantMultiSelectToNotEditable(
+    BaseFlowLandUserPlantMultiSelectToNotEditable
+):
     """
     FlowLandUserPlantMultiSelectToNotEditable handles the addition of
     a  to
@@ -52,14 +55,6 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
     This class extends the BaseFlowLandUserPlantMultiSelectToNotEditable class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowLandUserPlantMultiSelectToNotEditable class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         land_bus_obj: LandBusObj,

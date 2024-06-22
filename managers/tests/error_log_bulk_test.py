@@ -46,7 +46,8 @@ class TestErrorLogBulkManager:
         `ErrorLogManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple error_logs to the database.
+        method correctly adds multiple
+        error_logs to the database.
 
         Steps:
         1. Generate a list of error_log data using the
@@ -89,7 +90,8 @@ class TestErrorLogBulkManager:
             )
             fetched_error_log = result.scalars().first()
 
-            assert isinstance(fetched_error_log, ErrorLog)
+            assert isinstance(
+                fetched_error_log, ErrorLog)
 
             assert str(fetched_error_log.insert_user_id) == (
                 str(error_log_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestErrorLogBulkManager:
         Test case for bulk update of error_logs.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `ErrorLogManager` class.
+        `update_bulk` method in the
+        `ErrorLogManager` class.
         It creates two error_log instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestErrorLogBulkManager:
         1. Create two error_log instances using the
             `ErrorLogFactory.create_async` method.
         2. Generate new codes for the error_logs.
-        3. Update the error_logs' codes using the `update_bulk` method.
+        3. Update the error_logs' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            error_log_manager (ErrorLogManager): An instance of the
+            error_log_manager (ErrorLogManager):
+                An instance of the
                 `ErrorLogManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestErrorLogBulkManager:
             None
         """
         # Mocking error_log instances
-        error_log1 = await ErrorLogFactory.create_async(
-            session=session)
-        error_log2 = await ErrorLogFactory.create_async(
-            session=session)
+        error_log1 = await ErrorLogFactory. \
+            create_async(
+                session=session)
+        error_log2 = await ErrorLogFactory. \
+            create_async(
+                session=session)
         logging.info(error_log1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestErrorLogBulkManager:
         # Update error_logs
         updates = [
             {
-                "error_log_id": error_log1.error_log_id,
+                "error_log_id":
+                    error_log1.error_log_id,
                 "code": code_updated1
             },
             {
-                "error_log_id": error_log2.error_log_id,
+                "error_log_id":
+                    error_log2.error_log_id,
                 "code": code_updated2
             }
         ]

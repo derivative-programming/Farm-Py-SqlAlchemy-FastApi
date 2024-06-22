@@ -1,5 +1,5 @@
 # business/pac.py
-
+# pylint: disable=unused-import
 """
 This module contains the PacBusObj class,
 which represents the business object for a Pac.
@@ -7,10 +7,8 @@ which represents the business object for a Pac.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import PacManager
 from models import Pac
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .pac_fluent import PacFluentBusObj
 
 from business.tri_state_filter import TriStateFilterBusObj
@@ -66,6 +64,10 @@ class PacBusObj(PacFluentBusObj):
         return result
 
     async def build_tri_state_filter(self) -> TriStateFilterBusObj:
+        """
+        build tri_state_filter
+        instance (not saved yet)
+        """
         item = TriStateFilterBusObj(self._session_context)
 
         item.pac_id = self.pac_id
@@ -74,6 +76,9 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_tri_state_filter(self) -> List[TriStateFilterBusObj]:
+        """
+        get all tri_state_filter
+        """
         results = list()
         tri_state_filter_manager = managers_and_enums.TriStateFilterManager(self._session_context)
         obj_list = await tri_state_filter_manager.get_by_pac_id(self.pac_id)
@@ -84,6 +89,10 @@ class PacBusObj(PacFluentBusObj):
         return results
 
     async def build_tac(self) -> TacBusObj:
+        """
+        build tac
+        instance (not saved yet)
+        """
         item = TacBusObj(self._session_context)
 
         item.pac_id = self.pac_id
@@ -92,6 +101,9 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_tac(self) -> List[TacBusObj]:
+        """
+        get all tac
+        """
         results = list()
         tac_manager = managers_and_enums.TacManager(self._session_context)
         obj_list = await tac_manager.get_by_pac_id(self.pac_id)
@@ -102,6 +114,10 @@ class PacBusObj(PacFluentBusObj):
         return results
 
     async def build_role(self) -> RoleBusObj:
+        """
+        build role
+        instance (not saved yet)
+        """
         item = RoleBusObj(self._session_context)
 
         item.pac_id = self.pac_id
@@ -110,6 +126,9 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_role(self) -> List[RoleBusObj]:
+        """
+        get all role
+        """
         results = list()
         role_manager = managers_and_enums.RoleManager(self._session_context)
         obj_list = await role_manager.get_by_pac_id(self.pac_id)
@@ -120,6 +139,10 @@ class PacBusObj(PacFluentBusObj):
         return results
 
     async def build_land(self) -> LandBusObj:
+        """
+        build land
+        instance (not saved yet)
+        """
         item = LandBusObj(self._session_context)
 
         item.pac_id = self.pac_id
@@ -128,6 +151,9 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_land(self) -> List[LandBusObj]:
+        """
+        get all land
+        """
         results = list()
         land_manager = managers_and_enums.LandManager(self._session_context)
         obj_list = await land_manager.get_by_pac_id(self.pac_id)
@@ -138,6 +164,10 @@ class PacBusObj(PacFluentBusObj):
         return results
 
     async def build_flavor(self) -> FlavorBusObj:
+        """
+        build flavor
+        instance (not saved yet)
+        """
         item = FlavorBusObj(self._session_context)
 
         item.pac_id = self.pac_id
@@ -146,6 +176,9 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_flavor(self) -> List[FlavorBusObj]:
+        """
+        get all flavor
+        """
         results = list()
         flavor_manager = managers_and_enums.FlavorManager(self._session_context)
         obj_list = await flavor_manager.get_by_pac_id(self.pac_id)
@@ -156,6 +189,10 @@ class PacBusObj(PacFluentBusObj):
         return results
 
     async def build_error_log(self) -> ErrorLogBusObj:
+        """
+        build error_log
+        instance (not saved yet)
+        """
         item = ErrorLogBusObj(self._session_context)
 
         item.pac_id = self.pac_id
@@ -164,6 +201,9 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_error_log(self) -> List[ErrorLogBusObj]:
+        """
+        get all error_log
+        """
         results = list()
         error_log_manager = managers_and_enums.ErrorLogManager(self._session_context)
         obj_list = await error_log_manager.get_by_pac_id(self.pac_id)
@@ -174,6 +214,10 @@ class PacBusObj(PacFluentBusObj):
         return results
 
     async def build_date_greater_than_filter(self) -> DateGreaterThanFilterBusObj:
+        """
+        build date_greater_than_filter
+        instance (not saved yet)
+        """
         item = DateGreaterThanFilterBusObj(self._session_context)
 
         item.pac_id = self.pac_id
@@ -182,6 +226,9 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_date_greater_than_filter(self) -> List[DateGreaterThanFilterBusObj]:
+        """
+        get all date_greater_than_filter
+        """
         results = list()
         date_greater_than_filter_manager = managers_and_enums.DateGreaterThanFilterManager(self._session_context)
         obj_list = await date_greater_than_filter_manager.get_by_pac_id(self.pac_id)

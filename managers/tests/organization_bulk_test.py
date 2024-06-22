@@ -46,7 +46,8 @@ class TestOrganizationBulkManager:
         `OrganizationManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple organizations to the database.
+        method correctly adds multiple
+        organizations to the database.
 
         Steps:
         1. Generate a list of organization data using the
@@ -89,7 +90,8 @@ class TestOrganizationBulkManager:
             )
             fetched_organization = result.scalars().first()
 
-            assert isinstance(fetched_organization, Organization)
+            assert isinstance(
+                fetched_organization, Organization)
 
             assert str(fetched_organization.insert_user_id) == (
                 str(organization_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestOrganizationBulkManager:
         Test case for bulk update of organizations.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `OrganizationManager` class.
+        `update_bulk` method in the
+        `OrganizationManager` class.
         It creates two organization instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestOrganizationBulkManager:
         1. Create two organization instances using the
             `OrganizationFactory.create_async` method.
         2. Generate new codes for the organizations.
-        3. Update the organizations' codes using the `update_bulk` method.
+        3. Update the organizations' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            organization_manager (OrganizationManager): An instance of the
+            organization_manager (OrganizationManager):
+                An instance of the
                 `OrganizationManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestOrganizationBulkManager:
             None
         """
         # Mocking organization instances
-        organization1 = await OrganizationFactory.create_async(
-            session=session)
-        organization2 = await OrganizationFactory.create_async(
-            session=session)
+        organization1 = await OrganizationFactory. \
+            create_async(
+                session=session)
+        organization2 = await OrganizationFactory. \
+            create_async(
+                session=session)
         logging.info(organization1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestOrganizationBulkManager:
         # Update organizations
         updates = [
             {
-                "organization_id": organization1.organization_id,
+                "organization_id":
+                    organization1.organization_id,
                 "code": code_updated1
             },
             {
-                "organization_id": organization2.organization_id,
+                "organization_id":
+                    organization2.organization_id,
                 "code": code_updated2
             }
         ]

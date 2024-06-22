@@ -1,6 +1,7 @@
 # pac_user_tri_state_filter_list.py
 """
-This module contains the definition of the ReportItemPacUserTriStateFilterList class.
+This module contains the definition of the
+ReportItemPacUserTriStateFilterList class.
 """
 import uuid
 from decimal import Decimal

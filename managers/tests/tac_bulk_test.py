@@ -46,7 +46,8 @@ class TestTacBulkManager:
         `TacManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple tacs to the database.
+        method correctly adds multiple
+        tacs to the database.
 
         Steps:
         1. Generate a list of tac data using the
@@ -89,7 +90,8 @@ class TestTacBulkManager:
             )
             fetched_tac = result.scalars().first()
 
-            assert isinstance(fetched_tac, Tac)
+            assert isinstance(
+                fetched_tac, Tac)
 
             assert str(fetched_tac.insert_user_id) == (
                 str(tac_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestTacBulkManager:
         Test case for bulk update of tacs.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `TacManager` class.
+        `update_bulk` method in the
+        `TacManager` class.
         It creates two tac instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestTacBulkManager:
         1. Create two tac instances using the
             `TacFactory.create_async` method.
         2. Generate new codes for the tacs.
-        3. Update the tacs' codes using the `update_bulk` method.
+        3. Update the tacs' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            tac_manager (TacManager): An instance of the
+            tac_manager (TacManager):
+                An instance of the
                 `TacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestTacBulkManager:
             None
         """
         # Mocking tac instances
-        tac1 = await TacFactory.create_async(
-            session=session)
-        tac2 = await TacFactory.create_async(
-            session=session)
+        tac1 = await TacFactory. \
+            create_async(
+                session=session)
+        tac2 = await TacFactory. \
+            create_async(
+                session=session)
         logging.info(tac1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestTacBulkManager:
         # Update tacs
         updates = [
             {
-                "tac_id": tac1.tac_id,
+                "tac_id":
+                    tac1.tac_id,
                 "code": code_updated1
             },
             {
-                "tac_id": tac2.tac_id,
+                "tac_id":
+                    tac2.tac_id,
                 "code": code_updated2
             }
         ]

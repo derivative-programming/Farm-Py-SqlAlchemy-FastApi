@@ -17,7 +17,8 @@ from sqlalchemy import text
 from helpers import SessionContext
 class ReportProviderPacUserTacList():
     """
-    The ReportProviderPacUserTacList class is responsible
+    The ReportProviderPacUserTacList
+    class is responsible
     for generating a list of pac tacs
     based on the provided parameters.
     Args:
@@ -34,7 +35,8 @@ class ReportProviderPacUserTacList():
     _cached_sql_query: str = ""
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ReportProviderPacUserTacList class.
+        Initializes a new instance of the
+        ReportProviderPacUserTacList class.
         Args:
             session_context (SessionContext): The session context object.
         Raises:

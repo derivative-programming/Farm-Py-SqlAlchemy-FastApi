@@ -1,12 +1,11 @@
 # business/error_log_base.py
 """
-This module contains the ErrorLogBusObj class,
-which represents the business object for a ErrorLog.
+This module contains the ErrorLogBaseBusObj class,
+which represents the base business object for a ErrorLog.
 """
 from decimal import Decimal
 import random
 import uuid
-from typing import List
 from datetime import datetime, date
 from helpers.session_context import SessionContext
 from managers import ErrorLogManager

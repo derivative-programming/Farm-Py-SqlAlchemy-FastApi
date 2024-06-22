@@ -1,7 +1,8 @@
 # flows/base/tests/pac_user_tri_state_filter_list_init_report_test.py
 # pylint: disable=protected-access
 """
-This module contains the unit tests for the `BaseFlowPacUserTriStateFilterListInitReport` class.
+This module contains the unit tests for the
+`BaseFlowPacUserTriStateFilterListInitReport` class.
 """
 import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +16,8 @@ from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
 class TestBaseFlowPacUserTriStateFilterListInitReport():
     """
-    This class contains unit tests for the `BaseFlowPacUserTriStateFilterListInitReport` class.
+    This class contains unit tests for the
+    `BaseFlowPacUserTriStateFilterListInitReport` class.
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
@@ -52,7 +54,8 @@ class TestBaseFlowPacUserTriStateFilterListInitReport():
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
-        Test the process_security_rules method of BaseFlowPacUserTriStateFilterListInitReport.
+        Test the process_security_rules method of
+        BaseFlowPacUserTriStateFilterListInitReport.
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It

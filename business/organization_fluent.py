@@ -1,7 +1,7 @@
 # business/organization_fluent.py
 """
-This module contains the OrganizationBusObj class,
-which represents the business object for a Organization.
+This module contains the OrganizationFluentBusObj class,
+which adds fluent properties to the business object for a Organization.
 """
 from decimal import Decimal
 import uuid

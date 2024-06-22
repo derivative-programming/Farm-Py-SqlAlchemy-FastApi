@@ -1,4 +1,5 @@
 # flows/default/customer_user_log_out.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowCustomerUserLogOut class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.customer_user_log_out import BaseFlowCustomerUserLogOut
 from flows.base import LogSeverity
 from business.customer import CustomerBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowCustomerUserLogOutResult():
     """
@@ -44,7 +45,9 @@ class FlowCustomerUserLogOutResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
+class FlowCustomerUserLogOut(
+    BaseFlowCustomerUserLogOut
+):
     """
     FlowCustomerUserLogOut handles the addition of
     a  to
@@ -52,14 +55,6 @@ class FlowCustomerUserLogOut(BaseFlowCustomerUserLogOut):
     This class extends the BaseFlowCustomerUserLogOut class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowCustomerUserLogOut class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         customer_bus_obj: CustomerBusObj,

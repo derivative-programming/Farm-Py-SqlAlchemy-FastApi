@@ -1,7 +1,7 @@
 # business/flavor_fluent.py
 """
-This module contains the FlavorBusObj class,
-which represents the business object for a Flavor.
+This module contains the FlavorFluentBusObj class,
+which adds fluent properties to the business object for a Flavor.
 """
 from decimal import Decimal
 import uuid

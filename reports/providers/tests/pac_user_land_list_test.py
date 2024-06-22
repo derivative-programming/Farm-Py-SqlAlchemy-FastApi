@@ -1,6 +1,7 @@
 # pac_user_land_list_test.py
 """
-This module contains a test case for the ReportProviderPacUserLandList class.
+This module contains a test case for the
+ReportProviderPacUserLandList class.
 """
 import uuid
 import sqlite3
@@ -16,7 +17,8 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderPacUserLandList:
     """
-    This class contains test cases for the ReportProviderPacUserLandList class.
+    This class contains test cases for the
+    ReportProviderPacUserLandList class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):

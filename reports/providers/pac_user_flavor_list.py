@@ -17,7 +17,8 @@ from sqlalchemy import text
 from helpers import SessionContext
 class ReportProviderPacUserFlavorList():
     """
-    The ReportProviderPacUserFlavorList class is responsible
+    The ReportProviderPacUserFlavorList
+    class is responsible
     for generating a list of pac flavors
     based on the provided parameters.
     Args:
@@ -34,7 +35,8 @@ class ReportProviderPacUserFlavorList():
     _cached_sql_query: str = ""
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ReportProviderPacUserFlavorList class.
+        Initializes a new instance of the
+        ReportProviderPacUserFlavorList class.
         Args:
             session_context (SessionContext): The session context object.
         Raises:

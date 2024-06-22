@@ -1,4 +1,5 @@
 # flows/default/land_add_plant_init_obj_wf.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowLandAddPlantInitObjWF class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.land_add_plant_init_obj_wf import BaseFlowLandAddPlantInitObjWF
 from flows.base import LogSeverity
 from business.land import LandBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowLandAddPlantInitObjWFResult():
     """
@@ -101,7 +102,9 @@ class FlowLandAddPlantInitObjWFResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
+class FlowLandAddPlantInitObjWF(
+    BaseFlowLandAddPlantInitObjWF
+):
     """
     FlowLandAddPlantInitObjWF handles the addition of
     a plant to
@@ -109,14 +112,6 @@ class FlowLandAddPlantInitObjWF(BaseFlowLandAddPlantInitObjWF):
     This class extends the BaseFlowLandAddPlantInitObjWF class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowLandAddPlantInitObjWF class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         land_bus_obj: LandBusObj,

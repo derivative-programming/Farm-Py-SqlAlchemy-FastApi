@@ -17,11 +17,13 @@ from helpers.type_conversion import TypeConversion
 from models.factory.plant import PlantFactory
 class TestPlantUserDeletePostModelResponse:
     """
-    This class contains unit tests for the `FlowPlantUserDeleteResult` class.
+    This class contains unit tests for the
+    `FlowPlantUserDeleteResult` class.
     """
     def test_flow_plant_user_delete_result_to_json(self):
         """
-        Test the `to_json` method of the `FlowPlantUserDeleteResult` class.
+        Test the `to_json` method of the
+        `FlowPlantUserDeleteResult` class.
         """
         # Create an instance and set attributes
         result = FlowPlantUserDeleteResult()
@@ -37,7 +39,6 @@ class TestPlantUserDeletePostModelResponse:
             str(result.context_object_code))
 
 # endsets
-    #TODO finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """

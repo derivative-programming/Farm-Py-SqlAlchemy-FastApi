@@ -21,7 +21,8 @@ from helpers import SessionContext
 
 class ReportProviderLandPlantList():
     """
-    The ReportProviderLandPlantList class is responsible
+    The ReportProviderLandPlantList
+    class is responsible
     for generating a list of land plants
     based on the provided parameters.
 
@@ -43,7 +44,8 @@ class ReportProviderLandPlantList():
 
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ReportProviderLandPlantList class.
+        Initializes a new instance of the
+        ReportProviderLandPlantList class.
 
         Args:
             session_context (SessionContext): The session context object.

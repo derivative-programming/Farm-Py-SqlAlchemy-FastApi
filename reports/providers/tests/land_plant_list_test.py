@@ -1,7 +1,8 @@
 # land_plant_list_test.py
 
 """
-This module contains a test case for the ReportProviderLandPlantList class.
+This module contains a test case for the
+ReportProviderLandPlantList class.
 """
 
 import uuid
@@ -22,7 +23,8 @@ sqlite3.register_adapter(Decimal, str)
 
 class TestReportProviderLandPlantList:
     """
-    This class contains test cases for the ReportProviderLandPlantList class.
+    This class contains test cases for the
+    ReportProviderLandPlantList class.
     """
 
     @pytest.mark.asyncio

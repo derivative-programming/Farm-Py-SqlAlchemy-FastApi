@@ -1,6 +1,7 @@
 # pac_user_date_greater_than_filter_list.py
 """
-This module contains the definition of the ReportItemPacUserDateGreaterThanFilterList class.
+This module contains the definition of the
+ReportItemPacUserDateGreaterThanFilterList class.
 """
 import uuid
 from decimal import Decimal

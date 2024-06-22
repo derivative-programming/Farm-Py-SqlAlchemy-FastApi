@@ -1,6 +1,7 @@
 # pac_user_tri_state_filter_list_test.py
 """
-This module contains a test case for the ReportProviderPacUserTriStateFilterList class.
+This module contains a test case for the
+ReportProviderPacUserTriStateFilterList class.
 """
 import uuid
 import sqlite3
@@ -16,7 +17,8 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderPacUserTriStateFilterList:
     """
-    This class contains test cases for the ReportProviderPacUserTriStateFilterList class.
+    This class contains test cases for the
+    ReportProviderPacUserTriStateFilterList class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):

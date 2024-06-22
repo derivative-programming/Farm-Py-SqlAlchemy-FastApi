@@ -1,7 +1,7 @@
 # business/tac_fluent.py
 """
-This module contains the TacBusObj class,
-which represents the business object for a Tac.
+This module contains the TacFluentBusObj class,
+which adds fluent properties to the business object for a Tac.
 """
 from decimal import Decimal
 import uuid

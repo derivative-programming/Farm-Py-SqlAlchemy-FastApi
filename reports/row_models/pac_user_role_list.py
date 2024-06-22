@@ -1,6 +1,7 @@
 # pac_user_role_list.py
 """
-This module contains the definition of the ReportItemPacUserRoleList class.
+This module contains the definition of the
+ReportItemPacUserRoleList class.
 """
 import uuid
 from decimal import Decimal

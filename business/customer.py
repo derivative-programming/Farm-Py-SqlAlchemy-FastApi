@@ -1,5 +1,5 @@
 # business/customer.py
-
+# pylint: disable=unused-import
 """
 This module contains the CustomerBusObj class,
 which represents the business object for a Customer.
@@ -7,10 +7,8 @@ which represents the business object for a Customer.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import CustomerManager
 from models import Customer
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .customer_fluent import CustomerFluentBusObj
 
 from business.customer_role import CustomerRoleBusObj
@@ -54,6 +52,10 @@ class CustomerBusObj(CustomerFluentBusObj):
         return result
 
     async def build_customer_role(self) -> CustomerRoleBusObj:
+        """
+        build customer_role
+        instance (not saved yet)
+        """
         item = CustomerRoleBusObj(self._session_context)
         role_manager = managers_and_enums.RoleManager(self._session_context)
         role_id_role = await role_manager.from_enum(
@@ -67,6 +69,9 @@ class CustomerBusObj(CustomerFluentBusObj):
         return item
 
     async def get_all_customer_role(self) -> List[CustomerRoleBusObj]:
+        """
+        get all customer_role
+        """
         results = list()
         customer_role_manager = managers_and_enums.CustomerRoleManager(self._session_context)
         obj_list = await customer_role_manager.get_by_customer_id(self.customer_id)

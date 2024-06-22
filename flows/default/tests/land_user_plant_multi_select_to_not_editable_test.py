@@ -17,11 +17,13 @@ from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
 class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
     """
-    This class contains unit tests for the `FlowLandUserPlantMultiSelectToNotEditableResult` class.
+    This class contains unit tests for the
+    `FlowLandUserPlantMultiSelectToNotEditableResult` class.
     """
     def test_flow_land_user_plant_multi_select_to_not_editable_result_to_json(self):
         """
-        Test the `to_json` method of the `FlowLandUserPlantMultiSelectToNotEditableResult` class.
+        Test the `to_json` method of the
+        `FlowLandUserPlantMultiSelectToNotEditableResult` class.
         """
         # Create an instance and set attributes
         result = FlowLandUserPlantMultiSelectToNotEditableResult()
@@ -37,7 +39,6 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
             str(result.context_object_code))
 
 # endsets
-    #TODO finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """

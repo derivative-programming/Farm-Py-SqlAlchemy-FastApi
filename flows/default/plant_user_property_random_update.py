@@ -1,4 +1,5 @@
 # flows/default/plant_user_property_random_update.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowPlantUserPropertyRandomUpdate class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.plant_user_property_random_update import BaseFlowPlantUserPropertyRandomUpdate
 from flows.base import LogSeverity
 from business.plant import PlantBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowPlantUserPropertyRandomUpdateResult():
     """
@@ -44,7 +45,9 @@ class FlowPlantUserPropertyRandomUpdateResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
+class FlowPlantUserPropertyRandomUpdate(
+    BaseFlowPlantUserPropertyRandomUpdate
+):
     """
     FlowPlantUserPropertyRandomUpdate handles the addition of
     a  to
@@ -52,14 +55,6 @@ class FlowPlantUserPropertyRandomUpdate(BaseFlowPlantUserPropertyRandomUpdate):
     This class extends the BaseFlowPlantUserPropertyRandomUpdate class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowPlantUserPropertyRandomUpdate class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         plant_bus_obj: PlantBusObj,

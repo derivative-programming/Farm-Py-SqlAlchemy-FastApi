@@ -1,6 +1,7 @@
 # tac_farm_dashboard_test.py
 """
-This module contains a test case for the ReportProviderTacFarmDashboard class.
+This module contains a test case for the
+ReportProviderTacFarmDashboard class.
 """
 import uuid
 import sqlite3
@@ -16,7 +17,8 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderTacFarmDashboard:
     """
-    This class contains test cases for the ReportProviderTacFarmDashboard class.
+    This class contains test cases for the
+    ReportProviderTacFarmDashboard class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):

@@ -119,7 +119,8 @@ class PacUserTacListGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemPacUserTacList): The
-                ReportItemPacUserTacList object to load the data from.
+                ReportItemPacUserTacList object
+                to load the data from.
         """
         self.tac_code = (
             data.tac_code)

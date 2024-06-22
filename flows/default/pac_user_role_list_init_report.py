@@ -1,4 +1,5 @@
 # flows/default/pac_user_role_list_init_report.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowPacUserRoleListInitReport class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.pac_user_role_list_init_report import BaseFlowPacUserRoleListInitReport
 from flows.base import LogSeverity
 from business.pac import PacBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowPacUserRoleListInitReportResult():
     """
@@ -44,7 +45,9 @@ class FlowPacUserRoleListInitReportResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
+class FlowPacUserRoleListInitReport(
+    BaseFlowPacUserRoleListInitReport
+):
     """
     FlowPacUserRoleListInitReport handles the addition of
     a  to
@@ -52,14 +55,6 @@ class FlowPacUserRoleListInitReport(BaseFlowPacUserRoleListInitReport):
     This class extends the BaseFlowPacUserRoleListInitReport class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowPacUserRoleListInitReport class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         pac_bus_obj: PacBusObj,

@@ -1,6 +1,7 @@
 # pac_user_flavor_list_test.py
 """
-This module contains a test case for the ReportProviderPacUserFlavorList class.
+This module contains a test case for the
+ReportProviderPacUserFlavorList class.
 """
 import uuid
 import sqlite3
@@ -16,7 +17,8 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderPacUserFlavorList:
     """
-    This class contains test cases for the ReportProviderPacUserFlavorList class.
+    This class contains test cases for the
+    ReportProviderPacUserFlavorList class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):

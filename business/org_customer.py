@@ -1,5 +1,5 @@
 # business/org_customer.py
-
+# pylint: disable=unused-import
 """
 This module contains the OrgCustomerBusObj class,
 which represents the business object for a OrgCustomer.
@@ -7,10 +7,8 @@ which represents the business object for a OrgCustomer.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import OrgCustomerManager
 from models import OrgCustomer
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .org_customer_fluent import OrgCustomerFluentBusObj
 
 class OrgCustomerBusObj(OrgCustomerFluentBusObj):

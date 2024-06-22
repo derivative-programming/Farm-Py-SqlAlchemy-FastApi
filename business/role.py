@@ -1,5 +1,5 @@
 # business/role.py
-
+# pylint: disable=unused-import
 """
 This module contains the RoleBusObj class,
 which represents the business object for a Role.
@@ -7,10 +7,8 @@ which represents the business object for a Role.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import RoleManager
 from models import Role
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .role_fluent import RoleFluentBusObj
 
 class RoleBusObj(RoleFluentBusObj):

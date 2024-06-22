@@ -1,12 +1,11 @@
 # business/org_customer_base.py
 """
-This module contains the OrgCustomerBusObj class,
-which represents the business object for a OrgCustomer.
+This module contains the OrgCustomerBaseBusObj class,
+which represents the base business object for a OrgCustomer.
 """
 from decimal import Decimal
 import random
 import uuid
-from typing import List
 from datetime import datetime, date
 from helpers.session_context import SessionContext
 from managers import OrgCustomerManager

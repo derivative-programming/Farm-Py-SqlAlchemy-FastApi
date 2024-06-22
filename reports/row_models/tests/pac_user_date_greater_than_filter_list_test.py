@@ -18,7 +18,8 @@ from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_date_greater_than_filter_list import ReportItemPacUserDateGreaterThanFilterList
 class TestReportItemPacUserDateGreaterThanFilterList:
     """
-    Test class for the ReportItemPacUserDateGreaterThanFilterList model.
+    Test class for the
+    ReportItemPacUserDateGreaterThanFilterList model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

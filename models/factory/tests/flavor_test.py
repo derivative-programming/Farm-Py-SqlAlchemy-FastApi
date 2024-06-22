@@ -10,7 +10,7 @@ import uuid
 import logging
 from datetime import datetime, date, timedelta
 import pytest
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from models import Base, Flavor
@@ -30,7 +30,7 @@ class TestFlavorFactory:
         engine = create_engine(DATABASE_URL, echo=False)
         # FKs are not activated by default in sqllite
         with engine.connect() as conn:
-            conn.connection.execute("PRAGMA foreign_keys=ON")
+            conn.execute(text("PRAGMA foreign_keys=ON"))
         yield engine
         engine.dispose()
     @pytest.fixture

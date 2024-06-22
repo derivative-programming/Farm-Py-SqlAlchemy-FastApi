@@ -17,7 +17,8 @@ from sqlalchemy import text
 from helpers import SessionContext
 class ReportProviderPacUserTriStateFilterList():
     """
-    The ReportProviderPacUserTriStateFilterList class is responsible
+    The ReportProviderPacUserTriStateFilterList
+    class is responsible
     for generating a list of pac tri_state_filters
     based on the provided parameters.
     Args:
@@ -34,7 +35,8 @@ class ReportProviderPacUserTriStateFilterList():
     _cached_sql_query: str = ""
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ReportProviderPacUserTriStateFilterList class.
+        Initializes a new instance of the
+        ReportProviderPacUserTriStateFilterList class.
         Args:
             session_context (SessionContext): The session context object.
         Raises:

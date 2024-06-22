@@ -1,7 +1,8 @@
 # flows/base/tests/tac_register_test.py
 # pylint: disable=protected-access
 """
-This module contains the unit tests for the `BaseFlowTacRegister` class.
+This module contains the unit tests for the
+`BaseFlowTacRegister` class.
 """
 import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +16,8 @@ from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.tac import TacFactory
 class TestBaseFlowTacRegister():
     """
-    This class contains unit tests for the `BaseFlowTacRegister` class.
+    This class contains unit tests for the
+    `BaseFlowTacRegister` class.
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
@@ -89,7 +91,8 @@ class TestBaseFlowTacRegister():
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
-        Test the process_security_rules method of BaseFlowTacRegister.
+        Test the process_security_rules method of
+        BaseFlowTacRegister.
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It

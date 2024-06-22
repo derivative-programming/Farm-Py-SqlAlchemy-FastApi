@@ -1,12 +1,11 @@
 # business/tac_base.py
 """
-This module contains the TacBusObj class,
-which represents the business object for a Tac.
+This module contains the TacBaseBusObj class,
+which represents the base business object for a Tac.
 """
 from decimal import Decimal
 import random
 import uuid
-from typing import List
 from datetime import datetime, date
 from helpers.session_context import SessionContext
 from managers import TacManager

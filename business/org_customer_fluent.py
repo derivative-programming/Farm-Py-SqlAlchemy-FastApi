@@ -1,7 +1,7 @@
 # business/org_customer_fluent.py
 """
-This module contains the OrgCustomerBusObj class,
-which represents the business object for a OrgCustomer.
+This module contains the OrgCustomerFluentBusObj class,
+which adds fluent properties to the business object for a OrgCustomer.
 """
 from decimal import Decimal
 import uuid

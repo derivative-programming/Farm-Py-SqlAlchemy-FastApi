@@ -1,5 +1,5 @@
 # flows/default/land_add_plant.py
-
+# pylint: disable=unused-import
 """
 This module contains the
 FlowLandAddPlant class and related classes
@@ -15,7 +15,7 @@ from decimal import Decimal
 from flows.base.land_add_plant import BaseFlowLandAddPlant
 from flows.base import LogSeverity
 from business.land import LandBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 
 
@@ -111,7 +111,9 @@ class FlowLandAddPlantResult():
         return json.dumps(data)
 
 
-class FlowLandAddPlant(BaseFlowLandAddPlant):
+class FlowLandAddPlant(
+    BaseFlowLandAddPlant
+):
     """
     FlowLandAddPlant handles the addition of
     a plant to
@@ -120,16 +122,6 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
     This class extends the BaseFlowLandAddPlant class and
     initializes it with the provided session context.
     """
-
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowLandAddPlant class.
-
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
 
     async def process(
         self,
@@ -227,7 +219,7 @@ class FlowLandAddPlant(BaseFlowLandAddPlant):
 
         # plant: PlantBusObj = land_bus_obj.build_plant()
         # plant.land_id = land_bus_obj.land_id
-        # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session_context.session,code=request_flavor_code).code
+        # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.get_session_context().session,code=request_flavor_code).code
         # plant.other_flavor = request_other_flavor
         # plant.some_int_val = request_some_int_val
         # plant.some_big_int_val = request_some_big_int_val

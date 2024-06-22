@@ -17,11 +17,13 @@ from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
 class TestCustomerBuildTempApiKeyPostModelResponse:
     """
-    This class contains unit tests for the `FlowCustomerBuildTempApiKeyResult` class.
+    This class contains unit tests for the
+    `FlowCustomerBuildTempApiKeyResult` class.
     """
     def test_flow_customer_build_temp_api_key_result_to_json(self):
         """
-        Test the `to_json` method of the `FlowCustomerBuildTempApiKeyResult` class.
+        Test the `to_json` method of the
+        `FlowCustomerBuildTempApiKeyResult` class.
         """
         # Create an instance and set attributes
         result = FlowCustomerBuildTempApiKeyResult()
@@ -38,7 +40,6 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         assert data["tmp_org_api_key_code"] == (
             str(result.tmp_org_api_key_code))
 # endsets
-    #TODO finish test
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """

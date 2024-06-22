@@ -23,7 +23,8 @@ class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the BaseFlowLandUserPlantMultiSelectToEditable class.
+        Initializes a new instance of the
+        BaseFlowLandUserPlantMultiSelectToEditable class.
         Args:
             session_context (SessionContext): The session context for the flow.
         """

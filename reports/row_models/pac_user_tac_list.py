@@ -1,6 +1,7 @@
 # pac_user_tac_list.py
 """
-This module contains the definition of the ReportItemPacUserTacList class.
+This module contains the definition of the
+ReportItemPacUserTacList class.
 """
 import uuid
 from decimal import Decimal

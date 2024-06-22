@@ -24,7 +24,8 @@ class ReportManagerPacUserTacList():
         self._session_context = session_context
         if session_context.session is None:
             raise TypeError(
-                "ReportManagerPacUserTacList.init session_context has "
+                "ReportManagerPacUserTacList.init"
+                " session_context has "
                 "no session assigned"
             )
     async def generate(
@@ -44,7 +45,8 @@ class ReportManagerPacUserTacList():
             List[ReportItemPacUserTacList]: The
                 list of report items.
         """
-        logging.info('ReportManagerPacUserTacList.generate Start')
+        logging.info("ReportManagerPacUserTacList.generate"
+                     " Start")
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -60,7 +62,8 @@ class ReportManagerPacUserTacList():
         if page_number <= 0:
             raise ReportRequestValidationError("page_number",
                                                "Minimum page number is 1")
-        provider = ReportProviderPacUserTacList(self._session_context)
+        provider = ReportProviderPacUserTacList(
+            self._session_context)
         data_list = await provider.generate_list(
             pac_code,
 
@@ -72,7 +75,8 @@ class ReportManagerPacUserTacList():
         )
         result = list()
         for data_item in data_list:
-            report_item: ReportItemPacUserTacList = ReportItemPacUserTacList()
+            report_item: ReportItemPacUserTacList = \
+                ReportItemPacUserTacList()
             report_item.load_data_provider_dict(data_item)
             result.append(report_item)
         logging.info(
@@ -81,9 +85,11 @@ class ReportManagerPacUserTacList():
         )
         logging.info('ReportManagerPacUserTacList.generate End')
         return result
-    async def build_csv(self,
-                        file_name: str,
-                        data_list: List[ReportItemPacUserTacList]):
+    async def build_csv(
+        self,
+        file_name: str,
+        data_list: List[ReportItemPacUserTacList]
+    ):
         """
         Build a CSV file for the
         'Pac User Tac List' report.
@@ -95,7 +101,8 @@ class ReportManagerPacUserTacList():
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(
                 file,
-                fieldnames=vars(ReportItemPacUserTacList()).keys(),
+                fieldnames=vars(
+                    ReportItemPacUserTacList()).keys(),
                 quoting=csv.QUOTE_ALL)
             writer.writeheader()
             for obj in data_list:
@@ -134,13 +141,18 @@ class ReportManagerPacUserTacList():
             return uuid.UUID(value)
         else:
             return value
-    async def read_csv(self, file_name: str) -> List[ReportItemPacUserTacList]:
+    async def read_csv(
+        self,
+        file_name: str
+    ) -> List[ReportItemPacUserTacList]:
         """
-        Read a CSV file and return a list of report items.
+        Read a CSV file and return a
+        list of report items.
         Args:
             file_name (str): The name of the CSV file.
         Returns:
-            List[ReportItemPacUserTacList]: The list of report items.
+            List[ReportItemPacUserTacList]:
+                The list of report items.
         """
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:

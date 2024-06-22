@@ -1,4 +1,5 @@
 # flows/default/pac_user_tri_state_filter_list_init_report.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowPacUserTriStateFilterListInitReport class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.pac_user_tri_state_filter_list_init_report import BaseFlowPacUserTriStateFilterListInitReport
 from flows.base import LogSeverity
 from business.pac import PacBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowPacUserTriStateFilterListInitReportResult():
     """
@@ -44,7 +45,9 @@ class FlowPacUserTriStateFilterListInitReportResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowPacUserTriStateFilterListInitReport(BaseFlowPacUserTriStateFilterListInitReport):
+class FlowPacUserTriStateFilterListInitReport(
+    BaseFlowPacUserTriStateFilterListInitReport
+):
     """
     FlowPacUserTriStateFilterListInitReport handles the addition of
     a  to
@@ -52,14 +55,6 @@ class FlowPacUserTriStateFilterListInitReport(BaseFlowPacUserTriStateFilterListI
     This class extends the BaseFlowPacUserTriStateFilterListInitReport class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowPacUserTriStateFilterListInitReport class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         pac_bus_obj: PacBusObj,

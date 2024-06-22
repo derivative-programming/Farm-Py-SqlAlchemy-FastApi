@@ -1,4 +1,5 @@
 # flows/default/customer_user_log_out_init_obj_wf.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowCustomerUserLogOutInitObjWF class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.customer_user_log_out_init_obj_wf import BaseFlowCustomerUserLogOutInitObjWF
 from flows.base import LogSeverity
 from business.customer import CustomerBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowCustomerUserLogOutInitObjWFResult():
     """
@@ -45,7 +46,9 @@ class FlowCustomerUserLogOutInitObjWFResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
+class FlowCustomerUserLogOutInitObjWF(
+    BaseFlowCustomerUserLogOutInitObjWF
+):
     """
     FlowCustomerUserLogOutInitObjWF handles the addition of
     a  to
@@ -53,14 +56,6 @@ class FlowCustomerUserLogOutInitObjWF(BaseFlowCustomerUserLogOutInitObjWF):
     This class extends the BaseFlowCustomerUserLogOutInitObjWF class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowCustomerUserLogOutInitObjWF class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         customer_bus_obj: CustomerBusObj,

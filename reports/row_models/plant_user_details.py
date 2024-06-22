@@ -1,6 +1,7 @@
 # plant_user_details.py
 """
-This module contains the definition of the ReportItemPlantUserDetails class.
+This module contains the definition of the
+ReportItemPlantUserDetails class.
 """
 import uuid
 from decimal import Decimal

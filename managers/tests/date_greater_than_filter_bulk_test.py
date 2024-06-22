@@ -46,7 +46,8 @@ class TestDateGreaterThanFilterBulkManager:
         `DateGreaterThanFilterManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple date_greater_than_filters to the database.
+        method correctly adds multiple
+        date_greater_than_filters to the database.
 
         Steps:
         1. Generate a list of date_greater_than_filter data using the
@@ -89,7 +90,8 @@ class TestDateGreaterThanFilterBulkManager:
             )
             fetched_date_greater_than_filter = result.scalars().first()
 
-            assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+            assert isinstance(
+                fetched_date_greater_than_filter, DateGreaterThanFilter)
 
             assert str(fetched_date_greater_than_filter.insert_user_id) == (
                 str(date_greater_than_filter_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestDateGreaterThanFilterBulkManager:
         Test case for bulk update of date_greater_than_filters.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `DateGreaterThanFilterManager` class.
+        `update_bulk` method in the
+        `DateGreaterThanFilterManager` class.
         It creates two date_greater_than_filter instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestDateGreaterThanFilterBulkManager:
         1. Create two date_greater_than_filter instances using the
             `DateGreaterThanFilterFactory.create_async` method.
         2. Generate new codes for the date_greater_than_filters.
-        3. Update the date_greater_than_filters' codes using the `update_bulk` method.
+        3. Update the date_greater_than_filters' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance of the
+            date_greater_than_filter_manager (DateGreaterThanFilterManager):
+                An instance of the
                 `DateGreaterThanFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestDateGreaterThanFilterBulkManager:
             None
         """
         # Mocking date_greater_than_filter instances
-        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(
-            session=session)
-        date_greater_than_filter2 = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter1 = await DateGreaterThanFilterFactory. \
+            create_async(
+                session=session)
+        date_greater_than_filter2 = await DateGreaterThanFilterFactory. \
+            create_async(
+                session=session)
         logging.info(date_greater_than_filter1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestDateGreaterThanFilterBulkManager:
         # Update date_greater_than_filters
         updates = [
             {
-                "date_greater_than_filter_id": date_greater_than_filter1.date_greater_than_filter_id,
+                "date_greater_than_filter_id":
+                    date_greater_than_filter1.date_greater_than_filter_id,
                 "code": code_updated1
             },
             {
-                "date_greater_than_filter_id": date_greater_than_filter2.date_greater_than_filter_id,
+                "date_greater_than_filter_id":
+                    date_greater_than_filter2.date_greater_than_filter_id,
                 "code": code_updated2
             }
         ]

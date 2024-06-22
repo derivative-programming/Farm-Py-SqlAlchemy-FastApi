@@ -1,7 +1,8 @@
 # flows/base/tests/pac_user_date_greater_than_filter_list_init_report_test.py
 # pylint: disable=protected-access
 """
-This module contains the unit tests for the `BaseFlowPacUserDateGreaterThanFilterListInitReport` class.
+This module contains the unit tests for the
+`BaseFlowPacUserDateGreaterThanFilterListInitReport` class.
 """
 import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +16,8 @@ from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
 class TestBaseFlowPacUserDateGreaterThanFilterListInitReport():
     """
-    This class contains unit tests for the `BaseFlowPacUserDateGreaterThanFilterListInitReport` class.
+    This class contains unit tests for the
+    `BaseFlowPacUserDateGreaterThanFilterListInitReport` class.
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
@@ -52,7 +54,8 @@ class TestBaseFlowPacUserDateGreaterThanFilterListInitReport():
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
-        Test the process_security_rules method of BaseFlowPacUserDateGreaterThanFilterListInitReport.
+        Test the process_security_rules method of
+        BaseFlowPacUserDateGreaterThanFilterListInitReport.
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It

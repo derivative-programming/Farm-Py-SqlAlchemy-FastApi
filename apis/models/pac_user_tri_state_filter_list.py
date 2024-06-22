@@ -119,7 +119,8 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemPacUserTriStateFilterList): The
-                ReportItemPacUserTriStateFilterList object to load the data from.
+                ReportItemPacUserTriStateFilterList object
+                to load the data from.
         """
         self.tri_state_filter_code = (
             data.tri_state_filter_code)

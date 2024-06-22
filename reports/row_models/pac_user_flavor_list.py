@@ -1,6 +1,7 @@
 # pac_user_flavor_list.py
 """
-This module contains the definition of the ReportItemPacUserFlavorList class.
+This module contains the definition of the
+ReportItemPacUserFlavorList class.
 """
 import uuid
 from decimal import Decimal

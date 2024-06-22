@@ -46,7 +46,8 @@ class TestLandBulkManager:
         `LandManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple lands to the database.
+        method correctly adds multiple
+        lands to the database.
 
         Steps:
         1. Generate a list of land data using the
@@ -89,7 +90,8 @@ class TestLandBulkManager:
             )
             fetched_land = result.scalars().first()
 
-            assert isinstance(fetched_land, Land)
+            assert isinstance(
+                fetched_land, Land)
 
             assert str(fetched_land.insert_user_id) == (
                 str(land_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestLandBulkManager:
         Test case for bulk update of lands.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `LandManager` class.
+        `update_bulk` method in the
+        `LandManager` class.
         It creates two land instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestLandBulkManager:
         1. Create two land instances using the
             `LandFactory.create_async` method.
         2. Generate new codes for the lands.
-        3. Update the lands' codes using the `update_bulk` method.
+        3. Update the lands' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            land_manager (LandManager): An instance of the
+            land_manager (LandManager):
+                An instance of the
                 `LandManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestLandBulkManager:
             None
         """
         # Mocking land instances
-        land1 = await LandFactory.create_async(
-            session=session)
-        land2 = await LandFactory.create_async(
-            session=session)
+        land1 = await LandFactory. \
+            create_async(
+                session=session)
+        land2 = await LandFactory. \
+            create_async(
+                session=session)
         logging.info(land1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestLandBulkManager:
         # Update lands
         updates = [
             {
-                "land_id": land1.land_id,
+                "land_id":
+                    land1.land_id,
                 "code": code_updated1
             },
             {
-                "land_id": land2.land_id,
+                "land_id":
+                    land2.land_id,
                 "code": code_updated2
             }
         ]

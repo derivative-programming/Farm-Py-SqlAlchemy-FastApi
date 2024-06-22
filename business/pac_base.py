@@ -1,12 +1,11 @@
 # business/pac_base.py
 """
-This module contains the PacBusObj class,
-which represents the business object for a Pac.
+This module contains the PacBaseBusObj class,
+which represents the base business object for a Pac.
 """
 from decimal import Decimal
 import random
 import uuid
-from typing import List
 from datetime import datetime, date
 from helpers.session_context import SessionContext
 from managers import PacManager

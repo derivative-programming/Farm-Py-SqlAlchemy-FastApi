@@ -1,7 +1,8 @@
 # flows/base/tests/land_add_plant_test.py
 # pylint: disable=protected-access
 """
-This module contains the unit tests for the `BaseFlowLandAddPlant` class.
+This module contains the unit tests for the
+`BaseFlowLandAddPlant` class.
 """
 import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
@@ -17,7 +18,8 @@ from models.factory.land import LandFactory
 
 class TestBaseFlowLandAddPlant():
     """
-    This class contains unit tests for the `BaseFlowLandAddPlant` class.
+    This class contains unit tests for the
+    `BaseFlowLandAddPlant` class.
     """
 
     @pytest.mark.asyncio
@@ -205,7 +207,8 @@ class TestBaseFlowLandAddPlant():
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
-        Test the process_security_rules method of BaseFlowLandAddPlant.
+        Test the process_security_rules method of
+        BaseFlowLandAddPlant.
 
         This method tests the behavior of the
         _process_security_rules method

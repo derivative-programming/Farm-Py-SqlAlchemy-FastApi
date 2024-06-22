@@ -1,5 +1,5 @@
 # business/flavor.py
-
+# pylint: disable=unused-import
 """
 This module contains the FlavorBusObj class,
 which represents the business object for a Flavor.
@@ -7,10 +7,8 @@ which represents the business object for a Flavor.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import FlavorManager
 from models import Flavor
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .flavor_fluent import FlavorFluentBusObj
 
 class FlavorBusObj(FlavorFluentBusObj):

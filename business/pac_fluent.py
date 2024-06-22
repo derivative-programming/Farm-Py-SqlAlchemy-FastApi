@@ -1,7 +1,7 @@
 # business/pac_fluent.py
 """
-This module contains the PacBusObj class,
-which represents the business object for a Pac.
+This module contains the PacFluentBusObj class,
+which adds fluent properties to the business object for a Pac.
 """
 from decimal import Decimal
 import uuid

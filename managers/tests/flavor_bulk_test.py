@@ -46,7 +46,8 @@ class TestFlavorBulkManager:
         `FlavorManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple flavors to the database.
+        method correctly adds multiple
+        flavors to the database.
 
         Steps:
         1. Generate a list of flavor data using the
@@ -89,7 +90,8 @@ class TestFlavorBulkManager:
             )
             fetched_flavor = result.scalars().first()
 
-            assert isinstance(fetched_flavor, Flavor)
+            assert isinstance(
+                fetched_flavor, Flavor)
 
             assert str(fetched_flavor.insert_user_id) == (
                 str(flavor_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestFlavorBulkManager:
         Test case for bulk update of flavors.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `FlavorManager` class.
+        `update_bulk` method in the
+        `FlavorManager` class.
         It creates two flavor instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestFlavorBulkManager:
         1. Create two flavor instances using the
             `FlavorFactory.create_async` method.
         2. Generate new codes for the flavors.
-        3. Update the flavors' codes using the `update_bulk` method.
+        3. Update the flavors' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            flavor_manager (FlavorManager): An instance of the
+            flavor_manager (FlavorManager):
+                An instance of the
                 `FlavorManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestFlavorBulkManager:
             None
         """
         # Mocking flavor instances
-        flavor1 = await FlavorFactory.create_async(
-            session=session)
-        flavor2 = await FlavorFactory.create_async(
-            session=session)
+        flavor1 = await FlavorFactory. \
+            create_async(
+                session=session)
+        flavor2 = await FlavorFactory. \
+            create_async(
+                session=session)
         logging.info(flavor1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestFlavorBulkManager:
         # Update flavors
         updates = [
             {
-                "flavor_id": flavor1.flavor_id,
+                "flavor_id":
+                    flavor1.flavor_id,
                 "code": code_updated1
             },
             {
-                "flavor_id": flavor2.flavor_id,
+                "flavor_id":
+                    flavor2.flavor_id,
                 "code": code_updated2
             }
         ]

@@ -1,7 +1,8 @@
 # flows/base/tests/customer_user_log_out_init_obj_wf_test.py
 # pylint: disable=protected-access
 """
-This module contains the unit tests for the `BaseFlowCustomerUserLogOutInitObjWF` class.
+This module contains the unit tests for the
+`BaseFlowCustomerUserLogOutInitObjWF` class.
 """
 import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +16,8 @@ from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.customer import CustomerFactory
 class TestBaseFlowCustomerUserLogOutInitObjWF():
     """
-    This class contains unit tests for the `BaseFlowCustomerUserLogOutInitObjWF` class.
+    This class contains unit tests for the
+    `BaseFlowCustomerUserLogOutInitObjWF` class.
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
@@ -52,7 +54,8 @@ class TestBaseFlowCustomerUserLogOutInitObjWF():
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
-        Test the process_security_rules method of BaseFlowCustomerUserLogOutInitObjWF.
+        Test the process_security_rules method of
+        BaseFlowCustomerUserLogOutInitObjWF.
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It

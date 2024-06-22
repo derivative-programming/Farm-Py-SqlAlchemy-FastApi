@@ -47,7 +47,8 @@ class TestPlantBulkManager:
         `PlantManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple plants to the database.
+        method correctly adds multiple
+        plants to the database.
 
         Steps:
         1. Generate a list of plant data using the
@@ -90,7 +91,8 @@ class TestPlantBulkManager:
             )
             fetched_plant = result.scalars().first()
 
-            assert isinstance(fetched_plant, Plant)
+            assert isinstance(
+                fetched_plant, Plant)
 
             assert str(fetched_plant.insert_user_id) == (
                 str(plant_manager._session_context.customer_code))
@@ -110,7 +112,8 @@ class TestPlantBulkManager:
         Test case for bulk update of plants.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `PlantManager` class.
+        `update_bulk` method in the
+        `PlantManager` class.
         It creates two plant instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -121,12 +124,14 @@ class TestPlantBulkManager:
         1. Create two plant instances using the
             `PlantFactory.create_async` method.
         2. Generate new codes for the plants.
-        3. Update the plants' codes using the `update_bulk` method.
+        3. Update the plants' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            plant_manager (PlantManager): An instance of the
+            plant_manager (PlantManager):
+                An instance of the
                 `PlantManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -134,10 +139,12 @@ class TestPlantBulkManager:
             None
         """
         # Mocking plant instances
-        plant1 = await PlantFactory.create_async(
-            session=session)
-        plant2 = await PlantFactory.create_async(
-            session=session)
+        plant1 = await PlantFactory. \
+            create_async(
+                session=session)
+        plant2 = await PlantFactory. \
+            create_async(
+                session=session)
         logging.info(plant1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -148,11 +155,13 @@ class TestPlantBulkManager:
         # Update plants
         updates = [
             {
-                "plant_id": plant1.plant_id,
+                "plant_id":
+                    plant1.plant_id,
                 "code": code_updated1
             },
             {
-                "plant_id": plant2.plant_id,
+                "plant_id":
+                    plant2.plant_id,
                 "code": code_updated2
             }
         ]

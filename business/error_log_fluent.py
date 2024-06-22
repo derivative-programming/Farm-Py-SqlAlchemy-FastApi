@@ -1,7 +1,7 @@
 # business/error_log_fluent.py
 """
-This module contains the ErrorLogBusObj class,
-which represents the business object for a ErrorLog.
+This module contains the ErrorLogFluentBusObj class,
+which adds fluent properties to the business object for a ErrorLog.
 """
 from decimal import Decimal
 import uuid

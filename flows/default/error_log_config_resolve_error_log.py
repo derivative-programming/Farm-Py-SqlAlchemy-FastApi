@@ -1,4 +1,5 @@
 # flows/default/error_log_config_resolve_error_log.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowErrorLogConfigResolveErrorLog class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.error_log_config_resolve_error_log import BaseFlowErrorLogConfigResolveErrorLog
 from flows.base import LogSeverity
 from business.error_log import ErrorLogBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowErrorLogConfigResolveErrorLogResult():
     """
@@ -44,7 +45,9 @@ class FlowErrorLogConfigResolveErrorLogResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
+class FlowErrorLogConfigResolveErrorLog(
+    BaseFlowErrorLogConfigResolveErrorLog
+):
     """
     FlowErrorLogConfigResolveErrorLog handles the addition of
     a  to
@@ -52,14 +55,6 @@ class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
     This class extends the BaseFlowErrorLogConfigResolveErrorLog class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowErrorLogConfigResolveErrorLog class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         error_log_bus_obj: ErrorLogBusObj,

@@ -23,7 +23,8 @@ from reports.row_models.land_plant_list import ReportItemLandPlantList
 
 class TestReportItemLandPlantList:
     """
-    Test class for the ReportItemLandPlantList model.
+    Test class for the
+    ReportItemLandPlantList model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

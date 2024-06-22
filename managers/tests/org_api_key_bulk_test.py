@@ -46,7 +46,8 @@ class TestOrgApiKeyBulkManager:
         `OrgApiKeyManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple org_api_keys to the database.
+        method correctly adds multiple
+        org_api_keys to the database.
 
         Steps:
         1. Generate a list of org_api_key data using the
@@ -89,7 +90,8 @@ class TestOrgApiKeyBulkManager:
             )
             fetched_org_api_key = result.scalars().first()
 
-            assert isinstance(fetched_org_api_key, OrgApiKey)
+            assert isinstance(
+                fetched_org_api_key, OrgApiKey)
 
             assert str(fetched_org_api_key.insert_user_id) == (
                 str(org_api_key_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestOrgApiKeyBulkManager:
         Test case for bulk update of org_api_keys.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `OrgApiKeyManager` class.
+        `update_bulk` method in the
+        `OrgApiKeyManager` class.
         It creates two org_api_key instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestOrgApiKeyBulkManager:
         1. Create two org_api_key instances using the
             `OrgApiKeyFactory.create_async` method.
         2. Generate new codes for the org_api_keys.
-        3. Update the org_api_keys' codes using the `update_bulk` method.
+        3. Update the org_api_keys' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An instance of the
+            org_api_key_manager (OrgApiKeyManager):
+                An instance of the
                 `OrgApiKeyManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestOrgApiKeyBulkManager:
             None
         """
         # Mocking org_api_key instances
-        org_api_key1 = await OrgApiKeyFactory.create_async(
-            session=session)
-        org_api_key2 = await OrgApiKeyFactory.create_async(
-            session=session)
+        org_api_key1 = await OrgApiKeyFactory. \
+            create_async(
+                session=session)
+        org_api_key2 = await OrgApiKeyFactory. \
+            create_async(
+                session=session)
         logging.info(org_api_key1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestOrgApiKeyBulkManager:
         # Update org_api_keys
         updates = [
             {
-                "org_api_key_id": org_api_key1.org_api_key_id,
+                "org_api_key_id":
+                    org_api_key1.org_api_key_id,
                 "code": code_updated1
             },
             {
-                "org_api_key_id": org_api_key2.org_api_key_id,
+                "org_api_key_id":
+                    org_api_key2.org_api_key_id,
                 "code": code_updated2
             }
         ]

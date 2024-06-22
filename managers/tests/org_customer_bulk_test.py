@@ -46,7 +46,8 @@ class TestOrgCustomerBulkManager:
         `OrgCustomerManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple org_customers to the database.
+        method correctly adds multiple
+        org_customers to the database.
 
         Steps:
         1. Generate a list of org_customer data using the
@@ -89,7 +90,8 @@ class TestOrgCustomerBulkManager:
             )
             fetched_org_customer = result.scalars().first()
 
-            assert isinstance(fetched_org_customer, OrgCustomer)
+            assert isinstance(
+                fetched_org_customer, OrgCustomer)
 
             assert str(fetched_org_customer.insert_user_id) == (
                 str(org_customer_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestOrgCustomerBulkManager:
         Test case for bulk update of org_customers.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `OrgCustomerManager` class.
+        `update_bulk` method in the
+        `OrgCustomerManager` class.
         It creates two org_customer instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestOrgCustomerBulkManager:
         1. Create two org_customer instances using the
             `OrgCustomerFactory.create_async` method.
         2. Generate new codes for the org_customers.
-        3. Update the org_customers' codes using the `update_bulk` method.
+        3. Update the org_customers' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An instance of the
+            org_customer_manager (OrgCustomerManager):
+                An instance of the
                 `OrgCustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestOrgCustomerBulkManager:
             None
         """
         # Mocking org_customer instances
-        org_customer1 = await OrgCustomerFactory.create_async(
-            session=session)
-        org_customer2 = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer1 = await OrgCustomerFactory. \
+            create_async(
+                session=session)
+        org_customer2 = await OrgCustomerFactory. \
+            create_async(
+                session=session)
         logging.info(org_customer1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestOrgCustomerBulkManager:
         # Update org_customers
         updates = [
             {
-                "org_customer_id": org_customer1.org_customer_id,
+                "org_customer_id":
+                    org_customer1.org_customer_id,
                 "code": code_updated1
             },
             {
-                "org_customer_id": org_customer2.org_customer_id,
+                "org_customer_id":
+                    org_customer2.org_customer_id,
                 "code": code_updated2
             }
         ]

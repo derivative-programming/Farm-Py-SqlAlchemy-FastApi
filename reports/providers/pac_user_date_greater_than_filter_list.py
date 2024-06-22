@@ -17,7 +17,8 @@ from sqlalchemy import text
 from helpers import SessionContext
 class ReportProviderPacUserDateGreaterThanFilterList():
     """
-    The ReportProviderPacUserDateGreaterThanFilterList class is responsible
+    The ReportProviderPacUserDateGreaterThanFilterList
+    class is responsible
     for generating a list of pac date_greater_than_filters
     based on the provided parameters.
     Args:
@@ -34,7 +35,8 @@ class ReportProviderPacUserDateGreaterThanFilterList():
     _cached_sql_query: str = ""
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ReportProviderPacUserDateGreaterThanFilterList class.
+        Initializes a new instance of the
+        ReportProviderPacUserDateGreaterThanFilterList class.
         Args:
             session_context (SessionContext): The session context object.
         Raises:

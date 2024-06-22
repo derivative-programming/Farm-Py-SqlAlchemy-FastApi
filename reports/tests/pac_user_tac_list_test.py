@@ -2,7 +2,8 @@
 # pylint: disable=unused-argument
 # pylint: disable=protected-access
 """
-This module contains unit tests for the `ReportManagerPacUserTacList`
+This module contains unit tests for the
+`ReportManagerPacUserTacList`
 class in the `pac_user_tac_list` module.
 """
 import os
@@ -28,14 +29,16 @@ from reports.row_models.pac_user_tac_list import (
 sqlite3.register_adapter(Decimal, str)
 class TestReportManagerPacUserTacList:
     """
-    This class contains unit tests for the `ReportManagerPacUserTacList` class.
+    This class contains unit tests for the
+    `ReportManagerPacUserTacList` class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
         Test case for generating a report.
         This test case verifies the functionality of generating
-        a report using the `ReportManagerPacUserTacList` class.
+        a report using the
+        `ReportManagerPacUserTacList` class.
         It mocks the `generate_list` method and asserts that the
         results returned are of type list.
         The test also ensures that the `generate_list` method is awaited.
@@ -62,8 +65,10 @@ class TestReportManagerPacUserTacList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerPacUserTacList(session_context)
-            pac = await PacFactory.create_async(session=session)
+            report_generator = ReportManagerPacUserTacList(
+                session_context)
+            pac = await PacFactory.create_async(
+                session=session)
             pac_code = pac.code
             role_required = ""
             session_context.role_name_csv = role_required
@@ -113,8 +118,10 @@ class TestReportManagerPacUserTacList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerPacUserTacList(session_context)
-            pac = await PacFactory.create_async(session=session)
+            report_generator = ReportManagerPacUserTacList(
+                session_context)
+            pac = await PacFactory.create_async(
+                session=session)
             pac_code = pac.code
             role_required = ""
             session_context.role_name_csv = role_required
@@ -162,8 +169,10 @@ class TestReportManagerPacUserTacList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerPacUserTacList(session_context)
-            pac = await PacFactory.create_async(session=session)
+            report_generator = ReportManagerPacUserTacList(
+                session_context)
+            pac = await PacFactory.create_async(
+                session=session)
             pac_code = pac.code
             role_required = ""
             session_context.role_name_csv = role_required
@@ -186,7 +195,8 @@ class TestReportManagerPacUserTacList:
     @pytest.mark.asyncio
     async def test_build_csv(self, session):
         """
-        Test case for the build_csv method of ReportManagerPacUserTacList.
+        Test case for the build_csv method of
+        ReportManagerPacUserTacList.
             This method tests the functionality of the build_csv
             method by creating a test CSV file
             using the provided session and test data. It then
@@ -197,9 +207,12 @@ class TestReportManagerPacUserTacList:
             Returns:
                 None
         """
-        session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerPacUserTacList(session_context)
-        test_data = [ReportItemPacUserTacList(), ReportItemPacUserTacList()]
+        session_context = SessionContext(
+            dict(), session)
+        test_obj = ReportManagerPacUserTacList(
+            session_context)
+        test_data = [ReportItemPacUserTacList(),
+                     ReportItemPacUserTacList()]
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
         # Verify the file is created
@@ -218,8 +231,10 @@ class TestReportManagerPacUserTacList:
                     file is not as expected.
         """
         session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerPacUserTacList(session_context)
-        test_data = [ReportItemPacUserTacList(), ReportItemPacUserTacList()]
+        test_obj = ReportManagerPacUserTacList(
+            session_context)
+        test_data = [ReportItemPacUserTacList(),
+                     ReportItemPacUserTacList()]
         file_name = 'test_input.csv'
         await test_obj.build_csv(file_name, test_data)
         # Ensure 'test_input.csv' exists and contains valid data for testing
@@ -232,7 +247,8 @@ class TestReportManagerPacUserTacList:
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self, session):
         """
-        Test the _parse_bool method of ReportManagerPacUserTacList.
+        Test the _parse_bool method of
+        ReportManagerPacUserTacList.
         This method tests the behavior of the _parse_bool method
         in the ReportManagerPacUserTacList class.
         It verifies that the method correctly parses boolean
@@ -243,7 +259,8 @@ class TestReportManagerPacUserTacList:
             None
         """
         session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerPacUserTacList(session_context)
+        test_obj = ReportManagerPacUserTacList(
+            session_context)
         # True values
         assert test_obj._parse_bool('true')
         assert test_obj._parse_bool('1')

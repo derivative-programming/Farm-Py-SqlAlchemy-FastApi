@@ -109,7 +109,8 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemTacFarmDashboard): The
-                ReportItemTacFarmDashboard object to load the data from.
+                ReportItemTacFarmDashboard object
+                to load the data from.
         """
         self.field_one_plant_list_link_land_code = (
             data.field_one_plant_list_link_land_code)

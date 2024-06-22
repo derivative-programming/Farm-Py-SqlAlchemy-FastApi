@@ -6,7 +6,7 @@ This module contains fixtures for testing the serialization schema.
 """
 
 import pytest
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from models import Base
 from services.logging_config import get_logger
@@ -35,7 +35,7 @@ def engine():
 
     engine = create_engine(DATABASE_URL, echo=False)
     with engine.connect() as conn:
-        conn.connection.execute("PRAGMA foreign_keys=ON")
+        conn.execute(text("PRAGMA foreign_keys=ON"))
     yield engine
     engine.dispose()
 

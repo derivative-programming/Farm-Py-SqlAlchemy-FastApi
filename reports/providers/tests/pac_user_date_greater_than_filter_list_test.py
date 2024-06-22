@@ -1,6 +1,7 @@
 # pac_user_date_greater_than_filter_list_test.py
 """
-This module contains a test case for the ReportProviderPacUserDateGreaterThanFilterList class.
+This module contains a test case for the
+ReportProviderPacUserDateGreaterThanFilterList class.
 """
 import uuid
 import sqlite3
@@ -16,7 +17,8 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 class TestReportProviderPacUserDateGreaterThanFilterList:
     """
-    This class contains test cases for the ReportProviderPacUserDateGreaterThanFilterList class.
+    This class contains test cases for the
+    ReportProviderPacUserDateGreaterThanFilterList class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):

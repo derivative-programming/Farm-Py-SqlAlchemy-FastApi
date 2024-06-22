@@ -17,7 +17,8 @@ from sqlalchemy import text
 from helpers import SessionContext
 class ReportProviderTacFarmDashboard():
     """
-    The ReportProviderTacFarmDashboard class is responsible
+    The ReportProviderTacFarmDashboard
+    class is responsible
     for generating a list of tac s
     based on the provided parameters.
     Args:
@@ -34,7 +35,8 @@ class ReportProviderTacFarmDashboard():
     _cached_sql_query: str = ""
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ReportProviderTacFarmDashboard class.
+        Initializes a new instance of the
+        ReportProviderTacFarmDashboard class.
         Args:
             session_context (SessionContext): The session context object.
         Raises:

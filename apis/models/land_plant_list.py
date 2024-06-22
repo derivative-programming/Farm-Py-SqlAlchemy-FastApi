@@ -245,7 +245,8 @@ class LandPlantListGetModelResponseItem(CamelModel):
 
         Args:
             data (ReportItemLandPlantList): The
-                ReportItemLandPlantList object to load the data from.
+                ReportItemLandPlantList object
+                to load the data from.
         """
         self.plant_code = (
             data.plant_code)

@@ -1,7 +1,8 @@
 # flows/base/tests/land_user_plant_multi_select_to_editable_test.py
 # pylint: disable=protected-access
 """
-This module contains the unit tests for the `BaseFlowLandUserPlantMultiSelectToEditable` class.
+This module contains the unit tests for the
+`BaseFlowLandUserPlantMultiSelectToEditable` class.
 """
 import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +16,8 @@ from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.land import LandFactory
 class TestBaseFlowLandUserPlantMultiSelectToEditable():
     """
-    This class contains unit tests for the `BaseFlowLandUserPlantMultiSelectToEditable` class.
+    This class contains unit tests for the
+    `BaseFlowLandUserPlantMultiSelectToEditable` class.
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
@@ -57,7 +59,8 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
-        Test the process_security_rules method of BaseFlowLandUserPlantMultiSelectToEditable.
+        Test the process_security_rules method of
+        BaseFlowLandUserPlantMultiSelectToEditable.
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It

@@ -24,7 +24,8 @@ class ReportManagerPacUserTriStateFilterList():
         self._session_context = session_context
         if session_context.session is None:
             raise TypeError(
-                "ReportManagerPacUserTriStateFilterList.init session_context has "
+                "ReportManagerPacUserTriStateFilterList.init"
+                " session_context has "
                 "no session assigned"
             )
     async def generate(
@@ -44,7 +45,8 @@ class ReportManagerPacUserTriStateFilterList():
             List[ReportItemPacUserTriStateFilterList]: The
                 list of report items.
         """
-        logging.info('ReportManagerPacUserTriStateFilterList.generate Start')
+        logging.info("ReportManagerPacUserTriStateFilterList.generate"
+                     " Start")
         role_required = ""
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -60,7 +62,8 @@ class ReportManagerPacUserTriStateFilterList():
         if page_number <= 0:
             raise ReportRequestValidationError("page_number",
                                                "Minimum page number is 1")
-        provider = ReportProviderPacUserTriStateFilterList(self._session_context)
+        provider = ReportProviderPacUserTriStateFilterList(
+            self._session_context)
         data_list = await provider.generate_list(
             pac_code,
 
@@ -72,7 +75,8 @@ class ReportManagerPacUserTriStateFilterList():
         )
         result = list()
         for data_item in data_list:
-            report_item: ReportItemPacUserTriStateFilterList = ReportItemPacUserTriStateFilterList()
+            report_item: ReportItemPacUserTriStateFilterList = \
+                ReportItemPacUserTriStateFilterList()
             report_item.load_data_provider_dict(data_item)
             result.append(report_item)
         logging.info(
@@ -81,9 +85,11 @@ class ReportManagerPacUserTriStateFilterList():
         )
         logging.info('ReportManagerPacUserTriStateFilterList.generate End')
         return result
-    async def build_csv(self,
-                        file_name: str,
-                        data_list: List[ReportItemPacUserTriStateFilterList]):
+    async def build_csv(
+        self,
+        file_name: str,
+        data_list: List[ReportItemPacUserTriStateFilterList]
+    ):
         """
         Build a CSV file for the
         'Pac User Tri State Filter List' report.
@@ -95,7 +101,8 @@ class ReportManagerPacUserTriStateFilterList():
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(
                 file,
-                fieldnames=vars(ReportItemPacUserTriStateFilterList()).keys(),
+                fieldnames=vars(
+                    ReportItemPacUserTriStateFilterList()).keys(),
                 quoting=csv.QUOTE_ALL)
             writer.writeheader()
             for obj in data_list:
@@ -134,13 +141,18 @@ class ReportManagerPacUserTriStateFilterList():
             return uuid.UUID(value)
         else:
             return value
-    async def read_csv(self, file_name: str) -> List[ReportItemPacUserTriStateFilterList]:
+    async def read_csv(
+        self,
+        file_name: str
+    ) -> List[ReportItemPacUserTriStateFilterList]:
         """
-        Read a CSV file and return a list of report items.
+        Read a CSV file and return a
+        list of report items.
         Args:
             file_name (str): The name of the CSV file.
         Returns:
-            List[ReportItemPacUserTriStateFilterList]: The list of report items.
+            List[ReportItemPacUserTriStateFilterList]:
+                The list of report items.
         """
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:

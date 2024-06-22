@@ -1,7 +1,7 @@
 # business/tri_state_filter_fluent.py
 """
-This module contains the TriStateFilterBusObj class,
-which represents the business object for a TriStateFilter.
+This module contains the TriStateFilterFluentBusObj class,
+which adds fluent properties to the business object for a TriStateFilter.
 """
 from decimal import Decimal
 import uuid

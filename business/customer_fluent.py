@@ -1,7 +1,7 @@
 # business/customer_fluent.py
 """
-This module contains the CustomerBusObj class,
-which represents the business object for a Customer.
+This module contains the CustomerFluentBusObj class,
+which adds fluent properties to the business object for a Customer.
 """
 from decimal import Decimal
 import uuid

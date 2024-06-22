@@ -1,7 +1,7 @@
 # business/date_greater_than_filter_fluent.py
 """
-This module contains the DateGreaterThanFilterBusObj class,
-which represents the business object for a DateGreaterThanFilter.
+This module contains the DateGreaterThanFilterFluentBusObj class,
+which adds fluent properties to the business object for a DateGreaterThanFilter.
 """
 from decimal import Decimal
 import uuid

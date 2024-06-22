@@ -119,7 +119,8 @@ class PacUserLandListGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemPacUserLandList): The
-                ReportItemPacUserLandList object to load the data from.
+                ReportItemPacUserLandList object
+                to load the data from.
         """
         self.land_code = (
             data.land_code)

@@ -46,7 +46,8 @@ class TestTriStateFilterBulkManager:
         `TriStateFilterManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple tri_state_filters to the database.
+        method correctly adds multiple
+        tri_state_filters to the database.
 
         Steps:
         1. Generate a list of tri_state_filter data using the
@@ -89,7 +90,8 @@ class TestTriStateFilterBulkManager:
             )
             fetched_tri_state_filter = result.scalars().first()
 
-            assert isinstance(fetched_tri_state_filter, TriStateFilter)
+            assert isinstance(
+                fetched_tri_state_filter, TriStateFilter)
 
             assert str(fetched_tri_state_filter.insert_user_id) == (
                 str(tri_state_filter_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestTriStateFilterBulkManager:
         Test case for bulk update of tri_state_filters.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `TriStateFilterManager` class.
+        `update_bulk` method in the
+        `TriStateFilterManager` class.
         It creates two tri_state_filter instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestTriStateFilterBulkManager:
         1. Create two tri_state_filter instances using the
             `TriStateFilterFactory.create_async` method.
         2. Generate new codes for the tri_state_filters.
-        3. Update the tri_state_filters' codes using the `update_bulk` method.
+        3. Update the tri_state_filters' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An instance of the
+            tri_state_filter_manager (TriStateFilterManager):
+                An instance of the
                 `TriStateFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestTriStateFilterBulkManager:
             None
         """
         # Mocking tri_state_filter instances
-        tri_state_filter1 = await TriStateFilterFactory.create_async(
-            session=session)
-        tri_state_filter2 = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter1 = await TriStateFilterFactory. \
+            create_async(
+                session=session)
+        tri_state_filter2 = await TriStateFilterFactory. \
+            create_async(
+                session=session)
         logging.info(tri_state_filter1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestTriStateFilterBulkManager:
         # Update tri_state_filters
         updates = [
             {
-                "tri_state_filter_id": tri_state_filter1.tri_state_filter_id,
+                "tri_state_filter_id":
+                    tri_state_filter1.tri_state_filter_id,
                 "code": code_updated1
             },
             {
-                "tri_state_filter_id": tri_state_filter2.tri_state_filter_id,
+                "tri_state_filter_id":
+                    tri_state_filter2.tri_state_filter_id,
                 "code": code_updated2
             }
         ]

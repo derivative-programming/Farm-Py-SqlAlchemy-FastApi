@@ -23,7 +23,8 @@ class BaseFlowPlantUserDelete(BaseFlow):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the BaseFlowPlantUserDelete class.
+        Initializes a new instance of the
+        BaseFlowPlantUserDelete class.
         Args:
             session_context (SessionContext): The session context for the flow.
         """

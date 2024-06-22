@@ -18,7 +18,8 @@ from helpers.type_conversion import TypeConversion
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
 class TestReportItemPlantUserDetails:
     """
-    Test class for the ReportItemPlantUserDetails model.
+    Test class for the
+    ReportItemPlantUserDetails model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

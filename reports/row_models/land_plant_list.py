@@ -1,7 +1,8 @@
 # land_plant_list.py
 
 """
-This module contains the definition of the ReportItemLandPlantList class.
+This module contains the definition of the
+ReportItemLandPlantList class.
 """
 
 import uuid

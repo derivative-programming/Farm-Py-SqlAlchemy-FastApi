@@ -119,7 +119,8 @@ class PacUserRoleListGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemPacUserRoleList): The
-                ReportItemPacUserRoleList object to load the data from.
+                ReportItemPacUserRoleList object
+                to load the data from.
         """
         self.role_code = (
             data.role_code)

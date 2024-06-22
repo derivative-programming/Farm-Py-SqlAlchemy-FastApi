@@ -173,7 +173,8 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemPlantUserDetails): The
-                ReportItemPlantUserDetails object to load the data from.
+                ReportItemPlantUserDetails object
+                to load the data from.
         """
         self.flavor_name = (
             data.flavor_name)

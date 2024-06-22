@@ -23,7 +23,8 @@ class BaseFlowPlantUserPropertyRandomUpdate(BaseFlow):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the BaseFlowPlantUserPropertyRandomUpdate class.
+        Initializes a new instance of the
+        BaseFlowPlantUserPropertyRandomUpdate class.
         Args:
             session_context (SessionContext): The session context for the flow.
         """

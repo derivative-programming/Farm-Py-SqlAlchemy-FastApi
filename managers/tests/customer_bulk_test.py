@@ -46,7 +46,8 @@ class TestCustomerBulkManager:
         `CustomerManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple customers to the database.
+        method correctly adds multiple
+        customers to the database.
 
         Steps:
         1. Generate a list of customer data using the
@@ -89,7 +90,8 @@ class TestCustomerBulkManager:
             )
             fetched_customer = result.scalars().first()
 
-            assert isinstance(fetched_customer, Customer)
+            assert isinstance(
+                fetched_customer, Customer)
 
             assert str(fetched_customer.insert_user_id) == (
                 str(customer_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestCustomerBulkManager:
         Test case for bulk update of customers.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `CustomerManager` class.
+        `update_bulk` method in the
+        `CustomerManager` class.
         It creates two customer instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestCustomerBulkManager:
         1. Create two customer instances using the
             `CustomerFactory.create_async` method.
         2. Generate new codes for the customers.
-        3. Update the customers' codes using the `update_bulk` method.
+        3. Update the customers' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            customer_manager (CustomerManager): An instance of the
+            customer_manager (CustomerManager):
+                An instance of the
                 `CustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestCustomerBulkManager:
             None
         """
         # Mocking customer instances
-        customer1 = await CustomerFactory.create_async(
-            session=session)
-        customer2 = await CustomerFactory.create_async(
-            session=session)
+        customer1 = await CustomerFactory. \
+            create_async(
+                session=session)
+        customer2 = await CustomerFactory. \
+            create_async(
+                session=session)
         logging.info(customer1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestCustomerBulkManager:
         # Update customers
         updates = [
             {
-                "customer_id": customer1.customer_id,
+                "customer_id":
+                    customer1.customer_id,
                 "code": code_updated1
             },
             {
-                "customer_id": customer2.customer_id,
+                "customer_id":
+                    customer2.customer_id,
                 "code": code_updated2
             }
         ]

@@ -23,7 +23,8 @@ class BaseFlowPlantUserDetailsInitReport(BaseFlow):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the BaseFlowPlantUserDetailsInitReport class.
+        Initializes a new instance of the
+        BaseFlowPlantUserDetailsInitReport class.
         Args:
             session_context (SessionContext): The session context for the flow.
         """

@@ -119,7 +119,8 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemPacUserFlavorList): The
-                ReportItemPacUserFlavorList object to load the data from.
+                ReportItemPacUserFlavorList object
+                to load the data from.
         """
         self.flavor_code = (
             data.flavor_code)

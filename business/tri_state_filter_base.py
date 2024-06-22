@@ -1,12 +1,11 @@
 # business/tri_state_filter_base.py
 """
-This module contains the TriStateFilterBusObj class,
-which represents the business object for a TriStateFilter.
+This module contains the TriStateFilterBaseBusObj class,
+which represents the base business object for a TriStateFilter.
 """
 from decimal import Decimal
 import random
 import uuid
-from typing import List
 from datetime import datetime, date
 from helpers.session_context import SessionContext
 from managers import TriStateFilterManager

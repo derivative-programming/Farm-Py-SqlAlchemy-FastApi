@@ -1,5 +1,5 @@
 # business/tri_state_filter.py
-
+# pylint: disable=unused-import
 """
 This module contains the TriStateFilterBusObj class,
 which represents the business object for a TriStateFilter.
@@ -7,10 +7,8 @@ which represents the business object for a TriStateFilter.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import TriStateFilterManager
 from models import TriStateFilter
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .tri_state_filter_fluent import TriStateFilterFluentBusObj
 
 class TriStateFilterBusObj(TriStateFilterFluentBusObj):

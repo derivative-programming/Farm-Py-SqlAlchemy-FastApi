@@ -30,7 +30,8 @@ class ReportManagerLandPlantList():
         self._session_context = session_context
         if session_context.session is None:
             raise TypeError(
-                "ReportManagerLandPlantList.init session_context has "
+                "ReportManagerLandPlantList.init"
+                " session_context has "
                 "no session assigned"
             )
 
@@ -83,7 +84,8 @@ class ReportManagerLandPlantList():
             List[ReportItemLandPlantList]: The
                 list of report items.
         """
-        logging.info('ReportManagerLandPlantList.generate Start')
+        logging.info("ReportManagerLandPlantList.generate"
+                     " Start")
 
         role_required = "User"
 
@@ -104,7 +106,8 @@ class ReportManagerLandPlantList():
             raise ReportRequestValidationError("page_number",
                                                "Minimum page number is 1")
 
-        provider = ReportProviderLandPlantList(self._session_context)
+        provider = ReportProviderLandPlantList(
+            self._session_context)
 
         data_list = await provider.generate_list(
             land_code,
@@ -134,7 +137,8 @@ class ReportManagerLandPlantList():
         result = list()
 
         for data_item in data_list:
-            report_item: ReportItemLandPlantList = ReportItemLandPlantList()
+            report_item: ReportItemLandPlantList = \
+                ReportItemLandPlantList()
             report_item.load_data_provider_dict(data_item)
             result.append(report_item)
 
@@ -146,9 +150,11 @@ class ReportManagerLandPlantList():
         logging.info('ReportManagerLandPlantList.generate End')
         return result
 
-    async def build_csv(self,
-                        file_name: str,
-                        data_list: List[ReportItemLandPlantList]):
+    async def build_csv(
+        self,
+        file_name: str,
+        data_list: List[ReportItemLandPlantList]
+    ):
         """
         Build a CSV file for the
         'Land Plant List' report.
@@ -161,7 +167,8 @@ class ReportManagerLandPlantList():
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(
                 file,
-                fieldnames=vars(ReportItemLandPlantList()).keys(),
+                fieldnames=vars(
+                    ReportItemLandPlantList()).keys(),
                 quoting=csv.QUOTE_ALL)
             writer.writeheader()
 
@@ -208,15 +215,20 @@ class ReportManagerLandPlantList():
         else:
             return value
 
-    async def read_csv(self, file_name: str) -> List[ReportItemLandPlantList]:
+    async def read_csv(
+        self,
+        file_name: str
+    ) -> List[ReportItemLandPlantList]:
         """
-        Read a CSV file and return a list of report items.
+        Read a CSV file and return a
+        list of report items.
 
         Args:
             file_name (str): The name of the CSV file.
 
         Returns:
-            List[ReportItemLandPlantList]: The list of report items.
+            List[ReportItemLandPlantList]:
+                The list of report items.
         """
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:

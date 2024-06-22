@@ -1,7 +1,7 @@
 # business/land_fluent.py
 """
-This module contains the LandBusObj class,
-which represents the business object for a Land.
+This module contains the LandFluentBusObj class,
+which adds fluent properties to the business object for a Land.
 """
 from decimal import Decimal
 import uuid

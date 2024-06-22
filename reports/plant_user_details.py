@@ -24,7 +24,8 @@ class ReportManagerPlantUserDetails():
         self._session_context = session_context
         if session_context.session is None:
             raise TypeError(
-                "ReportManagerPlantUserDetails.init session_context has "
+                "ReportManagerPlantUserDetails.init"
+                " session_context has "
                 "no session assigned"
             )
     async def generate(
@@ -44,7 +45,8 @@ class ReportManagerPlantUserDetails():
             List[ReportItemPlantUserDetails]: The
                 list of report items.
         """
-        logging.info('ReportManagerPlantUserDetails.generate Start')
+        logging.info("ReportManagerPlantUserDetails.generate"
+                     " Start")
         role_required = "User"
         if len(role_required) > 0:
             if role_required not in self._session_context.role_name_csv:
@@ -60,7 +62,8 @@ class ReportManagerPlantUserDetails():
         if page_number <= 0:
             raise ReportRequestValidationError("page_number",
                                                "Minimum page number is 1")
-        provider = ReportProviderPlantUserDetails(self._session_context)
+        provider = ReportProviderPlantUserDetails(
+            self._session_context)
         data_list = await provider.generate_list(
             plant_code,
 
@@ -72,7 +75,8 @@ class ReportManagerPlantUserDetails():
         )
         result = list()
         for data_item in data_list:
-            report_item: ReportItemPlantUserDetails = ReportItemPlantUserDetails()
+            report_item: ReportItemPlantUserDetails = \
+                ReportItemPlantUserDetails()
             report_item.load_data_provider_dict(data_item)
             result.append(report_item)
         logging.info(
@@ -81,9 +85,11 @@ class ReportManagerPlantUserDetails():
         )
         logging.info('ReportManagerPlantUserDetails.generate End')
         return result
-    async def build_csv(self,
-                        file_name: str,
-                        data_list: List[ReportItemPlantUserDetails]):
+    async def build_csv(
+        self,
+        file_name: str,
+        data_list: List[ReportItemPlantUserDetails]
+    ):
         """
         Build a CSV file for the
         'Plant User Details' report.
@@ -95,7 +101,8 @@ class ReportManagerPlantUserDetails():
         with open(file_name, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(
                 file,
-                fieldnames=vars(ReportItemPlantUserDetails()).keys(),
+                fieldnames=vars(
+                    ReportItemPlantUserDetails()).keys(),
                 quoting=csv.QUOTE_ALL)
             writer.writeheader()
             for obj in data_list:
@@ -134,13 +141,18 @@ class ReportManagerPlantUserDetails():
             return uuid.UUID(value)
         else:
             return value
-    async def read_csv(self, file_name: str) -> List[ReportItemPlantUserDetails]:
+    async def read_csv(
+        self,
+        file_name: str
+    ) -> List[ReportItemPlantUserDetails]:
         """
-        Read a CSV file and return a list of report items.
+        Read a CSV file and return a
+        list of report items.
         Args:
             file_name (str): The name of the CSV file.
         Returns:
-            List[ReportItemPlantUserDetails]: The list of report items.
+            List[ReportItemPlantUserDetails]:
+                The list of report items.
         """
         objects = []
         with open(file_name, mode='r', newline='', encoding='utf-8') as file:

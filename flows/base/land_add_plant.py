@@ -30,7 +30,8 @@ class BaseFlowLandAddPlant(BaseFlow):
 
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the BaseFlowLandAddPlant class.
+        Initializes a new instance of the
+        BaseFlowLandAddPlant class.
 
         Args:
             session_context (SessionContext): The session context for the flow.

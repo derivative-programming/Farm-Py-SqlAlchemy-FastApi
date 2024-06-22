@@ -1,5 +1,5 @@
 # business/customer_role.py
-
+# pylint: disable=unused-import
 """
 This module contains the CustomerRoleBusObj class,
 which represents the business object for a CustomerRole.
@@ -7,10 +7,8 @@ which represents the business object for a CustomerRole.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import CustomerRoleManager
 from models import CustomerRole
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .customer_role_fluent import CustomerRoleFluentBusObj
 
 class CustomerRoleBusObj(CustomerRoleFluentBusObj):

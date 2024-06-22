@@ -1,7 +1,8 @@
 # flows/base/tests/error_log_config_resolve_error_log_test.py
 # pylint: disable=protected-access
 """
-This module contains the unit tests for the `BaseFlowErrorLogConfigResolveErrorLog` class.
+This module contains the unit tests for the
+`BaseFlowErrorLogConfigResolveErrorLog` class.
 """
 import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +16,8 @@ from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.error_log import ErrorLogFactory
 class TestBaseFlowErrorLogConfigResolveErrorLog():
     """
-    This class contains unit tests for the `BaseFlowErrorLogConfigResolveErrorLog` class.
+    This class contains unit tests for the
+    `BaseFlowErrorLogConfigResolveErrorLog` class.
     """
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
@@ -52,7 +54,8 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
-        Test the process_security_rules method of BaseFlowErrorLogConfigResolveErrorLog.
+        Test the process_security_rules method of
+        BaseFlowErrorLogConfigResolveErrorLog.
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It

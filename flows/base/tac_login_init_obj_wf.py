@@ -23,7 +23,8 @@ class BaseFlowTacLoginInitObjWF(BaseFlow):
     """
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the BaseFlowTacLoginInitObjWF class.
+        Initializes a new instance of the
+        BaseFlowTacLoginInitObjWF class.
         Args:
             session_context (SessionContext): The session context for the flow.
         """

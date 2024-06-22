@@ -119,7 +119,8 @@ class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
         object into the response model item.
         Args:
             data (ReportItemPacUserDateGreaterThanFilterList): The
-                ReportItemPacUserDateGreaterThanFilterList object to load the data from.
+                ReportItemPacUserDateGreaterThanFilterList object
+                to load the data from.
         """
         self.date_greater_than_filter_code = (
             data.date_greater_than_filter_code)

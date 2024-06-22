@@ -1,5 +1,5 @@
 # business/land.py
-
+# pylint: disable=unused-import
 """
 This module contains the LandBusObj class,
 which represents the business object for a Land.
@@ -7,10 +7,8 @@ which represents the business object for a Land.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import LandManager
 from models import Land
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .land_fluent import LandFluentBusObj
 
 from business.plant import PlantBusObj
@@ -54,6 +52,10 @@ class LandBusObj(LandFluentBusObj):
         return result
 
     async def build_plant(self) -> PlantBusObj:
+        """
+        build plant
+        instance (not saved yet)
+        """
         item = PlantBusObj(self._session_context)
         flavor_manager = managers_and_enums.FlavorManager(self._session_context)
         flvr_foreign_key_id_flavor = await flavor_manager.from_enum(
@@ -67,6 +69,9 @@ class LandBusObj(LandFluentBusObj):
         return item
 
     async def get_all_plant(self) -> List[PlantBusObj]:
+        """
+        get all plant
+        """
         results = list()
         plant_manager = managers_and_enums.PlantManager(self._session_context)
         obj_list = await plant_manager.get_by_land_id(self.land_id)

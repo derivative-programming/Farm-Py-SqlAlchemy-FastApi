@@ -1,5 +1,5 @@
 # business/error_log.py
-
+# pylint: disable=unused-import
 """
 This module contains the ErrorLogBusObj class,
 which represents the business object for a ErrorLog.
@@ -7,10 +7,8 @@ which represents the business object for a ErrorLog.
 
 from typing import List
 from helpers.session_context import SessionContext
-from managers import ErrorLogManager
 from models import ErrorLog
-import models
-import managers as managers_and_enums
+import managers as managers_and_enums  # noqa: F401
 from .error_log_fluent import ErrorLogFluentBusObj
 
 class ErrorLogBusObj(ErrorLogFluentBusObj):

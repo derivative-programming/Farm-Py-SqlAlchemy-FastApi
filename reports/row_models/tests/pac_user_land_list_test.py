@@ -18,7 +18,8 @@ from helpers.type_conversion import TypeConversion
 from reports.row_models.pac_user_land_list import ReportItemPacUserLandList
 class TestReportItemPacUserLandList:
     """
-    Test class for the ReportItemPacUserLandList model.
+    Test class for the
+    ReportItemPacUserLandList model.
     """
     def test_default_values(self):
         """Test the default values of all fields."""

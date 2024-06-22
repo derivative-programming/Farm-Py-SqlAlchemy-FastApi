@@ -46,7 +46,8 @@ class TestCustomerRoleBulkManager:
         `CustomerRoleManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple customer_roles to the database.
+        method correctly adds multiple
+        customer_roles to the database.
 
         Steps:
         1. Generate a list of customer_role data using the
@@ -89,7 +90,8 @@ class TestCustomerRoleBulkManager:
             )
             fetched_customer_role = result.scalars().first()
 
-            assert isinstance(fetched_customer_role, CustomerRole)
+            assert isinstance(
+                fetched_customer_role, CustomerRole)
 
             assert str(fetched_customer_role.insert_user_id) == (
                 str(customer_role_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestCustomerRoleBulkManager:
         Test case for bulk update of customer_roles.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `CustomerRoleManager` class.
+        `update_bulk` method in the
+        `CustomerRoleManager` class.
         It creates two customer_role instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestCustomerRoleBulkManager:
         1. Create two customer_role instances using the
             `CustomerRoleFactory.create_async` method.
         2. Generate new codes for the customer_roles.
-        3. Update the customer_roles' codes using the `update_bulk` method.
+        3. Update the customer_roles' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An instance of the
+            customer_role_manager (CustomerRoleManager):
+                An instance of the
                 `CustomerRoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestCustomerRoleBulkManager:
             None
         """
         # Mocking customer_role instances
-        customer_role1 = await CustomerRoleFactory.create_async(
-            session=session)
-        customer_role2 = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role1 = await CustomerRoleFactory. \
+            create_async(
+                session=session)
+        customer_role2 = await CustomerRoleFactory. \
+            create_async(
+                session=session)
         logging.info(customer_role1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestCustomerRoleBulkManager:
         # Update customer_roles
         updates = [
             {
-                "customer_role_id": customer_role1.customer_role_id,
+                "customer_role_id":
+                    customer_role1.customer_role_id,
                 "code": code_updated1
             },
             {
-                "customer_role_id": customer_role2.customer_role_id,
+                "customer_role_id":
+                    customer_role2.customer_role_id,
                 "code": code_updated2
             }
         ]

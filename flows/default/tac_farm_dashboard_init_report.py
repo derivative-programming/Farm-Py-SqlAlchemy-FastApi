@@ -1,4 +1,5 @@
 # flows/default/tac_farm_dashboard_init_report.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowTacFarmDashboardInitReport class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.tac_farm_dashboard_init_report import BaseFlowTacFarmDashboardInitReport
 from flows.base import LogSeverity
 from business.tac import TacBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowTacFarmDashboardInitReportResult():
     """
@@ -45,7 +46,9 @@ class FlowTacFarmDashboardInitReportResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
+class FlowTacFarmDashboardInitReport(
+    BaseFlowTacFarmDashboardInitReport
+):
     """
     FlowTacFarmDashboardInitReport handles the addition of
     a  to
@@ -53,14 +56,6 @@ class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
     This class extends the BaseFlowTacFarmDashboardInitReport class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowTacFarmDashboardInitReport class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         tac_bus_obj: TacBusObj,

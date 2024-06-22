@@ -1,7 +1,7 @@
 # business/org_api_key_fluent.py
 """
-This module contains the OrgApiKeyBusObj class,
-which represents the business object for a OrgApiKey.
+This module contains the OrgApiKeyFluentBusObj class,
+which adds fluent properties to the business object for a OrgApiKey.
 """
 from decimal import Decimal
 import uuid

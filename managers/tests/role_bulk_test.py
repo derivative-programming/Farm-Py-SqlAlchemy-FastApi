@@ -46,7 +46,8 @@ class TestRoleBulkManager:
         `RoleManager` class.
 
         This test case verifies that the `add_bulk`
-        method correctly adds multiple roles to the database.
+        method correctly adds multiple
+        roles to the database.
 
         Steps:
         1. Generate a list of role data using the
@@ -89,7 +90,8 @@ class TestRoleBulkManager:
             )
             fetched_role = result.scalars().first()
 
-            assert isinstance(fetched_role, Role)
+            assert isinstance(
+                fetched_role, Role)
 
             assert str(fetched_role.insert_user_id) == (
                 str(role_manager._session_context.customer_code))
@@ -109,7 +111,8 @@ class TestRoleBulkManager:
         Test case for bulk update of roles.
 
         This test case verifies the functionality of the
-        `update_bulk` method in the `RoleManager` class.
+        `update_bulk` method in the
+        `RoleManager` class.
         It creates two role instances,
         updates their codes
         using the `update_bulk` method, and then verifies
@@ -120,12 +123,14 @@ class TestRoleBulkManager:
         1. Create two role instances using the
             `RoleFactory.create_async` method.
         2. Generate new codes for the roles.
-        3. Update the roles' codes using the `update_bulk` method.
+        3. Update the roles' codes
+            using the `update_bulk` method.
         4. Verify that the update was successful by checking
             the updated codes in the database.
 
         Args:
-            role_manager (RoleManager): An instance of the
+            role_manager (RoleManager):
+                An instance of the
                 `RoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -133,10 +138,12 @@ class TestRoleBulkManager:
             None
         """
         # Mocking role instances
-        role1 = await RoleFactory.create_async(
-            session=session)
-        role2 = await RoleFactory.create_async(
-            session=session)
+        role1 = await RoleFactory. \
+            create_async(
+                session=session)
+        role2 = await RoleFactory. \
+            create_async(
+                session=session)
         logging.info(role1.__dict__)
 
         code_updated1 = uuid.uuid4()
@@ -147,11 +154,13 @@ class TestRoleBulkManager:
         # Update roles
         updates = [
             {
-                "role_id": role1.role_id,
+                "role_id":
+                    role1.role_id,
                 "code": code_updated1
             },
             {
-                "role_id": role2.role_id,
+                "role_id":
+                    role2.role_id,
                 "code": code_updated2
             }
         ]

@@ -17,7 +17,8 @@ from sqlalchemy import text
 from helpers import SessionContext
 class ReportProviderPacUserLandList():
     """
-    The ReportProviderPacUserLandList class is responsible
+    The ReportProviderPacUserLandList
+    class is responsible
     for generating a list of pac lands
     based on the provided parameters.
     Args:
@@ -34,7 +35,8 @@ class ReportProviderPacUserLandList():
     _cached_sql_query: str = ""
     def __init__(self, session_context: SessionContext):
         """
-        Initializes a new instance of the ReportProviderPacUserLandList class.
+        Initializes a new instance of the
+        ReportProviderPacUserLandList class.
         Args:
             session_context (SessionContext): The session context object.
         Raises:

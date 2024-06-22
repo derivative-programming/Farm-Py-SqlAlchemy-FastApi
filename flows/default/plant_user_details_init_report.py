@@ -1,4 +1,5 @@
 # flows/default/plant_user_details_init_report.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowPlantUserDetailsInitReport class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.plant_user_details_init_report import BaseFlowPlantUserDetailsInitReport
 from flows.base import LogSeverity
 from business.plant import PlantBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowPlantUserDetailsInitReportResult():
     """
@@ -48,7 +49,9 @@ class FlowPlantUserDetailsInitReportResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
+class FlowPlantUserDetailsInitReport(
+    BaseFlowPlantUserDetailsInitReport
+):
     """
     FlowPlantUserDetailsInitReport handles the addition of
     a  to
@@ -56,14 +59,6 @@ class FlowPlantUserDetailsInitReport(BaseFlowPlantUserDetailsInitReport):
     This class extends the BaseFlowPlantUserDetailsInitReport class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowPlantUserDetailsInitReport class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         plant_bus_obj: PlantBusObj,

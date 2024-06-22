@@ -1,6 +1,7 @@
 # tac_farm_dashboard.py
 """
-This module contains the definition of the ReportItemTacFarmDashboard class.
+This module contains the definition of the
+ReportItemTacFarmDashboard class.
 """
 import uuid
 from decimal import Decimal

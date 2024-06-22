@@ -1,6 +1,7 @@
 # pac_user_land_list.py
 """
-This module contains the definition of the ReportItemPacUserLandList class.
+This module contains the definition of the
+ReportItemPacUserLandList class.
 """
 import uuid
 from decimal import Decimal

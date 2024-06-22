@@ -1,4 +1,5 @@
 # flows/default/customer_build_temp_api_key.py
+# pylint: disable=unused-import
 """
 This module contains the
 FlowCustomerBuildTempApiKey class and related classes
@@ -13,7 +14,7 @@ from decimal import Decimal
 from flows.base.customer_build_temp_api_key import BaseFlowCustomerBuildTempApiKey
 from flows.base import LogSeverity
 from business.customer import CustomerBusObj
-from helpers import SessionContext
+from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
 class FlowCustomerBuildTempApiKeyResult():
     """
@@ -45,7 +46,9 @@ class FlowCustomerBuildTempApiKeyResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
+class FlowCustomerBuildTempApiKey(
+    BaseFlowCustomerBuildTempApiKey
+):
     """
     FlowCustomerBuildTempApiKey handles the addition of
     a  to
@@ -53,14 +56,6 @@ class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
     This class extends the BaseFlowCustomerBuildTempApiKey class and
     initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        Initializes a new instance of the FlowCustomerBuildTempApiKey class.
-        Args:
-            session_context (SessionContext): The session
-                context to be used for this flow.
-        """
-        super().__init__(session_context)
     async def process(
         self,
         customer_bus_obj: CustomerBusObj,

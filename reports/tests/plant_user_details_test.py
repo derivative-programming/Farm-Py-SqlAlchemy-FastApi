@@ -2,7 +2,8 @@
 # pylint: disable=unused-argument
 # pylint: disable=protected-access
 """
-This module contains unit tests for the `ReportManagerPlantUserDetails`
+This module contains unit tests for the
+`ReportManagerPlantUserDetails`
 class in the `plant_user_details` module.
 """
 import os
@@ -28,14 +29,16 @@ from reports.row_models.plant_user_details import (
 sqlite3.register_adapter(Decimal, str)
 class TestReportManagerPlantUserDetails:
     """
-    This class contains unit tests for the `ReportManagerPlantUserDetails` class.
+    This class contains unit tests for the
+    `ReportManagerPlantUserDetails` class.
     """
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
         Test case for generating a report.
         This test case verifies the functionality of generating
-        a report using the `ReportManagerPlantUserDetails` class.
+        a report using the
+        `ReportManagerPlantUserDetails` class.
         It mocks the `generate_list` method and asserts that the
         results returned are of type list.
         The test also ensures that the `generate_list` method is awaited.
@@ -62,8 +65,10 @@ class TestReportManagerPlantUserDetails:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerPlantUserDetails(session_context)
-            plant = await PlantFactory.create_async(session=session)
+            report_generator = ReportManagerPlantUserDetails(
+                session_context)
+            plant = await PlantFactory.create_async(
+                session=session)
             plant_code = plant.code
             role_required = "User"
             session_context.role_name_csv = role_required
@@ -113,8 +118,10 @@ class TestReportManagerPlantUserDetails:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerPlantUserDetails(session_context)
-            plant = await PlantFactory.create_async(session=session)
+            report_generator = ReportManagerPlantUserDetails(
+                session_context)
+            plant = await PlantFactory.create_async(
+                session=session)
             plant_code = plant.code
             role_required = "User"
             session_context.role_name_csv = role_required
@@ -162,8 +169,10 @@ class TestReportManagerPlantUserDetails:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerPlantUserDetails(session_context)
-            plant = await PlantFactory.create_async(session=session)
+            report_generator = ReportManagerPlantUserDetails(
+                session_context)
+            plant = await PlantFactory.create_async(
+                session=session)
             plant_code = plant.code
             role_required = "User"
             session_context.role_name_csv = role_required
@@ -186,7 +195,8 @@ class TestReportManagerPlantUserDetails:
     @pytest.mark.asyncio
     async def test_build_csv(self, session):
         """
-        Test case for the build_csv method of ReportManagerPlantUserDetails.
+        Test case for the build_csv method of
+        ReportManagerPlantUserDetails.
             This method tests the functionality of the build_csv
             method by creating a test CSV file
             using the provided session and test data. It then
@@ -197,9 +207,12 @@ class TestReportManagerPlantUserDetails:
             Returns:
                 None
         """
-        session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerPlantUserDetails(session_context)
-        test_data = [ReportItemPlantUserDetails(), ReportItemPlantUserDetails()]
+        session_context = SessionContext(
+            dict(), session)
+        test_obj = ReportManagerPlantUserDetails(
+            session_context)
+        test_data = [ReportItemPlantUserDetails(),
+                     ReportItemPlantUserDetails()]
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
         # Verify the file is created
@@ -218,8 +231,10 @@ class TestReportManagerPlantUserDetails:
                     file is not as expected.
         """
         session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerPlantUserDetails(session_context)
-        test_data = [ReportItemPlantUserDetails(), ReportItemPlantUserDetails()]
+        test_obj = ReportManagerPlantUserDetails(
+            session_context)
+        test_data = [ReportItemPlantUserDetails(),
+                     ReportItemPlantUserDetails()]
         file_name = 'test_input.csv'
         await test_obj.build_csv(file_name, test_data)
         # Ensure 'test_input.csv' exists and contains valid data for testing
@@ -232,7 +247,8 @@ class TestReportManagerPlantUserDetails:
         # Further checks can be added to verify the data in the objects
     def test_parse_bool(self, session):
         """
-        Test the _parse_bool method of ReportManagerPlantUserDetails.
+        Test the _parse_bool method of
+        ReportManagerPlantUserDetails.
         This method tests the behavior of the _parse_bool method
         in the ReportManagerPlantUserDetails class.
         It verifies that the method correctly parses boolean
@@ -243,7 +259,8 @@ class TestReportManagerPlantUserDetails:
             None
         """
         session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerPlantUserDetails(session_context)
+        test_obj = ReportManagerPlantUserDetails(
+            session_context)
         # True values
         assert test_obj._parse_bool('true')
         assert test_obj._parse_bool('1')

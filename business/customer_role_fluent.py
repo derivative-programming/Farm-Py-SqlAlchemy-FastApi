@@ -1,7 +1,7 @@
 # business/customer_role_fluent.py
 """
-This module contains the CustomerRoleBusObj class,
-which represents the business object for a CustomerRole.
+This module contains the CustomerRoleFluentBusObj class,
+which adds fluent properties to the business object for a CustomerRole.
 """
 from decimal import Decimal
 import uuid

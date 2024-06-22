@@ -2,7 +2,8 @@
 # pylint: disable=unused-argument
 # pylint: disable=protected-access
 """
-This module contains unit tests for the `ReportManagerLandPlantList`
+This module contains unit tests for the
+`ReportManagerLandPlantList`
 class in the `land_plant_list` module.
 """
 
@@ -32,7 +33,8 @@ sqlite3.register_adapter(Decimal, str)
 
 class TestReportManagerLandPlantList:
     """
-    This class contains unit tests for the `ReportManagerLandPlantList` class.
+    This class contains unit tests for the
+    `ReportManagerLandPlantList` class.
     """
 
     @pytest.mark.asyncio
@@ -41,7 +43,8 @@ class TestReportManagerLandPlantList:
         Test case for generating a report.
 
         This test case verifies the functionality of generating
-        a report using the `ReportManagerLandPlantList` class.
+        a report using the
+        `ReportManagerLandPlantList` class.
         It mocks the `generate_list` method and asserts that the
         results returned are of type list.
         The test also ensures that the `generate_list` method is awaited.
@@ -88,8 +91,10 @@ class TestReportManagerLandPlantList:
             mock_method.side_effect = mock_generate_list
 
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerLandPlantList(session_context)
-            land = await LandFactory.create_async(session=session)
+            report_generator = ReportManagerLandPlantList(
+                session_context)
+            land = await LandFactory.create_async(
+                session=session)
             land_code = land.code
 
             role_required = "User"
@@ -196,8 +201,10 @@ class TestReportManagerLandPlantList:
             mock_method.side_effect = mock_generate_list
 
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerLandPlantList(session_context)
-            land = await LandFactory.create_async(session=session)
+            report_generator = ReportManagerLandPlantList(
+                session_context)
+            land = await LandFactory.create_async(
+                session=session)
             land_code = land.code
 
             role_required = "User"
@@ -302,8 +309,10 @@ class TestReportManagerLandPlantList:
             mock_method.side_effect = mock_generate_list
 
             session_context = SessionContext(dict(), session)
-            report_generator = ReportManagerLandPlantList(session_context)
-            land = await LandFactory.create_async(session=session)
+            report_generator = ReportManagerLandPlantList(
+                session_context)
+            land = await LandFactory.create_async(
+                session=session)
             land_code = land.code
 
             role_required = "User"
@@ -362,7 +371,8 @@ class TestReportManagerLandPlantList:
     @pytest.mark.asyncio
     async def test_build_csv(self, session):
         """
-        Test case for the build_csv method of ReportManagerLandPlantList.
+        Test case for the build_csv method of
+        ReportManagerLandPlantList.
 
             This method tests the functionality of the build_csv
             method by creating a test CSV file
@@ -377,9 +387,12 @@ class TestReportManagerLandPlantList:
                 None
         """
 
-        session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerLandPlantList(session_context)
-        test_data = [ReportItemLandPlantList(), ReportItemLandPlantList()]
+        session_context = SessionContext(
+            dict(), session)
+        test_obj = ReportManagerLandPlantList(
+            session_context)
+        test_data = [ReportItemLandPlantList(),
+                     ReportItemLandPlantList()]
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
 
@@ -405,9 +418,11 @@ class TestReportManagerLandPlantList:
         """
 
         session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerLandPlantList(session_context)
+        test_obj = ReportManagerLandPlantList(
+            session_context)
 
-        test_data = [ReportItemLandPlantList(), ReportItemLandPlantList()]
+        test_data = [ReportItemLandPlantList(),
+                     ReportItemLandPlantList()]
         file_name = 'test_input.csv'
         await test_obj.build_csv(file_name, test_data)
 
@@ -424,7 +439,8 @@ class TestReportManagerLandPlantList:
 
     def test_parse_bool(self, session):
         """
-        Test the _parse_bool method of ReportManagerLandPlantList.
+        Test the _parse_bool method of
+        ReportManagerLandPlantList.
 
         This method tests the behavior of the _parse_bool method
         in the ReportManagerLandPlantList class.
@@ -439,7 +455,8 @@ class TestReportManagerLandPlantList:
         """
 
         session_context = SessionContext(dict(), session)
-        test_obj = ReportManagerLandPlantList(session_context)
+        test_obj = ReportManagerLandPlantList(
+            session_context)
 
         # True values
         assert test_obj._parse_bool('true')

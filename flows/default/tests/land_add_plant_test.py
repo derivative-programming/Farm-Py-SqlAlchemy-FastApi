@@ -23,12 +23,14 @@ from models.factory.land import LandFactory
 
 class TestLandAddPlantPostModelResponse:
     """
-    This class contains unit tests for the `FlowLandAddPlantResult` class.
+    This class contains unit tests for the
+    `FlowLandAddPlantResult` class.
     """
 
     def test_flow_land_add_plant_result_to_json(self):
         """
-        Test the `to_json` method of the `FlowLandAddPlantResult` class.
+        Test the `to_json` method of the
+        `FlowLandAddPlantResult` class.
         """
 
         # Create an instance and set attributes
@@ -103,7 +105,6 @@ class TestLandAddPlantPostModelResponse:
         assert data["output_some_email_address"] == (
             result.output_some_email_address)
 # endsets
-    #TODO finish test
 
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
