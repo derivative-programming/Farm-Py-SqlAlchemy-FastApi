@@ -43,6 +43,11 @@ pytest
 test and show all...
 pytest -v
 
+test with coverage report...
+coverage run -m pytest
+coverage report  # for a simple report
+coverage html # for a larger report
+
 run...
 uvicorn main:app --reload
 
