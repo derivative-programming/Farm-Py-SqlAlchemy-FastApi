@@ -6,12 +6,25 @@ PacUserRoleListGetModelRequestFactoryAsync class.
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
+from unittest.mock import AsyncMock, patch, Mock
 import pytest
 from helpers.type_conversion import TypeConversion
+from helpers.session_context import SessionContext
 from ..factory.pac_user_role_list import PacUserRoleListGetModelRequestFactory
-from ..pac_user_role_list import PacUserRoleListGetModelRequest
+from ..pac_user_role_list import (
+    PacUserRoleListGetModelRequest,
+    PacUserRoleListGetModelResponse,
+    PacUserRoleListGetModelResponseItem)
 class TestPacUserRoleListGetModelRequest():
+    """
+    This class contains unit tests for the
+    PacUserRoleListGetModelRequest class.
+    """
     def test_default_values(self):
+        """
+        Test the default values of the
+        PacUserRoleListGetModelRequest class.
+        """
         model = PacUserRoleListGetModelRequest()
         assert model.page_number == 0
         assert model.item_count_per_page == 0
@@ -22,15 +35,19 @@ class TestPacUserRoleListGetModelRequest():
 
 # endset
     def test_to_dict_snake(self):
+        """
+        Test the to_dict_snake method of the
+        PacUserRoleListGetModelRequest class.
+        """
         model = PacUserRoleListGetModelRequest(
             page_number=1,
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
 
-# endset
+# endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
         assert snake_case_dict['page_number'] == 1
@@ -38,19 +55,23 @@ class TestPacUserRoleListGetModelRequest():
         assert snake_case_dict['order_by_column_name'] == "name"
         assert snake_case_dict['order_by_descending'] is True
         assert snake_case_dict['force_error_message'] == "Test Error"
-# endset
+# endset  # noqa: E122
 
 # endset
     def test_to_dict_camel(self):
+        """
+        Test the to_dict_camel method of the
+        PacUserRoleListGetModelRequest class.
+        """
         model = PacUserRoleListGetModelRequest(
             page_number=1,
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
 
-# endset
+# endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
         assert camel_case_dict['pageNumber'] == 1
@@ -86,3 +107,73 @@ class PacUserRoleListGetModelRequestFactoryAsync:
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
+class MockReportItemPacUserRoleList:
+    """
+    This class contains mock report items for the
+    PacUserRoleListGetModelResponse class.
+    """
+    def __init__(self):
+        """
+        Initialize the mock object with default values.
+        """
+        self.role_code = uuid.uuid4()
+        self.role_description = "Some N Var Char"
+        self.role_display_order = 1
+        self.role_is_active = True
+        self.role_lookup_enum_name = "Some N Var Char"
+        self.role_name = "Some N Var Char"
+        self.pac_name = "Some N Var Char"
+@pytest.fixture
+def session_context():
+    """
+    Return a mock session context.
+    """
+    return Mock(spec=SessionContext)
+@pytest.fixture
+def report_request():
+    """
+    Return a mock report request.
+    """
+    return PacUserRoleListGetModelRequest()
+@pytest.fixture
+def report_items():
+    """
+    Return a list of mock report items.
+    """
+    return [MockReportItemPacUserRoleList() for _ in range(3)]
+@pytest.mark.asyncio
+async def test_process_request(session_context, report_request, report_items):
+    """
+    Test the process_request method of the
+    PacUserRoleListGetModelResponse class.
+    """
+    with patch(
+        'apis.models.pac_user_role_list.ReportManagerPacUserRoleList',
+        autospec=True
+    ) as mock_report_manager:
+        mock_report_manager_instance = mock_report_manager.return_value
+        mock_report_manager_instance.generate = AsyncMock(
+            return_value=report_items)
+        response = PacUserRoleListGetModelResponse()
+        pac_code = uuid.uuid4()
+        await response.process_request(
+            session_context, pac_code, report_request)
+        assert response.success is True
+        assert response.message == "Success."
+        assert len(response.items) == len(report_items)
+        for response_item, report_item in zip(response.items, report_items):
+            assert isinstance(response_item, PacUserRoleListGetModelResponseItem)
+            assert response_item.role_code == \
+                report_item.role_code
+            assert response_item.role_description == \
+                report_item.role_description
+            assert response_item.role_display_order == \
+                report_item.role_display_order
+            assert response_item.role_is_active == \
+                report_item.role_is_active
+            assert response_item.role_lookup_enum_name == \
+                report_item.role_lookup_enum_name
+            assert response_item.role_name == \
+                report_item.role_name
+            assert response_item.pac_name == \
+                report_item.pac_name

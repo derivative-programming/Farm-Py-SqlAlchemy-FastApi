@@ -6,6 +6,7 @@ LandAddPlantPostModelResponse class.
 """
 
 import uuid
+import math
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch
@@ -25,8 +26,16 @@ from ..factory.land_add_plant import LandAddPlantPostModelRequestFactory
 
 
 class TestLandAddPlantPostModelRequest:
-        
+    """
+    This class contains unit tests for the
+    LandAddPlantPostModelRequest class.
+    """
+
     def test_default_values(self):
+        """
+        This method tests the default values of the
+        LandAddPlantPostModelRequest class.
+        """
         model = LandAddPlantPostModelRequest()
         assert model.force_error_message == ""
 # endset
@@ -51,9 +60,13 @@ class TestLandAddPlantPostModelRequest:
 # endset
 
     def test_to_dict_snake(self):
+        """
+        This method tests the to_dict_snake method of the
+        LandAddPlantPostModelRequest class.
+        """
         model = LandAddPlantPostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
             request_flavor_code=uuid.uuid4(),
             request_other_flavor="Other Flavor",
             request_some_int_val=42,
@@ -72,7 +85,7 @@ class TestLandAddPlantPostModelRequest:
             request_some_phone_number="123-456-7890",
             request_some_email_address="test@example.com",
             request_sample_image_upload_file="image.png"
-# endset
+# endset  # noqa: E122
         )
 
         snake_case_dict = model.to_dict_snake()
@@ -85,7 +98,7 @@ class TestLandAddPlantPostModelRequest:
         assert snake_case_dict['request_some_bit_val'] is True
         assert snake_case_dict['request_is_edit_allowed'] is True
         assert snake_case_dict['request_is_delete_allowed'] is True
-        assert snake_case_dict['request_some_float_val'] == 3.14
+        assert math.isclose(snake_case_dict['request_some_float_val'], 3.14)
         assert snake_case_dict['request_some_decimal_val'] == Decimal('99.99')
         assert snake_case_dict['request_some_utc_date_time_val'] == datetime(2023, 1, 1, 12, 0, 0)
         assert snake_case_dict['request_some_date_val'] == date(2023, 1, 1)
@@ -99,9 +112,13 @@ class TestLandAddPlantPostModelRequest:
 # endset
 
     def test_to_dict_camel(self):
+        """
+        This method tests the to_dict_camel method of the
+        LandAddPlantPostModelRequest class.
+        """
         model = LandAddPlantPostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
             request_flavor_code=uuid.uuid4(),
             request_other_flavor="Other Flavor",
             request_some_int_val=42,
@@ -120,7 +137,7 @@ class TestLandAddPlantPostModelRequest:
             request_some_phone_number="123-456-7890",
             request_some_email_address="test@example.com",
             request_sample_image_upload_file="image.png"
-# endset
+# endset  # noqa: E122
         )
 
         camel_case_dict = model.to_dict_camel()
@@ -145,6 +162,120 @@ class TestLandAddPlantPostModelRequest:
         assert camel_case_dict['requestSomeEmailAddress'] == "test@example.com"
         assert camel_case_dict['requestSampleImageUploadFile'] == "image.png"
 # endset
+
+    def test_to_dict_snake_serialized(self):
+        """
+        This method tests the to_dict_snake_serialized method of the
+        LandAddPlantPostModelRequest class.
+        """
+        # Create an instance of the LandAddPlantPostModelRequest class
+        request = LandAddPlantPostModelRequest(
+            force_error_message="Test Error Message",
+# endset  # noqa: E122
+            request_flavor_code=uuid.uuid4(),
+            request_other_flavor="Test Flavor",
+            request_some_int_val=123,
+            request_some_big_int_val=456,
+            request_some_bit_val=True,
+            request_is_edit_allowed=True,
+            request_is_delete_allowed=False,
+            request_some_float_val=3.14,
+            request_some_decimal_val=Decimal("10.5"),
+            request_some_utc_date_time_val=datetime.utcnow(),
+            request_some_date_val=datetime.now().date(),
+            request_some_money_val=Decimal("100.50"),
+            request_some_n_var_char_val="Test NVarChar",
+            request_some_var_char_val="Test VarChar",
+            request_some_text_val="Test Text",
+            request_some_phone_number="1234567890",
+            request_some_email_address="test@example.com",
+            request_sample_image_upload_file="sample_image.jpg"
+# endset  # noqa: E122
+        )
+
+        # Convert the model to a dictionary with snake_case keys and serialized values
+        data = request.to_dict_snake_serialized()
+
+        # Define the expected dictionary
+        expected_data = {
+            "force_error_message": "Test Error Message",
+# endset  # noqa: E122
+            "request_flavor_code": str(request.request_flavor_code),
+            "request_other_flavor": "Test Flavor",
+            "request_some_int_val": 123,
+            "request_some_big_int_val": 456,
+            "request_some_bit_val": True,
+            "request_is_edit_allowed": True,
+            "request_is_delete_allowed": False,
+            "request_some_float_val": 3.14,
+            "request_some_decimal_val": "10.5",
+            "request_some_utc_date_time_val": request.request_some_utc_date_time_val.isoformat(),
+            "request_some_date_val": request.request_some_date_val.isoformat(),
+            "request_some_money_val": "100.50",
+            "request_some_n_var_char_val": "Test NVarChar",
+            "request_some_var_char_val": "Test VarChar",
+            "request_some_text_val": "Test Text",
+            "request_some_phone_number": "1234567890",
+            "request_some_email_address": "test@example.com",
+            "request_sample_image_upload_file": "sample_image.jpg"
+# endset  # noqa: E122
+        }
+
+        # Compare the actual and expected dictionaries
+        assert data == expected_data
+
+    def test_to_dict_camel_serialized(self):
+        """
+        This method tests the to_dict_camel_serialized method of the
+        LandAddPlantPostModelRequest class.
+        """
+        request = LandAddPlantPostModelRequest(
+            force_error_message="Test Error Message",
+            request_flavor_code=uuid.uuid4(),
+            request_other_flavor="Test Flavor",
+            request_some_int_val=123,
+            request_some_big_int_val=456,
+            request_some_bit_val=True,
+            request_is_edit_allowed=True,
+            request_is_delete_allowed=False,
+            request_some_float_val=3.14,
+            request_some_decimal_val=Decimal(2.5),
+            request_some_utc_date_time_val=datetime.utcnow(),
+            request_some_date_val=date.today(),
+            request_some_money_val=Decimal(100.50),
+            request_some_n_var_char_val="Test N Var Char",
+            request_some_var_char_val="Test Var Char",
+            request_some_text_val="Test Text",
+            request_some_phone_number="1234567890",
+            request_some_email_address="test@example.com",
+            request_sample_image_upload_file="sample.jpg"
+        )
+
+        expected_data = {
+            "forceErrorMessage": "Test Error Message",
+            "requestFlavorCode": str(request.request_flavor_code),
+            "requestOtherFlavor": "Test Flavor",
+            "requestSomeIntVal": 123,
+            "requestSomeBigIntVal": 456,
+            "requestSomeBitVal": True,
+            "requestIsEditAllowed": True,
+            "requestIsDeleteAllowed": False,
+            "requestSomeFloatVal": 3.14,
+            "requestSomeDecimalVal": "2.5",
+            "requestSomeUtcDateTimeVal": request.request_some_utc_date_time_val.isoformat(),
+            "requestSomeDateVal": str(request.request_some_date_val),
+            "requestSomeMoneyVal": "100.5",
+            "requestSomeNVarCharVal": "Test N Var Char",
+            "requestSomeVarCharVal": "Test Var Char",
+            "requestSomeTextVal": "Test Text",
+            "requestSomePhoneNumber": "1234567890",
+            "requestSomeEmailAddress": "test@example.com",
+            "requestSampleImageUploadFile": "sample.jpg"
+        }
+
+        data = request.to_dict_camel_serialized()
+
+        assert data == expected_data
 
 
 class TestLandAddPlantPostModelResponse:

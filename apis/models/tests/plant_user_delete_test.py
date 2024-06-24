@@ -19,18 +19,30 @@ from ...models.plant_user_delete import (
     PlantUserDeletePostModelRequest)
 from ..factory.plant_user_delete import PlantUserDeletePostModelRequestFactory
 class TestPlantUserDeletePostModelRequest:
+    """
+    This class contains unit tests for the
+    PlantUserDeletePostModelRequest class.
+    """
     def test_default_values(self):
+        """
+        This method tests the default values of the
+        PlantUserDeletePostModelRequest class.
+        """
         model = PlantUserDeletePostModelRequest()
         assert model.force_error_message == ""
 # endset
 
 # endset
     def test_to_dict_snake(self):
+        """
+        This method tests the to_dict_snake method of the
+        PlantUserDeletePostModelRequest class.
+        """
         model = PlantUserDeletePostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
 
-# endset
+# endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
         assert snake_case_dict['force_error_message'] == "Test Error"
@@ -38,17 +50,59 @@ class TestPlantUserDeletePostModelRequest:
 
 # endset
     def test_to_dict_camel(self):
+        """
+        This method tests the to_dict_camel method of the
+        PlantUserDeletePostModelRequest class.
+        """
         model = PlantUserDeletePostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
 
-# endset
+# endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
         assert camel_case_dict['forceErrorMessage'] == "Test Error"
 # endset
 
 # endset
+    def test_to_dict_snake_serialized(self):
+        """
+        This method tests the to_dict_snake_serialized method of the
+        PlantUserDeletePostModelRequest class.
+        """
+        # Create an instance of the PlantUserDeletePostModelRequest class
+        request = PlantUserDeletePostModelRequest(
+            force_error_message="Test Error Message",
+# endset  # noqa: E122
+
+# endset  # noqa: E122
+        )
+        # Convert the model to a dictionary with snake_case keys and serialized values
+        data = request.to_dict_snake_serialized()
+        # Define the expected dictionary
+        expected_data = {
+            "force_error_message": "Test Error Message",
+# endset  # noqa: E122
+
+# endset  # noqa: E122
+        }
+        # Compare the actual and expected dictionaries
+        assert data == expected_data
+    def test_to_dict_camel_serialized(self):
+        """
+        This method tests the to_dict_camel_serialized method of the
+        PlantUserDeletePostModelRequest class.
+        """
+        request = PlantUserDeletePostModelRequest(
+            force_error_message="Test Error Message",
+
+        )
+        expected_data = {
+            "forceErrorMessage": "Test Error Message",
+
+        }
+        data = request.to_dict_camel_serialized()
+        assert data == expected_data
 class TestPlantUserDeletePostModelResponse:
     """
     This class contains unit tests for the

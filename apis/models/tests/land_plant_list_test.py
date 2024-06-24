@@ -6,21 +6,35 @@ LandPlantListGetModelRequestFactoryAsync class.
 """
 
 import uuid
+import math
+        
 from datetime import date, datetime
 from decimal import Decimal
+from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
 
 from helpers.type_conversion import TypeConversion
+from helpers.session_context import SessionContext
 
 from ..factory.land_plant_list import LandPlantListGetModelRequestFactory
-from ..land_plant_list import LandPlantListGetModelRequest
-
+from ..land_plant_list import (
+    LandPlantListGetModelRequest,
+    LandPlantListGetModelResponse,
+    LandPlantListGetModelResponseItem)
 
 
 class TestLandPlantListGetModelRequest():
+    """
+    This class contains unit tests for the
+    LandPlantListGetModelRequest class.
+    """
 
     def test_default_values(self):
+        """
+        Test the default values of the
+        LandPlantListGetModelRequest class.
+        """
         model = LandPlantListGetModelRequest()
         assert model.page_number == 0
         assert model.item_count_per_page == 0
@@ -36,8 +50,10 @@ class TestLandPlantListGetModelRequest():
         assert model.is_edit_allowed is False
         assert model.is_delete_allowed is False
         assert model.some_decimal_val == Decimal(0)
-        assert model.some_min_utc_date_time_val == TypeConversion.get_default_date_time()
-        assert model.some_min_date_val == TypeConversion.get_default_date()
+        assert model.some_min_utc_date_time_val == \
+            TypeConversion.get_default_date_time()
+        assert model.some_min_date_val == \
+            TypeConversion.get_default_date()
         assert model.some_money_val == Decimal(0)
         assert model.some_n_var_char_val == ""
         assert model.some_var_char_val == ""
@@ -47,13 +63,17 @@ class TestLandPlantListGetModelRequest():
 # endset
 
     def test_to_dict_snake(self):
+        """
+        Test the to_dict_snake method of the
+        LandPlantListGetModelRequest class.
+        """
         model = LandPlantListGetModelRequest(
             page_number=1,
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
             flavor_code=uuid.uuid4(),  # Use a valid version 4 UUID
             some_int_val=42,
             some_big_int_val=123456789,
@@ -70,7 +90,7 @@ class TestLandPlantListGetModelRequest():
             some_text_val="text",
             some_phone_number="123-456-7890",
             some_email_address="test@example.com"
-# endset
+# endset  # noqa: E122
         )
 
         snake_case_dict = model.to_dict_snake()
@@ -79,7 +99,7 @@ class TestLandPlantListGetModelRequest():
         assert snake_case_dict['order_by_column_name'] == "name"
         assert snake_case_dict['order_by_descending'] is True
         assert snake_case_dict['force_error_message'] == "Test Error"
-# endset
+# endset  # noqa: E122
         assert snake_case_dict['flavor_code'] == model.flavor_code
         assert snake_case_dict['some_int_val'] == 42
         assert snake_case_dict['some_big_int_val'] == 123456789
@@ -99,13 +119,17 @@ class TestLandPlantListGetModelRequest():
 # endset
 
     def test_to_dict_camel(self):
+        """
+        Test the to_dict_camel method of the
+        LandPlantListGetModelRequest class.
+        """
         model = LandPlantListGetModelRequest(
             page_number=1,
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
             flavor_code=uuid.uuid4(),  # Use a valid version 4 UUID
             some_int_val=42,
             some_big_int_val=123456789,
@@ -122,7 +146,7 @@ class TestLandPlantListGetModelRequest():
             some_text_val="text",
             some_phone_number="123-456-7890",
             some_email_address="test@example.com"
-# endset
+# endset  # noqa: E122
         )
 
         camel_case_dict = model.to_dict_camel()
@@ -135,7 +159,7 @@ class TestLandPlantListGetModelRequest():
         assert camel_case_dict['flavorCode'] == model.flavor_code  # Convert to string for comparison
         assert camel_case_dict['someIntVal'] == 42
         assert camel_case_dict['someBigIntVal'] == 123456789
-        assert camel_case_dict['someFloatVal'] == 3.14
+        assert math.isclose(camel_case_dict['someFloatVal'], 3.14)
         assert camel_case_dict['someBitVal'] is True
         assert camel_case_dict['isEditAllowed'] is True
         assert camel_case_dict['isDeleteAllowed'] is True
@@ -196,3 +220,135 @@ class LandPlantListGetModelRequestFactoryAsync:
         assert isinstance(model_instance.some_email_address, str)
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
+
+
+class MockReportItemLandPlantList:
+    """
+    This class contains mock report items for the
+    LandPlantListGetModelResponse class.
+    """
+    def __init__(self):
+        """
+        Initialize the mock object with default values.
+        """
+        self.plant_code = uuid.uuid4()
+        self.some_int_val = 1
+        self.some_big_int_val = 1000000
+        self.some_bit_val = True
+        self.is_edit_allowed = True
+        self.is_delete_allowed = True
+        self.some_float_val = 1.23
+        self.some_decimal_val = Decimal('10.99')
+        self.some_utc_date_time_val = datetime.utcnow()
+        self.some_date_val = date.today()
+        self.some_money_val = Decimal('100.00')
+        self.some_n_var_char_val = "Some N Var Char"
+        self.some_var_char_val = "Some Var Char"
+        self.some_text_val = "Some Text"
+        self.some_phone_number = "123-456-7890"
+        self.some_email_address = "test@example.com"
+        self.flavor_name = "Flavor Name"
+        self.flavor_code = uuid.uuid4()
+        self.some_int_conditional_on_deletable = 2
+        self.n_var_char_as_url = "http://example.com"
+        self.update_link_plant_code = uuid.uuid4()
+        self.delete_async_button_link_plant_code = uuid.uuid4()
+        self.details_link_plant_code = uuid.uuid4()
+
+
+@pytest.fixture
+def session_context():
+    """
+    Return a mock session context.
+    """
+    return Mock(spec=SessionContext)
+
+
+@pytest.fixture
+def report_request():
+    """
+    Return a mock report request.
+    """
+    return LandPlantListGetModelRequest()
+
+
+@pytest.fixture
+def report_items():
+    """
+    Return a list of mock report items.
+    """
+    return [MockReportItemLandPlantList() for _ in range(3)]
+
+
+@pytest.mark.asyncio
+async def test_process_request(session_context, report_request, report_items):
+    """
+    Test the process_request method of the
+    LandPlantListGetModelResponse class.
+    """
+    with patch(
+        'apis.models.land_plant_list.ReportManagerLandPlantList',
+        autospec=True
+    ) as mock_report_manager:
+        mock_report_manager_instance = mock_report_manager.return_value
+        mock_report_manager_instance.generate = AsyncMock(
+            return_value=report_items)
+
+        response = LandPlantListGetModelResponse()
+        land_code = uuid.uuid4()
+
+        await response.process_request(
+            session_context, land_code, report_request)
+
+        assert response.success is True
+        assert response.message == "Success."
+        assert len(response.items) == len(report_items)
+
+        for response_item, report_item in zip(response.items, report_items):
+            assert isinstance(response_item, LandPlantListGetModelResponseItem)
+            assert response_item.plant_code == \
+                report_item.plant_code
+            assert response_item.some_int_val == \
+                report_item.some_int_val
+            assert response_item.some_big_int_val == \
+                report_item.some_big_int_val
+            assert response_item.some_bit_val == \
+                report_item.some_bit_val
+            assert response_item.is_edit_allowed == \
+                report_item.is_edit_allowed
+            assert response_item.is_delete_allowed == \
+                report_item.is_delete_allowed
+            assert response_item.some_float_val == \
+                report_item.some_float_val
+            assert response_item.some_decimal_val == \
+                report_item.some_decimal_val
+            assert response_item.some_utc_date_time_val == \
+                report_item.some_utc_date_time_val
+            assert response_item.some_date_val == \
+                report_item.some_date_val
+            assert response_item.some_money_val == \
+                report_item.some_money_val
+            assert response_item.some_n_var_char_val == \
+                report_item.some_n_var_char_val
+            assert response_item.some_var_char_val == \
+                report_item.some_var_char_val
+            assert response_item.some_text_val == \
+                report_item.some_text_val
+            assert response_item.some_phone_number == \
+                report_item.some_phone_number
+            assert response_item.some_email_address == \
+                report_item.some_email_address
+            assert response_item.flavor_name == \
+                report_item.flavor_name
+            assert response_item.flavor_code == \
+                report_item.flavor_code
+            assert response_item.some_int_conditional_on_deletable == \
+                report_item.some_int_conditional_on_deletable
+            assert response_item.n_var_char_as_url == \
+                report_item.n_var_char_as_url
+            assert response_item.update_link_plant_code == \
+                report_item.update_link_plant_code
+            assert response_item.delete_async_button_link_plant_code == \
+                report_item.delete_async_button_link_plant_code
+            assert response_item.details_link_plant_code == \
+                report_item.details_link_plant_code

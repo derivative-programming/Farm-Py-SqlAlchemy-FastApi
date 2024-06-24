@@ -19,7 +19,15 @@ from ...models.tac_register import (
     TacRegisterPostModelRequest)
 from ..factory.tac_register import TacRegisterPostModelRequestFactory
 class TestTacRegisterPostModelRequest:
+    """
+    This class contains unit tests for the
+    TacRegisterPostModelRequest class.
+    """
     def test_default_values(self):
+        """
+        This method tests the default values of the
+        TacRegisterPostModelRequest class.
+        """
         model = TacRegisterPostModelRequest()
         assert model.force_error_message == ""
 # endset
@@ -30,15 +38,19 @@ class TestTacRegisterPostModelRequest:
         assert model.last_name == ""
 # endset
     def test_to_dict_snake(self):
+        """
+        This method tests the to_dict_snake method of the
+        TacRegisterPostModelRequest class.
+        """
         model = TacRegisterPostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
             email="test@example.com",
             password="varchar",
             confirm_password="varchar",
             first_name="nvarchar",
             last_name="nvarchar",
-# endset
+# endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
         assert snake_case_dict['force_error_message'] == "Test Error"
@@ -50,15 +62,19 @@ class TestTacRegisterPostModelRequest:
         assert snake_case_dict['last_name'] == "nvarchar"
 # endset
     def test_to_dict_camel(self):
+        """
+        This method tests the to_dict_camel method of the
+        TacRegisterPostModelRequest class.
+        """
         model = TacRegisterPostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
             email="test@example.com",
             password="varchar",
             confirm_password="varchar",
             first_name="nvarchar",
             last_name="nvarchar",
-# endset
+# endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
         assert camel_case_dict['forceErrorMessage'] == "Test Error"
@@ -69,6 +85,60 @@ class TestTacRegisterPostModelRequest:
         assert camel_case_dict['firstName'] == "nvarchar"
         assert camel_case_dict['lastName'] == "nvarchar"
 # endset
+    def test_to_dict_snake_serialized(self):
+        """
+        This method tests the to_dict_snake_serialized method of the
+        TacRegisterPostModelRequest class.
+        """
+        # Create an instance of the TacRegisterPostModelRequest class
+        request = TacRegisterPostModelRequest(
+            force_error_message="Test Error Message",
+# endset  # noqa: E122
+            email="test@example.com",
+            password="Test VarChar",
+            confirm_password="Test VarChar",
+            first_name="Test NVarChar",
+            last_name="Test NVarChar",
+# endset  # noqa: E122
+        )
+        # Convert the model to a dictionary with snake_case keys and serialized values
+        data = request.to_dict_snake_serialized()
+        # Define the expected dictionary
+        expected_data = {
+            "force_error_message": "Test Error Message",
+# endset  # noqa: E122
+            "email": "test@example.com",
+            "password": "Test VarChar",
+            "confirm_password": "Test VarChar",
+            "first_name": "Test NVarChar",
+            "last_name": "Test NVarChar",
+# endset  # noqa: E122
+        }
+        # Compare the actual and expected dictionaries
+        assert data == expected_data
+    def test_to_dict_camel_serialized(self):
+        """
+        This method tests the to_dict_camel_serialized method of the
+        TacRegisterPostModelRequest class.
+        """
+        request = TacRegisterPostModelRequest(
+            force_error_message="Test Error Message",
+            email="test@example.com",
+            password="Test Var Char",
+            confirm_password="Test Var Char",
+            first_name="Test N Var Char",
+            last_name="Test N Var Char",
+        )
+        expected_data = {
+            "forceErrorMessage": "Test Error Message",
+            "email": "test@example.com",
+            "password": "Test Var Char",
+            "confirmPassword": "Test Var Char",
+            "firstName": "Test N Var Char",
+            "lastName": "Test N Var Char",
+        }
+        data = request.to_dict_camel_serialized()
+        assert data == expected_data
 class TestTacRegisterPostModelResponse:
     """
     This class contains unit tests for the

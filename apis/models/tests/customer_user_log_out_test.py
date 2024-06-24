@@ -19,18 +19,30 @@ from ...models.customer_user_log_out import (
     CustomerUserLogOutPostModelRequest)
 from ..factory.customer_user_log_out import CustomerUserLogOutPostModelRequestFactory
 class TestCustomerUserLogOutPostModelRequest:
+    """
+    This class contains unit tests for the
+    CustomerUserLogOutPostModelRequest class.
+    """
     def test_default_values(self):
+        """
+        This method tests the default values of the
+        CustomerUserLogOutPostModelRequest class.
+        """
         model = CustomerUserLogOutPostModelRequest()
         assert model.force_error_message == ""
 # endset
 
 # endset
     def test_to_dict_snake(self):
+        """
+        This method tests the to_dict_snake method of the
+        CustomerUserLogOutPostModelRequest class.
+        """
         model = CustomerUserLogOutPostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
 
-# endset
+# endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
         assert snake_case_dict['force_error_message'] == "Test Error"
@@ -38,17 +50,59 @@ class TestCustomerUserLogOutPostModelRequest:
 
 # endset
     def test_to_dict_camel(self):
+        """
+        This method tests the to_dict_camel method of the
+        CustomerUserLogOutPostModelRequest class.
+        """
         model = CustomerUserLogOutPostModelRequest(
             force_error_message="Test Error",
-# endset
+# endset  # noqa: E122
 
-# endset
+# endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
         assert camel_case_dict['forceErrorMessage'] == "Test Error"
 # endset
 
 # endset
+    def test_to_dict_snake_serialized(self):
+        """
+        This method tests the to_dict_snake_serialized method of the
+        CustomerUserLogOutPostModelRequest class.
+        """
+        # Create an instance of the CustomerUserLogOutPostModelRequest class
+        request = CustomerUserLogOutPostModelRequest(
+            force_error_message="Test Error Message",
+# endset  # noqa: E122
+
+# endset  # noqa: E122
+        )
+        # Convert the model to a dictionary with snake_case keys and serialized values
+        data = request.to_dict_snake_serialized()
+        # Define the expected dictionary
+        expected_data = {
+            "force_error_message": "Test Error Message",
+# endset  # noqa: E122
+
+# endset  # noqa: E122
+        }
+        # Compare the actual and expected dictionaries
+        assert data == expected_data
+    def test_to_dict_camel_serialized(self):
+        """
+        This method tests the to_dict_camel_serialized method of the
+        CustomerUserLogOutPostModelRequest class.
+        """
+        request = CustomerUserLogOutPostModelRequest(
+            force_error_message="Test Error Message",
+
+        )
+        expected_data = {
+            "forceErrorMessage": "Test Error Message",
+
+        }
+        data = request.to_dict_camel_serialized()
+        assert data == expected_data
 class TestCustomerUserLogOutPostModelResponse:
     """
     This class contains unit tests for the
