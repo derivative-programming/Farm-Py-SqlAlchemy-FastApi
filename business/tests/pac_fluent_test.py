@@ -2,9 +2,10 @@
 """
 Unit tests for the PacFluentBusObj class.
 """
+import math
 from datetime import date, datetime
 from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import uuid4
 import pytest
 from business.pac_fluent import PacFluentBusObj
 from helpers.session_context import SessionContext

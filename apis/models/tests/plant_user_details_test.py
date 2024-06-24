@@ -1,9 +1,11 @@
 # apis/models/tests/plant_user_details_test.py
+# pylint: disable=redefined-outer-name
 """
 This module contains unit tests for the
 PlantUserDetailsGetModelRequestFactoryAsync class.
 """
 import uuid
+import math
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch, Mock
@@ -15,6 +17,9 @@ from ..plant_user_details import (
     PlantUserDetailsGetModelRequest,
     PlantUserDetailsGetModelResponse,
     PlantUserDetailsGetModelResponseItem)
+TEST_ERROR_TEXT = "Test Error"
+TEST_EMAIL = "test@example.com"
+TEST_PHONE = "123-456-7890"
 class TestPlantUserDetailsGetModelRequest():
     """
     This class contains unit tests for the
@@ -44,7 +49,7 @@ class TestPlantUserDetailsGetModelRequest():
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
 
 # endset  # noqa: E122
@@ -54,7 +59,7 @@ class TestPlantUserDetailsGetModelRequest():
         assert snake_case_dict['item_count_per_page'] == 10
         assert snake_case_dict['order_by_column_name'] == "name"
         assert snake_case_dict['order_by_descending'] is True
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset  # noqa: E122
 
 # endset
@@ -68,7 +73,7 @@ class TestPlantUserDetailsGetModelRequest():
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
 
 # endset  # noqa: E122
@@ -78,7 +83,7 @@ class TestPlantUserDetailsGetModelRequest():
         assert camel_case_dict['itemCountPerPage'] == 10
         assert camel_case_dict['orderByColumnName'] == "name"
         assert camel_case_dict['orderByDescending'] is True
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
 
 # endset
@@ -124,12 +129,12 @@ class MockReportItemPlantUserDetails:
         self.some_bit_val = True
         self.some_date_val = date.today()
         self.some_decimal_val = Decimal('10.99')
-        self.some_email_address = "test@example.com"
+        self.some_email_address = TEST_EMAIL
         self.some_float_val = 1.23
         self.some_int_val = 1
         self.some_money_val = Decimal('100.00')
         self.some_n_var_char_val = "Some N Var Char"
-        self.some_phone_number = "123-456-7890"
+        self.some_phone_number = TEST_PHONE
         self.some_text_val = "Some Text"
         self.some_uniqueidentifier_val = uuid.uuid4()
         self.some_utc_date_time_val = datetime.utcnow()

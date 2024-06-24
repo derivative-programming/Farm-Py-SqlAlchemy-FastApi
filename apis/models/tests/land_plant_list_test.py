@@ -1,4 +1,5 @@
 # apis/models/tests/land_plant_list_test.py
+# pylint: disable=redefined-outer-name
 
 """
 This module contains unit tests for the
@@ -7,7 +8,7 @@ LandPlantListGetModelRequestFactoryAsync class.
 
 import uuid
 import math
-        
+
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch, Mock
@@ -22,6 +23,12 @@ from ..land_plant_list import (
     LandPlantListGetModelRequest,
     LandPlantListGetModelResponse,
     LandPlantListGetModelResponseItem)
+
+TEST_ERROR_TEXT = "Test Error"
+
+TEST_EMAIL = "test@example.com"
+
+TEST_PHONE = "123-456-7890"
 
 
 class TestLandPlantListGetModelRequest():
@@ -42,19 +49,22 @@ class TestLandPlantListGetModelRequest():
         assert model.order_by_descending is False
         assert model.force_error_message == ""
 # endset
-        assert model.flavor_code == uuid.UUID('00000000-0000-0000-0000-000000000000')
+        assert model.flavor_code == \
+            uuid.UUID('00000000-0000-0000-0000-000000000000')
         assert model.some_int_val == 0
         assert model.some_big_int_val == 0
-        assert model.some_float_val == 0.0
+        assert math.isclose(model.some_float_val, 0.0)
         assert model.some_bit_val is False
         assert model.is_edit_allowed is False
         assert model.is_delete_allowed is False
-        assert model.some_decimal_val == Decimal(0)
+        assert model.some_decimal_val == \
+            Decimal(0)
         assert model.some_min_utc_date_time_val == \
             TypeConversion.get_default_date_time()
         assert model.some_min_date_val == \
             TypeConversion.get_default_date()
-        assert model.some_money_val == Decimal(0)
+        assert model.some_money_val == \
+            Decimal(0)
         assert model.some_n_var_char_val == ""
         assert model.some_var_char_val == ""
         assert model.some_text_val == ""
@@ -72,9 +82,9 @@ class TestLandPlantListGetModelRequest():
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
-            flavor_code=uuid.uuid4(),  # Use a valid version 4 UUID
+            flavor_code=uuid.uuid4(),
             some_int_val=42,
             some_big_int_val=123456789,
             some_float_val=3.14,
@@ -88,8 +98,8 @@ class TestLandPlantListGetModelRequest():
             some_n_var_char_val="nvarchar",
             some_var_char_val="varchar",
             some_text_val="text",
-            some_phone_number="123-456-7890",
-            some_email_address="test@example.com"
+            some_phone_number=TEST_PHONE,
+            some_email_address=TEST_EMAIL
 # endset  # noqa: E122
         )
 
@@ -98,24 +108,28 @@ class TestLandPlantListGetModelRequest():
         assert snake_case_dict['item_count_per_page'] == 10
         assert snake_case_dict['order_by_column_name'] == "name"
         assert snake_case_dict['order_by_descending'] is True
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset  # noqa: E122
         assert snake_case_dict['flavor_code'] == model.flavor_code
         assert snake_case_dict['some_int_val'] == 42
         assert snake_case_dict['some_big_int_val'] == 123456789
-        assert snake_case_dict['some_float_val'] == 3.14
+        assert math.isclose(snake_case_dict['some_float_val'], 3.14)
         assert snake_case_dict['some_bit_val'] is True
         assert snake_case_dict['is_edit_allowed'] is True
         assert snake_case_dict['is_delete_allowed'] is True
-        assert snake_case_dict['some_decimal_val'] == Decimal('99.99')
-        assert snake_case_dict['some_min_utc_date_time_val'] == datetime(2023, 1, 1, 12, 0, 0)
-        assert snake_case_dict['some_min_date_val'] == date(2023, 1, 1)
-        assert snake_case_dict['some_money_val'] == Decimal('100.00')
+        assert snake_case_dict['some_decimal_val'] == \
+            Decimal('99.99')
+        assert snake_case_dict['some_min_utc_date_time_val'] == \
+            datetime(2023, 1, 1, 12, 0, 0)
+        assert snake_case_dict['some_min_date_val'] == \
+            date(2023, 1, 1)
+        assert snake_case_dict['some_money_val'] == \
+            Decimal('100.00')
         assert snake_case_dict['some_n_var_char_val'] == "nvarchar"
         assert snake_case_dict['some_var_char_val'] == "varchar"
         assert snake_case_dict['some_text_val'] == "text"
-        assert snake_case_dict['some_phone_number'] == "123-456-7890"
-        assert snake_case_dict['some_email_address'] == "test@example.com"
+        assert snake_case_dict['some_phone_number'] == TEST_PHONE
+        assert snake_case_dict['some_email_address'] == TEST_EMAIL
 # endset
 
     def test_to_dict_camel(self):
@@ -128,9 +142,9 @@ class TestLandPlantListGetModelRequest():
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
-            flavor_code=uuid.uuid4(),  # Use a valid version 4 UUID
+            flavor_code=uuid.uuid4(),
             some_int_val=42,
             some_big_int_val=123456789,
             some_float_val=3.14,
@@ -144,8 +158,8 @@ class TestLandPlantListGetModelRequest():
             some_n_var_char_val="nvarchar",
             some_var_char_val="varchar",
             some_text_val="text",
-            some_phone_number="123-456-7890",
-            some_email_address="test@example.com"
+            some_phone_number=TEST_PHONE,
+            some_email_address=TEST_EMAIL
 # endset  # noqa: E122
         )
 
@@ -154,9 +168,9 @@ class TestLandPlantListGetModelRequest():
         assert camel_case_dict['itemCountPerPage'] == 10
         assert camel_case_dict['orderByColumnName'] == "name"
         assert camel_case_dict['orderByDescending'] is True
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
-        assert camel_case_dict['flavorCode'] == model.flavor_code  # Convert to string for comparison
+        assert camel_case_dict['flavorCode'] == model.flavor_code
         assert camel_case_dict['someIntVal'] == 42
         assert camel_case_dict['someBigIntVal'] == 123456789
         assert math.isclose(camel_case_dict['someFloatVal'], 3.14)
@@ -170,8 +184,8 @@ class TestLandPlantListGetModelRequest():
         assert camel_case_dict['someNVarCharVal'] == "nvarchar"
         assert camel_case_dict['someVarCharVal'] == "varchar"
         assert camel_case_dict['someTextVal'] == "text"
-        assert camel_case_dict['somePhoneNumber'] == "123-456-7890"
-        assert camel_case_dict['someEmailAddress'] == "test@example.com"
+        assert camel_case_dict['somePhoneNumber'] == TEST_PHONE
+        assert camel_case_dict['someEmailAddress'] == TEST_EMAIL
 # endset
 
 
@@ -245,8 +259,8 @@ class MockReportItemLandPlantList:
         self.some_n_var_char_val = "Some N Var Char"
         self.some_var_char_val = "Some Var Char"
         self.some_text_val = "Some Text"
-        self.some_phone_number = "123-456-7890"
-        self.some_email_address = "test@example.com"
+        self.some_phone_number = TEST_PHONE
+        self.some_email_address = TEST_EMAIL
         self.flavor_name = "Flavor Name"
         self.flavor_code = uuid.uuid4()
         self.some_int_conditional_on_deletable = 2

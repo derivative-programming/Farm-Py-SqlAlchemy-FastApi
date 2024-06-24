@@ -2,9 +2,10 @@
 """
 Unit tests for the CustomerRoleFluentBusObj class.
 """
+import math
 from datetime import date, datetime
 from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import uuid4
 import pytest
 from business.customer_role_fluent import CustomerRoleFluentBusObj
 from helpers.session_context import SessionContext

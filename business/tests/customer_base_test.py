@@ -5,6 +5,7 @@
 This module contains unit tests for the CustomerBusObj class.
 """
 import uuid
+import math
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal
 from unittest.mock import AsyncMock, Mock, patch
@@ -760,7 +761,7 @@ class TestCustomerBaseBusObj:
         """
         customer.phone = "123-456-7890"
         assert customer_base_bus_obj.phone == "123-456-7890"
-    def test_phone_setter(self, customer_base_bus_obj, customer):
+    def test_phone_setter(self, customer_base_bus_obj):
         """
         Test case for the phone setter.
         """

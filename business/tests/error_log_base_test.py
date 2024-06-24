@@ -5,6 +5,7 @@
 This module contains unit tests for the ErrorLogBusObj class.
 """
 import uuid
+import math
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal
 from unittest.mock import AsyncMock, Mock, patch

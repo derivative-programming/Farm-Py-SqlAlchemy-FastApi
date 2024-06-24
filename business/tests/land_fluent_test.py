@@ -2,9 +2,10 @@
 """
 Unit tests for the LandFluentBusObj class.
 """
+import math
 from datetime import date, datetime
 from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import uuid4
 import pytest
 from business.land_fluent import LandFluentBusObj
 from helpers.session_context import SessionContext

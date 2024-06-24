@@ -1,8 +1,9 @@
 # business/tests/organization_test.py
+# pylint: disable=redefined-outer-name
 """
 Unit tests for the OrganizationBusObj class.
 """
-from typing import List
+
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest

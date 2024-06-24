@@ -1,9 +1,11 @@
 # apis/models/tests/pac_user_tri_state_filter_list_test.py
+# pylint: disable=redefined-outer-name
 """
 This module contains unit tests for the
 PacUserTriStateFilterListGetModelRequestFactoryAsync class.
 """
 import uuid
+import math
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch, Mock
@@ -15,6 +17,9 @@ from ..pac_user_tri_state_filter_list import (
     PacUserTriStateFilterListGetModelRequest,
     PacUserTriStateFilterListGetModelResponse,
     PacUserTriStateFilterListGetModelResponseItem)
+TEST_ERROR_TEXT = "Test Error"
+TEST_EMAIL = "test@example.com"
+TEST_PHONE = "123-456-7890"
 class TestPacUserTriStateFilterListGetModelRequest():
     """
     This class contains unit tests for the
@@ -44,7 +49,7 @@ class TestPacUserTriStateFilterListGetModelRequest():
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
 
 # endset  # noqa: E122
@@ -54,7 +59,7 @@ class TestPacUserTriStateFilterListGetModelRequest():
         assert snake_case_dict['item_count_per_page'] == 10
         assert snake_case_dict['order_by_column_name'] == "name"
         assert snake_case_dict['order_by_descending'] is True
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset  # noqa: E122
 
 # endset
@@ -68,7 +73,7 @@ class TestPacUserTriStateFilterListGetModelRequest():
             item_count_per_page=10,
             order_by_column_name="name",
             order_by_descending=True,
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
 
 # endset  # noqa: E122
@@ -78,7 +83,7 @@ class TestPacUserTriStateFilterListGetModelRequest():
         assert camel_case_dict['itemCountPerPage'] == 10
         assert camel_case_dict['orderByColumnName'] == "name"
         assert camel_case_dict['orderByDescending'] is True
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
 
 # endset

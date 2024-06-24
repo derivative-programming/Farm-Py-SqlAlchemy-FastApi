@@ -1,4 +1,5 @@
 # apis/models/init/tests/plant_user_details_init_report_test.py
+# pylint: disable=redefined-outer-name
 """
 This module contains the unit tests for the
 plant_user_details_init_report module.
@@ -75,7 +76,8 @@ async def test_process_request(flow_response):
         'apis.models.init.plant_user_details_init_report.PlantBusObj',
         autospec=True).start()
     mock_flow = patch(
-        'apis.models.init.plant_user_details_init_report.FlowPlantUserDetailsInitReport',
+        "apis.models.init.plant_user_details_init_report."
+        "FlowPlantUserDetailsInitReport",
         autospec=True).start()
     mock_flow_instance = mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)

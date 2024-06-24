@@ -1,4 +1,5 @@
 # apis/models/init/tests/tac_farm_dashboard_init_report_test.py
+# pylint: disable=redefined-outer-name
 """
 This module contains the unit tests for the
 tac_farm_dashboard_init_report module.
@@ -70,7 +71,8 @@ async def test_process_request(flow_response):
         'apis.models.init.tac_farm_dashboard_init_report.TacBusObj',
         autospec=True).start()
     mock_flow = patch(
-        'apis.models.init.tac_farm_dashboard_init_report.FlowTacFarmDashboardInitReport',
+        "apis.models.init.tac_farm_dashboard_init_report."
+        "FlowTacFarmDashboardInitReport",
         autospec=True).start()
     mock_flow_instance = mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)

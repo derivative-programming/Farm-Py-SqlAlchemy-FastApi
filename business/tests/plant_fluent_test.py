@@ -2,9 +2,10 @@
 """
 Unit tests for the PlantFluentBusObj class.
 """
+import math
 from datetime import date, datetime
 from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 
@@ -120,7 +121,7 @@ class TestPlantFluentBusObj:
         Test setting the some_float_val property.
         """
         result = plant.set_prop_some_float_val(3.14)
-        assert plant.some_float_val == 3.14
+        assert math.isclose(plant.some_float_val, 3.14)
         assert result is plant
 
     def test_set_prop_some_int_val(self, plant):

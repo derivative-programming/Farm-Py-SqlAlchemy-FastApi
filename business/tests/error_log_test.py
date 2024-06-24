@@ -1,8 +1,9 @@
 # business/tests/error_log_test.py
+# pylint: disable=redefined-outer-name
 """
 Unit tests for the ErrorLogBusObj class.
 """
-from typing import List
+
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest

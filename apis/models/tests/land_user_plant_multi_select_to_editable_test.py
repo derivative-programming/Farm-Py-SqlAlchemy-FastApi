@@ -5,6 +5,7 @@ This module contains unit tests for the
 LandUserPlantMultiSelectToEditablePostModelResponse class.
 """
 import uuid
+import math
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch
@@ -18,6 +19,9 @@ from ...models.land_user_plant_multi_select_to_editable import (
     LandUserPlantMultiSelectToEditablePostModelResponse,
     LandUserPlantMultiSelectToEditablePostModelRequest)
 from ..factory.land_user_plant_multi_select_to_editable import LandUserPlantMultiSelectToEditablePostModelRequestFactory
+TEST_ERROR_TEXT = "Test Error"
+TEST_EMAIL = "test@example.com"
+TEST_PHONE = "123-456-7890"
 class TestLandUserPlantMultiSelectToEditablePostModelRequest:
     """
     This class contains unit tests for the
@@ -39,15 +43,16 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequest:
         LandUserPlantMultiSelectToEditablePostModelRequest class.
         """
         model = LandUserPlantMultiSelectToEditablePostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
             plant_code_list_csv="Plant Code List Csv",
 # endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset
-        assert snake_case_dict['plant_code_list_csv'] == "Plant Code List Csv"
+        assert snake_case_dict['plant_code_list_csv'] == \
+            model.plant_code_list_csv
 # endset
     def test_to_dict_camel(self):
         """
@@ -55,15 +60,16 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequest:
         LandUserPlantMultiSelectToEditablePostModelRequest class.
         """
         model = LandUserPlantMultiSelectToEditablePostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
             plant_code_list_csv="Plant Code List Csv",
 # endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
-        assert camel_case_dict['plantCodeListCsv'] == "Plant Code List Csv"
+        assert camel_case_dict['plantCodeListCsv'] == \
+            model.plant_code_list_csv
 # endset
     def test_to_dict_snake_serialized(self):
         """

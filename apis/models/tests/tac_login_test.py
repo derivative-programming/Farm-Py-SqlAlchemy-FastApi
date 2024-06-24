@@ -5,6 +5,7 @@ This module contains unit tests for the
 TacLoginPostModelResponse class.
 """
 import uuid
+import math
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch
@@ -18,6 +19,9 @@ from ...models.tac_login import (
     TacLoginPostModelResponse,
     TacLoginPostModelRequest)
 from ..factory.tac_login import TacLoginPostModelRequestFactory
+TEST_ERROR_TEXT = "Test Error"
+TEST_EMAIL = "test@example.com"
+TEST_PHONE = "123-456-7890"
 class TestTacLoginPostModelRequest:
     """
     This class contains unit tests for the
@@ -40,17 +44,19 @@ class TestTacLoginPostModelRequest:
         TacLoginPostModelRequest class.
         """
         model = TacLoginPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="varchar",
 # endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset
-        assert snake_case_dict['email'] == "test@example.com"
-        assert snake_case_dict['password'] == "varchar"
+        assert snake_case_dict['email'] == \
+            model.email
+        assert snake_case_dict['password'] == \
+            model.password
 # endset
     def test_to_dict_camel(self):
         """
@@ -58,17 +64,19 @@ class TestTacLoginPostModelRequest:
         TacLoginPostModelRequest class.
         """
         model = TacLoginPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="varchar",
 # endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
-        assert camel_case_dict['email'] == "test@example.com"
-        assert camel_case_dict['password'] == "varchar"
+        assert camel_case_dict['email'] == \
+            model.email
+        assert camel_case_dict['password'] == \
+            model.password
 # endset
     def test_to_dict_snake_serialized(self):
         """
@@ -79,7 +87,7 @@ class TestTacLoginPostModelRequest:
         request = TacLoginPostModelRequest(
             force_error_message="Test Error Message",
 # endset  # noqa: E122
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="Test VarChar",
 # endset  # noqa: E122
         )
@@ -89,7 +97,7 @@ class TestTacLoginPostModelRequest:
         expected_data = {
             "force_error_message": "Test Error Message",
 # endset  # noqa: E122
-            "email": "test@example.com",
+            "email": TEST_EMAIL,
             "password": "Test VarChar",
 # endset  # noqa: E122
         }
@@ -102,12 +110,12 @@ class TestTacLoginPostModelRequest:
         """
         request = TacLoginPostModelRequest(
             force_error_message="Test Error Message",
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="Test Var Char",
         )
         expected_data = {
             "forceErrorMessage": "Test Error Message",
-            "email": "test@example.com",
+            "email": TEST_EMAIL,
             "password": "Test Var Char",
         }
         data = request.to_dict_camel_serialized()

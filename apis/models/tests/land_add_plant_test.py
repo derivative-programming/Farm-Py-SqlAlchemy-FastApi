@@ -24,6 +24,12 @@ from ...models.land_add_plant import (
     LandAddPlantPostModelRequest)
 from ..factory.land_add_plant import LandAddPlantPostModelRequestFactory
 
+TEST_ERROR_TEXT = "Test Error"
+
+TEST_EMAIL = "test@example.com"
+
+TEST_PHONE = "123-456-7890"
+
 
 class TestLandAddPlantPostModelRequest:
     """
@@ -46,7 +52,7 @@ class TestLandAddPlantPostModelRequest:
         assert model.request_some_bit_val is False
         assert model.request_is_edit_allowed is False
         assert model.request_is_delete_allowed is False
-        assert model.request_some_float_val == 0.0
+        assert math.isclose(model.request_some_float_val, 0.0)
         assert model.request_some_decimal_val == Decimal(0)
         assert model.request_some_utc_date_time_val == TypeConversion.get_default_date_time()
         assert model.request_some_date_val == TypeConversion.get_default_date()
@@ -65,7 +71,7 @@ class TestLandAddPlantPostModelRequest:
         LandAddPlantPostModelRequest class.
         """
         model = LandAddPlantPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
             request_flavor_code=uuid.uuid4(),
             request_other_flavor="Other Flavor",
@@ -82,17 +88,19 @@ class TestLandAddPlantPostModelRequest:
             request_some_n_var_char_val="nvarchar",
             request_some_var_char_val="varchar",
             request_some_text_val="text",
-            request_some_phone_number="123-456-7890",
-            request_some_email_address="test@example.com",
+            request_some_phone_number=TEST_PHONE,
+            request_some_email_address=TEST_EMAIL,
             request_sample_image_upload_file="image.png"
 # endset  # noqa: E122
         )
 
         snake_case_dict = model.to_dict_snake()
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset
-        assert snake_case_dict['request_flavor_code'] == model.request_flavor_code
-        assert snake_case_dict['request_other_flavor'] == "Other Flavor"
+        assert snake_case_dict['request_flavor_code'] == \
+            model.request_flavor_code
+        assert snake_case_dict['request_other_flavor'] == \
+            model.request_other_flavor
         assert snake_case_dict['request_some_int_val'] == 42
         assert snake_case_dict['request_some_big_int_val'] == 123456789
         assert snake_case_dict['request_some_bit_val'] is True
@@ -103,11 +111,16 @@ class TestLandAddPlantPostModelRequest:
         assert snake_case_dict['request_some_utc_date_time_val'] == datetime(2023, 1, 1, 12, 0, 0)
         assert snake_case_dict['request_some_date_val'] == date(2023, 1, 1)
         assert snake_case_dict['request_some_money_val'] == Decimal('100.00')
-        assert snake_case_dict['request_some_n_var_char_val'] == "nvarchar"
-        assert snake_case_dict['request_some_var_char_val'] == "varchar"
-        assert snake_case_dict['request_some_text_val'] == "text"
-        assert snake_case_dict['request_some_phone_number'] == "123-456-7890"
-        assert snake_case_dict['request_some_email_address'] == "test@example.com"
+        assert snake_case_dict['request_some_n_var_char_val'] == \
+            model.request_some_n_var_char_val
+        assert snake_case_dict['request_some_var_char_val'] == \
+            model.request_some_var_char_val
+        assert snake_case_dict['request_some_text_val'] == \
+            model.request_some_text_val
+        assert snake_case_dict['request_some_phone_number'] == \
+            model.request_some_phone_number
+        assert snake_case_dict['request_some_email_address'] == \
+            model.request_some_email_address
         assert snake_case_dict['request_sample_image_upload_file'] == "image.png"
 # endset
 
@@ -117,7 +130,7 @@ class TestLandAddPlantPostModelRequest:
         LandAddPlantPostModelRequest class.
         """
         model = LandAddPlantPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
             request_flavor_code=uuid.uuid4(),
             request_other_flavor="Other Flavor",
@@ -134,32 +147,39 @@ class TestLandAddPlantPostModelRequest:
             request_some_n_var_char_val="nvarchar",
             request_some_var_char_val="varchar",
             request_some_text_val="text",
-            request_some_phone_number="123-456-7890",
-            request_some_email_address="test@example.com",
+            request_some_phone_number=TEST_PHONE,
+            request_some_email_address=TEST_EMAIL,
             request_sample_image_upload_file="image.png"
 # endset  # noqa: E122
         )
 
         camel_case_dict = model.to_dict_camel()
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
-        assert camel_case_dict['requestFlavorCode'] == model.request_flavor_code
-        assert camel_case_dict['requestOtherFlavor'] == "Other Flavor"
+        assert camel_case_dict['requestFlavorCode'] == \
+            model.request_flavor_code
+        assert camel_case_dict['requestOtherFlavor'] == \
+            model.request_other_flavor
         assert camel_case_dict['requestSomeIntVal'] == 42
         assert camel_case_dict['requestSomeBigIntVal'] == 123456789
         assert camel_case_dict['requestSomeBitVal'] is True
         assert camel_case_dict['requestIsEditAllowed'] is True
         assert camel_case_dict['requestIsDeleteAllowed'] is True
-        assert camel_case_dict['requestSomeFloatVal'] == 3.14
+        assert math.isclose(camel_case_dict['requestSomeFloatVal'], 3.14)
         assert camel_case_dict['requestSomeDecimalVal'] == Decimal('99.99')
         # assert camel_case_dict['requestSomeUtcDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0).isoformat()
         # assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1).isoformat()
         assert camel_case_dict['requestSomeMoneyVal'] == Decimal('100.00')
-        assert camel_case_dict['requestSomeNVarCharVal'] == "nvarchar"
-        assert camel_case_dict['requestSomeVarCharVal'] == "varchar"
-        assert camel_case_dict['requestSomeTextVal'] == "text"
-        assert camel_case_dict['requestSomePhoneNumber'] == "123-456-7890"
-        assert camel_case_dict['requestSomeEmailAddress'] == "test@example.com"
+        assert camel_case_dict['requestSomeNVarCharVal'] == \
+            model.request_some_n_var_char_val
+        assert camel_case_dict['requestSomeVarCharVal'] == \
+            model.request_some_var_char_val
+        assert camel_case_dict['requestSomeTextVal'] == \
+            model.request_some_text_val
+        assert camel_case_dict['requestSomePhoneNumber'] == \
+            model.request_some_phone_number
+        assert camel_case_dict['requestSomeEmailAddress'] == \
+            model.request_some_email_address
         assert camel_case_dict['requestSampleImageUploadFile'] == "image.png"
 # endset
 
@@ -188,7 +208,7 @@ class TestLandAddPlantPostModelRequest:
             request_some_var_char_val="Test VarChar",
             request_some_text_val="Test Text",
             request_some_phone_number="1234567890",
-            request_some_email_address="test@example.com",
+            request_some_email_address=TEST_EMAIL,
             request_sample_image_upload_file="sample_image.jpg"
 # endset  # noqa: E122
         )
@@ -216,7 +236,7 @@ class TestLandAddPlantPostModelRequest:
             "request_some_var_char_val": "Test VarChar",
             "request_some_text_val": "Test Text",
             "request_some_phone_number": "1234567890",
-            "request_some_email_address": "test@example.com",
+            "request_some_email_address": TEST_EMAIL,
             "request_sample_image_upload_file": "sample_image.jpg"
 # endset  # noqa: E122
         }
@@ -247,7 +267,7 @@ class TestLandAddPlantPostModelRequest:
             request_some_var_char_val="Test Var Char",
             request_some_text_val="Test Text",
             request_some_phone_number="1234567890",
-            request_some_email_address="test@example.com",
+            request_some_email_address=TEST_EMAIL,
             request_sample_image_upload_file="sample.jpg"
         )
 
@@ -269,7 +289,7 @@ class TestLandAddPlantPostModelRequest:
             "requestSomeVarCharVal": "Test Var Char",
             "requestSomeTextVal": "Test Text",
             "requestSomePhoneNumber": "1234567890",
-            "requestSomeEmailAddress": "test@example.com",
+            "requestSomeEmailAddress": TEST_EMAIL,
             "requestSampleImageUploadFile": "sample.jpg"
         }
 

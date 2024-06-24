@@ -5,6 +5,7 @@ This module contains unit tests for the
 TacRegisterPostModelResponse class.
 """
 import uuid
+import math
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch
@@ -18,6 +19,9 @@ from ...models.tac_register import (
     TacRegisterPostModelResponse,
     TacRegisterPostModelRequest)
 from ..factory.tac_register import TacRegisterPostModelRequestFactory
+TEST_ERROR_TEXT = "Test Error"
+TEST_EMAIL = "test@example.com"
+TEST_PHONE = "123-456-7890"
 class TestTacRegisterPostModelRequest:
     """
     This class contains unit tests for the
@@ -43,9 +47,9 @@ class TestTacRegisterPostModelRequest:
         TacRegisterPostModelRequest class.
         """
         model = TacRegisterPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="varchar",
             confirm_password="varchar",
             first_name="nvarchar",
@@ -53,13 +57,18 @@ class TestTacRegisterPostModelRequest:
 # endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset
-        assert snake_case_dict['email'] == "test@example.com"
-        assert snake_case_dict['password'] == "varchar"
-        assert snake_case_dict['confirm_password'] == "varchar"
-        assert snake_case_dict['first_name'] == "nvarchar"
-        assert snake_case_dict['last_name'] == "nvarchar"
+        assert snake_case_dict['email'] == \
+            model.email
+        assert snake_case_dict['password'] == \
+            model.password
+        assert snake_case_dict['confirm_password'] == \
+            model.confirm_password
+        assert snake_case_dict['first_name'] == \
+            model.first_name
+        assert snake_case_dict['last_name'] == \
+            model.last_name
 # endset
     def test_to_dict_camel(self):
         """
@@ -67,9 +76,9 @@ class TestTacRegisterPostModelRequest:
         TacRegisterPostModelRequest class.
         """
         model = TacRegisterPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="varchar",
             confirm_password="varchar",
             first_name="nvarchar",
@@ -77,13 +86,18 @@ class TestTacRegisterPostModelRequest:
 # endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
-        assert camel_case_dict['email'] == "test@example.com"
-        assert camel_case_dict['password'] == "varchar"
-        assert camel_case_dict['confirmPassword'] == "varchar"
-        assert camel_case_dict['firstName'] == "nvarchar"
-        assert camel_case_dict['lastName'] == "nvarchar"
+        assert camel_case_dict['email'] == \
+            model.email
+        assert camel_case_dict['password'] == \
+            model.password
+        assert camel_case_dict['confirmPassword'] == \
+            model.confirm_password
+        assert camel_case_dict['firstName'] == \
+            model.first_name
+        assert camel_case_dict['lastName'] == \
+            model.last_name
 # endset
     def test_to_dict_snake_serialized(self):
         """
@@ -94,7 +108,7 @@ class TestTacRegisterPostModelRequest:
         request = TacRegisterPostModelRequest(
             force_error_message="Test Error Message",
 # endset  # noqa: E122
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="Test VarChar",
             confirm_password="Test VarChar",
             first_name="Test NVarChar",
@@ -107,7 +121,7 @@ class TestTacRegisterPostModelRequest:
         expected_data = {
             "force_error_message": "Test Error Message",
 # endset  # noqa: E122
-            "email": "test@example.com",
+            "email": TEST_EMAIL,
             "password": "Test VarChar",
             "confirm_password": "Test VarChar",
             "first_name": "Test NVarChar",
@@ -123,7 +137,7 @@ class TestTacRegisterPostModelRequest:
         """
         request = TacRegisterPostModelRequest(
             force_error_message="Test Error Message",
-            email="test@example.com",
+            email=TEST_EMAIL,
             password="Test Var Char",
             confirm_password="Test Var Char",
             first_name="Test N Var Char",
@@ -131,7 +145,7 @@ class TestTacRegisterPostModelRequest:
         )
         expected_data = {
             "forceErrorMessage": "Test Error Message",
-            "email": "test@example.com",
+            "email": TEST_EMAIL,
             "password": "Test Var Char",
             "confirmPassword": "Test Var Char",
             "firstName": "Test N Var Char",

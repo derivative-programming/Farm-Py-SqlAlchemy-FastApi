@@ -1,4 +1,5 @@
 # apis/models/init/tests/land_add_plant_init_obj_wf_test.py
+# pylint: disable=redefined-outer-name
 """
 This module contains the unit tests for the
 land_add_plant_init_obj_wf module.
@@ -193,7 +194,8 @@ async def test_process_request(flow_response):
         'apis.models.init.land_add_plant_init_obj_wf.LandBusObj',
         autospec=True).start()
     mock_flow = patch(
-        'apis.models.init.land_add_plant_init_obj_wf.FlowLandAddPlantInitObjWF',
+        "apis.models.init.land_add_plant_init_obj_wf."
+        "FlowLandAddPlantInitObjWF",
         autospec=True).start()
     mock_flow_instance = mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)

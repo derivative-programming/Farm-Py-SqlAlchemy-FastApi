@@ -1,4 +1,5 @@
 # apis/models/init/tests/pac_user_role_list_init_report_test.py
+# pylint: disable=redefined-outer-name
 """
 This module contains the unit tests for the
 pac_user_role_list_init_report module.
@@ -69,7 +70,8 @@ async def test_process_request(flow_response):
         'apis.models.init.pac_user_role_list_init_report.PacBusObj',
         autospec=True).start()
     mock_flow = patch(
-        'apis.models.init.pac_user_role_list_init_report.FlowPacUserRoleListInitReport',
+        "apis.models.init.pac_user_role_list_init_report."
+        "FlowPacUserRoleListInitReport",
         autospec=True).start()
     mock_flow_instance = mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)

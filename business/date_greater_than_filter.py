@@ -17,15 +17,20 @@ from .base_bus_obj import BaseBusObj
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "DateGreaterThanFilter object is not initialized")
+
+
 class DateGreaterThanFilterInvalidInitError(Exception):
     """
     Exception raised when the DateGreaterThanFilter object is not initialized properly.
     """
+
+
 class DateGreaterThanFilterBusObj(BaseBusObj):
     """
     This class represents the business object for a DateGreaterThanFilter.
     It requires a valid session context for initialization.
     """
+
     def __init__(self, session_context: SessionContext):
         """
         Initializes a new instance of the DateGreaterThanFilterBusObj class.
@@ -36,6 +41,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             raise ValueError("session required")
         self._session_context = session_context
         self.date_greater_than_filter = DateGreaterThanFilter()
+
     @property
     def date_greater_than_filter_id(self) -> int:
         """
@@ -49,6 +55,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             )
         return self.date_greater_than_filter.date_greater_than_filter_id
     # code
+
     @property
     def code(self):
         """
@@ -61,6 +68,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.date_greater_than_filter.code
+
     @code.setter
     def code(self, value: uuid.UUID):  # type: ignore
         """
@@ -77,6 +85,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
         self.date_greater_than_filter.code = value
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -89,6 +98,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.date_greater_than_filter.last_change_code
+
     @last_change_code.setter
     def last_change_code(self, value: int):
         """
@@ -105,6 +115,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
         self.date_greater_than_filter.last_change_code = value
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -117,6 +128,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.date_greater_than_filter.insert_user_id
+
     @insert_user_id.setter
     def insert_user_id(self, value: uuid.UUID):
         """
@@ -133,6 +145,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             raise ValueError("insert_user_id must be a UUID.")
         self.date_greater_than_filter.insert_user_id = value
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -145,6 +158,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.date_greater_than_filter.last_update_user_id
+
     @last_update_user_id.setter
     def last_update_user_id(self, value: uuid.UUID):
         """
@@ -162,6 +176,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         self.date_greater_than_filter.last_update_user_id = value
 # endset
     # dayCount
+
     @property
     def day_count(self):
         """
@@ -176,6 +191,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.date_greater_than_filter.day_count
+
     @day_count.setter
     def day_count(self, value):
         """
@@ -192,6 +208,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         assert isinstance(value, int), (
             "day_count must be an integer")
         self.date_greater_than_filter.day_count = value
+
     def set_prop_day_count(self, value: int):
         """
         Set the value of day_count property.
@@ -203,6 +220,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         self.day_count = value
         return self
     # description
+
     @property
     def description(self):
         """
@@ -217,6 +235,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         if self.date_greater_than_filter.description is None:
             return ""
         return self.date_greater_than_filter.description
+
     @description.setter
     def description(self, value):
         """
@@ -231,6 +250,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             )
         assert isinstance(value, str), "description must be a string"
         self.date_greater_than_filter.description = value
+
     def set_prop_description(self, value: str):
         """
         Set the Description for the DateGreaterThanFilter object.
@@ -240,6 +260,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         self.description = value
         return self
     # displayOrder
+
     @property
     def display_order(self):
         """
@@ -254,6 +275,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.date_greater_than_filter.display_order
+
     @display_order.setter
     def display_order(self, value):
         """
@@ -270,6 +292,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         assert isinstance(value, int), (
             "display_order must be an integer")
         self.date_greater_than_filter.display_order = value
+
     def set_prop_display_order(self, value: int):
         """
         Set the value of display_order property.
@@ -281,6 +304,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         self.display_order = value
         return self
     # isActive
+
     @property
     def is_active(self):
         """
@@ -293,6 +317,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
         return self.date_greater_than_filter.is_active
+
     @is_active.setter
     def is_active(self, value: bool):
         """
@@ -308,6 +333,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
         if not isinstance(value, bool):
             raise ValueError("is_active must be a boolean.")
         self.date_greater_than_filter.is_active = value
+
     def set_prop_is_active(self, value: bool):
         """
         Set the Is Active flag for the DateGreaterThanFilter object.
@@ -628,6 +654,7 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
                 self.date_greater_than_filter.lookup_enum_name
             ]
         )
+
     async def load_from_enum(
         self,
         date_greater_than_filter_enum:
@@ -875,4 +902,3 @@ class DateGreaterThanFilterBusObj(BaseBusObj):
             await date_greater_than_filter_bus_obj.load_from_obj_instance(date_greater_than_filter)
             result.append(date_greater_than_filter_bus_obj)
         return result
-

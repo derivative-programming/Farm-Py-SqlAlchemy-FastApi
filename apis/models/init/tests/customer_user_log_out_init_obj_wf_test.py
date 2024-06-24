@@ -1,4 +1,5 @@
 # apis/models/init/tests/customer_user_log_out_init_obj_wf_test.py
+# pylint: disable=redefined-outer-name
 """
 This module contains the unit tests for the
 customer_user_log_out_init_obj_wf module.
@@ -70,7 +71,8 @@ async def test_process_request(flow_response):
         'apis.models.init.customer_user_log_out_init_obj_wf.CustomerBusObj',
         autospec=True).start()
     mock_flow = patch(
-        'apis.models.init.customer_user_log_out_init_obj_wf.FlowCustomerUserLogOutInitObjWF',
+        "apis.models.init.customer_user_log_out_init_obj_wf."
+        "FlowCustomerUserLogOutInitObjWF",
         autospec=True).start()
     mock_flow_instance = mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)

@@ -30,6 +30,8 @@ class DateGreaterThanFilterNotFoundError(Exception):
 
 ##GENTrainingBlock[caseLookupEnums]Start
 ##GENLearn[isLookup=true]Start
+
+
 class DateGreaterThanFilterEnum(Enum):
     """
     Represents an enumeration of
@@ -75,10 +77,12 @@ class DateGreaterThanFilterManager:
 
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=true]Start
+
     async def _build_lookup_item(self, pac: Pac):
         item = await self.build()
         item.pac_id = pac.pac_id
         return item
+
     async def initialize(self):
         """
         Initializes the DateGreaterThanFilterManager.
@@ -157,6 +161,7 @@ class DateGreaterThanFilterManager:
             await self.add(item)
 # endset
         logging.info("DateGreaterThanFilterManager.Initialize end")
+
     async def from_enum(
         self,
         enum_val: DateGreaterThanFilterEnum
@@ -581,4 +586,3 @@ class DateGreaterThanFilterManager:
         query_results = await self._run_query(query_filter)
         return query_results
 # endset
-

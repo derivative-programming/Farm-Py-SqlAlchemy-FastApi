@@ -7,6 +7,7 @@ This module contains unit tests for the PlantBusObj class.
 """
 
 import uuid
+import math
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal
 from unittest.mock import AsyncMock, Mock, patch
@@ -689,14 +690,14 @@ class TestPlantBaseBusObj:
         Test case for the some_float_val property.
         """
         plant.some_float_val = 1.23
-        assert plant_base_bus_obj.some_float_val == 1.23
+        assert math.isclose(plant_base_bus_obj.some_float_val, 1.23)
 
     def test_some_float_val_setter(self, plant_base_bus_obj):
         """
         Test case for the some_float_val setter.
         """
         plant_base_bus_obj.some_float_val = 1.23
-        assert plant_base_bus_obj.some_float_val == 1.23
+        assert math.isclose(plant_base_bus_obj.some_float_val, 1.23)
 
     def test_some_float_val_invalid_value(self, plant_base_bus_obj):
         """

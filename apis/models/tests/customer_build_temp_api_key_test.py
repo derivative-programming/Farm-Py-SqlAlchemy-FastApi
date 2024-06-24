@@ -5,6 +5,7 @@ This module contains unit tests for the
 CustomerBuildTempApiKeyPostModelResponse class.
 """
 import uuid
+import math
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, patch
@@ -18,6 +19,9 @@ from ...models.customer_build_temp_api_key import (
     CustomerBuildTempApiKeyPostModelResponse,
     CustomerBuildTempApiKeyPostModelRequest)
 from ..factory.customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequestFactory
+TEST_ERROR_TEXT = "Test Error"
+TEST_EMAIL = "test@example.com"
+TEST_PHONE = "123-456-7890"
 class TestCustomerBuildTempApiKeyPostModelRequest:
     """
     This class contains unit tests for the
@@ -39,13 +43,13 @@ class TestCustomerBuildTempApiKeyPostModelRequest:
         CustomerBuildTempApiKeyPostModelRequest class.
         """
         model = CustomerBuildTempApiKeyPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
 
 # endset  # noqa: E122
         )
         snake_case_dict = model.to_dict_snake()
-        assert snake_case_dict['force_error_message'] == "Test Error"
+        assert snake_case_dict['force_error_message'] == TEST_ERROR_TEXT
 # endset
 
 # endset
@@ -55,13 +59,13 @@ class TestCustomerBuildTempApiKeyPostModelRequest:
         CustomerBuildTempApiKeyPostModelRequest class.
         """
         model = CustomerBuildTempApiKeyPostModelRequest(
-            force_error_message="Test Error",
+            force_error_message=TEST_ERROR_TEXT,
 # endset  # noqa: E122
 
 # endset  # noqa: E122
         )
         camel_case_dict = model.to_dict_camel()
-        assert camel_case_dict['forceErrorMessage'] == "Test Error"
+        assert camel_case_dict['forceErrorMessage'] == TEST_ERROR_TEXT
 # endset
 
 # endset
