@@ -23,7 +23,8 @@ from main import app
 
 from .....models import (  # pylint: disable=reimported
     factory as request_factory)
-from ..plant_user_details import PlantUserDetailsRouterConfig
+from ..plant_user_details import (
+    PlantUserDetailsRouterConfig)
 
 
 @pytest.mark.asyncio

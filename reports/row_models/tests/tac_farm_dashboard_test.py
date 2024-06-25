@@ -18,7 +18,8 @@ from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
-from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
+from reports.row_models.tac_farm_dashboard import (
+    ReportItemTacFarmDashboard)
 
 
 class TestReportItemTacFarmDashboard:

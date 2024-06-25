@@ -75,8 +75,9 @@ class TestPlantGetByManager:
         test_plant = await PlantFactory.create_async(
             session)
 
-        plant = await plant_manager.get_by_id(
-            test_plant.plant_id)
+        plant = await \
+            plant_manager.get_by_id(
+                test_plant.plant_id)
 
         assert isinstance(
             plant, Plant)
@@ -99,8 +100,9 @@ class TestPlantGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_plant = await plant_manager.get_by_id(
-            non_existent_id)
+        retrieved_plant = await \
+            plant_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_plant is None
 
@@ -120,8 +122,9 @@ class TestPlantGetByManager:
         test_plant = await PlantFactory.create_async(
             session)
 
-        plant = await plant_manager.get_by_code(
-            test_plant.code)
+        plant = await \
+            plant_manager.get_by_code(
+                test_plant.code)
 
         assert isinstance(
             plant, Plant)
@@ -144,8 +147,9 @@ class TestPlantGetByManager:
         # any Plant in the database
         random_code = uuid.uuid4()
 
-        plant = await plant_manager.get_by_code(
-            random_code)
+        plant = await \
+            plant_manager.get_by_code(
+                random_code)
 
         assert plant is None
 
@@ -208,8 +212,9 @@ class TestPlantGetByManager:
         # Fetch the plant using the
         # manager function
 
-        fetched_plants = await plant_manager.get_by_flvr_foreign_key_id(
-            plant1.flvr_foreign_key_id)
+        fetched_plants = await \
+            plant_manager.get_by_flvr_foreign_key_id(
+                plant1.flvr_foreign_key_id)
         assert len(fetched_plants) == 1
         assert isinstance(fetched_plants[0], Plant)
         assert fetched_plants[0].code == \
@@ -328,8 +333,9 @@ class TestPlantGetByManager:
         # Fetch the plant using
         # the manager function
 
-        fetched_plants = await plant_manager.get_by_land_id(
-            plant1.land_id)
+        fetched_plants = await \
+            plant_manager.get_by_land_id(
+                plant1.land_id)
         assert len(fetched_plants) == 1
         assert isinstance(fetched_plants[0], Plant)
         assert fetched_plants[0].code == \
@@ -360,8 +366,9 @@ class TestPlantGetByManager:
 
         non_existent_id = 999
 
-        fetched_plants = await plant_manager.get_by_land_id(
-            non_existent_id)
+        fetched_plants = await \
+            plant_manager.get_by_land_id(
+                non_existent_id)
         assert len(fetched_plants) == 0
 
     @pytest.mark.asyncio

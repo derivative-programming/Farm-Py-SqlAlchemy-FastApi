@@ -67,12 +67,15 @@ class ReportProviderPacUserFlavorList():
         order_by_descending: bool,
     ) -> list[dict[str, Any]]:
         """
-        Generates a list of pac flavors based on the provided parameters.
+        Generates a list of pac flavors based
+        on the provided parameters.
 
         Returns:
-            list[dict[str, Any]]: The list of pac flavors as dictionaries.
+            list[dict[str, Any]]: The list of
+            pac flavors as dictionaries.
         """
-        flow_name = "ReportProviderPacUserFlavorList.generate_list"
+        flow_name = "ReportProviderPacUserFlavorList"
+        ".generate_list"
 
         logging.info("%s Start", flow_name)
         logging.info("%s context_code: %s", flow_name, str(context_code))

@@ -21,7 +21,9 @@ from ..customer_user_log_out_init_obj_wf import (
 
 class MockFlowCustomerUserLogOutInitObjWFResult:
     """
-    A mock object for the FlowCustomerUserLogOutInitObjWFResult class.
+    A mock object for the
+    FlowCustomerUserLogOutInitObjWFResult
+    class.
     """
     def __init__(self):
         """
@@ -33,7 +35,9 @@ class MockFlowCustomerUserLogOutInitObjWFResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowCustomerUserLogOutInitObjWFResult object.
+    Return a mock
+    FlowCustomerUserLogOutInitObjWFResult
+    object.
     """
     return MockFlowCustomerUserLogOutInitObjWFResult()
 

@@ -146,7 +146,10 @@ class TestOrganizationSchema:
         assert result['tac_code_peek'] == (  # TacID
             str(organization.tac_code_peek))
 
-    def test_organization_deserialization(self, organization):
+    def test_organization_deserialization(
+        self,
+        organization
+    ):
         """
         Test the deserialization of a
         Organization object using the
@@ -187,7 +190,8 @@ class TestOrganizationSchema:
             'tac_code_peek')] == (
             organization.tac_code_peek)
 
-        new_organization = Organization(**deserialized_data)
+        new_organization = Organization(
+            **deserialized_data)
 
         assert isinstance(new_organization, Organization)
 
@@ -265,7 +269,8 @@ class TestOrganizationSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_organization = Organization(**deserialized_data)
+        new_organization = Organization(
+            **deserialized_data)
 
         assert isinstance(new_organization, Organization)
 

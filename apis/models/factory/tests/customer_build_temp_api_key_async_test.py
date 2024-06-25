@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequest
-from ..customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequestFactory
+from ...customer_build_temp_api_key import (
+    CustomerBuildTempApiKeyPostModelRequest)
+from ..customer_build_temp_api_key import (
+    CustomerBuildTempApiKeyPostModelRequestFactory)
 
 
 class TestCustomerBuildTempApiKeyPostModelRequestFactoryAsync:
@@ -32,5 +34,6 @@ class TestCustomerBuildTempApiKeyPostModelRequestFactoryAsync:
             await CustomerBuildTempApiKeyPostModelRequestFactory.create_async(
                 session=session)
         )
-        assert isinstance(model_instance, CustomerBuildTempApiKeyPostModelRequest)
+        assert isinstance(model_instance,
+                          CustomerBuildTempApiKeyPostModelRequest)
 

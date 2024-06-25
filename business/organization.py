@@ -61,7 +61,8 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         return result
 
 
-    async def build_org_customer(self) -> OrgCustomerBusObj:
+    async def build_org_customer(
+        self) -> OrgCustomerBusObj:
         """
         build org_customer
         instance (not saved yet)
@@ -76,21 +77,26 @@ class OrganizationBusObj(OrganizationFluentBusObj):
 
         return item
 
-    async def get_all_org_customer(self) -> List[OrgCustomerBusObj]:
+    async def get_all_org_customer(
+        self) -> List[OrgCustomerBusObj]:
         """
         get all org_customer
         """
         results = list()
-        org_customer_manager = managers_and_enums.OrgCustomerManager(self._session_context)
-        obj_list = await org_customer_manager.get_by_organization_id(self.organization_id)
+        org_customer_manager = managers_and_enums.OrgCustomerManager(
+            self._session_context)
+        obj_list = await org_customer_manager.get_by_organization_id(
+            self.organization_id)
         for obj_item in obj_list:
-            bus_obj_item = OrgCustomerBusObj(self._session_context)
+            bus_obj_item = OrgCustomerBusObj(
+                self._session_context)
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 
 
-    async def build_org_api_key(self) -> OrgApiKeyBusObj:
+    async def build_org_api_key(
+        self) -> OrgApiKeyBusObj:
         """
         build org_api_key
         instance (not saved yet)
@@ -105,15 +111,19 @@ class OrganizationBusObj(OrganizationFluentBusObj):
 
         return item
 
-    async def get_all_org_api_key(self) -> List[OrgApiKeyBusObj]:
+    async def get_all_org_api_key(
+        self) -> List[OrgApiKeyBusObj]:
         """
         get all org_api_key
         """
         results = list()
-        org_api_key_manager = managers_and_enums.OrgApiKeyManager(self._session_context)
-        obj_list = await org_api_key_manager.get_by_organization_id(self.organization_id)
+        org_api_key_manager = managers_and_enums.OrgApiKeyManager(
+            self._session_context)
+        obj_list = await org_api_key_manager.get_by_organization_id(
+            self.organization_id)
         for obj_item in obj_list:
-            bus_obj_item = OrgApiKeyBusObj(self._session_context)
+            bus_obj_item = OrgApiKeyBusObj(
+                self._session_context)
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results

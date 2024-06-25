@@ -58,7 +58,8 @@ class LandBusObj(LandFluentBusObj):
         return result
 
 
-    async def build_plant(self) -> PlantBusObj:
+    async def build_plant(
+        self) -> PlantBusObj:
         """
         build plant
         instance (not saved yet)
@@ -66,7 +67,8 @@ class LandBusObj(LandFluentBusObj):
         item = PlantBusObj(self._session_context)
 
         assert item.plant is not None
-        flavor_manager = managers_and_enums.FlavorManager(self._session_context)
+        flavor_manager = managers_and_enums.FlavorManager(
+            self._session_context)
         flvr_foreign_key_id_flavor = await flavor_manager.from_enum(
             managers_and_enums.FlavorEnum.UNKNOWN)
         item.flvr_foreign_key_id = flvr_foreign_key_id_flavor.flavor_id
@@ -77,15 +79,19 @@ class LandBusObj(LandFluentBusObj):
 
         return item
 
-    async def get_all_plant(self) -> List[PlantBusObj]:
+    async def get_all_plant(
+        self) -> List[PlantBusObj]:
         """
         get all plant
         """
         results = list()
-        plant_manager = managers_and_enums.PlantManager(self._session_context)
-        obj_list = await plant_manager.get_by_land_id(self.land_id)
+        plant_manager = managers_and_enums.PlantManager(
+            self._session_context)
+        obj_list = await plant_manager.get_by_land_id(
+            self.land_id)
         for obj_item in obj_list:
-            bus_obj_item = PlantBusObj(self._session_context)
+            bus_obj_item = PlantBusObj(
+                self._session_context)
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results

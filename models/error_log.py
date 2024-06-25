@@ -193,7 +193,8 @@ class ErrorLog(Base):
         Set the code of the error_log.
 
         Args:
-            value (uuid.UUID): The code to set for the error_log.
+            value (uuid.UUID): The code to set for the
+                error_log.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -226,9 +227,11 @@ class ErrorLog(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the error_log.
+        Returns the last change code of the
+        error_log.
 
-        :return: The last change code of the error_log.
+        :return: The last change code of the
+            error_log.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -263,7 +266,8 @@ class ErrorLog(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the error_log.
+        Returns the UUID of the last user who updated the
+        error_log.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -281,10 +285,12 @@ class ErrorLog(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the error_log.
+        Inserts the UTC date and time for the
+        error_log.
 
         Returns:
-            datetime: The UTC date and time for the error_log.
+            datetime: The UTC date and time for the
+                error_log.
         """
         return getattr(
             self,
@@ -303,7 +309,8 @@ class ErrorLog(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the error_log.
+        Returns the last update UTC date and time of the
+        error_log.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -427,9 +434,11 @@ class ErrorLog(Base):
     @property
     def description(self) -> str:
         """
-        Returns the Description of the error_log.
+        Returns the Description of the
+        error_log.
 
-        :return: The Description of the error_log.
+        :return: The Description of the
+            error_log.
         :rtype: str
         """
         return getattr(self, '_description', "") or ""
@@ -446,7 +455,8 @@ class ErrorLog(Base):
     @property
     def is_client_side_error(self) -> bool:
         """
-        Check if the delete operation is allowed for the error_log.
+        Check if the delete operation is allowed for the
+        error_log.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -465,7 +475,8 @@ class ErrorLog(Base):
     @property
     def is_resolved(self) -> bool:
         """
-        Check if the delete operation is allowed for the error_log.
+        Check if the delete operation is allowed for the
+        error_log.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -485,9 +496,11 @@ class ErrorLog(Base):
     @property
     def url(self) -> str:
         """
-        Returns the Url of the error_log.
+        Returns the Url of the
+        error_log.
 
-        :return: The Url of the error_log.
+        :return: The Url of the
+            error_log.
         :rtype: str
         """
         return getattr(self, '_url', "") or ""
@@ -517,7 +530,6 @@ class ErrorLog(Base):
         """
 
         self._pac_id = value
-
 
     @staticmethod
     def property_list():

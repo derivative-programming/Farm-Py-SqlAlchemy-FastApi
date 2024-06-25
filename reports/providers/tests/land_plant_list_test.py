@@ -13,7 +13,8 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
-from reports.providers.land_plant_list import ReportProviderLandPlantList
+from reports.providers.land_plant_list import (
+    ReportProviderLandPlantList)
 import current_runtime
 
 
@@ -43,7 +44,8 @@ class TestReportProviderLandPlantList:
 
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
-        report_provider = ReportProviderLandPlantList(session_context)
+        report_provider = ReportProviderLandPlantList(
+            session_context)
         land = await LandFactory.create_async(session=session)
         land_code = land.code
 
@@ -57,7 +59,8 @@ class TestReportProviderLandPlantList:
         some_decimal_val: Decimal = Decimal(0)
         some_min_utc_date_time_val: datetime = (
             TypeConversion.get_default_date_time())
-        some_min_date_val: date = TypeConversion.get_default_date()
+        some_min_date_val: date = (
+            TypeConversion.get_default_date())
         some_money_val: Decimal = Decimal(0)
         some_n_var_char_val: str = ""
         some_var_char_val: str = ""

@@ -41,7 +41,9 @@ class OrganizationFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Organization:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Organization:
         """
             Builds and returns an instance
             of the Organization model.
@@ -78,7 +80,9 @@ class OrganizationFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Organization:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Organization:
         """
         Create a new Organization object
         and save it to the database.
@@ -117,7 +121,9 @@ class OrganizationFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Organization:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Organization:
         """
         Create a new Organization object
         asynchronously.
@@ -147,7 +153,9 @@ class OrganizationFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Organization:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Organization:
         """
         Build a new Organization object
         asynchronously.

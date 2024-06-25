@@ -23,7 +23,8 @@ from main import app
 
 from .....models import (  # pylint: disable=reimported
     factory as request_factory)
-from ..tac_register import TacRegisterRouterConfig
+from ..tac_register import (
+    TacRegisterRouterConfig)
 
 
 @pytest.mark.asyncio
@@ -212,10 +213,12 @@ async def test_init_endpoint_method_failure(
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db, api_key_fixture: str):
     """
-    Test case for successful submission of a post to a tac.
+    Test case for successful submission
+    of a post to a tac.
 
     Args:
-        overridden_get_db (AsyncSession): The overridden database session.
+        overridden_get_db (AsyncSession):
+        The overridden database session.
         api_key_fixture (str): The API key fixture.
 
     Returns:

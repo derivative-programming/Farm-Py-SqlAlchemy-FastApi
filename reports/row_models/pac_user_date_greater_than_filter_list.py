@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemPacUserDateGreaterThanFilterList():
     """
-    Represents a report item for a pac Pac User Date Greater Than Filter List Report.
+    Represents a report item for a
+    pac Pac User Date Greater Than Filter List Report.
     """
     date_greater_than_filter_code: uuid.UUID = (
         uuid.UUID(int=0))

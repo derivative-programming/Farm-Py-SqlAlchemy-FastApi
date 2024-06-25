@@ -21,7 +21,9 @@ from ..pac_user_flavor_list_init_report import (
 
 class MockFlowPacUserFlavorListInitReportResult:
     """
-    A mock object for the FlowPacUserFlavorListInitReportResult class.
+    A mock object for the
+    FlowPacUserFlavorListInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -32,7 +34,9 @@ class MockFlowPacUserFlavorListInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowPacUserFlavorListInitReportResult object.
+    Return a mock
+    FlowPacUserFlavorListInitReportResult
+    object.
     """
     return MockFlowPacUserFlavorListInitReportResult()
 

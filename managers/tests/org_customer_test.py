@@ -537,7 +537,7 @@ class TestOrgCustomerManager:
         json_data = org_customer_manager.to_json(
             org_customer)
 
-        deserialized_org_customer = org_customer_manager.from_json(json_data)
+        deserialized_org_customer = await org_customer_manager.from_json(json_data)
 
         assert isinstance(deserialized_org_customer, OrgCustomer)
         assert deserialized_org_customer.code == \
@@ -578,7 +578,7 @@ class TestOrgCustomerManager:
 
         assert isinstance(org_customer_data, dict)
 
-        deserialized_org_customer = org_customer_manager.from_dict(
+        deserialized_org_customer = await org_customer_manager.from_dict(
             org_customer_data)
 
         assert isinstance(deserialized_org_customer, OrgCustomer)
@@ -784,11 +784,13 @@ class TestOrgCustomerManager:
             None
         """
         # Add a org_customer
-        org_customer1 = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer1 = await \
+            OrgCustomerFactory.create_async(
+                session=session)
 
-        org_customer2 = await org_customer_manager.get_by_id(
-            org_customer_id=org_customer1.org_customer_id)
+        org_customer2 = await \
+            org_customer_manager.get_by_id(
+                org_customer_id=org_customer1.org_customer_id)
 
         assert org_customer_manager.is_equal(
             org_customer1, org_customer2) is True
@@ -796,8 +798,9 @@ class TestOrgCustomerManager:
         org_customer1_dict = org_customer_manager.to_dict(
             org_customer1)
 
-        org_customer3 = org_customer_manager.from_dict(
-            org_customer1_dict)
+        org_customer3 = await \
+            org_customer_manager.from_dict(
+                org_customer1_dict)
 
         assert org_customer_manager.is_equal(
             org_customer1, org_customer3) is True

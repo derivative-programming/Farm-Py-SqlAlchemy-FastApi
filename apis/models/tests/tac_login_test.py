@@ -14,7 +14,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from business.tac import TacBusObj
-from flows.tac_login import FlowTacLogin, FlowTacLoginResult
+from flows.tac_login import (
+    FlowTacLogin,
+    FlowTacLoginResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.tac import TacFactory
@@ -22,7 +24,8 @@ from models.factory.tac import TacFactory
 from ...models.tac_login import (
     TacLoginPostModelResponse,
     TacLoginPostModelRequest)
-from ..factory.tac_login import TacLoginPostModelRequestFactory
+from ..factory.tac_login import (
+    TacLoginPostModelRequestFactory)
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -101,7 +104,8 @@ class TestTacLoginPostModelRequest:
 # endset  # noqa: E122
         )
 
-        # Convert the model to a dictionary with snake_case keys and serialized values
+        # Convert the model to a dictionary with snake_case
+        # keys and serialized values
         data = request.to_dict_snake_serialized()
 
         # Define the expected dictionary

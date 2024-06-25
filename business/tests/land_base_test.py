@@ -701,7 +701,6 @@ class TestLandBaseBusObj:
 
         assert plant_bus_obj.plant_id > 0
 
-
     @pytest.mark.asyncio
     async def test_get_all_plant(
         self,

@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...plant_user_delete import PlantUserDeletePostModelRequest
-from ..plant_user_delete import PlantUserDeletePostModelRequestFactory
+from ...plant_user_delete import (
+    PlantUserDeletePostModelRequest)
+from ..plant_user_delete import (
+    PlantUserDeletePostModelRequestFactory)
 
 
 class TestPlantUserDeletePostModelRequestFactoryAsync:
@@ -32,5 +34,6 @@ class TestPlantUserDeletePostModelRequestFactoryAsync:
             await PlantUserDeletePostModelRequestFactory.create_async(
                 session=session)
         )
-        assert isinstance(model_instance, PlantUserDeletePostModelRequest)
+        assert isinstance(model_instance,
+                          PlantUserDeletePostModelRequest)
 

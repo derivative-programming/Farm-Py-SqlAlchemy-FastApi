@@ -18,7 +18,8 @@ import pytest
 from helpers.type_conversion import TypeConversion
 from helpers.session_context import SessionContext
 
-from ..factory.tac_farm_dashboard import TacFarmDashboardGetModelRequestFactory
+from ..factory.tac_farm_dashboard import (
+    TacFarmDashboardGetModelRequestFactory)
 from ..tac_farm_dashboard import (
     TacFarmDashboardGetModelRequest,
     TacFarmDashboardGetModelResponse,

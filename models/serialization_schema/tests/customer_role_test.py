@@ -156,7 +156,10 @@ class TestCustomerRoleSchema:
         assert result['role_code_peek'] == (  # RoleID
             str(customer_role.role_code_peek))
 
-    def test_customer_role_deserialization(self, customer_role):
+    def test_customer_role_deserialization(
+        self,
+        customer_role
+    ):
         """
         Test the deserialization of a
         CustomerRole object using the
@@ -204,7 +207,8 @@ class TestCustomerRoleSchema:
             'role_code_peek')] == (
             customer_role.role_code_peek)
 
-        new_customer_role = CustomerRole(**deserialized_data)
+        new_customer_role = CustomerRole(
+            **deserialized_data)
 
         assert isinstance(new_customer_role, CustomerRole)
 
@@ -295,7 +299,8 @@ class TestCustomerRoleSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_customer_role = CustomerRole(**deserialized_data)
+        new_customer_role = CustomerRole(
+            **deserialized_data)
 
         assert isinstance(new_customer_role, CustomerRole)
 

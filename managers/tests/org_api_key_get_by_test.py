@@ -75,8 +75,9 @@ class TestOrgApiKeyGetByManager:
         test_org_api_key = await OrgApiKeyFactory.create_async(
             session)
 
-        org_api_key = await org_api_key_manager.get_by_id(
-            test_org_api_key.org_api_key_id)
+        org_api_key = await \
+            org_api_key_manager.get_by_id(
+                test_org_api_key.org_api_key_id)
 
         assert isinstance(
             org_api_key, OrgApiKey)
@@ -99,8 +100,9 @@ class TestOrgApiKeyGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_org_api_key = await org_api_key_manager.get_by_id(
-            non_existent_id)
+        retrieved_org_api_key = await \
+            org_api_key_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_org_api_key is None
 
@@ -120,8 +122,9 @@ class TestOrgApiKeyGetByManager:
         test_org_api_key = await OrgApiKeyFactory.create_async(
             session)
 
-        org_api_key = await org_api_key_manager.get_by_code(
-            test_org_api_key.code)
+        org_api_key = await \
+            org_api_key_manager.get_by_code(
+                test_org_api_key.code)
 
         assert isinstance(
             org_api_key, OrgApiKey)
@@ -144,8 +147,9 @@ class TestOrgApiKeyGetByManager:
         # any OrgApiKey in the database
         random_code = uuid.uuid4()
 
-        org_api_key = await org_api_key_manager.get_by_code(
-            random_code)
+        org_api_key = await \
+            org_api_key_manager.get_by_code(
+                random_code)
 
         assert org_api_key is None
 
@@ -199,8 +203,9 @@ class TestOrgApiKeyGetByManager:
         # Fetch the org_api_key using
         # the manager function
 
-        fetched_org_api_keys = await org_api_key_manager.get_by_organization_id(
-            org_api_key1.organization_id)
+        fetched_org_api_keys = await \
+            org_api_key_manager.get_by_organization_id(
+                org_api_key1.organization_id)
         assert len(fetched_org_api_keys) == 1
         assert isinstance(fetched_org_api_keys[0], OrgApiKey)
         assert fetched_org_api_keys[0].code == \
@@ -231,8 +236,9 @@ class TestOrgApiKeyGetByManager:
 
         non_existent_id = 999
 
-        fetched_org_api_keys = await org_api_key_manager.get_by_organization_id(
-            non_existent_id)
+        fetched_org_api_keys = await \
+            org_api_key_manager.get_by_organization_id(
+                non_existent_id)
         assert len(fetched_org_api_keys) == 0
 
     @pytest.mark.asyncio
@@ -310,8 +316,9 @@ class TestOrgApiKeyGetByManager:
         # Fetch the org_api_key using the
         # manager function
 
-        fetched_org_api_keys = await org_api_key_manager.get_by_org_customer_id(
-            org_api_key1.org_customer_id)
+        fetched_org_api_keys = await \
+            org_api_key_manager.get_by_org_customer_id(
+                org_api_key1.org_customer_id)
         assert len(fetched_org_api_keys) == 1
         assert isinstance(fetched_org_api_keys[0], OrgApiKey)
         assert fetched_org_api_keys[0].code == \

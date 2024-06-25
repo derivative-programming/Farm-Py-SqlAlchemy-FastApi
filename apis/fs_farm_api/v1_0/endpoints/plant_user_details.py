@@ -6,16 +6,17 @@ PlantUserDetailsRouter,
 which handles the API endpoints related to the
 Plant User Details.
 
-The PlantUserDetailsRouter provides the following endpoints:
-    - GET /api/v1_0/plant-user-details/{plant_code}/init:
-        Get the initialization data for the
-        Plant User Details page.
-    - GET /api/v1_0/plant-user-details/{plant_code}:
-        Get the Plant User Details Report
-        for a specific plant code.
-    - GET /api/v1_0/plant-user-details/{plant_code}/to-csv:
-        Retrieve the Plant User Details
-        Report as a CSV file.
+The PlantUserDetailsRouter provides
+the following endpoints:
+- GET /api/v1_0/plant-user-details/{plant_code}/init:
+    Get the initialization data for the
+    Plant User Details page.
+- GET /api/v1_0/plant-user-details/{plant_code}:
+    Get the Plant User Details Report
+    for a specific plant code.
+- GET /api/v1_0/plant-user-details/{plant_code}/to-csv:
+    Retrieve the Plant User Details
+    Report as a CSV file.
 """
 
 import logging
@@ -75,7 +76,8 @@ class PlantUserDetailsRouter(BaseRouter):
         "/api/v1_0/plant-user-details/{plant_code}/init",
         response_model=(
             api_init_models.
-            PlantUserDetailsInitReportGetInitModelResponse),
+            PlantUserDetailsInitReportGetInitModelResponse
+        ),
         summary="Plant User Details Init Page")
     async def request_get_init(
         plant_code: uuid.UUID = Path(..., description=PLANT_CODE),
@@ -101,7 +103,8 @@ class PlantUserDetailsRouter(BaseRouter):
             'PlantUserDetailsRouter.request_get_init start. plantCode:%s',
             plant_code)
         auth_dict = BaseRouter.implementation_check(
-            PlantUserDetailsRouterConfig.is_get_init_available)
+            PlantUserDetailsRouterConfig
+            .is_get_init_available)
 
         response = (
             api_init_models.
@@ -158,11 +161,15 @@ class PlantUserDetailsRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/plant-user-details/{plant_code}",
-        response_model=api_models.PlantUserDetailsGetModelResponse,
+        response_model=(
+            api_models
+            .PlantUserDetailsGetModelResponse
+        ),
         summary="Plant User Details Report")
     async def request_get_with_id(
         plant_code: uuid.UUID = Path(..., description=PLANT_CODE),
-        request_model: api_models.PlantUserDetailsGetModelRequest = Depends(),
+        request_model:
+            api_models.PlantUserDetailsGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -190,9 +197,11 @@ class PlantUserDetailsRouter(BaseRouter):
             'PlantUserDetailsRouter.request_get_with_id start. plantCode:%s',
             plant_code)
         auth_dict = BaseRouter.implementation_check(
-            PlantUserDetailsRouterConfig.is_get_with_id_available)
+            PlantUserDetailsRouterConfig
+            .is_get_with_id_available)
 
-        response = api_models.PlantUserDetailsGetModelResponse()
+        response = (api_models
+                    .PlantUserDetailsGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             PlantUserDetailsRouterConfig.is_public, api_key)
@@ -246,7 +255,8 @@ class PlantUserDetailsRouter(BaseRouter):
         summary="Plant User Details Report to CSV")
     async def request_get_with_id_to_csv(
         plant_code: uuid.UUID = Path(..., description=PLANT_CODE),
-        request_model: api_models.PlantUserDetailsGetModelRequest = Depends(),
+        request_model:
+            api_models.PlantUserDetailsGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -272,12 +282,15 @@ class PlantUserDetailsRouter(BaseRouter):
             plant_code
         )
         auth_dict = BaseRouter.implementation_check(
-            PlantUserDetailsRouterConfig.is_get_to_csv_available)
+            PlantUserDetailsRouterConfig
+            .is_get_to_csv_available)
 
-        response = api_models.PlantUserDetailsGetModelResponse()
+        response = (api_models
+                    .PlantUserDetailsGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
-            PlantUserDetailsRouterConfig.is_public, api_key)
+            PlantUserDetailsRouterConfig
+            .is_public, api_key)
 
         tmp_file_path = ""
 

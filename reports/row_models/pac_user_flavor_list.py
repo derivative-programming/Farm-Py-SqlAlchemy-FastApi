@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemPacUserFlavorList():
     """
-    Represents a report item for a pac Pac User Flavor List Report.
+    Represents a report item for a
+    pac Pac User Flavor List Report.
     """
     flavor_code: uuid.UUID = (
         uuid.UUID(int=0))

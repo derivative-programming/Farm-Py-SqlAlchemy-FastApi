@@ -153,7 +153,10 @@ class TestPacSchema:
             pac.last_update_utc_date_time.isoformat())
 
 
-    def test_pac_deserialization(self, pac):
+    def test_pac_deserialization(
+        self,
+        pac
+    ):
         """
         Test the deserialization of a
         Pac object using the
@@ -198,7 +201,8 @@ class TestPacSchema:
             pac.last_update_utc_date_time.isoformat())
 
 
-        new_pac = Pac(**deserialized_data)
+        new_pac = Pac(
+            **deserialized_data)
 
         assert isinstance(new_pac, Pac)
 
@@ -285,7 +289,8 @@ class TestPacSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_pac = Pac(**deserialized_data)
+        new_pac = Pac(
+            **deserialized_data)
 
         assert isinstance(new_pac, Pac)
 

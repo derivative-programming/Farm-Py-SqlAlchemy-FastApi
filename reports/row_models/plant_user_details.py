@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemPlantUserDetails():
     """
-    Represents a report item for a plant Plant Details.
+    Represents a report item for a
+    plant Plant Details.
     """
     flavor_name: str = ""
     is_delete_allowed: bool = False

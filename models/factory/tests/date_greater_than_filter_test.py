@@ -96,7 +96,8 @@ class TestDateGreaterThanFilterFactory:
         initial_code = date_greater_than_filter.last_change_code
         date_greater_than_filter.code = uuid.uuid4()
         session.commit()
-        assert date_greater_than_filter.last_change_code != initial_code
+        assert date_greater_than_filter.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestDateGreaterThanFilterFactory:
         session.delete(date_greater_than_filter)
         session.commit()
         deleted_date_greater_than_filter = session.query(DateGreaterThanFilter).filter_by(
-            date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
+            _date_greater_than_filter_id=(
+                date_greater_than_filter.date_greater_than_filter_id)
+        ).first()
         assert deleted_date_greater_than_filter is None
 
     def test_data_types(self, session):
@@ -235,10 +238,13 @@ class TestDateGreaterThanFilterFactory:
         """
         Test case for checking the unique code constraint.
         """
-        date_greater_than_filter_1 = DateGreaterThanFilterFactory.create(session=session)
-        date_greater_than_filter_2 = DateGreaterThanFilterFactory.create(session=session)
+        date_greater_than_filter_1 = DateGreaterThanFilterFactory.create(
+            session=session)
+        date_greater_than_filter_2 = DateGreaterThanFilterFactory.create(
+            session=session)
         date_greater_than_filter_2.code = date_greater_than_filter_1.code
-        session.add_all([date_greater_than_filter_1, date_greater_than_filter_2])
+        session.add_all([date_greater_than_filter_1,
+                         date_greater_than_filter_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -302,14 +308,19 @@ class TestDateGreaterThanFilterFactory:
             session=session)
         original_last_change_code = date_greater_than_filter.last_change_code
         date_greater_than_filter_1 = session.query(DateGreaterThanFilter).filter_by(
-            _date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
+            _date_greater_than_filter_id=(
+                date_greater_than_filter.date_greater_than_filter_id)
+        ).first()
         date_greater_than_filter_1.code = uuid.uuid4()
         session.commit()
         date_greater_than_filter_2 = session.query(DateGreaterThanFilter).filter_by(
-            _date_greater_than_filter_id=date_greater_than_filter.date_greater_than_filter_id).first()
+            _date_greater_than_filter_id=(
+                date_greater_than_filter.date_greater_than_filter_id)
+        ).first()
         date_greater_than_filter_2.code = uuid.uuid4()
         session.commit()
-        assert date_greater_than_filter_2.last_change_code != original_last_change_code
+        assert date_greater_than_filter_2.last_change_code != \
+            original_last_change_code
     # dayCount,
     # description,
     # displayOrder,

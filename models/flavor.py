@@ -173,7 +173,8 @@ class Flavor(Base):
         Set the code of the flavor.
 
         Args:
-            value (uuid.UUID): The code to set for the flavor.
+            value (uuid.UUID): The code to set for the
+                flavor.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -206,9 +207,11 @@ class Flavor(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the flavor.
+        Returns the last change code of the
+        flavor.
 
-        :return: The last change code of the flavor.
+        :return: The last change code of the
+            flavor.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -243,7 +246,8 @@ class Flavor(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the flavor.
+        Returns the UUID of the last user who updated the
+        flavor.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -261,10 +265,12 @@ class Flavor(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the flavor.
+        Inserts the UTC date and time for the
+        flavor.
 
         Returns:
-            datetime: The UTC date and time for the flavor.
+            datetime: The UTC date and time for the
+                flavor.
         """
         return getattr(
             self,
@@ -283,7 +289,8 @@ class Flavor(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the flavor.
+        Returns the last update UTC date and time of the
+        flavor.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -306,9 +313,11 @@ class Flavor(Base):
     @property
     def description(self) -> str:
         """
-        Returns the Description of the flavor.
+        Returns the Description of the
+        flavor.
 
-        :return: The Description of the flavor.
+        :return: The Description of the
+            flavor.
         :rtype: str
         """
         return getattr(self, '_description', "") or ""
@@ -345,7 +354,8 @@ class Flavor(Base):
     @property
     def is_active(self) -> bool:
         """
-        Check if the delete operation is allowed for the flavor.
+        Check if the delete operation is allowed for the
+        flavor.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -364,9 +374,11 @@ class Flavor(Base):
     @property
     def lookup_enum_name(self) -> str:
         """
-        Returns the Lookup Enum Name of the flavor.
+        Returns the Lookup Enum Name of the
+        flavor.
 
-        :return: The Lookup Enum Name of the flavor.
+        :return: The Lookup Enum Name of the
+            flavor.
         :rtype: str
         """
         return getattr(self, '_lookup_enum_name', "") or ""
@@ -383,9 +395,11 @@ class Flavor(Base):
     @property
     def name(self) -> str:
         """
-        Returns the Name of the flavor.
+        Returns the Name of the
+        flavor.
 
-        :return: The Name of the flavor.
+        :return: The Name of the
+            flavor.
         :rtype: str
         """
         return getattr(self, '_name', "") or ""
@@ -416,7 +430,6 @@ class Flavor(Base):
         """
 
         self._pac_id = value
-
 
     @staticmethod
     def property_list():

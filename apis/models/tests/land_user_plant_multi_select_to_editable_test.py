@@ -14,7 +14,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from business.land import LandBusObj
-from flows.land_user_plant_multi_select_to_editable import FlowLandUserPlantMultiSelectToEditable, FlowLandUserPlantMultiSelectToEditableResult
+from flows.land_user_plant_multi_select_to_editable import (
+    FlowLandUserPlantMultiSelectToEditable,
+    FlowLandUserPlantMultiSelectToEditableResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
@@ -22,7 +24,8 @@ from models.factory.land import LandFactory
 from ...models.land_user_plant_multi_select_to_editable import (
     LandUserPlantMultiSelectToEditablePostModelResponse,
     LandUserPlantMultiSelectToEditablePostModelRequest)
-from ..factory.land_user_plant_multi_select_to_editable import LandUserPlantMultiSelectToEditablePostModelRequestFactory
+from ..factory.land_user_plant_multi_select_to_editable import (
+    LandUserPlantMultiSelectToEditablePostModelRequestFactory)
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -93,7 +96,8 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequest:
 # endset  # noqa: E122
         )
 
-        # Convert the model to a dictionary with snake_case keys and serialized values
+        # Convert the model to a dictionary with snake_case
+        # keys and serialized values
         data = request.to_dict_snake_serialized()
 
         # Define the expected dictionary

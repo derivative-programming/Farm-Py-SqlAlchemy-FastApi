@@ -36,7 +36,6 @@
 
         assert GENVALSnakeName_bus_obj.GENVALSnakeName_id > 0
 
-    
     @pytest.mark.asyncio
     async def test_get_all_GENVALSnakeName(
         self,
@@ -71,4 +70,3 @@
         #assert GENVALSnakeName_list[0].GENVALSnakeName_id > 0 
 
         #assert GENVALSnakeName_list[0].GENVALSnakeName_id == GENVALSnakeName_bus_obj.GENVALSnakeName_id
-  

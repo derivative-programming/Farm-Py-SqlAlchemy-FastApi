@@ -173,7 +173,8 @@ class Role(Base):
         Set the code of the role.
 
         Args:
-            value (uuid.UUID): The code to set for the role.
+            value (uuid.UUID): The code to set for the
+                role.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -206,9 +207,11 @@ class Role(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the role.
+        Returns the last change code of the
+        role.
 
-        :return: The last change code of the role.
+        :return: The last change code of the
+            role.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -243,7 +246,8 @@ class Role(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the role.
+        Returns the UUID of the last user who updated the
+        role.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -261,10 +265,12 @@ class Role(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the role.
+        Inserts the UTC date and time for the
+        role.
 
         Returns:
-            datetime: The UTC date and time for the role.
+            datetime: The UTC date and time for the
+                role.
         """
         return getattr(
             self,
@@ -283,7 +289,8 @@ class Role(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the role.
+        Returns the last update UTC date and time of the
+        role.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -306,9 +313,11 @@ class Role(Base):
     @property
     def description(self) -> str:
         """
-        Returns the Description of the role.
+        Returns the Description of the
+        role.
 
-        :return: The Description of the role.
+        :return: The Description of the
+            role.
         :rtype: str
         """
         return getattr(self, '_description', "") or ""
@@ -345,7 +354,8 @@ class Role(Base):
     @property
     def is_active(self) -> bool:
         """
-        Check if the delete operation is allowed for the role.
+        Check if the delete operation is allowed for the
+        role.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -364,9 +374,11 @@ class Role(Base):
     @property
     def lookup_enum_name(self) -> str:
         """
-        Returns the Lookup Enum Name of the role.
+        Returns the Lookup Enum Name of the
+        role.
 
-        :return: The Lookup Enum Name of the role.
+        :return: The Lookup Enum Name of the
+            role.
         :rtype: str
         """
         return getattr(self, '_lookup_enum_name', "") or ""
@@ -383,9 +395,11 @@ class Role(Base):
     @property
     def name(self) -> str:
         """
-        Returns the Name of the role.
+        Returns the Name of the
+        role.
 
-        :return: The Name of the role.
+        :return: The Name of the
+            role.
         :rtype: str
         """
         return getattr(self, '_name', "") or ""
@@ -416,7 +430,6 @@ class Role(Base):
         """
 
         self._pac_id = value
-
 
     @staticmethod
     def property_list():

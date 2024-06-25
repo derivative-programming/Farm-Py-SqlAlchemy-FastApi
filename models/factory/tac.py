@@ -45,7 +45,9 @@ class TacFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Tac:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Tac:
         """
             Builds and returns an instance
             of the Tac model.
@@ -82,7 +84,9 @@ class TacFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Tac:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Tac:
         """
         Create a new Tac object
         and save it to the database.
@@ -121,7 +125,9 @@ class TacFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Tac:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Tac:
         """
         Create a new Tac object
         asynchronously.
@@ -151,7 +157,9 @@ class TacFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Tac:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Tac:
         """
         Build a new Tac object
         asynchronously.

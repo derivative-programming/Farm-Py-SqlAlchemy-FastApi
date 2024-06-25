@@ -266,18 +266,18 @@ class BaseFlowLandAddPlant(BaseFlow):
         while val:
             if item.get_object_name() == "pac":  # type: ignore
                 val = False
-
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrgCustomerSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start
+
             if FlowConstants. \
                 CALCULATED_IS_ROW_LEVEL_ORG_CUSTOMER_SECURITY_USED \
                     is True and item.get_object_name() == "org_customer":  # type: ignore  # noqa: E501
                 item = item.get_customer_id_rel_obj()  # type: ignore
 ##GENLearn[calculatedIsRowLevelOrgCustomerSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrgCustomerSecurityUsed]End
-
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelCustomerSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]Start
+
             if FlowConstants.CALCULATED_IS_ROW_LEVEL_CUSTOMER_SECURITY_USED \
                     is True and item.get_object_name() == "customer":  # type: ignore  # noqa: E501
                 if item.code != self._session_context.customer_code:  # type: ignore  # noqa: E501
@@ -285,9 +285,9 @@ class BaseFlowLandAddPlant(BaseFlow):
                         "Unauthorized access.  Invalid User.")
 ##GENLearn[calculatedIsRowLevelCustomerSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelCustomerSecurityUsed]End
-
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]Start
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
+
             if FlowConstants. \
                 CALCULATED_IS_ROW_LEVEL_ORGANIZATION_SECURITY_USED \
                     is True and item.get_object_name() == "organization":  # type: ignore # noqa: E501
@@ -314,6 +314,7 @@ class BaseFlowLandAddPlant(BaseFlow):
                     )
 ##GENLearn[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 ##GENTrainingBlock[caseFlowLogic_calculatedIsRowLevelOrganizationSecurityUsed]End
+
             if val is True:
                 # item = await item.get_parent_obj()
                 item = await BusObjFactory.create_from_code(

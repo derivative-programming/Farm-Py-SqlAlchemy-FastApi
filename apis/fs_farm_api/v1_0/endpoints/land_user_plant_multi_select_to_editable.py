@@ -6,16 +6,17 @@ LandUserPlantMultiSelectToEditableRouter,
 which handles the API endpoints related to the
 Land User Plant Multi Select To Editable.
 
-The LandUserPlantMultiSelectToEditableRouter provides the following endpoints:
-    - GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}/init:
-        Get the initialization data for the
-        Land User Plant Multi Select To Editable page.
-    - GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}:
-        Get the Land User Plant Multi Select To Editable Report
-        for a specific  code.
-    - GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}/to-csv:
-        Retrieve the Land User Plant Multi Select To Editable
-        Report as a CSV file.
+The LandUserPlantMultiSelectToEditableRouter provides
+the following endpoints:
+- GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}/init:
+    Get the initialization data for the
+    Land User Plant Multi Select To Editable page.
+- GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}:
+    Get the Land User Plant Multi Select To Editable Report
+    for a specific  code.
+- GET /api/v1_0/land-user-plant-multi-select-to-editable/{land_code}/to-csv:
+    Retrieve the Land User Plant Multi Select To Editable
+    Report as a CSV file.
 """
 
 import logging
@@ -73,11 +74,15 @@ class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
     @staticmethod
     @router.post(
         "/api/v1_0/land-user-plant-multi-select-to-editable/{land_code}",
-        response_model=api_models.LandUserPlantMultiSelectToEditablePostModelResponse,
+        response_model=(
+            api_models
+            .LandUserPlantMultiSelectToEditablePostModelResponse
+        ),
         summary="Land User Plant Multi Select To Editable Business Flow")
     async def request_post_with_id(
         land_code: uuid.UUID,
-        request_model: api_models.LandUserPlantMultiSelectToEditablePostModelRequest,
+        request_model: (
+            api_models.LandUserPlantMultiSelectToEditablePostModelRequest),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -100,9 +105,11 @@ class LandUserPlantMultiSelectToEditableRouter(BaseRouter):
             land_code
         )
         auth_dict = BaseRouter.implementation_check(
-            LandUserPlantMultiSelectToEditableRouterConfig.is_post_with_id_available)
+            LandUserPlantMultiSelectToEditableRouterConfig
+            .is_post_with_id_available)
 
-        response = api_models.LandUserPlantMultiSelectToEditablePostModelResponse()
+        response = (api_models
+                    .LandUserPlantMultiSelectToEditablePostModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             LandUserPlantMultiSelectToEditableRouterConfig.is_public,

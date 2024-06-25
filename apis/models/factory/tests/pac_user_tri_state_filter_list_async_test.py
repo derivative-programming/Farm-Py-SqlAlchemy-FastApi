@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...pac_user_tri_state_filter_list import PacUserTriStateFilterListGetModelRequest
-from ..pac_user_tri_state_filter_list import PacUserTriStateFilterListGetModelRequestFactory
+from ...pac_user_tri_state_filter_list import (
+    PacUserTriStateFilterListGetModelRequest)
+from ..pac_user_tri_state_filter_list import (
+    PacUserTriStateFilterListGetModelRequestFactory)
 
 
 class TestPacUserTriStateFilterListGetModelRequestFactoryAsync:
@@ -34,7 +36,8 @@ class TestPacUserTriStateFilterListGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance, PacUserTriStateFilterListGetModelRequest)
+        assert isinstance(model_instance,
+                          PacUserTriStateFilterListGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)

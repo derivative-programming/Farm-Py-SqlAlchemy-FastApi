@@ -148,7 +148,8 @@ class TacManager:
             Tac: The newly created
                 Tac object.
         """
-        logging.info("TacManager.build")
+        logging.info(
+            "TacManager.build")
         return Tac(**kwargs)
 
     async def add(
@@ -166,9 +167,12 @@ class TacManager:
             Tac: The added
                 tac.
         """
-        logging.info("TacManager.add")
-        tac.insert_user_id = self._session_context.customer_code
-        tac.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "TacManager.add")
+        tac.insert_user_id = (
+            self._session_context.customer_code)
+        tac.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             tac)
         await self._session_context.session.flush()
@@ -183,7 +187,8 @@ class TacManager:
             The base query for retrieving
             tacs.
         """
-        logging.info("TacManager._build_query")
+        logging.info(
+            "TacManager._build_query")
 
         query = select(
             Tac,
@@ -212,7 +217,8 @@ class TacManager:
             List[Tac]: The list of
                 tacs that match the query.
         """
-        logging.info("TacManager._run_query")
+        logging.info(
+            "TacManager._run_query")
         tac_query_all = self._build_query()
 
         if query_filter is not None:
@@ -262,7 +268,9 @@ class TacManager:
             else None
         )
 
-    async def get_by_id(self, tac_id: int) -> Optional[Tac]:
+    async def get_by_id(
+        self, tac_id: int
+    ) -> Optional[Tac]:
         """
         Retrieves a tac by its ID.
 
@@ -289,7 +297,9 @@ class TacManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[Tac]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[Tac]:
         """
         Retrieves a tac
         by its code.
@@ -302,7 +312,8 @@ class TacManager:
             Optional[Tac]: The retrieved
                 tac, or None if not found.
         """
-        logging.info("TacManager.get_by_code %s", code)
+        logging.info("TacManager.get_by_code %s",
+                     code)
 
         query_filter = Tac._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -356,7 +367,9 @@ class TacManager:
                 tac with the
                 specified ID is not found.
         """
-        logging.info("TacManager.delete %s", tac_id)
+        logging.info(
+            "TacManager.delete %s",
+            tac_id)
         if not isinstance(tac_id, int):
             raise TypeError(
                 f"The tac_id must be an integer, "
@@ -365,7 +378,8 @@ class TacManager:
         tac = await self.get_by_id(
             tac_id)
         if not tac:
-            raise TacNotFoundError(f"Tac with ID {tac_id} not found!")
+            raise TacNotFoundError(
+                f"Tac with ID {tac_id} not found!")
 
         await self._session_context.session.delete(
             tac)
@@ -382,7 +396,8 @@ class TacManager:
             List[Tac]: The list of
                 tacs.
         """
-        logging.info("TacManager.get_list")
+        logging.info(
+            "TacManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -403,7 +418,8 @@ class TacManager:
             str: The JSON string representation of the
                 tac.
         """
-        logging.info("TacManager.to_json")
+        logging.info(
+            "TacManager.to_json")
         schema = TacSchema()
         tac_data = schema.dump(tac)
         return json.dumps(tac_data)
@@ -424,7 +440,8 @@ class TacManager:
             Dict[str, Any]: The dictionary representation of the
                 tac.
         """
-        logging.info("TacManager.to_dict")
+        logging.info(
+            "TacManager.to_dict")
         schema = TacSchema()
         tac_data = schema.dump(tac)
 
@@ -432,7 +449,7 @@ class TacManager:
 
         return tac_data
 
-    def from_json(self, json_str: str) -> Tac:
+    async def from_json(self, json_str: str) -> Tac:
         """
         Deserializes a JSON string into a
         Tac object.
@@ -444,19 +461,32 @@ class TacManager:
             Tac: The deserialized
                 Tac object.
         """
-        logging.info("TacManager.from_json")
+        logging.info(
+            "TacManager.from_json")
         schema = TacSchema()
         data = json.loads(json_str)
         tac_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_tac = Tac(**tac_dict)
+        # new_tac = Tac(**tac_dict)
+
+        # load or create
+        new_tac = await self.get_by_id(
+            tac_dict["tac_id"])
+        if new_tac is None:
+            new_tac = Tac(**tac_dict)
+            self._session_context.session.add(new_tac)
+        else:
+            for key, value in tac_dict.items():
+                setattr(new_tac, key, value)
 
         return new_tac
 
-    def from_dict(self, tac_dict: Dict[str, Any]) -> Tac:
+    async def from_dict(
+        self, tac_dict: Dict[str, Any]
+    ) -> Tac:
         """
         Creates a Tac
         instance from a dictionary of attributes.
@@ -472,19 +502,31 @@ class TacManager:
                 created from the given
                 dictionary.
         """
-        logging.info("TacManager.from_dict")
+        logging.info(
+            "TacManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = TacSchema()
         tac_dict_converted = schema.load(
             tac_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new Tac instance
         # using the validated data
-        new_tac = Tac(**tac_dict_converted)
+        # new_tac = Tac(**tac_dict_converted)
+
+        # load or create
+        new_tac = await self.get_by_id(
+            tac_dict_converted["tac_id"])
+        if new_tac is None:
+            new_tac = Tac(**tac_dict_converted)
+            self._session_context.session.add(new_tac)
+        else:
+            for key, value in tac_dict_converted.items():
+                setattr(new_tac, key, value)
+
         return new_tac
 
     async def add_bulk(
@@ -503,7 +545,8 @@ class TacManager:
             List[Tac]: The added
                 tacs.
         """
-        logging.info("TacManager.add_bulk")
+        logging.info(
+            "TacManager.add_bulk")
         for tac in tacs:
             tac_id = tac.tac_id
             code = tac.code
@@ -512,8 +555,10 @@ class TacManager:
                     "Tac is already added"
                     f": {str(code)} {str(tac_id)}"
                 )
-            tac.insert_user_id = self._session_context.customer_code
-            tac.last_update_user_id = self._session_context.customer_code
+            tac.insert_user_id = (
+                self._session_context.customer_code)
+            tac.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(tacs)
         await self._session_context.session.flush()
         return tacs
@@ -542,7 +587,8 @@ class TacManager:
                 provided tac_id is not found.
         """
 
-        logging.info("TacManager.update_bulk start")
+        logging.info(
+            "TacManager.update_bulk start")
         updated_tacs = []
         for update in tac_updates:
             tac_id = update.get("tac_id")
@@ -554,7 +600,9 @@ class TacManager:
             if not tac_id:
                 continue
 
-            logging.info("TacManager.update_bulk tac_id:%s", tac_id)
+            logging.info(
+                "TacManager.update_bulk tac_id:%s",
+                tac_id)
 
             tac = await self.get_by_id(
                 tac_id)
@@ -573,7 +621,8 @@ class TacManager:
 
         await self._session_context.session.flush()
 
-        logging.info("TacManager.update_bulk end")
+        logging.info(
+            "TacManager.update_bulk end")
 
         return updated_tacs
 
@@ -582,7 +631,8 @@ class TacManager:
         Delete multiple tacs
         by their IDs.
         """
-        logging.info("TacManager.delete_bulk")
+        logging.info(
+            "TacManager.delete_bulk")
 
         for tac_id in tac_ids:
             if not isinstance(tac_id, int):
@@ -611,7 +661,8 @@ class TacManager:
         return the total number of
         tacs.
         """
-        logging.info("TacManager.count")
+        logging.info(
+            "TacManager.count")
         result = await self._session_context.session.execute(
             select(Tac))
         return len(list(result.scalars().all()))
@@ -626,7 +677,8 @@ class TacManager:
         from the database.
         """
 
-        logging.info("TacManager.refresh")
+        logging.info(
+            "TacManager.refresh")
 
         await self._session_context.session.refresh(tac)
 
@@ -637,7 +689,9 @@ class TacManager:
         Check if a tac
         with the given ID exists.
         """
-        logging.info("TacManager.exists %s", tac_id)
+        logging.info(
+            "TacManager.exists %s",
+            tac_id)
         if not isinstance(tac_id, int):
             raise TypeError(
                 f"The tac_id must be an integer, "
@@ -690,7 +744,9 @@ class TacManager:
         dict2 = self.to_dict(tac2)
 
         return dict1 == dict2
-    async def get_by_pac_id(self, pac_id: int) -> List[Tac]:  # PacID
+    async def get_by_pac_id(  # PacID
+            self,
+            pac_id: int) -> List[Tac]:
         """
         Retrieve a list of tacs by
         pac ID.
@@ -704,7 +760,8 @@ class TacManager:
                 with the specified pac ID.
         """
 
-        logging.info("TacManager.get_by_pac_id")
+        logging.info(
+            "TacManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
                 f"The tac_id must be an integer, "

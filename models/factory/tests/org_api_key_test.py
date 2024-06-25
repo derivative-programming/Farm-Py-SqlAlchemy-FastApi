@@ -96,7 +96,8 @@ class TestOrgApiKeyFactory:
         initial_code = org_api_key.last_change_code
         org_api_key.code = uuid.uuid4()
         session.commit()
-        assert org_api_key.last_change_code != initial_code
+        assert org_api_key.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestOrgApiKeyFactory:
         session.delete(org_api_key)
         session.commit()
         deleted_org_api_key = session.query(OrgApiKey).filter_by(
-            org_api_key_id=org_api_key.org_api_key_id).first()
+            _org_api_key_id=(
+                org_api_key.org_api_key_id)
+        ).first()
         assert deleted_org_api_key is None
 
     def test_data_types(self, session):
@@ -242,10 +245,13 @@ class TestOrgApiKeyFactory:
         """
         Test case for checking the unique code constraint.
         """
-        org_api_key_1 = OrgApiKeyFactory.create(session=session)
-        org_api_key_2 = OrgApiKeyFactory.create(session=session)
+        org_api_key_1 = OrgApiKeyFactory.create(
+            session=session)
+        org_api_key_2 = OrgApiKeyFactory.create(
+            session=session)
         org_api_key_2.code = org_api_key_1.code
-        session.add_all([org_api_key_1, org_api_key_2])
+        session.add_all([org_api_key_1,
+                         org_api_key_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -316,14 +322,19 @@ class TestOrgApiKeyFactory:
             session=session)
         original_last_change_code = org_api_key.last_change_code
         org_api_key_1 = session.query(OrgApiKey).filter_by(
-            _org_api_key_id=org_api_key.org_api_key_id).first()
+            _org_api_key_id=(
+                org_api_key.org_api_key_id)
+        ).first()
         org_api_key_1.code = uuid.uuid4()
         session.commit()
         org_api_key_2 = session.query(OrgApiKey).filter_by(
-            _org_api_key_id=org_api_key.org_api_key_id).first()
+            _org_api_key_id=(
+                org_api_key.org_api_key_id)
+        ).first()
         org_api_key_2.code = uuid.uuid4()
         session.commit()
-        assert org_api_key_2.last_change_code != original_last_change_code
+        assert org_api_key_2.last_change_code != \
+            original_last_change_code
     # apiKeyValue,
     # createdBy,
     # createdUTCDateTime

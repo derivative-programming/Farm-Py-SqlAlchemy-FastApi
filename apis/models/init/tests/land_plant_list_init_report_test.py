@@ -21,7 +21,9 @@ from ..land_plant_list_init_report import (
 
 class MockFlowLandPlantListInitReportResult:
     """
-    A mock object for the FlowLandPlantListInitReportResult class.
+    A mock object for the
+    FlowLandPlantListInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -50,7 +52,9 @@ class MockFlowLandPlantListInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowLandPlantListInitReportResult object.
+    Return a mock
+    FlowLandPlantListInitReportResult
+    object.
     """
     return MockFlowLandPlantListInitReportResult()
 

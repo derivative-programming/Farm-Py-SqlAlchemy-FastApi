@@ -701,7 +701,6 @@ class TestTacBaseBusObj:
 
         assert organization_bus_obj.organization_id > 0
 
-
     @pytest.mark.asyncio
     async def test_get_all_organization(
         self,
@@ -765,7 +764,6 @@ class TestTacBaseBusObj:
         await customer_bus_obj.save()
 
         assert customer_bus_obj.customer_id > 0
-
 
     @pytest.mark.asyncio
     async def test_get_all_customer(

@@ -96,7 +96,8 @@ class TestRoleFactory:
         initial_code = role.last_change_code
         role.code = uuid.uuid4()
         session.commit()
-        assert role.last_change_code != initial_code
+        assert role.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestRoleFactory:
         session.delete(role)
         session.commit()
         deleted_role = session.query(Role).filter_by(
-            role_id=role.role_id).first()
+            _role_id=(
+                role.role_id)
+        ).first()
         assert deleted_role is None
 
     def test_data_types(self, session):
@@ -233,10 +236,13 @@ class TestRoleFactory:
         """
         Test case for checking the unique code constraint.
         """
-        role_1 = RoleFactory.create(session=session)
-        role_2 = RoleFactory.create(session=session)
+        role_1 = RoleFactory.create(
+            session=session)
+        role_2 = RoleFactory.create(
+            session=session)
         role_2.code = role_1.code
-        session.add_all([role_1, role_2])
+        session.add_all([role_1,
+                         role_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -298,14 +304,19 @@ class TestRoleFactory:
             session=session)
         original_last_change_code = role.last_change_code
         role_1 = session.query(Role).filter_by(
-            _role_id=role.role_id).first()
+            _role_id=(
+                role.role_id)
+        ).first()
         role_1.code = uuid.uuid4()
         session.commit()
         role_2 = session.query(Role).filter_by(
-            _role_id=role.role_id).first()
+            _role_id=(
+                role.role_id)
+        ).first()
         role_2.code = uuid.uuid4()
         session.commit()
-        assert role_2.last_change_code != original_last_change_code
+        assert role_2.last_change_code != \
+            original_last_change_code
     # description,
     # displayOrder,
     # isActive,

@@ -537,7 +537,7 @@ class TestLandManager:
         json_data = land_manager.to_json(
             land)
 
-        deserialized_land = land_manager.from_json(json_data)
+        deserialized_land = await land_manager.from_json(json_data)
 
         assert isinstance(deserialized_land, Land)
         assert deserialized_land.code == \
@@ -578,7 +578,7 @@ class TestLandManager:
 
         assert isinstance(land_data, dict)
 
-        deserialized_land = land_manager.from_dict(
+        deserialized_land = await land_manager.from_dict(
             land_data)
 
         assert isinstance(deserialized_land, Land)
@@ -784,11 +784,13 @@ class TestLandManager:
             None
         """
         # Add a land
-        land1 = await LandFactory.create_async(
-            session=session)
+        land1 = await \
+            LandFactory.create_async(
+                session=session)
 
-        land2 = await land_manager.get_by_id(
-            land_id=land1.land_id)
+        land2 = await \
+            land_manager.get_by_id(
+                land_id=land1.land_id)
 
         assert land_manager.is_equal(
             land1, land2) is True
@@ -796,8 +798,9 @@ class TestLandManager:
         land1_dict = land_manager.to_dict(
             land1)
 
-        land3 = land_manager.from_dict(
-            land1_dict)
+        land3 = await \
+            land_manager.from_dict(
+                land1_dict)
 
         assert land_manager.is_equal(
             land1, land3) is True

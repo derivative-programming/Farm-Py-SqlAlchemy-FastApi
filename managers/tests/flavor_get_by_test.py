@@ -75,8 +75,9 @@ class TestFlavorGetByManager:
         test_flavor = await FlavorFactory.create_async(
             session)
 
-        flavor = await flavor_manager.get_by_id(
-            test_flavor.flavor_id)
+        flavor = await \
+            flavor_manager.get_by_id(
+                test_flavor.flavor_id)
 
         assert isinstance(
             flavor, Flavor)
@@ -99,8 +100,9 @@ class TestFlavorGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_flavor = await flavor_manager.get_by_id(
-            non_existent_id)
+        retrieved_flavor = await \
+            flavor_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_flavor is None
 
@@ -120,8 +122,9 @@ class TestFlavorGetByManager:
         test_flavor = await FlavorFactory.create_async(
             session)
 
-        flavor = await flavor_manager.get_by_code(
-            test_flavor.code)
+        flavor = await \
+            flavor_manager.get_by_code(
+                test_flavor.code)
 
         assert isinstance(
             flavor, Flavor)
@@ -144,8 +147,9 @@ class TestFlavorGetByManager:
         # any Flavor in the database
         random_code = uuid.uuid4()
 
-        flavor = await flavor_manager.get_by_code(
-            random_code)
+        flavor = await \
+            flavor_manager.get_by_code(
+                random_code)
 
         assert flavor is None
 
@@ -197,8 +201,9 @@ class TestFlavorGetByManager:
         # Fetch the flavor using
         # the manager function
 
-        fetched_flavors = await flavor_manager.get_by_pac_id(
-            flavor1.pac_id)
+        fetched_flavors = await \
+            flavor_manager.get_by_pac_id(
+                flavor1.pac_id)
         assert len(fetched_flavors) == 1
         assert isinstance(fetched_flavors[0], Flavor)
         assert fetched_flavors[0].code == \
@@ -229,8 +234,9 @@ class TestFlavorGetByManager:
 
         non_existent_id = 999
 
-        fetched_flavors = await flavor_manager.get_by_pac_id(
-            non_existent_id)
+        fetched_flavors = await \
+            flavor_manager.get_by_pac_id(
+                non_existent_id)
         assert len(fetched_flavors) == 0
 
     @pytest.mark.asyncio

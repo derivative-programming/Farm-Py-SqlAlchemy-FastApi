@@ -159,7 +159,8 @@ class FlavorManager:
             Flavor: The newly created
                 Flavor object.
         """
-        logging.info("FlavorManager.build")
+        logging.info(
+            "FlavorManager.build")
         return Flavor(**kwargs)
 
     async def add(
@@ -177,9 +178,12 @@ class FlavorManager:
             Flavor: The added
                 flavor.
         """
-        logging.info("FlavorManager.add")
-        flavor.insert_user_id = self._session_context.customer_code
-        flavor.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "FlavorManager.add")
+        flavor.insert_user_id = (
+            self._session_context.customer_code)
+        flavor.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             flavor)
         await self._session_context.session.flush()
@@ -194,7 +198,8 @@ class FlavorManager:
             The base query for retrieving
             flavors.
         """
-        logging.info("FlavorManager._build_query")
+        logging.info(
+            "FlavorManager._build_query")
 
         query = select(
             Flavor,
@@ -223,7 +228,8 @@ class FlavorManager:
             List[Flavor]: The list of
                 flavors that match the query.
         """
-        logging.info("FlavorManager._run_query")
+        logging.info(
+            "FlavorManager._run_query")
         flavor_query_all = self._build_query()
 
         if query_filter is not None:
@@ -273,7 +279,9 @@ class FlavorManager:
             else None
         )
 
-    async def get_by_id(self, flavor_id: int) -> Optional[Flavor]:
+    async def get_by_id(
+        self, flavor_id: int
+    ) -> Optional[Flavor]:
         """
         Retrieves a flavor by its ID.
 
@@ -300,7 +308,9 @@ class FlavorManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[Flavor]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[Flavor]:
         """
         Retrieves a flavor
         by its code.
@@ -313,7 +323,8 @@ class FlavorManager:
             Optional[Flavor]: The retrieved
                 flavor, or None if not found.
         """
-        logging.info("FlavorManager.get_by_code %s", code)
+        logging.info("FlavorManager.get_by_code %s",
+                     code)
 
         query_filter = Flavor._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -367,7 +378,9 @@ class FlavorManager:
                 flavor with the
                 specified ID is not found.
         """
-        logging.info("FlavorManager.delete %s", flavor_id)
+        logging.info(
+            "FlavorManager.delete %s",
+            flavor_id)
         if not isinstance(flavor_id, int):
             raise TypeError(
                 f"The flavor_id must be an integer, "
@@ -376,7 +389,8 @@ class FlavorManager:
         flavor = await self.get_by_id(
             flavor_id)
         if not flavor:
-            raise FlavorNotFoundError(f"Flavor with ID {flavor_id} not found!")
+            raise FlavorNotFoundError(
+                f"Flavor with ID {flavor_id} not found!")
 
         await self._session_context.session.delete(
             flavor)
@@ -393,7 +407,8 @@ class FlavorManager:
             List[Flavor]: The list of
                 flavors.
         """
-        logging.info("FlavorManager.get_list")
+        logging.info(
+            "FlavorManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -414,7 +429,8 @@ class FlavorManager:
             str: The JSON string representation of the
                 flavor.
         """
-        logging.info("FlavorManager.to_json")
+        logging.info(
+            "FlavorManager.to_json")
         schema = FlavorSchema()
         flavor_data = schema.dump(flavor)
         return json.dumps(flavor_data)
@@ -435,7 +451,8 @@ class FlavorManager:
             Dict[str, Any]: The dictionary representation of the
                 flavor.
         """
-        logging.info("FlavorManager.to_dict")
+        logging.info(
+            "FlavorManager.to_dict")
         schema = FlavorSchema()
         flavor_data = schema.dump(flavor)
 
@@ -443,7 +460,7 @@ class FlavorManager:
 
         return flavor_data
 
-    def from_json(self, json_str: str) -> Flavor:
+    async def from_json(self, json_str: str) -> Flavor:
         """
         Deserializes a JSON string into a
         Flavor object.
@@ -455,19 +472,32 @@ class FlavorManager:
             Flavor: The deserialized
                 Flavor object.
         """
-        logging.info("FlavorManager.from_json")
+        logging.info(
+            "FlavorManager.from_json")
         schema = FlavorSchema()
         data = json.loads(json_str)
         flavor_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_flavor = Flavor(**flavor_dict)
+        # new_flavor = Flavor(**flavor_dict)
+
+        # load or create
+        new_flavor = await self.get_by_id(
+            flavor_dict["flavor_id"])
+        if new_flavor is None:
+            new_flavor = Flavor(**flavor_dict)
+            self._session_context.session.add(new_flavor)
+        else:
+            for key, value in flavor_dict.items():
+                setattr(new_flavor, key, value)
 
         return new_flavor
 
-    def from_dict(self, flavor_dict: Dict[str, Any]) -> Flavor:
+    async def from_dict(
+        self, flavor_dict: Dict[str, Any]
+    ) -> Flavor:
         """
         Creates a Flavor
         instance from a dictionary of attributes.
@@ -483,19 +513,31 @@ class FlavorManager:
                 created from the given
                 dictionary.
         """
-        logging.info("FlavorManager.from_dict")
+        logging.info(
+            "FlavorManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = FlavorSchema()
         flavor_dict_converted = schema.load(
             flavor_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new Flavor instance
         # using the validated data
-        new_flavor = Flavor(**flavor_dict_converted)
+        # new_flavor = Flavor(**flavor_dict_converted)
+
+        # load or create
+        new_flavor = await self.get_by_id(
+            flavor_dict_converted["flavor_id"])
+        if new_flavor is None:
+            new_flavor = Flavor(**flavor_dict_converted)
+            self._session_context.session.add(new_flavor)
+        else:
+            for key, value in flavor_dict_converted.items():
+                setattr(new_flavor, key, value)
+
         return new_flavor
 
     async def add_bulk(
@@ -514,7 +556,8 @@ class FlavorManager:
             List[Flavor]: The added
                 flavors.
         """
-        logging.info("FlavorManager.add_bulk")
+        logging.info(
+            "FlavorManager.add_bulk")
         for flavor in flavors:
             flavor_id = flavor.flavor_id
             code = flavor.code
@@ -523,8 +566,10 @@ class FlavorManager:
                     "Flavor is already added"
                     f": {str(code)} {str(flavor_id)}"
                 )
-            flavor.insert_user_id = self._session_context.customer_code
-            flavor.last_update_user_id = self._session_context.customer_code
+            flavor.insert_user_id = (
+                self._session_context.customer_code)
+            flavor.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(flavors)
         await self._session_context.session.flush()
         return flavors
@@ -553,7 +598,8 @@ class FlavorManager:
                 provided flavor_id is not found.
         """
 
-        logging.info("FlavorManager.update_bulk start")
+        logging.info(
+            "FlavorManager.update_bulk start")
         updated_flavors = []
         for update in flavor_updates:
             flavor_id = update.get("flavor_id")
@@ -565,7 +611,9 @@ class FlavorManager:
             if not flavor_id:
                 continue
 
-            logging.info("FlavorManager.update_bulk flavor_id:%s", flavor_id)
+            logging.info(
+                "FlavorManager.update_bulk flavor_id:%s",
+                flavor_id)
 
             flavor = await self.get_by_id(
                 flavor_id)
@@ -584,7 +632,8 @@ class FlavorManager:
 
         await self._session_context.session.flush()
 
-        logging.info("FlavorManager.update_bulk end")
+        logging.info(
+            "FlavorManager.update_bulk end")
 
         return updated_flavors
 
@@ -593,7 +642,8 @@ class FlavorManager:
         Delete multiple flavors
         by their IDs.
         """
-        logging.info("FlavorManager.delete_bulk")
+        logging.info(
+            "FlavorManager.delete_bulk")
 
         for flavor_id in flavor_ids:
             if not isinstance(flavor_id, int):
@@ -622,7 +672,8 @@ class FlavorManager:
         return the total number of
         flavors.
         """
-        logging.info("FlavorManager.count")
+        logging.info(
+            "FlavorManager.count")
         result = await self._session_context.session.execute(
             select(Flavor))
         return len(list(result.scalars().all()))
@@ -637,7 +688,8 @@ class FlavorManager:
         from the database.
         """
 
-        logging.info("FlavorManager.refresh")
+        logging.info(
+            "FlavorManager.refresh")
 
         await self._session_context.session.refresh(flavor)
 
@@ -648,7 +700,9 @@ class FlavorManager:
         Check if a flavor
         with the given ID exists.
         """
-        logging.info("FlavorManager.exists %s", flavor_id)
+        logging.info(
+            "FlavorManager.exists %s",
+            flavor_id)
         if not isinstance(flavor_id, int):
             raise TypeError(
                 f"The flavor_id must be an integer, "
@@ -701,7 +755,9 @@ class FlavorManager:
         dict2 = self.to_dict(flavor2)
 
         return dict1 == dict2
-    async def get_by_pac_id(self, pac_id: int) -> List[Flavor]:  # PacID
+    async def get_by_pac_id(  # PacID
+            self,
+            pac_id: int) -> List[Flavor]:
         """
         Retrieve a list of flavors by
         pac ID.
@@ -715,7 +771,8 @@ class FlavorManager:
                 with the specified pac ID.
         """
 
-        logging.info("FlavorManager.get_by_pac_id")
+        logging.info(
+            "FlavorManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
                 f"The flavor_id must be an integer, "

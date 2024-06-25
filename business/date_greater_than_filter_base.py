@@ -195,7 +195,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.date_greater_than_filter.insert_user_id = value
 
@@ -236,7 +237,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.date_greater_than_filter.last_update_user_id = value
 
@@ -416,7 +418,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.date_greater_than_filter.is_active = value
     # lookupEnumName
@@ -629,7 +632,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.date_greater_than_filter.insert_utc_date_time = value
 
@@ -677,7 +681,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.date_greater_than_filter.last_update_utc_date_time = value
 
@@ -697,11 +702,12 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         date_greater_than_filter_manager = DateGreaterThanFilterManager(
             self._session_context)
-        self.date_greater_than_filter = date_greater_than_filter_manager.from_json(json_data)
+        self.date_greater_than_filter = await date_greater_than_filter_manager.from_json(json_data)
 
         return self
 
@@ -719,7 +725,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             date_greater_than_filter data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         date_greater_than_filter_manager = DateGreaterThanFilterManager(
             self._session_context)
@@ -746,7 +753,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(date_greater_than_filter_id, int):
-            raise ValueError("date_greater_than_filter_id must be an integer")
+            raise ValueError(
+                "date_greater_than_filter_id must be an integer")
 
         date_greater_than_filter_manager = DateGreaterThanFilterManager(
             self._session_context)
@@ -773,7 +781,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
 
         if not isinstance(date_greater_than_filter_obj_instance,
                           DateGreaterThanFilter):
-            raise ValueError("date_greater_than_filter_obj_instance must be an instance of DateGreaterThanFilter")
+            raise ValueError(
+                "date_greater_than_filter_obj_instance must be an instance of DateGreaterThanFilter")
 
         # date_greater_than_filter_manager = DateGreaterThanFilterManager(
         #     self._session_context)
@@ -802,12 +811,13 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             date_greater_than_filter data is found.
         """
         if not isinstance(date_greater_than_filter_dict, dict):
-            raise ValueError("date_greater_than_filter_dict must be a dictionary")
+            raise ValueError(
+                "date_greater_than_filter_dict must be a dictionary")
 
         date_greater_than_filter_manager = DateGreaterThanFilterManager(
             self._session_context)
 
-        self.date_greater_than_filter = date_greater_than_filter_manager.from_dict(
+        self.date_greater_than_filter = await date_greater_than_filter_manager.from_dict(
             date_greater_than_filter_dict)
 
         return self

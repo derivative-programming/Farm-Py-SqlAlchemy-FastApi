@@ -18,7 +18,8 @@ import pytest
 from helpers.type_conversion import TypeConversion
 from helpers.session_context import SessionContext
 
-from ..factory.pac_user_date_greater_than_filter_list import PacUserDateGreaterThanFilterListGetModelRequestFactory
+from ..factory.pac_user_date_greater_than_filter_list import (
+    PacUserDateGreaterThanFilterListGetModelRequestFactory)
 from ..pac_user_date_greater_than_filter_list import (
     PacUserDateGreaterThanFilterListGetModelRequest,
     PacUserDateGreaterThanFilterListGetModelResponse,

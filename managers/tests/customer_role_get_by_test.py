@@ -75,8 +75,9 @@ class TestCustomerRoleGetByManager:
         test_customer_role = await CustomerRoleFactory.create_async(
             session)
 
-        customer_role = await customer_role_manager.get_by_id(
-            test_customer_role.customer_role_id)
+        customer_role = await \
+            customer_role_manager.get_by_id(
+                test_customer_role.customer_role_id)
 
         assert isinstance(
             customer_role, CustomerRole)
@@ -99,8 +100,9 @@ class TestCustomerRoleGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_customer_role = await customer_role_manager.get_by_id(
-            non_existent_id)
+        retrieved_customer_role = await \
+            customer_role_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_customer_role is None
 
@@ -120,8 +122,9 @@ class TestCustomerRoleGetByManager:
         test_customer_role = await CustomerRoleFactory.create_async(
             session)
 
-        customer_role = await customer_role_manager.get_by_code(
-            test_customer_role.code)
+        customer_role = await \
+            customer_role_manager.get_by_code(
+                test_customer_role.code)
 
         assert isinstance(
             customer_role, CustomerRole)
@@ -144,8 +147,9 @@ class TestCustomerRoleGetByManager:
         # any CustomerRole in the database
         random_code = uuid.uuid4()
 
-        customer_role = await customer_role_manager.get_by_code(
-            random_code)
+        customer_role = await \
+            customer_role_manager.get_by_code(
+                random_code)
 
         assert customer_role is None
 
@@ -192,8 +196,9 @@ class TestCustomerRoleGetByManager:
         # Fetch the customer_role using
         # the manager function
 
-        fetched_customer_roles = await customer_role_manager.get_by_customer_id(
-            customer_role1.customer_id)
+        fetched_customer_roles = await \
+            customer_role_manager.get_by_customer_id(
+                customer_role1.customer_id)
         assert len(fetched_customer_roles) == 1
         assert isinstance(fetched_customer_roles[0], CustomerRole)
         assert fetched_customer_roles[0].code == \
@@ -224,8 +229,9 @@ class TestCustomerRoleGetByManager:
 
         non_existent_id = 999
 
-        fetched_customer_roles = await customer_role_manager.get_by_customer_id(
-            non_existent_id)
+        fetched_customer_roles = await \
+            customer_role_manager.get_by_customer_id(
+                non_existent_id)
         assert len(fetched_customer_roles) == 0
 
     @pytest.mark.asyncio
@@ -305,8 +311,9 @@ class TestCustomerRoleGetByManager:
         # Fetch the customer_role using the
         # manager function
 
-        fetched_customer_roles = await customer_role_manager.get_by_role_id(
-            customer_role1.role_id)
+        fetched_customer_roles = await \
+            customer_role_manager.get_by_role_id(
+                customer_role1.role_id)
         assert len(fetched_customer_roles) == 1
         assert isinstance(fetched_customer_roles[0], CustomerRole)
         assert fetched_customer_roles[0].code == \

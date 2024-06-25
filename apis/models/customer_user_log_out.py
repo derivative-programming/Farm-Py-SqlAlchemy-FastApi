@@ -16,7 +16,9 @@ from pydantic import UUID4, Field
 from apis.models.validation_error import ValidationErrorItem
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.customer_user_log_out import FlowCustomerUserLogOut, FlowCustomerUserLogOutResult
+from flows.customer_user_log_out import (
+    FlowCustomerUserLogOut,
+    FlowCustomerUserLogOutResult)
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
@@ -84,6 +86,7 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
     Represents the response model for the
     Customer User Log Out API.
     """
+
 
     def load_flow_response(self, data: FlowCustomerUserLogOutResult):
         """

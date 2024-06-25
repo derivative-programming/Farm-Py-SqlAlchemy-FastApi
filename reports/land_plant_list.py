@@ -13,9 +13,12 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import List
 from helpers import SessionContext, TypeConversion
-from reports.providers.land_plant_list import ReportProviderLandPlantList
-from reports.row_models.land_plant_list import ReportItemLandPlantList
-from .report_request_validation_error import ReportRequestValidationError
+from reports.providers.land_plant_list import (
+    ReportProviderLandPlantList)
+from reports.row_models.land_plant_list import (
+    ReportItemLandPlantList)
+from .report_request_validation_error import (
+    ReportRequestValidationError)
 
 
 class ReportManagerLandPlantList():
@@ -84,7 +87,8 @@ class ReportManagerLandPlantList():
             List[ReportItemLandPlantList]: The
                 list of report items.
         """
-        logging.info("ReportManagerLandPlantList.generate"
+        logging.info("ReportManagerLandPlantList"
+                     ".generate"
                      " Start")
 
         role_required = "User"
@@ -143,11 +147,13 @@ class ReportManagerLandPlantList():
             result.append(report_item)
 
         logging.info(
-            "ReportManagerLandPlantList.generate Results: %s",
+            "ReportManagerLandPlantList"
+            ".generate Results: %s",
             json.dumps(data_list)
         )
 
-        logging.info('ReportManagerLandPlantList.generate End')
+        logging.info("ReportManagerLandPlantList"
+                     ".generate End")
         return result
 
     async def build_csv(

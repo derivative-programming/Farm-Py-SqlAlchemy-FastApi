@@ -75,8 +75,9 @@ class TestRoleGetByManager:
         test_role = await RoleFactory.create_async(
             session)
 
-        role = await role_manager.get_by_id(
-            test_role.role_id)
+        role = await \
+            role_manager.get_by_id(
+                test_role.role_id)
 
         assert isinstance(
             role, Role)
@@ -99,8 +100,9 @@ class TestRoleGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_role = await role_manager.get_by_id(
-            non_existent_id)
+        retrieved_role = await \
+            role_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_role is None
 
@@ -120,8 +122,9 @@ class TestRoleGetByManager:
         test_role = await RoleFactory.create_async(
             session)
 
-        role = await role_manager.get_by_code(
-            test_role.code)
+        role = await \
+            role_manager.get_by_code(
+                test_role.code)
 
         assert isinstance(
             role, Role)
@@ -144,8 +147,9 @@ class TestRoleGetByManager:
         # any Role in the database
         random_code = uuid.uuid4()
 
-        role = await role_manager.get_by_code(
-            random_code)
+        role = await \
+            role_manager.get_by_code(
+                random_code)
 
         assert role is None
 
@@ -197,8 +201,9 @@ class TestRoleGetByManager:
         # Fetch the role using
         # the manager function
 
-        fetched_roles = await role_manager.get_by_pac_id(
-            role1.pac_id)
+        fetched_roles = await \
+            role_manager.get_by_pac_id(
+                role1.pac_id)
         assert len(fetched_roles) == 1
         assert isinstance(fetched_roles[0], Role)
         assert fetched_roles[0].code == \
@@ -229,8 +234,9 @@ class TestRoleGetByManager:
 
         non_existent_id = 999
 
-        fetched_roles = await role_manager.get_by_pac_id(
-            non_existent_id)
+        fetched_roles = await \
+            role_manager.get_by_pac_id(
+                non_existent_id)
         assert len(fetched_roles) == 0
 
     @pytest.mark.asyncio

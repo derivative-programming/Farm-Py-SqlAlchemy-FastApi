@@ -21,7 +21,9 @@ from ..pac_user_role_list_init_report import (
 
 class MockFlowPacUserRoleListInitReportResult:
     """
-    A mock object for the FlowPacUserRoleListInitReportResult class.
+    A mock object for the
+    FlowPacUserRoleListInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -32,7 +34,9 @@ class MockFlowPacUserRoleListInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowPacUserRoleListInitReportResult object.
+    Return a mock
+    FlowPacUserRoleListInitReportResult
+    object.
     """
     return MockFlowPacUserRoleListInitReportResult()
 

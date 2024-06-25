@@ -21,7 +21,9 @@ from ..pac_user_land_list_init_report import (
 
 class MockFlowPacUserLandListInitReportResult:
     """
-    A mock object for the FlowPacUserLandListInitReportResult class.
+    A mock object for the
+    FlowPacUserLandListInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -32,7 +34,9 @@ class MockFlowPacUserLandListInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowPacUserLandListInitReportResult object.
+    Return a mock
+    FlowPacUserLandListInitReportResult
+    object.
     """
     return MockFlowPacUserLandListInitReportResult()
 

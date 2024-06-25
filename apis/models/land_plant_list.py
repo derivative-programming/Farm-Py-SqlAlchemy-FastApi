@@ -240,7 +240,8 @@ class LandPlantListGetModelResponseItem(CamelModel):
 
     def load_report_item(self, data: ReportItemLandPlantList):
         """
-        Loads the data from a ReportItemLandPlantList
+        Loads the data from a
+        ReportItemLandPlantList
         object into the response model item.
 
         Args:

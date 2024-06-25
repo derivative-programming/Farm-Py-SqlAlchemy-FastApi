@@ -122,7 +122,8 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
 
     def load_report_item(self, data: ReportItemTacFarmDashboard):
         """
-        Loads the data from a ReportItemTacFarmDashboard
+        Loads the data from a
+        ReportItemTacFarmDashboard
         object into the response model item.
 
         Args:

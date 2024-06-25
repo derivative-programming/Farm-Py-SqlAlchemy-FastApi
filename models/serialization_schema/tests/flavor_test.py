@@ -158,7 +158,10 @@ class TestFlavorSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(flavor.pac_code_peek))
 
-    def test_flavor_deserialization(self, flavor):
+    def test_flavor_deserialization(
+        self,
+        flavor
+    ):
         """
         Test the deserialization of a
         Flavor object using the
@@ -207,7 +210,8 @@ class TestFlavorSchema:
             'pac_code_peek')] == (
             flavor.pac_code_peek)
 
-        new_flavor = Flavor(**deserialized_data)
+        new_flavor = Flavor(
+            **deserialized_data)
 
         assert isinstance(new_flavor, Flavor)
 
@@ -301,7 +305,8 @@ class TestFlavorSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_flavor = Flavor(**deserialized_data)
+        new_flavor = Flavor(
+            **deserialized_data)
 
         assert isinstance(new_flavor, Flavor)
 

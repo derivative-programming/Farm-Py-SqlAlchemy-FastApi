@@ -19,7 +19,8 @@ from apis import models as apis_models
 from database import get_db
 from main import app
 
-from ..land_add_plant import LandAddPlantRouterConfig
+from ..land_add_plant import (
+    LandAddPlantRouterConfig)
 # Test cases for the `submit` endpoint
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=true]Start
@@ -28,10 +29,12 @@ from ..land_add_plant import LandAddPlantRouterConfig
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db, api_key_fixture: str):
     """
-    Test case for successful submission of a post to a land.
+    Test case for successful submission
+    of a post to a land.
 
     Args:
-        overridden_get_db (AsyncSession): The overridden database session.
+        overridden_get_db (AsyncSession):
+        The overridden database session.
         api_key_fixture (str): The API key fixture.
 
     Returns:

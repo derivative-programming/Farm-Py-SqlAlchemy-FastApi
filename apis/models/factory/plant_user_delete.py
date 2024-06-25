@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
 
-from ..plant_user_delete import PlantUserDeletePostModelRequest
+from ..plant_user_delete import (
+    PlantUserDeletePostModelRequest)
 
 
 class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
@@ -45,7 +46,8 @@ class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of PlantUserDeletePostModelRequest.
+            An instance of
+            PlantUserDeletePostModelRequest.
         """
 
         if session is None:
@@ -74,7 +76,8 @@ class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of PlantUserDeletePostModelRequest.
+            An instance of
+            PlantUserDeletePostModelRequest.
         """
 
 
@@ -98,7 +101,8 @@ class PlantUserDeletePostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of PlantUserDeletePostModelRequest.
+            An instance of
+            PlantUserDeletePostModelRequest.
         """
 
 

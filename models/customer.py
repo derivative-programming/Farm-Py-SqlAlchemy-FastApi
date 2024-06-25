@@ -370,7 +370,8 @@ class Customer(Base):
         Set the code of the customer.
 
         Args:
-            value (uuid.UUID): The code to set for the customer.
+            value (uuid.UUID): The code to set for the
+                customer.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -403,9 +404,11 @@ class Customer(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the customer.
+        Returns the last change code of the
+        customer.
 
-        :return: The last change code of the customer.
+        :return: The last change code of the
+            customer.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -440,7 +443,8 @@ class Customer(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the customer.
+        Returns the UUID of the last user who updated the
+        customer.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -458,10 +462,12 @@ class Customer(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the customer.
+        Inserts the UTC date and time for the
+        customer.
 
         Returns:
-            datetime: The UTC date and time for the customer.
+            datetime: The UTC date and time for the
+                customer.
         """
         return getattr(
             self,
@@ -480,7 +486,8 @@ class Customer(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the customer.
+        Returns the last update UTC date and time of the
+        customer.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -564,9 +571,11 @@ class Customer(Base):
     @property
     def first_name(self) -> str:
         """
-        Returns the First Name of the customer.
+        Returns the First Name of the
+        customer.
 
-        :return: The First Name of the customer.
+        :return: The First Name of the
+            customer.
         :rtype: str
         """
         return getattr(self, '_first_name', "") or ""
@@ -606,9 +615,11 @@ class Customer(Base):
     @property
     def forgot_password_key_value(self) -> str:
         """
-        Returns the Forgot Password Key Value of the customer.
+        Returns the Forgot Password Key Value of the
+        customer.
 
-        :return: The Forgot Password Key Value of the customer.
+        :return: The Forgot Password Key Value of the
+            customer.
         :rtype: str
         """
         return getattr(self, '_forgot_password_key_value', "") or ""
@@ -664,7 +675,8 @@ class Customer(Base):
     @property
     def is_active(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer.
+        Check if the delete operation is allowed for the
+        customer.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -683,7 +695,8 @@ class Customer(Base):
     @property
     def is_email_allowed(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer.
+        Check if the delete operation is allowed for the
+        customer.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -702,7 +715,8 @@ class Customer(Base):
     @property
     def is_email_confirmed(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer.
+        Check if the delete operation is allowed for the
+        customer.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -721,7 +735,8 @@ class Customer(Base):
     @property
     def is_email_marketing_allowed(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer.
+        Check if the delete operation is allowed for the
+        customer.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -740,7 +755,8 @@ class Customer(Base):
     @property
     def is_locked(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer.
+        Check if the delete operation is allowed for the
+        customer.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -759,7 +775,8 @@ class Customer(Base):
     @property
     def is_multiple_organizations_allowed(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer.
+        Check if the delete operation is allowed for the
+        customer.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -778,7 +795,8 @@ class Customer(Base):
     @property
     def is_verbose_logging_forced(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer.
+        Check if the delete operation is allowed for the
+        customer.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -820,9 +838,11 @@ class Customer(Base):
     @property
     def last_name(self) -> str:
         """
-        Returns the Last Name of the customer.
+        Returns the Last Name of the
+        customer.
 
-        :return: The Last Name of the customer.
+        :return: The Last Name of the
+            customer.
         :rtype: str
         """
         return getattr(self, '_last_name', "") or ""
@@ -839,9 +859,11 @@ class Customer(Base):
     @property
     def password(self) -> str:
         """
-        Returns the Password of the customer.
+        Returns the Password of the
+        customer.
 
-        :return: The Password of the customer.
+        :return: The Password of the
+            customer.
         :rtype: str
         """
         return getattr(self, '_password', "") or ""
@@ -877,9 +899,11 @@ class Customer(Base):
     @property
     def province(self) -> str:
         """
-        Returns the Province of the customer.
+        Returns the Province of the
+        customer.
 
-        :return: The Province of the customer.
+        :return: The Province of the
+            customer.
         :rtype: str
         """
         return getattr(self, '_province', "") or ""
@@ -940,9 +964,11 @@ class Customer(Base):
     @property
     def zip(self) -> str:
         """
-        Returns the Zip of the customer.
+        Returns the Zip of the
+        customer.
 
-        :return: The Zip of the customer.
+        :return: The Zip of the
+            customer.
         :rtype: str
         """
         return getattr(self, '_zip', "") or ""
@@ -972,7 +998,6 @@ class Customer(Base):
         """
 
         self._tac_id = value
-
 
     @staticmethod
     def property_list():

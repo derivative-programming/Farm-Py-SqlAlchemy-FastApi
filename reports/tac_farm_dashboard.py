@@ -13,9 +13,12 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import List
 from helpers import SessionContext, TypeConversion
-from reports.providers.tac_farm_dashboard import ReportProviderTacFarmDashboard
-from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
-from .report_request_validation_error import ReportRequestValidationError
+from reports.providers.tac_farm_dashboard import (
+    ReportProviderTacFarmDashboard)
+from reports.row_models.tac_farm_dashboard import (
+    ReportItemTacFarmDashboard)
+from .report_request_validation_error import (
+    ReportRequestValidationError)
 
 
 class ReportManagerTacFarmDashboard():
@@ -53,7 +56,8 @@ class ReportManagerTacFarmDashboard():
             List[ReportItemTacFarmDashboard]: The
                 list of report items.
         """
-        logging.info("ReportManagerTacFarmDashboard.generate"
+        logging.info("ReportManagerTacFarmDashboard"
+                     ".generate"
                      " Start")
 
         role_required = ""
@@ -97,11 +101,13 @@ class ReportManagerTacFarmDashboard():
             result.append(report_item)
 
         logging.info(
-            "ReportManagerTacFarmDashboard.generate Results: %s",
+            "ReportManagerTacFarmDashboard"
+            ".generate Results: %s",
             json.dumps(data_list)
         )
 
-        logging.info('ReportManagerTacFarmDashboard.generate End')
+        logging.info("ReportManagerTacFarmDashboard"
+                     ".generate End")
         return result
 
     async def build_csv(

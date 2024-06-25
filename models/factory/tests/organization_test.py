@@ -96,7 +96,8 @@ class TestOrganizationFactory:
         initial_code = organization.last_change_code
         organization.code = uuid.uuid4()
         session.commit()
-        assert organization.last_change_code != initial_code
+        assert organization.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestOrganizationFactory:
         session.delete(organization)
         session.commit()
         deleted_organization = session.query(Organization).filter_by(
-            organization_id=organization.organization_id).first()
+            _organization_id=(
+                organization.organization_id)
+        ).first()
         assert deleted_organization is None
 
     def test_data_types(self, session):
@@ -225,10 +228,13 @@ class TestOrganizationFactory:
         """
         Test case for checking the unique code constraint.
         """
-        organization_1 = OrganizationFactory.create(session=session)
-        organization_2 = OrganizationFactory.create(session=session)
+        organization_1 = OrganizationFactory.create(
+            session=session)
+        organization_2 = OrganizationFactory.create(
+            session=session)
         organization_2.code = organization_1.code
-        session.add_all([organization_1, organization_2])
+        session.add_all([organization_1,
+                         organization_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -282,14 +288,19 @@ class TestOrganizationFactory:
             session=session)
         original_last_change_code = organization.last_change_code
         organization_1 = session.query(Organization).filter_by(
-            _organization_id=organization.organization_id).first()
+            _organization_id=(
+                organization.organization_id)
+        ).first()
         organization_1.code = uuid.uuid4()
         session.commit()
         organization_2 = session.query(Organization).filter_by(
-            _organization_id=organization.organization_id).first()
+            _organization_id=(
+                organization.organization_id)
+        ).first()
         organization_2.code = uuid.uuid4()
         session.commit()
-        assert organization_2.last_change_code != original_last_change_code
+        assert organization_2.last_change_code != \
+            original_last_change_code
     # name,
     # TacID
 

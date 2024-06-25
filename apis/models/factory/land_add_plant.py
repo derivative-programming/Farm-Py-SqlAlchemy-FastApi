@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
 from models.factory import FlavorFactory  # requestFlavorCode
-from ..land_add_plant import LandAddPlantPostModelRequest
+from ..land_add_plant import (
+    LandAddPlantPostModelRequest)
 
 
 class LandAddPlantPostModelRequestFactory(factory.base.Factory):
@@ -85,7 +86,8 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of LandAddPlantPostModelRequest.
+            An instance of
+            LandAddPlantPostModelRequest.
         """
 
         if session is None:
@@ -125,7 +127,8 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of LandAddPlantPostModelRequest.
+            An instance of
+            LandAddPlantPostModelRequest.
         """
 
         request_flavor_code_instance = (  # requestFlavorCode
@@ -159,7 +162,8 @@ class LandAddPlantPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of LandAddPlantPostModelRequest.
+            An instance of
+            LandAddPlantPostModelRequest.
         """
 
         request_flavor_code_instance = (  # requestFlavorCode

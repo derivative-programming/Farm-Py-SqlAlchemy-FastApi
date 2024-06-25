@@ -21,7 +21,9 @@ from ..pac_user_tri_state_filter_list_init_report import (
 
 class MockFlowPacUserTriStateFilterListInitReportResult:
     """
-    A mock object for the FlowPacUserTriStateFilterListInitReportResult class.
+    A mock object for the
+    FlowPacUserTriStateFilterListInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -32,7 +34,9 @@ class MockFlowPacUserTriStateFilterListInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowPacUserTriStateFilterListInitReportResult object.
+    Return a mock
+    FlowPacUserTriStateFilterListInitReportResult
+    object.
     """
     return MockFlowPacUserTriStateFilterListInitReportResult()
 

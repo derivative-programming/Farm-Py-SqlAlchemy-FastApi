@@ -537,7 +537,7 @@ class TestTacManager:
         json_data = tac_manager.to_json(
             tac)
 
-        deserialized_tac = tac_manager.from_json(json_data)
+        deserialized_tac = await tac_manager.from_json(json_data)
 
         assert isinstance(deserialized_tac, Tac)
         assert deserialized_tac.code == \
@@ -578,7 +578,7 @@ class TestTacManager:
 
         assert isinstance(tac_data, dict)
 
-        deserialized_tac = tac_manager.from_dict(
+        deserialized_tac = await tac_manager.from_dict(
             tac_data)
 
         assert isinstance(deserialized_tac, Tac)
@@ -784,11 +784,13 @@ class TestTacManager:
             None
         """
         # Add a tac
-        tac1 = await TacFactory.create_async(
-            session=session)
+        tac1 = await \
+            TacFactory.create_async(
+                session=session)
 
-        tac2 = await tac_manager.get_by_id(
-            tac_id=tac1.tac_id)
+        tac2 = await \
+            tac_manager.get_by_id(
+                tac_id=tac1.tac_id)
 
         assert tac_manager.is_equal(
             tac1, tac2) is True
@@ -796,8 +798,9 @@ class TestTacManager:
         tac1_dict = tac_manager.to_dict(
             tac1)
 
-        tac3 = tac_manager.from_dict(
-            tac1_dict)
+        tac3 = await \
+            tac_manager.from_dict(
+                tac1_dict)
 
         assert tac_manager.is_equal(
             tac1, tac3) is True

@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...tac_register import TacRegisterPostModelRequest
-from ..tac_register import TacRegisterPostModelRequestFactory
+from ...tac_register import (
+    TacRegisterPostModelRequest)
+from ..tac_register import (
+    TacRegisterPostModelRequestFactory)
 
 
 class TestTacRegisterPostModelRequestFactoryAsync:
@@ -32,7 +34,8 @@ class TestTacRegisterPostModelRequestFactoryAsync:
             await TacRegisterPostModelRequestFactory.create_async(
                 session=session)
         )
-        assert isinstance(model_instance, TacRegisterPostModelRequest)
+        assert isinstance(model_instance,
+                          TacRegisterPostModelRequest)
         assert isinstance(model_instance.email,
                           str)
         assert isinstance(model_instance.password,

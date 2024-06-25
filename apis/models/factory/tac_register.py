@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
 
-from ..tac_register import TacRegisterPostModelRequest
+from ..tac_register import (
+    TacRegisterPostModelRequest)
 
 
 class TacRegisterPostModelRequestFactory(factory.base.Factory):
@@ -61,7 +62,8 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of TacRegisterPostModelRequest.
+            An instance of
+            TacRegisterPostModelRequest.
         """
 
         if session is None:
@@ -90,7 +92,8 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of TacRegisterPostModelRequest.
+            An instance of
+            TacRegisterPostModelRequest.
         """
 
 
@@ -114,7 +117,8 @@ class TacRegisterPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of TacRegisterPostModelRequest.
+            An instance of
+            TacRegisterPostModelRequest.
         """
 
 

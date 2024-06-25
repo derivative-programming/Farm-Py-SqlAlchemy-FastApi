@@ -186,7 +186,8 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
 
     def load_report_item(self, data: ReportItemPlantUserDetails):
         """
-        Loads the data from a ReportItemPlantUserDetails
+        Loads the data from a
+        ReportItemPlantUserDetails
         object into the response model item.
 
         Args:

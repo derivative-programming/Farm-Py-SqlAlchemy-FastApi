@@ -21,7 +21,9 @@ from ..tac_register_init_obj_wf import (
 
 class MockFlowTacRegisterInitObjWFResult:
     """
-    A mock object for the FlowTacRegisterInitObjWFResult class.
+    A mock object for the
+    FlowTacRegisterInitObjWFResult
+    class.
     """
     def __init__(self):
         """
@@ -37,7 +39,9 @@ class MockFlowTacRegisterInitObjWFResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowTacRegisterInitObjWFResult object.
+    Return a mock
+    FlowTacRegisterInitObjWFResult
+    object.
     """
     return MockFlowTacRegisterInitObjWFResult()
 

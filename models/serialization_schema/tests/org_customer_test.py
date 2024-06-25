@@ -153,7 +153,10 @@ class TestOrgCustomerSchema:
         assert result['organization_code_peek'] == (  # OrganizationID
             str(org_customer.organization_code_peek))
 
-    def test_org_customer_deserialization(self, org_customer):
+    def test_org_customer_deserialization(
+        self,
+        org_customer
+    ):
         """
         Test the deserialization of a
         OrgCustomer object using the
@@ -199,7 +202,8 @@ class TestOrgCustomerSchema:
             'organization_code_peek')] == (
             org_customer.organization_code_peek)
 
-        new_org_customer = OrgCustomer(**deserialized_data)
+        new_org_customer = OrgCustomer(
+            **deserialized_data)
 
         assert isinstance(new_org_customer, OrgCustomer)
 
@@ -286,7 +290,8 @@ class TestOrgCustomerSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_org_customer = OrgCustomer(**deserialized_data)
+        new_org_customer = OrgCustomer(
+            **deserialized_data)
 
         assert isinstance(new_org_customer, OrgCustomer)
 

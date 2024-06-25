@@ -21,7 +21,9 @@ from ..land_add_plant_init_obj_wf import (
 
 class MockFlowLandAddPlantInitObjWFResult:
     """
-    A mock object for the FlowLandAddPlantInitObjWFResult class.
+    A mock object for the
+    FlowLandAddPlantInitObjWFResult
+    class.
     """
     def __init__(self):
         """
@@ -53,7 +55,9 @@ class MockFlowLandAddPlantInitObjWFResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowLandAddPlantInitObjWFResult object.
+    Return a mock
+    FlowLandAddPlantInitObjWFResult
+    object.
     """
     return MockFlowLandAddPlantInitObjWFResult()
 

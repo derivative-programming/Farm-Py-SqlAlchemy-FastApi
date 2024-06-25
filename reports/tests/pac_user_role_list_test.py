@@ -287,7 +287,8 @@ class TestReportManagerPacUserRoleList:
         result = await test_obj.read_csv(file_name)
         assert isinstance(result, list)
         assert all(
-            isinstance(item, ReportItemPacUserRoleList) for item in result
+            isinstance(item, ReportItemPacUserRoleList
+                       ) for item in result
         )
 
         os.remove(file_name)

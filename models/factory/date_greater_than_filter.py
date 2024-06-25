@@ -46,7 +46,9 @@ class DateGreaterThanFilterFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> DateGreaterThanFilter:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> DateGreaterThanFilter:
         """
             Builds and returns an instance
             of the DateGreaterThanFilter model.
@@ -83,7 +85,9 @@ class DateGreaterThanFilterFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> DateGreaterThanFilter:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> DateGreaterThanFilter:
         """
         Create a new DateGreaterThanFilter object
         and save it to the database.
@@ -122,7 +126,9 @@ class DateGreaterThanFilterFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> DateGreaterThanFilter:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> DateGreaterThanFilter:
         """
         Create a new DateGreaterThanFilter object
         asynchronously.
@@ -152,7 +158,9 @@ class DateGreaterThanFilterFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> DateGreaterThanFilter:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> DateGreaterThanFilter:
         """
         Build a new DateGreaterThanFilter object
         asynchronously.

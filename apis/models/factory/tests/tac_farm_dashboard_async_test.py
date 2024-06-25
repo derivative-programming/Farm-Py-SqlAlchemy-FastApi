@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...tac_farm_dashboard import TacFarmDashboardGetModelRequest
-from ..tac_farm_dashboard import TacFarmDashboardGetModelRequestFactory
+from ...tac_farm_dashboard import (
+    TacFarmDashboardGetModelRequest)
+from ..tac_farm_dashboard import (
+    TacFarmDashboardGetModelRequestFactory)
 
 
 class TestTacFarmDashboardGetModelRequestFactoryAsync:
@@ -34,7 +36,8 @@ class TestTacFarmDashboardGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance, TacFarmDashboardGetModelRequest)
+        assert isinstance(model_instance,
+                          TacFarmDashboardGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)

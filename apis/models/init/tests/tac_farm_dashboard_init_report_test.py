@@ -21,7 +21,9 @@ from ..tac_farm_dashboard_init_report import (
 
 class MockFlowTacFarmDashboardInitReportResult:
     """
-    A mock object for the FlowTacFarmDashboardInitReportResult class.
+    A mock object for the
+    FlowTacFarmDashboardInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -33,7 +35,9 @@ class MockFlowTacFarmDashboardInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowTacFarmDashboardInitReportResult object.
+    Return a mock
+    FlowTacFarmDashboardInitReportResult
+    object.
     """
     return MockFlowTacFarmDashboardInitReportResult()
 

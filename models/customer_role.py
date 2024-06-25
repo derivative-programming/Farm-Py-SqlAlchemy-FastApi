@@ -148,7 +148,8 @@ class CustomerRole(Base):
         Set the code of the customer_role.
 
         Args:
-            value (uuid.UUID): The code to set for the customer_role.
+            value (uuid.UUID): The code to set for the
+                customer_role.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -181,9 +182,11 @@ class CustomerRole(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the customer_role.
+        Returns the last change code of the
+        customer_role.
 
-        :return: The last change code of the customer_role.
+        :return: The last change code of the
+            customer_role.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -218,7 +221,8 @@ class CustomerRole(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the customer_role.
+        Returns the UUID of the last user who updated the
+        customer_role.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -236,10 +240,12 @@ class CustomerRole(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the customer_role.
+        Inserts the UTC date and time for the
+        customer_role.
 
         Returns:
-            datetime: The UTC date and time for the customer_role.
+            datetime: The UTC date and time for the
+                customer_role.
         """
         return getattr(
             self,
@@ -258,7 +264,8 @@ class CustomerRole(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the customer_role.
+        Returns the last update UTC date and time of the
+        customer_role.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -282,7 +289,8 @@ class CustomerRole(Base):
     @property
     def is_placeholder(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer_role.
+        Check if the delete operation is allowed for the
+        customer_role.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -301,7 +309,8 @@ class CustomerRole(Base):
     @property
     def placeholder(self) -> bool:
         """
-        Check if the delete operation is allowed for the customer_role.
+        Check if the delete operation is allowed for the
+        customer_role.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -322,10 +331,12 @@ class CustomerRole(Base):
     @property
     def role_id(self) -> int:
         """
-        Get the foreign key ID for the role of the customer_role.
+        Get the foreign key ID for the role of the
+        customer_role.
 
         Returns:
-            int: The foreign key ID for the role of the customer_role.
+            int: The foreign key ID for the role of the
+                customer_role.
         """
         return getattr(self, '_role_id', 0) or 0
 
@@ -353,7 +364,6 @@ class CustomerRole(Base):
         """
 
         self._customer_id = value
-
 
     @staticmethod
     def property_list():

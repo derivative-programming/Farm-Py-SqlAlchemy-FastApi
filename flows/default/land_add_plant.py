@@ -216,7 +216,6 @@ class FlowLandAddPlant(
         # TODO: add flow logic
 ##GENTrainingBlock[caseFlowLogic]Start
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]Start
-
         # plant: PlantBusObj = land_bus_obj.build_plant()
         # plant.land_id = land_bus_obj.land_id
         # plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.get_session_context().session,code=request_flavor_code).code
@@ -260,7 +259,6 @@ class FlowLandAddPlant(
         # output_some_phone_number_output = plant.some_phone_number
         # output_some_email_address_output = plant.some_email_address
 # endset
-
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]End
 ##GENTrainingBlock[caseFlowLogic]End
 

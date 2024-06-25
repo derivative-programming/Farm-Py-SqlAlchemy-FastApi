@@ -209,7 +209,8 @@ class OrgApiKey(Base):
         Set the code of the org_api_key.
 
         Args:
-            value (uuid.UUID): The code to set for the org_api_key.
+            value (uuid.UUID): The code to set for the
+                org_api_key.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -242,9 +243,11 @@ class OrgApiKey(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the org_api_key.
+        Returns the last change code of the
+        org_api_key.
 
-        :return: The last change code of the org_api_key.
+        :return: The last change code of the
+            org_api_key.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -279,7 +282,8 @@ class OrgApiKey(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the org_api_key.
+        Returns the UUID of the last user who updated the
+        org_api_key.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -297,10 +301,12 @@ class OrgApiKey(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the org_api_key.
+        Inserts the UTC date and time for the
+        org_api_key.
 
         Returns:
-            datetime: The UTC date and time for the org_api_key.
+            datetime: The UTC date and time for the
+                org_api_key.
         """
         return getattr(
             self,
@@ -319,7 +325,8 @@ class OrgApiKey(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the org_api_key.
+        Returns the last update UTC date and time of the
+        org_api_key.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -342,9 +349,11 @@ class OrgApiKey(Base):
     @property
     def api_key_value(self) -> str:
         """
-        Returns the Api Key Value of the org_api_key.
+        Returns the Api Key Value of the
+        org_api_key.
 
-        :return: The Api Key Value of the org_api_key.
+        :return: The Api Key Value of the
+            org_api_key.
         :rtype: str
         """
         return getattr(self, '_api_key_value', "") or ""
@@ -361,9 +370,11 @@ class OrgApiKey(Base):
     @property
     def created_by(self) -> str:
         """
-        Returns the Created By of the org_api_key.
+        Returns the Created By of the
+        org_api_key.
 
-        :return: The Created By of the org_api_key.
+        :return: The Created By of the
+            org_api_key.
         :rtype: str
         """
         return getattr(self, '_created_by', "") or ""
@@ -426,7 +437,8 @@ class OrgApiKey(Base):
     @property
     def is_active(self) -> bool:
         """
-        Check if the delete operation is allowed for the org_api_key.
+        Check if the delete operation is allowed for the
+        org_api_key.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -445,7 +457,8 @@ class OrgApiKey(Base):
     @property
     def is_temp_user_key(self) -> bool:
         """
-        Check if the delete operation is allowed for the org_api_key.
+        Check if the delete operation is allowed for the
+        org_api_key.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -464,9 +477,11 @@ class OrgApiKey(Base):
     @property
     def name(self) -> str:
         """
-        Returns the Name of the org_api_key.
+        Returns the Name of the
+        org_api_key.
 
-        :return: The Name of the org_api_key.
+        :return: The Name of the
+            org_api_key.
         :rtype: str
         """
         return getattr(self, '_name', "") or ""
@@ -486,10 +501,12 @@ class OrgApiKey(Base):
     @property
     def org_customer_id(self) -> int:
         """
-        Get the foreign key ID for the org_customer of the org_api_key.
+        Get the foreign key ID for the org_customer of the
+        org_api_key.
 
         Returns:
-            int: The foreign key ID for the org_customer of the org_api_key.
+            int: The foreign key ID for the org_customer of the
+                org_api_key.
         """
         return getattr(self, '_org_customer_id', 0) or 0
 
@@ -517,7 +534,6 @@ class OrgApiKey(Base):
         """
 
         self._organization_id = value
-
 
     @staticmethod
     def property_list():

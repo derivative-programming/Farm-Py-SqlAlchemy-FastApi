@@ -195,7 +195,8 @@ class RoleBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.role.insert_user_id = value
 
@@ -236,7 +237,8 @@ class RoleBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.role.last_update_user_id = value
 
@@ -368,7 +370,8 @@ class RoleBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.role.is_active = value
     # lookupEnumName
@@ -581,7 +584,8 @@ class RoleBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.role.insert_utc_date_time = value
 
@@ -629,7 +633,8 @@ class RoleBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.role.last_update_utc_date_time = value
 
@@ -649,11 +654,12 @@ class RoleBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         role_manager = RoleManager(
             self._session_context)
-        self.role = role_manager.from_json(json_data)
+        self.role = await role_manager.from_json(json_data)
 
         return self
 
@@ -671,7 +677,8 @@ class RoleBaseBusObj(BaseBusObj):
             role data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         role_manager = RoleManager(
             self._session_context)
@@ -698,7 +705,8 @@ class RoleBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(role_id, int):
-            raise ValueError("role_id must be an integer")
+            raise ValueError(
+                "role_id must be an integer")
 
         role_manager = RoleManager(
             self._session_context)
@@ -725,7 +733,8 @@ class RoleBaseBusObj(BaseBusObj):
 
         if not isinstance(role_obj_instance,
                           Role):
-            raise ValueError("role_obj_instance must be an instance of Role")
+            raise ValueError(
+                "role_obj_instance must be an instance of Role")
 
         # role_manager = RoleManager(
         #     self._session_context)
@@ -754,12 +763,13 @@ class RoleBaseBusObj(BaseBusObj):
             role data is found.
         """
         if not isinstance(role_dict, dict):
-            raise ValueError("role_dict must be a dictionary")
+            raise ValueError(
+                "role_dict must be a dictionary")
 
         role_manager = RoleManager(
             self._session_context)
 
-        self.role = role_manager.from_dict(
+        self.role = await role_manager.from_dict(
             role_dict)
 
         return self

@@ -46,7 +46,9 @@ class TriStateFilterFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> TriStateFilter:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> TriStateFilter:
         """
             Builds and returns an instance
             of the TriStateFilter model.
@@ -83,7 +85,9 @@ class TriStateFilterFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> TriStateFilter:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> TriStateFilter:
         """
         Create a new TriStateFilter object
         and save it to the database.
@@ -122,7 +126,9 @@ class TriStateFilterFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> TriStateFilter:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> TriStateFilter:
         """
         Create a new TriStateFilter object
         asynchronously.
@@ -152,7 +158,9 @@ class TriStateFilterFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> TriStateFilter:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> TriStateFilter:
         """
         Build a new TriStateFilter object
         asynchronously.

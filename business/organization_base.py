@@ -195,7 +195,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.organization.insert_user_id = value
 
@@ -236,7 +237,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.organization.last_update_user_id = value
 
@@ -408,7 +410,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.organization.insert_utc_date_time = value
 
@@ -456,7 +459,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.organization.last_update_utc_date_time = value
 
@@ -476,11 +480,12 @@ class OrganizationBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         organization_manager = OrganizationManager(
             self._session_context)
-        self.organization = organization_manager.from_json(json_data)
+        self.organization = await organization_manager.from_json(json_data)
 
         return self
 
@@ -498,7 +503,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             organization data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         organization_manager = OrganizationManager(
             self._session_context)
@@ -525,7 +531,8 @@ class OrganizationBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(organization_id, int):
-            raise ValueError("organization_id must be an integer")
+            raise ValueError(
+                "organization_id must be an integer")
 
         organization_manager = OrganizationManager(
             self._session_context)
@@ -552,7 +559,8 @@ class OrganizationBaseBusObj(BaseBusObj):
 
         if not isinstance(organization_obj_instance,
                           Organization):
-            raise ValueError("organization_obj_instance must be an instance of Organization")
+            raise ValueError(
+                "organization_obj_instance must be an instance of Organization")
 
         # organization_manager = OrganizationManager(
         #     self._session_context)
@@ -581,12 +589,13 @@ class OrganizationBaseBusObj(BaseBusObj):
             organization data is found.
         """
         if not isinstance(organization_dict, dict):
-            raise ValueError("organization_dict must be a dictionary")
+            raise ValueError(
+                "organization_dict must be a dictionary")
 
         organization_manager = OrganizationManager(
             self._session_context)
 
-        self.organization = organization_manager.from_dict(
+        self.organization = await organization_manager.from_dict(
             organization_dict)
 
         return self

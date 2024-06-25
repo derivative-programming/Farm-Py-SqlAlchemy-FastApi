@@ -6,16 +6,17 @@ TacRegisterRouter,
 which handles the API endpoints related to the
 Tac Register.
 
-The TacRegisterRouter provides the following endpoints:
-    - GET /api/v1_0/tac-register/{tac_code}/init:
-        Get the initialization data for the
-        Tac Register page.
-    - GET /api/v1_0/tac-register/{tac_code}:
-        Get the Tac Register Report
-        for a specific tac code.
-    - GET /api/v1_0/tac-register/{tac_code}/to-csv:
-        Retrieve the Tac Register
-        Report as a CSV file.
+The TacRegisterRouter provides
+the following endpoints:
+- GET /api/v1_0/tac-register/{tac_code}/init:
+    Get the initialization data for the
+    Tac Register page.
+- GET /api/v1_0/tac-register/{tac_code}:
+    Get the Tac Register Report
+    for a specific tac code.
+- GET /api/v1_0/tac-register/{tac_code}/to-csv:
+    Retrieve the Tac Register
+    Report as a CSV file.
 """
 
 import logging
@@ -75,7 +76,8 @@ class TacRegisterRouter(BaseRouter):
         "/api/v1_0/tac-register/{tac_code}/init",
         response_model=(
             api_init_models.
-            TacRegisterInitObjWFGetInitModelResponse),
+            TacRegisterInitObjWFGetInitModelResponse
+        ),
         summary="Tac Register Init Page")
     async def request_get_init(
         tac_code: uuid.UUID = Path(..., description=TAC_CODE),
@@ -101,7 +103,8 @@ class TacRegisterRouter(BaseRouter):
             'TacRegisterRouter.request_get_init start. tacCode:%s',
             tac_code)
         auth_dict = BaseRouter.implementation_check(
-            TacRegisterRouterConfig.is_get_init_available)
+            TacRegisterRouterConfig
+            .is_get_init_available)
 
         response = (
             api_init_models.
@@ -158,11 +161,15 @@ class TacRegisterRouter(BaseRouter):
     @staticmethod
     @router.post(
         "/api/v1_0/tac-register/{tac_code}",
-        response_model=api_models.TacRegisterPostModelResponse,
+        response_model=(
+            api_models
+            .TacRegisterPostModelResponse
+        ),
         summary="Tac Register Business Flow")
     async def request_post_with_id(
         tac_code: uuid.UUID,
-        request_model: api_models.TacRegisterPostModelRequest,
+        request_model: (
+            api_models.TacRegisterPostModelRequest),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -185,9 +192,11 @@ class TacRegisterRouter(BaseRouter):
             tac_code
         )
         auth_dict = BaseRouter.implementation_check(
-            TacRegisterRouterConfig.is_post_with_id_available)
+            TacRegisterRouterConfig
+            .is_post_with_id_available)
 
-        response = api_models.TacRegisterPostModelResponse()
+        response = (api_models
+                    .TacRegisterPostModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             TacRegisterRouterConfig.is_public,

@@ -195,7 +195,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.customer_role.insert_user_id = value
 
@@ -236,7 +237,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.customer_role.last_update_user_id = value
 
@@ -279,7 +281,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_placeholder must be a boolean.")
+            raise ValueError(
+                "is_placeholder must be a boolean.")
 
         self.customer_role.is_placeholder = value
     # placeholder
@@ -320,7 +323,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("placeholder must be a boolean.")
+            raise ValueError(
+                "placeholder must be a boolean.")
 
         self.customer_role.placeholder = value
     # RoleID
@@ -519,7 +523,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.customer_role.insert_utc_date_time = value
 
@@ -567,7 +572,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.customer_role.last_update_utc_date_time = value
 
@@ -587,11 +593,12 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         customer_role_manager = CustomerRoleManager(
             self._session_context)
-        self.customer_role = customer_role_manager.from_json(json_data)
+        self.customer_role = await customer_role_manager.from_json(json_data)
 
         return self
 
@@ -609,7 +616,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             customer_role data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         customer_role_manager = CustomerRoleManager(
             self._session_context)
@@ -636,7 +644,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(customer_role_id, int):
-            raise ValueError("customer_role_id must be an integer")
+            raise ValueError(
+                "customer_role_id must be an integer")
 
         customer_role_manager = CustomerRoleManager(
             self._session_context)
@@ -663,7 +672,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
 
         if not isinstance(customer_role_obj_instance,
                           CustomerRole):
-            raise ValueError("customer_role_obj_instance must be an instance of CustomerRole")
+            raise ValueError(
+                "customer_role_obj_instance must be an instance of CustomerRole")
 
         # customer_role_manager = CustomerRoleManager(
         #     self._session_context)
@@ -692,12 +702,13 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             customer_role data is found.
         """
         if not isinstance(customer_role_dict, dict):
-            raise ValueError("customer_role_dict must be a dictionary")
+            raise ValueError(
+                "customer_role_dict must be a dictionary")
 
         customer_role_manager = CustomerRoleManager(
             self._session_context)
 
-        self.customer_role = customer_role_manager.from_dict(
+        self.customer_role = await customer_role_manager.from_dict(
             customer_role_dict)
 
         return self

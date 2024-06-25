@@ -45,7 +45,9 @@ class FlavorFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Flavor:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Flavor:
         """
             Builds and returns an instance
             of the Flavor model.
@@ -82,7 +84,9 @@ class FlavorFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Flavor:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Flavor:
         """
         Create a new Flavor object
         and save it to the database.
@@ -121,7 +125,9 @@ class FlavorFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Flavor:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Flavor:
         """
         Create a new Flavor object
         asynchronously.
@@ -151,7 +157,9 @@ class FlavorFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Flavor:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Flavor:
         """
         Build a new Flavor object
         asynchronously.

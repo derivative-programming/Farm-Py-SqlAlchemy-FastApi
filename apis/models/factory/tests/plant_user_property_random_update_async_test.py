@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...plant_user_property_random_update import PlantUserPropertyRandomUpdatePostModelRequest
-from ..plant_user_property_random_update import PlantUserPropertyRandomUpdatePostModelRequestFactory
+from ...plant_user_property_random_update import (
+    PlantUserPropertyRandomUpdatePostModelRequest)
+from ..plant_user_property_random_update import (
+    PlantUserPropertyRandomUpdatePostModelRequestFactory)
 
 
 class TestPlantUserPropertyRandomUpdatePostModelRequestFactoryAsync:
@@ -32,5 +34,6 @@ class TestPlantUserPropertyRandomUpdatePostModelRequestFactoryAsync:
             await PlantUserPropertyRandomUpdatePostModelRequestFactory.create_async(
                 session=session)
         )
-        assert isinstance(model_instance, PlantUserPropertyRandomUpdatePostModelRequest)
+        assert isinstance(model_instance,
+                          PlantUserPropertyRandomUpdatePostModelRequest)
 

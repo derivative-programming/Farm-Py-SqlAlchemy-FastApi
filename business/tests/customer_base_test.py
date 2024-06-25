@@ -1137,7 +1137,6 @@ class TestCustomerBaseBusObj:
 
         assert customer_role_bus_obj.customer_role_id > 0
 
-
     @pytest.mark.asyncio
     async def test_get_all_customer_role(
         self,

@@ -195,7 +195,8 @@ class PacBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.pac.insert_user_id = value
 
@@ -236,7 +237,8 @@ class PacBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.pac.last_update_user_id = value
 
@@ -368,7 +370,8 @@ class PacBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.pac.is_active = value
     # lookupEnumName
@@ -580,7 +583,8 @@ class PacBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.pac.insert_utc_date_time = value
 
@@ -628,7 +632,8 @@ class PacBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.pac.last_update_utc_date_time = value
 
@@ -648,11 +653,12 @@ class PacBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         pac_manager = PacManager(
             self._session_context)
-        self.pac = pac_manager.from_json(json_data)
+        self.pac = await pac_manager.from_json(json_data)
 
         return self
 
@@ -670,7 +676,8 @@ class PacBaseBusObj(BaseBusObj):
             pac data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         pac_manager = PacManager(
             self._session_context)
@@ -697,7 +704,8 @@ class PacBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(pac_id, int):
-            raise ValueError("pac_id must be an integer")
+            raise ValueError(
+                "pac_id must be an integer")
 
         pac_manager = PacManager(
             self._session_context)
@@ -724,7 +732,8 @@ class PacBaseBusObj(BaseBusObj):
 
         if not isinstance(pac_obj_instance,
                           Pac):
-            raise ValueError("pac_obj_instance must be an instance of Pac")
+            raise ValueError(
+                "pac_obj_instance must be an instance of Pac")
 
         # pac_manager = PacManager(
         #     self._session_context)
@@ -753,12 +762,13 @@ class PacBaseBusObj(BaseBusObj):
             pac data is found.
         """
         if not isinstance(pac_dict, dict):
-            raise ValueError("pac_dict must be a dictionary")
+            raise ValueError(
+                "pac_dict must be a dictionary")
 
         pac_manager = PacManager(
             self._session_context)
 
-        self.pac = pac_manager.from_dict(
+        self.pac = await pac_manager.from_dict(
             pac_dict)
 
         return self

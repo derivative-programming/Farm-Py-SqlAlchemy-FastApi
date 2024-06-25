@@ -340,7 +340,8 @@ class Plant(Base):
         Set the code of the plant.
 
         Args:
-            value (uuid.UUID): The code to set for the plant.
+            value (uuid.UUID): The code to set for the 
+                plant.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -373,9 +374,11 @@ class Plant(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the plant.
+        Returns the last change code of the
+        plant.
 
-        :return: The last change code of the plant.
+        :return: The last change code of the
+            plant.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -410,7 +413,8 @@ class Plant(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the plant.
+        Returns the UUID of the last user who updated the
+        plant.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -428,10 +432,12 @@ class Plant(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the plant.
+        Inserts the UTC date and time for the
+        plant.
 
         Returns:
-            datetime: The UTC date and time for the plant.
+            datetime: The UTC date and time for the
+                plant.
         """
         return getattr(
             self,
@@ -450,7 +456,8 @@ class Plant(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the plant.
+        Returns the last update UTC date and time of the
+        plant.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -474,7 +481,8 @@ class Plant(Base):
     @property
     def is_delete_allowed(self) -> bool:
         """
-        Check if the delete operation is allowed for the plant.
+        Check if the delete operation is allowed for the
+        plant.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -493,7 +501,8 @@ class Plant(Base):
     @property
     def is_edit_allowed(self) -> bool:
         """
-        Checks if editing is allowed for the plant.
+        Checks if editing is allowed for the
+        plant.
 
         Returns:
             bool: True if editing is allowed, False otherwise.
@@ -512,9 +521,11 @@ class Plant(Base):
     @property
     def other_flavor(self) -> str:
         """
-        Returns the other flavor of the plant.
+        Returns the other flavor of the
+        plant.
 
-        :return: The other flavor of the plant.
+        :return: The other flavor of the
+            plant.
         :rtype: str
         """
         return getattr(self, '_other_flavor', "") or ""
@@ -814,8 +825,8 @@ class Plant(Base):
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.utcnow()
-
     # someTextVal,
+
     @property
     def some_text_val(self) -> str:
         """
@@ -833,21 +844,20 @@ class Plant(Base):
         """
 
         self._some_text_val = value
-
     # flvrForeignKeyID
     # LandID
-
 # endset
-
     # flvrForeignKeyID
 
     @property
     def flvr_foreign_key_id(self) -> int:
         """
-        Get the foreign key ID for the flavor of the plant.
+        Get the foreign key ID for the flavor of the
+        plant.
 
         Returns:
-            int: The foreign key ID for the flavor of the plant.
+            int: The foreign key ID for the flavor of the
+                plant.
         """
         return getattr(self, '_flvr_foreign_key_id', 0) or 0
 
@@ -877,7 +887,6 @@ class Plant(Base):
         """
 
         self._land_id = value
-
 # endset
 
     @staticmethod

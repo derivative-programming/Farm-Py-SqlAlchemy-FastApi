@@ -161,7 +161,8 @@ class Pac(Base):
         Set the code of the pac.
 
         Args:
-            value (uuid.UUID): The code to set for the pac.
+            value (uuid.UUID): The code to set for the
+                pac.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -194,9 +195,11 @@ class Pac(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the pac.
+        Returns the last change code of the
+        pac.
 
-        :return: The last change code of the pac.
+        :return: The last change code of the
+            pac.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -231,7 +234,8 @@ class Pac(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the pac.
+        Returns the UUID of the last user who updated the
+        pac.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -249,10 +253,12 @@ class Pac(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the pac.
+        Inserts the UTC date and time for the
+        pac.
 
         Returns:
-            datetime: The UTC date and time for the pac.
+            datetime: The UTC date and time for the
+                pac.
         """
         return getattr(
             self,
@@ -271,7 +277,8 @@ class Pac(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the pac.
+        Returns the last update UTC date and time of the
+        pac.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -294,9 +301,11 @@ class Pac(Base):
     @property
     def description(self) -> str:
         """
-        Returns the Description of the pac.
+        Returns the Description of the
+        pac.
 
-        :return: The Description of the pac.
+        :return: The Description of the
+            pac.
         :rtype: str
         """
         return getattr(self, '_description', "") or ""
@@ -333,7 +342,8 @@ class Pac(Base):
     @property
     def is_active(self) -> bool:
         """
-        Check if the delete operation is allowed for the pac.
+        Check if the delete operation is allowed for the
+        pac.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -352,9 +362,11 @@ class Pac(Base):
     @property
     def lookup_enum_name(self) -> str:
         """
-        Returns the Lookup Enum Name of the pac.
+        Returns the Lookup Enum Name of the
+        pac.
 
-        :return: The Lookup Enum Name of the pac.
+        :return: The Lookup Enum Name of the
+            pac.
         :rtype: str
         """
         return getattr(self, '_lookup_enum_name', "") or ""
@@ -371,9 +383,11 @@ class Pac(Base):
     @property
     def name(self) -> str:
         """
-        Returns the Name of the pac.
+        Returns the Name of the
+        pac.
 
-        :return: The Name of the pac.
+        :return: The Name of the
+            pac.
         :rtype: str
         """
         return getattr(self, '_name', "") or ""
@@ -403,7 +417,6 @@ class Pac(Base):
         """
 
         self.__id = value
-
 
     @staticmethod
     def property_list():

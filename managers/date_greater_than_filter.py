@@ -386,7 +386,7 @@ class DateGreaterThanFilterManager:
         date_greater_than_filter_data = schema.dump(date_greater_than_filter)
         assert isinstance(date_greater_than_filter_data, dict)
         return date_greater_than_filter_data
-    def from_json(self, json_str: str) -> DateGreaterThanFilter:
+    async def from_json(self, json_str: str) -> DateGreaterThanFilter:
         """
         Deserializes a JSON string into a DateGreaterThanFilter object.
         Args:
@@ -398,9 +398,19 @@ class DateGreaterThanFilterManager:
         schema = DateGreaterThanFilterSchema()
         data = json.loads(json_str)
         date_greater_than_filter_dict = schema.load(data)
-        new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict)
+        # new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict)
+
+        # load or create
+        new_date_greater_than_filter = await self.get_by_id(date_greater_than_filter_dict["date_greater_than_filter_id"])
+        if new_date_greater_than_filter is None:
+            new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict)
+            self._session_context.session.add(new_date_greater_than_filter)
+        else:
+            for key, value in date_greater_than_filter_dict.items():
+                setattr(new_date_greater_than_filter, key, value)
+
         return new_date_greater_than_filter
-    def from_dict(self, date_greater_than_filter_dict: Dict[str, Any]) -> DateGreaterThanFilter:
+    async def from_dict(self, date_greater_than_filter_dict: Dict[str, Any]) -> DateGreaterThanFilter:
         """
         Creates a DateGreaterThanFilter instance from a dictionary of attributes.
         Args:
@@ -414,7 +424,17 @@ class DateGreaterThanFilterManager:
         schema = DateGreaterThanFilterSchema()
         date_greater_than_filter_dict_converted = schema.load(date_greater_than_filter_dict)
         # Create a new DateGreaterThanFilter instance using the validated data
-        new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict_converted)
+        # new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict_converted)
+
+        # load or create
+        new_date_greater_than_filter = await self.get_by_id(date_greater_than_filter_dict_converted["date_greater_than_filter_id"])
+        if new_date_greater_than_filter is None:
+            new_date_greater_than_filter = DateGreaterThanFilter(**date_greater_than_filter_dict_converted)
+            self._session_context.session.add(new_date_greater_than_filter)
+        else:
+            for key, value in date_greater_than_filter_dict_converted.items():
+                setattr(new_date_greater_than_filter, key, value)
+
         return new_date_greater_than_filter
     async def add_bulk(self, date_greater_than_filters: List[DateGreaterThanFilter]) -> List[DateGreaterThanFilter]:
         """

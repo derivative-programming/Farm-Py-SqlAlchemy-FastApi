@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
 
-from ..land_user_plant_multi_select_to_editable import LandUserPlantMultiSelectToEditablePostModelRequest
+from ..land_user_plant_multi_select_to_editable import (
+    LandUserPlantMultiSelectToEditablePostModelRequest)
 
 
 class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Factory):
@@ -45,7 +46,8 @@ class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Fac
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of LandUserPlantMultiSelectToEditablePostModelRequest.
+            An instance of
+            LandUserPlantMultiSelectToEditablePostModelRequest.
         """
 
         if session is None:
@@ -74,7 +76,8 @@ class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Fac
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of LandUserPlantMultiSelectToEditablePostModelRequest.
+            An instance of
+            LandUserPlantMultiSelectToEditablePostModelRequest.
         """
 
 
@@ -98,7 +101,8 @@ class LandUserPlantMultiSelectToEditablePostModelRequestFactory(factory.base.Fac
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of LandUserPlantMultiSelectToEditablePostModelRequest.
+            An instance of
+            LandUserPlantMultiSelectToEditablePostModelRequest.
         """
 
 

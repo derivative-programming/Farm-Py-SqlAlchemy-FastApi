@@ -431,7 +431,8 @@ class TestReportManagerLandPlantList:
         result = await test_obj.read_csv(file_name)
         assert isinstance(result, list)
         assert all(
-            isinstance(item, ReportItemLandPlantList) for item in result
+            isinstance(item, ReportItemLandPlantList
+                       ) for item in result
         )
 
         os.remove(file_name)

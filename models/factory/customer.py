@@ -62,7 +62,9 @@ class CustomerFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Customer:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Customer:
         """
             Builds and returns an instance
             of the Customer model.
@@ -99,7 +101,9 @@ class CustomerFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Customer:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Customer:
         """
         Create a new Customer object
         and save it to the database.
@@ -138,7 +142,9 @@ class CustomerFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Customer:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Customer:
         """
         Create a new Customer object
         asynchronously.
@@ -168,7 +174,9 @@ class CustomerFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Customer:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Customer:
         """
         Build a new Customer object
         asynchronously.

@@ -195,7 +195,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.customer.insert_user_id = value
 
@@ -236,7 +237,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.customer.last_update_user_id = value
 
@@ -382,7 +384,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "email_confirmed_utc_date_time must be a datetime object")
+            "email_confirmed_utc_date_time "
+            "must be a datetime object")
         self.customer.email_confirmed_utc_date_time = value
     # firstName
 
@@ -472,7 +475,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "forgot_password_key_expiration_utc_date_time must be a datetime object")
+            "forgot_password_key_expiration_utc_date_time "
+            "must be a datetime object")
         self.customer.forgot_password_key_expiration_utc_date_time = value
     # forgotPasswordKeyValue
 
@@ -603,7 +607,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.customer.is_active = value
     # isEmailAllowed
@@ -644,7 +649,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_email_allowed must be a boolean.")
+            raise ValueError(
+                "is_email_allowed must be a boolean.")
 
         self.customer.is_email_allowed = value
     # isEmailConfirmed
@@ -685,7 +691,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_email_confirmed must be a boolean.")
+            raise ValueError(
+                "is_email_confirmed must be a boolean.")
 
         self.customer.is_email_confirmed = value
     # isEmailMarketingAllowed
@@ -726,7 +733,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_email_marketing_allowed must be a boolean.")
+            raise ValueError(
+                "is_email_marketing_allowed must be a boolean.")
 
         self.customer.is_email_marketing_allowed = value
     # isLocked
@@ -767,7 +775,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_locked must be a boolean.")
+            raise ValueError(
+                "is_locked must be a boolean.")
 
         self.customer.is_locked = value
     # isMultipleOrganizationsAllowed
@@ -808,7 +817,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_multiple_organizations_allowed must be a boolean.")
+            raise ValueError(
+                "is_multiple_organizations_allowed must be a boolean.")
 
         self.customer.is_multiple_organizations_allowed = value
     # isVerboseLoggingForced
@@ -849,7 +859,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_verbose_logging_forced must be a boolean.")
+            raise ValueError(
+                "is_verbose_logging_forced must be a boolean.")
 
         self.customer.is_verbose_logging_forced = value
     # lastLoginUTCDateTime
@@ -898,7 +909,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "last_login_utc_date_time must be a datetime object")
+            "last_login_utc_date_time "
+            "must be a datetime object")
         self.customer.last_login_utc_date_time = value
     # lastName
 
@@ -1131,7 +1143,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "registration_utc_date_time must be a datetime object")
+            "registration_utc_date_time "
+            "must be a datetime object")
         self.customer.registration_utc_date_time = value
     # TacID
     # uTCOffsetInMinutes
@@ -1349,7 +1362,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.customer.insert_utc_date_time = value
 
@@ -1397,7 +1411,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.customer.last_update_utc_date_time = value
 
@@ -1417,11 +1432,12 @@ class CustomerBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         customer_manager = CustomerManager(
             self._session_context)
-        self.customer = customer_manager.from_json(json_data)
+        self.customer = await customer_manager.from_json(json_data)
 
         return self
 
@@ -1439,7 +1455,8 @@ class CustomerBaseBusObj(BaseBusObj):
             customer data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         customer_manager = CustomerManager(
             self._session_context)
@@ -1466,7 +1483,8 @@ class CustomerBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(customer_id, int):
-            raise ValueError("customer_id must be an integer")
+            raise ValueError(
+                "customer_id must be an integer")
 
         customer_manager = CustomerManager(
             self._session_context)
@@ -1493,7 +1511,8 @@ class CustomerBaseBusObj(BaseBusObj):
 
         if not isinstance(customer_obj_instance,
                           Customer):
-            raise ValueError("customer_obj_instance must be an instance of Customer")
+            raise ValueError(
+                "customer_obj_instance must be an instance of Customer")
 
         # customer_manager = CustomerManager(
         #     self._session_context)
@@ -1522,12 +1541,13 @@ class CustomerBaseBusObj(BaseBusObj):
             customer data is found.
         """
         if not isinstance(customer_dict, dict):
-            raise ValueError("customer_dict must be a dictionary")
+            raise ValueError(
+                "customer_dict must be a dictionary")
 
         customer_manager = CustomerManager(
             self._session_context)
 
-        self.customer = customer_manager.from_dict(
+        self.customer = await customer_manager.from_dict(
             customer_dict)
 
         return self

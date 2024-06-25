@@ -195,7 +195,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.org_customer.insert_user_id = value
 
@@ -236,7 +237,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.org_customer.last_update_user_id = value
 
@@ -485,7 +487,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.org_customer.insert_utc_date_time = value
 
@@ -533,7 +536,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.org_customer.last_update_utc_date_time = value
 
@@ -553,11 +557,12 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         org_customer_manager = OrgCustomerManager(
             self._session_context)
-        self.org_customer = org_customer_manager.from_json(json_data)
+        self.org_customer = await org_customer_manager.from_json(json_data)
 
         return self
 
@@ -575,7 +580,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             org_customer data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         org_customer_manager = OrgCustomerManager(
             self._session_context)
@@ -602,7 +608,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(org_customer_id, int):
-            raise ValueError("org_customer_id must be an integer")
+            raise ValueError(
+                "org_customer_id must be an integer")
 
         org_customer_manager = OrgCustomerManager(
             self._session_context)
@@ -629,7 +636,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
 
         if not isinstance(org_customer_obj_instance,
                           OrgCustomer):
-            raise ValueError("org_customer_obj_instance must be an instance of OrgCustomer")
+            raise ValueError(
+                "org_customer_obj_instance must be an instance of OrgCustomer")
 
         # org_customer_manager = OrgCustomerManager(
         #     self._session_context)
@@ -658,12 +666,13 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             org_customer data is found.
         """
         if not isinstance(org_customer_dict, dict):
-            raise ValueError("org_customer_dict must be a dictionary")
+            raise ValueError(
+                "org_customer_dict must be a dictionary")
 
         org_customer_manager = OrgCustomerManager(
             self._session_context)
 
-        self.org_customer = org_customer_manager.from_dict(
+        self.org_customer = await org_customer_manager.from_dict(
             org_customer_dict)
 
         return self

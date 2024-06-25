@@ -67,7 +67,8 @@ class OrganizationManager:
         """
         Initializes the OrganizationManager.
         """
-        logging.info("OrganizationManager.Initialize")
+        logging.info(
+            "OrganizationManager.Initialize")
 
 
     async def build(self, **kwargs) -> Organization:
@@ -83,7 +84,8 @@ class OrganizationManager:
             Organization: The newly created
                 Organization object.
         """
-        logging.info("OrganizationManager.build")
+        logging.info(
+            "OrganizationManager.build")
         return Organization(**kwargs)
 
     async def add(
@@ -101,9 +103,12 @@ class OrganizationManager:
             Organization: The added
                 organization.
         """
-        logging.info("OrganizationManager.add")
-        organization.insert_user_id = self._session_context.customer_code
-        organization.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "OrganizationManager.add")
+        organization.insert_user_id = (
+            self._session_context.customer_code)
+        organization.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             organization)
         await self._session_context.session.flush()
@@ -118,7 +123,8 @@ class OrganizationManager:
             The base query for retrieving
             organizations.
         """
-        logging.info("OrganizationManager._build_query")
+        logging.info(
+            "OrganizationManager._build_query")
 
         query = select(
             Organization,
@@ -147,7 +153,8 @@ class OrganizationManager:
             List[Organization]: The list of
                 organizations that match the query.
         """
-        logging.info("OrganizationManager._run_query")
+        logging.info(
+            "OrganizationManager._run_query")
         organization_query_all = self._build_query()
 
         if query_filter is not None:
@@ -197,7 +204,9 @@ class OrganizationManager:
             else None
         )
 
-    async def get_by_id(self, organization_id: int) -> Optional[Organization]:
+    async def get_by_id(
+        self, organization_id: int
+    ) -> Optional[Organization]:
         """
         Retrieves a organization by its ID.
 
@@ -224,7 +233,9 @@ class OrganizationManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[Organization]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[Organization]:
         """
         Retrieves a organization
         by its code.
@@ -237,7 +248,8 @@ class OrganizationManager:
             Optional[Organization]: The retrieved
                 organization, or None if not found.
         """
-        logging.info("OrganizationManager.get_by_code %s", code)
+        logging.info("OrganizationManager.get_by_code %s",
+                     code)
 
         query_filter = Organization._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -291,7 +303,9 @@ class OrganizationManager:
                 organization with the
                 specified ID is not found.
         """
-        logging.info("OrganizationManager.delete %s", organization_id)
+        logging.info(
+            "OrganizationManager.delete %s",
+            organization_id)
         if not isinstance(organization_id, int):
             raise TypeError(
                 f"The organization_id must be an integer, "
@@ -300,7 +314,8 @@ class OrganizationManager:
         organization = await self.get_by_id(
             organization_id)
         if not organization:
-            raise OrganizationNotFoundError(f"Organization with ID {organization_id} not found!")
+            raise OrganizationNotFoundError(
+                f"Organization with ID {organization_id} not found!")
 
         await self._session_context.session.delete(
             organization)
@@ -317,7 +332,8 @@ class OrganizationManager:
             List[Organization]: The list of
                 organizations.
         """
-        logging.info("OrganizationManager.get_list")
+        logging.info(
+            "OrganizationManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -338,7 +354,8 @@ class OrganizationManager:
             str: The JSON string representation of the
                 organization.
         """
-        logging.info("OrganizationManager.to_json")
+        logging.info(
+            "OrganizationManager.to_json")
         schema = OrganizationSchema()
         organization_data = schema.dump(organization)
         return json.dumps(organization_data)
@@ -359,7 +376,8 @@ class OrganizationManager:
             Dict[str, Any]: The dictionary representation of the
                 organization.
         """
-        logging.info("OrganizationManager.to_dict")
+        logging.info(
+            "OrganizationManager.to_dict")
         schema = OrganizationSchema()
         organization_data = schema.dump(organization)
 
@@ -367,7 +385,7 @@ class OrganizationManager:
 
         return organization_data
 
-    def from_json(self, json_str: str) -> Organization:
+    async def from_json(self, json_str: str) -> Organization:
         """
         Deserializes a JSON string into a
         Organization object.
@@ -379,19 +397,32 @@ class OrganizationManager:
             Organization: The deserialized
                 Organization object.
         """
-        logging.info("OrganizationManager.from_json")
+        logging.info(
+            "OrganizationManager.from_json")
         schema = OrganizationSchema()
         data = json.loads(json_str)
         organization_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_organization = Organization(**organization_dict)
+        # new_organization = Organization(**organization_dict)
+
+        # load or create
+        new_organization = await self.get_by_id(
+            organization_dict["organization_id"])
+        if new_organization is None:
+            new_organization = Organization(**organization_dict)
+            self._session_context.session.add(new_organization)
+        else:
+            for key, value in organization_dict.items():
+                setattr(new_organization, key, value)
 
         return new_organization
 
-    def from_dict(self, organization_dict: Dict[str, Any]) -> Organization:
+    async def from_dict(
+        self, organization_dict: Dict[str, Any]
+    ) -> Organization:
         """
         Creates a Organization
         instance from a dictionary of attributes.
@@ -407,19 +438,31 @@ class OrganizationManager:
                 created from the given
                 dictionary.
         """
-        logging.info("OrganizationManager.from_dict")
+        logging.info(
+            "OrganizationManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = OrganizationSchema()
         organization_dict_converted = schema.load(
             organization_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new Organization instance
         # using the validated data
-        new_organization = Organization(**organization_dict_converted)
+        # new_organization = Organization(**organization_dict_converted)
+
+        # load or create
+        new_organization = await self.get_by_id(
+            organization_dict_converted["organization_id"])
+        if new_organization is None:
+            new_organization = Organization(**organization_dict_converted)
+            self._session_context.session.add(new_organization)
+        else:
+            for key, value in organization_dict_converted.items():
+                setattr(new_organization, key, value)
+
         return new_organization
 
     async def add_bulk(
@@ -438,7 +481,8 @@ class OrganizationManager:
             List[Organization]: The added
                 organizations.
         """
-        logging.info("OrganizationManager.add_bulk")
+        logging.info(
+            "OrganizationManager.add_bulk")
         for organization in organizations:
             organization_id = organization.organization_id
             code = organization.code
@@ -447,8 +491,10 @@ class OrganizationManager:
                     "Organization is already added"
                     f": {str(code)} {str(organization_id)}"
                 )
-            organization.insert_user_id = self._session_context.customer_code
-            organization.last_update_user_id = self._session_context.customer_code
+            organization.insert_user_id = (
+                self._session_context.customer_code)
+            organization.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(organizations)
         await self._session_context.session.flush()
         return organizations
@@ -477,7 +523,8 @@ class OrganizationManager:
                 provided organization_id is not found.
         """
 
-        logging.info("OrganizationManager.update_bulk start")
+        logging.info(
+            "OrganizationManager.update_bulk start")
         updated_organizations = []
         for update in organization_updates:
             organization_id = update.get("organization_id")
@@ -489,7 +536,9 @@ class OrganizationManager:
             if not organization_id:
                 continue
 
-            logging.info("OrganizationManager.update_bulk organization_id:%s", organization_id)
+            logging.info(
+                "OrganizationManager.update_bulk organization_id:%s",
+                organization_id)
 
             organization = await self.get_by_id(
                 organization_id)
@@ -508,7 +557,8 @@ class OrganizationManager:
 
         await self._session_context.session.flush()
 
-        logging.info("OrganizationManager.update_bulk end")
+        logging.info(
+            "OrganizationManager.update_bulk end")
 
         return updated_organizations
 
@@ -517,7 +567,8 @@ class OrganizationManager:
         Delete multiple organizations
         by their IDs.
         """
-        logging.info("OrganizationManager.delete_bulk")
+        logging.info(
+            "OrganizationManager.delete_bulk")
 
         for organization_id in organization_ids:
             if not isinstance(organization_id, int):
@@ -546,7 +597,8 @@ class OrganizationManager:
         return the total number of
         organizations.
         """
-        logging.info("OrganizationManager.count")
+        logging.info(
+            "OrganizationManager.count")
         result = await self._session_context.session.execute(
             select(Organization))
         return len(list(result.scalars().all()))
@@ -561,7 +613,8 @@ class OrganizationManager:
         from the database.
         """
 
-        logging.info("OrganizationManager.refresh")
+        logging.info(
+            "OrganizationManager.refresh")
 
         await self._session_context.session.refresh(organization)
 
@@ -572,7 +625,9 @@ class OrganizationManager:
         Check if a organization
         with the given ID exists.
         """
-        logging.info("OrganizationManager.exists %s", organization_id)
+        logging.info(
+            "OrganizationManager.exists %s",
+            organization_id)
         if not isinstance(organization_id, int):
             raise TypeError(
                 f"The organization_id must be an integer, "
@@ -625,7 +680,9 @@ class OrganizationManager:
         dict2 = self.to_dict(organization2)
 
         return dict1 == dict2
-    async def get_by_tac_id(self, tac_id: int) -> List[Organization]:  # TacID
+    async def get_by_tac_id(  # TacID
+            self,
+            tac_id: int) -> List[Organization]:
         """
         Retrieve a list of organizations by
         tac ID.
@@ -639,7 +696,8 @@ class OrganizationManager:
                 with the specified tac ID.
         """
 
-        logging.info("OrganizationManager.get_by_tac_id")
+        logging.info(
+            "OrganizationManager.get_by_tac_id")
         if not isinstance(tac_id, int):
             raise TypeError(
                 f"The organization_id must be an integer, "

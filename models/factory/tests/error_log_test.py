@@ -96,7 +96,8 @@ class TestErrorLogFactory:
         initial_code = error_log.last_change_code
         error_log.code = uuid.uuid4()
         session.commit()
-        assert error_log.last_change_code != initial_code
+        assert error_log.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestErrorLogFactory:
         session.delete(error_log)
         session.commit()
         deleted_error_log = session.query(ErrorLog).filter_by(
-            error_log_id=error_log.error_log_id).first()
+            _error_log_id=(
+                error_log.error_log_id)
+        ).first()
         assert deleted_error_log is None
 
     def test_data_types(self, session):
@@ -241,10 +244,13 @@ class TestErrorLogFactory:
         """
         Test case for checking the unique code constraint.
         """
-        error_log_1 = ErrorLogFactory.create(session=session)
-        error_log_2 = ErrorLogFactory.create(session=session)
+        error_log_1 = ErrorLogFactory.create(
+            session=session)
+        error_log_2 = ErrorLogFactory.create(
+            session=session)
         error_log_2.code = error_log_1.code
-        session.add_all([error_log_1, error_log_2])
+        session.add_all([error_log_1,
+                         error_log_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -318,14 +324,19 @@ class TestErrorLogFactory:
             session=session)
         original_last_change_code = error_log.last_change_code
         error_log_1 = session.query(ErrorLog).filter_by(
-            _error_log_id=error_log.error_log_id).first()
+            _error_log_id=(
+                error_log.error_log_id)
+        ).first()
         error_log_1.code = uuid.uuid4()
         session.commit()
         error_log_2 = session.query(ErrorLog).filter_by(
-            _error_log_id=error_log.error_log_id).first()
+            _error_log_id=(
+                error_log.error_log_id)
+        ).first()
         error_log_2.code = uuid.uuid4()
         session.commit()
-        assert error_log_2.last_change_code != original_last_change_code
+        assert error_log_2.last_change_code != \
+            original_last_change_code
     # browserCode,
     # contextCode,
     # createdUTCDateTime

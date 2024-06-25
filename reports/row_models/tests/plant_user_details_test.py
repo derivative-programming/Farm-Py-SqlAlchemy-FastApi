@@ -18,7 +18,8 @@ from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
-from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+from reports.row_models.plant_user_details import (
+    ReportItemPlantUserDetails)
 
 
 class TestReportItemPlantUserDetails:

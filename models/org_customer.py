@@ -139,7 +139,8 @@ class OrgCustomer(Base):
         Set the code of the org_customer.
 
         Args:
-            value (uuid.UUID): The code to set for the org_customer.
+            value (uuid.UUID): The code to set for the
+                org_customer.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -172,9 +173,11 @@ class OrgCustomer(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the org_customer.
+        Returns the last change code of the
+        org_customer.
 
-        :return: The last change code of the org_customer.
+        :return: The last change code of the
+            org_customer.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -209,7 +212,8 @@ class OrgCustomer(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the org_customer.
+        Returns the UUID of the last user who updated the
+        org_customer.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -227,10 +231,12 @@ class OrgCustomer(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the org_customer.
+        Inserts the UTC date and time for the
+        org_customer.
 
         Returns:
-            datetime: The UTC date and time for the org_customer.
+            datetime: The UTC date and time for the
+                org_customer.
         """
         return getattr(
             self,
@@ -249,7 +255,8 @@ class OrgCustomer(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the org_customer.
+        Returns the last update UTC date and time of the
+        org_customer.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -292,10 +299,12 @@ class OrgCustomer(Base):
     @property
     def customer_id(self) -> int:
         """
-        Get the foreign key ID for the customer of the org_customer.
+        Get the foreign key ID for the customer of the
+        org_customer.
 
         Returns:
-            int: The foreign key ID for the customer of the org_customer.
+            int: The foreign key ID for the customer of the
+                org_customer.
         """
         return getattr(self, '_customer_id', 0) or 0
 
@@ -324,7 +333,6 @@ class OrgCustomer(Base):
         """
 
         self._organization_id = value
-
 
     @staticmethod
     def property_list():

@@ -21,7 +21,9 @@ from ..pac_user_date_greater_than_filter_list_init_report import (
 
 class MockFlowPacUserDateGreaterThanFilterListInitReportResult:
     """
-    A mock object for the FlowPacUserDateGreaterThanFilterListInitReportResult class.
+    A mock object for the
+    FlowPacUserDateGreaterThanFilterListInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -32,7 +34,9 @@ class MockFlowPacUserDateGreaterThanFilterListInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowPacUserDateGreaterThanFilterListInitReportResult object.
+    Return a mock
+    FlowPacUserDateGreaterThanFilterListInitReportResult
+    object.
     """
     return MockFlowPacUserDateGreaterThanFilterListInitReportResult()
 

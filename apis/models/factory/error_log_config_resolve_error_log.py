@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
 
-from ..error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequest
+from ..error_log_config_resolve_error_log import (
+    ErrorLogConfigResolveErrorLogPostModelRequest)
 
 
 class ErrorLogConfigResolveErrorLogPostModelRequestFactory(factory.base.Factory):
@@ -45,7 +46,8 @@ class ErrorLogConfigResolveErrorLogPostModelRequestFactory(factory.base.Factory)
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of ErrorLogConfigResolveErrorLogPostModelRequest.
+            An instance of
+            ErrorLogConfigResolveErrorLogPostModelRequest.
         """
 
         if session is None:
@@ -74,7 +76,8 @@ class ErrorLogConfigResolveErrorLogPostModelRequestFactory(factory.base.Factory)
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of ErrorLogConfigResolveErrorLogPostModelRequest.
+            An instance of
+            ErrorLogConfigResolveErrorLogPostModelRequest.
         """
 
 
@@ -98,7 +101,8 @@ class ErrorLogConfigResolveErrorLogPostModelRequestFactory(factory.base.Factory)
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of ErrorLogConfigResolveErrorLogPostModelRequest.
+            An instance of
+            ErrorLogConfigResolveErrorLogPostModelRequest.
         """
 
 

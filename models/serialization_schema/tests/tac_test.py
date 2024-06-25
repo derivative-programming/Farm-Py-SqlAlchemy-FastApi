@@ -158,7 +158,10 @@ class TestTacSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tac.pac_code_peek))
 
-    def test_tac_deserialization(self, tac):
+    def test_tac_deserialization(
+        self,
+        tac
+    ):
         """
         Test the deserialization of a
         Tac object using the
@@ -207,7 +210,8 @@ class TestTacSchema:
             'pac_code_peek')] == (
             tac.pac_code_peek)
 
-        new_tac = Tac(**deserialized_data)
+        new_tac = Tac(
+            **deserialized_data)
 
         assert isinstance(new_tac, Tac)
 
@@ -301,7 +305,8 @@ class TestTacSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_tac = Tac(**deserialized_data)
+        new_tac = Tac(
+            **deserialized_data)
 
         assert isinstance(new_tac, Tac)
 

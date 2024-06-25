@@ -137,7 +137,8 @@ class PacManager:
             Pac: The newly created
                 Pac object.
         """
-        logging.info("PacManager.build")
+        logging.info(
+            "PacManager.build")
         return Pac(**kwargs)
 
     async def add(
@@ -155,9 +156,12 @@ class PacManager:
             Pac: The added
                 pac.
         """
-        logging.info("PacManager.add")
-        pac.insert_user_id = self._session_context.customer_code
-        pac.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "PacManager.add")
+        pac.insert_user_id = (
+            self._session_context.customer_code)
+        pac.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             pac)
         await self._session_context.session.flush()
@@ -172,7 +176,8 @@ class PacManager:
             The base query for retrieving
             pacs.
         """
-        logging.info("PacManager._build_query")
+        logging.info(
+            "PacManager._build_query")
 
         query = select(
             Pac,
@@ -197,7 +202,8 @@ class PacManager:
             List[Pac]: The list of
                 pacs that match the query.
         """
-        logging.info("PacManager._run_query")
+        logging.info(
+            "PacManager._run_query")
         pac_query_all = self._build_query()
 
         if query_filter is not None:
@@ -245,7 +251,9 @@ class PacManager:
             else None
         )
 
-    async def get_by_id(self, pac_id: int) -> Optional[Pac]:
+    async def get_by_id(
+        self, pac_id: int
+    ) -> Optional[Pac]:
         """
         Retrieves a pac by its ID.
 
@@ -272,7 +280,9 @@ class PacManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[Pac]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[Pac]:
         """
         Retrieves a pac
         by its code.
@@ -285,7 +295,8 @@ class PacManager:
             Optional[Pac]: The retrieved
                 pac, or None if not found.
         """
-        logging.info("PacManager.get_by_code %s", code)
+        logging.info("PacManager.get_by_code %s",
+                     code)
 
         query_filter = Pac._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -339,7 +350,9 @@ class PacManager:
                 pac with the
                 specified ID is not found.
         """
-        logging.info("PacManager.delete %s", pac_id)
+        logging.info(
+            "PacManager.delete %s",
+            pac_id)
         if not isinstance(pac_id, int):
             raise TypeError(
                 f"The pac_id must be an integer, "
@@ -348,7 +361,8 @@ class PacManager:
         pac = await self.get_by_id(
             pac_id)
         if not pac:
-            raise PacNotFoundError(f"Pac with ID {pac_id} not found!")
+            raise PacNotFoundError(
+                f"Pac with ID {pac_id} not found!")
 
         await self._session_context.session.delete(
             pac)
@@ -365,7 +379,8 @@ class PacManager:
             List[Pac]: The list of
                 pacs.
         """
-        logging.info("PacManager.get_list")
+        logging.info(
+            "PacManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -386,7 +401,8 @@ class PacManager:
             str: The JSON string representation of the
                 pac.
         """
-        logging.info("PacManager.to_json")
+        logging.info(
+            "PacManager.to_json")
         schema = PacSchema()
         pac_data = schema.dump(pac)
         return json.dumps(pac_data)
@@ -407,7 +423,8 @@ class PacManager:
             Dict[str, Any]: The dictionary representation of the
                 pac.
         """
-        logging.info("PacManager.to_dict")
+        logging.info(
+            "PacManager.to_dict")
         schema = PacSchema()
         pac_data = schema.dump(pac)
 
@@ -415,7 +432,7 @@ class PacManager:
 
         return pac_data
 
-    def from_json(self, json_str: str) -> Pac:
+    async def from_json(self, json_str: str) -> Pac:
         """
         Deserializes a JSON string into a
         Pac object.
@@ -427,19 +444,32 @@ class PacManager:
             Pac: The deserialized
                 Pac object.
         """
-        logging.info("PacManager.from_json")
+        logging.info(
+            "PacManager.from_json")
         schema = PacSchema()
         data = json.loads(json_str)
         pac_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_pac = Pac(**pac_dict)
+        # new_pac = Pac(**pac_dict)
+
+        # load or create
+        new_pac = await self.get_by_id(
+            pac_dict["pac_id"])
+        if new_pac is None:
+            new_pac = Pac(**pac_dict)
+            self._session_context.session.add(new_pac)
+        else:
+            for key, value in pac_dict.items():
+                setattr(new_pac, key, value)
 
         return new_pac
 
-    def from_dict(self, pac_dict: Dict[str, Any]) -> Pac:
+    async def from_dict(
+        self, pac_dict: Dict[str, Any]
+    ) -> Pac:
         """
         Creates a Pac
         instance from a dictionary of attributes.
@@ -455,19 +485,31 @@ class PacManager:
                 created from the given
                 dictionary.
         """
-        logging.info("PacManager.from_dict")
+        logging.info(
+            "PacManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = PacSchema()
         pac_dict_converted = schema.load(
             pac_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new Pac instance
         # using the validated data
-        new_pac = Pac(**pac_dict_converted)
+        # new_pac = Pac(**pac_dict_converted)
+
+        # load or create
+        new_pac = await self.get_by_id(
+            pac_dict_converted["pac_id"])
+        if new_pac is None:
+            new_pac = Pac(**pac_dict_converted)
+            self._session_context.session.add(new_pac)
+        else:
+            for key, value in pac_dict_converted.items():
+                setattr(new_pac, key, value)
+
         return new_pac
 
     async def add_bulk(
@@ -486,7 +528,8 @@ class PacManager:
             List[Pac]: The added
                 pacs.
         """
-        logging.info("PacManager.add_bulk")
+        logging.info(
+            "PacManager.add_bulk")
         for pac in pacs:
             pac_id = pac.pac_id
             code = pac.code
@@ -495,8 +538,10 @@ class PacManager:
                     "Pac is already added"
                     f": {str(code)} {str(pac_id)}"
                 )
-            pac.insert_user_id = self._session_context.customer_code
-            pac.last_update_user_id = self._session_context.customer_code
+            pac.insert_user_id = (
+                self._session_context.customer_code)
+            pac.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(pacs)
         await self._session_context.session.flush()
         return pacs
@@ -525,7 +570,8 @@ class PacManager:
                 provided pac_id is not found.
         """
 
-        logging.info("PacManager.update_bulk start")
+        logging.info(
+            "PacManager.update_bulk start")
         updated_pacs = []
         for update in pac_updates:
             pac_id = update.get("pac_id")
@@ -537,7 +583,9 @@ class PacManager:
             if not pac_id:
                 continue
 
-            logging.info("PacManager.update_bulk pac_id:%s", pac_id)
+            logging.info(
+                "PacManager.update_bulk pac_id:%s",
+                pac_id)
 
             pac = await self.get_by_id(
                 pac_id)
@@ -556,7 +604,8 @@ class PacManager:
 
         await self._session_context.session.flush()
 
-        logging.info("PacManager.update_bulk end")
+        logging.info(
+            "PacManager.update_bulk end")
 
         return updated_pacs
 
@@ -565,7 +614,8 @@ class PacManager:
         Delete multiple pacs
         by their IDs.
         """
-        logging.info("PacManager.delete_bulk")
+        logging.info(
+            "PacManager.delete_bulk")
 
         for pac_id in pac_ids:
             if not isinstance(pac_id, int):
@@ -594,7 +644,8 @@ class PacManager:
         return the total number of
         pacs.
         """
-        logging.info("PacManager.count")
+        logging.info(
+            "PacManager.count")
         result = await self._session_context.session.execute(
             select(Pac))
         return len(list(result.scalars().all()))
@@ -609,7 +660,8 @@ class PacManager:
         from the database.
         """
 
-        logging.info("PacManager.refresh")
+        logging.info(
+            "PacManager.refresh")
 
         await self._session_context.session.refresh(pac)
 
@@ -620,7 +672,9 @@ class PacManager:
         Check if a pac
         with the given ID exists.
         """
-        logging.info("PacManager.exists %s", pac_id)
+        logging.info(
+            "PacManager.exists %s",
+            pac_id)
         if not isinstance(pac_id, int):
             raise TypeError(
                 f"The pac_id must be an integer, "

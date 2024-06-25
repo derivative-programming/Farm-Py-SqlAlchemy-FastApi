@@ -67,12 +67,15 @@ class ReportProviderTacFarmDashboard():
         order_by_descending: bool,
     ) -> list[dict[str, Any]]:
         """
-        Generates a list of tac s based on the provided parameters.
+        Generates a list of tac s based
+        on the provided parameters.
 
         Returns:
-            list[dict[str, Any]]: The list of tac s as dictionaries.
+            list[dict[str, Any]]: The list of
+            tac s as dictionaries.
         """
-        flow_name = "ReportProviderTacFarmDashboard.generate_list"
+        flow_name = "ReportProviderTacFarmDashboard"
+        ".generate_list"
 
         logging.info("%s Start", flow_name)
         logging.info("%s context_code: %s", flow_name, str(context_code))

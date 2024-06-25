@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemPacUserTacList():
     """
-    Represents a report item for a pac Pac User Tac List Report.
+    Represents a report item for a
+    pac Pac User Tac List Report.
     """
     tac_code: uuid.UUID = (
         uuid.UUID(int=0))

@@ -96,7 +96,8 @@ class TestOrgCustomerFactory:
         initial_code = org_customer.last_change_code
         org_customer.code = uuid.uuid4()
         session.commit()
-        assert org_customer.last_change_code != initial_code
+        assert org_customer.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestOrgCustomerFactory:
         session.delete(org_customer)
         session.commit()
         deleted_org_customer = session.query(OrgCustomer).filter_by(
-            org_customer_id=org_customer.org_customer_id).first()
+            _org_customer_id=(
+                org_customer.org_customer_id)
+        ).first()
         assert deleted_org_customer is None
 
     def test_data_types(self, session):
@@ -231,10 +234,13 @@ class TestOrgCustomerFactory:
         """
         Test case for checking the unique code constraint.
         """
-        org_customer_1 = OrgCustomerFactory.create(session=session)
-        org_customer_2 = OrgCustomerFactory.create(session=session)
+        org_customer_1 = OrgCustomerFactory.create(
+            session=session)
+        org_customer_2 = OrgCustomerFactory.create(
+            session=session)
         org_customer_2.code = org_customer_1.code
-        session.add_all([org_customer_1, org_customer_2])
+        session.add_all([org_customer_1,
+                         org_customer_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -293,14 +299,19 @@ class TestOrgCustomerFactory:
             session=session)
         original_last_change_code = org_customer.last_change_code
         org_customer_1 = session.query(OrgCustomer).filter_by(
-            _org_customer_id=org_customer.org_customer_id).first()
+            _org_customer_id=(
+                org_customer.org_customer_id)
+        ).first()
         org_customer_1.code = uuid.uuid4()
         session.commit()
         org_customer_2 = session.query(OrgCustomer).filter_by(
-            _org_customer_id=org_customer.org_customer_id).first()
+            _org_customer_id=(
+                org_customer.org_customer_id)
+        ).first()
         org_customer_2.code = uuid.uuid4()
         session.commit()
-        assert org_customer_2.last_change_code != original_last_change_code
+        assert org_customer_2.last_change_code != \
+            original_last_change_code
     # CustomerID
 
     def test_invalid_customer_id(self, session):

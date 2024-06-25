@@ -23,7 +23,8 @@ from main import app
 
 from .....models import (  # pylint: disable=reimported
     factory as request_factory)
-from ..land_plant_list import LandPlantListRouterConfig
+from ..land_plant_list import (
+    LandPlantListRouterConfig)
 
 ##GENTrainingBlock[caseisGetInitAvailable]Start
 ##GENLearn[isGetInitAvailable=true]Start

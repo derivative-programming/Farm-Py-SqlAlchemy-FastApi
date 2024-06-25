@@ -21,7 +21,9 @@ from ..plant_user_details_init_report import (
 
 class MockFlowPlantUserDetailsInitReportResult:
     """
-    A mock object for the FlowPlantUserDetailsInitReportResult class.
+    A mock object for the
+    FlowPlantUserDetailsInitReportResult
+    class.
     """
     def __init__(self):
         """
@@ -34,7 +36,9 @@ class MockFlowPlantUserDetailsInitReportResult:
 @pytest.fixture
 def flow_response():
     """
-    Return a mock FlowPlantUserDetailsInitReportResult object.
+    Return a mock
+    FlowPlantUserDetailsInitReportResult
+    object.
     """
     return MockFlowPlantUserDetailsInitReportResult()
 

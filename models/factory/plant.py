@@ -78,7 +78,9 @@ class PlantFactory(factory.Factory):
 # endset
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Plant:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Plant:
         """
             Builds and returns an instance
             of the Plant model.
@@ -136,7 +138,9 @@ class PlantFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Plant:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Plant:
         """
         Create a new Plant object
         and save it to the database.
@@ -195,7 +199,9 @@ class PlantFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Plant:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Plant:
         """
         Create a new Plant object
         asynchronously.
@@ -246,7 +252,9 @@ class PlantFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Plant:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Plant:
         """
         Build a new Plant object
         asynchronously.

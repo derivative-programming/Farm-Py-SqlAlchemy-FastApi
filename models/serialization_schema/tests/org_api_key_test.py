@@ -175,7 +175,10 @@ class TestOrgApiKeySchema:
         assert result['org_customer_code_peek'] == (  # OrgCustomerID
             str(org_api_key.org_customer_code_peek))
 
-    def test_org_api_key_deserialization(self, org_api_key):
+    def test_org_api_key_deserialization(
+        self,
+        org_api_key
+    ):
         """
         Test the deserialization of a
         OrgApiKey object using the
@@ -233,7 +236,8 @@ class TestOrgApiKeySchema:
             'org_customer_code_peek')] == (
             org_api_key.org_customer_code_peek)
 
-        new_org_api_key = OrgApiKey(**deserialized_data)
+        new_org_api_key = OrgApiKey(
+            **deserialized_data)
 
         assert isinstance(new_org_api_key, OrgApiKey)
 
@@ -344,7 +348,8 @@ class TestOrgApiKeySchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_org_api_key = OrgApiKey(**deserialized_data)
+        new_org_api_key = OrgApiKey(
+            **deserialized_data)
 
         assert isinstance(new_org_api_key, OrgApiKey)
 

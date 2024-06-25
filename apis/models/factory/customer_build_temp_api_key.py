@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
 
-from ..customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequest
+from ..customer_build_temp_api_key import (
+    CustomerBuildTempApiKeyPostModelRequest)
 
 
 class CustomerBuildTempApiKeyPostModelRequestFactory(factory.base.Factory):
@@ -45,7 +46,8 @@ class CustomerBuildTempApiKeyPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of CustomerBuildTempApiKeyPostModelRequest.
+            An instance of
+            CustomerBuildTempApiKeyPostModelRequest.
         """
 
         if session is None:
@@ -74,7 +76,8 @@ class CustomerBuildTempApiKeyPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of CustomerBuildTempApiKeyPostModelRequest.
+            An instance of
+            CustomerBuildTempApiKeyPostModelRequest.
         """
 
 
@@ -98,7 +101,8 @@ class CustomerBuildTempApiKeyPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of CustomerBuildTempApiKeyPostModelRequest.
+            An instance of
+            CustomerBuildTempApiKeyPostModelRequest.
         """
 
 

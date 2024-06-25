@@ -537,7 +537,7 @@ class TestDateGreaterThanFilterManager:
         json_data = date_greater_than_filter_manager.to_json(
             date_greater_than_filter)
 
-        deserialized_date_greater_than_filter = date_greater_than_filter_manager.from_json(json_data)
+        deserialized_date_greater_than_filter = await date_greater_than_filter_manager.from_json(json_data)
 
         assert isinstance(deserialized_date_greater_than_filter, DateGreaterThanFilter)
         assert deserialized_date_greater_than_filter.code == \
@@ -578,7 +578,7 @@ class TestDateGreaterThanFilterManager:
 
         assert isinstance(date_greater_than_filter_data, dict)
 
-        deserialized_date_greater_than_filter = date_greater_than_filter_manager.from_dict(
+        deserialized_date_greater_than_filter = await date_greater_than_filter_manager.from_dict(
             date_greater_than_filter_data)
 
         assert isinstance(deserialized_date_greater_than_filter, DateGreaterThanFilter)
@@ -784,11 +784,13 @@ class TestDateGreaterThanFilterManager:
             None
         """
         # Add a date_greater_than_filter
-        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter1 = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
 
-        date_greater_than_filter2 = await date_greater_than_filter_manager.get_by_id(
-            date_greater_than_filter_id=date_greater_than_filter1.date_greater_than_filter_id)
+        date_greater_than_filter2 = await \
+            date_greater_than_filter_manager.get_by_id(
+                date_greater_than_filter_id=date_greater_than_filter1.date_greater_than_filter_id)
 
         assert date_greater_than_filter_manager.is_equal(
             date_greater_than_filter1, date_greater_than_filter2) is True
@@ -796,8 +798,9 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter1_dict = date_greater_than_filter_manager.to_dict(
             date_greater_than_filter1)
 
-        date_greater_than_filter3 = date_greater_than_filter_manager.from_dict(
-            date_greater_than_filter1_dict)
+        date_greater_than_filter3 = await \
+            date_greater_than_filter_manager.from_dict(
+                date_greater_than_filter1_dict)
 
         assert date_greater_than_filter_manager.is_equal(
             date_greater_than_filter1, date_greater_than_filter3) is True

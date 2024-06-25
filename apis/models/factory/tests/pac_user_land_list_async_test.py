@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...pac_user_land_list import PacUserLandListGetModelRequest
-from ..pac_user_land_list import PacUserLandListGetModelRequestFactory
+from ...pac_user_land_list import (
+    PacUserLandListGetModelRequest)
+from ..pac_user_land_list import (
+    PacUserLandListGetModelRequestFactory)
 
 
 class TestPacUserLandListGetModelRequestFactoryAsync:
@@ -34,7 +36,8 @@ class TestPacUserLandListGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance, PacUserLandListGetModelRequest)
+        assert isinstance(model_instance,
+                          PacUserLandListGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)

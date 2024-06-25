@@ -170,7 +170,8 @@ class RoleManager:
             Role: The newly created
                 Role object.
         """
-        logging.info("RoleManager.build")
+        logging.info(
+            "RoleManager.build")
         return Role(**kwargs)
 
     async def add(
@@ -188,9 +189,12 @@ class RoleManager:
             Role: The added
                 role.
         """
-        logging.info("RoleManager.add")
-        role.insert_user_id = self._session_context.customer_code
-        role.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "RoleManager.add")
+        role.insert_user_id = (
+            self._session_context.customer_code)
+        role.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             role)
         await self._session_context.session.flush()
@@ -205,7 +209,8 @@ class RoleManager:
             The base query for retrieving
             roles.
         """
-        logging.info("RoleManager._build_query")
+        logging.info(
+            "RoleManager._build_query")
 
         query = select(
             Role,
@@ -234,7 +239,8 @@ class RoleManager:
             List[Role]: The list of
                 roles that match the query.
         """
-        logging.info("RoleManager._run_query")
+        logging.info(
+            "RoleManager._run_query")
         role_query_all = self._build_query()
 
         if query_filter is not None:
@@ -284,7 +290,9 @@ class RoleManager:
             else None
         )
 
-    async def get_by_id(self, role_id: int) -> Optional[Role]:
+    async def get_by_id(
+        self, role_id: int
+    ) -> Optional[Role]:
         """
         Retrieves a role by its ID.
 
@@ -311,7 +319,9 @@ class RoleManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[Role]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[Role]:
         """
         Retrieves a role
         by its code.
@@ -324,7 +334,8 @@ class RoleManager:
             Optional[Role]: The retrieved
                 role, or None if not found.
         """
-        logging.info("RoleManager.get_by_code %s", code)
+        logging.info("RoleManager.get_by_code %s",
+                     code)
 
         query_filter = Role._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -378,7 +389,9 @@ class RoleManager:
                 role with the
                 specified ID is not found.
         """
-        logging.info("RoleManager.delete %s", role_id)
+        logging.info(
+            "RoleManager.delete %s",
+            role_id)
         if not isinstance(role_id, int):
             raise TypeError(
                 f"The role_id must be an integer, "
@@ -387,7 +400,8 @@ class RoleManager:
         role = await self.get_by_id(
             role_id)
         if not role:
-            raise RoleNotFoundError(f"Role with ID {role_id} not found!")
+            raise RoleNotFoundError(
+                f"Role with ID {role_id} not found!")
 
         await self._session_context.session.delete(
             role)
@@ -404,7 +418,8 @@ class RoleManager:
             List[Role]: The list of
                 roles.
         """
-        logging.info("RoleManager.get_list")
+        logging.info(
+            "RoleManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -425,7 +440,8 @@ class RoleManager:
             str: The JSON string representation of the
                 role.
         """
-        logging.info("RoleManager.to_json")
+        logging.info(
+            "RoleManager.to_json")
         schema = RoleSchema()
         role_data = schema.dump(role)
         return json.dumps(role_data)
@@ -446,7 +462,8 @@ class RoleManager:
             Dict[str, Any]: The dictionary representation of the
                 role.
         """
-        logging.info("RoleManager.to_dict")
+        logging.info(
+            "RoleManager.to_dict")
         schema = RoleSchema()
         role_data = schema.dump(role)
 
@@ -454,7 +471,7 @@ class RoleManager:
 
         return role_data
 
-    def from_json(self, json_str: str) -> Role:
+    async def from_json(self, json_str: str) -> Role:
         """
         Deserializes a JSON string into a
         Role object.
@@ -466,19 +483,32 @@ class RoleManager:
             Role: The deserialized
                 Role object.
         """
-        logging.info("RoleManager.from_json")
+        logging.info(
+            "RoleManager.from_json")
         schema = RoleSchema()
         data = json.loads(json_str)
         role_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_role = Role(**role_dict)
+        # new_role = Role(**role_dict)
+
+        # load or create
+        new_role = await self.get_by_id(
+            role_dict["role_id"])
+        if new_role is None:
+            new_role = Role(**role_dict)
+            self._session_context.session.add(new_role)
+        else:
+            for key, value in role_dict.items():
+                setattr(new_role, key, value)
 
         return new_role
 
-    def from_dict(self, role_dict: Dict[str, Any]) -> Role:
+    async def from_dict(
+        self, role_dict: Dict[str, Any]
+    ) -> Role:
         """
         Creates a Role
         instance from a dictionary of attributes.
@@ -494,19 +524,31 @@ class RoleManager:
                 created from the given
                 dictionary.
         """
-        logging.info("RoleManager.from_dict")
+        logging.info(
+            "RoleManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = RoleSchema()
         role_dict_converted = schema.load(
             role_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new Role instance
         # using the validated data
-        new_role = Role(**role_dict_converted)
+        # new_role = Role(**role_dict_converted)
+
+        # load or create
+        new_role = await self.get_by_id(
+            role_dict_converted["role_id"])
+        if new_role is None:
+            new_role = Role(**role_dict_converted)
+            self._session_context.session.add(new_role)
+        else:
+            for key, value in role_dict_converted.items():
+                setattr(new_role, key, value)
+
         return new_role
 
     async def add_bulk(
@@ -525,7 +567,8 @@ class RoleManager:
             List[Role]: The added
                 roles.
         """
-        logging.info("RoleManager.add_bulk")
+        logging.info(
+            "RoleManager.add_bulk")
         for role in roles:
             role_id = role.role_id
             code = role.code
@@ -534,8 +577,10 @@ class RoleManager:
                     "Role is already added"
                     f": {str(code)} {str(role_id)}"
                 )
-            role.insert_user_id = self._session_context.customer_code
-            role.last_update_user_id = self._session_context.customer_code
+            role.insert_user_id = (
+                self._session_context.customer_code)
+            role.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(roles)
         await self._session_context.session.flush()
         return roles
@@ -564,7 +609,8 @@ class RoleManager:
                 provided role_id is not found.
         """
 
-        logging.info("RoleManager.update_bulk start")
+        logging.info(
+            "RoleManager.update_bulk start")
         updated_roles = []
         for update in role_updates:
             role_id = update.get("role_id")
@@ -576,7 +622,9 @@ class RoleManager:
             if not role_id:
                 continue
 
-            logging.info("RoleManager.update_bulk role_id:%s", role_id)
+            logging.info(
+                "RoleManager.update_bulk role_id:%s",
+                role_id)
 
             role = await self.get_by_id(
                 role_id)
@@ -595,7 +643,8 @@ class RoleManager:
 
         await self._session_context.session.flush()
 
-        logging.info("RoleManager.update_bulk end")
+        logging.info(
+            "RoleManager.update_bulk end")
 
         return updated_roles
 
@@ -604,7 +653,8 @@ class RoleManager:
         Delete multiple roles
         by their IDs.
         """
-        logging.info("RoleManager.delete_bulk")
+        logging.info(
+            "RoleManager.delete_bulk")
 
         for role_id in role_ids:
             if not isinstance(role_id, int):
@@ -633,7 +683,8 @@ class RoleManager:
         return the total number of
         roles.
         """
-        logging.info("RoleManager.count")
+        logging.info(
+            "RoleManager.count")
         result = await self._session_context.session.execute(
             select(Role))
         return len(list(result.scalars().all()))
@@ -648,7 +699,8 @@ class RoleManager:
         from the database.
         """
 
-        logging.info("RoleManager.refresh")
+        logging.info(
+            "RoleManager.refresh")
 
         await self._session_context.session.refresh(role)
 
@@ -659,7 +711,9 @@ class RoleManager:
         Check if a role
         with the given ID exists.
         """
-        logging.info("RoleManager.exists %s", role_id)
+        logging.info(
+            "RoleManager.exists %s",
+            role_id)
         if not isinstance(role_id, int):
             raise TypeError(
                 f"The role_id must be an integer, "
@@ -712,7 +766,9 @@ class RoleManager:
         dict2 = self.to_dict(role2)
 
         return dict1 == dict2
-    async def get_by_pac_id(self, pac_id: int) -> List[Role]:  # PacID
+    async def get_by_pac_id(  # PacID
+            self,
+            pac_id: int) -> List[Role]:
         """
         Retrieve a list of roles by
         pac ID.
@@ -726,7 +782,8 @@ class RoleManager:
                 with the specified pac ID.
         """
 
-        logging.info("RoleManager.get_by_pac_id")
+        logging.info(
+            "RoleManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
                 f"The role_id must be an integer, "

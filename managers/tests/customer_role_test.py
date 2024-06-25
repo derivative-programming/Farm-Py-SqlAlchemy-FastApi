@@ -537,7 +537,7 @@ class TestCustomerRoleManager:
         json_data = customer_role_manager.to_json(
             customer_role)
 
-        deserialized_customer_role = customer_role_manager.from_json(json_data)
+        deserialized_customer_role = await customer_role_manager.from_json(json_data)
 
         assert isinstance(deserialized_customer_role, CustomerRole)
         assert deserialized_customer_role.code == \
@@ -578,7 +578,7 @@ class TestCustomerRoleManager:
 
         assert isinstance(customer_role_data, dict)
 
-        deserialized_customer_role = customer_role_manager.from_dict(
+        deserialized_customer_role = await customer_role_manager.from_dict(
             customer_role_data)
 
         assert isinstance(deserialized_customer_role, CustomerRole)
@@ -784,11 +784,13 @@ class TestCustomerRoleManager:
             None
         """
         # Add a customer_role
-        customer_role1 = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role1 = await \
+            CustomerRoleFactory.create_async(
+                session=session)
 
-        customer_role2 = await customer_role_manager.get_by_id(
-            customer_role_id=customer_role1.customer_role_id)
+        customer_role2 = await \
+            customer_role_manager.get_by_id(
+                customer_role_id=customer_role1.customer_role_id)
 
         assert customer_role_manager.is_equal(
             customer_role1, customer_role2) is True
@@ -796,8 +798,9 @@ class TestCustomerRoleManager:
         customer_role1_dict = customer_role_manager.to_dict(
             customer_role1)
 
-        customer_role3 = customer_role_manager.from_dict(
-            customer_role1_dict)
+        customer_role3 = await \
+            customer_role_manager.from_dict(
+                customer_role1_dict)
 
         assert customer_role_manager.is_equal(
             customer_role1, customer_role3) is True

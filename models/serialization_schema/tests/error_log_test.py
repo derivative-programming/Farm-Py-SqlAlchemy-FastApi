@@ -168,7 +168,10 @@ class TestErrorLogSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(error_log.pac_code_peek))
 
-    def test_error_log_deserialization(self, error_log):
+    def test_error_log_deserialization(
+        self,
+        error_log
+    ):
         """
         Test the deserialization of a
         ErrorLog object using the
@@ -221,7 +224,8 @@ class TestErrorLogSchema:
             'pac_code_peek')] == (
             error_log.pac_code_peek)
 
-        new_error_log = ErrorLog(**deserialized_data)
+        new_error_log = ErrorLog(
+            **deserialized_data)
 
         assert isinstance(new_error_log, ErrorLog)
 
@@ -323,7 +327,8 @@ class TestErrorLogSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_error_log = ErrorLog(**deserialized_data)
+        new_error_log = ErrorLog(
+            **deserialized_data)
 
         assert isinstance(new_error_log, ErrorLog)
 

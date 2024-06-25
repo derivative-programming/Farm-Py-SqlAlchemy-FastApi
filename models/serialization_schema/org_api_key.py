@@ -51,8 +51,10 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
     last_update_user_id = fields.UUID()
     api_key_value = fields.Str()
     created_by = fields.Str()
-    created_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
-    expiration_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
+    created_utc_date_time = \
+        fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
+    expiration_utc_date_time = \
+        fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
     is_active = fields.Bool()
     is_temp_user_key = fields.Bool()
     name = fields.Str()

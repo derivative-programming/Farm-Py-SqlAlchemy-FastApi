@@ -18,7 +18,8 @@ import pytest
 from helpers.type_conversion import TypeConversion
 from helpers.session_context import SessionContext
 
-from ..factory.land_plant_list import LandPlantListGetModelRequestFactory
+from ..factory.land_plant_list import (
+    LandPlantListGetModelRequestFactory)
 from ..land_plant_list import (
     LandPlantListGetModelRequest,
     LandPlantListGetModelResponse,

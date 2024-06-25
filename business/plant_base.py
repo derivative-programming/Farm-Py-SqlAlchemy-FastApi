@@ -195,7 +195,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.plant.insert_user_id = value
 
@@ -236,7 +237,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.plant.last_update_user_id = value
 
@@ -280,7 +282,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_delete_allowed must be a boolean.")
+            raise ValueError(
+                "is_delete_allowed must be a boolean.")
 
         self.plant.is_delete_allowed = value
     # isEditAllowed
@@ -970,7 +973,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "some_utc_date_time_val must be a datetime object")
+            "some_utc_date_time_val "
+            "must be a datetime object")
         self.plant.some_utc_date_time_val = value
     # someVarCharVal
 
@@ -1222,7 +1226,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.plant.insert_utc_date_time = value
 
@@ -1270,7 +1275,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.plant.last_update_utc_date_time = value
 
@@ -1290,11 +1296,12 @@ class PlantBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         plant_manager = PlantManager(
             self._session_context)
-        self.plant = plant_manager.from_json(json_data)
+        self.plant = await plant_manager.from_json(json_data)
 
         return self
 
@@ -1312,7 +1319,8 @@ class PlantBaseBusObj(BaseBusObj):
             plant data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         plant_manager = PlantManager(
             self._session_context)
@@ -1339,7 +1347,8 @@ class PlantBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(plant_id, int):
-            raise ValueError("plant_id must be an integer")
+            raise ValueError(
+                "plant_id must be an integer")
 
         plant_manager = PlantManager(
             self._session_context)
@@ -1366,7 +1375,8 @@ class PlantBaseBusObj(BaseBusObj):
 
         if not isinstance(plant_obj_instance,
                           Plant):
-            raise ValueError("plant_obj_instance must be an instance of Plant")
+            raise ValueError(
+                "plant_obj_instance must be an instance of Plant")
 
         # plant_manager = PlantManager(
         #     self._session_context)
@@ -1395,12 +1405,13 @@ class PlantBaseBusObj(BaseBusObj):
             plant data is found.
         """
         if not isinstance(plant_dict, dict):
-            raise ValueError("plant_dict must be a dictionary")
+            raise ValueError(
+                "plant_dict must be a dictionary")
 
         plant_manager = PlantManager(
             self._session_context)
 
-        self.plant = plant_manager.from_dict(
+        self.plant = await plant_manager.from_dict(
             plant_dict)
 
         return self

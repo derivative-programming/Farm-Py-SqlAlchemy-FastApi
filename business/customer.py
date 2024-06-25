@@ -58,7 +58,8 @@ class CustomerBusObj(CustomerFluentBusObj):
         return result
 
 
-    async def build_customer_role(self) -> CustomerRoleBusObj:
+    async def build_customer_role(
+        self) -> CustomerRoleBusObj:
         """
         build customer_role
         instance (not saved yet)
@@ -66,7 +67,8 @@ class CustomerBusObj(CustomerFluentBusObj):
         item = CustomerRoleBusObj(self._session_context)
 
         assert item.customer_role is not None
-        role_manager = managers_and_enums.RoleManager(self._session_context)
+        role_manager = managers_and_enums.RoleManager(
+            self._session_context)
         role_id_role = await role_manager.from_enum(
             managers_and_enums.RoleEnum.UNKNOWN)
         item.role_id = role_id_role.role_id
@@ -77,15 +79,19 @@ class CustomerBusObj(CustomerFluentBusObj):
 
         return item
 
-    async def get_all_customer_role(self) -> List[CustomerRoleBusObj]:
+    async def get_all_customer_role(
+        self) -> List[CustomerRoleBusObj]:
         """
         get all customer_role
         """
         results = list()
-        customer_role_manager = managers_and_enums.CustomerRoleManager(self._session_context)
-        obj_list = await customer_role_manager.get_by_customer_id(self.customer_id)
+        customer_role_manager = managers_and_enums.CustomerRoleManager(
+            self._session_context)
+        obj_list = await customer_role_manager.get_by_customer_id(
+            self.customer_id)
         for obj_item in obj_list:
-            bus_obj_item = CustomerRoleBusObj(self._session_context)
+            bus_obj_item = CustomerRoleBusObj(
+                self._session_context)
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results

@@ -96,7 +96,8 @@ class TestTriStateFilterFactory:
         initial_code = tri_state_filter.last_change_code
         tri_state_filter.code = uuid.uuid4()
         session.commit()
-        assert tri_state_filter.last_change_code != initial_code
+        assert tri_state_filter.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestTriStateFilterFactory:
         session.delete(tri_state_filter)
         session.commit()
         deleted_tri_state_filter = session.query(TriStateFilter).filter_by(
-            tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
+            _tri_state_filter_id=(
+                tri_state_filter.tri_state_filter_id)
+        ).first()
         assert deleted_tri_state_filter is None
 
     def test_data_types(self, session):
@@ -235,10 +238,13 @@ class TestTriStateFilterFactory:
         """
         Test case for checking the unique code constraint.
         """
-        tri_state_filter_1 = TriStateFilterFactory.create(session=session)
-        tri_state_filter_2 = TriStateFilterFactory.create(session=session)
+        tri_state_filter_1 = TriStateFilterFactory.create(
+            session=session)
+        tri_state_filter_2 = TriStateFilterFactory.create(
+            session=session)
         tri_state_filter_2.code = tri_state_filter_1.code
-        session.add_all([tri_state_filter_1, tri_state_filter_2])
+        session.add_all([tri_state_filter_1,
+                         tri_state_filter_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -302,14 +308,19 @@ class TestTriStateFilterFactory:
             session=session)
         original_last_change_code = tri_state_filter.last_change_code
         tri_state_filter_1 = session.query(TriStateFilter).filter_by(
-            _tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
+            _tri_state_filter_id=(
+                tri_state_filter.tri_state_filter_id)
+        ).first()
         tri_state_filter_1.code = uuid.uuid4()
         session.commit()
         tri_state_filter_2 = session.query(TriStateFilter).filter_by(
-            _tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
+            _tri_state_filter_id=(
+                tri_state_filter.tri_state_filter_id)
+        ).first()
         tri_state_filter_2.code = uuid.uuid4()
         session.commit()
-        assert tri_state_filter_2.last_change_code != original_last_change_code
+        assert tri_state_filter_2.last_change_code != \
+            original_last_change_code
     # description,
     # displayOrder,
     # isActive,

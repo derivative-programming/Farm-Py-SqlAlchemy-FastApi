@@ -6,16 +6,17 @@ TacLoginRouter,
 which handles the API endpoints related to the
 Tac Login.
 
-The TacLoginRouter provides the following endpoints:
-    - GET /api/v1_0/tac-login/{tac_code}/init:
-        Get the initialization data for the
-        Tac Login page.
-    - GET /api/v1_0/tac-login/{tac_code}:
-        Get the Tac Login Report
-        for a specific tac code.
-    - GET /api/v1_0/tac-login/{tac_code}/to-csv:
-        Retrieve the Tac Login
-        Report as a CSV file.
+The TacLoginRouter provides
+the following endpoints:
+- GET /api/v1_0/tac-login/{tac_code}/init:
+    Get the initialization data for the
+    Tac Login page.
+- GET /api/v1_0/tac-login/{tac_code}:
+    Get the Tac Login Report
+    for a specific tac code.
+- GET /api/v1_0/tac-login/{tac_code}/to-csv:
+    Retrieve the Tac Login
+    Report as a CSV file.
 """
 
 import logging
@@ -75,7 +76,8 @@ class TacLoginRouter(BaseRouter):
         "/api/v1_0/tac-login/{tac_code}/init",
         response_model=(
             api_init_models.
-            TacLoginInitObjWFGetInitModelResponse),
+            TacLoginInitObjWFGetInitModelResponse
+        ),
         summary="Tac Login Init Page")
     async def request_get_init(
         tac_code: uuid.UUID = Path(..., description=TAC_CODE),
@@ -101,7 +103,8 @@ class TacLoginRouter(BaseRouter):
             'TacLoginRouter.request_get_init start. tacCode:%s',
             tac_code)
         auth_dict = BaseRouter.implementation_check(
-            TacLoginRouterConfig.is_get_init_available)
+            TacLoginRouterConfig
+            .is_get_init_available)
 
         response = (
             api_init_models.
@@ -158,11 +161,15 @@ class TacLoginRouter(BaseRouter):
     @staticmethod
     @router.post(
         "/api/v1_0/tac-login/{tac_code}",
-        response_model=api_models.TacLoginPostModelResponse,
+        response_model=(
+            api_models
+            .TacLoginPostModelResponse
+        ),
         summary="Tac Login Business Flow")
     async def request_post_with_id(
         tac_code: uuid.UUID,
-        request_model: api_models.TacLoginPostModelRequest,
+        request_model: (
+            api_models.TacLoginPostModelRequest),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -185,9 +192,11 @@ class TacLoginRouter(BaseRouter):
             tac_code
         )
         auth_dict = BaseRouter.implementation_check(
-            TacLoginRouterConfig.is_post_with_id_available)
+            TacLoginRouterConfig
+            .is_post_with_id_available)
 
-        response = api_models.TacLoginPostModelResponse()
+        response = (api_models
+                    .TacLoginPostModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             TacLoginRouterConfig.is_public,

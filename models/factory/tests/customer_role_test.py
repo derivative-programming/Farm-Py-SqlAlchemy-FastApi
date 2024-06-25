@@ -96,7 +96,8 @@ class TestCustomerRoleFactory:
         initial_code = customer_role.last_change_code
         customer_role.code = uuid.uuid4()
         session.commit()
-        assert customer_role.last_change_code != initial_code
+        assert customer_role.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestCustomerRoleFactory:
         session.delete(customer_role)
         session.commit()
         deleted_customer_role = session.query(CustomerRole).filter_by(
-            customer_role_id=customer_role.customer_role_id).first()
+            _customer_role_id=(
+                customer_role.customer_role_id)
+        ).first()
         assert deleted_customer_role is None
 
     def test_data_types(self, session):
@@ -232,10 +235,13 @@ class TestCustomerRoleFactory:
         """
         Test case for checking the unique code constraint.
         """
-        customer_role_1 = CustomerRoleFactory.create(session=session)
-        customer_role_2 = CustomerRoleFactory.create(session=session)
+        customer_role_1 = CustomerRoleFactory.create(
+            session=session)
+        customer_role_2 = CustomerRoleFactory.create(
+            session=session)
         customer_role_2.code = customer_role_1.code
-        session.add_all([customer_role_1, customer_role_2])
+        session.add_all([customer_role_1,
+                         customer_role_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -296,14 +302,19 @@ class TestCustomerRoleFactory:
             session=session)
         original_last_change_code = customer_role.last_change_code
         customer_role_1 = session.query(CustomerRole).filter_by(
-            _customer_role_id=customer_role.customer_role_id).first()
+            _customer_role_id=(
+                customer_role.customer_role_id)
+        ).first()
         customer_role_1.code = uuid.uuid4()
         session.commit()
         customer_role_2 = session.query(CustomerRole).filter_by(
-            _customer_role_id=customer_role.customer_role_id).first()
+            _customer_role_id=(
+                customer_role.customer_role_id)
+        ).first()
         customer_role_2.code = uuid.uuid4()
         session.commit()
-        assert customer_role_2.last_change_code != original_last_change_code
+        assert customer_role_2.last_change_code != \
+            original_last_change_code
     # CustomerID
 
     def test_invalid_customer_id(self, session):

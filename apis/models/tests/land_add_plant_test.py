@@ -14,7 +14,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from business.land import LandBusObj
-from flows.land_add_plant import FlowLandAddPlant, FlowLandAddPlantResult
+from flows.land_add_plant import (
+    FlowLandAddPlant,
+    FlowLandAddPlantResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.land import LandFactory
@@ -22,7 +24,8 @@ from models.factory.land import LandFactory
 from ...models.land_add_plant import (
     LandAddPlantPostModelResponse,
     LandAddPlantPostModelRequest)
-from ..factory.land_add_plant import LandAddPlantPostModelRequestFactory
+from ..factory.land_add_plant import (
+    LandAddPlantPostModelRequestFactory)
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -45,7 +48,8 @@ class TestLandAddPlantPostModelRequest:
         model = LandAddPlantPostModelRequest()
         assert model.force_error_message == ""
 # endset
-        assert model.request_flavor_code == uuid.UUID('00000000-0000-0000-0000-000000000000')
+        assert model.request_flavor_code == \
+            uuid.UUID('00000000-0000-0000-0000-000000000000')
         assert model.request_other_flavor == ""
         assert model.request_some_int_val == 0
         assert model.request_some_big_int_val == 0
@@ -54,8 +58,10 @@ class TestLandAddPlantPostModelRequest:
         assert model.request_is_delete_allowed is False
         assert math.isclose(model.request_some_float_val, 0.0)
         assert model.request_some_decimal_val == Decimal(0)
-        assert model.request_some_utc_date_time_val == TypeConversion.get_default_date_time()
-        assert model.request_some_date_val == TypeConversion.get_default_date()
+        assert model.request_some_utc_date_time_val == \
+            TypeConversion.get_default_date_time()
+        assert model.request_some_date_val == \
+            TypeConversion.get_default_date()
         assert model.request_some_money_val == Decimal(0)
         assert model.request_some_n_var_char_val == ""
         assert model.request_some_var_char_val == ""
@@ -107,10 +113,14 @@ class TestLandAddPlantPostModelRequest:
         assert snake_case_dict['request_is_edit_allowed'] is True
         assert snake_case_dict['request_is_delete_allowed'] is True
         assert math.isclose(snake_case_dict['request_some_float_val'], 3.14)
-        assert snake_case_dict['request_some_decimal_val'] == Decimal('99.99')
-        assert snake_case_dict['request_some_utc_date_time_val'] == datetime(2023, 1, 1, 12, 0, 0)
-        assert snake_case_dict['request_some_date_val'] == date(2023, 1, 1)
-        assert snake_case_dict['request_some_money_val'] == Decimal('100.00')
+        assert snake_case_dict['request_some_decimal_val'] == \
+            Decimal('99.99')
+        assert snake_case_dict['request_some_utc_date_time_val'] == \
+            datetime(2023, 1, 1, 12, 0, 0)
+        assert snake_case_dict['request_some_date_val'] == \
+            date(2023, 1, 1)
+        assert snake_case_dict['request_some_money_val'] == \
+            Decimal('100.00')
         assert snake_case_dict['request_some_n_var_char_val'] == \
             model.request_some_n_var_char_val
         assert snake_case_dict['request_some_var_char_val'] == \
@@ -121,7 +131,8 @@ class TestLandAddPlantPostModelRequest:
             model.request_some_phone_number
         assert snake_case_dict['request_some_email_address'] == \
             model.request_some_email_address
-        assert snake_case_dict['request_sample_image_upload_file'] == "image.png"
+        assert snake_case_dict['request_sample_image_upload_file'] == \
+            "image.png"
 # endset
 
     def test_to_dict_camel(self):
@@ -180,7 +191,8 @@ class TestLandAddPlantPostModelRequest:
             model.request_some_phone_number
         assert camel_case_dict['requestSomeEmailAddress'] == \
             model.request_some_email_address
-        assert camel_case_dict['requestSampleImageUploadFile'] == "image.png"
+        assert camel_case_dict['requestSampleImageUploadFile'] == \
+            "image.png"
 # endset
 
     def test_to_dict_snake_serialized(self):
@@ -213,7 +225,8 @@ class TestLandAddPlantPostModelRequest:
 # endset  # noqa: E122
         )
 
-        # Convert the model to a dictionary with snake_case keys and serialized values
+        # Convert the model to a dictionary with snake_case
+        # keys and serialized values
         data = request.to_dict_snake_serialized()
 
         # Define the expected dictionary

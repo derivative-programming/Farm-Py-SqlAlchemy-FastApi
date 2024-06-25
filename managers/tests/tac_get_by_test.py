@@ -75,8 +75,9 @@ class TestTacGetByManager:
         test_tac = await TacFactory.create_async(
             session)
 
-        tac = await tac_manager.get_by_id(
-            test_tac.tac_id)
+        tac = await \
+            tac_manager.get_by_id(
+                test_tac.tac_id)
 
         assert isinstance(
             tac, Tac)
@@ -99,8 +100,9 @@ class TestTacGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_tac = await tac_manager.get_by_id(
-            non_existent_id)
+        retrieved_tac = await \
+            tac_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_tac is None
 
@@ -120,8 +122,9 @@ class TestTacGetByManager:
         test_tac = await TacFactory.create_async(
             session)
 
-        tac = await tac_manager.get_by_code(
-            test_tac.code)
+        tac = await \
+            tac_manager.get_by_code(
+                test_tac.code)
 
         assert isinstance(
             tac, Tac)
@@ -144,8 +147,9 @@ class TestTacGetByManager:
         # any Tac in the database
         random_code = uuid.uuid4()
 
-        tac = await tac_manager.get_by_code(
-            random_code)
+        tac = await \
+            tac_manager.get_by_code(
+                random_code)
 
         assert tac is None
 
@@ -197,8 +201,9 @@ class TestTacGetByManager:
         # Fetch the tac using
         # the manager function
 
-        fetched_tacs = await tac_manager.get_by_pac_id(
-            tac1.pac_id)
+        fetched_tacs = await \
+            tac_manager.get_by_pac_id(
+                tac1.pac_id)
         assert len(fetched_tacs) == 1
         assert isinstance(fetched_tacs[0], Tac)
         assert fetched_tacs[0].code == \
@@ -229,8 +234,9 @@ class TestTacGetByManager:
 
         non_existent_id = 999
 
-        fetched_tacs = await tac_manager.get_by_pac_id(
-            non_existent_id)
+        fetched_tacs = await \
+            tac_manager.get_by_pac_id(
+                non_existent_id)
         assert len(fetched_tacs) == 0
 
     @pytest.mark.asyncio

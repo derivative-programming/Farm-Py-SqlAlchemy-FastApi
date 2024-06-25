@@ -184,7 +184,8 @@ class TriStateFilter(Base):
         Set the code of the tri_state_filter.
 
         Args:
-            value (uuid.UUID): The code to set for the tri_state_filter.
+            value (uuid.UUID): The code to set for the
+                tri_state_filter.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -217,9 +218,11 @@ class TriStateFilter(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the tri_state_filter.
+        Returns the last change code of the
+        tri_state_filter.
 
-        :return: The last change code of the tri_state_filter.
+        :return: The last change code of the
+            tri_state_filter.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -254,7 +257,8 @@ class TriStateFilter(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the tri_state_filter.
+        Returns the UUID of the last user who updated the
+        tri_state_filter.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -272,10 +276,12 @@ class TriStateFilter(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the tri_state_filter.
+        Inserts the UTC date and time for the
+        tri_state_filter.
 
         Returns:
-            datetime: The UTC date and time for the tri_state_filter.
+            datetime: The UTC date and time for the
+                tri_state_filter.
         """
         return getattr(
             self,
@@ -294,7 +300,8 @@ class TriStateFilter(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the tri_state_filter.
+        Returns the last update UTC date and time of the
+        tri_state_filter.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -317,9 +324,11 @@ class TriStateFilter(Base):
     @property
     def description(self) -> str:
         """
-        Returns the Description of the tri_state_filter.
+        Returns the Description of the
+        tri_state_filter.
 
-        :return: The Description of the tri_state_filter.
+        :return: The Description of the
+            tri_state_filter.
         :rtype: str
         """
         return getattr(self, '_description', "") or ""
@@ -356,7 +365,8 @@ class TriStateFilter(Base):
     @property
     def is_active(self) -> bool:
         """
-        Check if the delete operation is allowed for the tri_state_filter.
+        Check if the delete operation is allowed for the
+        tri_state_filter.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -375,9 +385,11 @@ class TriStateFilter(Base):
     @property
     def lookup_enum_name(self) -> str:
         """
-        Returns the Lookup Enum Name of the tri_state_filter.
+        Returns the Lookup Enum Name of the
+        tri_state_filter.
 
-        :return: The Lookup Enum Name of the tri_state_filter.
+        :return: The Lookup Enum Name of the
+            tri_state_filter.
         :rtype: str
         """
         return getattr(self, '_lookup_enum_name', "") or ""
@@ -394,9 +406,11 @@ class TriStateFilter(Base):
     @property
     def name(self) -> str:
         """
-        Returns the Name of the tri_state_filter.
+        Returns the Name of the
+        tri_state_filter.
 
-        :return: The Name of the tri_state_filter.
+        :return: The Name of the
+            tri_state_filter.
         :rtype: str
         """
         return getattr(self, '_name', "") or ""
@@ -447,7 +461,6 @@ class TriStateFilter(Base):
         """
 
         self._pac_id = value
-
 
     @staticmethod
     def property_list():

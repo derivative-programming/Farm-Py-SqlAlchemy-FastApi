@@ -13,9 +13,12 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import List
 from helpers import SessionContext, TypeConversion
-from reports.providers.pac_user_date_greater_than_filter_list import ReportProviderPacUserDateGreaterThanFilterList
-from reports.row_models.pac_user_date_greater_than_filter_list import ReportItemPacUserDateGreaterThanFilterList
-from .report_request_validation_error import ReportRequestValidationError
+from reports.providers.pac_user_date_greater_than_filter_list import (
+    ReportProviderPacUserDateGreaterThanFilterList)
+from reports.row_models.pac_user_date_greater_than_filter_list import (
+    ReportItemPacUserDateGreaterThanFilterList)
+from .report_request_validation_error import (
+    ReportRequestValidationError)
 
 
 class ReportManagerPacUserDateGreaterThanFilterList():
@@ -53,7 +56,8 @@ class ReportManagerPacUserDateGreaterThanFilterList():
             List[ReportItemPacUserDateGreaterThanFilterList]: The
                 list of report items.
         """
-        logging.info("ReportManagerPacUserDateGreaterThanFilterList.generate"
+        logging.info("ReportManagerPacUserDateGreaterThanFilterList"
+                     ".generate"
                      " Start")
 
         role_required = ""
@@ -97,11 +101,13 @@ class ReportManagerPacUserDateGreaterThanFilterList():
             result.append(report_item)
 
         logging.info(
-            "ReportManagerPacUserDateGreaterThanFilterList.generate Results: %s",
+            "ReportManagerPacUserDateGreaterThanFilterList"
+            ".generate Results: %s",
             json.dumps(data_list)
         )
 
-        logging.info('ReportManagerPacUserDateGreaterThanFilterList.generate End')
+        logging.info("ReportManagerPacUserDateGreaterThanFilterList"
+                     ".generate End")
         return result
 
     async def build_csv(

@@ -173,7 +173,8 @@ class Tac(Base):
         Set the code of the tac.
 
         Args:
-            value (uuid.UUID): The code to set for the tac.
+            value (uuid.UUID): The code to set for the
+                tac.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -206,9 +207,11 @@ class Tac(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the tac.
+        Returns the last change code of the
+        tac.
 
-        :return: The last change code of the tac.
+        :return: The last change code of the
+            tac.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -243,7 +246,8 @@ class Tac(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the tac.
+        Returns the UUID of the last user who updated the
+        tac.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -261,10 +265,12 @@ class Tac(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the tac.
+        Inserts the UTC date and time for the
+        tac.
 
         Returns:
-            datetime: The UTC date and time for the tac.
+            datetime: The UTC date and time for the
+                tac.
         """
         return getattr(
             self,
@@ -283,7 +289,8 @@ class Tac(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the tac.
+        Returns the last update UTC date and time of the
+        tac.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -306,9 +313,11 @@ class Tac(Base):
     @property
     def description(self) -> str:
         """
-        Returns the Description of the tac.
+        Returns the Description of the
+        tac.
 
-        :return: The Description of the tac.
+        :return: The Description of the
+            tac.
         :rtype: str
         """
         return getattr(self, '_description', "") or ""
@@ -345,7 +354,8 @@ class Tac(Base):
     @property
     def is_active(self) -> bool:
         """
-        Check if the delete operation is allowed for the tac.
+        Check if the delete operation is allowed for the
+        tac.
 
         Returns:
             bool: True if delete is allowed, False otherwise.
@@ -364,9 +374,11 @@ class Tac(Base):
     @property
     def lookup_enum_name(self) -> str:
         """
-        Returns the Lookup Enum Name of the tac.
+        Returns the Lookup Enum Name of the
+        tac.
 
-        :return: The Lookup Enum Name of the tac.
+        :return: The Lookup Enum Name of the
+            tac.
         :rtype: str
         """
         return getattr(self, '_lookup_enum_name', "") or ""
@@ -383,9 +395,11 @@ class Tac(Base):
     @property
     def name(self) -> str:
         """
-        Returns the Name of the tac.
+        Returns the Name of the
+        tac.
 
-        :return: The Name of the tac.
+        :return: The Name of the
+            tac.
         :rtype: str
         """
         return getattr(self, '_name', "") or ""
@@ -416,7 +430,6 @@ class Tac(Base):
         """
 
         self._pac_id = value
-
 
     @staticmethod
     def property_list():

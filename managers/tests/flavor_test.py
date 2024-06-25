@@ -537,7 +537,7 @@ class TestFlavorManager:
         json_data = flavor_manager.to_json(
             flavor)
 
-        deserialized_flavor = flavor_manager.from_json(json_data)
+        deserialized_flavor = await flavor_manager.from_json(json_data)
 
         assert isinstance(deserialized_flavor, Flavor)
         assert deserialized_flavor.code == \
@@ -578,7 +578,7 @@ class TestFlavorManager:
 
         assert isinstance(flavor_data, dict)
 
-        deserialized_flavor = flavor_manager.from_dict(
+        deserialized_flavor = await flavor_manager.from_dict(
             flavor_data)
 
         assert isinstance(deserialized_flavor, Flavor)
@@ -784,11 +784,13 @@ class TestFlavorManager:
             None
         """
         # Add a flavor
-        flavor1 = await FlavorFactory.create_async(
-            session=session)
+        flavor1 = await \
+            FlavorFactory.create_async(
+                session=session)
 
-        flavor2 = await flavor_manager.get_by_id(
-            flavor_id=flavor1.flavor_id)
+        flavor2 = await \
+            flavor_manager.get_by_id(
+                flavor_id=flavor1.flavor_id)
 
         assert flavor_manager.is_equal(
             flavor1, flavor2) is True
@@ -796,8 +798,9 @@ class TestFlavorManager:
         flavor1_dict = flavor_manager.to_dict(
             flavor1)
 
-        flavor3 = flavor_manager.from_dict(
-            flavor1_dict)
+        flavor3 = await \
+            flavor_manager.from_dict(
+                flavor1_dict)
 
         assert flavor_manager.is_equal(
             flavor1, flavor3) is True

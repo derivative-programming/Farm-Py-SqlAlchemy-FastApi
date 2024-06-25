@@ -51,7 +51,8 @@ class LandAddPlantRouter(BaseRouter):
     @router.get(
         "/api/v1_0/land-add-plant/{land_code}/init",
         response_model=(
-            api_init_models.LandAddPlantInitObjWFGetInitModelResponse
+            api_init_models
+            .LandAddPlantInitObjWFGetInitModelResponse
         ),
         summary="Land Add Plant Init Page"
     )
@@ -75,12 +76,14 @@ class LandAddPlantRouter(BaseRouter):
             'LandAddPlantRouter.request_get_init start. landCode:%s',
             land_code)
         auth_dict = BaseRouter.implementation_check(
-            LandAddPlantRouterConfig.is_get_init_available)
+            LandAddPlantRouterConfig
+            .is_get_init_available)
 
         response = api_init_models.LandAddPlantInitObjWFGetInitModelResponse()
 
         auth_dict = BaseRouter.authorization_check(
-            LandAddPlantRouterConfig.is_public, api_key)
+            LandAddPlantRouterConfig
+            .is_public, api_key)
 
         async with session:
             try:
@@ -124,17 +127,21 @@ class LandAddPlantRouter(BaseRouter):
             'LandAddPlantRouter.init get result:%s',
             response_data)
         return response
-
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true]Start
+
     @staticmethod
     @router.post(
         "/api/v1_0/land-add-plant/{land_code}",
-        response_model=api_models.LandAddPlantPostModelResponse,
+        response_model=(
+            api_models
+            .LandAddPlantPostModelResponse
+        ),
         summary="Land Add Plant Business Flow")
     async def request_post_with_id(
         land_code: uuid.UUID,
-        request_model: api_models.LandAddPlantPostModelRequest,
+        request_model: (
+            api_models.LandAddPlantPostModelRequest),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -157,9 +164,11 @@ class LandAddPlantRouter(BaseRouter):
             land_code
         )
         auth_dict = BaseRouter.implementation_check(
-            LandAddPlantRouterConfig.is_post_with_id_available)
+            LandAddPlantRouterConfig
+            .is_post_with_id_available)
 
-        response = api_models.LandAddPlantPostModelResponse()
+        response = (api_models
+                    .LandAddPlantPostModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             LandAddPlantRouterConfig.is_public,

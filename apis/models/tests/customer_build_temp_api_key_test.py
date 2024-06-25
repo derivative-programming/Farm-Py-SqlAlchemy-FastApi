@@ -14,7 +14,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from business.customer import CustomerBusObj
-from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey, FlowCustomerBuildTempApiKeyResult
+from flows.customer_build_temp_api_key import (
+    FlowCustomerBuildTempApiKey,
+    FlowCustomerBuildTempApiKeyResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
@@ -22,7 +24,8 @@ from models.factory.customer import CustomerFactory
 from ...models.customer_build_temp_api_key import (
     CustomerBuildTempApiKeyPostModelResponse,
     CustomerBuildTempApiKeyPostModelRequest)
-from ..factory.customer_build_temp_api_key import CustomerBuildTempApiKeyPostModelRequestFactory
+from ..factory.customer_build_temp_api_key import (
+    CustomerBuildTempApiKeyPostModelRequestFactory)
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -91,7 +94,8 @@ class TestCustomerBuildTempApiKeyPostModelRequest:
 # endset  # noqa: E122
         )
 
-        # Convert the model to a dictionary with snake_case keys and serialized values
+        # Convert the model to a dictionary with snake_case
+        # keys and serialized values
         data = request.to_dict_snake_serialized()
 
         # Define the expected dictionary

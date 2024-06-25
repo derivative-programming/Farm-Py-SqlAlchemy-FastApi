@@ -96,7 +96,8 @@ class TestCustomerFactory:
         initial_code = customer.last_change_code
         customer.code = uuid.uuid4()
         session.commit()
-        assert customer.last_change_code != initial_code
+        assert customer.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestCustomerFactory:
         session.delete(customer)
         session.commit()
         deleted_customer = session.query(Customer).filter_by(
-            customer_id=customer.customer_id).first()
+            _customer_id=(
+                customer.customer_id)
+        ).first()
         assert deleted_customer is None
 
     def test_data_types(self, session):
@@ -271,10 +274,13 @@ class TestCustomerFactory:
         """
         Test case for checking the unique code constraint.
         """
-        customer_1 = CustomerFactory.create(session=session)
-        customer_2 = CustomerFactory.create(session=session)
+        customer_1 = CustomerFactory.create(
+            session=session)
+        customer_2 = CustomerFactory.create(
+            session=session)
         customer_2.code = customer_1.code
-        session.add_all([customer_1, customer_2])
+        session.add_all([customer_1,
+                         customer_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -374,14 +380,19 @@ class TestCustomerFactory:
             session=session)
         original_last_change_code = customer.last_change_code
         customer_1 = session.query(Customer).filter_by(
-            _customer_id=customer.customer_id).first()
+            _customer_id=(
+                customer.customer_id)
+        ).first()
         customer_1.code = uuid.uuid4()
         session.commit()
         customer_2 = session.query(Customer).filter_by(
-            _customer_id=customer.customer_id).first()
+            _customer_id=(
+                customer.customer_id)
+        ).first()
         customer_2.code = uuid.uuid4()
         session.commit()
-        assert customer_2.last_change_code != original_last_change_code
+        assert customer_2.last_change_code != \
+            original_last_change_code
     # activeOrganizationID,
     # email,
     # emailConfirmedUTCDateTime

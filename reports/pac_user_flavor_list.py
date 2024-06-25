@@ -13,9 +13,12 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import List
 from helpers import SessionContext, TypeConversion
-from reports.providers.pac_user_flavor_list import ReportProviderPacUserFlavorList
-from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
-from .report_request_validation_error import ReportRequestValidationError
+from reports.providers.pac_user_flavor_list import (
+    ReportProviderPacUserFlavorList)
+from reports.row_models.pac_user_flavor_list import (
+    ReportItemPacUserFlavorList)
+from .report_request_validation_error import (
+    ReportRequestValidationError)
 
 
 class ReportManagerPacUserFlavorList():
@@ -53,7 +56,8 @@ class ReportManagerPacUserFlavorList():
             List[ReportItemPacUserFlavorList]: The
                 list of report items.
         """
-        logging.info("ReportManagerPacUserFlavorList.generate"
+        logging.info("ReportManagerPacUserFlavorList"
+                     ".generate"
                      " Start")
 
         role_required = ""
@@ -97,11 +101,13 @@ class ReportManagerPacUserFlavorList():
             result.append(report_item)
 
         logging.info(
-            "ReportManagerPacUserFlavorList.generate Results: %s",
+            "ReportManagerPacUserFlavorList"
+            ".generate Results: %s",
             json.dumps(data_list)
         )
 
-        logging.info('ReportManagerPacUserFlavorList.generate End')
+        logging.info("ReportManagerPacUserFlavorList"
+                     ".generate End")
         return result
 
     async def build_csv(

@@ -14,7 +14,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from business.error_log import ErrorLogBusObj
-from flows.error_log_config_resolve_error_log import FlowErrorLogConfigResolveErrorLog, FlowErrorLogConfigResolveErrorLogResult
+from flows.error_log_config_resolve_error_log import (
+    FlowErrorLogConfigResolveErrorLog,
+    FlowErrorLogConfigResolveErrorLogResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.error_log import ErrorLogFactory
@@ -22,7 +24,8 @@ from models.factory.error_log import ErrorLogFactory
 from ...models.error_log_config_resolve_error_log import (
     ErrorLogConfigResolveErrorLogPostModelResponse,
     ErrorLogConfigResolveErrorLogPostModelRequest)
-from ..factory.error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequestFactory
+from ..factory.error_log_config_resolve_error_log import (
+    ErrorLogConfigResolveErrorLogPostModelRequestFactory)
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -91,7 +94,8 @@ class TestErrorLogConfigResolveErrorLogPostModelRequest:
 # endset  # noqa: E122
         )
 
-        # Convert the model to a dictionary with snake_case keys and serialized values
+        # Convert the model to a dictionary with snake_case
+        # keys and serialized values
         data = request.to_dict_snake_serialized()
 
         # Define the expected dictionary

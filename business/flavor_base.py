@@ -195,7 +195,8 @@ class FlavorBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.flavor.insert_user_id = value
 
@@ -236,7 +237,8 @@ class FlavorBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.flavor.last_update_user_id = value
 
@@ -368,7 +370,8 @@ class FlavorBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.flavor.is_active = value
     # lookupEnumName
@@ -581,7 +584,8 @@ class FlavorBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.flavor.insert_utc_date_time = value
 
@@ -629,7 +633,8 @@ class FlavorBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.flavor.last_update_utc_date_time = value
 
@@ -649,11 +654,12 @@ class FlavorBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         flavor_manager = FlavorManager(
             self._session_context)
-        self.flavor = flavor_manager.from_json(json_data)
+        self.flavor = await flavor_manager.from_json(json_data)
 
         return self
 
@@ -671,7 +677,8 @@ class FlavorBaseBusObj(BaseBusObj):
             flavor data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         flavor_manager = FlavorManager(
             self._session_context)
@@ -698,7 +705,8 @@ class FlavorBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(flavor_id, int):
-            raise ValueError("flavor_id must be an integer")
+            raise ValueError(
+                "flavor_id must be an integer")
 
         flavor_manager = FlavorManager(
             self._session_context)
@@ -725,7 +733,8 @@ class FlavorBaseBusObj(BaseBusObj):
 
         if not isinstance(flavor_obj_instance,
                           Flavor):
-            raise ValueError("flavor_obj_instance must be an instance of Flavor")
+            raise ValueError(
+                "flavor_obj_instance must be an instance of Flavor")
 
         # flavor_manager = FlavorManager(
         #     self._session_context)
@@ -754,12 +763,13 @@ class FlavorBaseBusObj(BaseBusObj):
             flavor data is found.
         """
         if not isinstance(flavor_dict, dict):
-            raise ValueError("flavor_dict must be a dictionary")
+            raise ValueError(
+                "flavor_dict must be a dictionary")
 
         flavor_manager = FlavorManager(
             self._session_context)
 
-        self.flavor = flavor_manager.from_dict(
+        self.flavor = await flavor_manager.from_dict(
             flavor_dict)
 
         return self

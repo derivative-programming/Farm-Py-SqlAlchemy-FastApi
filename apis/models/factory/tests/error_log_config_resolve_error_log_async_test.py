@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequest
-from ..error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogPostModelRequestFactory
+from ...error_log_config_resolve_error_log import (
+    ErrorLogConfigResolveErrorLogPostModelRequest)
+from ..error_log_config_resolve_error_log import (
+    ErrorLogConfigResolveErrorLogPostModelRequestFactory)
 
 
 class TestErrorLogConfigResolveErrorLogPostModelRequestFactoryAsync:
@@ -32,5 +34,6 @@ class TestErrorLogConfigResolveErrorLogPostModelRequestFactoryAsync:
             await ErrorLogConfigResolveErrorLogPostModelRequestFactory.create_async(
                 session=session)
         )
-        assert isinstance(model_instance, ErrorLogConfigResolveErrorLogPostModelRequest)
+        assert isinstance(model_instance,
+                          ErrorLogConfigResolveErrorLogPostModelRequest)
 

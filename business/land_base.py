@@ -195,7 +195,8 @@ class LandBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.land.insert_user_id = value
 
@@ -236,7 +237,8 @@ class LandBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.land.last_update_user_id = value
 
@@ -368,7 +370,8 @@ class LandBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.land.is_active = value
     # lookupEnumName
@@ -581,7 +584,8 @@ class LandBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.land.insert_utc_date_time = value
 
@@ -629,7 +633,8 @@ class LandBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.land.last_update_utc_date_time = value
 
@@ -649,11 +654,12 @@ class LandBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         land_manager = LandManager(
             self._session_context)
-        self.land = land_manager.from_json(json_data)
+        self.land = await land_manager.from_json(json_data)
 
         return self
 
@@ -671,7 +677,8 @@ class LandBaseBusObj(BaseBusObj):
             land data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         land_manager = LandManager(
             self._session_context)
@@ -698,7 +705,8 @@ class LandBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(land_id, int):
-            raise ValueError("land_id must be an integer")
+            raise ValueError(
+                "land_id must be an integer")
 
         land_manager = LandManager(
             self._session_context)
@@ -725,7 +733,8 @@ class LandBaseBusObj(BaseBusObj):
 
         if not isinstance(land_obj_instance,
                           Land):
-            raise ValueError("land_obj_instance must be an instance of Land")
+            raise ValueError(
+                "land_obj_instance must be an instance of Land")
 
         # land_manager = LandManager(
         #     self._session_context)
@@ -754,12 +763,13 @@ class LandBaseBusObj(BaseBusObj):
             land data is found.
         """
         if not isinstance(land_dict, dict):
-            raise ValueError("land_dict must be a dictionary")
+            raise ValueError(
+                "land_dict must be a dictionary")
 
         land_manager = LandManager(
             self._session_context)
 
-        self.land = land_manager.from_dict(
+        self.land = await land_manager.from_dict(
             land_dict)
 
         return self

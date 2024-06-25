@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...land_user_plant_multi_select_to_editable import LandUserPlantMultiSelectToEditablePostModelRequest
-from ..land_user_plant_multi_select_to_editable import LandUserPlantMultiSelectToEditablePostModelRequestFactory
+from ...land_user_plant_multi_select_to_editable import (
+    LandUserPlantMultiSelectToEditablePostModelRequest)
+from ..land_user_plant_multi_select_to_editable import (
+    LandUserPlantMultiSelectToEditablePostModelRequestFactory)
 
 
 class TestLandUserPlantMultiSelectToEditablePostModelRequestFactoryAsync:
@@ -32,7 +34,8 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequestFactoryAsync:
             await LandUserPlantMultiSelectToEditablePostModelRequestFactory.create_async(
                 session=session)
         )
-        assert isinstance(model_instance, LandUserPlantMultiSelectToEditablePostModelRequest)
+        assert isinstance(model_instance,
+                          LandUserPlantMultiSelectToEditablePostModelRequest)
         assert isinstance(model_instance.plant_code_list_csv,
                           str)
 

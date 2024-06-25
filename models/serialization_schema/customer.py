@@ -65,9 +65,11 @@ class CustomerSchema(SQLAlchemyAutoSchema):
     last_update_user_id = fields.UUID()
     active_organization_id = fields.Int()
     email = fields.Str()
-    email_confirmed_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
+    email_confirmed_utc_date_time = \
+        fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
     first_name = fields.Str()
-    forgot_password_key_expiration_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
+    forgot_password_key_expiration_utc_date_time = \
+        fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
     forgot_password_key_value = fields.Str()
     fs_user_code_value = fields.UUID()
     is_active = fields.Bool()
@@ -77,12 +79,14 @@ class CustomerSchema(SQLAlchemyAutoSchema):
     is_locked = fields.Bool()
     is_multiple_organizations_allowed = fields.Bool()
     is_verbose_logging_forced = fields.Bool()
-    last_login_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
+    last_login_utc_date_time = \
+        fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
     last_name = fields.Str()
     password = fields.Str()
     phone = fields.Str()
     province = fields.Str()
-    registration_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
+    registration_utc_date_time = \
+        fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
     tac_id = fields.Int()
     utc_offset_in_minutes = fields.Int()
     zip = fields.Str()

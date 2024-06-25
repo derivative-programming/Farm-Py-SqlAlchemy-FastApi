@@ -132,7 +132,8 @@ class PacUserTacListGetModelResponseItem(CamelModel):
 
     def load_report_item(self, data: ReportItemPacUserTacList):
         """
-        Loads the data from a ReportItemPacUserTacList
+        Loads the data from a
+        ReportItemPacUserTacList
         object into the response model item.
 
         Args:

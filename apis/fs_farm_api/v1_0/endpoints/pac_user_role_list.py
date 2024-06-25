@@ -6,16 +6,17 @@ PacUserRoleListRouter,
 which handles the API endpoints related to the
 Pac User Role List.
 
-The PacUserRoleListRouter provides the following endpoints:
-    - GET /api/v1_0/pac-user-role-list/{pac_code}/init:
-        Get the initialization data for the
-        Pac User Role List page.
-    - GET /api/v1_0/pac-user-role-list/{pac_code}:
-        Get the Pac User Role List Report
-        for a specific pac code.
-    - GET /api/v1_0/pac-user-role-list/{pac_code}/to-csv:
-        Retrieve the Pac User Role List
-        Report as a CSV file.
+The PacUserRoleListRouter provides
+the following endpoints:
+- GET /api/v1_0/pac-user-role-list/{pac_code}/init:
+    Get the initialization data for the
+    Pac User Role List page.
+- GET /api/v1_0/pac-user-role-list/{pac_code}:
+    Get the Pac User Role List Report
+    for a specific pac code.
+- GET /api/v1_0/pac-user-role-list/{pac_code}/to-csv:
+    Retrieve the Pac User Role List
+    Report as a CSV file.
 """
 
 import logging
@@ -75,7 +76,8 @@ class PacUserRoleListRouter(BaseRouter):
         "/api/v1_0/pac-user-role-list/{pac_code}/init",
         response_model=(
             api_init_models.
-            PacUserRoleListInitReportGetInitModelResponse),
+            PacUserRoleListInitReportGetInitModelResponse
+        ),
         summary="Pac User Role List Init Page")
     async def request_get_init(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
@@ -101,7 +103,8 @@ class PacUserRoleListRouter(BaseRouter):
             'PacUserRoleListRouter.request_get_init start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserRoleListRouterConfig.is_get_init_available)
+            PacUserRoleListRouterConfig
+            .is_get_init_available)
 
         response = (
             api_init_models.
@@ -158,11 +161,15 @@ class PacUserRoleListRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/pac-user-role-list/{pac_code}",
-        response_model=api_models.PacUserRoleListGetModelResponse,
+        response_model=(
+            api_models
+            .PacUserRoleListGetModelResponse
+        ),
         summary="Pac User Role List Report")
     async def request_get_with_id(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserRoleListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserRoleListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -190,9 +197,11 @@ class PacUserRoleListRouter(BaseRouter):
             'PacUserRoleListRouter.request_get_with_id start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserRoleListRouterConfig.is_get_with_id_available)
+            PacUserRoleListRouterConfig
+            .is_get_with_id_available)
 
-        response = api_models.PacUserRoleListGetModelResponse()
+        response = (api_models
+                    .PacUserRoleListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             PacUserRoleListRouterConfig.is_public, api_key)
@@ -246,7 +255,8 @@ class PacUserRoleListRouter(BaseRouter):
         summary="Pac User Role List Report to CSV")
     async def request_get_with_id_to_csv(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserRoleListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserRoleListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -272,12 +282,15 @@ class PacUserRoleListRouter(BaseRouter):
             pac_code
         )
         auth_dict = BaseRouter.implementation_check(
-            PacUserRoleListRouterConfig.is_get_to_csv_available)
+            PacUserRoleListRouterConfig
+            .is_get_to_csv_available)
 
-        response = api_models.PacUserRoleListGetModelResponse()
+        response = (api_models
+                    .PacUserRoleListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
-            PacUserRoleListRouterConfig.is_public, api_key)
+            PacUserRoleListRouterConfig
+            .is_public, api_key)
 
         tmp_file_path = ""
 

@@ -6,16 +6,17 @@ PacUserTriStateFilterListRouter,
 which handles the API endpoints related to the
 Pac User Tri State Filter List.
 
-The PacUserTriStateFilterListRouter provides the following endpoints:
-    - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init:
-        Get the initialization data for the
-        Pac User Tri State Filter List page.
-    - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}:
-        Get the Pac User Tri State Filter List Report
-        for a specific pac code.
-    - GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/to-csv:
-        Retrieve the Pac User Tri State Filter List
-        Report as a CSV file.
+The PacUserTriStateFilterListRouter provides
+the following endpoints:
+- GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init:
+    Get the initialization data for the
+    Pac User Tri State Filter List page.
+- GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}:
+    Get the Pac User Tri State Filter List Report
+    for a specific pac code.
+- GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/to-csv:
+    Retrieve the Pac User Tri State Filter List
+    Report as a CSV file.
 """
 
 import logging
@@ -75,7 +76,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         "/api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init",
         response_model=(
             api_init_models.
-            PacUserTriStateFilterListInitReportGetInitModelResponse),
+            PacUserTriStateFilterListInitReportGetInitModelResponse
+        ),
         summary="Pac User Tri State Filter List Init Page")
     async def request_get_init(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
@@ -101,7 +103,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             'PacUserTriStateFilterListRouter.request_get_init start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserTriStateFilterListRouterConfig.is_get_init_available)
+            PacUserTriStateFilterListRouterConfig
+            .is_get_init_available)
 
         response = (
             api_init_models.
@@ -158,11 +161,15 @@ class PacUserTriStateFilterListRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/pac-user-tri-state-filter-list/{pac_code}",
-        response_model=api_models.PacUserTriStateFilterListGetModelResponse,
+        response_model=(
+            api_models
+            .PacUserTriStateFilterListGetModelResponse
+        ),
         summary="Pac User Tri State Filter List Report")
     async def request_get_with_id(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserTriStateFilterListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserTriStateFilterListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -190,9 +197,11 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             'PacUserTriStateFilterListRouter.request_get_with_id start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserTriStateFilterListRouterConfig.is_get_with_id_available)
+            PacUserTriStateFilterListRouterConfig
+            .is_get_with_id_available)
 
-        response = api_models.PacUserTriStateFilterListGetModelResponse()
+        response = (api_models
+                    .PacUserTriStateFilterListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             PacUserTriStateFilterListRouterConfig.is_public, api_key)
@@ -246,7 +255,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
         summary="Pac User Tri State Filter List Report to CSV")
     async def request_get_with_id_to_csv(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserTriStateFilterListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserTriStateFilterListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -272,12 +282,15 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             pac_code
         )
         auth_dict = BaseRouter.implementation_check(
-            PacUserTriStateFilterListRouterConfig.is_get_to_csv_available)
+            PacUserTriStateFilterListRouterConfig
+            .is_get_to_csv_available)
 
-        response = api_models.PacUserTriStateFilterListGetModelResponse()
+        response = (api_models
+                    .PacUserTriStateFilterListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
-            PacUserTriStateFilterListRouterConfig.is_public, api_key)
+            PacUserTriStateFilterListRouterConfig
+            .is_public, api_key)
 
         tmp_file_path = ""
 

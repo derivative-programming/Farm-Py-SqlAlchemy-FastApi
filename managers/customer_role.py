@@ -68,7 +68,8 @@ class CustomerRoleManager:
         """
         Initializes the CustomerRoleManager.
         """
-        logging.info("CustomerRoleManager.Initialize")
+        logging.info(
+            "CustomerRoleManager.Initialize")
 
 
     async def build(self, **kwargs) -> CustomerRole:
@@ -84,7 +85,8 @@ class CustomerRoleManager:
             CustomerRole: The newly created
                 CustomerRole object.
         """
-        logging.info("CustomerRoleManager.build")
+        logging.info(
+            "CustomerRoleManager.build")
         return CustomerRole(**kwargs)
 
     async def add(
@@ -102,9 +104,12 @@ class CustomerRoleManager:
             CustomerRole: The added
                 customer_role.
         """
-        logging.info("CustomerRoleManager.add")
-        customer_role.insert_user_id = self._session_context.customer_code
-        customer_role.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "CustomerRoleManager.add")
+        customer_role.insert_user_id = (
+            self._session_context.customer_code)
+        customer_role.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             customer_role)
         await self._session_context.session.flush()
@@ -119,7 +124,8 @@ class CustomerRoleManager:
             The base query for retrieving
             customer_roles.
         """
-        logging.info("CustomerRoleManager._build_query")
+        logging.info(
+            "CustomerRoleManager._build_query")
 
         query = select(
             CustomerRole,
@@ -154,7 +160,8 @@ class CustomerRoleManager:
             List[CustomerRole]: The list of
                 customer_roles that match the query.
         """
-        logging.info("CustomerRoleManager._run_query")
+        logging.info(
+            "CustomerRoleManager._run_query")
         customer_role_query_all = self._build_query()
 
         if query_filter is not None:
@@ -208,7 +215,9 @@ class CustomerRoleManager:
             else None
         )
 
-    async def get_by_id(self, customer_role_id: int) -> Optional[CustomerRole]:
+    async def get_by_id(
+        self, customer_role_id: int
+    ) -> Optional[CustomerRole]:
         """
         Retrieves a customer_role by its ID.
 
@@ -235,7 +244,9 @@ class CustomerRoleManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[CustomerRole]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[CustomerRole]:
         """
         Retrieves a customer_role
         by its code.
@@ -248,7 +259,8 @@ class CustomerRoleManager:
             Optional[CustomerRole]: The retrieved
                 customer_role, or None if not found.
         """
-        logging.info("CustomerRoleManager.get_by_code %s", code)
+        logging.info("CustomerRoleManager.get_by_code %s",
+                     code)
 
         query_filter = CustomerRole._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -302,7 +314,9 @@ class CustomerRoleManager:
                 customer_role with the
                 specified ID is not found.
         """
-        logging.info("CustomerRoleManager.delete %s", customer_role_id)
+        logging.info(
+            "CustomerRoleManager.delete %s",
+            customer_role_id)
         if not isinstance(customer_role_id, int):
             raise TypeError(
                 f"The customer_role_id must be an integer, "
@@ -311,7 +325,8 @@ class CustomerRoleManager:
         customer_role = await self.get_by_id(
             customer_role_id)
         if not customer_role:
-            raise CustomerRoleNotFoundError(f"CustomerRole with ID {customer_role_id} not found!")
+            raise CustomerRoleNotFoundError(
+                f"CustomerRole with ID {customer_role_id} not found!")
 
         await self._session_context.session.delete(
             customer_role)
@@ -328,7 +343,8 @@ class CustomerRoleManager:
             List[CustomerRole]: The list of
                 customer_roles.
         """
-        logging.info("CustomerRoleManager.get_list")
+        logging.info(
+            "CustomerRoleManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -349,7 +365,8 @@ class CustomerRoleManager:
             str: The JSON string representation of the
                 customer_role.
         """
-        logging.info("CustomerRoleManager.to_json")
+        logging.info(
+            "CustomerRoleManager.to_json")
         schema = CustomerRoleSchema()
         customer_role_data = schema.dump(customer_role)
         return json.dumps(customer_role_data)
@@ -370,7 +387,8 @@ class CustomerRoleManager:
             Dict[str, Any]: The dictionary representation of the
                 customer_role.
         """
-        logging.info("CustomerRoleManager.to_dict")
+        logging.info(
+            "CustomerRoleManager.to_dict")
         schema = CustomerRoleSchema()
         customer_role_data = schema.dump(customer_role)
 
@@ -378,7 +396,7 @@ class CustomerRoleManager:
 
         return customer_role_data
 
-    def from_json(self, json_str: str) -> CustomerRole:
+    async def from_json(self, json_str: str) -> CustomerRole:
         """
         Deserializes a JSON string into a
         CustomerRole object.
@@ -390,19 +408,32 @@ class CustomerRoleManager:
             CustomerRole: The deserialized
                 CustomerRole object.
         """
-        logging.info("CustomerRoleManager.from_json")
+        logging.info(
+            "CustomerRoleManager.from_json")
         schema = CustomerRoleSchema()
         data = json.loads(json_str)
         customer_role_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_customer_role = CustomerRole(**customer_role_dict)
+        # new_customer_role = CustomerRole(**customer_role_dict)
+
+        # load or create
+        new_customer_role = await self.get_by_id(
+            customer_role_dict["customer_role_id"])
+        if new_customer_role is None:
+            new_customer_role = CustomerRole(**customer_role_dict)
+            self._session_context.session.add(new_customer_role)
+        else:
+            for key, value in customer_role_dict.items():
+                setattr(new_customer_role, key, value)
 
         return new_customer_role
 
-    def from_dict(self, customer_role_dict: Dict[str, Any]) -> CustomerRole:
+    async def from_dict(
+        self, customer_role_dict: Dict[str, Any]
+    ) -> CustomerRole:
         """
         Creates a CustomerRole
         instance from a dictionary of attributes.
@@ -418,19 +449,31 @@ class CustomerRoleManager:
                 created from the given
                 dictionary.
         """
-        logging.info("CustomerRoleManager.from_dict")
+        logging.info(
+            "CustomerRoleManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = CustomerRoleSchema()
         customer_role_dict_converted = schema.load(
             customer_role_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new CustomerRole instance
         # using the validated data
-        new_customer_role = CustomerRole(**customer_role_dict_converted)
+        # new_customer_role = CustomerRole(**customer_role_dict_converted)
+
+        # load or create
+        new_customer_role = await self.get_by_id(
+            customer_role_dict_converted["customer_role_id"])
+        if new_customer_role is None:
+            new_customer_role = CustomerRole(**customer_role_dict_converted)
+            self._session_context.session.add(new_customer_role)
+        else:
+            for key, value in customer_role_dict_converted.items():
+                setattr(new_customer_role, key, value)
+
         return new_customer_role
 
     async def add_bulk(
@@ -449,7 +492,8 @@ class CustomerRoleManager:
             List[CustomerRole]: The added
                 customer_roles.
         """
-        logging.info("CustomerRoleManager.add_bulk")
+        logging.info(
+            "CustomerRoleManager.add_bulk")
         for customer_role in customer_roles:
             customer_role_id = customer_role.customer_role_id
             code = customer_role.code
@@ -458,8 +502,10 @@ class CustomerRoleManager:
                     "CustomerRole is already added"
                     f": {str(code)} {str(customer_role_id)}"
                 )
-            customer_role.insert_user_id = self._session_context.customer_code
-            customer_role.last_update_user_id = self._session_context.customer_code
+            customer_role.insert_user_id = (
+                self._session_context.customer_code)
+            customer_role.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(customer_roles)
         await self._session_context.session.flush()
         return customer_roles
@@ -488,7 +534,8 @@ class CustomerRoleManager:
                 provided customer_role_id is not found.
         """
 
-        logging.info("CustomerRoleManager.update_bulk start")
+        logging.info(
+            "CustomerRoleManager.update_bulk start")
         updated_customer_roles = []
         for update in customer_role_updates:
             customer_role_id = update.get("customer_role_id")
@@ -500,7 +547,9 @@ class CustomerRoleManager:
             if not customer_role_id:
                 continue
 
-            logging.info("CustomerRoleManager.update_bulk customer_role_id:%s", customer_role_id)
+            logging.info(
+                "CustomerRoleManager.update_bulk customer_role_id:%s",
+                customer_role_id)
 
             customer_role = await self.get_by_id(
                 customer_role_id)
@@ -519,7 +568,8 @@ class CustomerRoleManager:
 
         await self._session_context.session.flush()
 
-        logging.info("CustomerRoleManager.update_bulk end")
+        logging.info(
+            "CustomerRoleManager.update_bulk end")
 
         return updated_customer_roles
 
@@ -528,7 +578,8 @@ class CustomerRoleManager:
         Delete multiple customer_roles
         by their IDs.
         """
-        logging.info("CustomerRoleManager.delete_bulk")
+        logging.info(
+            "CustomerRoleManager.delete_bulk")
 
         for customer_role_id in customer_role_ids:
             if not isinstance(customer_role_id, int):
@@ -557,7 +608,8 @@ class CustomerRoleManager:
         return the total number of
         customer_roles.
         """
-        logging.info("CustomerRoleManager.count")
+        logging.info(
+            "CustomerRoleManager.count")
         result = await self._session_context.session.execute(
             select(CustomerRole))
         return len(list(result.scalars().all()))
@@ -572,7 +624,8 @@ class CustomerRoleManager:
         from the database.
         """
 
-        logging.info("CustomerRoleManager.refresh")
+        logging.info(
+            "CustomerRoleManager.refresh")
 
         await self._session_context.session.refresh(customer_role)
 
@@ -583,7 +636,9 @@ class CustomerRoleManager:
         Check if a customer_role
         with the given ID exists.
         """
-        logging.info("CustomerRoleManager.exists %s", customer_role_id)
+        logging.info(
+            "CustomerRoleManager.exists %s",
+            customer_role_id)
         if not isinstance(customer_role_id, int):
             raise TypeError(
                 f"The customer_role_id must be an integer, "
@@ -636,7 +691,9 @@ class CustomerRoleManager:
         dict2 = self.to_dict(customer_role2)
 
         return dict1 == dict2
-    async def get_by_customer_id(self, customer_id: int) -> List[CustomerRole]:  # CustomerID
+    async def get_by_customer_id(  # CustomerID
+            self,
+            customer_id: int) -> List[CustomerRole]:
         """
         Retrieve a list of customer_roles by
         customer ID.
@@ -650,7 +707,8 @@ class CustomerRoleManager:
                 with the specified customer ID.
         """
 
-        logging.info("CustomerRoleManager.get_by_customer_id")
+        logging.info(
+            "CustomerRoleManager.get_by_customer_id")
         if not isinstance(customer_id, int):
             raise TypeError(
                 f"The customer_role_id must be an integer, "
@@ -662,10 +720,9 @@ class CustomerRoleManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-    async def get_by_role_id(
-        self,
-        role_id: int
-    ) -> List[CustomerRole]:  # RoleID
+    async def get_by_role_id(  # RoleID
+            self,
+            role_id: int) -> List[CustomerRole]:
         """
         Retrieve a list of customer_roles
             based on the
@@ -684,7 +741,8 @@ class CustomerRoleManager:
                 role_id.
         """
 
-        logging.info("CustomerRoleManager.get_by_role_id")
+        logging.info(
+            "CustomerRoleManager.get_by_role_id")
         if not isinstance(role_id, int):
             raise TypeError(
                 f"The customer_role_id must be an integer, "

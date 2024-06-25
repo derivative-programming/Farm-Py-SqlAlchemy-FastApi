@@ -208,7 +208,10 @@ class TestPlantSchema:
             str(plant.land_code_peek))
 # endset
 
-    def test_plant_deserialization(self, plant):
+    def test_plant_deserialization(
+        self,
+        plant
+    ):
         """
         Test the deserialization of a
         Plant object using the
@@ -291,7 +294,8 @@ class TestPlantSchema:
             plant.land_code_peek)
 # endset
 
-        new_plant = Plant(**deserialized_data)
+        new_plant = Plant(
+            **deserialized_data)
 
         assert isinstance(new_plant, Plant)
 
@@ -451,7 +455,8 @@ class TestPlantSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_plant = Plant(**deserialized_data)
+        new_plant = Plant(
+            **deserialized_data)
 
         assert isinstance(new_plant, Plant)
 

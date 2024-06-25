@@ -158,7 +158,10 @@ class TestLandSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(land.pac_code_peek))
 
-    def test_land_deserialization(self, land):
+    def test_land_deserialization(
+        self,
+        land
+    ):
         """
         Test the deserialization of a
         Land object using the
@@ -207,7 +210,8 @@ class TestLandSchema:
             'pac_code_peek')] == (
             land.pac_code_peek)
 
-        new_land = Land(**deserialized_data)
+        new_land = Land(
+            **deserialized_data)
 
         assert isinstance(new_land, Land)
 
@@ -301,7 +305,8 @@ class TestLandSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_land = Land(**deserialized_data)
+        new_land = Land(
+            **deserialized_data)
 
         assert isinstance(new_land, Land)
 

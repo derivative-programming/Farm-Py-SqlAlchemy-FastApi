@@ -6,16 +6,17 @@ LandUserPlantMultiSelectToNotEditableRouter,
 which handles the API endpoints related to the
 Land User Plant Multi Select To Not Editable.
 
-The LandUserPlantMultiSelectToNotEditableRouter provides the following endpoints:
-    - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/init:
-        Get the initialization data for the
-        Land User Plant Multi Select To Not Editable page.
-    - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}:
-        Get the Land User Plant Multi Select To Not Editable Report
-        for a specific  code.
-    - GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/to-csv:
-        Retrieve the Land User Plant Multi Select To Not Editable
-        Report as a CSV file.
+The LandUserPlantMultiSelectToNotEditableRouter provides
+the following endpoints:
+- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/init:
+    Get the initialization data for the
+    Land User Plant Multi Select To Not Editable page.
+- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}:
+    Get the Land User Plant Multi Select To Not Editable Report
+    for a specific  code.
+- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/to-csv:
+    Retrieve the Land User Plant Multi Select To Not Editable
+    Report as a CSV file.
 """
 
 import logging
@@ -73,11 +74,15 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
     @staticmethod
     @router.post(
         "/api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}",
-        response_model=api_models.LandUserPlantMultiSelectToNotEditablePostModelResponse,
+        response_model=(
+            api_models
+            .LandUserPlantMultiSelectToNotEditablePostModelResponse
+        ),
         summary="Land User Plant Multi Select To Not Editable Business Flow")
     async def request_post_with_id(
         land_code: uuid.UUID,
-        request_model: api_models.LandUserPlantMultiSelectToNotEditablePostModelRequest,
+        request_model: (
+            api_models.LandUserPlantMultiSelectToNotEditablePostModelRequest),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -100,9 +105,11 @@ class LandUserPlantMultiSelectToNotEditableRouter(BaseRouter):
             land_code
         )
         auth_dict = BaseRouter.implementation_check(
-            LandUserPlantMultiSelectToNotEditableRouterConfig.is_post_with_id_available)
+            LandUserPlantMultiSelectToNotEditableRouterConfig
+            .is_post_with_id_available)
 
-        response = api_models.LandUserPlantMultiSelectToNotEditablePostModelResponse()
+        response = (api_models
+                    .LandUserPlantMultiSelectToNotEditablePostModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             LandUserPlantMultiSelectToNotEditableRouterConfig.is_public,

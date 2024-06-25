@@ -676,7 +676,6 @@ class TestPacBaseBusObj:
 
         assert tri_state_filter_bus_obj.tri_state_filter_id > 0
 
-
     @pytest.mark.asyncio
     async def test_get_all_tri_state_filter(
         self,
@@ -740,7 +739,6 @@ class TestPacBaseBusObj:
         await tac_bus_obj.save()
 
         assert tac_bus_obj.tac_id > 0
-
 
     @pytest.mark.asyncio
     async def test_get_all_tac(
@@ -806,7 +804,6 @@ class TestPacBaseBusObj:
 
         assert role_bus_obj.role_id > 0
 
-
     @pytest.mark.asyncio
     async def test_get_all_role(
         self,
@@ -870,7 +867,6 @@ class TestPacBaseBusObj:
         await land_bus_obj.save()
 
         assert land_bus_obj.land_id > 0
-
 
     @pytest.mark.asyncio
     async def test_get_all_land(
@@ -936,7 +932,6 @@ class TestPacBaseBusObj:
 
         assert flavor_bus_obj.flavor_id > 0
 
-
     @pytest.mark.asyncio
     async def test_get_all_flavor(
         self,
@@ -1001,7 +996,6 @@ class TestPacBaseBusObj:
 
         assert error_log_bus_obj.error_log_id > 0
 
-
     @pytest.mark.asyncio
     async def test_get_all_error_log(
         self,
@@ -1065,7 +1059,6 @@ class TestPacBaseBusObj:
         await date_greater_than_filter_bus_obj.save()
 
         assert date_greater_than_filter_bus_obj.date_greater_than_filter_id > 0
-
 
     @pytest.mark.asyncio
     async def test_get_all_date_greater_than_filter(

@@ -2,7 +2,8 @@
 //GENDELETETHISFILE
 ##GENIF[calculatedIsParentObjectAvailable=false]End
 
-    async def build_GENVALSnakeName(self) -> GENVALPascalNameBusObj:
+    async def build_GENVALSnakeName(
+        self) -> GENVALPascalNameBusObj:
         """
         build GENVALSnakeName
         instance (not saved yet)
@@ -13,7 +14,8 @@
 
         ##GENLOOPPropStart
         ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]Start
-        GENVALSnakefKObjectName_manager = managers_and_enums.GENVALPascalfKObjectNameManager(self._session_context)
+        GENVALSnakefKObjectName_manager = managers_and_enums.GENVALPascalfKObjectNameManager(
+            self._session_context)
         GENVALSnakeName_GENVALSnakefKObjectName = await GENVALSnakefKObjectName_manager.from_enum(
             managers_and_enums.GENVALPascalfKObjectNameEnum.UNKNOWN)
         item.GENVALSnakeName = GENVALSnakeName_GENVALSnakefKObjectName.GENVALSnakefKObjectName_id
@@ -26,30 +28,38 @@
 
         return item
 
-    async def get_all_GENVALSnakeName(self) -> List[GENVALPascalNameBusObj]:
+    async def get_all_GENVALSnakeName(
+        self) -> List[GENVALPascalNameBusObj]:
         """
         get all GENVALSnakeName
         """
         results = list()
-        GENVALSnakeName_manager = managers_and_enums.GENVALPascalNameManager(self._session_context)
-        obj_list = await GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(self.GENVALSnakeParentObjectName_id)
+        GENVALSnakeName_manager = managers_and_enums.GENVALPascalNameManager(
+            self._session_context)
+        obj_list = await GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(
+            self.GENVALSnakeParentObjectName_id)
         for obj_item in obj_list:
-            bus_obj_item = GENVALPascalNameBusObj(self._session_context)
+            bus_obj_item = GENVALPascalNameBusObj(
+                self._session_context)
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
     ##GENLOOPPropStart
     ##GENIF[isFK=false,forceDBColumnIndex=true]Start
 
-    async def get_GENVALSnakeObjectName_by_GENVALSnakeName_prop(self, GENVALSnakeName) -> List[GENVALPascalObjectNameBusObj]: 
+    async def get_GENVALSnakeObjectName_by_GENVALSnakeName_prop(
+        self, GENVALSnakeName) -> List[GENVALPascalObjectNameBusObj]: 
         """
         get GENVALSnakeObjectName by GENVALSnakeName
         """
         results = list()
-        GENVALSnakeObjectName_manager = managers_and_enums.GENVALPascalObjectNameManager(self._session_context)
-        obj_list = await GENVALSnakeObjectName_manager.get_by_GENVALSnakeName_prop(GENVALSnakeName)
+        GENVALSnakeObjectName_manager = managers_and_enums.GENVALPascalObjectNameManager(
+            self._session_context)
+        obj_list = await GENVALSnakeObjectName_manager.get_by_GENVALSnakeName_prop(
+            GENVALSnakeName)
         for obj_item in obj_list:
-            bus_obj_item = GENVALPascalObjectNameBusObj(self._session_context)
+            bus_obj_item = GENVALPascalObjectNameBusObj(
+                self._session_context)
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results   

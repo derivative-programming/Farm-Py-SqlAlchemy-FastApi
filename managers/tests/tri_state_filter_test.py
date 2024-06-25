@@ -537,7 +537,7 @@ class TestTriStateFilterManager:
         json_data = tri_state_filter_manager.to_json(
             tri_state_filter)
 
-        deserialized_tri_state_filter = tri_state_filter_manager.from_json(json_data)
+        deserialized_tri_state_filter = await tri_state_filter_manager.from_json(json_data)
 
         assert isinstance(deserialized_tri_state_filter, TriStateFilter)
         assert deserialized_tri_state_filter.code == \
@@ -578,7 +578,7 @@ class TestTriStateFilterManager:
 
         assert isinstance(tri_state_filter_data, dict)
 
-        deserialized_tri_state_filter = tri_state_filter_manager.from_dict(
+        deserialized_tri_state_filter = await tri_state_filter_manager.from_dict(
             tri_state_filter_data)
 
         assert isinstance(deserialized_tri_state_filter, TriStateFilter)
@@ -784,11 +784,13 @@ class TestTriStateFilterManager:
             None
         """
         # Add a tri_state_filter
-        tri_state_filter1 = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter1 = await \
+            TriStateFilterFactory.create_async(
+                session=session)
 
-        tri_state_filter2 = await tri_state_filter_manager.get_by_id(
-            tri_state_filter_id=tri_state_filter1.tri_state_filter_id)
+        tri_state_filter2 = await \
+            tri_state_filter_manager.get_by_id(
+                tri_state_filter_id=tri_state_filter1.tri_state_filter_id)
 
         assert tri_state_filter_manager.is_equal(
             tri_state_filter1, tri_state_filter2) is True
@@ -796,8 +798,9 @@ class TestTriStateFilterManager:
         tri_state_filter1_dict = tri_state_filter_manager.to_dict(
             tri_state_filter1)
 
-        tri_state_filter3 = tri_state_filter_manager.from_dict(
-            tri_state_filter1_dict)
+        tri_state_filter3 = await \
+            tri_state_filter_manager.from_dict(
+                tri_state_filter1_dict)
 
         assert tri_state_filter_manager.is_equal(
             tri_state_filter1, tri_state_filter3) is True

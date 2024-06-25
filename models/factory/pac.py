@@ -42,7 +42,9 @@ class PacFactory(factory.Factory):
 
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Pac:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Pac:
         """
             Builds and returns an instance
             of the Pac model.
@@ -73,7 +75,9 @@ class PacFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Pac:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Pac:
         """
         Create a new Pac object
         and save it to the database.
@@ -106,7 +110,9 @@ class PacFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Pac:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Pac:
         """
         Create a new Pac object
         asynchronously.
@@ -130,7 +136,9 @@ class PacFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Pac:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Pac:
         """
         Build a new Pac object
         asynchronously.

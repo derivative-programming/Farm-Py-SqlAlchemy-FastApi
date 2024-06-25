@@ -16,7 +16,9 @@ from pydantic import UUID4, Field
 from apis.models.validation_error import ValidationErrorItem
 from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.tac_register import FlowTacRegister, FlowTacRegisterResult
+from flows.tac_register import (
+    FlowTacRegister,
+    FlowTacRegisterResult)
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
@@ -116,6 +118,7 @@ class TacRegisterPostModelResponse(PostResponse):
     api_key: str = Field(
         default="",
         description="Api Key")
+
     def load_flow_response(self, data: FlowTacRegisterResult):
         """
         Loads the flow response data into the response model.

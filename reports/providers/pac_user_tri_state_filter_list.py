@@ -67,12 +67,15 @@ class ReportProviderPacUserTriStateFilterList():
         order_by_descending: bool,
     ) -> list[dict[str, Any]]:
         """
-        Generates a list of pac tri_state_filters based on the provided parameters.
+        Generates a list of pac tri_state_filters based
+        on the provided parameters.
 
         Returns:
-            list[dict[str, Any]]: The list of pac tri_state_filters as dictionaries.
+            list[dict[str, Any]]: The list of
+            pac tri_state_filters as dictionaries.
         """
-        flow_name = "ReportProviderPacUserTriStateFilterList.generate_list"
+        flow_name = "ReportProviderPacUserTriStateFilterList"
+        ".generate_list"
 
         logging.info("%s Start", flow_name)
         logging.info("%s context_code: %s", flow_name, str(context_code))

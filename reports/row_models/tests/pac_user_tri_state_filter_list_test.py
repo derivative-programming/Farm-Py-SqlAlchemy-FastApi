@@ -18,7 +18,8 @@ from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
-from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
+from reports.row_models.pac_user_tri_state_filter_list import (
+    ReportItemPacUserTriStateFilterList)
 
 
 class TestReportItemPacUserTriStateFilterList:

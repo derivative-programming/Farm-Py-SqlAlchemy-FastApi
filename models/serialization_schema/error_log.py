@@ -50,7 +50,8 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
     last_update_user_id = fields.UUID()
     browser_code = fields.UUID()
     context_code = fields.UUID()
-    created_utc_date_time = fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
+    created_utc_date_time = \
+        fields.DateTime()  # (format="%Y-%m-%dT%H:%M:%S")
     description = fields.Str()
     is_client_side_error = fields.Bool()
     is_resolved = fields.Bool()

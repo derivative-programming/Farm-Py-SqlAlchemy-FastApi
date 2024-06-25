@@ -14,7 +14,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from business.plant import PlantBusObj
-from flows.plant_user_property_random_update import FlowPlantUserPropertyRandomUpdate, FlowPlantUserPropertyRandomUpdateResult
+from flows.plant_user_property_random_update import (
+    FlowPlantUserPropertyRandomUpdate,
+    FlowPlantUserPropertyRandomUpdateResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.plant import PlantFactory
@@ -22,7 +24,8 @@ from models.factory.plant import PlantFactory
 from ...models.plant_user_property_random_update import (
     PlantUserPropertyRandomUpdatePostModelResponse,
     PlantUserPropertyRandomUpdatePostModelRequest)
-from ..factory.plant_user_property_random_update import PlantUserPropertyRandomUpdatePostModelRequestFactory
+from ..factory.plant_user_property_random_update import (
+    PlantUserPropertyRandomUpdatePostModelRequestFactory)
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -91,7 +94,8 @@ class TestPlantUserPropertyRandomUpdatePostModelRequest:
 # endset  # noqa: E122
         )
 
-        # Convert the model to a dictionary with snake_case keys and serialized values
+        # Convert the model to a dictionary with snake_case
+        # keys and serialized values
         data = request.to_dict_snake_serialized()
 
         # Define the expected dictionary

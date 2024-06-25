@@ -23,7 +23,8 @@ from main import app
 
 from .....models import (  # pylint: disable=reimported
     factory as request_factory)
-from ..pac_user_date_greater_than_filter_list import PacUserDateGreaterThanFilterListRouterConfig
+from ..pac_user_date_greater_than_filter_list import (
+    PacUserDateGreaterThanFilterListRouterConfig)
 
 
 @pytest.mark.asyncio

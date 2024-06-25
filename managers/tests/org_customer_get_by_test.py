@@ -75,8 +75,9 @@ class TestOrgCustomerGetByManager:
         test_org_customer = await OrgCustomerFactory.create_async(
             session)
 
-        org_customer = await org_customer_manager.get_by_id(
-            test_org_customer.org_customer_id)
+        org_customer = await \
+            org_customer_manager.get_by_id(
+                test_org_customer.org_customer_id)
 
         assert isinstance(
             org_customer, OrgCustomer)
@@ -99,8 +100,9 @@ class TestOrgCustomerGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_org_customer = await org_customer_manager.get_by_id(
-            non_existent_id)
+        retrieved_org_customer = await \
+            org_customer_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_org_customer is None
 
@@ -120,8 +122,9 @@ class TestOrgCustomerGetByManager:
         test_org_customer = await OrgCustomerFactory.create_async(
             session)
 
-        org_customer = await org_customer_manager.get_by_code(
-            test_org_customer.code)
+        org_customer = await \
+            org_customer_manager.get_by_code(
+                test_org_customer.code)
 
         assert isinstance(
             org_customer, OrgCustomer)
@@ -144,8 +147,9 @@ class TestOrgCustomerGetByManager:
         # any OrgCustomer in the database
         random_code = uuid.uuid4()
 
-        org_customer = await org_customer_manager.get_by_code(
-            random_code)
+        org_customer = await \
+            org_customer_manager.get_by_code(
+                random_code)
 
         assert org_customer is None
 
@@ -193,8 +197,9 @@ class TestOrgCustomerGetByManager:
         # Fetch the org_customer using the
         # manager function
 
-        fetched_org_customers = await org_customer_manager.get_by_customer_id(
-            org_customer1.customer_id)
+        fetched_org_customers = await \
+            org_customer_manager.get_by_customer_id(
+                org_customer1.customer_id)
         assert len(fetched_org_customers) == 1
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == \
@@ -314,8 +319,9 @@ class TestOrgCustomerGetByManager:
         # Fetch the org_customer using
         # the manager function
 
-        fetched_org_customers = await org_customer_manager.get_by_organization_id(
-            org_customer1.organization_id)
+        fetched_org_customers = await \
+            org_customer_manager.get_by_organization_id(
+                org_customer1.organization_id)
         assert len(fetched_org_customers) == 1
         assert isinstance(fetched_org_customers[0], OrgCustomer)
         assert fetched_org_customers[0].code == \
@@ -346,8 +352,9 @@ class TestOrgCustomerGetByManager:
 
         non_existent_id = 999
 
-        fetched_org_customers = await org_customer_manager.get_by_organization_id(
-            non_existent_id)
+        fetched_org_customers = await \
+            org_customer_manager.get_by_organization_id(
+                non_existent_id)
         assert len(fetched_org_customers) == 0
 
     @pytest.mark.asyncio

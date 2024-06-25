@@ -13,9 +13,12 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import List
 from helpers import SessionContext, TypeConversion
-from reports.providers.pac_user_tac_list import ReportProviderPacUserTacList
-from reports.row_models.pac_user_tac_list import ReportItemPacUserTacList
-from .report_request_validation_error import ReportRequestValidationError
+from reports.providers.pac_user_tac_list import (
+    ReportProviderPacUserTacList)
+from reports.row_models.pac_user_tac_list import (
+    ReportItemPacUserTacList)
+from .report_request_validation_error import (
+    ReportRequestValidationError)
 
 
 class ReportManagerPacUserTacList():
@@ -53,7 +56,8 @@ class ReportManagerPacUserTacList():
             List[ReportItemPacUserTacList]: The
                 list of report items.
         """
-        logging.info("ReportManagerPacUserTacList.generate"
+        logging.info("ReportManagerPacUserTacList"
+                     ".generate"
                      " Start")
 
         role_required = ""
@@ -97,11 +101,13 @@ class ReportManagerPacUserTacList():
             result.append(report_item)
 
         logging.info(
-            "ReportManagerPacUserTacList.generate Results: %s",
+            "ReportManagerPacUserTacList"
+            ".generate Results: %s",
             json.dumps(data_list)
         )
 
-        logging.info('ReportManagerPacUserTacList.generate End')
+        logging.info("ReportManagerPacUserTacList"
+                     ".generate End")
         return result
 
     async def build_csv(

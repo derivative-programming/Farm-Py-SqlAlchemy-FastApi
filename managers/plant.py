@@ -67,7 +67,6 @@ class PlantManager:
         if not session_context.session:
             raise ValueError("session required")
         self._session_context = session_context
-
 ##GENTrainingBlock[caseIsLookupObject]Start
 ##GENLearn[isLookup=false]Start
 
@@ -75,8 +74,8 @@ class PlantManager:
         """
         Initializes the PlantManager.
         """
-        logging.info("PlantManager.Initialize")
-
+        logging.info(
+            "PlantManager.Initialize")
 ##GENLearn[isLookup=false]End
 ##GENTrainingBlock[caseIsLookupObject]End
 
@@ -93,7 +92,8 @@ class PlantManager:
             Plant: The newly created
                 Plant object.
         """
-        logging.info("PlantManager.build")
+        logging.info(
+            "PlantManager.build")
         return Plant(**kwargs)
 
     async def add(
@@ -111,9 +111,12 @@ class PlantManager:
             Plant: The added
                 plant.
         """
-        logging.info("PlantManager.add")
-        plant.insert_user_id = self._session_context.customer_code
-        plant.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "PlantManager.add")
+        plant.insert_user_id = (
+            self._session_context.customer_code)
+        plant.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             plant)
         await self._session_context.session.flush()
@@ -128,7 +131,8 @@ class PlantManager:
             The base query for retrieving
             plants.
         """
-        logging.info("PlantManager._build_query")
+        logging.info(
+            "PlantManager._build_query")
 
         query = select(
             Plant,
@@ -165,7 +169,8 @@ class PlantManager:
             List[Plant]: The list of
                 plants that match the query.
         """
-        logging.info("PlantManager._run_query")
+        logging.info(
+            "PlantManager._run_query")
         plant_query_all = self._build_query()
 
         if query_filter is not None:
@@ -222,7 +227,9 @@ class PlantManager:
             else None
         )
 
-    async def get_by_id(self, plant_id: int) -> Optional[Plant]:
+    async def get_by_id(
+        self, plant_id: int
+    ) -> Optional[Plant]:
         """
         Retrieves a plant by its ID.
 
@@ -249,7 +256,9 @@ class PlantManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[Plant]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[Plant]:
         """
         Retrieves a plant
         by its code.
@@ -262,7 +271,8 @@ class PlantManager:
             Optional[Plant]: The retrieved
                 plant, or None if not found.
         """
-        logging.info("PlantManager.get_by_code %s", code)
+        logging.info("PlantManager.get_by_code %s",
+                     code)
 
         query_filter = Plant._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -316,7 +326,9 @@ class PlantManager:
                 plant with the
                 specified ID is not found.
         """
-        logging.info("PlantManager.delete %s", plant_id)
+        logging.info(
+            "PlantManager.delete %s",
+            plant_id)
         if not isinstance(plant_id, int):
             raise TypeError(
                 f"The plant_id must be an integer, "
@@ -325,7 +337,8 @@ class PlantManager:
         plant = await self.get_by_id(
             plant_id)
         if not plant:
-            raise PlantNotFoundError(f"Plant with ID {plant_id} not found!")
+            raise PlantNotFoundError(
+                f"Plant with ID {plant_id} not found!")
 
         await self._session_context.session.delete(
             plant)
@@ -342,7 +355,8 @@ class PlantManager:
             List[Plant]: The list of
                 plants.
         """
-        logging.info("PlantManager.get_list")
+        logging.info(
+            "PlantManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -363,7 +377,8 @@ class PlantManager:
             str: The JSON string representation of the
                 plant.
         """
-        logging.info("PlantManager.to_json")
+        logging.info(
+            "PlantManager.to_json")
         schema = PlantSchema()
         plant_data = schema.dump(plant)
         return json.dumps(plant_data)
@@ -384,7 +399,8 @@ class PlantManager:
             Dict[str, Any]: The dictionary representation of the
                 plant.
         """
-        logging.info("PlantManager.to_dict")
+        logging.info(
+            "PlantManager.to_dict")
         schema = PlantSchema()
         plant_data = schema.dump(plant)
 
@@ -392,7 +408,7 @@ class PlantManager:
 
         return plant_data
 
-    def from_json(self, json_str: str) -> Plant:
+    async def from_json(self, json_str: str) -> Plant:
         """
         Deserializes a JSON string into a
         Plant object.
@@ -404,19 +420,32 @@ class PlantManager:
             Plant: The deserialized
                 Plant object.
         """
-        logging.info("PlantManager.from_json")
+        logging.info(
+            "PlantManager.from_json")
         schema = PlantSchema()
         data = json.loads(json_str)
         plant_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_plant = Plant(**plant_dict)
+        # new_plant = Plant(**plant_dict)
+
+        # load or create
+        new_plant = await self.get_by_id(
+            plant_dict["plant_id"])
+        if new_plant is None:
+            new_plant = Plant(**plant_dict)
+            self._session_context.session.add(new_plant)
+        else:
+            for key, value in plant_dict.items():
+                setattr(new_plant, key, value)
 
         return new_plant
 
-    def from_dict(self, plant_dict: Dict[str, Any]) -> Plant:
+    async def from_dict(
+        self, plant_dict: Dict[str, Any]
+    ) -> Plant:
         """
         Creates a Plant
         instance from a dictionary of attributes.
@@ -432,19 +461,31 @@ class PlantManager:
                 created from the given
                 dictionary.
         """
-        logging.info("PlantManager.from_dict")
+        logging.info(
+            "PlantManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = PlantSchema()
         plant_dict_converted = schema.load(
             plant_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new Plant instance
         # using the validated data
-        new_plant = Plant(**plant_dict_converted)
+        # new_plant = Plant(**plant_dict_converted)
+
+        # load or create
+        new_plant = await self.get_by_id(
+            plant_dict_converted["plant_id"])
+        if new_plant is None:
+            new_plant = Plant(**plant_dict_converted)
+            self._session_context.session.add(new_plant)
+        else:
+            for key, value in plant_dict_converted.items():
+                setattr(new_plant, key, value)
+
         return new_plant
 
     async def add_bulk(
@@ -463,7 +504,8 @@ class PlantManager:
             List[Plant]: The added
                 plants.
         """
-        logging.info("PlantManager.add_bulk")
+        logging.info(
+            "PlantManager.add_bulk")
         for plant in plants:
             plant_id = plant.plant_id
             code = plant.code
@@ -472,8 +514,10 @@ class PlantManager:
                     "Plant is already added"
                     f": {str(code)} {str(plant_id)}"
                 )
-            plant.insert_user_id = self._session_context.customer_code
-            plant.last_update_user_id = self._session_context.customer_code
+            plant.insert_user_id = (
+                self._session_context.customer_code)
+            plant.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(plants)
         await self._session_context.session.flush()
         return plants
@@ -502,7 +546,8 @@ class PlantManager:
                 provided plant_id is not found.
         """
 
-        logging.info("PlantManager.update_bulk start")
+        logging.info(
+            "PlantManager.update_bulk start")
         updated_plants = []
         for update in plant_updates:
             plant_id = update.get("plant_id")
@@ -514,7 +559,9 @@ class PlantManager:
             if not plant_id:
                 continue
 
-            logging.info("PlantManager.update_bulk plant_id:%s", plant_id)
+            logging.info(
+                "PlantManager.update_bulk plant_id:%s",
+                plant_id)
 
             plant = await self.get_by_id(
                 plant_id)
@@ -533,7 +580,8 @@ class PlantManager:
 
         await self._session_context.session.flush()
 
-        logging.info("PlantManager.update_bulk end")
+        logging.info(
+            "PlantManager.update_bulk end")
 
         return updated_plants
 
@@ -542,7 +590,8 @@ class PlantManager:
         Delete multiple plants
         by their IDs.
         """
-        logging.info("PlantManager.delete_bulk")
+        logging.info(
+            "PlantManager.delete_bulk")
 
         for plant_id in plant_ids:
             if not isinstance(plant_id, int):
@@ -571,7 +620,8 @@ class PlantManager:
         return the total number of
         plants.
         """
-        logging.info("PlantManager.count")
+        logging.info(
+            "PlantManager.count")
         result = await self._session_context.session.execute(
             select(Plant))
         return len(list(result.scalars().all()))
@@ -586,7 +636,8 @@ class PlantManager:
         from the database.
         """
 
-        logging.info("PlantManager.refresh")
+        logging.info(
+            "PlantManager.refresh")
 
         await self._session_context.session.refresh(plant)
 
@@ -597,7 +648,9 @@ class PlantManager:
         Check if a plant
         with the given ID exists.
         """
-        logging.info("PlantManager.exists %s", plant_id)
+        logging.info(
+            "PlantManager.exists %s",
+            plant_id)
         if not isinstance(plant_id, int):
             raise TypeError(
                 f"The plant_id must be an integer, "
@@ -652,10 +705,9 @@ class PlantManager:
         return dict1 == dict2
 # endset
 
-    async def get_by_flvr_foreign_key_id(
-        self,
-        flvr_foreign_key_id: int
-    ) -> List[Plant]:  # FlvrForeignKeyID
+    async def get_by_flvr_foreign_key_id(  # FlvrForeignKeyID
+            self,
+            flvr_foreign_key_id: int) -> List[Plant]:
         """
         Retrieve a list of plants
             based on the
@@ -674,7 +726,8 @@ class PlantManager:
                 flvr_foreign_key_id.
         """
 
-        logging.info("PlantManager.get_by_flvr_foreign_key_id")
+        logging.info(
+            "PlantManager.get_by_flvr_foreign_key_id")
         if not isinstance(flvr_foreign_key_id, int):
             raise TypeError(
                 f"The plant_id must be an integer, "
@@ -687,7 +740,9 @@ class PlantManager:
 
         return query_results
 
-    async def get_by_land_id(self, land_id: int) -> List[Plant]:  # LandID
+    async def get_by_land_id(  # LandID
+            self,
+            land_id: int) -> List[Plant]:
         """
         Retrieve a list of plants by
         land ID.
@@ -701,7 +756,8 @@ class PlantManager:
                 with the specified land ID.
         """
 
-        logging.info("PlantManager.get_by_land_id")
+        logging.info(
+            "PlantManager.get_by_land_id")
         if not isinstance(land_id, int):
             raise TypeError(
                 f"The plant_id must be an integer, "

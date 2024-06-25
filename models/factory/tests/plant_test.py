@@ -96,7 +96,8 @@ class TestPlantFactory:
         initial_code = plant.last_change_code
         plant.code = uuid.uuid4()
         session.commit()
-        assert plant.last_change_code != initial_code
+        assert plant.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestPlantFactory:
         session.delete(plant)
         session.commit()
         deleted_plant = session.query(Plant).filter_by(
-            plant_id=plant.plant_id).first()
+            _plant_id=(
+                plant.plant_id)
+        ).first()
         assert deleted_plant is None
 
     def test_data_types(self, session):
@@ -271,10 +274,13 @@ class TestPlantFactory:
         """
         Test case for checking the unique code constraint.
         """
-        plant_1 = PlantFactory.create(session=session)
-        plant_2 = PlantFactory.create(session=session)
+        plant_1 = PlantFactory.create(
+            session=session)
+        plant_2 = PlantFactory.create(
+            session=session)
         plant_2.code = plant_1.code
-        session.add_all([plant_1, plant_2])
+        session.add_all([plant_1,
+                         plant_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -374,14 +380,19 @@ class TestPlantFactory:
             session=session)
         original_last_change_code = plant.last_change_code
         plant_1 = session.query(Plant).filter_by(
-            _plant_id=plant.plant_id).first()
+            _plant_id=(
+                plant.plant_id)
+        ).first()
         plant_1.code = uuid.uuid4()
         session.commit()
         plant_2 = session.query(Plant).filter_by(
-            _plant_id=plant.plant_id).first()
+            _plant_id=(
+                plant.plant_id)
+        ).first()
         plant_2.code = uuid.uuid4()
         session.commit()
-        assert plant_2.last_change_code != original_last_change_code
+        assert plant_2.last_change_code != \
+            original_last_change_code
 # endset
     # isDeleteAllowed,
     # isEditAllowed,

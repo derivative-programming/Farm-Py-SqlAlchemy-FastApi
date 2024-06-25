@@ -132,7 +132,8 @@ class PacUserLandListGetModelResponseItem(CamelModel):
 
     def load_report_item(self, data: ReportItemPacUserLandList):
         """
-        Loads the data from a ReportItemPacUserLandList
+        Loads the data from a
+        ReportItemPacUserLandList
         object into the response model item.
 
         Args:

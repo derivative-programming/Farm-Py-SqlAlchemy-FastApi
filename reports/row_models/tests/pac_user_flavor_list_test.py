@@ -18,7 +18,8 @@ from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
-from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
+from reports.row_models.pac_user_flavor_list import (
+    ReportItemPacUserFlavorList)
 
 
 class TestReportItemPacUserFlavorList:

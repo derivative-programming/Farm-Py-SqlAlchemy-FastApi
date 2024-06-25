@@ -537,7 +537,7 @@ class TestPlantManager:
         json_data = plant_manager.to_json(
             plant)
 
-        deserialized_plant = plant_manager.from_json(json_data)
+        deserialized_plant = await plant_manager.from_json(json_data)
 
         assert isinstance(deserialized_plant, Plant)
         assert deserialized_plant.code == \
@@ -578,7 +578,7 @@ class TestPlantManager:
 
         assert isinstance(plant_data, dict)
 
-        deserialized_plant = plant_manager.from_dict(
+        deserialized_plant = await plant_manager.from_dict(
             plant_data)
 
         assert isinstance(deserialized_plant, Plant)
@@ -784,11 +784,13 @@ class TestPlantManager:
             None
         """
         # Add a plant
-        plant1 = await PlantFactory.create_async(
-            session=session)
+        plant1 = await \
+            PlantFactory.create_async(
+                session=session)
 
-        plant2 = await plant_manager.get_by_id(
-            plant_id=plant1.plant_id)
+        plant2 = await \
+            plant_manager.get_by_id(
+                plant_id=plant1.plant_id)
 
         assert plant_manager.is_equal(
             plant1, plant2) is True
@@ -796,8 +798,9 @@ class TestPlantManager:
         plant1_dict = plant_manager.to_dict(
             plant1)
 
-        plant3 = plant_manager.from_dict(
-            plant1_dict)
+        plant3 = await \
+            plant_manager.from_dict(
+                plant1_dict)
 
         assert plant_manager.is_equal(
             plant1, plant3) is True

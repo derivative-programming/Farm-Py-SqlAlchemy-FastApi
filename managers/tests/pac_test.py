@@ -537,7 +537,7 @@ class TestPacManager:
         json_data = pac_manager.to_json(
             pac)
 
-        deserialized_pac = pac_manager.from_json(json_data)
+        deserialized_pac = await pac_manager.from_json(json_data)
 
         assert isinstance(deserialized_pac, Pac)
         assert deserialized_pac.code == \
@@ -578,7 +578,7 @@ class TestPacManager:
 
         assert isinstance(pac_data, dict)
 
-        deserialized_pac = pac_manager.from_dict(
+        deserialized_pac = await pac_manager.from_dict(
             pac_data)
 
         assert isinstance(deserialized_pac, Pac)
@@ -784,11 +784,13 @@ class TestPacManager:
             None
         """
         # Add a pac
-        pac1 = await PacFactory.create_async(
-            session=session)
+        pac1 = await \
+            PacFactory.create_async(
+                session=session)
 
-        pac2 = await pac_manager.get_by_id(
-            pac_id=pac1.pac_id)
+        pac2 = await \
+            pac_manager.get_by_id(
+                pac_id=pac1.pac_id)
 
         assert pac_manager.is_equal(
             pac1, pac2) is True
@@ -796,8 +798,9 @@ class TestPacManager:
         pac1_dict = pac_manager.to_dict(
             pac1)
 
-        pac3 = pac_manager.from_dict(
-            pac1_dict)
+        pac3 = await \
+            pac_manager.from_dict(
+                pac1_dict)
 
         assert pac_manager.is_equal(
             pac1, pac3) is True

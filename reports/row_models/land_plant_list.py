@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemLandPlantList():
     """
-    Represents a report item for a land plant list.
+    Represents a report item for a
+    land plant list.
     """
 
     plant_code: uuid.UUID = uuid.UUID(int=0)

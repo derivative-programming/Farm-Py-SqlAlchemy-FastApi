@@ -68,7 +68,8 @@ class OrgCustomerManager:
         """
         Initializes the OrgCustomerManager.
         """
-        logging.info("OrgCustomerManager.Initialize")
+        logging.info(
+            "OrgCustomerManager.Initialize")
 
 
     async def build(self, **kwargs) -> OrgCustomer:
@@ -84,7 +85,8 @@ class OrgCustomerManager:
             OrgCustomer: The newly created
                 OrgCustomer object.
         """
-        logging.info("OrgCustomerManager.build")
+        logging.info(
+            "OrgCustomerManager.build")
         return OrgCustomer(**kwargs)
 
     async def add(
@@ -102,9 +104,12 @@ class OrgCustomerManager:
             OrgCustomer: The added
                 org_customer.
         """
-        logging.info("OrgCustomerManager.add")
-        org_customer.insert_user_id = self._session_context.customer_code
-        org_customer.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "OrgCustomerManager.add")
+        org_customer.insert_user_id = (
+            self._session_context.customer_code)
+        org_customer.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             org_customer)
         await self._session_context.session.flush()
@@ -119,7 +124,8 @@ class OrgCustomerManager:
             The base query for retrieving
             org_customers.
         """
-        logging.info("OrgCustomerManager._build_query")
+        logging.info(
+            "OrgCustomerManager._build_query")
 
         query = select(
             OrgCustomer,
@@ -154,7 +160,8 @@ class OrgCustomerManager:
             List[OrgCustomer]: The list of
                 org_customers that match the query.
         """
-        logging.info("OrgCustomerManager._run_query")
+        logging.info(
+            "OrgCustomerManager._run_query")
         org_customer_query_all = self._build_query()
 
         if query_filter is not None:
@@ -208,7 +215,9 @@ class OrgCustomerManager:
             else None
         )
 
-    async def get_by_id(self, org_customer_id: int) -> Optional[OrgCustomer]:
+    async def get_by_id(
+        self, org_customer_id: int
+    ) -> Optional[OrgCustomer]:
         """
         Retrieves a org_customer by its ID.
 
@@ -235,7 +244,9 @@ class OrgCustomerManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[OrgCustomer]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[OrgCustomer]:
         """
         Retrieves a org_customer
         by its code.
@@ -248,7 +259,8 @@ class OrgCustomerManager:
             Optional[OrgCustomer]: The retrieved
                 org_customer, or None if not found.
         """
-        logging.info("OrgCustomerManager.get_by_code %s", code)
+        logging.info("OrgCustomerManager.get_by_code %s",
+                     code)
 
         query_filter = OrgCustomer._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -302,7 +314,9 @@ class OrgCustomerManager:
                 org_customer with the
                 specified ID is not found.
         """
-        logging.info("OrgCustomerManager.delete %s", org_customer_id)
+        logging.info(
+            "OrgCustomerManager.delete %s",
+            org_customer_id)
         if not isinstance(org_customer_id, int):
             raise TypeError(
                 f"The org_customer_id must be an integer, "
@@ -311,7 +325,8 @@ class OrgCustomerManager:
         org_customer = await self.get_by_id(
             org_customer_id)
         if not org_customer:
-            raise OrgCustomerNotFoundError(f"OrgCustomer with ID {org_customer_id} not found!")
+            raise OrgCustomerNotFoundError(
+                f"OrgCustomer with ID {org_customer_id} not found!")
 
         await self._session_context.session.delete(
             org_customer)
@@ -328,7 +343,8 @@ class OrgCustomerManager:
             List[OrgCustomer]: The list of
                 org_customers.
         """
-        logging.info("OrgCustomerManager.get_list")
+        logging.info(
+            "OrgCustomerManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -349,7 +365,8 @@ class OrgCustomerManager:
             str: The JSON string representation of the
                 org_customer.
         """
-        logging.info("OrgCustomerManager.to_json")
+        logging.info(
+            "OrgCustomerManager.to_json")
         schema = OrgCustomerSchema()
         org_customer_data = schema.dump(org_customer)
         return json.dumps(org_customer_data)
@@ -370,7 +387,8 @@ class OrgCustomerManager:
             Dict[str, Any]: The dictionary representation of the
                 org_customer.
         """
-        logging.info("OrgCustomerManager.to_dict")
+        logging.info(
+            "OrgCustomerManager.to_dict")
         schema = OrgCustomerSchema()
         org_customer_data = schema.dump(org_customer)
 
@@ -378,7 +396,7 @@ class OrgCustomerManager:
 
         return org_customer_data
 
-    def from_json(self, json_str: str) -> OrgCustomer:
+    async def from_json(self, json_str: str) -> OrgCustomer:
         """
         Deserializes a JSON string into a
         OrgCustomer object.
@@ -390,19 +408,32 @@ class OrgCustomerManager:
             OrgCustomer: The deserialized
                 OrgCustomer object.
         """
-        logging.info("OrgCustomerManager.from_json")
+        logging.info(
+            "OrgCustomerManager.from_json")
         schema = OrgCustomerSchema()
         data = json.loads(json_str)
         org_customer_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_org_customer = OrgCustomer(**org_customer_dict)
+        # new_org_customer = OrgCustomer(**org_customer_dict)
+
+        # load or create
+        new_org_customer = await self.get_by_id(
+            org_customer_dict["org_customer_id"])
+        if new_org_customer is None:
+            new_org_customer = OrgCustomer(**org_customer_dict)
+            self._session_context.session.add(new_org_customer)
+        else:
+            for key, value in org_customer_dict.items():
+                setattr(new_org_customer, key, value)
 
         return new_org_customer
 
-    def from_dict(self, org_customer_dict: Dict[str, Any]) -> OrgCustomer:
+    async def from_dict(
+        self, org_customer_dict: Dict[str, Any]
+    ) -> OrgCustomer:
         """
         Creates a OrgCustomer
         instance from a dictionary of attributes.
@@ -418,19 +449,31 @@ class OrgCustomerManager:
                 created from the given
                 dictionary.
         """
-        logging.info("OrgCustomerManager.from_dict")
+        logging.info(
+            "OrgCustomerManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = OrgCustomerSchema()
         org_customer_dict_converted = schema.load(
             org_customer_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new OrgCustomer instance
         # using the validated data
-        new_org_customer = OrgCustomer(**org_customer_dict_converted)
+        # new_org_customer = OrgCustomer(**org_customer_dict_converted)
+
+        # load or create
+        new_org_customer = await self.get_by_id(
+            org_customer_dict_converted["org_customer_id"])
+        if new_org_customer is None:
+            new_org_customer = OrgCustomer(**org_customer_dict_converted)
+            self._session_context.session.add(new_org_customer)
+        else:
+            for key, value in org_customer_dict_converted.items():
+                setattr(new_org_customer, key, value)
+
         return new_org_customer
 
     async def add_bulk(
@@ -449,7 +492,8 @@ class OrgCustomerManager:
             List[OrgCustomer]: The added
                 org_customers.
         """
-        logging.info("OrgCustomerManager.add_bulk")
+        logging.info(
+            "OrgCustomerManager.add_bulk")
         for org_customer in org_customers:
             org_customer_id = org_customer.org_customer_id
             code = org_customer.code
@@ -458,8 +502,10 @@ class OrgCustomerManager:
                     "OrgCustomer is already added"
                     f": {str(code)} {str(org_customer_id)}"
                 )
-            org_customer.insert_user_id = self._session_context.customer_code
-            org_customer.last_update_user_id = self._session_context.customer_code
+            org_customer.insert_user_id = (
+                self._session_context.customer_code)
+            org_customer.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(org_customers)
         await self._session_context.session.flush()
         return org_customers
@@ -488,7 +534,8 @@ class OrgCustomerManager:
                 provided org_customer_id is not found.
         """
 
-        logging.info("OrgCustomerManager.update_bulk start")
+        logging.info(
+            "OrgCustomerManager.update_bulk start")
         updated_org_customers = []
         for update in org_customer_updates:
             org_customer_id = update.get("org_customer_id")
@@ -500,7 +547,9 @@ class OrgCustomerManager:
             if not org_customer_id:
                 continue
 
-            logging.info("OrgCustomerManager.update_bulk org_customer_id:%s", org_customer_id)
+            logging.info(
+                "OrgCustomerManager.update_bulk org_customer_id:%s",
+                org_customer_id)
 
             org_customer = await self.get_by_id(
                 org_customer_id)
@@ -519,7 +568,8 @@ class OrgCustomerManager:
 
         await self._session_context.session.flush()
 
-        logging.info("OrgCustomerManager.update_bulk end")
+        logging.info(
+            "OrgCustomerManager.update_bulk end")
 
         return updated_org_customers
 
@@ -528,7 +578,8 @@ class OrgCustomerManager:
         Delete multiple org_customers
         by their IDs.
         """
-        logging.info("OrgCustomerManager.delete_bulk")
+        logging.info(
+            "OrgCustomerManager.delete_bulk")
 
         for org_customer_id in org_customer_ids:
             if not isinstance(org_customer_id, int):
@@ -557,7 +608,8 @@ class OrgCustomerManager:
         return the total number of
         org_customers.
         """
-        logging.info("OrgCustomerManager.count")
+        logging.info(
+            "OrgCustomerManager.count")
         result = await self._session_context.session.execute(
             select(OrgCustomer))
         return len(list(result.scalars().all()))
@@ -572,7 +624,8 @@ class OrgCustomerManager:
         from the database.
         """
 
-        logging.info("OrgCustomerManager.refresh")
+        logging.info(
+            "OrgCustomerManager.refresh")
 
         await self._session_context.session.refresh(org_customer)
 
@@ -583,7 +636,9 @@ class OrgCustomerManager:
         Check if a org_customer
         with the given ID exists.
         """
-        logging.info("OrgCustomerManager.exists %s", org_customer_id)
+        logging.info(
+            "OrgCustomerManager.exists %s",
+            org_customer_id)
         if not isinstance(org_customer_id, int):
             raise TypeError(
                 f"The org_customer_id must be an integer, "
@@ -636,10 +691,9 @@ class OrgCustomerManager:
         dict2 = self.to_dict(org_customer2)
 
         return dict1 == dict2
-    async def get_by_customer_id(
-        self,
-        customer_id: int
-    ) -> List[OrgCustomer]:  # CustomerID
+    async def get_by_customer_id(  # CustomerID
+            self,
+            customer_id: int) -> List[OrgCustomer]:
         """
         Retrieve a list of org_customers
             based on the
@@ -658,7 +712,8 @@ class OrgCustomerManager:
                 customer_id.
         """
 
-        logging.info("OrgCustomerManager.get_by_customer_id")
+        logging.info(
+            "OrgCustomerManager.get_by_customer_id")
         if not isinstance(customer_id, int):
             raise TypeError(
                 f"The org_customer_id must be an integer, "
@@ -670,7 +725,9 @@ class OrgCustomerManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-    async def get_by_organization_id(self, organization_id: int) -> List[OrgCustomer]:  # OrganizationID
+    async def get_by_organization_id(  # OrganizationID
+            self,
+            organization_id: int) -> List[OrgCustomer]:
         """
         Retrieve a list of org_customers by
         organization ID.
@@ -684,7 +741,8 @@ class OrgCustomerManager:
                 with the specified organization ID.
         """
 
-        logging.info("OrgCustomerManager.get_by_organization_id")
+        logging.info(
+            "OrgCustomerManager.get_by_organization_id")
         if not isinstance(organization_id, int):
             raise TypeError(
                 f"The org_customer_id must be an integer, "

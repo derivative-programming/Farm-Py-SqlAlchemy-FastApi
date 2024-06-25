@@ -132,7 +132,8 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
 
     def load_report_item(self, data: ReportItemPacUserTriStateFilterList):
         """
-        Loads the data from a ReportItemPacUserTriStateFilterList
+        Loads the data from a
+        ReportItemPacUserTriStateFilterList
         object into the response model item.
 
         Args:

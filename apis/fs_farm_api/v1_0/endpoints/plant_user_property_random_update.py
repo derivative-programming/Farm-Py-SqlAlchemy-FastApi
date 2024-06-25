@@ -6,16 +6,17 @@ PlantUserPropertyRandomUpdateRouter,
 which handles the API endpoints related to the
 Plant User Property Random Update.
 
-The PlantUserPropertyRandomUpdateRouter provides the following endpoints:
-    - GET /api/v1_0/plant-user-property-random-update/{plant_code}/init:
-        Get the initialization data for the
-        Plant User Property Random Update page.
-    - GET /api/v1_0/plant-user-property-random-update/{plant_code}:
-        Get the Plant User Property Random Update Report
-        for a specific  code.
-    - GET /api/v1_0/plant-user-property-random-update/{plant_code}/to-csv:
-        Retrieve the Plant User Property Random Update
-        Report as a CSV file.
+The PlantUserPropertyRandomUpdateRouter provides
+the following endpoints:
+- GET /api/v1_0/plant-user-property-random-update/{plant_code}/init:
+    Get the initialization data for the
+    Plant User Property Random Update page.
+- GET /api/v1_0/plant-user-property-random-update/{plant_code}:
+    Get the Plant User Property Random Update Report
+    for a specific  code.
+- GET /api/v1_0/plant-user-property-random-update/{plant_code}/to-csv:
+    Retrieve the Plant User Property Random Update
+    Report as a CSV file.
 """
 
 import logging
@@ -73,11 +74,15 @@ class PlantUserPropertyRandomUpdateRouter(BaseRouter):
     @staticmethod
     @router.post(
         "/api/v1_0/plant-user-property-random-update/{plant_code}",
-        response_model=api_models.PlantUserPropertyRandomUpdatePostModelResponse,
+        response_model=(
+            api_models
+            .PlantUserPropertyRandomUpdatePostModelResponse
+        ),
         summary="Plant User Property Random Update Business Flow")
     async def request_post_with_id(
         plant_code: uuid.UUID,
-        request_model: api_models.PlantUserPropertyRandomUpdatePostModelRequest,
+        request_model: (
+            api_models.PlantUserPropertyRandomUpdatePostModelRequest),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -100,9 +105,11 @@ class PlantUserPropertyRandomUpdateRouter(BaseRouter):
             plant_code
         )
         auth_dict = BaseRouter.implementation_check(
-            PlantUserPropertyRandomUpdateRouterConfig.is_post_with_id_available)
+            PlantUserPropertyRandomUpdateRouterConfig
+            .is_post_with_id_available)
 
-        response = api_models.PlantUserPropertyRandomUpdatePostModelResponse()
+        response = (api_models
+                    .PlantUserPropertyRandomUpdatePostModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             PlantUserPropertyRandomUpdateRouterConfig.is_public,

@@ -96,7 +96,8 @@ class TestFlavorFactory:
         initial_code = flavor.last_change_code
         flavor.code = uuid.uuid4()
         session.commit()
-        assert flavor.last_change_code != initial_code
+        assert flavor.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestFlavorFactory:
         session.delete(flavor)
         session.commit()
         deleted_flavor = session.query(Flavor).filter_by(
-            flavor_id=flavor.flavor_id).first()
+            _flavor_id=(
+                flavor.flavor_id)
+        ).first()
         assert deleted_flavor is None
 
     def test_data_types(self, session):
@@ -233,10 +236,13 @@ class TestFlavorFactory:
         """
         Test case for checking the unique code constraint.
         """
-        flavor_1 = FlavorFactory.create(session=session)
-        flavor_2 = FlavorFactory.create(session=session)
+        flavor_1 = FlavorFactory.create(
+            session=session)
+        flavor_2 = FlavorFactory.create(
+            session=session)
         flavor_2.code = flavor_1.code
-        session.add_all([flavor_1, flavor_2])
+        session.add_all([flavor_1,
+                         flavor_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -298,14 +304,19 @@ class TestFlavorFactory:
             session=session)
         original_last_change_code = flavor.last_change_code
         flavor_1 = session.query(Flavor).filter_by(
-            _flavor_id=flavor.flavor_id).first()
+            _flavor_id=(
+                flavor.flavor_id)
+        ).first()
         flavor_1.code = uuid.uuid4()
         session.commit()
         flavor_2 = session.query(Flavor).filter_by(
-            _flavor_id=flavor.flavor_id).first()
+            _flavor_id=(
+                flavor.flavor_id)
+        ).first()
         flavor_2.code = uuid.uuid4()
         session.commit()
-        assert flavor_2.last_change_code != original_last_change_code
+        assert flavor_2.last_change_code != \
+            original_last_change_code
     # description,
     # displayOrder,
     # isActive,

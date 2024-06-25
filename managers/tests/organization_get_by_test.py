@@ -75,8 +75,9 @@ class TestOrganizationGetByManager:
         test_organization = await OrganizationFactory.create_async(
             session)
 
-        organization = await organization_manager.get_by_id(
-            test_organization.organization_id)
+        organization = await \
+            organization_manager.get_by_id(
+                test_organization.organization_id)
 
         assert isinstance(
             organization, Organization)
@@ -99,8 +100,9 @@ class TestOrganizationGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_organization = await organization_manager.get_by_id(
-            non_existent_id)
+        retrieved_organization = await \
+            organization_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_organization is None
 
@@ -120,8 +122,9 @@ class TestOrganizationGetByManager:
         test_organization = await OrganizationFactory.create_async(
             session)
 
-        organization = await organization_manager.get_by_code(
-            test_organization.code)
+        organization = await \
+            organization_manager.get_by_code(
+                test_organization.code)
 
         assert isinstance(
             organization, Organization)
@@ -144,8 +147,9 @@ class TestOrganizationGetByManager:
         # any Organization in the database
         random_code = uuid.uuid4()
 
-        organization = await organization_manager.get_by_code(
-            random_code)
+        organization = await \
+            organization_manager.get_by_code(
+                random_code)
 
         assert organization is None
 
@@ -193,8 +197,9 @@ class TestOrganizationGetByManager:
         # Fetch the organization using
         # the manager function
 
-        fetched_organizations = await organization_manager.get_by_tac_id(
-            organization1.tac_id)
+        fetched_organizations = await \
+            organization_manager.get_by_tac_id(
+                organization1.tac_id)
         assert len(fetched_organizations) == 1
         assert isinstance(fetched_organizations[0], Organization)
         assert fetched_organizations[0].code == \
@@ -225,8 +230,9 @@ class TestOrganizationGetByManager:
 
         non_existent_id = 999
 
-        fetched_organizations = await organization_manager.get_by_tac_id(
-            non_existent_id)
+        fetched_organizations = await \
+            organization_manager.get_by_tac_id(
+                non_existent_id)
         assert len(fetched_organizations) == 0
 
     @pytest.mark.asyncio

@@ -6,16 +6,17 @@ PacUserLandListRouter,
 which handles the API endpoints related to the
 Pac User Land List.
 
-The PacUserLandListRouter provides the following endpoints:
-    - GET /api/v1_0/pac-user-land-list/{pac_code}/init:
-        Get the initialization data for the
-        Pac User Land List page.
-    - GET /api/v1_0/pac-user-land-list/{pac_code}:
-        Get the Pac User Land List Report
-        for a specific pac code.
-    - GET /api/v1_0/pac-user-land-list/{pac_code}/to-csv:
-        Retrieve the Pac User Land List
-        Report as a CSV file.
+The PacUserLandListRouter provides
+the following endpoints:
+- GET /api/v1_0/pac-user-land-list/{pac_code}/init:
+    Get the initialization data for the
+    Pac User Land List page.
+- GET /api/v1_0/pac-user-land-list/{pac_code}:
+    Get the Pac User Land List Report
+    for a specific pac code.
+- GET /api/v1_0/pac-user-land-list/{pac_code}/to-csv:
+    Retrieve the Pac User Land List
+    Report as a CSV file.
 """
 
 import logging
@@ -75,7 +76,8 @@ class PacUserLandListRouter(BaseRouter):
         "/api/v1_0/pac-user-land-list/{pac_code}/init",
         response_model=(
             api_init_models.
-            PacUserLandListInitReportGetInitModelResponse),
+            PacUserLandListInitReportGetInitModelResponse
+        ),
         summary="Pac User Land List Init Page")
     async def request_get_init(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
@@ -101,7 +103,8 @@ class PacUserLandListRouter(BaseRouter):
             'PacUserLandListRouter.request_get_init start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserLandListRouterConfig.is_get_init_available)
+            PacUserLandListRouterConfig
+            .is_get_init_available)
 
         response = (
             api_init_models.
@@ -158,11 +161,15 @@ class PacUserLandListRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/pac-user-land-list/{pac_code}",
-        response_model=api_models.PacUserLandListGetModelResponse,
+        response_model=(
+            api_models
+            .PacUserLandListGetModelResponse
+        ),
         summary="Pac User Land List Report")
     async def request_get_with_id(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserLandListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserLandListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -190,9 +197,11 @@ class PacUserLandListRouter(BaseRouter):
             'PacUserLandListRouter.request_get_with_id start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserLandListRouterConfig.is_get_with_id_available)
+            PacUserLandListRouterConfig
+            .is_get_with_id_available)
 
-        response = api_models.PacUserLandListGetModelResponse()
+        response = (api_models
+                    .PacUserLandListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             PacUserLandListRouterConfig.is_public, api_key)
@@ -246,7 +255,8 @@ class PacUserLandListRouter(BaseRouter):
         summary="Pac User Land List Report to CSV")
     async def request_get_with_id_to_csv(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserLandListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserLandListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -272,12 +282,15 @@ class PacUserLandListRouter(BaseRouter):
             pac_code
         )
         auth_dict = BaseRouter.implementation_check(
-            PacUserLandListRouterConfig.is_get_to_csv_available)
+            PacUserLandListRouterConfig
+            .is_get_to_csv_available)
 
-        response = api_models.PacUserLandListGetModelResponse()
+        response = (api_models
+                    .PacUserLandListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
-            PacUserLandListRouterConfig.is_public, api_key)
+            PacUserLandListRouterConfig
+            .is_public, api_key)
 
         tmp_file_path = ""
 

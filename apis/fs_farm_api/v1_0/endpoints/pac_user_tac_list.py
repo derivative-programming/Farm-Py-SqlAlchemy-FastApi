@@ -6,16 +6,17 @@ PacUserTacListRouter,
 which handles the API endpoints related to the
 Pac User Tac List.
 
-The PacUserTacListRouter provides the following endpoints:
-    - GET /api/v1_0/pac-user-tac-list/{pac_code}/init:
-        Get the initialization data for the
-        Pac User Tac List page.
-    - GET /api/v1_0/pac-user-tac-list/{pac_code}:
-        Get the Pac User Tac List Report
-        for a specific pac code.
-    - GET /api/v1_0/pac-user-tac-list/{pac_code}/to-csv:
-        Retrieve the Pac User Tac List
-        Report as a CSV file.
+The PacUserTacListRouter provides
+the following endpoints:
+- GET /api/v1_0/pac-user-tac-list/{pac_code}/init:
+    Get the initialization data for the
+    Pac User Tac List page.
+- GET /api/v1_0/pac-user-tac-list/{pac_code}:
+    Get the Pac User Tac List Report
+    for a specific pac code.
+- GET /api/v1_0/pac-user-tac-list/{pac_code}/to-csv:
+    Retrieve the Pac User Tac List
+    Report as a CSV file.
 """
 
 import logging
@@ -75,7 +76,8 @@ class PacUserTacListRouter(BaseRouter):
         "/api/v1_0/pac-user-tac-list/{pac_code}/init",
         response_model=(
             api_init_models.
-            PacUserTacListInitReportGetInitModelResponse),
+            PacUserTacListInitReportGetInitModelResponse
+        ),
         summary="Pac User Tac List Init Page")
     async def request_get_init(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
@@ -101,7 +103,8 @@ class PacUserTacListRouter(BaseRouter):
             'PacUserTacListRouter.request_get_init start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserTacListRouterConfig.is_get_init_available)
+            PacUserTacListRouterConfig
+            .is_get_init_available)
 
         response = (
             api_init_models.
@@ -158,11 +161,15 @@ class PacUserTacListRouter(BaseRouter):
     @staticmethod
     @router.get(
         "/api/v1_0/pac-user-tac-list/{pac_code}",
-        response_model=api_models.PacUserTacListGetModelResponse,
+        response_model=(
+            api_models
+            .PacUserTacListGetModelResponse
+        ),
         summary="Pac User Tac List Report")
     async def request_get_with_id(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserTacListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserTacListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -190,9 +197,11 @@ class PacUserTacListRouter(BaseRouter):
             'PacUserTacListRouter.request_get_with_id start. pacCode:%s',
             pac_code)
         auth_dict = BaseRouter.implementation_check(
-            PacUserTacListRouterConfig.is_get_with_id_available)
+            PacUserTacListRouterConfig
+            .is_get_with_id_available)
 
-        response = api_models.PacUserTacListGetModelResponse()
+        response = (api_models
+                    .PacUserTacListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             PacUserTacListRouterConfig.is_public, api_key)
@@ -246,7 +255,8 @@ class PacUserTacListRouter(BaseRouter):
         summary="Pac User Tac List Report to CSV")
     async def request_get_with_id_to_csv(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
-        request_model: api_models.PacUserTacListGetModelRequest = Depends(),
+        request_model:
+            api_models.PacUserTacListGetModelRequest = Depends(),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -272,12 +282,15 @@ class PacUserTacListRouter(BaseRouter):
             pac_code
         )
         auth_dict = BaseRouter.implementation_check(
-            PacUserTacListRouterConfig.is_get_to_csv_available)
+            PacUserTacListRouterConfig
+            .is_get_to_csv_available)
 
-        response = api_models.PacUserTacListGetModelResponse()
+        response = (api_models
+                    .PacUserTacListGetModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
-            PacUserTacListRouterConfig.is_public, api_key)
+            PacUserTacListRouterConfig
+            .is_public, api_key)
 
         tmp_file_path = ""
 

@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...customer_user_log_out import CustomerUserLogOutPostModelRequest
-from ..customer_user_log_out import CustomerUserLogOutPostModelRequestFactory
+from ...customer_user_log_out import (
+    CustomerUserLogOutPostModelRequest)
+from ..customer_user_log_out import (
+    CustomerUserLogOutPostModelRequestFactory)
 
 
 class TestCustomerUserLogOutPostModelRequestFactoryAsync:
@@ -32,5 +34,6 @@ class TestCustomerUserLogOutPostModelRequestFactoryAsync:
             await CustomerUserLogOutPostModelRequestFactory.create_async(
                 session=session)
         )
-        assert isinstance(model_instance, CustomerUserLogOutPostModelRequest)
+        assert isinstance(model_instance,
+                          CustomerUserLogOutPostModelRequest)
 

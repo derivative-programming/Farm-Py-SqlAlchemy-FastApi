@@ -195,7 +195,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.tri_state_filter.insert_user_id = value
 
@@ -236,7 +237,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.tri_state_filter.last_update_user_id = value
 
@@ -368,7 +370,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.tri_state_filter.is_active = value
     # lookupEnumName
@@ -629,7 +632,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.tri_state_filter.insert_utc_date_time = value
 
@@ -677,7 +681,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.tri_state_filter.last_update_utc_date_time = value
 
@@ -697,11 +702,12 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         tri_state_filter_manager = TriStateFilterManager(
             self._session_context)
-        self.tri_state_filter = tri_state_filter_manager.from_json(json_data)
+        self.tri_state_filter = await tri_state_filter_manager.from_json(json_data)
 
         return self
 
@@ -719,7 +725,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             tri_state_filter data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         tri_state_filter_manager = TriStateFilterManager(
             self._session_context)
@@ -746,7 +753,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(tri_state_filter_id, int):
-            raise ValueError("tri_state_filter_id must be an integer")
+            raise ValueError(
+                "tri_state_filter_id must be an integer")
 
         tri_state_filter_manager = TriStateFilterManager(
             self._session_context)
@@ -773,7 +781,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
 
         if not isinstance(tri_state_filter_obj_instance,
                           TriStateFilter):
-            raise ValueError("tri_state_filter_obj_instance must be an instance of TriStateFilter")
+            raise ValueError(
+                "tri_state_filter_obj_instance must be an instance of TriStateFilter")
 
         # tri_state_filter_manager = TriStateFilterManager(
         #     self._session_context)
@@ -802,12 +811,13 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             tri_state_filter data is found.
         """
         if not isinstance(tri_state_filter_dict, dict):
-            raise ValueError("tri_state_filter_dict must be a dictionary")
+            raise ValueError(
+                "tri_state_filter_dict must be a dictionary")
 
         tri_state_filter_manager = TriStateFilterManager(
             self._session_context)
 
-        self.tri_state_filter = tri_state_filter_manager.from_dict(
+        self.tri_state_filter = await tri_state_filter_manager.from_dict(
             tri_state_filter_dict)
 
         return self

@@ -46,7 +46,9 @@ class OrgCustomerFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> OrgCustomer:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> OrgCustomer:
         """
             Builds and returns an instance
             of the OrgCustomer model.
@@ -93,7 +95,9 @@ class OrgCustomerFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> OrgCustomer:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> OrgCustomer:
         """
         Create a new OrgCustomer object
         and save it to the database.
@@ -142,7 +146,9 @@ class OrgCustomerFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> OrgCustomer:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> OrgCustomer:
         """
         Create a new OrgCustomer object
         asynchronously.
@@ -182,7 +188,9 @@ class OrgCustomerFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> OrgCustomer:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> OrgCustomer:
         """
         Build a new OrgCustomer object
         asynchronously.

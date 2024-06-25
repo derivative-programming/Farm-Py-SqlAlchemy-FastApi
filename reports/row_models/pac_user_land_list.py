@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemPacUserLandList():
     """
-    Represents a report item for a pac Pac User Land List Report.
+    Represents a report item for a
+    pac Pac User Land List Report.
     """
     land_code: uuid.UUID = (
         uuid.UUID(int=0))

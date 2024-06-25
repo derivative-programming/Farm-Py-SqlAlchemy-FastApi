@@ -14,7 +14,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from business.customer import CustomerBusObj
-from flows.customer_user_log_out import FlowCustomerUserLogOut, FlowCustomerUserLogOutResult
+from flows.customer_user_log_out import (
+    FlowCustomerUserLogOut,
+    FlowCustomerUserLogOutResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.customer import CustomerFactory
@@ -22,7 +24,8 @@ from models.factory.customer import CustomerFactory
 from ...models.customer_user_log_out import (
     CustomerUserLogOutPostModelResponse,
     CustomerUserLogOutPostModelRequest)
-from ..factory.customer_user_log_out import CustomerUserLogOutPostModelRequestFactory
+from ..factory.customer_user_log_out import (
+    CustomerUserLogOutPostModelRequestFactory)
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -91,7 +94,8 @@ class TestCustomerUserLogOutPostModelRequest:
 # endset  # noqa: E122
         )
 
-        # Convert the model to a dictionary with snake_case keys and serialized values
+        # Convert the model to a dictionary with snake_case
+        # keys and serialized values
         data = request.to_dict_snake_serialized()
 
         # Define the expected dictionary

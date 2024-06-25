@@ -75,8 +75,9 @@ class TestPacGetByManager:
         test_pac = await PacFactory.create_async(
             session)
 
-        pac = await pac_manager.get_by_id(
-            test_pac.pac_id)
+        pac = await \
+            pac_manager.get_by_id(
+                test_pac.pac_id)
 
         assert isinstance(
             pac, Pac)
@@ -99,8 +100,9 @@ class TestPacGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_pac = await pac_manager.get_by_id(
-            non_existent_id)
+        retrieved_pac = await \
+            pac_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_pac is None
 
@@ -120,8 +122,9 @@ class TestPacGetByManager:
         test_pac = await PacFactory.create_async(
             session)
 
-        pac = await pac_manager.get_by_code(
-            test_pac.code)
+        pac = await \
+            pac_manager.get_by_code(
+                test_pac.code)
 
         assert isinstance(
             pac, Pac)
@@ -144,8 +147,9 @@ class TestPacGetByManager:
         # any Pac in the database
         random_code = uuid.uuid4()
 
-        pac = await pac_manager.get_by_code(
-            random_code)
+        pac = await \
+            pac_manager.get_by_code(
+                random_code)
 
         assert pac is None
 

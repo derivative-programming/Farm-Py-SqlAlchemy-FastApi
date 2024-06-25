@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...pac_user_role_list import PacUserRoleListGetModelRequest
-from ..pac_user_role_list import PacUserRoleListGetModelRequestFactory
+from ...pac_user_role_list import (
+    PacUserRoleListGetModelRequest)
+from ..pac_user_role_list import (
+    PacUserRoleListGetModelRequestFactory)
 
 
 class TestPacUserRoleListGetModelRequestFactoryAsync:
@@ -34,7 +36,8 @@ class TestPacUserRoleListGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance, PacUserRoleListGetModelRequest)
+        assert isinstance(model_instance,
+                          PacUserRoleListGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)

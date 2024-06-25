@@ -537,7 +537,7 @@ class TestCustomerManager:
         json_data = customer_manager.to_json(
             customer)
 
-        deserialized_customer = customer_manager.from_json(json_data)
+        deserialized_customer = await customer_manager.from_json(json_data)
 
         assert isinstance(deserialized_customer, Customer)
         assert deserialized_customer.code == \
@@ -578,7 +578,7 @@ class TestCustomerManager:
 
         assert isinstance(customer_data, dict)
 
-        deserialized_customer = customer_manager.from_dict(
+        deserialized_customer = await customer_manager.from_dict(
             customer_data)
 
         assert isinstance(deserialized_customer, Customer)
@@ -784,11 +784,13 @@ class TestCustomerManager:
             None
         """
         # Add a customer
-        customer1 = await CustomerFactory.create_async(
-            session=session)
+        customer1 = await \
+            CustomerFactory.create_async(
+                session=session)
 
-        customer2 = await customer_manager.get_by_id(
-            customer_id=customer1.customer_id)
+        customer2 = await \
+            customer_manager.get_by_id(
+                customer_id=customer1.customer_id)
 
         assert customer_manager.is_equal(
             customer1, customer2) is True
@@ -796,8 +798,9 @@ class TestCustomerManager:
         customer1_dict = customer_manager.to_dict(
             customer1)
 
-        customer3 = customer_manager.from_dict(
-            customer1_dict)
+        customer3 = await \
+            customer_manager.from_dict(
+                customer1_dict)
 
         assert customer_manager.is_equal(
             customer1, customer3) is True

@@ -13,7 +13,8 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.pac import PacFactory
-from reports.providers.pac_user_land_list import ReportProviderPacUserLandList
+from reports.providers.pac_user_land_list import (
+    ReportProviderPacUserLandList)
 import current_runtime
 
 
@@ -43,7 +44,8 @@ class TestReportProviderPacUserLandList:
 
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
-        report_provider = ReportProviderPacUserLandList(session_context)
+        report_provider = ReportProviderPacUserLandList(
+            session_context)
         pac = await PacFactory.create_async(session=session)
         pac_code = pac.code
 

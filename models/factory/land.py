@@ -45,7 +45,9 @@ class LandFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Land:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Land:
         """
             Builds and returns an instance
             of the Land model.
@@ -82,7 +84,9 @@ class LandFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Land:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Land:
         """
         Create a new Land object
         and save it to the database.
@@ -121,7 +125,9 @@ class LandFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Land:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Land:
         """
         Create a new Land object
         asynchronously.
@@ -151,7 +157,9 @@ class LandFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Land:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Land:
         """
         Build a new Land object
         asynchronously.

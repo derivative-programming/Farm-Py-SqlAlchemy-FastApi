@@ -23,25 +23,31 @@ from main import app
 
 from .....models import (  # pylint: disable=reimported
     factory as request_factory)
-from ..error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogRouterConfig
+from ..error_log_config_resolve_error_log import (
+    ErrorLogConfigResolveErrorLogRouterConfig)
 
 
 @pytest.mark.asyncio
 async def test_submit_success(overridden_get_db):
     """
-    Test the successful submission of a delete request.
+    Test the successful submission of
+    a delete request.
 
-    This test ensures that a delete request is successfully
+    This test ensures that a delete
+    request is successfully
     processed and returns the expected response.
 
     Steps:
     1. Create a mock process_request function.
     2. Patch the `process_request` method of
-        `ErrorLogConfigResolveErrorLogPostModelResponse` with the mock function.
+        `ErrorLogConfigResolveErrorLogPostModelResponse`
+        with the mock function.
     3. Create a error_log using the
         `ErrorLogFactory`.
-    4. Generate an API key for the error_log.
-    5. Send a POST request to the `error-log-config-resolve-error-log`
+    4. Generate an API key for the
+        error_log.
+    5. Send a POST request to the
+        `error-log-config-resolve-error-log`
         endpoint with the error_log
         code and API key.
     6. Assert that the response status code is 200 and
@@ -189,10 +195,12 @@ async def test_submit_authorization_failure_empty_header_key(
     request without header.
 
     This test case sends a POST request to the
-    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}' endpoint
+    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}'
+    endpoint
     without providing an authorization header.
     It checks whether the response status code is 401
-    if the endpoint is not public, or 200 if the endpoint is public.
+    if the endpoint is not public, or 200 if
+    the endpoint is public.
 
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
@@ -230,10 +238,12 @@ async def test_submit_authorization_failure_no_header(
     request without authorization header.
 
     This test case sends a POST request to the
-    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}' endpoint
+    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}'
+    endpoint
     without providing an authorization header.
     It checks whether the response status code is 401
-    if the endpoint is not public, or 200 if the endpoint is public.
+    if the endpoint is not public, or 200 if the
+    endpoint is public.
 
     Args:
         overridden_get_db (AsyncSession): The overridden database session.
@@ -268,7 +278,8 @@ async def test_submit_endpoint_url_failure(
     Test the failure of the submit endpoint URL.
 
     This test case sends a POST request to the
-    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}/xxxx' endpoint
+    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}/xxxx'
+    endpoint
     with an invalid URL parameter ('xxxx'). It verifies
     that the response status code is 501 (Not Implemented).
 
@@ -340,7 +351,8 @@ async def test_submit_endpoint_method_failure(
     It creates a error_log using the
     ErrorLogFactory, generates
     an API token, and sends a GET request to the
-    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}' endpoint
+    '/api/v1_0/error-log-config-resolve-error-log/{error_log_code}'
+    endpoint
     with the API key in the headers. The expected
     response status code is 405 (Method Not Allowed).
 

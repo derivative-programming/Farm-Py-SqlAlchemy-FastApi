@@ -75,8 +75,9 @@ class TestLandGetByManager:
         test_land = await LandFactory.create_async(
             session)
 
-        land = await land_manager.get_by_id(
-            test_land.land_id)
+        land = await \
+            land_manager.get_by_id(
+                test_land.land_id)
 
         assert isinstance(
             land, Land)
@@ -99,8 +100,9 @@ class TestLandGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_land = await land_manager.get_by_id(
-            non_existent_id)
+        retrieved_land = await \
+            land_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_land is None
 
@@ -120,8 +122,9 @@ class TestLandGetByManager:
         test_land = await LandFactory.create_async(
             session)
 
-        land = await land_manager.get_by_code(
-            test_land.code)
+        land = await \
+            land_manager.get_by_code(
+                test_land.code)
 
         assert isinstance(
             land, Land)
@@ -144,8 +147,9 @@ class TestLandGetByManager:
         # any Land in the database
         random_code = uuid.uuid4()
 
-        land = await land_manager.get_by_code(
-            random_code)
+        land = await \
+            land_manager.get_by_code(
+                random_code)
 
         assert land is None
 
@@ -197,8 +201,9 @@ class TestLandGetByManager:
         # Fetch the land using
         # the manager function
 
-        fetched_lands = await land_manager.get_by_pac_id(
-            land1.pac_id)
+        fetched_lands = await \
+            land_manager.get_by_pac_id(
+                land1.pac_id)
         assert len(fetched_lands) == 1
         assert isinstance(fetched_lands[0], Land)
         assert fetched_lands[0].code == \
@@ -229,8 +234,9 @@ class TestLandGetByManager:
 
         non_existent_id = 999
 
-        fetched_lands = await land_manager.get_by_pac_id(
-            non_existent_id)
+        fetched_lands = await \
+            land_manager.get_by_pac_id(
+                non_existent_id)
         assert len(fetched_lands) == 0
 
     @pytest.mark.asyncio

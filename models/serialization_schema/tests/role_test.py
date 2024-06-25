@@ -158,7 +158,10 @@ class TestRoleSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(role.pac_code_peek))
 
-    def test_role_deserialization(self, role):
+    def test_role_deserialization(
+        self,
+        role
+    ):
         """
         Test the deserialization of a
         Role object using the
@@ -207,7 +210,8 @@ class TestRoleSchema:
             'pac_code_peek')] == (
             role.pac_code_peek)
 
-        new_role = Role(**deserialized_data)
+        new_role = Role(
+            **deserialized_data)
 
         assert isinstance(new_role, Role)
 
@@ -301,7 +305,8 @@ class TestRoleSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_role = Role(**deserialized_data)
+        new_role = Role(
+            **deserialized_data)
 
         assert isinstance(new_role, Role)
 

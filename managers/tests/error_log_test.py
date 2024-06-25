@@ -537,7 +537,7 @@ class TestErrorLogManager:
         json_data = error_log_manager.to_json(
             error_log)
 
-        deserialized_error_log = error_log_manager.from_json(json_data)
+        deserialized_error_log = await error_log_manager.from_json(json_data)
 
         assert isinstance(deserialized_error_log, ErrorLog)
         assert deserialized_error_log.code == \
@@ -578,7 +578,7 @@ class TestErrorLogManager:
 
         assert isinstance(error_log_data, dict)
 
-        deserialized_error_log = error_log_manager.from_dict(
+        deserialized_error_log = await error_log_manager.from_dict(
             error_log_data)
 
         assert isinstance(deserialized_error_log, ErrorLog)
@@ -784,11 +784,13 @@ class TestErrorLogManager:
             None
         """
         # Add a error_log
-        error_log1 = await ErrorLogFactory.create_async(
-            session=session)
+        error_log1 = await \
+            ErrorLogFactory.create_async(
+                session=session)
 
-        error_log2 = await error_log_manager.get_by_id(
-            error_log_id=error_log1.error_log_id)
+        error_log2 = await \
+            error_log_manager.get_by_id(
+                error_log_id=error_log1.error_log_id)
 
         assert error_log_manager.is_equal(
             error_log1, error_log2) is True
@@ -796,8 +798,9 @@ class TestErrorLogManager:
         error_log1_dict = error_log_manager.to_dict(
             error_log1)
 
-        error_log3 = error_log_manager.from_dict(
-            error_log1_dict)
+        error_log3 = await \
+            error_log_manager.from_dict(
+                error_log1_dict)
 
         assert error_log_manager.is_equal(
             error_log1, error_log3) is True

@@ -13,7 +13,8 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
 from models.factory.tac import TacFactory
-from reports.providers.tac_farm_dashboard import ReportProviderTacFarmDashboard
+from reports.providers.tac_farm_dashboard import (
+    ReportProviderTacFarmDashboard)
 import current_runtime
 
 
@@ -43,7 +44,8 @@ class TestReportProviderTacFarmDashboard:
 
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
-        report_provider = ReportProviderTacFarmDashboard(session_context)
+        report_provider = ReportProviderTacFarmDashboard(
+            session_context)
         tac = await TacFactory.create_async(session=session)
         tac_code = tac.code
 

@@ -195,7 +195,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.org_api_key.insert_user_id = value
 
@@ -236,7 +237,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.org_api_key.last_update_user_id = value
 
@@ -370,7 +372,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "created_utc_date_time must be a datetime object")
+            "created_utc_date_time "
+            "must be a datetime object")
         self.org_api_key.created_utc_date_time = value
     # expirationUTCDateTime
 
@@ -418,7 +421,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "expiration_utc_date_time must be a datetime object")
+            "expiration_utc_date_time "
+            "must be a datetime object")
         self.org_api_key.expiration_utc_date_time = value
     # isActive
 
@@ -458,7 +462,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_active must be a boolean.")
+            raise ValueError(
+                "is_active must be a boolean.")
 
         self.org_api_key.is_active = value
     # isTempUserKey
@@ -499,7 +504,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_temp_user_key must be a boolean.")
+            raise ValueError(
+                "is_temp_user_key must be a boolean.")
 
         self.org_api_key.is_temp_user_key = value
     # name
@@ -741,7 +747,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.org_api_key.insert_utc_date_time = value
 
@@ -789,7 +796,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.org_api_key.last_update_utc_date_time = value
 
@@ -809,11 +817,12 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         org_api_key_manager = OrgApiKeyManager(
             self._session_context)
-        self.org_api_key = org_api_key_manager.from_json(json_data)
+        self.org_api_key = await org_api_key_manager.from_json(json_data)
 
         return self
 
@@ -831,7 +840,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             org_api_key data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         org_api_key_manager = OrgApiKeyManager(
             self._session_context)
@@ -858,7 +868,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(org_api_key_id, int):
-            raise ValueError("org_api_key_id must be an integer")
+            raise ValueError(
+                "org_api_key_id must be an integer")
 
         org_api_key_manager = OrgApiKeyManager(
             self._session_context)
@@ -885,7 +896,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
 
         if not isinstance(org_api_key_obj_instance,
                           OrgApiKey):
-            raise ValueError("org_api_key_obj_instance must be an instance of OrgApiKey")
+            raise ValueError(
+                "org_api_key_obj_instance must be an instance of OrgApiKey")
 
         # org_api_key_manager = OrgApiKeyManager(
         #     self._session_context)
@@ -914,12 +926,13 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             org_api_key data is found.
         """
         if not isinstance(org_api_key_dict, dict):
-            raise ValueError("org_api_key_dict must be a dictionary")
+            raise ValueError(
+                "org_api_key_dict must be a dictionary")
 
         org_api_key_manager = OrgApiKeyManager(
             self._session_context)
 
-        self.org_api_key = org_api_key_manager.from_dict(
+        self.org_api_key = await org_api_key_manager.from_dict(
             org_api_key_dict)
 
         return self

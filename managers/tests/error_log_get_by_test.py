@@ -75,8 +75,9 @@ class TestErrorLogGetByManager:
         test_error_log = await ErrorLogFactory.create_async(
             session)
 
-        error_log = await error_log_manager.get_by_id(
-            test_error_log.error_log_id)
+        error_log = await \
+            error_log_manager.get_by_id(
+                test_error_log.error_log_id)
 
         assert isinstance(
             error_log, ErrorLog)
@@ -99,8 +100,9 @@ class TestErrorLogGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_error_log = await error_log_manager.get_by_id(
-            non_existent_id)
+        retrieved_error_log = await \
+            error_log_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_error_log is None
 
@@ -120,8 +122,9 @@ class TestErrorLogGetByManager:
         test_error_log = await ErrorLogFactory.create_async(
             session)
 
-        error_log = await error_log_manager.get_by_code(
-            test_error_log.code)
+        error_log = await \
+            error_log_manager.get_by_code(
+                test_error_log.code)
 
         assert isinstance(
             error_log, ErrorLog)
@@ -144,8 +147,9 @@ class TestErrorLogGetByManager:
         # any ErrorLog in the database
         random_code = uuid.uuid4()
 
-        error_log = await error_log_manager.get_by_code(
-            random_code)
+        error_log = await \
+            error_log_manager.get_by_code(
+                random_code)
 
         assert error_log is None
 
@@ -198,8 +202,9 @@ class TestErrorLogGetByManager:
         # Fetch the error_log using
         # the manager function
 
-        fetched_error_logs = await error_log_manager.get_by_pac_id(
-            error_log1.pac_id)
+        fetched_error_logs = await \
+            error_log_manager.get_by_pac_id(
+                error_log1.pac_id)
         assert len(fetched_error_logs) == 1
         assert isinstance(fetched_error_logs[0], ErrorLog)
         assert fetched_error_logs[0].code == \
@@ -230,8 +235,9 @@ class TestErrorLogGetByManager:
 
         non_existent_id = 999
 
-        fetched_error_logs = await error_log_manager.get_by_pac_id(
-            non_existent_id)
+        fetched_error_logs = await \
+            error_log_manager.get_by_pac_id(
+                non_existent_id)
         assert len(fetched_error_logs) == 0
 
     @pytest.mark.asyncio

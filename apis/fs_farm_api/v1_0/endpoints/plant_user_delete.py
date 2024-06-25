@@ -6,16 +6,17 @@ PlantUserDeleteRouter,
 which handles the API endpoints related to the
 Plant User Delete.
 
-The PlantUserDeleteRouter provides the following endpoints:
-    - GET /api/v1_0/plant-user-delete/{plant_code}/init:
-        Get the initialization data for the
-        Plant User Delete page.
-    - GET /api/v1_0/plant-user-delete/{plant_code}:
-        Get the Plant User Delete Report
-        for a specific  code.
-    - GET /api/v1_0/plant-user-delete/{plant_code}/to-csv:
-        Retrieve the Plant User Delete
-        Report as a CSV file.
+The PlantUserDeleteRouter provides
+the following endpoints:
+- GET /api/v1_0/plant-user-delete/{plant_code}/init:
+    Get the initialization data for the
+    Plant User Delete page.
+- GET /api/v1_0/plant-user-delete/{plant_code}:
+    Get the Plant User Delete Report
+    for a specific  code.
+- GET /api/v1_0/plant-user-delete/{plant_code}/to-csv:
+    Retrieve the Plant User Delete
+    Report as a CSV file.
 """
 
 import logging
@@ -73,11 +74,15 @@ class PlantUserDeleteRouter(BaseRouter):
     @staticmethod
     @router.post(
         "/api/v1_0/plant-user-delete/{plant_code}",
-        response_model=api_models.PlantUserDeletePostModelResponse,
+        response_model=(
+            api_models
+            .PlantUserDeletePostModelResponse
+        ),
         summary="Plant User Delete Business Flow")
     async def request_post_with_id(
         plant_code: uuid.UUID,
-        request_model: api_models.PlantUserDeletePostModelRequest,
+        request_model: (
+            api_models.PlantUserDeletePostModelRequest),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -100,9 +105,11 @@ class PlantUserDeleteRouter(BaseRouter):
             plant_code
         )
         auth_dict = BaseRouter.implementation_check(
-            PlantUserDeleteRouterConfig.is_post_with_id_available)
+            PlantUserDeleteRouterConfig
+            .is_post_with_id_available)
 
-        response = api_models.PlantUserDeletePostModelResponse()
+        response = (api_models
+                    .PlantUserDeletePostModelResponse())
 
         auth_dict = BaseRouter.authorization_check(
             PlantUserDeleteRouterConfig.is_public,

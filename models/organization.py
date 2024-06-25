@@ -125,7 +125,8 @@ class Organization(Base):
         Set the code of the organization.
 
         Args:
-            value (uuid.UUID): The code to set for the organization.
+            value (uuid.UUID): The code to set for the
+                organization.
 
         Raises:
             TypeError: If the value is not of type uuid.UUID.
@@ -158,9 +159,11 @@ class Organization(Base):
     @property
     def last_change_code(self) -> int:
         """
-        Returns the last change code of the organization.
+        Returns the last change code of the
+        organization.
 
-        :return: The last change code of the organization.
+        :return: The last change code of the
+            organization.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
@@ -195,7 +198,8 @@ class Organization(Base):
     @property
     def last_update_user_id(self):
         """
-        Returns the UUID of the last user who updated the organization.
+        Returns the UUID of the last user who updated the
+        organization.
 
         :return: The UUID of the last update user.
         :rtype: UUID
@@ -213,10 +217,12 @@ class Organization(Base):
     @property
     def insert_utc_date_time(self) -> datetime:
         """
-        Inserts the UTC date and time for the organization.
+        Inserts the UTC date and time for the
+        organization.
 
         Returns:
-            datetime: The UTC date and time for the organization.
+            datetime: The UTC date and time for the
+                organization.
         """
         return getattr(
             self,
@@ -235,7 +241,8 @@ class Organization(Base):
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
-        Returns the last update UTC date and time of the organization.
+        Returns the last update UTC date and time of the
+        organization.
 
         :return: A datetime object representing the
             last update UTC date and time.
@@ -258,9 +265,11 @@ class Organization(Base):
     @property
     def name(self) -> str:
         """
-        Returns the Name of the organization.
+        Returns the Name of the
+        organization.
 
-        :return: The Name of the organization.
+        :return: The Name of the
+            organization.
         :rtype: str
         """
         return getattr(self, '_name', "") or ""
@@ -291,7 +300,6 @@ class Organization(Base):
         """
 
         self._tac_id = value
-
 
     @staticmethod
     def property_list():

@@ -96,7 +96,8 @@ class TestLandFactory:
         initial_code = land.last_change_code
         land.code = uuid.uuid4()
         session.commit()
-        assert land.last_change_code != initial_code
+        assert land.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestLandFactory:
         session.delete(land)
         session.commit()
         deleted_land = session.query(Land).filter_by(
-            land_id=land.land_id).first()
+            _land_id=(
+                land.land_id)
+        ).first()
         assert deleted_land is None
 
     def test_data_types(self, session):
@@ -233,10 +236,13 @@ class TestLandFactory:
         """
         Test case for checking the unique code constraint.
         """
-        land_1 = LandFactory.create(session=session)
-        land_2 = LandFactory.create(session=session)
+        land_1 = LandFactory.create(
+            session=session)
+        land_2 = LandFactory.create(
+            session=session)
         land_2.code = land_1.code
-        session.add_all([land_1, land_2])
+        session.add_all([land_1,
+                         land_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -298,14 +304,19 @@ class TestLandFactory:
             session=session)
         original_last_change_code = land.last_change_code
         land_1 = session.query(Land).filter_by(
-            _land_id=land.land_id).first()
+            _land_id=(
+                land.land_id)
+        ).first()
         land_1.code = uuid.uuid4()
         session.commit()
         land_2 = session.query(Land).filter_by(
-            _land_id=land.land_id).first()
+            _land_id=(
+                land.land_id)
+        ).first()
         land_2.code = uuid.uuid4()
         session.commit()
-        assert land_2.last_change_code != original_last_change_code
+        assert land_2.last_change_code != \
+            original_last_change_code
     # description,
     # displayOrder,
     # isActive,

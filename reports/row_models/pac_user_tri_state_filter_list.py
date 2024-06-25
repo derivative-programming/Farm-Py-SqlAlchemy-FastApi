@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemPacUserTriStateFilterList():
     """
-    Represents a report item for a pac Pac User Tri State Filter List Report.
+    Represents a report item for a
+    pac Pac User Tri State Filter List Report.
     """
     tri_state_filter_code: uuid.UUID = (
         uuid.UUID(int=0))

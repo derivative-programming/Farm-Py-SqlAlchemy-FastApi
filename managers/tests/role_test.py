@@ -537,7 +537,7 @@ class TestRoleManager:
         json_data = role_manager.to_json(
             role)
 
-        deserialized_role = role_manager.from_json(json_data)
+        deserialized_role = await role_manager.from_json(json_data)
 
         assert isinstance(deserialized_role, Role)
         assert deserialized_role.code == \
@@ -578,7 +578,7 @@ class TestRoleManager:
 
         assert isinstance(role_data, dict)
 
-        deserialized_role = role_manager.from_dict(
+        deserialized_role = await role_manager.from_dict(
             role_data)
 
         assert isinstance(deserialized_role, Role)
@@ -784,11 +784,13 @@ class TestRoleManager:
             None
         """
         # Add a role
-        role1 = await RoleFactory.create_async(
-            session=session)
+        role1 = await \
+            RoleFactory.create_async(
+                session=session)
 
-        role2 = await role_manager.get_by_id(
-            role_id=role1.role_id)
+        role2 = await \
+            role_manager.get_by_id(
+                role_id=role1.role_id)
 
         assert role_manager.is_equal(
             role1, role2) is True
@@ -796,8 +798,9 @@ class TestRoleManager:
         role1_dict = role_manager.to_dict(
             role1)
 
-        role3 = role_manager.from_dict(
-            role1_dict)
+        role3 = await \
+            role_manager.from_dict(
+                role1_dict)
 
         assert role_manager.is_equal(
             role1, role3) is True

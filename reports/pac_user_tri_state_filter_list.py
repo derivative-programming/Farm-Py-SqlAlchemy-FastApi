@@ -13,9 +13,12 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import List
 from helpers import SessionContext, TypeConversion
-from reports.providers.pac_user_tri_state_filter_list import ReportProviderPacUserTriStateFilterList
-from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
-from .report_request_validation_error import ReportRequestValidationError
+from reports.providers.pac_user_tri_state_filter_list import (
+    ReportProviderPacUserTriStateFilterList)
+from reports.row_models.pac_user_tri_state_filter_list import (
+    ReportItemPacUserTriStateFilterList)
+from .report_request_validation_error import (
+    ReportRequestValidationError)
 
 
 class ReportManagerPacUserTriStateFilterList():
@@ -53,7 +56,8 @@ class ReportManagerPacUserTriStateFilterList():
             List[ReportItemPacUserTriStateFilterList]: The
                 list of report items.
         """
-        logging.info("ReportManagerPacUserTriStateFilterList.generate"
+        logging.info("ReportManagerPacUserTriStateFilterList"
+                     ".generate"
                      " Start")
 
         role_required = ""
@@ -97,11 +101,13 @@ class ReportManagerPacUserTriStateFilterList():
             result.append(report_item)
 
         logging.info(
-            "ReportManagerPacUserTriStateFilterList.generate Results: %s",
+            "ReportManagerPacUserTriStateFilterList"
+            ".generate Results: %s",
             json.dumps(data_list)
         )
 
-        logging.info('ReportManagerPacUserTriStateFilterList.generate End')
+        logging.info("ReportManagerPacUserTriStateFilterList"
+                     ".generate End")
         return result
 
     async def build_csv(

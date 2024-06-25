@@ -18,7 +18,8 @@ import pytest
 from helpers.type_conversion import TypeConversion
 from helpers.session_context import SessionContext
 
-from ..factory.pac_user_tac_list import PacUserTacListGetModelRequestFactory
+from ..factory.pac_user_tac_list import (
+    PacUserTacListGetModelRequestFactory)
 from ..pac_user_tac_list import (
     PacUserTacListGetModelRequest,
     PacUserTacListGetModelResponse,

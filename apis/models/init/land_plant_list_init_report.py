@@ -24,7 +24,9 @@ from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 
 
-class LandPlantListInitReportGetInitModelResponse(CamelModel):
+class LandPlantListInitReportGetInitModelResponse(
+    CamelModel
+):
     """
     Represents the response model for the
     LandPlantListInitReportGetInitModelRequest.

@@ -11,7 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker
 
-from ..customer_user_log_out import CustomerUserLogOutPostModelRequest
+from ..customer_user_log_out import (
+    CustomerUserLogOutPostModelRequest)
 
 
 class CustomerUserLogOutPostModelRequestFactory(factory.base.Factory):
@@ -45,7 +46,8 @@ class CustomerUserLogOutPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of CustomerUserLogOutPostModelRequest.
+            An instance of
+            CustomerUserLogOutPostModelRequest.
         """
 
         if session is None:
@@ -74,7 +76,8 @@ class CustomerUserLogOutPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of CustomerUserLogOutPostModelRequest.
+            An instance of
+            CustomerUserLogOutPostModelRequest.
         """
 
 
@@ -98,7 +101,8 @@ class CustomerUserLogOutPostModelRequestFactory(factory.base.Factory):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            An instance of CustomerUserLogOutPostModelRequest.
+            An instance of
+            CustomerUserLogOutPostModelRequest.
         """
 
 

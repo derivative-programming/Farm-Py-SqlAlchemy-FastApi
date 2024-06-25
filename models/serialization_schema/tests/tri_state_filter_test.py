@@ -161,7 +161,10 @@ class TestTriStateFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(tri_state_filter.pac_code_peek))
 
-    def test_tri_state_filter_deserialization(self, tri_state_filter):
+    def test_tri_state_filter_deserialization(
+        self,
+        tri_state_filter
+    ):
         """
         Test the deserialization of a
         TriStateFilter object using the
@@ -212,7 +215,8 @@ class TestTriStateFilterSchema:
             'pac_code_peek')] == (
             tri_state_filter.pac_code_peek)
 
-        new_tri_state_filter = TriStateFilter(**deserialized_data)
+        new_tri_state_filter = TriStateFilter(
+            **deserialized_data)
 
         assert isinstance(new_tri_state_filter, TriStateFilter)
 
@@ -310,7 +314,8 @@ class TestTriStateFilterSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_tri_state_filter = TriStateFilter(**deserialized_data)
+        new_tri_state_filter = TriStateFilter(
+            **deserialized_data)
 
         assert isinstance(new_tri_state_filter, TriStateFilter)
 

@@ -45,7 +45,9 @@ class RoleFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> Role:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Role:
         """
             Builds and returns an instance
             of the Role model.
@@ -82,7 +84,9 @@ class RoleFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> Role:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> Role:
         """
         Create a new Role object
         and save it to the database.
@@ -121,7 +125,9 @@ class RoleFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> Role:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> Role:
         """
         Create a new Role object
         asynchronously.
@@ -151,7 +157,9 @@ class RoleFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> Role:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> Role:
         """
         Build a new Role object
         asynchronously.

@@ -75,8 +75,9 @@ class TestTriStateFilterGetByManager:
         test_tri_state_filter = await TriStateFilterFactory.create_async(
             session)
 
-        tri_state_filter = await tri_state_filter_manager.get_by_id(
-            test_tri_state_filter.tri_state_filter_id)
+        tri_state_filter = await \
+            tri_state_filter_manager.get_by_id(
+                test_tri_state_filter.tri_state_filter_id)
 
         assert isinstance(
             tri_state_filter, TriStateFilter)
@@ -99,8 +100,9 @@ class TestTriStateFilterGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_tri_state_filter = await tri_state_filter_manager.get_by_id(
-            non_existent_id)
+        retrieved_tri_state_filter = await \
+            tri_state_filter_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_tri_state_filter is None
 
@@ -120,8 +122,9 @@ class TestTriStateFilterGetByManager:
         test_tri_state_filter = await TriStateFilterFactory.create_async(
             session)
 
-        tri_state_filter = await tri_state_filter_manager.get_by_code(
-            test_tri_state_filter.code)
+        tri_state_filter = await \
+            tri_state_filter_manager.get_by_code(
+                test_tri_state_filter.code)
 
         assert isinstance(
             tri_state_filter, TriStateFilter)
@@ -144,8 +147,9 @@ class TestTriStateFilterGetByManager:
         # any TriStateFilter in the database
         random_code = uuid.uuid4()
 
-        tri_state_filter = await tri_state_filter_manager.get_by_code(
-            random_code)
+        tri_state_filter = await \
+            tri_state_filter_manager.get_by_code(
+                random_code)
 
         assert tri_state_filter is None
 
@@ -197,8 +201,9 @@ class TestTriStateFilterGetByManager:
         # Fetch the tri_state_filter using
         # the manager function
 
-        fetched_tri_state_filters = await tri_state_filter_manager.get_by_pac_id(
-            tri_state_filter1.pac_id)
+        fetched_tri_state_filters = await \
+            tri_state_filter_manager.get_by_pac_id(
+                tri_state_filter1.pac_id)
         assert len(fetched_tri_state_filters) == 1
         assert isinstance(fetched_tri_state_filters[0], TriStateFilter)
         assert fetched_tri_state_filters[0].code == \
@@ -229,8 +234,9 @@ class TestTriStateFilterGetByManager:
 
         non_existent_id = 999
 
-        fetched_tri_state_filters = await tri_state_filter_manager.get_by_pac_id(
-            non_existent_id)
+        fetched_tri_state_filters = await \
+            tri_state_filter_manager.get_by_pac_id(
+                non_existent_id)
         assert len(fetched_tri_state_filters) == 0
 
     @pytest.mark.asyncio

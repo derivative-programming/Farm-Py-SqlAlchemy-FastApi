@@ -96,7 +96,8 @@ class TestPacFactory:
         initial_code = pac.last_change_code
         pac.code = uuid.uuid4()
         session.commit()
-        assert pac.last_change_code != initial_code
+        assert pac.last_change_code != \
+            initial_code
 
     def test_date_inserted_on_build(self, session):
         """
@@ -194,7 +195,9 @@ class TestPacFactory:
         session.delete(pac)
         session.commit()
         deleted_pac = session.query(Pac).filter_by(
-            pac_id=pac.pac_id).first()
+            _pac_id=(
+                pac.pac_id)
+        ).first()
         assert deleted_pac is None
 
     def test_data_types(self, session):
@@ -228,10 +231,13 @@ class TestPacFactory:
         """
         Test case for checking the unique code constraint.
         """
-        pac_1 = PacFactory.create(session=session)
-        pac_2 = PacFactory.create(session=session)
+        pac_1 = PacFactory.create(
+            session=session)
+        pac_2 = PacFactory.create(
+            session=session)
         pac_2.code = pac_1.code
-        session.add_all([pac_1, pac_2])
+        session.add_all([pac_1,
+                         pac_2])
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
@@ -288,14 +294,19 @@ class TestPacFactory:
             session=session)
         original_last_change_code = pac.last_change_code
         pac_1 = session.query(Pac).filter_by(
-            _pac_id=pac.pac_id).first()
+            _pac_id=(
+                pac.pac_id)
+        ).first()
         pac_1.code = uuid.uuid4()
         session.commit()
         pac_2 = session.query(Pac).filter_by(
-            _pac_id=pac.pac_id).first()
+            _pac_id=(
+                pac.pac_id)
+        ).first()
         pac_2.code = uuid.uuid4()
         session.commit()
-        assert pac_2.last_change_code != original_last_change_code
+        assert pac_2.last_change_code != \
+            original_last_change_code
     # description,
     # displayOrder,
     # isActive,

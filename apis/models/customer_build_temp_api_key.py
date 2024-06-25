@@ -16,7 +16,9 @@ from pydantic import UUID4, Field
 from apis.models.validation_error import ValidationErrorItem
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey, FlowCustomerBuildTempApiKeyResult
+from flows.customer_build_temp_api_key import (
+    FlowCustomerBuildTempApiKey,
+    FlowCustomerBuildTempApiKeyResult)
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
@@ -87,6 +89,7 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
     tmp_org_api_key_code: UUID4 = Field(
         default=uuid.UUID(int=0),
         description="Tmp Org Api Key Code")
+
     def load_flow_response(self, data: FlowCustomerBuildTempApiKeyResult):
         """
         Loads the flow response data into the response model.

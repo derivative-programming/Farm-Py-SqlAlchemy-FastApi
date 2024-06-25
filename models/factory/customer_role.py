@@ -47,7 +47,9 @@ class CustomerRoleFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> CustomerRole:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> CustomerRole:
         """
             Builds and returns an instance
             of the CustomerRole model.
@@ -94,7 +96,9 @@ class CustomerRoleFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> CustomerRole:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> CustomerRole:
         """
         Create a new CustomerRole object
         and save it to the database.
@@ -143,7 +147,9 @@ class CustomerRoleFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> CustomerRole:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> CustomerRole:
         """
         Create a new CustomerRole object
         asynchronously.
@@ -183,7 +189,9 @@ class CustomerRoleFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> CustomerRole:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> CustomerRole:
         """
         Build a new CustomerRole object
         asynchronously.

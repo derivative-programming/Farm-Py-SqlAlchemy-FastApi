@@ -18,7 +18,8 @@ from decimal import Decimal
 from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
-from reports.row_models.pac_user_date_greater_than_filter_list import ReportItemPacUserDateGreaterThanFilterList
+from reports.row_models.pac_user_date_greater_than_filter_list import (
+    ReportItemPacUserDateGreaterThanFilterList)
 
 
 class TestReportItemPacUserDateGreaterThanFilterList:

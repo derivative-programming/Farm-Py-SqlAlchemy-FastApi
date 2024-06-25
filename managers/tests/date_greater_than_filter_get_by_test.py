@@ -75,8 +75,9 @@ class TestDateGreaterThanFilterGetByManager:
         test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
             session)
 
-        date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(
-            test_date_greater_than_filter.date_greater_than_filter_id)
+        date_greater_than_filter = await \
+            date_greater_than_filter_manager.get_by_id(
+                test_date_greater_than_filter.date_greater_than_filter_id)
 
         assert isinstance(
             date_greater_than_filter, DateGreaterThanFilter)
@@ -99,8 +100,9 @@ class TestDateGreaterThanFilterGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_date_greater_than_filter = await date_greater_than_filter_manager.get_by_id(
-            non_existent_id)
+        retrieved_date_greater_than_filter = await \
+            date_greater_than_filter_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_date_greater_than_filter is None
 
@@ -120,8 +122,9 @@ class TestDateGreaterThanFilterGetByManager:
         test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
             session)
 
-        date_greater_than_filter = await date_greater_than_filter_manager.get_by_code(
-            test_date_greater_than_filter.code)
+        date_greater_than_filter = await \
+            date_greater_than_filter_manager.get_by_code(
+                test_date_greater_than_filter.code)
 
         assert isinstance(
             date_greater_than_filter, DateGreaterThanFilter)
@@ -144,8 +147,9 @@ class TestDateGreaterThanFilterGetByManager:
         # any DateGreaterThanFilter in the database
         random_code = uuid.uuid4()
 
-        date_greater_than_filter = await date_greater_than_filter_manager.get_by_code(
-            random_code)
+        date_greater_than_filter = await \
+            date_greater_than_filter_manager.get_by_code(
+                random_code)
 
         assert date_greater_than_filter is None
 
@@ -198,8 +202,9 @@ class TestDateGreaterThanFilterGetByManager:
         # Fetch the date_greater_than_filter using
         # the manager function
 
-        fetched_date_greater_than_filters = await date_greater_than_filter_manager.get_by_pac_id(
-            date_greater_than_filter1.pac_id)
+        fetched_date_greater_than_filters = await \
+            date_greater_than_filter_manager.get_by_pac_id(
+                date_greater_than_filter1.pac_id)
         assert len(fetched_date_greater_than_filters) == 1
         assert isinstance(fetched_date_greater_than_filters[0], DateGreaterThanFilter)
         assert fetched_date_greater_than_filters[0].code == \
@@ -230,8 +235,9 @@ class TestDateGreaterThanFilterGetByManager:
 
         non_existent_id = 999
 
-        fetched_date_greater_than_filters = await date_greater_than_filter_manager.get_by_pac_id(
-            non_existent_id)
+        fetched_date_greater_than_filters = await \
+            date_greater_than_filter_manager.get_by_pac_id(
+                non_existent_id)
         assert len(fetched_date_greater_than_filters) == 0
 
     @pytest.mark.asyncio

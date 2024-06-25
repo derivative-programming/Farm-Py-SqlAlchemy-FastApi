@@ -23,7 +23,8 @@ from main import app
 
 from .....models import (  # pylint: disable=reimported
     factory as request_factory)
-from ..pac_user_flavor_list import PacUserFlavorListRouterConfig
+from ..pac_user_flavor_list import (
+    PacUserFlavorListRouterConfig)
 
 
 @pytest.mark.asyncio

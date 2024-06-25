@@ -195,7 +195,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("insert_user_id must be a UUID.")
+            raise ValueError(
+                "insert_user_id must be a UUID.")
 
         self.error_log.insert_user_id = value
 
@@ -236,7 +237,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, uuid.UUID):
-            raise ValueError("last_update_user_id must be a UUID.")
+            raise ValueError(
+                "last_update_user_id must be a UUID.")
 
         self.error_log.last_update_user_id = value
 
@@ -384,7 +386,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime), (
-            "created_utc_date_time must be a datetime object")
+            "created_utc_date_time "
+            "must be a datetime object")
         self.error_log.created_utc_date_time = value
     # description
 
@@ -466,7 +469,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_client_side_error must be a boolean.")
+            raise ValueError(
+                "is_client_side_error must be a boolean.")
 
         self.error_log.is_client_side_error = value
     # isResolved
@@ -507,7 +511,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         if not isinstance(value, bool):
-            raise ValueError("is_resolved must be a boolean.")
+            raise ValueError(
+                "is_resolved must be a boolean.")
 
         self.error_log.is_resolved = value
     # PacID
@@ -678,7 +683,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "insert_utc_date_time must be a datetime object or None")
+            "insert_utc_date_time must be "
+            "a datetime object or None")
 
         self.error_log.insert_utc_date_time = value
 
@@ -726,7 +732,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         assert isinstance(value, datetime) or value is None, (
-            "last_update_utc_date_time must be a datetime object or None")
+            "last_update_utc_date_time "
+            "must be a datetime object or None")
 
         self.error_log.last_update_utc_date_time = value
 
@@ -746,11 +753,12 @@ class ErrorLogBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(json_data, str):
-            raise ValueError("json_data must be a string")
+            raise ValueError(
+                "json_data must be a string")
 
         error_log_manager = ErrorLogManager(
             self._session_context)
-        self.error_log = error_log_manager.from_json(json_data)
+        self.error_log = await error_log_manager.from_json(json_data)
 
         return self
 
@@ -768,7 +776,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             error_log data is found.
         """
         if not isinstance(code, uuid.UUID):
-            raise ValueError("code must be a UUID")
+            raise ValueError(
+                "code must be a UUID")
 
         error_log_manager = ErrorLogManager(
             self._session_context)
@@ -795,7 +804,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
         """
 
         if not isinstance(error_log_id, int):
-            raise ValueError("error_log_id must be an integer")
+            raise ValueError(
+                "error_log_id must be an integer")
 
         error_log_manager = ErrorLogManager(
             self._session_context)
@@ -822,7 +832,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
 
         if not isinstance(error_log_obj_instance,
                           ErrorLog):
-            raise ValueError("error_log_obj_instance must be an instance of ErrorLog")
+            raise ValueError(
+                "error_log_obj_instance must be an instance of ErrorLog")
 
         # error_log_manager = ErrorLogManager(
         #     self._session_context)
@@ -851,12 +862,13 @@ class ErrorLogBaseBusObj(BaseBusObj):
             error_log data is found.
         """
         if not isinstance(error_log_dict, dict):
-            raise ValueError("error_log_dict must be a dictionary")
+            raise ValueError(
+                "error_log_dict must be a dictionary")
 
         error_log_manager = ErrorLogManager(
             self._session_context)
 
-        self.error_log = error_log_manager.from_dict(
+        self.error_log = await error_log_manager.from_dict(
             error_log_dict)
 
         return self

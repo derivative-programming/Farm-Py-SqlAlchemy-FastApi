@@ -11,8 +11,10 @@ from decimal import Decimal
 
 import pytest
 
-from ...land_plant_list import LandPlantListGetModelRequest
-from ..land_plant_list import LandPlantListGetModelRequestFactory
+from ...land_plant_list import (
+    LandPlantListGetModelRequest)
+from ..land_plant_list import (
+    LandPlantListGetModelRequestFactory)
 
 
 class TestLandPlantListGetModelRequestFactoryAsync:
@@ -34,7 +36,8 @@ class TestLandPlantListGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance, LandPlantListGetModelRequest)
+        assert isinstance(model_instance,
+                          LandPlantListGetModelRequest)
         assert isinstance(model_instance.flavor_code, uuid.UUID)
         assert isinstance(model_instance.some_int_val, int)
         assert isinstance(model_instance.some_big_int_val, int)

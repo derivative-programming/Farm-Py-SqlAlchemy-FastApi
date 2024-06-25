@@ -161,7 +161,10 @@ class TestDateGreaterThanFilterSchema:
         assert result['pac_code_peek'] == (  # PacID
             str(date_greater_than_filter.pac_code_peek))
 
-    def test_date_greater_than_filter_deserialization(self, date_greater_than_filter):
+    def test_date_greater_than_filter_deserialization(
+        self,
+        date_greater_than_filter
+    ):
         """
         Test the deserialization of a
         DateGreaterThanFilter object using the
@@ -212,7 +215,8 @@ class TestDateGreaterThanFilterSchema:
             'pac_code_peek')] == (
             date_greater_than_filter.pac_code_peek)
 
-        new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
+        new_date_greater_than_filter = DateGreaterThanFilter(
+            **deserialized_data)
 
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
 
@@ -310,7 +314,8 @@ class TestDateGreaterThanFilterSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_date_greater_than_filter = DateGreaterThanFilter(**deserialized_data)
+        new_date_greater_than_filter = DateGreaterThanFilter(
+            **deserialized_data)
 
         assert isinstance(new_date_greater_than_filter, DateGreaterThanFilter)
 

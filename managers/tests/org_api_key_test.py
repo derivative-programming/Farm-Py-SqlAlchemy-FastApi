@@ -537,7 +537,7 @@ class TestOrgApiKeyManager:
         json_data = org_api_key_manager.to_json(
             org_api_key)
 
-        deserialized_org_api_key = org_api_key_manager.from_json(json_data)
+        deserialized_org_api_key = await org_api_key_manager.from_json(json_data)
 
         assert isinstance(deserialized_org_api_key, OrgApiKey)
         assert deserialized_org_api_key.code == \
@@ -578,7 +578,7 @@ class TestOrgApiKeyManager:
 
         assert isinstance(org_api_key_data, dict)
 
-        deserialized_org_api_key = org_api_key_manager.from_dict(
+        deserialized_org_api_key = await org_api_key_manager.from_dict(
             org_api_key_data)
 
         assert isinstance(deserialized_org_api_key, OrgApiKey)
@@ -784,11 +784,13 @@ class TestOrgApiKeyManager:
             None
         """
         # Add a org_api_key
-        org_api_key1 = await OrgApiKeyFactory.create_async(
-            session=session)
+        org_api_key1 = await \
+            OrgApiKeyFactory.create_async(
+                session=session)
 
-        org_api_key2 = await org_api_key_manager.get_by_id(
-            org_api_key_id=org_api_key1.org_api_key_id)
+        org_api_key2 = await \
+            org_api_key_manager.get_by_id(
+                org_api_key_id=org_api_key1.org_api_key_id)
 
         assert org_api_key_manager.is_equal(
             org_api_key1, org_api_key2) is True
@@ -796,8 +798,9 @@ class TestOrgApiKeyManager:
         org_api_key1_dict = org_api_key_manager.to_dict(
             org_api_key1)
 
-        org_api_key3 = org_api_key_manager.from_dict(
-            org_api_key1_dict)
+        org_api_key3 = await \
+            org_api_key_manager.from_dict(
+                org_api_key1_dict)
 
         assert org_api_key_manager.is_equal(
             org_api_key1, org_api_key3) is True

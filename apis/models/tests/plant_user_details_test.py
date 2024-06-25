@@ -18,7 +18,8 @@ import pytest
 from helpers.type_conversion import TypeConversion
 from helpers.session_context import SessionContext
 
-from ..factory.plant_user_details import PlantUserDetailsGetModelRequestFactory
+from ..factory.plant_user_details import (
+    PlantUserDetailsGetModelRequestFactory)
 from ..plant_user_details import (
     PlantUserDetailsGetModelRequest,
     PlantUserDetailsGetModelResponse,

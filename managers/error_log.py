@@ -67,7 +67,8 @@ class ErrorLogManager:
         """
         Initializes the ErrorLogManager.
         """
-        logging.info("ErrorLogManager.Initialize")
+        logging.info(
+            "ErrorLogManager.Initialize")
 
 
     async def build(self, **kwargs) -> ErrorLog:
@@ -83,7 +84,8 @@ class ErrorLogManager:
             ErrorLog: The newly created
                 ErrorLog object.
         """
-        logging.info("ErrorLogManager.build")
+        logging.info(
+            "ErrorLogManager.build")
         return ErrorLog(**kwargs)
 
     async def add(
@@ -101,9 +103,12 @@ class ErrorLogManager:
             ErrorLog: The added
                 error_log.
         """
-        logging.info("ErrorLogManager.add")
-        error_log.insert_user_id = self._session_context.customer_code
-        error_log.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "ErrorLogManager.add")
+        error_log.insert_user_id = (
+            self._session_context.customer_code)
+        error_log.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             error_log)
         await self._session_context.session.flush()
@@ -118,7 +123,8 @@ class ErrorLogManager:
             The base query for retrieving
             error_logs.
         """
-        logging.info("ErrorLogManager._build_query")
+        logging.info(
+            "ErrorLogManager._build_query")
 
         query = select(
             ErrorLog,
@@ -147,7 +153,8 @@ class ErrorLogManager:
             List[ErrorLog]: The list of
                 error_logs that match the query.
         """
-        logging.info("ErrorLogManager._run_query")
+        logging.info(
+            "ErrorLogManager._run_query")
         error_log_query_all = self._build_query()
 
         if query_filter is not None:
@@ -197,7 +204,9 @@ class ErrorLogManager:
             else None
         )
 
-    async def get_by_id(self, error_log_id: int) -> Optional[ErrorLog]:
+    async def get_by_id(
+        self, error_log_id: int
+    ) -> Optional[ErrorLog]:
         """
         Retrieves a error_log by its ID.
 
@@ -224,7 +233,9 @@ class ErrorLogManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[ErrorLog]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[ErrorLog]:
         """
         Retrieves a error_log
         by its code.
@@ -237,7 +248,8 @@ class ErrorLogManager:
             Optional[ErrorLog]: The retrieved
                 error_log, or None if not found.
         """
-        logging.info("ErrorLogManager.get_by_code %s", code)
+        logging.info("ErrorLogManager.get_by_code %s",
+                     code)
 
         query_filter = ErrorLog._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -291,7 +303,9 @@ class ErrorLogManager:
                 error_log with the
                 specified ID is not found.
         """
-        logging.info("ErrorLogManager.delete %s", error_log_id)
+        logging.info(
+            "ErrorLogManager.delete %s",
+            error_log_id)
         if not isinstance(error_log_id, int):
             raise TypeError(
                 f"The error_log_id must be an integer, "
@@ -300,7 +314,8 @@ class ErrorLogManager:
         error_log = await self.get_by_id(
             error_log_id)
         if not error_log:
-            raise ErrorLogNotFoundError(f"ErrorLog with ID {error_log_id} not found!")
+            raise ErrorLogNotFoundError(
+                f"ErrorLog with ID {error_log_id} not found!")
 
         await self._session_context.session.delete(
             error_log)
@@ -317,7 +332,8 @@ class ErrorLogManager:
             List[ErrorLog]: The list of
                 error_logs.
         """
-        logging.info("ErrorLogManager.get_list")
+        logging.info(
+            "ErrorLogManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -338,7 +354,8 @@ class ErrorLogManager:
             str: The JSON string representation of the
                 error_log.
         """
-        logging.info("ErrorLogManager.to_json")
+        logging.info(
+            "ErrorLogManager.to_json")
         schema = ErrorLogSchema()
         error_log_data = schema.dump(error_log)
         return json.dumps(error_log_data)
@@ -359,7 +376,8 @@ class ErrorLogManager:
             Dict[str, Any]: The dictionary representation of the
                 error_log.
         """
-        logging.info("ErrorLogManager.to_dict")
+        logging.info(
+            "ErrorLogManager.to_dict")
         schema = ErrorLogSchema()
         error_log_data = schema.dump(error_log)
 
@@ -367,7 +385,7 @@ class ErrorLogManager:
 
         return error_log_data
 
-    def from_json(self, json_str: str) -> ErrorLog:
+    async def from_json(self, json_str: str) -> ErrorLog:
         """
         Deserializes a JSON string into a
         ErrorLog object.
@@ -379,19 +397,32 @@ class ErrorLogManager:
             ErrorLog: The deserialized
                 ErrorLog object.
         """
-        logging.info("ErrorLogManager.from_json")
+        logging.info(
+            "ErrorLogManager.from_json")
         schema = ErrorLogSchema()
         data = json.loads(json_str)
         error_log_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_error_log = ErrorLog(**error_log_dict)
+        # new_error_log = ErrorLog(**error_log_dict)
+
+        # load or create
+        new_error_log = await self.get_by_id(
+            error_log_dict["error_log_id"])
+        if new_error_log is None:
+            new_error_log = ErrorLog(**error_log_dict)
+            self._session_context.session.add(new_error_log)
+        else:
+            for key, value in error_log_dict.items():
+                setattr(new_error_log, key, value)
 
         return new_error_log
 
-    def from_dict(self, error_log_dict: Dict[str, Any]) -> ErrorLog:
+    async def from_dict(
+        self, error_log_dict: Dict[str, Any]
+    ) -> ErrorLog:
         """
         Creates a ErrorLog
         instance from a dictionary of attributes.
@@ -407,19 +438,31 @@ class ErrorLogManager:
                 created from the given
                 dictionary.
         """
-        logging.info("ErrorLogManager.from_dict")
+        logging.info(
+            "ErrorLogManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = ErrorLogSchema()
         error_log_dict_converted = schema.load(
             error_log_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new ErrorLog instance
         # using the validated data
-        new_error_log = ErrorLog(**error_log_dict_converted)
+        # new_error_log = ErrorLog(**error_log_dict_converted)
+
+        # load or create
+        new_error_log = await self.get_by_id(
+            error_log_dict_converted["error_log_id"])
+        if new_error_log is None:
+            new_error_log = ErrorLog(**error_log_dict_converted)
+            self._session_context.session.add(new_error_log)
+        else:
+            for key, value in error_log_dict_converted.items():
+                setattr(new_error_log, key, value)
+
         return new_error_log
 
     async def add_bulk(
@@ -438,7 +481,8 @@ class ErrorLogManager:
             List[ErrorLog]: The added
                 error_logs.
         """
-        logging.info("ErrorLogManager.add_bulk")
+        logging.info(
+            "ErrorLogManager.add_bulk")
         for error_log in error_logs:
             error_log_id = error_log.error_log_id
             code = error_log.code
@@ -447,8 +491,10 @@ class ErrorLogManager:
                     "ErrorLog is already added"
                     f": {str(code)} {str(error_log_id)}"
                 )
-            error_log.insert_user_id = self._session_context.customer_code
-            error_log.last_update_user_id = self._session_context.customer_code
+            error_log.insert_user_id = (
+                self._session_context.customer_code)
+            error_log.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(error_logs)
         await self._session_context.session.flush()
         return error_logs
@@ -477,7 +523,8 @@ class ErrorLogManager:
                 provided error_log_id is not found.
         """
 
-        logging.info("ErrorLogManager.update_bulk start")
+        logging.info(
+            "ErrorLogManager.update_bulk start")
         updated_error_logs = []
         for update in error_log_updates:
             error_log_id = update.get("error_log_id")
@@ -489,7 +536,9 @@ class ErrorLogManager:
             if not error_log_id:
                 continue
 
-            logging.info("ErrorLogManager.update_bulk error_log_id:%s", error_log_id)
+            logging.info(
+                "ErrorLogManager.update_bulk error_log_id:%s",
+                error_log_id)
 
             error_log = await self.get_by_id(
                 error_log_id)
@@ -508,7 +557,8 @@ class ErrorLogManager:
 
         await self._session_context.session.flush()
 
-        logging.info("ErrorLogManager.update_bulk end")
+        logging.info(
+            "ErrorLogManager.update_bulk end")
 
         return updated_error_logs
 
@@ -517,7 +567,8 @@ class ErrorLogManager:
         Delete multiple error_logs
         by their IDs.
         """
-        logging.info("ErrorLogManager.delete_bulk")
+        logging.info(
+            "ErrorLogManager.delete_bulk")
 
         for error_log_id in error_log_ids:
             if not isinstance(error_log_id, int):
@@ -546,7 +597,8 @@ class ErrorLogManager:
         return the total number of
         error_logs.
         """
-        logging.info("ErrorLogManager.count")
+        logging.info(
+            "ErrorLogManager.count")
         result = await self._session_context.session.execute(
             select(ErrorLog))
         return len(list(result.scalars().all()))
@@ -561,7 +613,8 @@ class ErrorLogManager:
         from the database.
         """
 
-        logging.info("ErrorLogManager.refresh")
+        logging.info(
+            "ErrorLogManager.refresh")
 
         await self._session_context.session.refresh(error_log)
 
@@ -572,7 +625,9 @@ class ErrorLogManager:
         Check if a error_log
         with the given ID exists.
         """
-        logging.info("ErrorLogManager.exists %s", error_log_id)
+        logging.info(
+            "ErrorLogManager.exists %s",
+            error_log_id)
         if not isinstance(error_log_id, int):
             raise TypeError(
                 f"The error_log_id must be an integer, "
@@ -625,7 +680,9 @@ class ErrorLogManager:
         dict2 = self.to_dict(error_log2)
 
         return dict1 == dict2
-    async def get_by_pac_id(self, pac_id: int) -> List[ErrorLog]:  # PacID
+    async def get_by_pac_id(  # PacID
+            self,
+            pac_id: int) -> List[ErrorLog]:
         """
         Retrieve a list of error_logs by
         pac ID.
@@ -639,7 +696,8 @@ class ErrorLogManager:
                 with the specified pac ID.
         """
 
-        logging.info("ErrorLogManager.get_by_pac_id")
+        logging.info(
+            "ErrorLogManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
                 f"The error_log_id must be an integer, "

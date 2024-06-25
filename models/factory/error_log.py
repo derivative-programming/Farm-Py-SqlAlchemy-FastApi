@@ -47,7 +47,9 @@ class ErrorLogFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> ErrorLog:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> ErrorLog:
         """
             Builds and returns an instance
             of the ErrorLog model.
@@ -84,7 +86,9 @@ class ErrorLogFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> ErrorLog:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> ErrorLog:
         """
         Create a new ErrorLog object
         and save it to the database.
@@ -123,7 +127,9 @@ class ErrorLogFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> ErrorLog:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> ErrorLog:
         """
         Create a new ErrorLog object
         asynchronously.
@@ -153,7 +159,9 @@ class ErrorLogFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> ErrorLog:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> ErrorLog:
         """
         Build a new ErrorLog object
         asynchronously.

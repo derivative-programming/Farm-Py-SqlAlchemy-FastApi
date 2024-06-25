@@ -218,7 +218,10 @@ class TestCustomerSchema:
         assert result['tac_code_peek'] == (  # TacID
             str(customer.tac_code_peek))
 
-    def test_customer_deserialization(self, customer):
+    def test_customer_deserialization(
+        self,
+        customer
+    ):
         """
         Test the deserialization of a
         Customer object using the
@@ -301,7 +304,8 @@ class TestCustomerSchema:
             'tac_code_peek')] == (
             customer.tac_code_peek)
 
-        new_customer = Customer(**deserialized_data)
+        new_customer = Customer(
+            **deserialized_data)
 
         assert isinstance(new_customer, Customer)
 
@@ -463,7 +467,8 @@ class TestCustomerSchema:
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
 
-        new_customer = Customer(**deserialized_data)
+        new_customer = Customer(
+            **deserialized_data)
 
         assert isinstance(new_customer, Customer)
 

@@ -159,7 +159,8 @@ class TriStateFilterManager:
             TriStateFilter: The newly created
                 TriStateFilter object.
         """
-        logging.info("TriStateFilterManager.build")
+        logging.info(
+            "TriStateFilterManager.build")
         return TriStateFilter(**kwargs)
 
     async def add(
@@ -177,9 +178,12 @@ class TriStateFilterManager:
             TriStateFilter: The added
                 tri_state_filter.
         """
-        logging.info("TriStateFilterManager.add")
-        tri_state_filter.insert_user_id = self._session_context.customer_code
-        tri_state_filter.last_update_user_id = self._session_context.customer_code
+        logging.info(
+            "TriStateFilterManager.add")
+        tri_state_filter.insert_user_id = (
+            self._session_context.customer_code)
+        tri_state_filter.last_update_user_id = (
+            self._session_context.customer_code)
         self._session_context.session.add(
             tri_state_filter)
         await self._session_context.session.flush()
@@ -194,7 +198,8 @@ class TriStateFilterManager:
             The base query for retrieving
             tri_state_filters.
         """
-        logging.info("TriStateFilterManager._build_query")
+        logging.info(
+            "TriStateFilterManager._build_query")
 
         query = select(
             TriStateFilter,
@@ -223,7 +228,8 @@ class TriStateFilterManager:
             List[TriStateFilter]: The list of
                 tri_state_filters that match the query.
         """
-        logging.info("TriStateFilterManager._run_query")
+        logging.info(
+            "TriStateFilterManager._run_query")
         tri_state_filter_query_all = self._build_query()
 
         if query_filter is not None:
@@ -273,7 +279,9 @@ class TriStateFilterManager:
             else None
         )
 
-    async def get_by_id(self, tri_state_filter_id: int) -> Optional[TriStateFilter]:
+    async def get_by_id(
+        self, tri_state_filter_id: int
+    ) -> Optional[TriStateFilter]:
         """
         Retrieves a tri_state_filter by its ID.
 
@@ -300,7 +308,9 @@ class TriStateFilterManager:
 
         return self._first_or_none(query_results)
 
-    async def get_by_code(self, code: uuid.UUID) -> Optional[TriStateFilter]:
+    async def get_by_code(
+        self, code: uuid.UUID
+    ) -> Optional[TriStateFilter]:
         """
         Retrieves a tri_state_filter
         by its code.
@@ -313,7 +323,8 @@ class TriStateFilterManager:
             Optional[TriStateFilter]: The retrieved
                 tri_state_filter, or None if not found.
         """
-        logging.info("TriStateFilterManager.get_by_code %s", code)
+        logging.info("TriStateFilterManager.get_by_code %s",
+                     code)
 
         query_filter = TriStateFilter._code == str(code)  # pylint: disable=protected-access  # noqa: E501
 
@@ -367,7 +378,9 @@ class TriStateFilterManager:
                 tri_state_filter with the
                 specified ID is not found.
         """
-        logging.info("TriStateFilterManager.delete %s", tri_state_filter_id)
+        logging.info(
+            "TriStateFilterManager.delete %s",
+            tri_state_filter_id)
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(
                 f"The tri_state_filter_id must be an integer, "
@@ -376,7 +389,8 @@ class TriStateFilterManager:
         tri_state_filter = await self.get_by_id(
             tri_state_filter_id)
         if not tri_state_filter:
-            raise TriStateFilterNotFoundError(f"TriStateFilter with ID {tri_state_filter_id} not found!")
+            raise TriStateFilterNotFoundError(
+                f"TriStateFilter with ID {tri_state_filter_id} not found!")
 
         await self._session_context.session.delete(
             tri_state_filter)
@@ -393,7 +407,8 @@ class TriStateFilterManager:
             List[TriStateFilter]: The list of
                 tri_state_filters.
         """
-        logging.info("TriStateFilterManager.get_list")
+        logging.info(
+            "TriStateFilterManager.get_list")
 
         query_results = await self._run_query(None)
 
@@ -414,7 +429,8 @@ class TriStateFilterManager:
             str: The JSON string representation of the
                 tri_state_filter.
         """
-        logging.info("TriStateFilterManager.to_json")
+        logging.info(
+            "TriStateFilterManager.to_json")
         schema = TriStateFilterSchema()
         tri_state_filter_data = schema.dump(tri_state_filter)
         return json.dumps(tri_state_filter_data)
@@ -435,7 +451,8 @@ class TriStateFilterManager:
             Dict[str, Any]: The dictionary representation of the
                 tri_state_filter.
         """
-        logging.info("TriStateFilterManager.to_dict")
+        logging.info(
+            "TriStateFilterManager.to_dict")
         schema = TriStateFilterSchema()
         tri_state_filter_data = schema.dump(tri_state_filter)
 
@@ -443,7 +460,7 @@ class TriStateFilterManager:
 
         return tri_state_filter_data
 
-    def from_json(self, json_str: str) -> TriStateFilter:
+    async def from_json(self, json_str: str) -> TriStateFilter:
         """
         Deserializes a JSON string into a
         TriStateFilter object.
@@ -455,19 +472,32 @@ class TriStateFilterManager:
             TriStateFilter: The deserialized
                 TriStateFilter object.
         """
-        logging.info("TriStateFilterManager.from_json")
+        logging.info(
+            "TriStateFilterManager.from_json")
         schema = TriStateFilterSchema()
         data = json.loads(json_str)
         tri_state_filter_dict = schema.load(data)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
-        new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
+        # new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
+
+        # load or create
+        new_tri_state_filter = await self.get_by_id(
+            tri_state_filter_dict["tri_state_filter_id"])
+        if new_tri_state_filter is None:
+            new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
+            self._session_context.session.add(new_tri_state_filter)
+        else:
+            for key, value in tri_state_filter_dict.items():
+                setattr(new_tri_state_filter, key, value)
 
         return new_tri_state_filter
 
-    def from_dict(self, tri_state_filter_dict: Dict[str, Any]) -> TriStateFilter:
+    async def from_dict(
+        self, tri_state_filter_dict: Dict[str, Any]
+    ) -> TriStateFilter:
         """
         Creates a TriStateFilter
         instance from a dictionary of attributes.
@@ -483,19 +513,31 @@ class TriStateFilterManager:
                 created from the given
                 dictionary.
         """
-        logging.info("TriStateFilterManager.from_dict")
+        logging.info(
+            "TriStateFilterManager.from_dict")
 
         # Deserialize the dictionary into a validated schema object
         schema = TriStateFilterSchema()
         tri_state_filter_dict_converted = schema.load(
             tri_state_filter_dict)
 
-        #TODO: we need to load the obj form db and into session first.
+        #we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
 
         # Create a new TriStateFilter instance
         # using the validated data
-        new_tri_state_filter = TriStateFilter(**tri_state_filter_dict_converted)
+        # new_tri_state_filter = TriStateFilter(**tri_state_filter_dict_converted)
+
+        # load or create
+        new_tri_state_filter = await self.get_by_id(
+            tri_state_filter_dict_converted["tri_state_filter_id"])
+        if new_tri_state_filter is None:
+            new_tri_state_filter = TriStateFilter(**tri_state_filter_dict_converted)
+            self._session_context.session.add(new_tri_state_filter)
+        else:
+            for key, value in tri_state_filter_dict_converted.items():
+                setattr(new_tri_state_filter, key, value)
+
         return new_tri_state_filter
 
     async def add_bulk(
@@ -514,7 +556,8 @@ class TriStateFilterManager:
             List[TriStateFilter]: The added
                 tri_state_filters.
         """
-        logging.info("TriStateFilterManager.add_bulk")
+        logging.info(
+            "TriStateFilterManager.add_bulk")
         for tri_state_filter in tri_state_filters:
             tri_state_filter_id = tri_state_filter.tri_state_filter_id
             code = tri_state_filter.code
@@ -523,8 +566,10 @@ class TriStateFilterManager:
                     "TriStateFilter is already added"
                     f": {str(code)} {str(tri_state_filter_id)}"
                 )
-            tri_state_filter.insert_user_id = self._session_context.customer_code
-            tri_state_filter.last_update_user_id = self._session_context.customer_code
+            tri_state_filter.insert_user_id = (
+                self._session_context.customer_code)
+            tri_state_filter.last_update_user_id = (
+                self._session_context.customer_code)
         self._session_context.session.add_all(tri_state_filters)
         await self._session_context.session.flush()
         return tri_state_filters
@@ -553,7 +598,8 @@ class TriStateFilterManager:
                 provided tri_state_filter_id is not found.
         """
 
-        logging.info("TriStateFilterManager.update_bulk start")
+        logging.info(
+            "TriStateFilterManager.update_bulk start")
         updated_tri_state_filters = []
         for update in tri_state_filter_updates:
             tri_state_filter_id = update.get("tri_state_filter_id")
@@ -565,7 +611,9 @@ class TriStateFilterManager:
             if not tri_state_filter_id:
                 continue
 
-            logging.info("TriStateFilterManager.update_bulk tri_state_filter_id:%s", tri_state_filter_id)
+            logging.info(
+                "TriStateFilterManager.update_bulk tri_state_filter_id:%s",
+                tri_state_filter_id)
 
             tri_state_filter = await self.get_by_id(
                 tri_state_filter_id)
@@ -584,7 +632,8 @@ class TriStateFilterManager:
 
         await self._session_context.session.flush()
 
-        logging.info("TriStateFilterManager.update_bulk end")
+        logging.info(
+            "TriStateFilterManager.update_bulk end")
 
         return updated_tri_state_filters
 
@@ -593,7 +642,8 @@ class TriStateFilterManager:
         Delete multiple tri_state_filters
         by their IDs.
         """
-        logging.info("TriStateFilterManager.delete_bulk")
+        logging.info(
+            "TriStateFilterManager.delete_bulk")
 
         for tri_state_filter_id in tri_state_filter_ids:
             if not isinstance(tri_state_filter_id, int):
@@ -622,7 +672,8 @@ class TriStateFilterManager:
         return the total number of
         tri_state_filters.
         """
-        logging.info("TriStateFilterManager.count")
+        logging.info(
+            "TriStateFilterManager.count")
         result = await self._session_context.session.execute(
             select(TriStateFilter))
         return len(list(result.scalars().all()))
@@ -637,7 +688,8 @@ class TriStateFilterManager:
         from the database.
         """
 
-        logging.info("TriStateFilterManager.refresh")
+        logging.info(
+            "TriStateFilterManager.refresh")
 
         await self._session_context.session.refresh(tri_state_filter)
 
@@ -648,7 +700,9 @@ class TriStateFilterManager:
         Check if a tri_state_filter
         with the given ID exists.
         """
-        logging.info("TriStateFilterManager.exists %s", tri_state_filter_id)
+        logging.info(
+            "TriStateFilterManager.exists %s",
+            tri_state_filter_id)
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(
                 f"The tri_state_filter_id must be an integer, "
@@ -701,7 +755,9 @@ class TriStateFilterManager:
         dict2 = self.to_dict(tri_state_filter2)
 
         return dict1 == dict2
-    async def get_by_pac_id(self, pac_id: int) -> List[TriStateFilter]:  # PacID
+    async def get_by_pac_id(  # PacID
+            self,
+            pac_id: int) -> List[TriStateFilter]:
         """
         Retrieve a list of tri_state_filters by
         pac ID.
@@ -715,7 +771,8 @@ class TriStateFilterManager:
                 with the specified pac ID.
         """
 
-        logging.info("TriStateFilterManager.get_by_pac_id")
+        logging.info(
+            "TriStateFilterManager.get_by_pac_id")
         if not isinstance(pac_id, int):
             raise TypeError(
                 f"The tri_state_filter_id must be an integer, "

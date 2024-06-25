@@ -75,8 +75,9 @@ class TestCustomerGetByManager:
         test_customer = await CustomerFactory.create_async(
             session)
 
-        customer = await customer_manager.get_by_id(
-            test_customer.customer_id)
+        customer = await \
+            customer_manager.get_by_id(
+                test_customer.customer_id)
 
         assert isinstance(
             customer, Customer)
@@ -99,8 +100,9 @@ class TestCustomerGetByManager:
 
         non_existent_id = 9999  # An ID that's not in the database
 
-        retrieved_customer = await customer_manager.get_by_id(
-            non_existent_id)
+        retrieved_customer = await \
+            customer_manager.get_by_id(
+                non_existent_id)
 
         assert retrieved_customer is None
 
@@ -120,8 +122,9 @@ class TestCustomerGetByManager:
         test_customer = await CustomerFactory.create_async(
             session)
 
-        customer = await customer_manager.get_by_code(
-            test_customer.code)
+        customer = await \
+            customer_manager.get_by_code(
+                test_customer.code)
 
         assert isinstance(
             customer, Customer)
@@ -144,8 +147,9 @@ class TestCustomerGetByManager:
         # any Customer in the database
         random_code = uuid.uuid4()
 
-        customer = await customer_manager.get_by_code(
-            random_code)
+        customer = await \
+            customer_manager.get_by_code(
+                random_code)
 
         assert customer is None
 
@@ -212,8 +216,9 @@ class TestCustomerGetByManager:
         # Fetch the customer using
         # the manager function
 
-        fetched_customers = await customer_manager.get_by_tac_id(
-            customer1.tac_id)
+        fetched_customers = await \
+            customer_manager.get_by_tac_id(
+                customer1.tac_id)
         assert len(fetched_customers) == 1
         assert isinstance(fetched_customers[0], Customer)
         assert fetched_customers[0].code == \
@@ -244,8 +249,9 @@ class TestCustomerGetByManager:
 
         non_existent_id = 999
 
-        fetched_customers = await customer_manager.get_by_tac_id(
-            non_existent_id)
+        fetched_customers = await \
+            customer_manager.get_by_tac_id(
+                non_existent_id)
         assert len(fetched_customers) == 0
 
     @pytest.mark.asyncio

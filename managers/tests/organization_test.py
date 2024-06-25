@@ -537,7 +537,7 @@ class TestOrganizationManager:
         json_data = organization_manager.to_json(
             organization)
 
-        deserialized_organization = organization_manager.from_json(json_data)
+        deserialized_organization = await organization_manager.from_json(json_data)
 
         assert isinstance(deserialized_organization, Organization)
         assert deserialized_organization.code == \
@@ -578,7 +578,7 @@ class TestOrganizationManager:
 
         assert isinstance(organization_data, dict)
 
-        deserialized_organization = organization_manager.from_dict(
+        deserialized_organization = await organization_manager.from_dict(
             organization_data)
 
         assert isinstance(deserialized_organization, Organization)
@@ -784,11 +784,13 @@ class TestOrganizationManager:
             None
         """
         # Add a organization
-        organization1 = await OrganizationFactory.create_async(
-            session=session)
+        organization1 = await \
+            OrganizationFactory.create_async(
+                session=session)
 
-        organization2 = await organization_manager.get_by_id(
-            organization_id=organization1.organization_id)
+        organization2 = await \
+            organization_manager.get_by_id(
+                organization_id=organization1.organization_id)
 
         assert organization_manager.is_equal(
             organization1, organization2) is True
@@ -796,8 +798,9 @@ class TestOrganizationManager:
         organization1_dict = organization_manager.to_dict(
             organization1)
 
-        organization3 = organization_manager.from_dict(
-            organization1_dict)
+        organization3 = await \
+            organization_manager.from_dict(
+                organization1_dict)
 
         assert organization_manager.is_equal(
             organization1, organization3) is True

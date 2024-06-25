@@ -23,7 +23,8 @@ from main import app
 
 from .....models import (  # pylint: disable=reimported
     factory as request_factory)
-from ..tac_farm_dashboard import TacFarmDashboardRouterConfig
+from ..tac_farm_dashboard import (
+    TacFarmDashboardRouterConfig)
 
 
 @pytest.mark.asyncio

@@ -52,7 +52,9 @@ class OrgApiKeyFactory(factory.Factory):
     )
 
     @classmethod
-    def _build(cls, model_class, *args, session=None, **kwargs) -> OrgApiKey:
+    def _build(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> OrgApiKey:
         """
             Builds and returns an instance
             of the OrgApiKey model.
@@ -99,7 +101,9 @@ class OrgApiKeyFactory(factory.Factory):
         return obj
 
     @classmethod
-    def _create(cls, model_class, *args, session=None, **kwargs) -> OrgApiKey:
+    def _create(
+        cls, model_class, *args, session=None, **kwargs
+    ) -> OrgApiKey:
         """
         Create a new OrgApiKey object
         and save it to the database.
@@ -148,7 +152,9 @@ class OrgApiKeyFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def create_async(cls, session, *args, **kwargs) -> OrgApiKey:
+    async def create_async(
+        cls, session, *args, **kwargs
+    ) -> OrgApiKey:
         """
         Create a new OrgApiKey object
         asynchronously.
@@ -188,7 +194,9 @@ class OrgApiKeyFactory(factory.Factory):
         return obj
 
     @classmethod
-    async def build_async(cls, session, *args, **kwargs) -> OrgApiKey:
+    async def build_async(
+        cls, session, *args, **kwargs
+    ) -> OrgApiKey:
         """
         Build a new OrgApiKey object
         asynchronously.

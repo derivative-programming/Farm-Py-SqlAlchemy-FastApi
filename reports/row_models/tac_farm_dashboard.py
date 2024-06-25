@@ -14,7 +14,8 @@ from helpers.type_conversion import TypeConversion
 
 class ReportItemTacFarmDashboard():
     """
-    Represents a report item for a tac Farm Dashboard.
+    Represents a report item for a
+    tac Farm Dashboard.
     """
     field_one_plant_list_link_land_code: uuid.UUID = (
         uuid.UUID(int=0))
