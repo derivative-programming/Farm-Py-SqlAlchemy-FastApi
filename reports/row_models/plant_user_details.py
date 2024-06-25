@@ -1,13 +1,14 @@
 # plant_user_details.py
+# pylint: disable=unused-import
 
 """
 This module contains the definition of the
 ReportItemPlantUserDetails class.
 """
 
-import uuid
-from decimal import Decimal
-from datetime import datetime, date
+import uuid  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 
 from helpers.type_conversion import TypeConversion
 
@@ -47,7 +48,8 @@ class ReportItemPlantUserDetails():
     back_to_dashboard_link_tac_code: uuid.UUID = (
         uuid.UUID(int=0))
 
-    def load_data_provider_dict(self, data: dict):
+    def load_data_provider_dict(
+            self, data: dict):
         """
         Loads data from a dictionary into the report item.
 

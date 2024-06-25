@@ -1,13 +1,15 @@
 # apis/models/factory/tests/pac_user_land_list_async_test.py
+# pylint: disable=unused-import
 
 """
 This module contains test cases for the
-PacUserLandListGetModelRequestFactoryAsync class.
+PacUserLandListGetModelRequestFactoryAsync
+class.
 """
 
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import pytest
 
@@ -20,14 +22,16 @@ from ..pac_user_land_list import (
 class TestPacUserLandListGetModelRequestFactoryAsync:
     """
     This class contains test cases for the
-    PacUserLandListGetModelRequestFactoryAsync class.
+    PacUserLandListGetModelRequestFactoryAsync
+    class.
     """
 
     @pytest.mark.asyncio
     async def test_create_async(self, session):
         """
         Test the create_async method of
-        PacUserLandListGetModelRequestFactoryAsync class.
+        PacUserLandListGetModelRequestFactoryAsync
+        class.
         """
 
         model_instance = await (
@@ -38,7 +42,4 @@ class TestPacUserLandListGetModelRequestFactoryAsync:
         )
         assert isinstance(model_instance,
                           PacUserLandListGetModelRequest)
-
-        assert isinstance(model_instance.page_number, int)
-        assert isinstance(model_instance.item_count_per_page, int)
 

@@ -1,21 +1,25 @@
 # business/tests/error_log_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the ErrorLogFluentBusObj class.
+Unit tests for the
+ErrorLogFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.error_log_fluent import ErrorLogFluentBusObj
+from business.error_log_fluent import (
+    ErrorLogFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockErrorLogBaseBusObj:
     """
-    A mock base class for the ErrorLogFluentBusObj class.
+    A mock base class for the
+    ErrorLogFluentBusObj class.
     """
     def __init__(self):
         self.browser_code = None
@@ -28,12 +32,14 @@ class MockErrorLogBaseBusObj:
         self.url = None
 class TestErrorLogFluentBusObj:
     """
-    Unit tests for the ErrorLogFluentBusObj class.
+    Unit tests for the
+    ErrorLogFluentBusObj class.
     """
     @pytest.fixture
     def error_log(self, session):
         """
-        Return a ErrorLogFluentBusObj object.
+        Return a ErrorLogFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return ErrorLogFluentBusObj(session_context)

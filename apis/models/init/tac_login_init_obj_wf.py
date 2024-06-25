@@ -1,4 +1,5 @@
 # apis/models/init/tac_login_init_obj_wf.py
+# pylint: disable=unused-import
 
 """
 This module contains the models and request/response classes
@@ -6,9 +7,9 @@ for the TacLoginInitObjWF workflow.
 """
 
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import Field
@@ -66,7 +67,9 @@ class TacLoginInitObjWFGetInitModelResponse(
         return self.model_dump_json()
 
 
-class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
+class TacLoginInitObjWFGetInitModelRequest(
+    SnakeModel
+):
     """
     Represents the request model for the
     TacLoginInitObjWFGetInitModelRequest.
@@ -76,7 +79,8 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
             self,
             session_context: SessionContext,
             tac_code: uuid.UUID,
-            response: TacLoginInitObjWFGetInitModelResponse
+            response:
+            TacLoginInitObjWFGetInitModelResponse
     ) -> TacLoginInitObjWFGetInitModelResponse:
         """
         Processes the request and returns the response.
@@ -84,7 +88,9 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
 
         try:
             logging.info(
-                "loading model...TacLoginInitObjWFGetInitModelRequest")
+                "loading model..."
+                "TacLoginInitObjWF"
+                "GetInitModelRequest")
             tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load_from_code(tac_code)
             if tac_bus_obj.get_tac_obj() is None:
@@ -92,7 +98,9 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
                 raise ValueError("Invalid tac_code")
             flow = FlowTacLoginInitObjWF(session_context)
             logging.info(
-                "process request...TacLoginInitObjWFGetInitModelRequest")
+                "process request..."
+                "TacLoginInitObjWF"
+                "GetInitModelRequest")
             flow_response = await flow.process(
                 tac_bus_obj
             )
@@ -100,7 +108,9 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...TacLoginInitObjWFGetInitModelRequest")
+            logging.info("error..."
+                         "TacLoginInitObjWF"
+                         "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

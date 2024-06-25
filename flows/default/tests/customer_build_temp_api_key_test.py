@@ -1,24 +1,29 @@
 # flows/default/tests/customer_build_temp_api_key_test.py
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
-`FlowCustomerBuildTempApiKeyResult` and `FlowCustomerBuildTempApiKey` classes.
+`FlowCustomerBuildTempApiKeyResult` and
+`FlowCustomerBuildTempApiKey` classes.
 """
 
 import json
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import pytest
 
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.customer_build_temp_api_key import FlowCustomerBuildTempApiKey, FlowCustomerBuildTempApiKeyResult
+from flows.customer_build_temp_api_key import (
+    FlowCustomerBuildTempApiKey,
+    FlowCustomerBuildTempApiKeyResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.customer import CustomerFactory
+from models.factory.customer import (
+    CustomerFactory)
 
 
 class TestCustomerBuildTempApiKeyPostModelResponse:
@@ -53,7 +58,8 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-        Test the `process` method of the `FlowCustomerBuildTempApiKey` class.
+        Test the `process` method of the
+        `FlowCustomerBuildTempApiKey` class.
         """
 
         session_context = SessionContext(dict(), session)

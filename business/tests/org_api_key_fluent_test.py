@@ -1,21 +1,25 @@
 # business/tests/org_api_key_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the OrgApiKeyFluentBusObj class.
+Unit tests for the
+OrgApiKeyFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.org_api_key_fluent import OrgApiKeyFluentBusObj
+from business.org_api_key_fluent import (
+    OrgApiKeyFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockOrgApiKeyBaseBusObj:
     """
-    A mock base class for the OrgApiKeyFluentBusObj class.
+    A mock base class for the
+    OrgApiKeyFluentBusObj class.
     """
     def __init__(self):
         self.api_key_value = None
@@ -29,12 +33,14 @@ class MockOrgApiKeyBaseBusObj:
         self.org_customer_id = None
 class TestOrgApiKeyFluentBusObj:
     """
-    Unit tests for the OrgApiKeyFluentBusObj class.
+    Unit tests for the
+    OrgApiKeyFluentBusObj class.
     """
     @pytest.fixture
     def org_api_key(self, session):
         """
-        Return a OrgApiKeyFluentBusObj object.
+        Return a OrgApiKeyFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return OrgApiKeyFluentBusObj(session_context)

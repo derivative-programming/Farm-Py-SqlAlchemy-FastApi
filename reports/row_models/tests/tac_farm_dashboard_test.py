@@ -1,4 +1,5 @@
 # reports/row_models/tests/tac_farm_dashboard_test.py
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
@@ -14,9 +15,9 @@ values of the fields are set correctly
 and that data can be loaded into the model from a dictionary.
 """
 import math
-from decimal import Decimal
-from datetime import datetime, date
-from uuid import UUID
+from decimal import Decimal  # noqa: F401
+from datetime import datetime, date  # noqa: F401
+from uuid import UUID  # noqa: F401
 from helpers.type_conversion import TypeConversion
 from reports.row_models.tac_farm_dashboard import (
     ReportItemTacFarmDashboard)

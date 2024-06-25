@@ -1,15 +1,19 @@
 # business/customer_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the CustomerBaseBusObj class,
-which represents the base business object for a Customer.
+This module contains the
+CustomerBaseBusObj class,
+which represents the base
+business object for a
+Customer.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import CustomerManager
 from models import Customer
@@ -76,8 +80,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         return self.customer.customer_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class CustomerBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.customer.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class CustomerBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.customer.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class CustomerBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.customer.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -1437,7 +1441,8 @@ class CustomerBaseBusObj(BaseBusObj):
 
         customer_manager = CustomerManager(
             self._session_context)
-        self.customer = await customer_manager.from_json(json_data)
+        self.customer = await \
+            customer_manager.from_json(json_data)
 
         return self
 
@@ -1512,14 +1517,8 @@ class CustomerBaseBusObj(BaseBusObj):
         if not isinstance(customer_obj_instance,
                           Customer):
             raise ValueError(
-                "customer_obj_instance must be an instance of Customer")
-
-        # customer_manager = CustomerManager(
-        #     self._session_context)
-
-        # customer_dict = customer_manager.to_dict(customer_obj_instance)
-
-        # self.customer = customer_manager.from_dict(customer_dict)
+                "customer_obj_instance must be an "
+                "instance of Customer")
 
         self.customer = customer_obj_instance
 
@@ -1547,8 +1546,9 @@ class CustomerBaseBusObj(BaseBusObj):
         customer_manager = CustomerManager(
             self._session_context)
 
-        self.customer = await customer_manager.from_dict(
-            customer_dict)
+        self.customer = await \
+            customer_manager.from_dict(
+                customer_dict)
 
         return self
 
@@ -1574,8 +1574,9 @@ class CustomerBaseBusObj(BaseBusObj):
         """
         customer_manager = CustomerManager(
             self._session_context)
-        self.customer = await customer_manager.refresh(
-            self.customer)
+        self.customer = await \
+            customer_manager.refresh(
+                self.customer)
 
         return self
 
@@ -1649,14 +1650,16 @@ class CustomerBaseBusObj(BaseBusObj):
         if customer_id > 0:
             customer_manager = CustomerManager(
                 self._session_context)
-            self.customer = await customer_manager.update(
-                self.customer)
+            self.customer = await \
+                customer_manager.update(
+                    self.customer)
 
         if customer_id == 0:
             customer_manager = CustomerManager(
                 self._session_context)
-            self.customer = await customer_manager.add(
-                self.customer)
+            self.customer = await \
+                customer_manager.add(
+                    self.customer)
 
         return self
 
@@ -1830,8 +1833,10 @@ class CustomerBaseBusObj(BaseBusObj):
             representing the related tac.
 
         """
-        tac_manager = managers_and_enums.TacManager(self._session_context)
-        tac_obj = await tac_manager.get_by_id(self.tac_id)
+        tac_manager = managers_and_enums.TacManager(
+            self._session_context)
+        tac_obj = await tac_manager.get_by_id(
+            self.tac_id)
         return tac_obj
     # uTCOffsetInMinutes,
     # zip,

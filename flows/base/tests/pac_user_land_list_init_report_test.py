@@ -1,5 +1,6 @@
 # flows/base/tests/pac_user_land_list_init_report_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowPacUserLandListInitReport` class.
@@ -66,7 +67,8 @@ class TestBaseFlowPacUserLandListInitReport():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a pac
-        object, and a BaseFlowPacUserLandListInitReport object.
+        object, and a
+        BaseFlowPacUserLandListInitReport object.
         Then, it sets the role_required
         variable to "" and calls the
         _process_security_rules method. Finally,

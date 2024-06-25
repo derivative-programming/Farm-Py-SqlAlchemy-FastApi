@@ -10,7 +10,7 @@ pacs in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -327,7 +327,8 @@ class PacManager:
         logging.info("PacManager.update")
         property_list = Pac.property_list()
         if pac:
-            pac.last_update_user_id = self._session_context.customer_code
+            pac.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -531,7 +532,8 @@ class PacManager:
         logging.info(
             "PacManager.add_bulk")
         for pac in pacs:
-            pac_id = pac.pac_id
+            pac_id = \
+                pac.pac_id
             code = pac.code
             if pac.pac_id is not None and pac.pac_id > 0:
                 raise ValueError(
@@ -598,7 +600,8 @@ class PacManager:
                 if key != "pac_id":
                     setattr(pac, key, value)
 
-            pac.last_update_user_id = self._session_context.customer_code
+            pac.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_pacs.append(pac)
 
@@ -715,11 +718,13 @@ class PacManager:
         if not pac2:
             raise TypeError("Pac2 required.")
 
-        if not isinstance(pac1, Pac):
+        if not isinstance(pac1,
+                          Pac):
             raise TypeError("The pac1 must be an "
                             "Pac instance.")
 
-        if not isinstance(pac2, Pac):
+        if not isinstance(pac2,
+                          Pac):
             raise TypeError("The pac2 must be an "
                             "Pac instance.")
 
@@ -727,4 +732,34 @@ class PacManager:
         dict2 = self.to_dict(pac2)
 
         return dict1 == dict2
+
+    async def get_by__id(
+            self,
+            _id: int) -> List[Pac]:
+        """
+        Retrieve a list of pacs by
+         ID.
+
+        Args:
+            _id (int): The ID of the .
+
+        Returns:
+            List[Pac]: A list of
+                pacs associated
+                with the specified  ID.
+        """
+
+        logging.info(
+            "PacManager.get_by__id")
+        if not isinstance(_id, int):
+            raise TypeError(
+                f"The pac_id must be an integer, "
+                f"got {type(_id)} instead."
+            )
+
+        query_filter = Pac.__id == _id  # pylint: disable=protected-access  # noqa: E501
+
+        query_results = await self._run_query(query_filter)
+
+        return query_results
 

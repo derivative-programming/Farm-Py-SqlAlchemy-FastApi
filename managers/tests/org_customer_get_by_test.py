@@ -1,12 +1,13 @@
 # models/managers/tests/org_customer_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrgCustomerManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestOrgCustomerGetByManager:
         }
 
         # Call the build function of the manager
-        org_customer = await org_customer_manager.build(
-            **mock_data)
+        org_customer = await \
+            org_customer_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of OrgCustomer
+        # Assert that the returned object is an instance of
+        # OrgCustomer
         assert isinstance(
-            org_customer, OrgCustomer)
+            org_customer,
+            OrgCustomer)
 
         # Assert that the attributes of the
         # org_customer match our mock data
@@ -72,15 +76,17 @@ class TestOrgCustomerGetByManager:
         Test case for the `get_by_id` method of
         `OrgCustomerManager`.
         """
-        test_org_customer = await OrgCustomerFactory.create_async(
-            session)
+        test_org_customer = await \
+            OrgCustomerFactory.create_async(
+                session)
 
         org_customer = await \
             org_customer_manager.get_by_id(
                 test_org_customer.org_customer_id)
 
         assert isinstance(
-            org_customer, OrgCustomer)
+            org_customer,
+            OrgCustomer)
 
         assert test_org_customer.org_customer_id == \
             org_customer.org_customer_id
@@ -119,15 +125,17 @@ class TestOrgCustomerGetByManager:
         returned by its code.
         """
 
-        test_org_customer = await OrgCustomerFactory.create_async(
-            session)
+        test_org_customer = await \
+            OrgCustomerFactory.create_async(
+                session)
 
         org_customer = await \
             org_customer_manager.get_by_code(
                 test_org_customer.code)
 
         assert isinstance(
-            org_customer, OrgCustomer)
+            org_customer,
+            OrgCustomer)
 
         assert test_org_customer.org_customer_id == \
             org_customer.org_customer_id
@@ -201,7 +209,8 @@ class TestOrgCustomerGetByManager:
             org_customer_manager.get_by_customer_id(
                 org_customer1.customer_id)
         assert len(fetched_org_customers) == 1
-        assert isinstance(fetched_org_customers[0], OrgCustomer)
+        assert isinstance(fetched_org_customers[0],
+                          OrgCustomer)
         assert fetched_org_customers[0].code == \
             org_customer1.code
 
@@ -323,7 +332,8 @@ class TestOrgCustomerGetByManager:
             org_customer_manager.get_by_organization_id(
                 org_customer1.organization_id)
         assert len(fetched_org_customers) == 1
-        assert isinstance(fetched_org_customers[0], OrgCustomer)
+        assert isinstance(fetched_org_customers[0],
+                          OrgCustomer)
         assert fetched_org_customers[0].code == \
             org_customer1.code
 

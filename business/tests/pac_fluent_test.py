@@ -1,21 +1,25 @@
 # business/tests/pac_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the PacFluentBusObj class.
+Unit tests for the
+PacFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.pac_fluent import PacFluentBusObj
+from business.pac_fluent import (
+    PacFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockPacBaseBusObj:
     """
-    A mock base class for the PacFluentBusObj class.
+    A mock base class for the
+    PacFluentBusObj class.
     """
     def __init__(self):
         self.description = None
@@ -25,12 +29,14 @@ class MockPacBaseBusObj:
         self.name = None
 class TestPacFluentBusObj:
     """
-    Unit tests for the PacFluentBusObj class.
+    Unit tests for the
+    PacFluentBusObj class.
     """
     @pytest.fixture
     def pac(self, session):
         """
-        Return a PacFluentBusObj object.
+        Return a PacFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return PacFluentBusObj(session_context)

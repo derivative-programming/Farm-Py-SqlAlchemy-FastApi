@@ -1,5 +1,6 @@
 # flows/base/tests/tac_register_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowTacRegister` class.
@@ -103,7 +104,8 @@ class TestBaseFlowTacRegister():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a tac
-        object, and a BaseFlowTacRegister object.
+        object, and a
+        BaseFlowTacRegister object.
         Then, it sets the role_required
         variable to "" and calls the
         _process_security_rules method. Finally,

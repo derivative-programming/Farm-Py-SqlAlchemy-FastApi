@@ -1,13 +1,16 @@
 # models/factory/role.py
+# pylint: disable=unused-import
 """
-This module contains the RoleFactory
+This module contains the
+RoleFactory
 class, which is responsible
-for creating instances of the Role
+for creating instances of the
+Role
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import Role
@@ -88,7 +91,8 @@ class RoleFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> Role:
         """
-        Create a new Role object
+        Create a new
+        Role object
         and save it to the database.
 
         Args:
@@ -129,7 +133,8 @@ class RoleFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> Role:
         """
-        Create a new Role object
+        Create a new
+        Role object
         asynchronously.
 
         Args:

@@ -1,13 +1,14 @@
 # apis/models/init/tests/land_plant_list_init_report_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 land_plant_list_init_report module.
 """
 import json
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -35,18 +36,28 @@ class MockFlowLandPlantListInitReportResult:
         self.is_edit_allowed = True
         self.is_delete_allowed = True
         self.some_float_val = 1.23
-        self.some_decimal_val = Decimal('10.99')
-        self.some_min_utc_date_time_val = datetime.utcnow()
-        self.some_min_date_val = date.today()
-        self.some_money_val = Decimal('100.00')
-        self.some_n_var_char_val = "Some N Var Char Val"
-        self.some_var_char_val = "Some Var Char"
-        self.some_text_val = "Some Text"
-        self.some_phone_number = "123-456-7890"
-        self.some_email_address = "Some Var Char"
+        self.some_decimal_val = \
+            Decimal('10.99')
+        self.some_min_utc_date_time_val = \
+            datetime.utcnow()
+        self.some_min_date_val = \
+            date.today()
+        self.some_money_val = \
+            Decimal('100.00')
+        self.some_n_var_char_val = \
+            "Some N Var Char Val"
+        self.some_var_char_val = \
+            "Some Var Char"
+        self.some_text_val = \
+            "Some Text"
+        self.some_phone_number = \
+            "123-456-7890"
+        self.some_email_address = \
+            "Some Var Char"
         self.land_code = uuid.uuid4()
         self.tac_code = uuid.uuid4()
-        self.land_name = "Land Name"
+        self.land_name = \
+            "Land Name"
 
 
 @pytest.fixture
@@ -188,7 +199,8 @@ async def test_process_request(flow_response):
         "apis.models.init.land_plant_list_init_report."
         "FlowLandPlantListInitReport",
         autospec=True).start()
-    mock_flow_instance = mock_flow.return_value
+    mock_flow_instance = \
+        mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)
 
     request = LandPlantListInitReportGetInitModelRequest()
@@ -202,7 +214,8 @@ async def test_process_request(flow_response):
 
     assert result.success is True
     assert result.message == "Success."
-    mock_land_bus_obj.assert_called_once_with(mock_session_context)
+    mock_land_bus_obj.assert_called_once_with(
+        mock_session_context)
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()

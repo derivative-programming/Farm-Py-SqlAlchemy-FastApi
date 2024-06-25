@@ -1,13 +1,14 @@
 # models/managers/tests/role_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `RoleManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestRoleManager:
         }
 
         # Call the build function of the manager
-        role = await role_manager.build(
-            **mock_data)
+        role = await \
+            role_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of Role
         assert isinstance(
-            role, Role)
+            role,
+            Role)
 
         # Assert that the attributes of the
         # role match our mock data
@@ -96,17 +99,20 @@ class TestRoleManager:
         `RoleManager` that checks if a
         role is correctly added to the database.
         """
-        test_role = await RoleFactory.build_async(
-            session)
+        test_role = await \
+            RoleFactory.build_async(
+                session)
 
         assert test_role.role_id == 0
 
         # Add the role using the
         # manager's add method
-        added_role = await role_manager.add(
-            role=test_role)
+        added_role = await \
+            role_manager.add(
+                role=test_role)
 
-        assert isinstance(added_role, Role)
+        assert isinstance(added_role,
+                          Role)
 
         assert str(added_role.insert_user_id) == (
             str(role_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestRoleManager:
         # is not None and matches the
         # added role
         assert fetched_role is not None
-        assert isinstance(fetched_role, Role)
+        assert isinstance(fetched_role,
+                          Role)
         assert fetched_role.role_id == added_role.role_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestRoleManager:
         # Create a test role
         # using the RoleFactory
         # without persisting it to the database
-        test_role = await RoleFactory.build_async(
-            session)
+        test_role = await \
+            RoleFactory.build_async(
+                session)
 
         assert test_role.role_id == 0
 
@@ -154,10 +162,12 @@ class TestRoleManager:
 
         # Add the role using
         # the manager's add method
-        added_role = await role_manager.add(
-            role=test_role)
+        added_role = await \
+            role_manager.add(
+                role=test_role)
 
-        assert isinstance(added_role, Role)
+        assert isinstance(added_role,
+                          Role)
 
         assert str(added_role.insert_user_id) == (
             str(role_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestRoleManager:
         that checks if a role
         is correctly updated.
         """
-        test_role = await RoleFactory.create_async(
-            session)
+        test_role = await \
+            RoleFactory.create_async(
+                session)
 
         test_role.code = uuid.uuid4()
 
-        updated_role = await role_manager.update(
-            role=test_role)
+        updated_role = await \
+            role_manager.update(
+                role=test_role)
 
-        assert isinstance(updated_role, Role)
+        assert isinstance(updated_role,
+                          Role)
 
         assert str(updated_role.last_update_user_id) == str(
             role_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestRoleManager:
         that checks if a role is
         correctly updated using a dictionary.
         """
-        test_role = await RoleFactory.create_async(
-            session)
+        test_role = await \
+            RoleFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_role = await role_manager.update(
-            role=test_role,
-            code=new_code
-        )
+        updated_role = await \
+            role_manager.update(
+                role=test_role,
+                code=new_code
+            )
 
-        assert isinstance(updated_role, Role)
+        assert isinstance(updated_role,
+                          Role)
 
         assert str(updated_role.last_update_user_id) == str(
             role_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestRoleManager:
         role_manager: RoleManager
     ):
         """
-        Test case for the `update` method of `RoleManager`
+        Test case for the `update` method of
+        `RoleManager`
         with an invalid role.
         """
 
@@ -299,11 +316,13 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `RoleManager`
+        Test case for the `update` method of
+        `RoleManager`
         with a nonexistent attribute.
         """
-        test_role = await RoleFactory.create_async(
-            session)
+        test_role = await \
+            RoleFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestRoleManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `RoleManager`.
+        Test case for the `delete` method of
+        `RoleManager`.
         """
         role_data = await RoleFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestRoleManager:
         )
         fetched_role = result.scalars().first()
 
-        assert isinstance(fetched_role, Role)
+        assert isinstance(fetched_role,
+                          Role)
 
         assert fetched_role.role_id == \
             role_data.role_id
@@ -363,7 +384,8 @@ class TestRoleManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param role_manager: The instance of the RoleManager class.
+        :param role_manager: The instance of the
+            RoleManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestRoleManager:
         the test case will fail.
 
         Args:
-            role_manager (RoleManager): An
+            role_manager
+            (RoleManager): An
                 instance of the
                 `RoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestRoleManager:
         Test the 'to_json' method of the RoleManager class.
 
         Args:
-            role_manager (RoleManager): An
+            role_manager
+            (RoleManager): An
                 instance of the
                 RoleManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestRoleManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        role = await RoleFactory.build_async(
-            session)
+        role = await \
+            RoleFactory.build_async(
+                session)
 
         json_data = role_manager.to_json(
             role)
@@ -486,7 +511,8 @@ class TestRoleManager:
         Test the to_dict method of the RoleManager class.
 
         Args:
-            role_manager (RoleManager): An
+            role_manager
+            (RoleManager): An
                 instance of the
                 RoleManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestRoleManager:
         Returns:
             None
         """
-        role = await RoleFactory.build_async(
-            session)
+        role = await \
+            RoleFactory.build_async(
+                session)
 
-        dict_data = role_manager.to_dict(
-            role)
+        dict_data = \
+            role_manager.to_dict(
+                role)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestRoleManager:
         the same code as the original role.
 
         Args:
-            role_manager (RoleManager): An
-            instance of the
+            role_manager
+            (RoleManager): An
+                instance of the
                 `RoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        role = await RoleFactory.create_async(
-            session)
+        role = await \
+            RoleFactory.create_async(
+                session)
 
         json_data = role_manager.to_json(
             role)
 
-        deserialized_role = await role_manager.from_json(json_data)
+        deserialized_role = await \
+                role_manager.from_json(json_data)
 
-        assert isinstance(deserialized_role, Role)
+        assert isinstance(deserialized_role,
+                          Role)
         assert deserialized_role.code == \
             role.code
 
@@ -559,7 +591,8 @@ class TestRoleManager:
         role object.
 
         Args:
-            role_manager (RoleManager): An instance
+            role_manager
+            (RoleManager): An instance
                 of the `RoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestRoleManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        role = await RoleFactory.create_async(
-            session)
+        role = await \
+            RoleFactory.create_async(
+                session)
 
         schema = RoleSchema()
 
@@ -578,10 +612,12 @@ class TestRoleManager:
 
         assert isinstance(role_data, dict)
 
-        deserialized_role = await role_manager.from_dict(
-            role_data)
+        deserialized_role = await \
+            role_manager.from_dict(
+                role_data)
 
-        assert isinstance(deserialized_role, Role)
+        assert isinstance(deserialized_role,
+                          Role)
 
         assert deserialized_role.code == \
             role.code
@@ -630,7 +666,8 @@ class TestRoleManager:
         RoleManager class returns 0 when the database is empty.
 
         Args:
-            role_manager (RoleManager): An
+            role_manager
+            (RoleManager): An
                 instance of the
                 RoleManager class.
 
@@ -664,7 +701,8 @@ class TestRoleManager:
             it reflects the updated code.
 
         Args:
-            role_manager (RoleManager): The
+            role_manager
+            (RoleManager): The
                 manager responsible
                 for role operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestRoleManager:
         # Verify that the updated role
         # is of type Role
         # and has the updated code
-        assert isinstance(updated_role1, Role)
+        assert isinstance(updated_role1,
+                          Role)
 
         assert updated_role1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestRoleManager:
         Test case to verify the behavior of refreshing a nonexistent role.
 
         Args:
-            role_manager (RoleManager): The
+            role_manager
+            (RoleManager): The
                 instance of the
                 RoleManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestRoleManager:
         exists using the manager function.
 
         Args:
-            role_manager (RoleManager): The
+            role_manager
+            (RoleManager): The
                 role manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestRoleManager:
         RoleManager class correctly compares two roles.
 
         Args:
-            role_manager (RoleManager): An
+            role_manager
+            (RoleManager): An
                 instance of the
                 RoleManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestRoleManager:
         assert role_manager.is_equal(
             role1, role2) is True
 
-        role1_dict = role_manager.to_dict(
-            role1)
+        role1_dict = \
+            role_manager.to_dict(
+                role1)
 
         role3 = await \
             role_manager.from_dict(
@@ -815,7 +858,8 @@ class TestRoleManager:
         non-existent ID exists in the database.
 
         Args:
-            role_manager (RoleManager): The
+            role_manager
+            (RoleManager): The
                 instance of the RoleManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestRoleManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            role_manager (RoleManager): The instance
+            role_manager
+            (RoleManager): The instance
                 of the RoleManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

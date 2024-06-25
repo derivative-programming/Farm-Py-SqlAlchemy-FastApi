@@ -1,4 +1,5 @@
 # apis/models/pac_user_date_greater_than_filter_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -14,9 +15,9 @@ Pac User Date Greater Than Filter List API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import UUID4, Field
@@ -130,7 +131,8 @@ class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
         default="",
         description="Date Greater Than Filter Name")
 
-    def load_report_item(self, data: ReportItemPacUserDateGreaterThanFilterList):
+    def load_report_item(
+            self, data: ReportItemPacUserDateGreaterThanFilterList):
         """
         Loads the data from a
         ReportItemPacUserDateGreaterThanFilterList
@@ -224,9 +226,11 @@ class PacUserDateGreaterThanFilterListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model...PacUserDateGreaterThanFilterListGetModelResponse")
+            logging.info("loading model..."
+                         "PacUserDateGreaterThanFilterListGetModelResponse")
             generator = ReportManagerPacUserDateGreaterThanFilterList(session_context)
-            logging.info("processing...PacUserDateGreaterThanFilterListGetModelResponse")
+            logging.info("processing..."
+                         "PacUserDateGreaterThanFilterListGetModelResponse")
             items = await generator.generate(
                 pac_code,
 

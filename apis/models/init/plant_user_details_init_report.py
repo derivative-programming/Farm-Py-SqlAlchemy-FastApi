@@ -1,4 +1,5 @@
 # apis/models/init/plant_user_details_init_report.py
+# pylint: disable=unused-import
 
 """
 This module contains the models and request/response classes
@@ -6,9 +7,9 @@ for the PlantUserDetailsInitReport workflow.
 """
 
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import Field
@@ -70,7 +71,9 @@ class PlantUserDetailsInitReportGetInitModelResponse(
         return self.model_dump_json()
 
 
-class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
+class PlantUserDetailsInitReportGetInitModelRequest(
+    SnakeModel
+):
     """
     Represents the request model for the
     PlantUserDetailsInitReportGetInitModelRequest.
@@ -80,7 +83,8 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
             self,
             session_context: SessionContext,
             plant_code: uuid.UUID,
-            response: PlantUserDetailsInitReportGetInitModelResponse
+            response:
+            PlantUserDetailsInitReportGetInitModelResponse
     ) -> PlantUserDetailsInitReportGetInitModelResponse:
         """
         Processes the request and returns the response.
@@ -88,7 +92,9 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
 
         try:
             logging.info(
-                "loading model...PlantUserDetailsInitReportGetInitModelRequest")
+                "loading model..."
+                "PlantUserDetailsInitReport"
+                "GetInitModelRequest")
             plant_bus_obj = PlantBusObj(session_context)
             await plant_bus_obj.load_from_code(plant_code)
             if plant_bus_obj.get_plant_obj() is None:
@@ -96,7 +102,9 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
                 raise ValueError("Invalid plant_code")
             flow = FlowPlantUserDetailsInitReport(session_context)
             logging.info(
-                "process request...PlantUserDetailsInitReportGetInitModelRequest")
+                "process request..."
+                "PlantUserDetailsInitReport"
+                "GetInitModelRequest")
             flow_response = await flow.process(
                 plant_bus_obj
             )
@@ -104,7 +112,9 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...PlantUserDetailsInitReportGetInitModelRequest")
+            logging.info("error..."
+                         "PlantUserDetailsInitReport"
+                         "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

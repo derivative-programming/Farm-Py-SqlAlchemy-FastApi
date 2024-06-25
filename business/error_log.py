@@ -1,8 +1,11 @@
 # business/error_log.py
 # pylint: disable=unused-import
 """
-This module contains the ErrorLogBusObj class,
-which represents the business object for a ErrorLog.
+This module contains the
+ErrorLogBusObj class,
+which represents the
+business object for a
+ErrorLog.
 """
 
 from typing import List

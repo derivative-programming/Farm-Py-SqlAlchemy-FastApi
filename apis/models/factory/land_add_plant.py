@@ -1,24 +1,29 @@
 # apis/models/factory/land_add_plant.py
 # pylint: disable=unused-import
 """
-Factory module for creating instances of LandAddPlantPostModelRequest with
+Factory module for creating instances of
+LandAddPlantPostModelRequest with
 various field values for testing.
 """
 
-import uuid
-from datetime import datetime
+import uuid  # noqa: F401
+from datetime import datetime  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
-from factory import Faker
+from factory import Faker  # noqa: F401
 from models.factory import FlavorFactory  # requestFlavorCode
 from ..land_add_plant import (
     LandAddPlantPostModelRequest)
 
 
-class LandAddPlantPostModelRequestFactory(factory.base.Factory):
+class LandAddPlantPostModelRequestFactory(
+    factory.base.Factory
+):
     """
-    Factory class for LandAddPlantPostModelRequest. Generates
-    instances with randomized field values for testing.
+    Factory class for
+    LandAddPlantPostModelRequest.
+    Generates instances with randomized
+    field values for testing.
     """
 
     class Meta:

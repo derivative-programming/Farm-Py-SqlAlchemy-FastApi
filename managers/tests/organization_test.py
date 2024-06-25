@@ -1,13 +1,14 @@
 # models/managers/tests/organization_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrganizationManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestOrganizationManager:
         }
 
         # Call the build function of the manager
-        organization = await organization_manager.build(
-            **mock_data)
+        organization = await \
+            organization_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of Organization
         assert isinstance(
-            organization, Organization)
+            organization,
+            Organization)
 
         # Assert that the attributes of the
         # organization match our mock data
@@ -96,17 +99,20 @@ class TestOrganizationManager:
         `OrganizationManager` that checks if a
         organization is correctly added to the database.
         """
-        test_organization = await OrganizationFactory.build_async(
-            session)
+        test_organization = await \
+            OrganizationFactory.build_async(
+                session)
 
         assert test_organization.organization_id == 0
 
         # Add the organization using the
         # manager's add method
-        added_organization = await organization_manager.add(
-            organization=test_organization)
+        added_organization = await \
+            organization_manager.add(
+                organization=test_organization)
 
-        assert isinstance(added_organization, Organization)
+        assert isinstance(added_organization,
+                          Organization)
 
         assert str(added_organization.insert_user_id) == (
             str(organization_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestOrganizationManager:
         # is not None and matches the
         # added organization
         assert fetched_organization is not None
-        assert isinstance(fetched_organization, Organization)
+        assert isinstance(fetched_organization,
+                          Organization)
         assert fetched_organization.organization_id == added_organization.organization_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestOrganizationManager:
         # Create a test organization
         # using the OrganizationFactory
         # without persisting it to the database
-        test_organization = await OrganizationFactory.build_async(
-            session)
+        test_organization = await \
+            OrganizationFactory.build_async(
+                session)
 
         assert test_organization.organization_id == 0
 
@@ -154,10 +162,12 @@ class TestOrganizationManager:
 
         # Add the organization using
         # the manager's add method
-        added_organization = await organization_manager.add(
-            organization=test_organization)
+        added_organization = await \
+            organization_manager.add(
+                organization=test_organization)
 
-        assert isinstance(added_organization, Organization)
+        assert isinstance(added_organization,
+                          Organization)
 
         assert str(added_organization.insert_user_id) == (
             str(organization_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestOrganizationManager:
         that checks if a organization
         is correctly updated.
         """
-        test_organization = await OrganizationFactory.create_async(
-            session)
+        test_organization = await \
+            OrganizationFactory.create_async(
+                session)
 
         test_organization.code = uuid.uuid4()
 
-        updated_organization = await organization_manager.update(
-            organization=test_organization)
+        updated_organization = await \
+            organization_manager.update(
+                organization=test_organization)
 
-        assert isinstance(updated_organization, Organization)
+        assert isinstance(updated_organization,
+                          Organization)
 
         assert str(updated_organization.last_update_user_id) == str(
             organization_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestOrganizationManager:
         that checks if a organization is
         correctly updated using a dictionary.
         """
-        test_organization = await OrganizationFactory.create_async(
-            session)
+        test_organization = await \
+            OrganizationFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_organization = await organization_manager.update(
-            organization=test_organization,
-            code=new_code
-        )
+        updated_organization = await \
+            organization_manager.update(
+                organization=test_organization,
+                code=new_code
+            )
 
-        assert isinstance(updated_organization, Organization)
+        assert isinstance(updated_organization,
+                          Organization)
 
         assert str(updated_organization.last_update_user_id) == str(
             organization_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestOrganizationManager:
         organization_manager: OrganizationManager
     ):
         """
-        Test case for the `update` method of `OrganizationManager`
+        Test case for the `update` method of
+        `OrganizationManager`
         with an invalid organization.
         """
 
@@ -299,11 +316,13 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `OrganizationManager`
+        Test case for the `update` method of
+        `OrganizationManager`
         with a nonexistent attribute.
         """
-        test_organization = await OrganizationFactory.create_async(
-            session)
+        test_organization = await \
+            OrganizationFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestOrganizationManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `OrganizationManager`.
+        Test case for the `delete` method of
+        `OrganizationManager`.
         """
         organization_data = await OrganizationFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestOrganizationManager:
         )
         fetched_organization = result.scalars().first()
 
-        assert isinstance(fetched_organization, Organization)
+        assert isinstance(fetched_organization,
+                          Organization)
 
         assert fetched_organization.organization_id == \
             organization_data.organization_id
@@ -363,7 +384,8 @@ class TestOrganizationManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param organization_manager: The instance of the OrganizationManager class.
+        :param organization_manager: The instance of the
+            OrganizationManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestOrganizationManager:
         the test case will fail.
 
         Args:
-            organization_manager (OrganizationManager): An
+            organization_manager
+            (OrganizationManager): An
                 instance of the
                 `OrganizationManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestOrganizationManager:
         Test the 'to_json' method of the OrganizationManager class.
 
         Args:
-            organization_manager (OrganizationManager): An
+            organization_manager
+            (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestOrganizationManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        organization = await OrganizationFactory.build_async(
-            session)
+        organization = await \
+            OrganizationFactory.build_async(
+                session)
 
         json_data = organization_manager.to_json(
             organization)
@@ -486,7 +511,8 @@ class TestOrganizationManager:
         Test the to_dict method of the OrganizationManager class.
 
         Args:
-            organization_manager (OrganizationManager): An
+            organization_manager
+            (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestOrganizationManager:
         Returns:
             None
         """
-        organization = await OrganizationFactory.build_async(
-            session)
+        organization = await \
+            OrganizationFactory.build_async(
+                session)
 
-        dict_data = organization_manager.to_dict(
-            organization)
+        dict_data = \
+            organization_manager.to_dict(
+                organization)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestOrganizationManager:
         the same code as the original organization.
 
         Args:
-            organization_manager (OrganizationManager): An
-            instance of the
+            organization_manager
+            (OrganizationManager): An
+                instance of the
                 `OrganizationManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        organization = await OrganizationFactory.create_async(
-            session)
+        organization = await \
+            OrganizationFactory.create_async(
+                session)
 
         json_data = organization_manager.to_json(
             organization)
 
-        deserialized_organization = await organization_manager.from_json(json_data)
+        deserialized_organization = await \
+                organization_manager.from_json(json_data)
 
-        assert isinstance(deserialized_organization, Organization)
+        assert isinstance(deserialized_organization,
+                          Organization)
         assert deserialized_organization.code == \
             organization.code
 
@@ -559,7 +591,8 @@ class TestOrganizationManager:
         organization object.
 
         Args:
-            organization_manager (OrganizationManager): An instance
+            organization_manager
+            (OrganizationManager): An instance
                 of the `OrganizationManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestOrganizationManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        organization = await OrganizationFactory.create_async(
-            session)
+        organization = await \
+            OrganizationFactory.create_async(
+                session)
 
         schema = OrganizationSchema()
 
@@ -578,10 +612,12 @@ class TestOrganizationManager:
 
         assert isinstance(organization_data, dict)
 
-        deserialized_organization = await organization_manager.from_dict(
-            organization_data)
+        deserialized_organization = await \
+            organization_manager.from_dict(
+                organization_data)
 
-        assert isinstance(deserialized_organization, Organization)
+        assert isinstance(deserialized_organization,
+                          Organization)
 
         assert deserialized_organization.code == \
             organization.code
@@ -630,7 +666,8 @@ class TestOrganizationManager:
         OrganizationManager class returns 0 when the database is empty.
 
         Args:
-            organization_manager (OrganizationManager): An
+            organization_manager
+            (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
 
@@ -664,7 +701,8 @@ class TestOrganizationManager:
             it reflects the updated code.
 
         Args:
-            organization_manager (OrganizationManager): The
+            organization_manager
+            (OrganizationManager): The
                 manager responsible
                 for organization operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestOrganizationManager:
         # Verify that the updated organization
         # is of type Organization
         # and has the updated code
-        assert isinstance(updated_organization1, Organization)
+        assert isinstance(updated_organization1,
+                          Organization)
 
         assert updated_organization1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestOrganizationManager:
         Test case to verify the behavior of refreshing a nonexistent organization.
 
         Args:
-            organization_manager (OrganizationManager): The
+            organization_manager
+            (OrganizationManager): The
                 instance of the
                 OrganizationManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestOrganizationManager:
         exists using the manager function.
 
         Args:
-            organization_manager (OrganizationManager): The
+            organization_manager
+            (OrganizationManager): The
                 organization manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestOrganizationManager:
         OrganizationManager class correctly compares two organizations.
 
         Args:
-            organization_manager (OrganizationManager): An
+            organization_manager
+            (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestOrganizationManager:
         assert organization_manager.is_equal(
             organization1, organization2) is True
 
-        organization1_dict = organization_manager.to_dict(
-            organization1)
+        organization1_dict = \
+            organization_manager.to_dict(
+                organization1)
 
         organization3 = await \
             organization_manager.from_dict(
@@ -815,7 +858,8 @@ class TestOrganizationManager:
         non-existent ID exists in the database.
 
         Args:
-            organization_manager (OrganizationManager): The
+            organization_manager
+            (OrganizationManager): The
                 instance of the OrganizationManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestOrganizationManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            organization_manager (OrganizationManager): The instance
+            organization_manager
+            (OrganizationManager): The instance
                 of the OrganizationManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

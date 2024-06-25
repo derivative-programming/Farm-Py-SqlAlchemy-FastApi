@@ -3,13 +3,14 @@
 # pylint: disable=redefined-outer-name
 
 """
-This module contains unit tests for the OrganizationBusObj class.
+This module contains unit tests for the
+OrganizationBusObj class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 from datetime import date, datetime  # noqa: F401
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -17,11 +18,14 @@ import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.organization_base import OrganizationBaseBusObj
+from business.organization_base import (
+    OrganizationBaseBusObj)
 from helpers.session_context import SessionContext
-from managers.organization import OrganizationManager
+from managers.organization import (
+    OrganizationManager)
 from models import Organization
-from models.factory import OrganizationFactory
+from models.factory import (
+    OrganizationFactory)
 from services.logging_config import get_logger
 
 from ..organization import OrganizationBusObj
@@ -50,24 +54,29 @@ def organization():
 
 
 @pytest.fixture
-def organization_base_bus_obj(fake_session_context, organization):
+def organization_base_bus_obj(
+    fake_session_context, organization
+):
     """
     Fixture that returns a OrganizationBaseBusObj instance.
     """
-    organization_base = OrganizationBaseBusObj(fake_session_context)
+    organization_base = OrganizationBaseBusObj(
+        fake_session_context)
     organization_base.organization = organization
     return organization_base
 
 
 class TestOrganizationBaseBusObj:
     """
-    Unit tests for the OrganizationBusObj class.
+    Unit tests for the
+    OrganizationBusObj class.
     """
 
     @pytest_asyncio.fixture(scope="function")
     async def organization_manager(self, session: AsyncSession):
         """
-        Fixture that returns an instance of the OrganizationManager class.
+        Fixture that returns an instance of the
+        OrganizationManager class.
         """
         session_context = SessionContext(dict(), session)
         return OrganizationManager(session_context)
@@ -75,7 +84,8 @@ class TestOrganizationBaseBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def organization_bus_obj(self, session):
         """
-        Fixture that returns an instance of the OrganizationBusObj class.
+        Fixture that returns an instance of the
+        OrganizationBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return OrganizationBusObj(session_context)
@@ -113,8 +123,10 @@ class TestOrganizationBaseBusObj:
 
         assert organization_bus_obj.last_update_user_id == uuid.UUID(int=0)
 
-        assert isinstance(organization_bus_obj.name, str)
-        assert isinstance(organization_bus_obj.tac_id, int)
+        assert isinstance(organization_bus_obj.name,
+                          str)
+        assert isinstance(organization_bus_obj.tac_id,
+                          int)
 
     @pytest.mark.asyncio
     async def test_load_with_organization_obj(
@@ -146,7 +158,8 @@ class TestOrganizationBaseBusObj:
         organization ID.
         """
 
-        new_organization_organization_id = new_organization.organization_id
+        new_organization_organization_id = \
+            new_organization.organization_id
 
         await organization_bus_obj.load_from_id(
             new_organization_organization_id)
@@ -184,7 +197,9 @@ class TestOrganizationBaseBusObj:
         organization JSON.
         """
 
-        organization_json = organization_manager.to_json(new_organization)
+        organization_json = \
+            organization_manager.to_json(
+                new_organization)
 
         await organization_bus_obj.load_from_json(
             organization_json)
@@ -206,7 +221,9 @@ class TestOrganizationBaseBusObj:
 
         logger.info("test_load_with_organization_dict 1")
 
-        organization_dict = organization_manager.to_dict(new_organization)
+        organization_dict = \
+            organization_manager.to_dict(
+                new_organization)
 
         logger.info(organization_dict)
 
@@ -246,10 +263,12 @@ class TestOrganizationBaseBusObj:
 
         new_organization_organization_id_value = new_organization.organization_id
 
-        new_organization = await organization_manager.get_by_id(
-            new_organization_organization_id_value)
+        new_organization = await \
+            organization_manager.get_by_id(
+                new_organization_organization_id_value)
 
-        assert isinstance(new_organization, Organization)
+        assert isinstance(new_organization,
+                          Organization)
 
         new_code = uuid.uuid4()
 
@@ -266,8 +285,9 @@ class TestOrganizationBaseBusObj:
 
         new_organization_organization_id_value = new_organization.organization_id
 
-        new_organization = await organization_manager.get_by_id(
-            new_organization_organization_id_value)
+        new_organization = await \
+            organization_manager.get_by_id(
+                new_organization_organization_id_value)
 
         assert organization_manager.is_equal(
             organization_bus_obj.organization,
@@ -297,8 +317,9 @@ class TestOrganizationBaseBusObj:
 
         new_organization_organization_id_value = new_organization.organization_id
 
-        new_organization = await organization_manager.get_by_id(
-            new_organization_organization_id_value)
+        new_organization = await \
+            organization_manager.get_by_id(
+                new_organization_organization_id_value)
 
         assert new_organization is None
 
@@ -313,7 +334,8 @@ class TestOrganizationBaseBusObj:
         assert organization_base_bus_obj.get_session_context() == fake_session_context
 
     @pytest.mark.asyncio
-    async def test_refresh(self, organization_base_bus_obj, organization):
+    async def test_refresh(
+        self, organization_base_bus_obj, organization):
         """
         Test case for refreshing the organization data.
         """
@@ -321,14 +343,17 @@ class TestOrganizationBaseBusObj:
             'business.organization_base.OrganizationManager',
             autospec=True
         ) as mock_organization_manager:
-            mock_organization_manager_instance = mock_organization_manager.return_value
-            mock_organization_manager_instance.refresh = AsyncMock(return_value=organization)
+            mock_organization_manager_instance = \
+                mock_organization_manager.return_value
+            mock_organization_manager_instance.refresh =\
+                AsyncMock(return_value=organization)
 
             refreshed_organization_base = await organization_base_bus_obj.refresh()
             assert refreshed_organization_base.organization == organization
             mock_organization_manager_instance.refresh.assert_called_once_with(organization)
 
-    def test_is_valid(self, organization_base_bus_obj):
+    def test_is_valid(
+            self, organization_base_bus_obj):
         """
         Test case for checking if the organization data is valid.
         """
@@ -337,7 +362,8 @@ class TestOrganizationBaseBusObj:
         organization_base_bus_obj.organization = None
         assert organization_base_bus_obj.is_valid() is False
 
-    def test_to_dict(self, organization_base_bus_obj):
+    def test_to_dict(
+            self, organization_base_bus_obj):
         """
         Test case for converting the organization data to a dictionary.
         """
@@ -345,7 +371,8 @@ class TestOrganizationBaseBusObj:
             'business.organization_base.OrganizationManager',
             autospec=True
         ) as mock_organization_manager:
-            mock_organization_manager_instance = mock_organization_manager.return_value
+            mock_organization_manager_instance = \
+                mock_organization_manager.return_value
             mock_organization_manager_instance.to_dict = Mock(
                 return_value={"key": "value"})
 
@@ -354,7 +381,8 @@ class TestOrganizationBaseBusObj:
             mock_organization_manager_instance.to_dict.assert_called_once_with(
                 organization_base_bus_obj.organization)
 
-    def test_to_json(self, organization_base_bus_obj):
+    def test_to_json(
+            self, organization_base_bus_obj):
         """
         Test case for converting the organization data to JSON.
         """
@@ -362,7 +390,8 @@ class TestOrganizationBaseBusObj:
             'business.organization_base.OrganizationManager',
             autospec=True
         ) as mock_organization_manager:
-            mock_organization_manager_instance = mock_organization_manager.return_value
+            mock_organization_manager_instance = \
+                mock_organization_manager.return_value
             mock_organization_manager_instance.to_json = Mock(
                 return_value='{"key": "value"}')
 
@@ -371,33 +400,38 @@ class TestOrganizationBaseBusObj:
             mock_organization_manager_instance.to_json.assert_called_once_with(
                 organization_base_bus_obj.organization)
 
-    def test_get_obj(self, organization_base_bus_obj, organization):
+    def test_get_obj(
+            self, organization_base_bus_obj, organization):
         """
         Test case for getting the organization object.
         """
         assert organization_base_bus_obj.get_obj() == organization
 
-    def test_get_object_name(self, organization_base_bus_obj):
+    def test_get_object_name(
+            self, organization_base_bus_obj):
         """
         Test case for getting the object name.
         """
         assert organization_base_bus_obj.get_object_name() == "organization"
 
-    def test_get_id(self, organization_base_bus_obj, organization):
+    def test_get_id(
+            self, organization_base_bus_obj, organization):
         """
         Test case for getting the organization ID.
         """
         organization.organization_id = 1
         assert organization_base_bus_obj.get_id() == 1
 
-    def test_organization_id(self, organization_base_bus_obj, organization):
+    def test_organization_id(
+            self, organization_base_bus_obj, organization):
         """
         Test case for the organization_id property.
         """
         organization.organization_id = 1
         assert organization_base_bus_obj.organization_id == 1
 
-    def test_code(self, organization_base_bus_obj, organization):
+    def test_code(
+            self, organization_base_bus_obj, organization):
         """
         Test case for the code property.
         """
@@ -405,7 +439,8 @@ class TestOrganizationBaseBusObj:
         organization.code = test_uuid
         assert organization_base_bus_obj.code == test_uuid
 
-    def test_code_setter(self, organization_base_bus_obj):
+    def test_code_setter(
+            self, organization_base_bus_obj):
         """
         Test case for the code setter.
         """
@@ -413,14 +448,16 @@ class TestOrganizationBaseBusObj:
         organization_base_bus_obj.code = test_uuid
         assert organization_base_bus_obj.code == test_uuid
 
-    def test_code_invalid_value(self, organization_base_bus_obj):
+    def test_code_invalid_value(
+            self, organization_base_bus_obj):
         """
         Test case for setting an invalid value for the code property.
         """
         with pytest.raises(ValueError):
             organization_base_bus_obj.code = "not-a-uuid"
 
-    def test_last_change_code(self, organization_base_bus_obj, organization):
+    def test_last_change_code(
+            self, organization_base_bus_obj, organization):
         """
         Test case to verify the behavior of the last_change_code
         attribute in the OrganizationBaseBusiness class.
@@ -429,7 +466,8 @@ class TestOrganizationBaseBusObj:
             organization_base_bus_obj (OrganizationBaseBusiness):
                 An instance of the
                 OrganizationBaseBusiness class.
-            organization (Organization): An instance of the Organization class.
+            organization (Organization): An instance of the
+                Organization class.
 
         Returns:
             None
@@ -437,14 +475,16 @@ class TestOrganizationBaseBusObj:
         organization.last_change_code = 123
         assert organization_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_setter(self, organization_base_bus_obj):
+    def test_last_change_code_setter(
+            self, organization_base_bus_obj):
         """
         Test case for the last_change_code setter.
         """
         organization_base_bus_obj.last_change_code = 123
         assert organization_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_invalid_value(self, organization_base_bus_obj):
+    def test_last_change_code_invalid_value(
+            self, organization_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_change_code property.
@@ -452,7 +492,8 @@ class TestOrganizationBaseBusObj:
         with pytest.raises(ValueError):
             organization_base_bus_obj.last_change_code = "not-an-int"
 
-    def test_insert_user_id(self, organization_base_bus_obj, organization):
+    def test_insert_user_id(
+            self, organization_base_bus_obj, organization):
         """
         Test case for the insert_user_id property.
         """
@@ -460,7 +501,8 @@ class TestOrganizationBaseBusObj:
         organization.insert_user_id = test_uuid
         assert organization_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_setter(self, organization_base_bus_obj):
+    def test_insert_user_id_setter(
+            self, organization_base_bus_obj):
         """
         Test case for the insert_user_id setter.
         """
@@ -468,7 +510,8 @@ class TestOrganizationBaseBusObj:
         organization_base_bus_obj.insert_user_id = test_uuid
         assert organization_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_invalid_value(self, organization_base_bus_obj):
+    def test_insert_user_id_invalid_value(
+            self, organization_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_user_id property.
@@ -477,21 +520,24 @@ class TestOrganizationBaseBusObj:
             organization_base_bus_obj.insert_user_id = "not-a-uuid"
     # name
 
-    def test_name(self, organization_base_bus_obj, organization):
+    def test_name(
+            self, organization_base_bus_obj, organization):
         """
         Test case for the name property.
         """
         organization.name = "Vanilla"
         assert organization_base_bus_obj.name == "Vanilla"
 
-    def test_name_setter(self, organization_base_bus_obj):
+    def test_name_setter(
+            self, organization_base_bus_obj):
         """
         Test case for the name setter.
         """
         organization_base_bus_obj.name = "Vanilla"
         assert organization_base_bus_obj.name == "Vanilla"
 
-    def test_name_invalid_value(self, organization_base_bus_obj):
+    def test_name_invalid_value(
+            self, organization_base_bus_obj):
         """
         Test case for setting an invalid value for the
         name property.
@@ -502,21 +548,24 @@ class TestOrganizationBaseBusObj:
     # name,
     # TacID
 
-    def test_tac_id(self, organization_base_bus_obj, organization):
+    def test_tac_id(
+            self, organization_base_bus_obj, organization):
         """
         Test case for the tac_id property.
         """
         organization.tac_id = 1
         assert organization_base_bus_obj.tac_id == 1
 
-    def test_tac_id_setter(self, organization_base_bus_obj):
+    def test_tac_id_setter(
+            self, organization_base_bus_obj):
         """
         Test case for the tac_id setter.
         """
         organization_base_bus_obj.tac_id = 1
         assert organization_base_bus_obj.tac_id == 1
 
-    def test_tac_id_invalid_value(self, organization_base_bus_obj):
+    def test_tac_id_invalid_value(
+            self, organization_base_bus_obj):
         """
         Test case for setting an invalid value for the
         tac_id property.
@@ -524,7 +573,10 @@ class TestOrganizationBaseBusObj:
         with pytest.raises(AssertionError):
             organization_base_bus_obj.tac_id = "not-an-int"
 
-    def test_insert_utc_date_time(self, organization_base_bus_obj, organization):
+    def test_insert_utc_date_time(
+            self,
+            organization_base_bus_obj,
+            organization):
         """
         Test case for the insert_utc_date_time property.
         """
@@ -532,7 +584,8 @@ class TestOrganizationBaseBusObj:
         organization.insert_utc_date_time = test_datetime
         assert organization_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_setter(self, organization_base_bus_obj):
+    def test_insert_utc_date_time_setter(
+            self, organization_base_bus_obj):
         """
         Test case for the insert_utc_date_time setter.
         """
@@ -540,7 +593,8 @@ class TestOrganizationBaseBusObj:
         organization_base_bus_obj.insert_utc_date_time = test_datetime
         assert organization_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_invalid_value(self, organization_base_bus_obj):
+    def test_insert_utc_date_time_invalid_value(
+            self, organization_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_utc_date_time property.
@@ -548,7 +602,10 @@ class TestOrganizationBaseBusObj:
         with pytest.raises(AssertionError):
             organization_base_bus_obj.insert_utc_date_time = "not-a-datetime"
 
-    def test_last_update_utc_date_time(self, organization_base_bus_obj, organization):
+    def test_last_update_utc_date_time(
+            self,
+            organization_base_bus_obj,
+            organization):
         """
         Test case for the last_update_utc_date_time property.
         """
@@ -556,7 +613,8 @@ class TestOrganizationBaseBusObj:
         organization.last_update_utc_date_time = test_datetime
         assert organization_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_setter(self, organization_base_bus_obj):
+    def test_last_update_utc_date_time_setter(
+            self, organization_base_bus_obj):
         """
         Test case for the last_update_utc_date_time setter.
         """
@@ -564,7 +622,8 @@ class TestOrganizationBaseBusObj:
         organization_base_bus_obj.last_update_utc_date_time = test_datetime
         assert organization_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_invalid_value(self, organization_base_bus_obj):
+    def test_last_update_utc_date_time_invalid_value(
+            self, organization_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_update_utc_date_time property.

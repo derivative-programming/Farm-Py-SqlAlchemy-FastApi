@@ -10,7 +10,7 @@ customers in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -280,7 +280,8 @@ class CustomerManager:
         logging.info("CustomerManager.update")
         property_list = Customer.property_list()
         if customer:
-            customer.last_update_user_id = self._session_context.customer_code
+            customer.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -484,7 +485,8 @@ class CustomerManager:
         logging.info(
             "CustomerManager.add_bulk")
         for customer in customers:
-            customer_id = customer.customer_id
+            customer_id = \
+                customer.customer_id
             code = customer.code
             if customer.customer_id is not None and customer.customer_id > 0:
                 raise ValueError(
@@ -551,7 +553,8 @@ class CustomerManager:
                 if key != "customer_id":
                     setattr(customer, key, value)
 
-            customer.last_update_user_id = self._session_context.customer_code
+            customer.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_customers.append(customer)
 
@@ -668,11 +671,13 @@ class CustomerManager:
         if not customer2:
             raise TypeError("Customer2 required.")
 
-        if not isinstance(customer1, Customer):
+        if not isinstance(customer1,
+                          Customer):
             raise TypeError("The customer1 must be an "
                             "Customer instance.")
 
-        if not isinstance(customer2, Customer):
+        if not isinstance(customer2,
+                          Customer):
             raise TypeError("The customer2 must be an "
                             "Customer instance.")
 
@@ -680,7 +685,8 @@ class CustomerManager:
         dict2 = self.to_dict(customer2)
 
         return dict1 == dict2
-    async def get_by_tac_id(  # TacID
+    # TacID
+    async def get_by_tac_id(
             self,
             tac_id: int) -> List[Customer]:
         """

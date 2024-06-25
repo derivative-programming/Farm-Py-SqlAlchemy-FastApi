@@ -1,8 +1,11 @@
 # business/tac.py
 # pylint: disable=unused-import
 """
-This module contains the TacBusObj class,
-which represents the business object for a Tac.
+This module contains the
+TacBusObj class,
+which represents the
+business object for a
+Tac.
 """
 
 from typing import List

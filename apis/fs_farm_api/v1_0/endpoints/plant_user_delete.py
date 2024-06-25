@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_delete.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Plant User Delete.
 
 The PlantUserDeleteRouter provides
 the following endpoints:
-- GET /api/v1_0/plant-user-delete/{plant_code}/init:
+- GET /api/v1_0/plant-user-delete/...
+    {plant_code}/init:
     Get the initialization data for the
     Plant User Delete page.
-- GET /api/v1_0/plant-user-delete/{plant_code}:
+- GET /api/v1_0/plant-user-delete/...
+    {plant_code}:
     Get the Plant User Delete Report
     for a specific  code.
-- GET /api/v1_0/plant-user-delete/{plant_code}/to-csv:
+- GET /api/v1_0/plant-user-delete/...
+        {plant_code}/to-csv:
     Retrieve the Plant User Delete
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class PlantUserDeleteRouterConfig():
     """
-    Configuration class for the PlantUserDeleteRouter.
+    Configuration class for the
+    PlantUserDeleteRouter.
     """
 
     # constants

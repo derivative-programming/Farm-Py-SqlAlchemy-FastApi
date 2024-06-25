@@ -1,16 +1,18 @@
 # apis/models/tests/land_plant_list_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
-LandPlantListGetModelRequestFactoryAsync class.
+LandPlantListGetModelRequestFactoryAsync
+class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
@@ -216,7 +218,8 @@ class LandPlantListGetModelRequestFactoryAsync:
             LandPlantListGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance, LandPlantListGetModelRequest)
+        assert isinstance(model_instance,
+                          LandPlantListGetModelRequest)
         assert isinstance(model_instance.flavor_code, uuid.UUID)
         assert isinstance(model_instance.some_int_val, int)
         assert isinstance(model_instance.some_big_int_val, int)
@@ -257,15 +260,20 @@ class MockReportItemLandPlantList:
         self.some_utc_date_time_val = datetime.utcnow()
         self.some_date_val = date.today()
         self.some_money_val = Decimal('100.00')
-        self.some_n_var_char_val = "Some N Var Char"
-        self.some_var_char_val = "Some Var Char"
-        self.some_text_val = "Some Text"
+        self.some_n_var_char_val = \
+            "Some N Var Char"
+        self.some_var_char_val = \
+            "Some Var Char"
+        self.some_text_val = \
+            "Some Text"
         self.some_phone_number = TEST_PHONE
         self.some_email_address = TEST_EMAIL
-        self.flavor_name = "Flavor Name"
+        self.flavor_name = \
+            "Flavor Name"
         self.flavor_code = uuid.uuid4()
         self.some_int_conditional_on_deletable = 2
-        self.n_var_char_as_url = "http://example.com"
+        self.n_var_char_as_url = \
+            "http://example.com"
         self.update_link_plant_code = uuid.uuid4()
         self.delete_async_button_link_plant_code = uuid.uuid4()
         self.details_link_plant_code = uuid.uuid4()
@@ -305,7 +313,8 @@ async def test_process_request(session_context, report_request, report_items):
         'apis.models.land_plant_list.ReportManagerLandPlantList',
         autospec=True
     ) as mock_report_manager:
-        mock_report_manager_instance = mock_report_manager.return_value
+        mock_report_manager_instance = \
+            mock_report_manager.return_value
         mock_report_manager_instance.generate = AsyncMock(
             return_value=report_items)
 
@@ -320,7 +329,8 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item, LandPlantListGetModelResponseItem)
+            assert isinstance(response_item,
+                              LandPlantListGetModelResponseItem)
             assert response_item.plant_code == \
                 report_item.plant_code
             assert response_item.some_int_val == \

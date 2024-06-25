@@ -8,11 +8,12 @@ that handle the addition of a
 customer in the flow process.
 """
 
-import uuid
+import uuid  # noqa: F401
 import json
-from datetime import date, datetime
-from decimal import Decimal
-from flows.base.customer_user_log_out import BaseFlowCustomerUserLogOut
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from flows.base.customer_user_log_out import (
+    BaseFlowCustomerUserLogOut)
 from flows.base import LogSeverity
 from business.customer import CustomerBusObj
 from helpers import SessionContext  # noqa: F401

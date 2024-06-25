@@ -1,4 +1,5 @@
 # apis/models/pac_user_tac_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -14,9 +15,9 @@ Pac User Tac List API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import UUID4, Field
@@ -130,7 +131,8 @@ class PacUserTacListGetModelResponseItem(CamelModel):
         default="",
         description="Pac Name")
 
-    def load_report_item(self, data: ReportItemPacUserTacList):
+    def load_report_item(
+            self, data: ReportItemPacUserTacList):
         """
         Loads the data from a
         ReportItemPacUserTacList
@@ -224,9 +226,11 @@ class PacUserTacListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model...PacUserTacListGetModelResponse")
+            logging.info("loading model..."
+                         "PacUserTacListGetModelResponse")
             generator = ReportManagerPacUserTacList(session_context)
-            logging.info("processing...PacUserTacListGetModelResponse")
+            logging.info("processing..."
+                         "PacUserTacListGetModelResponse")
             items = await generator.generate(
                 pac_code,
 

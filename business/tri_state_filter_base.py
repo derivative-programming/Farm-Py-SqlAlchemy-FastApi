@@ -1,15 +1,19 @@
 # business/tri_state_filter_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the TriStateFilterBaseBusObj class,
-which represents the base business object for a TriStateFilter.
+This module contains the
+TriStateFilterBaseBusObj class,
+which represents the base
+business object for a
+TriStateFilter.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import TriStateFilterManager
 from models import TriStateFilter
@@ -76,8 +80,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         return self.tri_state_filter.tri_state_filter_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.tri_state_filter.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.tri_state_filter.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.tri_state_filter.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -707,7 +711,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
 
         tri_state_filter_manager = TriStateFilterManager(
             self._session_context)
-        self.tri_state_filter = await tri_state_filter_manager.from_json(json_data)
+        self.tri_state_filter = await \
+            tri_state_filter_manager.from_json(json_data)
 
         return self
 
@@ -782,14 +787,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         if not isinstance(tri_state_filter_obj_instance,
                           TriStateFilter):
             raise ValueError(
-                "tri_state_filter_obj_instance must be an instance of TriStateFilter")
-
-        # tri_state_filter_manager = TriStateFilterManager(
-        #     self._session_context)
-
-        # tri_state_filter_dict = tri_state_filter_manager.to_dict(tri_state_filter_obj_instance)
-
-        # self.tri_state_filter = tri_state_filter_manager.from_dict(tri_state_filter_dict)
+                "tri_state_filter_obj_instance must be an "
+                "instance of TriStateFilter")
 
         self.tri_state_filter = tri_state_filter_obj_instance
 
@@ -817,8 +816,9 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         tri_state_filter_manager = TriStateFilterManager(
             self._session_context)
 
-        self.tri_state_filter = await tri_state_filter_manager.from_dict(
-            tri_state_filter_dict)
+        self.tri_state_filter = await \
+            tri_state_filter_manager.from_dict(
+                tri_state_filter_dict)
 
         return self
 
@@ -844,8 +844,9 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         """
         tri_state_filter_manager = TriStateFilterManager(
             self._session_context)
-        self.tri_state_filter = await tri_state_filter_manager.refresh(
-            self.tri_state_filter)
+        self.tri_state_filter = await \
+            tri_state_filter_manager.refresh(
+                self.tri_state_filter)
 
         return self
 
@@ -919,14 +920,16 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         if tri_state_filter_id > 0:
             tri_state_filter_manager = TriStateFilterManager(
                 self._session_context)
-            self.tri_state_filter = await tri_state_filter_manager.update(
-                self.tri_state_filter)
+            self.tri_state_filter = await \
+                tri_state_filter_manager.update(
+                    self.tri_state_filter)
 
         if tri_state_filter_id == 0:
             tri_state_filter_manager = TriStateFilterManager(
                 self._session_context)
-            self.tri_state_filter = await tri_state_filter_manager.add(
-                self.tri_state_filter)
+            self.tri_state_filter = await \
+                tri_state_filter_manager.add(
+                    self.tri_state_filter)
 
         return self
 
@@ -1046,8 +1049,10 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             representing the related pac.
 
         """
-        pac_manager = managers_and_enums.PacManager(self._session_context)
-        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
         return pac_obj
     # stateIntValue,
 

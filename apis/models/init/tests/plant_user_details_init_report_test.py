@@ -1,13 +1,14 @@
 # apis/models/init/tests/plant_user_details_init_report_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 plant_user_details_init_report module.
 """
 import json
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -93,7 +94,8 @@ async def test_process_request(flow_response):
         "apis.models.init.plant_user_details_init_report."
         "FlowPlantUserDetailsInitReport",
         autospec=True).start()
-    mock_flow_instance = mock_flow.return_value
+    mock_flow_instance = \
+        mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)
 
     request = PlantUserDetailsInitReportGetInitModelRequest()
@@ -107,7 +109,8 @@ async def test_process_request(flow_response):
 
     assert result.success is True
     assert result.message == "Success."
-    mock_plant_bus_obj.assert_called_once_with(mock_session_context)
+    mock_plant_bus_obj.assert_called_once_with(
+        mock_session_context)
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()

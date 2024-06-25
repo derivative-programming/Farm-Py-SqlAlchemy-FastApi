@@ -1,13 +1,14 @@
 # models/managers/tests/flavor_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `FlavorManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestFlavorBulkManager:
             fetched_flavor = result.scalars().first()
 
             assert isinstance(
-                fetched_flavor, Flavor)
+                fetched_flavor,
+                Flavor)
 
             assert str(fetched_flavor.insert_user_id) == (
                 str(flavor_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestFlavorBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_flavors) == 2
-        logging.info(updated_flavors[0].__dict__)
-        logging.info(updated_flavors[1].__dict__)
+        logging.info(updated_flavors[0]
+                     .__dict__)
+        logging.info(updated_flavors[1]
+                     .__dict__)
 
         logging.info('getall')
         flavors = await flavor_manager.get_list()
-        logging.info(flavors[0].__dict__)
-        logging.info(flavors[1].__dict__)
+        logging.info(flavors[0]
+                     .__dict__)
+        logging.info(flavors[1]
+                     .__dict__)
 
-        assert updated_flavors[0].code == code_updated1
-        assert updated_flavors[1].code == code_updated2
+        assert updated_flavors[0].code == \
+            code_updated1
+        assert updated_flavors[1].code == \
+            code_updated2
 
-        assert str(updated_flavors[0].last_update_user_id) == (
-            str(flavor_manager._session_context.customer_code))
+        assert str(updated_flavors[0]
+                   .last_update_user_id) == (
+            str(flavor_manager
+                ._session_context.customer_code))
 
-        assert str(updated_flavors[1].last_update_user_id) == (
-            str(flavor_manager._session_context.customer_code))
+        assert str(updated_flavors[1]
+                   .last_update_user_id) == (
+            str(flavor_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Flavor).filter(
@@ -194,7 +206,8 @@ class TestFlavorBulkManager:
         )
         fetched_flavor = result.scalars().first()
 
-        assert isinstance(fetched_flavor, Flavor)
+        assert isinstance(fetched_flavor,
+                          Flavor)
 
         assert fetched_flavor.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestFlavorBulkManager:
         )
         fetched_flavor = result.scalars().first()
 
-        assert isinstance(fetched_flavor, Flavor)
+        assert isinstance(fetched_flavor,
+                          Flavor)
 
         assert fetched_flavor.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestFlavorBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param flavor_manager: An instance of the FlavorManager class.
+        :param flavor_manager: An instance of the
+            FlavorManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestFlavorBulkManager:
             session=session)
 
         # Delete flavors
-        flavor_ids = [flavor1.flavor_id, flavor2.flavor_id]
+        flavor_ids = [flavor1.flavor_id,
+                     flavor2.flavor_id]
         result = await flavor_manager.delete_bulk(
             flavor_ids)
 
@@ -379,7 +395,8 @@ class TestFlavorBulkManager:
         flavor1 = await FlavorFactory.create_async(
             session=session)
 
-        assert isinstance(flavor1, Flavor)
+        assert isinstance(flavor1,
+                          Flavor)
 
         # Delete flavors
         flavor_ids = [1, 2]

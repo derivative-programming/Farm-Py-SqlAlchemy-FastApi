@@ -1,13 +1,16 @@
 # models/factory/tac.py
+# pylint: disable=unused-import
 """
-This module contains the TacFactory
+This module contains the
+TacFactory
 class, which is responsible
-for creating instances of the Tac
+for creating instances of the
+Tac
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import Tac
@@ -88,7 +91,8 @@ class TacFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> Tac:
         """
-        Create a new Tac object
+        Create a new
+        Tac object
         and save it to the database.
 
         Args:
@@ -129,7 +133,8 @@ class TacFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> Tac:
         """
-        Create a new Tac object
+        Create a new
+        Tac object
         asynchronously.
 
         Args:

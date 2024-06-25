@@ -1,5 +1,6 @@
 # models/factory/tests/date_greater_than_filter_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the DateGreaterThanFilterFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the date_greater_than_filter ID
                 is None after creation.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         assert date_greater_than_filter.date_greater_than_filter_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         assert isinstance(date_greater_than_filter.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestDateGreaterThanFilterFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        date_greater_than_filter: DateGreaterThanFilter = await DateGreaterThanFilterFactory.build_async(
-            session=session)
+        date_greater_than_filter: DateGreaterThanFilter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session=session)
         assert date_greater_than_filter.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestDateGreaterThanFilterFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        date_greater_than_filter: DateGreaterThanFilter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter: DateGreaterThanFilter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         assert date_greater_than_filter.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestDateGreaterThanFilterFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         initial_code = date_greater_than_filter.last_change_code
         date_greater_than_filter.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session=session)
         assert date_greater_than_filter.insert_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session=session)
         assert date_greater_than_filter.insert_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter.code = uuid.uuid4()
         session.add(date_greater_than_filter)
         await session.commit()
-        assert date_greater_than_filter.insert_utc_date_time > initial_time
+        assert date_greater_than_filter.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         assert date_greater_than_filter.insert_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert date_greater_than_filter.insert_utc_date_time == initial_time
+        assert date_greater_than_filter.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session=session)
         assert date_greater_than_filter.last_update_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session=session)
         assert date_greater_than_filter.last_update_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter.code = uuid.uuid4()
         session.add(date_greater_than_filter)
         await session.commit()
-        assert date_greater_than_filter.last_update_utc_date_time > initial_time
+        assert date_greater_than_filter.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         assert date_greater_than_filter.last_update_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestDateGreaterThanFilterFactoryAsync:
         date_greater_than_filter.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert date_greater_than_filter.last_update_utc_date_time > initial_time
+        assert date_greater_than_filter.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestDateGreaterThanFilterFactoryAsync:
             date_greater_than_filter is still
             found in the database.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         await session.delete(date_greater_than_filter)
         await session.commit()
 
         # Construct the select statement
         stmt = select(DateGreaterThanFilter).where(
-            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            DateGreaterThanFilter._date_greater_than_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                date_greater_than_filter.date_greater_than_filter_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,19 +405,23 @@ class TestDateGreaterThanFilterFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         assert isinstance(date_greater_than_filter.date_greater_than_filter_id, int)
         assert isinstance(date_greater_than_filter.code, uuid.UUID)
         assert isinstance(date_greater_than_filter.last_change_code, int)
         assert isinstance(date_greater_than_filter.insert_user_id, uuid.UUID)
         assert isinstance(date_greater_than_filter.last_update_user_id, uuid.UUID)
         assert isinstance(date_greater_than_filter.day_count, int)
-        assert date_greater_than_filter.description == "" or isinstance(date_greater_than_filter.description, str)
+        assert date_greater_than_filter.description == "" or isinstance(
+            date_greater_than_filter.description, str)
         assert isinstance(date_greater_than_filter.display_order, int)
         assert isinstance(date_greater_than_filter.is_active, bool)
-        assert date_greater_than_filter.lookup_enum_name == "" or isinstance(date_greater_than_filter.lookup_enum_name, str)
-        assert date_greater_than_filter.name == "" or isinstance(date_greater_than_filter.name, str)
+        assert date_greater_than_filter.lookup_enum_name == "" or isinstance(
+            date_greater_than_filter.lookup_enum_name, str)
+        assert date_greater_than_filter.name == "" or isinstance(
+            date_greater_than_filter.name, str)
         assert isinstance(date_greater_than_filter.pac_id, int)
         # Check for the peek values
         # dayCount,
@@ -418,7 +440,8 @@ class TestDateGreaterThanFilterFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for date_greater_than_filters.
+        Test case to check the unique code constraint
+        for date_greater_than_filters.
 
         This test creates two date_greater_than_filter
         instances using
@@ -432,7 +455,9 @@ class TestDateGreaterThanFilterFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        DateGreaterThanFilterFactory.create_async() method creates unique codes for each date_greater_than_filter.
+        DateGreaterThanFilterFactory.create_async()
+        method creates unique codes for
+        each date_greater_than_filter.
         """
 
         date_greater_than_filter_1 = await DateGreaterThanFilterFactory.create_async(
@@ -496,16 +521,20 @@ class TestDateGreaterThanFilterFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new DateGreaterThanFilter object using
+        1. Create a new
+            DateGreaterThanFilter object using
             the DateGreaterThanFilterFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the DateGreaterThanFilter
-            object using the date_greater_than_filter_id.
+            object using the
+            date_greater_than_filter_id.
         4. Modify the code attribute of the
             retrieved DateGreaterThanFilter object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            DateGreaterThanFilter object using the date_greater_than_filter_id.
+            DateGreaterThanFilter object using the
+            date_greater_than_filter_id.
         7. Get the modified DateGreaterThanFilter object.
         8. Verify that the last_change_code attribute
             of the modified DateGreaterThanFilter object
@@ -516,12 +545,14 @@ class TestDateGreaterThanFilterFactoryAsync:
                             of the modified DateGreaterThanFilter
                             object is the same as the original value.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         original_last_change_code = date_greater_than_filter.last_change_code
 
         stmt = select(DateGreaterThanFilter).where(
-            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            DateGreaterThanFilter._date_greater_than_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                date_greater_than_filter.date_greater_than_filter_id))
         result = await session.execute(stmt)
         date_greater_than_filter_1 = result.scalars().first()
 
@@ -531,7 +562,8 @@ class TestDateGreaterThanFilterFactoryAsync:
         await session.commit()
 
         stmt = select(DateGreaterThanFilter).where(
-            DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter.date_greater_than_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            DateGreaterThanFilter._date_greater_than_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                date_greater_than_filter.date_greater_than_filter_id))
         result = await session.execute(stmt)
         date_greater_than_filter_2 = result.scalars().first()
 
@@ -565,8 +597,9 @@ class TestDateGreaterThanFilterFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session=session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session=session)
         date_greater_than_filter.pac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

@@ -1,13 +1,16 @@
 # models/factory/pac.py
+# pylint: disable=unused-import
 """
-This module contains the PacFactory
+This module contains the
+PacFactory
 class, which is responsible
-for creating instances of the Pac
+for creating instances of the
+Pac
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import Pac
@@ -79,7 +82,8 @@ class PacFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> Pac:
         """
-        Create a new Pac object
+        Create a new
+        Pac object
         and save it to the database.
 
         Args:
@@ -114,7 +118,8 @@ class PacFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> Pac:
         """
-        Create a new Pac object
+        Create a new
+        Pac object
         asynchronously.
 
         Args:

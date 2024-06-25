@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `plant_user_details` endpoint.
+This module contains unit tests for the
+`plant_user_details` endpoint.
 """
 
 import logging
@@ -216,7 +217,8 @@ async def test_get_success(
     api_key_fixture: str
 ):
     """
-    Test the successful retrieval of the `plant_user_details` get endpoint.
+    Test the successful retrieval of the
+    `plant_user_details` get endpoint.
     """
 
     async def mock_process_request(
@@ -801,7 +803,8 @@ async def test_get_csv_endpoint_invalid_code_failure(
 
     Steps:
     1. Create a UUID representing an invalid plant code.
-    2. Create a request object using the PlantUserDetailsGetModelRequestFactory.
+    2. Create a request object using the
+        PlantUserDetailsGetModelRequestFactory.
     3. Convert the request object to a dictionary
         in camel case serialization format.
     4. Set the test API key.

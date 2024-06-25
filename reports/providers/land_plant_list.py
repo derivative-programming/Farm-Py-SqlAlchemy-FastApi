@@ -1,4 +1,5 @@
 # reports/providers/land_plant_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of
@@ -8,11 +9,11 @@ of land plants based on the provided parameters.
 """
 
 import json
-from datetime import date, datetime
+from datetime import date, datetime  # noqa: F401
 import os
 from typing import Any
-import uuid
-from decimal import Decimal
+import uuid  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
@@ -89,8 +90,10 @@ class ReportProviderLandPlantList():
             list[dict[str, Any]]: The list of
             land plants as dictionaries.
         """
-        flow_name = "ReportProviderLandPlantList"
-        ".generate_list"
+        flow_name = (
+            "ReportProviderLandPlantList"
+            ".generate_list"
+        )
 
         logging.info("%s Start", flow_name)
         logging.info("%s context_code: %s", flow_name, str(context_code))
@@ -188,11 +191,13 @@ class ReportProviderLandPlantList():
                 raise FileNotFoundError("SQL file not found")
 
             with open(file_to_read, 'r', encoding='utf-8') as file:
-                ReportProviderLandPlantList._cached_sql_query = file.read()
+                (ReportProviderLandPlantList
+                 ._cached_sql_query) = file.read()
 
         # Execute the SQL query with the provided parameters
         cursor = await self._session_context.session.execute(
-            text(ReportProviderLandPlantList._cached_sql_query),
+            text(ReportProviderLandPlantList
+                 ._cached_sql_query),
             query_dict
         )
 

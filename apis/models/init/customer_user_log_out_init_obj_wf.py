@@ -1,4 +1,5 @@
 # apis/models/init/customer_user_log_out_init_obj_wf.py
+# pylint: disable=unused-import
 
 """
 This module contains the models and request/response classes
@@ -6,9 +7,9 @@ for the CustomerUserLogOutInitObjWF workflow.
 """
 
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import Field
@@ -63,7 +64,9 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(
         return self.model_dump_json()
 
 
-class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
+class CustomerUserLogOutInitObjWFGetInitModelRequest(
+    SnakeModel
+):
     """
     Represents the request model for the
     CustomerUserLogOutInitObjWFGetInitModelRequest.
@@ -73,7 +76,8 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             self,
             session_context: SessionContext,
             customer_code: uuid.UUID,
-            response: CustomerUserLogOutInitObjWFGetInitModelResponse
+            response:
+            CustomerUserLogOutInitObjWFGetInitModelResponse
     ) -> CustomerUserLogOutInitObjWFGetInitModelResponse:
         """
         Processes the request and returns the response.
@@ -81,7 +85,9 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
 
         try:
             logging.info(
-                "loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")
+                "loading model..."
+                "CustomerUserLogOutInitObjWF"
+                "GetInitModelRequest")
             customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load_from_code(customer_code)
             if customer_bus_obj.get_customer_obj() is None:
@@ -89,7 +95,9 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
                 raise ValueError("Invalid customer_code")
             flow = FlowCustomerUserLogOutInitObjWF(session_context)
             logging.info(
-                "process request...CustomerUserLogOutInitObjWFGetInitModelRequest")
+                "process request..."
+                "CustomerUserLogOutInitObjWF"
+                "GetInitModelRequest")
             flow_response = await flow.process(
                 customer_bus_obj
             )
@@ -97,7 +105,9 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...CustomerUserLogOutInitObjWFGetInitModelRequest")
+            logging.info("error..."
+                         "CustomerUserLogOutInitObjWF"
+                         "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

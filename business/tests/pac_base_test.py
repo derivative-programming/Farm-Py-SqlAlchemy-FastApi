@@ -3,13 +3,14 @@
 # pylint: disable=redefined-outer-name
 
 """
-This module contains unit tests for the PacBusObj class.
+This module contains unit tests for the
+PacBusObj class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 from datetime import date, datetime  # noqa: F401
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -17,11 +18,14 @@ import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.pac_base import PacBaseBusObj
+from business.pac_base import (
+    PacBaseBusObj)
 from helpers.session_context import SessionContext
-from managers.pac import PacManager
+from managers.pac import (
+    PacManager)
 from models import Pac
-from models.factory import PacFactory
+from models.factory import (
+    PacFactory)
 from services.logging_config import get_logger
 
 from ..pac import PacBusObj
@@ -50,24 +54,29 @@ def pac():
 
 
 @pytest.fixture
-def pac_base_bus_obj(fake_session_context, pac):
+def pac_base_bus_obj(
+    fake_session_context, pac
+):
     """
     Fixture that returns a PacBaseBusObj instance.
     """
-    pac_base = PacBaseBusObj(fake_session_context)
+    pac_base = PacBaseBusObj(
+        fake_session_context)
     pac_base.pac = pac
     return pac_base
 
 
 class TestPacBaseBusObj:
     """
-    Unit tests for the PacBusObj class.
+    Unit tests for the
+    PacBusObj class.
     """
 
     @pytest_asyncio.fixture(scope="function")
     async def pac_manager(self, session: AsyncSession):
         """
-        Fixture that returns an instance of the PacManager class.
+        Fixture that returns an instance of the
+        PacManager class.
         """
         session_context = SessionContext(dict(), session)
         return PacManager(session_context)
@@ -75,7 +84,8 @@ class TestPacBaseBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def pac_bus_obj(self, session):
         """
-        Fixture that returns an instance of the PacBusObj class.
+        Fixture that returns an instance of the
+        PacBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return PacBusObj(session_context)
@@ -113,11 +123,16 @@ class TestPacBaseBusObj:
 
         assert pac_bus_obj.last_update_user_id == uuid.UUID(int=0)
 
-        assert isinstance(pac_bus_obj.description, str)
-        assert isinstance(pac_bus_obj.display_order, int)
-        assert isinstance(pac_bus_obj.is_active, bool)
-        assert isinstance(pac_bus_obj.lookup_enum_name, str)
-        assert isinstance(pac_bus_obj.name, str)
+        assert isinstance(pac_bus_obj.description,
+                          str)
+        assert isinstance(pac_bus_obj.display_order,
+                          int)
+        assert isinstance(pac_bus_obj.is_active,
+                          bool)
+        assert isinstance(pac_bus_obj.lookup_enum_name,
+                          str)
+        assert isinstance(pac_bus_obj.name,
+                          str)
 
     @pytest.mark.asyncio
     async def test_load_with_pac_obj(
@@ -149,7 +164,8 @@ class TestPacBaseBusObj:
         pac ID.
         """
 
-        new_pac_pac_id = new_pac.pac_id
+        new_pac_pac_id = \
+            new_pac.pac_id
 
         await pac_bus_obj.load_from_id(
             new_pac_pac_id)
@@ -187,7 +203,9 @@ class TestPacBaseBusObj:
         pac JSON.
         """
 
-        pac_json = pac_manager.to_json(new_pac)
+        pac_json = \
+            pac_manager.to_json(
+                new_pac)
 
         await pac_bus_obj.load_from_json(
             pac_json)
@@ -209,7 +227,9 @@ class TestPacBaseBusObj:
 
         logger.info("test_load_with_pac_dict 1")
 
-        pac_dict = pac_manager.to_dict(new_pac)
+        pac_dict = \
+            pac_manager.to_dict(
+                new_pac)
 
         logger.info(pac_dict)
 
@@ -249,10 +269,12 @@ class TestPacBaseBusObj:
 
         new_pac_pac_id_value = new_pac.pac_id
 
-        new_pac = await pac_manager.get_by_id(
-            new_pac_pac_id_value)
+        new_pac = await \
+            pac_manager.get_by_id(
+                new_pac_pac_id_value)
 
-        assert isinstance(new_pac, Pac)
+        assert isinstance(new_pac,
+                          Pac)
 
         new_code = uuid.uuid4()
 
@@ -269,8 +291,9 @@ class TestPacBaseBusObj:
 
         new_pac_pac_id_value = new_pac.pac_id
 
-        new_pac = await pac_manager.get_by_id(
-            new_pac_pac_id_value)
+        new_pac = await \
+            pac_manager.get_by_id(
+                new_pac_pac_id_value)
 
         assert pac_manager.is_equal(
             pac_bus_obj.pac,
@@ -300,8 +323,9 @@ class TestPacBaseBusObj:
 
         new_pac_pac_id_value = new_pac.pac_id
 
-        new_pac = await pac_manager.get_by_id(
-            new_pac_pac_id_value)
+        new_pac = await \
+            pac_manager.get_by_id(
+                new_pac_pac_id_value)
 
         assert new_pac is None
 
@@ -316,7 +340,8 @@ class TestPacBaseBusObj:
         assert pac_base_bus_obj.get_session_context() == fake_session_context
 
     @pytest.mark.asyncio
-    async def test_refresh(self, pac_base_bus_obj, pac):
+    async def test_refresh(
+        self, pac_base_bus_obj, pac):
         """
         Test case for refreshing the pac data.
         """
@@ -324,14 +349,17 @@ class TestPacBaseBusObj:
             'business.pac_base.PacManager',
             autospec=True
         ) as mock_pac_manager:
-            mock_pac_manager_instance = mock_pac_manager.return_value
-            mock_pac_manager_instance.refresh = AsyncMock(return_value=pac)
+            mock_pac_manager_instance = \
+                mock_pac_manager.return_value
+            mock_pac_manager_instance.refresh =\
+                AsyncMock(return_value=pac)
 
             refreshed_pac_base = await pac_base_bus_obj.refresh()
             assert refreshed_pac_base.pac == pac
             mock_pac_manager_instance.refresh.assert_called_once_with(pac)
 
-    def test_is_valid(self, pac_base_bus_obj):
+    def test_is_valid(
+            self, pac_base_bus_obj):
         """
         Test case for checking if the pac data is valid.
         """
@@ -340,7 +368,8 @@ class TestPacBaseBusObj:
         pac_base_bus_obj.pac = None
         assert pac_base_bus_obj.is_valid() is False
 
-    def test_to_dict(self, pac_base_bus_obj):
+    def test_to_dict(
+            self, pac_base_bus_obj):
         """
         Test case for converting the pac data to a dictionary.
         """
@@ -348,7 +377,8 @@ class TestPacBaseBusObj:
             'business.pac_base.PacManager',
             autospec=True
         ) as mock_pac_manager:
-            mock_pac_manager_instance = mock_pac_manager.return_value
+            mock_pac_manager_instance = \
+                mock_pac_manager.return_value
             mock_pac_manager_instance.to_dict = Mock(
                 return_value={"key": "value"})
 
@@ -357,7 +387,8 @@ class TestPacBaseBusObj:
             mock_pac_manager_instance.to_dict.assert_called_once_with(
                 pac_base_bus_obj.pac)
 
-    def test_to_json(self, pac_base_bus_obj):
+    def test_to_json(
+            self, pac_base_bus_obj):
         """
         Test case for converting the pac data to JSON.
         """
@@ -365,7 +396,8 @@ class TestPacBaseBusObj:
             'business.pac_base.PacManager',
             autospec=True
         ) as mock_pac_manager:
-            mock_pac_manager_instance = mock_pac_manager.return_value
+            mock_pac_manager_instance = \
+                mock_pac_manager.return_value
             mock_pac_manager_instance.to_json = Mock(
                 return_value='{"key": "value"}')
 
@@ -374,33 +406,38 @@ class TestPacBaseBusObj:
             mock_pac_manager_instance.to_json.assert_called_once_with(
                 pac_base_bus_obj.pac)
 
-    def test_get_obj(self, pac_base_bus_obj, pac):
+    def test_get_obj(
+            self, pac_base_bus_obj, pac):
         """
         Test case for getting the pac object.
         """
         assert pac_base_bus_obj.get_obj() == pac
 
-    def test_get_object_name(self, pac_base_bus_obj):
+    def test_get_object_name(
+            self, pac_base_bus_obj):
         """
         Test case for getting the object name.
         """
         assert pac_base_bus_obj.get_object_name() == "pac"
 
-    def test_get_id(self, pac_base_bus_obj, pac):
+    def test_get_id(
+            self, pac_base_bus_obj, pac):
         """
         Test case for getting the pac ID.
         """
         pac.pac_id = 1
         assert pac_base_bus_obj.get_id() == 1
 
-    def test_pac_id(self, pac_base_bus_obj, pac):
+    def test_pac_id(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the pac_id property.
         """
         pac.pac_id = 1
         assert pac_base_bus_obj.pac_id == 1
 
-    def test_code(self, pac_base_bus_obj, pac):
+    def test_code(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the code property.
         """
@@ -408,7 +445,8 @@ class TestPacBaseBusObj:
         pac.code = test_uuid
         assert pac_base_bus_obj.code == test_uuid
 
-    def test_code_setter(self, pac_base_bus_obj):
+    def test_code_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the code setter.
         """
@@ -416,14 +454,16 @@ class TestPacBaseBusObj:
         pac_base_bus_obj.code = test_uuid
         assert pac_base_bus_obj.code == test_uuid
 
-    def test_code_invalid_value(self, pac_base_bus_obj):
+    def test_code_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the code property.
         """
         with pytest.raises(ValueError):
             pac_base_bus_obj.code = "not-a-uuid"
 
-    def test_last_change_code(self, pac_base_bus_obj, pac):
+    def test_last_change_code(
+            self, pac_base_bus_obj, pac):
         """
         Test case to verify the behavior of the last_change_code
         attribute in the PacBaseBusiness class.
@@ -432,7 +472,8 @@ class TestPacBaseBusObj:
             pac_base_bus_obj (PacBaseBusiness):
                 An instance of the
                 PacBaseBusiness class.
-            pac (Pac): An instance of the Pac class.
+            pac (Pac): An instance of the
+                Pac class.
 
         Returns:
             None
@@ -440,14 +481,16 @@ class TestPacBaseBusObj:
         pac.last_change_code = 123
         assert pac_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_setter(self, pac_base_bus_obj):
+    def test_last_change_code_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the last_change_code setter.
         """
         pac_base_bus_obj.last_change_code = 123
         assert pac_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_invalid_value(self, pac_base_bus_obj):
+    def test_last_change_code_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_change_code property.
@@ -455,7 +498,8 @@ class TestPacBaseBusObj:
         with pytest.raises(ValueError):
             pac_base_bus_obj.last_change_code = "not-an-int"
 
-    def test_insert_user_id(self, pac_base_bus_obj, pac):
+    def test_insert_user_id(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the insert_user_id property.
         """
@@ -463,7 +507,8 @@ class TestPacBaseBusObj:
         pac.insert_user_id = test_uuid
         assert pac_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_setter(self, pac_base_bus_obj):
+    def test_insert_user_id_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the insert_user_id setter.
         """
@@ -471,7 +516,8 @@ class TestPacBaseBusObj:
         pac_base_bus_obj.insert_user_id = test_uuid
         assert pac_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_invalid_value(self, pac_base_bus_obj):
+    def test_insert_user_id_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_user_id property.
@@ -480,21 +526,24 @@ class TestPacBaseBusObj:
             pac_base_bus_obj.insert_user_id = "not-a-uuid"
     # description
 
-    def test_description(self, pac_base_bus_obj, pac):
+    def test_description(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the description property.
         """
         pac.description = "Vanilla"
         assert pac_base_bus_obj.description == "Vanilla"
 
-    def test_description_setter(self, pac_base_bus_obj):
+    def test_description_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the description setter.
         """
         pac_base_bus_obj.description = "Vanilla"
         assert pac_base_bus_obj.description == "Vanilla"
 
-    def test_description_invalid_value(self, pac_base_bus_obj):
+    def test_description_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         description property.
@@ -503,14 +552,16 @@ class TestPacBaseBusObj:
             pac_base_bus_obj.description = 123
     # displayOrder
 
-    def test_display_order(self, pac_base_bus_obj, pac):
+    def test_display_order(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the display_order property.
         """
         pac.display_order = 1
         assert pac_base_bus_obj.display_order == 1
 
-    def test_display_order_setter(self, pac_base_bus_obj):
+    def test_display_order_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the display_order setter.
         """
@@ -526,21 +577,24 @@ class TestPacBaseBusObj:
             pac_base_bus_obj.display_order = "not-an-int"
     # isActive
 
-    def test_is_active(self, pac_base_bus_obj, pac):
+    def test_is_active(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the is_active property.
         """
         pac.is_active = True
         assert pac_base_bus_obj.is_active is True
 
-    def test_is_active_setter(self, pac_base_bus_obj):
+    def test_is_active_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the is_active setter.
         """
         pac_base_bus_obj.is_active = True
         assert pac_base_bus_obj.is_active is True
 
-    def test_is_active_invalid_value(self, pac_base_bus_obj):
+    def test_is_active_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         is_active property.
@@ -549,21 +603,24 @@ class TestPacBaseBusObj:
             pac_base_bus_obj.is_active = "not-a-boolean"
     # lookupEnumName
 
-    def test_lookup_enum_name(self, pac_base_bus_obj, pac):
+    def test_lookup_enum_name(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the lookup_enum_name property.
         """
         pac.lookup_enum_name = "Vanilla"
         assert pac_base_bus_obj.lookup_enum_name == "Vanilla"
 
-    def test_lookup_enum_name_setter(self, pac_base_bus_obj):
+    def test_lookup_enum_name_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the lookup_enum_name setter.
         """
         pac_base_bus_obj.lookup_enum_name = "Vanilla"
         assert pac_base_bus_obj.lookup_enum_name == "Vanilla"
 
-    def test_lookup_enum_name_invalid_value(self, pac_base_bus_obj):
+    def test_lookup_enum_name_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         lookup_enum_name property.
@@ -572,21 +629,24 @@ class TestPacBaseBusObj:
             pac_base_bus_obj.lookup_enum_name = 123
     # name
 
-    def test_name(self, pac_base_bus_obj, pac):
+    def test_name(
+            self, pac_base_bus_obj, pac):
         """
         Test case for the name property.
         """
         pac.name = "Vanilla"
         assert pac_base_bus_obj.name == "Vanilla"
 
-    def test_name_setter(self, pac_base_bus_obj):
+    def test_name_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the name setter.
         """
         pac_base_bus_obj.name = "Vanilla"
         assert pac_base_bus_obj.name == "Vanilla"
 
-    def test_name_invalid_value(self, pac_base_bus_obj):
+    def test_name_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         name property.
@@ -599,7 +659,10 @@ class TestPacBaseBusObj:
     # lookupEnumName,
     # name,
 
-    def test_insert_utc_date_time(self, pac_base_bus_obj, pac):
+    def test_insert_utc_date_time(
+            self,
+            pac_base_bus_obj,
+            pac):
         """
         Test case for the insert_utc_date_time property.
         """
@@ -607,7 +670,8 @@ class TestPacBaseBusObj:
         pac.insert_utc_date_time = test_datetime
         assert pac_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_setter(self, pac_base_bus_obj):
+    def test_insert_utc_date_time_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the insert_utc_date_time setter.
         """
@@ -615,7 +679,8 @@ class TestPacBaseBusObj:
         pac_base_bus_obj.insert_utc_date_time = test_datetime
         assert pac_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_invalid_value(self, pac_base_bus_obj):
+    def test_insert_utc_date_time_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_utc_date_time property.
@@ -623,7 +688,10 @@ class TestPacBaseBusObj:
         with pytest.raises(AssertionError):
             pac_base_bus_obj.insert_utc_date_time = "not-a-datetime"
 
-    def test_last_update_utc_date_time(self, pac_base_bus_obj, pac):
+    def test_last_update_utc_date_time(
+            self,
+            pac_base_bus_obj,
+            pac):
         """
         Test case for the last_update_utc_date_time property.
         """
@@ -631,7 +699,8 @@ class TestPacBaseBusObj:
         pac.last_update_utc_date_time = test_datetime
         assert pac_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_setter(self, pac_base_bus_obj):
+    def test_last_update_utc_date_time_setter(
+            self, pac_base_bus_obj):
         """
         Test case for the last_update_utc_date_time setter.
         """
@@ -639,7 +708,8 @@ class TestPacBaseBusObj:
         pac_base_bus_obj.last_update_utc_date_time = test_datetime
         assert pac_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_invalid_value(self, pac_base_bus_obj):
+    def test_last_update_utc_date_time_invalid_value(
+            self, pac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_update_utc_date_time property.

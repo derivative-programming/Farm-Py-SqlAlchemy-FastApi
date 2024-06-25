@@ -1,13 +1,16 @@
 # models/factory/error_log.py
+# pylint: disable=unused-import
 """
-This module contains the ErrorLogFactory
+This module contains the
+ErrorLogFactory
 class, which is responsible
-for creating instances of the ErrorLog
+for creating instances of the
+ErrorLog
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import ErrorLog
@@ -90,7 +93,8 @@ class ErrorLogFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> ErrorLog:
         """
-        Create a new ErrorLog object
+        Create a new
+        ErrorLog object
         and save it to the database.
 
         Args:
@@ -131,7 +135,8 @@ class ErrorLogFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> ErrorLog:
         """
-        Create a new ErrorLog object
+        Create a new
+        ErrorLog object
         asynchronously.
 
         Args:

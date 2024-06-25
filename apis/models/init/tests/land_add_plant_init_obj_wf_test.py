@@ -1,13 +1,14 @@
 # apis/models/init/tests/land_add_plant_init_obj_wf_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 land_add_plant_init_obj_wf module.
 """
 import json
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -31,23 +32,34 @@ class MockFlowLandAddPlantInitObjWFResult:
         """
 # endset
         self.request_flavor_code = uuid.uuid4()
-        self.request_other_flavor = "Other Flavor"
+        self.request_other_flavor = \
+            "Other Flavor"
         self.request_some_int_val = 1
         self.request_some_big_int_val = 1000000
         self.request_some_bit_val = True
         self.request_is_delete_allowed = True
         self.request_is_edit_allowed = True
         self.request_some_float_val = 1.23
-        self.request_some_decimal_val = Decimal('10.99')
-        self.request_some_utc_date_time_val = datetime.utcnow()
-        self.request_some_date_val = date.today()
-        self.request_some_money_val = Decimal('100.00')
-        self.request_some_n_var_char_val = "Some N Var Char"
-        self.request_some_var_char_val = "Some Var Char"
-        self.request_some_text_val = "Some Text"
-        self.request_some_phone_number = "123-456-7890"
-        self.request_some_email_address = "test@example.com"
-        self.land_name = "Land Name"
+        self.request_some_decimal_val = \
+            Decimal('10.99')
+        self.request_some_utc_date_time_val = \
+            datetime.utcnow()
+        self.request_some_date_val = \
+            date.today()
+        self.request_some_money_val = \
+            Decimal('100.00')
+        self.request_some_n_var_char_val = \
+            "Some N Var Char"
+        self.request_some_var_char_val = \
+            "Some Var Char"
+        self.request_some_text_val = \
+            "Some Text"
+        self.request_some_phone_number = \
+            "123-456-7890"
+        self.request_some_email_address = \
+            "test@example.com"
+        self.land_name = \
+            "Land Name"
         self.tac_code = uuid.uuid4()
 # endset
 
@@ -201,7 +213,8 @@ async def test_process_request(flow_response):
         "apis.models.init.land_add_plant_init_obj_wf."
         "FlowLandAddPlantInitObjWF",
         autospec=True).start()
-    mock_flow_instance = mock_flow.return_value
+    mock_flow_instance = \
+        mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)
 
     request = LandAddPlantInitObjWFGetInitModelRequest()
@@ -215,7 +228,8 @@ async def test_process_request(flow_response):
 
     assert result.success is True
     assert result.message == "Success."
-    mock_land_bus_obj.assert_called_once_with(mock_session_context)
+    mock_land_bus_obj.assert_called_once_with(
+        mock_session_context)
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()

@@ -1,13 +1,14 @@
 # models/managers/tests/error_log_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `ErrorLogManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestErrorLogManager:
         }
 
         # Call the build function of the manager
-        error_log = await error_log_manager.build(
-            **mock_data)
+        error_log = await \
+            error_log_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of ErrorLog
         assert isinstance(
-            error_log, ErrorLog)
+            error_log,
+            ErrorLog)
 
         # Assert that the attributes of the
         # error_log match our mock data
@@ -96,17 +99,20 @@ class TestErrorLogManager:
         `ErrorLogManager` that checks if a
         error_log is correctly added to the database.
         """
-        test_error_log = await ErrorLogFactory.build_async(
-            session)
+        test_error_log = await \
+            ErrorLogFactory.build_async(
+                session)
 
         assert test_error_log.error_log_id == 0
 
         # Add the error_log using the
         # manager's add method
-        added_error_log = await error_log_manager.add(
-            error_log=test_error_log)
+        added_error_log = await \
+            error_log_manager.add(
+                error_log=test_error_log)
 
-        assert isinstance(added_error_log, ErrorLog)
+        assert isinstance(added_error_log,
+                          ErrorLog)
 
         assert str(added_error_log.insert_user_id) == (
             str(error_log_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestErrorLogManager:
         # is not None and matches the
         # added error_log
         assert fetched_error_log is not None
-        assert isinstance(fetched_error_log, ErrorLog)
+        assert isinstance(fetched_error_log,
+                          ErrorLog)
         assert fetched_error_log.error_log_id == added_error_log.error_log_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestErrorLogManager:
         # Create a test error_log
         # using the ErrorLogFactory
         # without persisting it to the database
-        test_error_log = await ErrorLogFactory.build_async(
-            session)
+        test_error_log = await \
+            ErrorLogFactory.build_async(
+                session)
 
         assert test_error_log.error_log_id == 0
 
@@ -154,10 +162,12 @@ class TestErrorLogManager:
 
         # Add the error_log using
         # the manager's add method
-        added_error_log = await error_log_manager.add(
-            error_log=test_error_log)
+        added_error_log = await \
+            error_log_manager.add(
+                error_log=test_error_log)
 
-        assert isinstance(added_error_log, ErrorLog)
+        assert isinstance(added_error_log,
+                          ErrorLog)
 
         assert str(added_error_log.insert_user_id) == (
             str(error_log_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestErrorLogManager:
         that checks if a error_log
         is correctly updated.
         """
-        test_error_log = await ErrorLogFactory.create_async(
-            session)
+        test_error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         test_error_log.code = uuid.uuid4()
 
-        updated_error_log = await error_log_manager.update(
-            error_log=test_error_log)
+        updated_error_log = await \
+            error_log_manager.update(
+                error_log=test_error_log)
 
-        assert isinstance(updated_error_log, ErrorLog)
+        assert isinstance(updated_error_log,
+                          ErrorLog)
 
         assert str(updated_error_log.last_update_user_id) == str(
             error_log_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestErrorLogManager:
         that checks if a error_log is
         correctly updated using a dictionary.
         """
-        test_error_log = await ErrorLogFactory.create_async(
-            session)
+        test_error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_error_log = await error_log_manager.update(
-            error_log=test_error_log,
-            code=new_code
-        )
+        updated_error_log = await \
+            error_log_manager.update(
+                error_log=test_error_log,
+                code=new_code
+            )
 
-        assert isinstance(updated_error_log, ErrorLog)
+        assert isinstance(updated_error_log,
+                          ErrorLog)
 
         assert str(updated_error_log.last_update_user_id) == str(
             error_log_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestErrorLogManager:
         error_log_manager: ErrorLogManager
     ):
         """
-        Test case for the `update` method of `ErrorLogManager`
+        Test case for the `update` method of
+        `ErrorLogManager`
         with an invalid error_log.
         """
 
@@ -299,11 +316,13 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `ErrorLogManager`
+        Test case for the `update` method of
+        `ErrorLogManager`
         with a nonexistent attribute.
         """
-        test_error_log = await ErrorLogFactory.create_async(
-            session)
+        test_error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestErrorLogManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `ErrorLogManager`.
+        Test case for the `delete` method of
+        `ErrorLogManager`.
         """
         error_log_data = await ErrorLogFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestErrorLogManager:
         )
         fetched_error_log = result.scalars().first()
 
-        assert isinstance(fetched_error_log, ErrorLog)
+        assert isinstance(fetched_error_log,
+                          ErrorLog)
 
         assert fetched_error_log.error_log_id == \
             error_log_data.error_log_id
@@ -363,7 +384,8 @@ class TestErrorLogManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param error_log_manager: The instance of the ErrorLogManager class.
+        :param error_log_manager: The instance of the
+            ErrorLogManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestErrorLogManager:
         the test case will fail.
 
         Args:
-            error_log_manager (ErrorLogManager): An
+            error_log_manager
+            (ErrorLogManager): An
                 instance of the
                 `ErrorLogManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestErrorLogManager:
         Test the 'to_json' method of the ErrorLogManager class.
 
         Args:
-            error_log_manager (ErrorLogManager): An
+            error_log_manager
+            (ErrorLogManager): An
                 instance of the
                 ErrorLogManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestErrorLogManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        error_log = await ErrorLogFactory.build_async(
-            session)
+        error_log = await \
+            ErrorLogFactory.build_async(
+                session)
 
         json_data = error_log_manager.to_json(
             error_log)
@@ -486,7 +511,8 @@ class TestErrorLogManager:
         Test the to_dict method of the ErrorLogManager class.
 
         Args:
-            error_log_manager (ErrorLogManager): An
+            error_log_manager
+            (ErrorLogManager): An
                 instance of the
                 ErrorLogManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestErrorLogManager:
         Returns:
             None
         """
-        error_log = await ErrorLogFactory.build_async(
-            session)
+        error_log = await \
+            ErrorLogFactory.build_async(
+                session)
 
-        dict_data = error_log_manager.to_dict(
-            error_log)
+        dict_data = \
+            error_log_manager.to_dict(
+                error_log)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestErrorLogManager:
         the same code as the original error_log.
 
         Args:
-            error_log_manager (ErrorLogManager): An
-            instance of the
+            error_log_manager
+            (ErrorLogManager): An
+                instance of the
                 `ErrorLogManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        error_log = await ErrorLogFactory.create_async(
-            session)
+        error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         json_data = error_log_manager.to_json(
             error_log)
 
-        deserialized_error_log = await error_log_manager.from_json(json_data)
+        deserialized_error_log = await \
+                error_log_manager.from_json(json_data)
 
-        assert isinstance(deserialized_error_log, ErrorLog)
+        assert isinstance(deserialized_error_log,
+                          ErrorLog)
         assert deserialized_error_log.code == \
             error_log.code
 
@@ -559,7 +591,8 @@ class TestErrorLogManager:
         error_log object.
 
         Args:
-            error_log_manager (ErrorLogManager): An instance
+            error_log_manager
+            (ErrorLogManager): An instance
                 of the `ErrorLogManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestErrorLogManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        error_log = await ErrorLogFactory.create_async(
-            session)
+        error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         schema = ErrorLogSchema()
 
@@ -578,10 +612,12 @@ class TestErrorLogManager:
 
         assert isinstance(error_log_data, dict)
 
-        deserialized_error_log = await error_log_manager.from_dict(
-            error_log_data)
+        deserialized_error_log = await \
+            error_log_manager.from_dict(
+                error_log_data)
 
-        assert isinstance(deserialized_error_log, ErrorLog)
+        assert isinstance(deserialized_error_log,
+                          ErrorLog)
 
         assert deserialized_error_log.code == \
             error_log.code
@@ -630,7 +666,8 @@ class TestErrorLogManager:
         ErrorLogManager class returns 0 when the database is empty.
 
         Args:
-            error_log_manager (ErrorLogManager): An
+            error_log_manager
+            (ErrorLogManager): An
                 instance of the
                 ErrorLogManager class.
 
@@ -664,7 +701,8 @@ class TestErrorLogManager:
             it reflects the updated code.
 
         Args:
-            error_log_manager (ErrorLogManager): The
+            error_log_manager
+            (ErrorLogManager): The
                 manager responsible
                 for error_log operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestErrorLogManager:
         # Verify that the updated error_log
         # is of type ErrorLog
         # and has the updated code
-        assert isinstance(updated_error_log1, ErrorLog)
+        assert isinstance(updated_error_log1,
+                          ErrorLog)
 
         assert updated_error_log1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestErrorLogManager:
         Test case to verify the behavior of refreshing a nonexistent error_log.
 
         Args:
-            error_log_manager (ErrorLogManager): The
+            error_log_manager
+            (ErrorLogManager): The
                 instance of the
                 ErrorLogManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestErrorLogManager:
         exists using the manager function.
 
         Args:
-            error_log_manager (ErrorLogManager): The
+            error_log_manager
+            (ErrorLogManager): The
                 error_log manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestErrorLogManager:
         ErrorLogManager class correctly compares two error_logs.
 
         Args:
-            error_log_manager (ErrorLogManager): An
+            error_log_manager
+            (ErrorLogManager): An
                 instance of the
                 ErrorLogManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestErrorLogManager:
         assert error_log_manager.is_equal(
             error_log1, error_log2) is True
 
-        error_log1_dict = error_log_manager.to_dict(
-            error_log1)
+        error_log1_dict = \
+            error_log_manager.to_dict(
+                error_log1)
 
         error_log3 = await \
             error_log_manager.from_dict(
@@ -815,7 +858,8 @@ class TestErrorLogManager:
         non-existent ID exists in the database.
 
         Args:
-            error_log_manager (ErrorLogManager): The
+            error_log_manager
+            (ErrorLogManager): The
                 instance of the ErrorLogManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestErrorLogManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            error_log_manager (ErrorLogManager): The instance
+            error_log_manager
+            (ErrorLogManager): The instance
                 of the ErrorLogManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

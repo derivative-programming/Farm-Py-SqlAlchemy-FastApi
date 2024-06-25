@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/land_plant_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Land Plant List.
 
 The LandPlantListRouter provides
 the following endpoints:
-- GET /api/v1_0/land-plant-list/{land_code}/init:
+- GET /api/v1_0/land-plant-list/...
+    {land_code}/init:
     Get the initialization data for the
     Land Plant List page.
-- GET /api/v1_0/land-plant-list/{land_code}:
+- GET /api/v1_0/land-plant-list/...
+    {land_code}:
     Get the Land Plant List Report
     for a specific land code.
-- GET /api/v1_0/land-plant-list/{land_code}/to-csv:
+- GET /api/v1_0/land-plant-list/...
+        {land_code}/to-csv:
     Retrieve the Land Plant List
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class LandPlantListRouterConfig():
     """
-    Configuration class for the LandPlantListRouter.
+    Configuration class for the
+    LandPlantListRouter.
     """
 
     # constants
@@ -193,7 +198,8 @@ class LandPlantListRouter(BaseRouter):
             api_key (str): The API key for authorization.
 
         Returns:
-            api_models.LandPlantListGetModelResponse: The response
+            api_models.LandPlantListGetModelResponse:
+                The response
                 model containing the
                 Land Plant List Report.
 

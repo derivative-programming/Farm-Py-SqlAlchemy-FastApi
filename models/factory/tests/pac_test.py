@@ -1,15 +1,16 @@
 # models/factory/tests/pac_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the PacFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestPacFactory:
         pac.code = uuid.uuid4()
         session.add(pac)
         session.commit()
-        assert pac.insert_utc_date_time > initial_time
+        assert pac.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestPacFactory:
         pac.code = uuid.uuid4()
         session.add(pac)
         session.commit()
-        assert pac.last_update_utc_date_time > initial_time
+        assert pac.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestPacFactory:
         pac.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert pac.last_update_utc_date_time > initial_time
+        assert pac.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -212,13 +216,14 @@ class TestPacFactory:
         assert isinstance(pac.last_change_code, int)
         assert isinstance(pac.insert_user_id, uuid.UUID)
         assert isinstance(pac.last_update_user_id, uuid.UUID)
-        assert pac.description == "" or isinstance(pac.description, str)
+        assert pac.description == "" or isinstance(
+            pac.description, str)
         assert isinstance(pac.display_order, int)
         assert isinstance(pac.is_active, bool)
-        assert pac.lookup_enum_name == "" or isinstance(pac.lookup_enum_name, str)
-        assert pac.name == "" or isinstance(pac.name, str)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
+        assert pac.lookup_enum_name == "" or isinstance(
+            pac.lookup_enum_name, str)
+        assert pac.name == "" or isinstance(
+            pac.name, str)
         # description,
         # displayOrder,
         # isActive,

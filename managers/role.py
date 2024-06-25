@@ -10,7 +10,7 @@ roles in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -366,7 +366,8 @@ class RoleManager:
         logging.info("RoleManager.update")
         property_list = Role.property_list()
         if role:
-            role.last_update_user_id = self._session_context.customer_code
+            role.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -570,7 +571,8 @@ class RoleManager:
         logging.info(
             "RoleManager.add_bulk")
         for role in roles:
-            role_id = role.role_id
+            role_id = \
+                role.role_id
             code = role.code
             if role.role_id is not None and role.role_id > 0:
                 raise ValueError(
@@ -637,7 +639,8 @@ class RoleManager:
                 if key != "role_id":
                     setattr(role, key, value)
 
-            role.last_update_user_id = self._session_context.customer_code
+            role.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_roles.append(role)
 
@@ -754,11 +757,13 @@ class RoleManager:
         if not role2:
             raise TypeError("Role2 required.")
 
-        if not isinstance(role1, Role):
+        if not isinstance(role1,
+                          Role):
             raise TypeError("The role1 must be an "
                             "Role instance.")
 
-        if not isinstance(role2, Role):
+        if not isinstance(role2,
+                          Role):
             raise TypeError("The role2 must be an "
                             "Role instance.")
 
@@ -766,7 +771,8 @@ class RoleManager:
         dict2 = self.to_dict(role2)
 
         return dict1 == dict2
-    async def get_by_pac_id(  # PacID
+    # PacID
+    async def get_by_pac_id(
             self,
             pac_id: int) -> List[Role]:
         """

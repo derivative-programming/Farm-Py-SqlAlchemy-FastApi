@@ -1,13 +1,16 @@
 # models/factory/flavor.py
+# pylint: disable=unused-import
 """
-This module contains the FlavorFactory
+This module contains the
+FlavorFactory
 class, which is responsible
-for creating instances of the Flavor
+for creating instances of the
+Flavor
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import Flavor
@@ -88,7 +91,8 @@ class FlavorFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> Flavor:
         """
-        Create a new Flavor object
+        Create a new
+        Flavor object
         and save it to the database.
 
         Args:
@@ -129,7 +133,8 @@ class FlavorFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> Flavor:
         """
-        Create a new Flavor object
+        Create a new
+        Flavor object
         asynchronously.
 
         Args:

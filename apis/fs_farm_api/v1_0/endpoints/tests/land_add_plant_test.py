@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `land_add_plant` endpoint.
+This module contains unit tests for the
+`land_add_plant` endpoint.
 """
 
 import json

@@ -1,5 +1,6 @@
 # models/factory/tests/customer_role_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the CustomerRoleFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the customer_role ID
                 is None after creation.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         assert customer_role.customer_role_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         assert isinstance(customer_role.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestCustomerRoleFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        customer_role: CustomerRole = await CustomerRoleFactory.build_async(
-            session=session)
+        customer_role: CustomerRole = await \
+            CustomerRoleFactory.build_async(
+                session=session)
         assert customer_role.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestCustomerRoleFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        customer_role: CustomerRole = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role: CustomerRole = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         assert customer_role.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestCustomerRoleFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         initial_code = customer_role.last_change_code
         customer_role.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        customer_role = await CustomerRoleFactory.build_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.build_async(
+                session=session)
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(
             customer_role.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        customer_role = await CustomerRoleFactory.build_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.build_async(
+                session=session)
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(
             customer_role.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestCustomerRoleFactoryAsync:
         customer_role.code = uuid.uuid4()
         session.add(customer_role)
         await session.commit()
-        assert customer_role.insert_utc_date_time > initial_time
+        assert customer_role.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(
             customer_role.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestCustomerRoleFactoryAsync:
         customer_role.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert customer_role.insert_utc_date_time == initial_time
+        assert customer_role.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        customer_role = await CustomerRoleFactory.build_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.build_async(
+                session=session)
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(
             customer_role.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        customer_role = await CustomerRoleFactory.build_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.build_async(
+                session=session)
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(
             customer_role.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestCustomerRoleFactoryAsync:
         customer_role.code = uuid.uuid4()
         session.add(customer_role)
         await session.commit()
-        assert customer_role.last_update_utc_date_time > initial_time
+        assert customer_role.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestCustomerRoleFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(
             customer_role.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestCustomerRoleFactoryAsync:
         customer_role.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert customer_role.last_update_utc_date_time > initial_time
+        assert customer_role.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestCustomerRoleFactoryAsync:
             customer_role is still
             found in the database.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         await session.delete(customer_role)
         await session.commit()
 
         # Construct the select statement
         stmt = select(CustomerRole).where(
-            CustomerRole._customer_role_id == customer_role.customer_role_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            CustomerRole._customer_role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                customer_role.customer_role_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,8 +405,9 @@ class TestCustomerRoleFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         assert isinstance(customer_role.customer_role_id, int)
         assert isinstance(customer_role.code, uuid.UUID)
         assert isinstance(customer_role.last_change_code, int)
@@ -414,7 +433,8 @@ class TestCustomerRoleFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for customer_roles.
+        Test case to check the unique code constraint
+        for customer_roles.
 
         This test creates two customer_role
         instances using
@@ -428,7 +448,9 @@ class TestCustomerRoleFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        CustomerRoleFactory.create_async() method creates unique codes for each customer_role.
+        CustomerRoleFactory.create_async()
+        method creates unique codes for
+        each customer_role.
         """
 
         customer_role_1 = await CustomerRoleFactory.create_async(
@@ -488,16 +510,20 @@ class TestCustomerRoleFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new CustomerRole object using
+        1. Create a new
+            CustomerRole object using
             the CustomerRoleFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the CustomerRole
-            object using the customer_role_id.
+            object using the
+            customer_role_id.
         4. Modify the code attribute of the
             retrieved CustomerRole object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            CustomerRole object using the customer_role_id.
+            CustomerRole object using the
+            customer_role_id.
         7. Get the modified CustomerRole object.
         8. Verify that the last_change_code attribute
             of the modified CustomerRole object
@@ -508,12 +534,14 @@ class TestCustomerRoleFactoryAsync:
                             of the modified CustomerRole
                             object is the same as the original value.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         original_last_change_code = customer_role.last_change_code
 
         stmt = select(CustomerRole).where(
-            CustomerRole._customer_role_id == customer_role.customer_role_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            CustomerRole._customer_role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                customer_role.customer_role_id))
         result = await session.execute(stmt)
         customer_role_1 = result.scalars().first()
 
@@ -523,7 +551,8 @@ class TestCustomerRoleFactoryAsync:
         await session.commit()
 
         stmt = select(CustomerRole).where(
-            CustomerRole._customer_role_id == customer_role.customer_role_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            CustomerRole._customer_role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                customer_role.customer_role_id))
         result = await session.execute(stmt)
         customer_role_2 = result.scalars().first()
 
@@ -551,8 +580,9 @@ class TestCustomerRoleFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         customer_role.customer_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()
@@ -578,8 +608,9 @@ class TestCustomerRoleFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session=session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session=session)
         customer_role.role_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

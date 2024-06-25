@@ -1,13 +1,14 @@
 # models/managers/tests/customer_role_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `CustomerRoleManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestCustomerRoleManager:
         }
 
         # Call the build function of the manager
-        customer_role = await customer_role_manager.build(
-            **mock_data)
+        customer_role = await \
+            customer_role_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of CustomerRole
         assert isinstance(
-            customer_role, CustomerRole)
+            customer_role,
+            CustomerRole)
 
         # Assert that the attributes of the
         # customer_role match our mock data
@@ -96,17 +99,20 @@ class TestCustomerRoleManager:
         `CustomerRoleManager` that checks if a
         customer_role is correctly added to the database.
         """
-        test_customer_role = await CustomerRoleFactory.build_async(
-            session)
+        test_customer_role = await \
+            CustomerRoleFactory.build_async(
+                session)
 
         assert test_customer_role.customer_role_id == 0
 
         # Add the customer_role using the
         # manager's add method
-        added_customer_role = await customer_role_manager.add(
-            customer_role=test_customer_role)
+        added_customer_role = await \
+            customer_role_manager.add(
+                customer_role=test_customer_role)
 
-        assert isinstance(added_customer_role, CustomerRole)
+        assert isinstance(added_customer_role,
+                          CustomerRole)
 
         assert str(added_customer_role.insert_user_id) == (
             str(customer_role_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestCustomerRoleManager:
         # is not None and matches the
         # added customer_role
         assert fetched_customer_role is not None
-        assert isinstance(fetched_customer_role, CustomerRole)
+        assert isinstance(fetched_customer_role,
+                          CustomerRole)
         assert fetched_customer_role.customer_role_id == added_customer_role.customer_role_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestCustomerRoleManager:
         # Create a test customer_role
         # using the CustomerRoleFactory
         # without persisting it to the database
-        test_customer_role = await CustomerRoleFactory.build_async(
-            session)
+        test_customer_role = await \
+            CustomerRoleFactory.build_async(
+                session)
 
         assert test_customer_role.customer_role_id == 0
 
@@ -154,10 +162,12 @@ class TestCustomerRoleManager:
 
         # Add the customer_role using
         # the manager's add method
-        added_customer_role = await customer_role_manager.add(
-            customer_role=test_customer_role)
+        added_customer_role = await \
+            customer_role_manager.add(
+                customer_role=test_customer_role)
 
-        assert isinstance(added_customer_role, CustomerRole)
+        assert isinstance(added_customer_role,
+                          CustomerRole)
 
         assert str(added_customer_role.insert_user_id) == (
             str(customer_role_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestCustomerRoleManager:
         that checks if a customer_role
         is correctly updated.
         """
-        test_customer_role = await CustomerRoleFactory.create_async(
-            session)
+        test_customer_role = await \
+            CustomerRoleFactory.create_async(
+                session)
 
         test_customer_role.code = uuid.uuid4()
 
-        updated_customer_role = await customer_role_manager.update(
-            customer_role=test_customer_role)
+        updated_customer_role = await \
+            customer_role_manager.update(
+                customer_role=test_customer_role)
 
-        assert isinstance(updated_customer_role, CustomerRole)
+        assert isinstance(updated_customer_role,
+                          CustomerRole)
 
         assert str(updated_customer_role.last_update_user_id) == str(
             customer_role_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestCustomerRoleManager:
         that checks if a customer_role is
         correctly updated using a dictionary.
         """
-        test_customer_role = await CustomerRoleFactory.create_async(
-            session)
+        test_customer_role = await \
+            CustomerRoleFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_customer_role = await customer_role_manager.update(
-            customer_role=test_customer_role,
-            code=new_code
-        )
+        updated_customer_role = await \
+            customer_role_manager.update(
+                customer_role=test_customer_role,
+                code=new_code
+            )
 
-        assert isinstance(updated_customer_role, CustomerRole)
+        assert isinstance(updated_customer_role,
+                          CustomerRole)
 
         assert str(updated_customer_role.last_update_user_id) == str(
             customer_role_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestCustomerRoleManager:
         customer_role_manager: CustomerRoleManager
     ):
         """
-        Test case for the `update` method of `CustomerRoleManager`
+        Test case for the `update` method of
+        `CustomerRoleManager`
         with an invalid customer_role.
         """
 
@@ -299,11 +316,13 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `CustomerRoleManager`
+        Test case for the `update` method of
+        `CustomerRoleManager`
         with a nonexistent attribute.
         """
-        test_customer_role = await CustomerRoleFactory.create_async(
-            session)
+        test_customer_role = await \
+            CustomerRoleFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestCustomerRoleManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `CustomerRoleManager`.
+        Test case for the `delete` method of
+        `CustomerRoleManager`.
         """
         customer_role_data = await CustomerRoleFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestCustomerRoleManager:
         )
         fetched_customer_role = result.scalars().first()
 
-        assert isinstance(fetched_customer_role, CustomerRole)
+        assert isinstance(fetched_customer_role,
+                          CustomerRole)
 
         assert fetched_customer_role.customer_role_id == \
             customer_role_data.customer_role_id
@@ -363,7 +384,8 @@ class TestCustomerRoleManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param customer_role_manager: The instance of the CustomerRoleManager class.
+        :param customer_role_manager: The instance of the
+            CustomerRoleManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestCustomerRoleManager:
         the test case will fail.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An
+            customer_role_manager
+            (CustomerRoleManager): An
                 instance of the
                 `CustomerRoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestCustomerRoleManager:
         Test the 'to_json' method of the CustomerRoleManager class.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An
+            customer_role_manager
+            (CustomerRoleManager): An
                 instance of the
                 CustomerRoleManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestCustomerRoleManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        customer_role = await CustomerRoleFactory.build_async(
-            session)
+        customer_role = await \
+            CustomerRoleFactory.build_async(
+                session)
 
         json_data = customer_role_manager.to_json(
             customer_role)
@@ -486,7 +511,8 @@ class TestCustomerRoleManager:
         Test the to_dict method of the CustomerRoleManager class.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An
+            customer_role_manager
+            (CustomerRoleManager): An
                 instance of the
                 CustomerRoleManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestCustomerRoleManager:
         Returns:
             None
         """
-        customer_role = await CustomerRoleFactory.build_async(
-            session)
+        customer_role = await \
+            CustomerRoleFactory.build_async(
+                session)
 
-        dict_data = customer_role_manager.to_dict(
-            customer_role)
+        dict_data = \
+            customer_role_manager.to_dict(
+                customer_role)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestCustomerRoleManager:
         the same code as the original customer_role.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An
-            instance of the
+            customer_role_manager
+            (CustomerRoleManager): An
+                instance of the
                 `CustomerRoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session)
 
         json_data = customer_role_manager.to_json(
             customer_role)
 
-        deserialized_customer_role = await customer_role_manager.from_json(json_data)
+        deserialized_customer_role = await \
+                customer_role_manager.from_json(json_data)
 
-        assert isinstance(deserialized_customer_role, CustomerRole)
+        assert isinstance(deserialized_customer_role,
+                          CustomerRole)
         assert deserialized_customer_role.code == \
             customer_role.code
 
@@ -559,7 +591,8 @@ class TestCustomerRoleManager:
         customer_role object.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An instance
+            customer_role_manager
+            (CustomerRoleManager): An instance
                 of the `CustomerRoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestCustomerRoleManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        customer_role = await CustomerRoleFactory.create_async(
-            session)
+        customer_role = await \
+            CustomerRoleFactory.create_async(
+                session)
 
         schema = CustomerRoleSchema()
 
@@ -578,10 +612,12 @@ class TestCustomerRoleManager:
 
         assert isinstance(customer_role_data, dict)
 
-        deserialized_customer_role = await customer_role_manager.from_dict(
-            customer_role_data)
+        deserialized_customer_role = await \
+            customer_role_manager.from_dict(
+                customer_role_data)
 
-        assert isinstance(deserialized_customer_role, CustomerRole)
+        assert isinstance(deserialized_customer_role,
+                          CustomerRole)
 
         assert deserialized_customer_role.code == \
             customer_role.code
@@ -630,7 +666,8 @@ class TestCustomerRoleManager:
         CustomerRoleManager class returns 0 when the database is empty.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An
+            customer_role_manager
+            (CustomerRoleManager): An
                 instance of the
                 CustomerRoleManager class.
 
@@ -664,7 +701,8 @@ class TestCustomerRoleManager:
             it reflects the updated code.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The
+            customer_role_manager
+            (CustomerRoleManager): The
                 manager responsible
                 for customer_role operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestCustomerRoleManager:
         # Verify that the updated customer_role
         # is of type CustomerRole
         # and has the updated code
-        assert isinstance(updated_customer_role1, CustomerRole)
+        assert isinstance(updated_customer_role1,
+                          CustomerRole)
 
         assert updated_customer_role1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestCustomerRoleManager:
         Test case to verify the behavior of refreshing a nonexistent customer_role.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The
+            customer_role_manager
+            (CustomerRoleManager): The
                 instance of the
                 CustomerRoleManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestCustomerRoleManager:
         exists using the manager function.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The
+            customer_role_manager
+            (CustomerRoleManager): The
                 customer_role manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestCustomerRoleManager:
         CustomerRoleManager class correctly compares two customer_roles.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An
+            customer_role_manager
+            (CustomerRoleManager): An
                 instance of the
                 CustomerRoleManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestCustomerRoleManager:
         assert customer_role_manager.is_equal(
             customer_role1, customer_role2) is True
 
-        customer_role1_dict = customer_role_manager.to_dict(
-            customer_role1)
+        customer_role1_dict = \
+            customer_role_manager.to_dict(
+                customer_role1)
 
         customer_role3 = await \
             customer_role_manager.from_dict(
@@ -815,7 +858,8 @@ class TestCustomerRoleManager:
         non-existent ID exists in the database.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The
+            customer_role_manager
+            (CustomerRoleManager): The
                 instance of the CustomerRoleManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestCustomerRoleManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The instance
+            customer_role_manager
+            (CustomerRoleManager): The instance
                 of the CustomerRoleManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

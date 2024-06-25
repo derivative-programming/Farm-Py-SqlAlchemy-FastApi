@@ -6,9 +6,9 @@ The Plant model inherits from
 the Base model and is mapped to the
 'farm_Plant' table in the database.
 """
-from decimal import Decimal
-import uuid
-from datetime import date, datetime
+from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -340,7 +340,7 @@ class Plant(Base):
         Set the code of the plant.
 
         Args:
-            value (uuid.UUID): The code to set for the 
+            value (uuid.UUID): The code to set for the
                 plant.
 
         Raises:
@@ -797,7 +797,8 @@ class Plant(Base):
             uuid.UUID: The unique identifier value.
         """
 
-        return uuid.UUID(str(self._some_uniqueidentifier_val))
+        return uuid.UUID(
+            str(self._some_uniqueidentifier_val))
 
     @some_uniqueidentifier_val.setter
     def some_uniqueidentifier_val(self, value):

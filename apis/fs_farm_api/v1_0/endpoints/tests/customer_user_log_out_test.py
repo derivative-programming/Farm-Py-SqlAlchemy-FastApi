@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `customer_user_log_out` endpoint.
+This module contains unit tests for the
+`customer_user_log_out` endpoint.
 """
 
 import logging

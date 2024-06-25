@@ -1,6 +1,8 @@
 # models/constants/tri_state_filter.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to tri_state_filters.
+This module contains boolean constants related to
+tri_state_filters.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_register.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Tac Register.
 
 The TacRegisterRouter provides
 the following endpoints:
-- GET /api/v1_0/tac-register/{tac_code}/init:
+- GET /api/v1_0/tac-register/...
+    {tac_code}/init:
     Get the initialization data for the
     Tac Register page.
-- GET /api/v1_0/tac-register/{tac_code}:
+- GET /api/v1_0/tac-register/...
+    {tac_code}:
     Get the Tac Register Report
     for a specific tac code.
-- GET /api/v1_0/tac-register/{tac_code}/to-csv:
+- GET /api/v1_0/tac-register/...
+        {tac_code}/to-csv:
     Retrieve the Tac Register
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class TacRegisterRouterConfig():
     """
-    Configuration class for the TacRegisterRouter.
+    Configuration class for the
+    TacRegisterRouter.
     """
 
     # constants

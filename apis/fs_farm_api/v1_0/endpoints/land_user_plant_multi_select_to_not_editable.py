@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/land_user_plant_multi_select_to_not_editable.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Land User Plant Multi Select To Not Editable.
 
 The LandUserPlantMultiSelectToNotEditableRouter provides
 the following endpoints:
-- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/init:
+- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/...
+    {land_code}/init:
     Get the initialization data for the
     Land User Plant Multi Select To Not Editable page.
-- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}:
+- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/...
+    {land_code}:
     Get the Land User Plant Multi Select To Not Editable Report
     for a specific  code.
-- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/{land_code}/to-csv:
+- GET /api/v1_0/land-user-plant-multi-select-to-not-editable/...
+        {land_code}/to-csv:
     Retrieve the Land User Plant Multi Select To Not Editable
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class LandUserPlantMultiSelectToNotEditableRouterConfig():
     """
-    Configuration class for the LandUserPlantMultiSelectToNotEditableRouter.
+    Configuration class for the
+    LandUserPlantMultiSelectToNotEditableRouter.
     """
 
     # constants

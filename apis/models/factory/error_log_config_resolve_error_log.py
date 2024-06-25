@@ -1,24 +1,29 @@
 # apis/models/factory/error_log_config_resolve_error_log.py
 # pylint: disable=unused-import
 """
-Factory module for creating instances of ErrorLogConfigResolveErrorLogPostModelRequest with
+Factory module for creating instances of
+ErrorLogConfigResolveErrorLogPostModelRequest with
 various field values for testing.
 """
 
-import uuid
-from datetime import datetime
+import uuid  # noqa: F401
+from datetime import datetime  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
-from factory import Faker
+from factory import Faker  # noqa: F401
 
 from ..error_log_config_resolve_error_log import (
     ErrorLogConfigResolveErrorLogPostModelRequest)
 
 
-class ErrorLogConfigResolveErrorLogPostModelRequestFactory(factory.base.Factory):
+class ErrorLogConfigResolveErrorLogPostModelRequestFactory(
+    factory.base.Factory
+):
     """
-    Factory class for ErrorLogConfigResolveErrorLogPostModelRequest. Generates
-    instances with randomized field values for testing.
+    Factory class for
+    ErrorLogConfigResolveErrorLogPostModelRequest.
+    Generates instances with randomized
+    field values for testing.
     """
 
     class Meta:

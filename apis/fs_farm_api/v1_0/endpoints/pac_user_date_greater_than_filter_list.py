@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/pac_user_date_greater_than_filter_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Pac User Date Greater Than Filter List.
 
 The PacUserDateGreaterThanFilterListRouter provides
 the following endpoints:
-- GET /api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}/init:
+- GET /api/v1_0/pac-user-date-greater-than-filter-list/...
+    {pac_code}/init:
     Get the initialization data for the
     Pac User Date Greater Than Filter List page.
-- GET /api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}:
+- GET /api/v1_0/pac-user-date-greater-than-filter-list/...
+    {pac_code}:
     Get the Pac User Date Greater Than Filter List Report
     for a specific pac code.
-- GET /api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}/to-csv:
+- GET /api/v1_0/pac-user-date-greater-than-filter-list/...
+        {pac_code}/to-csv:
     Retrieve the Pac User Date Greater Than Filter List
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class PacUserDateGreaterThanFilterListRouterConfig():
     """
-    Configuration class for the PacUserDateGreaterThanFilterListRouter.
+    Configuration class for the
+    PacUserDateGreaterThanFilterListRouter.
     """
 
     # constants
@@ -185,7 +190,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
             api_key (str): The API key for authorization.
 
         Returns:
-            api_models.PacUserDateGreaterThanFilterListGetModelResponse: The response
+            api_models.PacUserDateGreaterThanFilterListGetModelResponse:
+                The response
                 model containing the
                 Pac User Date Greater Than Filter List Report.
 

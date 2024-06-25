@@ -1,4 +1,5 @@
 # apis/models/pac_user_tri_state_filter_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -14,9 +15,9 @@ Pac User Tri State Filter List API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import UUID4, Field
@@ -130,7 +131,8 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
         default=0,
         description="Tri State Filter State Int Value")
 
-    def load_report_item(self, data: ReportItemPacUserTriStateFilterList):
+    def load_report_item(
+            self, data: ReportItemPacUserTriStateFilterList):
         """
         Loads the data from a
         ReportItemPacUserTriStateFilterList
@@ -224,9 +226,11 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model...PacUserTriStateFilterListGetModelResponse")
+            logging.info("loading model..."
+                         "PacUserTriStateFilterListGetModelResponse")
             generator = ReportManagerPacUserTriStateFilterList(session_context)
-            logging.info("processing...PacUserTriStateFilterListGetModelResponse")
+            logging.info("processing..."
+                         "PacUserTriStateFilterListGetModelResponse")
             items = await generator.generate(
                 pac_code,
 

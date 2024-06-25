@@ -1,13 +1,14 @@
 # pac_user_tri_state_filter_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the definition of the
 ReportItemPacUserTriStateFilterList class.
 """
 
-import uuid
-from decimal import Decimal
-from datetime import datetime, date
+import uuid  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 
 from helpers.type_conversion import TypeConversion
 
@@ -26,7 +27,8 @@ class ReportItemPacUserTriStateFilterList():
     tri_state_filter_name: str = ""
     tri_state_filter_state_int_value: int = 0
 
-    def load_data_provider_dict(self, data: dict):
+    def load_data_provider_dict(
+            self, data: dict):
         """
         Loads data from a dictionary into the report item.
 

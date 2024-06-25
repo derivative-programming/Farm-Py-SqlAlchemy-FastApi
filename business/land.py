@@ -1,8 +1,11 @@
 # business/land.py
 # pylint: disable=unused-import
 """
-This module contains the LandBusObj class,
-which represents the business object for a Land.
+This module contains the
+LandBusObj class,
+which represents the
+business object for a
+Land.
 """
 
 from typing import List

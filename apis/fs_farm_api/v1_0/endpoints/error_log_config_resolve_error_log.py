@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/error_log_config_resolve_error_log.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Error Log Config Resolve Error Log.
 
 The ErrorLogConfigResolveErrorLogRouter provides
 the following endpoints:
-- GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/init:
+- GET /api/v1_0/error-log-config-resolve-error-log/...
+    {error_log_code}/init:
     Get the initialization data for the
     Error Log Config Resolve Error Log page.
-- GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}:
+- GET /api/v1_0/error-log-config-resolve-error-log/...
+    {error_log_code}:
     Get the Error Log Config Resolve Error Log Report
     for a specific  code.
-- GET /api/v1_0/error-log-config-resolve-error-log/{error_log_code}/to-csv:
+- GET /api/v1_0/error-log-config-resolve-error-log/...
+        {error_log_code}/to-csv:
     Retrieve the Error Log Config Resolve Error Log
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class ErrorLogConfigResolveErrorLogRouterConfig():
     """
-    Configuration class for the ErrorLogConfigResolveErrorLogRouter.
+    Configuration class for the
+    ErrorLogConfigResolveErrorLogRouter.
     """
 
     # constants

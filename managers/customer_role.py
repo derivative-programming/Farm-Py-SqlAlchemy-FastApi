@@ -10,7 +10,7 @@ customer_roles in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -291,7 +291,8 @@ class CustomerRoleManager:
         logging.info("CustomerRoleManager.update")
         property_list = CustomerRole.property_list()
         if customer_role:
-            customer_role.last_update_user_id = self._session_context.customer_code
+            customer_role.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -495,7 +496,8 @@ class CustomerRoleManager:
         logging.info(
             "CustomerRoleManager.add_bulk")
         for customer_role in customer_roles:
-            customer_role_id = customer_role.customer_role_id
+            customer_role_id = \
+                customer_role.customer_role_id
             code = customer_role.code
             if customer_role.customer_role_id is not None and customer_role.customer_role_id > 0:
                 raise ValueError(
@@ -562,7 +564,8 @@ class CustomerRoleManager:
                 if key != "customer_role_id":
                     setattr(customer_role, key, value)
 
-            customer_role.last_update_user_id = self._session_context.customer_code
+            customer_role.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_customer_roles.append(customer_role)
 
@@ -679,11 +682,13 @@ class CustomerRoleManager:
         if not customer_role2:
             raise TypeError("CustomerRole2 required.")
 
-        if not isinstance(customer_role1, CustomerRole):
+        if not isinstance(customer_role1,
+                          CustomerRole):
             raise TypeError("The customer_role1 must be an "
                             "CustomerRole instance.")
 
-        if not isinstance(customer_role2, CustomerRole):
+        if not isinstance(customer_role2,
+                          CustomerRole):
             raise TypeError("The customer_role2 must be an "
                             "CustomerRole instance.")
 
@@ -691,36 +696,10 @@ class CustomerRoleManager:
         dict2 = self.to_dict(customer_role2)
 
         return dict1 == dict2
-    async def get_by_customer_id(  # CustomerID
-            self,
-            customer_id: int) -> List[CustomerRole]:
-        """
-        Retrieve a list of customer_roles by
-        customer ID.
+    # CustomerID
+    # RoleID
 
-        Args:
-            customer_id (int): The ID of the customer.
-
-        Returns:
-            List[CustomerRole]: A list of
-                customer_roles associated
-                with the specified customer ID.
-        """
-
-        logging.info(
-            "CustomerRoleManager.get_by_customer_id")
-        if not isinstance(customer_id, int):
-            raise TypeError(
-                f"The customer_role_id must be an integer, "
-                f"got {type(customer_id)} instead."
-            )
-
-        query_filter = CustomerRole._customer_id == customer_id  # pylint: disable=protected-access  # noqa: E501
-
-        query_results = await self._run_query(query_filter)
-
-        return query_results
-    async def get_by_role_id(  # RoleID
+    async def get_by_role_id(
             self,
             role_id: int) -> List[CustomerRole]:
         """
@@ -750,6 +729,35 @@ class CustomerRoleManager:
             )
 
         query_filter = CustomerRole._role_id == role_id  # pylint: disable=protected-access  # noqa: E501
+
+        query_results = await self._run_query(query_filter)
+
+        return query_results
+    async def get_by_customer_id(
+            self,
+            customer_id: int) -> List[CustomerRole]:
+        """
+        Retrieve a list of customer_roles by
+        customer ID.
+
+        Args:
+            customer_id (int): The ID of the customer.
+
+        Returns:
+            List[CustomerRole]: A list of
+                customer_roles associated
+                with the specified customer ID.
+        """
+
+        logging.info(
+            "CustomerRoleManager.get_by_customer_id")
+        if not isinstance(customer_id, int):
+            raise TypeError(
+                f"The customer_role_id must be an integer, "
+                f"got {type(customer_id)} instead."
+            )
+
+        query_filter = CustomerRole._customer_id == customer_id  # pylint: disable=protected-access  # noqa: E501
 
         query_results = await self._run_query(query_filter)
 

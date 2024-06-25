@@ -1,5 +1,6 @@
 # models/factory/tests/tac_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the TacFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestTacFactoryAsync:
             AssertionError: If the tac ID
                 is None after creation.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         assert tac.tac_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestTacFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         assert isinstance(tac.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestTacFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        tac: Tac = await TacFactory.build_async(
-            session=session)
+        tac: Tac = await \
+            TacFactory.build_async(
+                session=session)
         assert tac.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestTacFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        tac: Tac = await TacFactory.create_async(
-            session=session)
+        tac: Tac = await \
+            TacFactory.create_async(
+                session=session)
         assert tac.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestTacFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         initial_code = tac.last_change_code
         tac.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestTacFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        tac = await TacFactory.build_async(
-            session=session)
+        tac = await \
+            TacFactory.build_async(
+                session=session)
         assert tac.insert_utc_date_time is not None
         assert isinstance(
             tac.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestTacFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        tac = await TacFactory.build_async(
-            session=session)
+        tac = await \
+            TacFactory.build_async(
+                session=session)
         assert tac.insert_utc_date_time is not None
         assert isinstance(
             tac.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestTacFactoryAsync:
         tac.code = uuid.uuid4()
         session.add(tac)
         await session.commit()
-        assert tac.insert_utc_date_time > initial_time
+        assert tac.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestTacFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         assert tac.insert_utc_date_time is not None
         assert isinstance(
             tac.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestTacFactoryAsync:
         tac.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert tac.insert_utc_date_time == initial_time
+        assert tac.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestTacFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        tac = await TacFactory.build_async(
-            session=session)
+        tac = await \
+            TacFactory.build_async(
+                session=session)
         assert tac.last_update_utc_date_time is not None
         assert isinstance(
             tac.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestTacFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        tac = await TacFactory.build_async(
-            session=session)
+        tac = await \
+            TacFactory.build_async(
+                session=session)
         assert tac.last_update_utc_date_time is not None
         assert isinstance(
             tac.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestTacFactoryAsync:
         tac.code = uuid.uuid4()
         session.add(tac)
         await session.commit()
-        assert tac.last_update_utc_date_time > initial_time
+        assert tac.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestTacFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         assert tac.last_update_utc_date_time is not None
         assert isinstance(
             tac.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestTacFactoryAsync:
         tac.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert tac.last_update_utc_date_time > initial_time
+        assert tac.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestTacFactoryAsync:
             tac is still
             found in the database.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         await session.delete(tac)
         await session.commit()
 
         # Construct the select statement
         stmt = select(Tac).where(
-            Tac._tac_id == tac.tac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Tac._tac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                tac.tac_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,18 +405,22 @@ class TestTacFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         assert isinstance(tac.tac_id, int)
         assert isinstance(tac.code, uuid.UUID)
         assert isinstance(tac.last_change_code, int)
         assert isinstance(tac.insert_user_id, uuid.UUID)
         assert isinstance(tac.last_update_user_id, uuid.UUID)
-        assert tac.description == "" or isinstance(tac.description, str)
+        assert tac.description == "" or isinstance(
+            tac.description, str)
         assert isinstance(tac.display_order, int)
         assert isinstance(tac.is_active, bool)
-        assert tac.lookup_enum_name == "" or isinstance(tac.lookup_enum_name, str)
-        assert tac.name == "" or isinstance(tac.name, str)
+        assert tac.lookup_enum_name == "" or isinstance(
+            tac.lookup_enum_name, str)
+        assert tac.name == "" or isinstance(
+            tac.name, str)
         assert isinstance(tac.pac_id, int)
         # Check for the peek values
         # description,
@@ -416,7 +438,8 @@ class TestTacFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for tacs.
+        Test case to check the unique code constraint
+        for tacs.
 
         This test creates two tac
         instances using
@@ -430,7 +453,9 @@ class TestTacFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        TacFactory.create_async() method creates unique codes for each tac.
+        TacFactory.create_async()
+        method creates unique codes for
+        each tac.
         """
 
         tac_1 = await TacFactory.create_async(
@@ -492,16 +517,20 @@ class TestTacFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new Tac object using
+        1. Create a new
+            Tac object using
             the TacFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the Tac
-            object using the tac_id.
+            object using the
+            tac_id.
         4. Modify the code attribute of the
             retrieved Tac object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            Tac object using the tac_id.
+            Tac object using the
+            tac_id.
         7. Get the modified Tac object.
         8. Verify that the last_change_code attribute
             of the modified Tac object
@@ -512,12 +541,14 @@ class TestTacFactoryAsync:
                             of the modified Tac
                             object is the same as the original value.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         original_last_change_code = tac.last_change_code
 
         stmt = select(Tac).where(
-            Tac._tac_id == tac.tac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Tac._tac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                tac.tac_id))
         result = await session.execute(stmt)
         tac_1 = result.scalars().first()
 
@@ -527,7 +558,8 @@ class TestTacFactoryAsync:
         await session.commit()
 
         stmt = select(Tac).where(
-            Tac._tac_id == tac.tac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Tac._tac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                tac.tac_id))
         result = await session.execute(stmt)
         tac_2 = result.scalars().first()
 
@@ -560,8 +592,9 @@ class TestTacFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        tac = await TacFactory.create_async(
-            session=session)
+        tac = await \
+            TacFactory.create_async(
+                session=session)
         tac.pac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

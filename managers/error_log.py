@@ -10,7 +10,7 @@ error_logs in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -280,7 +280,8 @@ class ErrorLogManager:
         logging.info("ErrorLogManager.update")
         property_list = ErrorLog.property_list()
         if error_log:
-            error_log.last_update_user_id = self._session_context.customer_code
+            error_log.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -484,7 +485,8 @@ class ErrorLogManager:
         logging.info(
             "ErrorLogManager.add_bulk")
         for error_log in error_logs:
-            error_log_id = error_log.error_log_id
+            error_log_id = \
+                error_log.error_log_id
             code = error_log.code
             if error_log.error_log_id is not None and error_log.error_log_id > 0:
                 raise ValueError(
@@ -551,7 +553,8 @@ class ErrorLogManager:
                 if key != "error_log_id":
                     setattr(error_log, key, value)
 
-            error_log.last_update_user_id = self._session_context.customer_code
+            error_log.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_error_logs.append(error_log)
 
@@ -668,11 +671,13 @@ class ErrorLogManager:
         if not error_log2:
             raise TypeError("ErrorLog2 required.")
 
-        if not isinstance(error_log1, ErrorLog):
+        if not isinstance(error_log1,
+                          ErrorLog):
             raise TypeError("The error_log1 must be an "
                             "ErrorLog instance.")
 
-        if not isinstance(error_log2, ErrorLog):
+        if not isinstance(error_log2,
+                          ErrorLog):
             raise TypeError("The error_log2 must be an "
                             "ErrorLog instance.")
 
@@ -680,7 +685,8 @@ class ErrorLogManager:
         dict2 = self.to_dict(error_log2)
 
         return dict1 == dict2
-    async def get_by_pac_id(  # PacID
+    # PacID
+    async def get_by_pac_id(
             self,
             pac_id: int) -> List[ErrorLog]:
         """

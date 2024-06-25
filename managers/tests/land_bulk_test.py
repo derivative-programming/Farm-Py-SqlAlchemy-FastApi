@@ -1,13 +1,14 @@
 # models/managers/tests/land_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `LandManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestLandBulkManager:
             fetched_land = result.scalars().first()
 
             assert isinstance(
-                fetched_land, Land)
+                fetched_land,
+                Land)
 
             assert str(fetched_land.insert_user_id) == (
                 str(land_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestLandBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_lands) == 2
-        logging.info(updated_lands[0].__dict__)
-        logging.info(updated_lands[1].__dict__)
+        logging.info(updated_lands[0]
+                     .__dict__)
+        logging.info(updated_lands[1]
+                     .__dict__)
 
         logging.info('getall')
         lands = await land_manager.get_list()
-        logging.info(lands[0].__dict__)
-        logging.info(lands[1].__dict__)
+        logging.info(lands[0]
+                     .__dict__)
+        logging.info(lands[1]
+                     .__dict__)
 
-        assert updated_lands[0].code == code_updated1
-        assert updated_lands[1].code == code_updated2
+        assert updated_lands[0].code == \
+            code_updated1
+        assert updated_lands[1].code == \
+            code_updated2
 
-        assert str(updated_lands[0].last_update_user_id) == (
-            str(land_manager._session_context.customer_code))
+        assert str(updated_lands[0]
+                   .last_update_user_id) == (
+            str(land_manager
+                ._session_context.customer_code))
 
-        assert str(updated_lands[1].last_update_user_id) == (
-            str(land_manager._session_context.customer_code))
+        assert str(updated_lands[1]
+                   .last_update_user_id) == (
+            str(land_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Land).filter(
@@ -194,7 +206,8 @@ class TestLandBulkManager:
         )
         fetched_land = result.scalars().first()
 
-        assert isinstance(fetched_land, Land)
+        assert isinstance(fetched_land,
+                          Land)
 
         assert fetched_land.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestLandBulkManager:
         )
         fetched_land = result.scalars().first()
 
-        assert isinstance(fetched_land, Land)
+        assert isinstance(fetched_land,
+                          Land)
 
         assert fetched_land.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestLandBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param land_manager: An instance of the LandManager class.
+        :param land_manager: An instance of the
+            LandManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestLandBulkManager:
             session=session)
 
         # Delete lands
-        land_ids = [land1.land_id, land2.land_id]
+        land_ids = [land1.land_id,
+                     land2.land_id]
         result = await land_manager.delete_bulk(
             land_ids)
 
@@ -379,7 +395,8 @@ class TestLandBulkManager:
         land1 = await LandFactory.create_async(
             session=session)
 
-        assert isinstance(land1, Land)
+        assert isinstance(land1,
+                          Land)
 
         # Delete lands
         land_ids = [1, 2]

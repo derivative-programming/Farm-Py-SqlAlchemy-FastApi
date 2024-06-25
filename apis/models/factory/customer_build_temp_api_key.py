@@ -1,24 +1,29 @@
 # apis/models/factory/customer_build_temp_api_key.py
 # pylint: disable=unused-import
 """
-Factory module for creating instances of CustomerBuildTempApiKeyPostModelRequest with
+Factory module for creating instances of
+CustomerBuildTempApiKeyPostModelRequest with
 various field values for testing.
 """
 
-import uuid
-from datetime import datetime
+import uuid  # noqa: F401
+from datetime import datetime  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
-from factory import Faker
+from factory import Faker  # noqa: F401
 
 from ..customer_build_temp_api_key import (
     CustomerBuildTempApiKeyPostModelRequest)
 
 
-class CustomerBuildTempApiKeyPostModelRequestFactory(factory.base.Factory):
+class CustomerBuildTempApiKeyPostModelRequestFactory(
+    factory.base.Factory
+):
     """
-    Factory class for CustomerBuildTempApiKeyPostModelRequest. Generates
-    instances with randomized field values for testing.
+    Factory class for
+    CustomerBuildTempApiKeyPostModelRequest.
+    Generates instances with randomized
+    field values for testing.
     """
 
     class Meta:

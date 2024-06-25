@@ -1,15 +1,16 @@
 # models/factory/tests/role_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the RoleFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestRoleFactory:
         role.code = uuid.uuid4()
         session.add(role)
         session.commit()
-        assert role.insert_utc_date_time > initial_time
+        assert role.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestRoleFactory:
         role.code = uuid.uuid4()
         session.add(role)
         session.commit()
-        assert role.last_update_utc_date_time > initial_time
+        assert role.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestRoleFactory:
         role.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert role.last_update_utc_date_time > initial_time
+        assert role.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -212,14 +216,15 @@ class TestRoleFactory:
         assert isinstance(role.last_change_code, int)
         assert isinstance(role.insert_user_id, uuid.UUID)
         assert isinstance(role.last_update_user_id, uuid.UUID)
-        assert role.description == "" or isinstance(role.description, str)
+        assert role.description == "" or isinstance(
+            role.description, str)
         assert isinstance(role.display_order, int)
         assert isinstance(role.is_active, bool)
-        assert role.lookup_enum_name == "" or isinstance(role.lookup_enum_name, str)
-        assert role.name == "" or isinstance(role.name, str)
+        assert role.lookup_enum_name == "" or isinstance(
+            role.lookup_enum_name, str)
+        assert role.name == "" or isinstance(
+            role.name, str)
         assert isinstance(role.pac_id, int)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
         # description,
         # displayOrder,
         # isActive,

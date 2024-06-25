@@ -1,13 +1,16 @@
 # models/factory/org_api_key.py
+# pylint: disable=unused-import
 """
-This module contains the OrgApiKeyFactory
+This module contains the
+OrgApiKeyFactory
 class, which is responsible
-for creating instances of the OrgApiKey
+for creating instances of the
+OrgApiKey
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import OrgApiKey
@@ -105,7 +108,8 @@ class OrgApiKeyFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> OrgApiKey:
         """
-        Create a new OrgApiKey object
+        Create a new
+        OrgApiKey object
         and save it to the database.
 
         Args:
@@ -156,7 +160,8 @@ class OrgApiKeyFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> OrgApiKey:
         """
-        Create a new OrgApiKey object
+        Create a new
+        OrgApiKey object
         asynchronously.
 
         Args:

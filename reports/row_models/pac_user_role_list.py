@@ -1,13 +1,14 @@
 # pac_user_role_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the definition of the
 ReportItemPacUserRoleList class.
 """
 
-import uuid
-from decimal import Decimal
-from datetime import datetime, date
+import uuid  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 
 from helpers.type_conversion import TypeConversion
 
@@ -26,7 +27,8 @@ class ReportItemPacUserRoleList():
     role_name: str = ""
     pac_name: str = ""
 
-    def load_data_provider_dict(self, data: dict):
+    def load_data_provider_dict(
+            self, data: dict):
         """
         Loads data from a dictionary into the report item.
 

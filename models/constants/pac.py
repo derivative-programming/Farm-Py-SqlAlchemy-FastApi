@@ -1,6 +1,8 @@
 # models/constants/pac.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to pacs.
+This module contains boolean constants related to
+pacs.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

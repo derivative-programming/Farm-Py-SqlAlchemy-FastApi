@@ -1,7 +1,9 @@
 # models/serialization_schema/date_greater_than_filter.py
+# pylint: disable=unused-import
 
 """
-This module contains the DateGreaterThanFilterSchema
+This module contains the
+DateGreaterThanFilterSchema
 class, which is responsible
 for serializing and deserializing
 DateGreaterThanFilter objects.

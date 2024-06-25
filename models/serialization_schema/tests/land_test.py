@@ -1,5 +1,6 @@
 # land_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains tests for the
@@ -40,8 +41,8 @@ works correctly and produces the expected results.
 
 import json
 import logging
-from datetime import datetime
-from decimal import Decimal
+from datetime import datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import pytest
 import pytz
@@ -213,7 +214,8 @@ class TestLandSchema:
         new_land = Land(
             **deserialized_data)
 
-        assert isinstance(new_land, Land)
+        assert isinstance(new_land,
+                          Land)
 
         # Now compare the new_land attributes with
         # the land attributes
@@ -308,7 +310,8 @@ class TestLandSchema:
         new_land = Land(
             **deserialized_data)
 
-        assert isinstance(new_land, Land)
+        assert isinstance(new_land,
+                          Land)
 
     def test_to_json(
         self,

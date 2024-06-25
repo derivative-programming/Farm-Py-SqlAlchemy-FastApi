@@ -3,13 +3,14 @@
 # pylint: disable=redefined-outer-name
 
 """
-This module contains unit tests for the TacBusObj class.
+This module contains unit tests for the
+TacBusObj class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 from datetime import date, datetime  # noqa: F401
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -17,11 +18,14 @@ import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.tac_base import TacBaseBusObj
+from business.tac_base import (
+    TacBaseBusObj)
 from helpers.session_context import SessionContext
-from managers.tac import TacManager
+from managers.tac import (
+    TacManager)
 from models import Tac
-from models.factory import TacFactory
+from models.factory import (
+    TacFactory)
 from services.logging_config import get_logger
 
 from ..tac import TacBusObj
@@ -50,24 +54,29 @@ def tac():
 
 
 @pytest.fixture
-def tac_base_bus_obj(fake_session_context, tac):
+def tac_base_bus_obj(
+    fake_session_context, tac
+):
     """
     Fixture that returns a TacBaseBusObj instance.
     """
-    tac_base = TacBaseBusObj(fake_session_context)
+    tac_base = TacBaseBusObj(
+        fake_session_context)
     tac_base.tac = tac
     return tac_base
 
 
 class TestTacBaseBusObj:
     """
-    Unit tests for the TacBusObj class.
+    Unit tests for the
+    TacBusObj class.
     """
 
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session: AsyncSession):
         """
-        Fixture that returns an instance of the TacManager class.
+        Fixture that returns an instance of the
+        TacManager class.
         """
         session_context = SessionContext(dict(), session)
         return TacManager(session_context)
@@ -75,7 +84,8 @@ class TestTacBaseBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def tac_bus_obj(self, session):
         """
-        Fixture that returns an instance of the TacBusObj class.
+        Fixture that returns an instance of the
+        TacBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return TacBusObj(session_context)
@@ -113,12 +123,18 @@ class TestTacBaseBusObj:
 
         assert tac_bus_obj.last_update_user_id == uuid.UUID(int=0)
 
-        assert isinstance(tac_bus_obj.description, str)
-        assert isinstance(tac_bus_obj.display_order, int)
-        assert isinstance(tac_bus_obj.is_active, bool)
-        assert isinstance(tac_bus_obj.lookup_enum_name, str)
-        assert isinstance(tac_bus_obj.name, str)
-        assert isinstance(tac_bus_obj.pac_id, int)
+        assert isinstance(tac_bus_obj.description,
+                          str)
+        assert isinstance(tac_bus_obj.display_order,
+                          int)
+        assert isinstance(tac_bus_obj.is_active,
+                          bool)
+        assert isinstance(tac_bus_obj.lookup_enum_name,
+                          str)
+        assert isinstance(tac_bus_obj.name,
+                          str)
+        assert isinstance(tac_bus_obj.pac_id,
+                          int)
 
     @pytest.mark.asyncio
     async def test_load_with_tac_obj(
@@ -150,7 +166,8 @@ class TestTacBaseBusObj:
         tac ID.
         """
 
-        new_tac_tac_id = new_tac.tac_id
+        new_tac_tac_id = \
+            new_tac.tac_id
 
         await tac_bus_obj.load_from_id(
             new_tac_tac_id)
@@ -188,7 +205,9 @@ class TestTacBaseBusObj:
         tac JSON.
         """
 
-        tac_json = tac_manager.to_json(new_tac)
+        tac_json = \
+            tac_manager.to_json(
+                new_tac)
 
         await tac_bus_obj.load_from_json(
             tac_json)
@@ -210,7 +229,9 @@ class TestTacBaseBusObj:
 
         logger.info("test_load_with_tac_dict 1")
 
-        tac_dict = tac_manager.to_dict(new_tac)
+        tac_dict = \
+            tac_manager.to_dict(
+                new_tac)
 
         logger.info(tac_dict)
 
@@ -250,10 +271,12 @@ class TestTacBaseBusObj:
 
         new_tac_tac_id_value = new_tac.tac_id
 
-        new_tac = await tac_manager.get_by_id(
-            new_tac_tac_id_value)
+        new_tac = await \
+            tac_manager.get_by_id(
+                new_tac_tac_id_value)
 
-        assert isinstance(new_tac, Tac)
+        assert isinstance(new_tac,
+                          Tac)
 
         new_code = uuid.uuid4()
 
@@ -270,8 +293,9 @@ class TestTacBaseBusObj:
 
         new_tac_tac_id_value = new_tac.tac_id
 
-        new_tac = await tac_manager.get_by_id(
-            new_tac_tac_id_value)
+        new_tac = await \
+            tac_manager.get_by_id(
+                new_tac_tac_id_value)
 
         assert tac_manager.is_equal(
             tac_bus_obj.tac,
@@ -301,8 +325,9 @@ class TestTacBaseBusObj:
 
         new_tac_tac_id_value = new_tac.tac_id
 
-        new_tac = await tac_manager.get_by_id(
-            new_tac_tac_id_value)
+        new_tac = await \
+            tac_manager.get_by_id(
+                new_tac_tac_id_value)
 
         assert new_tac is None
 
@@ -317,7 +342,8 @@ class TestTacBaseBusObj:
         assert tac_base_bus_obj.get_session_context() == fake_session_context
 
     @pytest.mark.asyncio
-    async def test_refresh(self, tac_base_bus_obj, tac):
+    async def test_refresh(
+        self, tac_base_bus_obj, tac):
         """
         Test case for refreshing the tac data.
         """
@@ -325,14 +351,17 @@ class TestTacBaseBusObj:
             'business.tac_base.TacManager',
             autospec=True
         ) as mock_tac_manager:
-            mock_tac_manager_instance = mock_tac_manager.return_value
-            mock_tac_manager_instance.refresh = AsyncMock(return_value=tac)
+            mock_tac_manager_instance = \
+                mock_tac_manager.return_value
+            mock_tac_manager_instance.refresh =\
+                AsyncMock(return_value=tac)
 
             refreshed_tac_base = await tac_base_bus_obj.refresh()
             assert refreshed_tac_base.tac == tac
             mock_tac_manager_instance.refresh.assert_called_once_with(tac)
 
-    def test_is_valid(self, tac_base_bus_obj):
+    def test_is_valid(
+            self, tac_base_bus_obj):
         """
         Test case for checking if the tac data is valid.
         """
@@ -341,7 +370,8 @@ class TestTacBaseBusObj:
         tac_base_bus_obj.tac = None
         assert tac_base_bus_obj.is_valid() is False
 
-    def test_to_dict(self, tac_base_bus_obj):
+    def test_to_dict(
+            self, tac_base_bus_obj):
         """
         Test case for converting the tac data to a dictionary.
         """
@@ -349,7 +379,8 @@ class TestTacBaseBusObj:
             'business.tac_base.TacManager',
             autospec=True
         ) as mock_tac_manager:
-            mock_tac_manager_instance = mock_tac_manager.return_value
+            mock_tac_manager_instance = \
+                mock_tac_manager.return_value
             mock_tac_manager_instance.to_dict = Mock(
                 return_value={"key": "value"})
 
@@ -358,7 +389,8 @@ class TestTacBaseBusObj:
             mock_tac_manager_instance.to_dict.assert_called_once_with(
                 tac_base_bus_obj.tac)
 
-    def test_to_json(self, tac_base_bus_obj):
+    def test_to_json(
+            self, tac_base_bus_obj):
         """
         Test case for converting the tac data to JSON.
         """
@@ -366,7 +398,8 @@ class TestTacBaseBusObj:
             'business.tac_base.TacManager',
             autospec=True
         ) as mock_tac_manager:
-            mock_tac_manager_instance = mock_tac_manager.return_value
+            mock_tac_manager_instance = \
+                mock_tac_manager.return_value
             mock_tac_manager_instance.to_json = Mock(
                 return_value='{"key": "value"}')
 
@@ -375,33 +408,38 @@ class TestTacBaseBusObj:
             mock_tac_manager_instance.to_json.assert_called_once_with(
                 tac_base_bus_obj.tac)
 
-    def test_get_obj(self, tac_base_bus_obj, tac):
+    def test_get_obj(
+            self, tac_base_bus_obj, tac):
         """
         Test case for getting the tac object.
         """
         assert tac_base_bus_obj.get_obj() == tac
 
-    def test_get_object_name(self, tac_base_bus_obj):
+    def test_get_object_name(
+            self, tac_base_bus_obj):
         """
         Test case for getting the object name.
         """
         assert tac_base_bus_obj.get_object_name() == "tac"
 
-    def test_get_id(self, tac_base_bus_obj, tac):
+    def test_get_id(
+            self, tac_base_bus_obj, tac):
         """
         Test case for getting the tac ID.
         """
         tac.tac_id = 1
         assert tac_base_bus_obj.get_id() == 1
 
-    def test_tac_id(self, tac_base_bus_obj, tac):
+    def test_tac_id(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the tac_id property.
         """
         tac.tac_id = 1
         assert tac_base_bus_obj.tac_id == 1
 
-    def test_code(self, tac_base_bus_obj, tac):
+    def test_code(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the code property.
         """
@@ -409,7 +447,8 @@ class TestTacBaseBusObj:
         tac.code = test_uuid
         assert tac_base_bus_obj.code == test_uuid
 
-    def test_code_setter(self, tac_base_bus_obj):
+    def test_code_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the code setter.
         """
@@ -417,14 +456,16 @@ class TestTacBaseBusObj:
         tac_base_bus_obj.code = test_uuid
         assert tac_base_bus_obj.code == test_uuid
 
-    def test_code_invalid_value(self, tac_base_bus_obj):
+    def test_code_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the code property.
         """
         with pytest.raises(ValueError):
             tac_base_bus_obj.code = "not-a-uuid"
 
-    def test_last_change_code(self, tac_base_bus_obj, tac):
+    def test_last_change_code(
+            self, tac_base_bus_obj, tac):
         """
         Test case to verify the behavior of the last_change_code
         attribute in the TacBaseBusiness class.
@@ -433,7 +474,8 @@ class TestTacBaseBusObj:
             tac_base_bus_obj (TacBaseBusiness):
                 An instance of the
                 TacBaseBusiness class.
-            tac (Tac): An instance of the Tac class.
+            tac (Tac): An instance of the
+                Tac class.
 
         Returns:
             None
@@ -441,14 +483,16 @@ class TestTacBaseBusObj:
         tac.last_change_code = 123
         assert tac_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_setter(self, tac_base_bus_obj):
+    def test_last_change_code_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the last_change_code setter.
         """
         tac_base_bus_obj.last_change_code = 123
         assert tac_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_invalid_value(self, tac_base_bus_obj):
+    def test_last_change_code_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_change_code property.
@@ -456,7 +500,8 @@ class TestTacBaseBusObj:
         with pytest.raises(ValueError):
             tac_base_bus_obj.last_change_code = "not-an-int"
 
-    def test_insert_user_id(self, tac_base_bus_obj, tac):
+    def test_insert_user_id(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the insert_user_id property.
         """
@@ -464,7 +509,8 @@ class TestTacBaseBusObj:
         tac.insert_user_id = test_uuid
         assert tac_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_setter(self, tac_base_bus_obj):
+    def test_insert_user_id_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the insert_user_id setter.
         """
@@ -472,7 +518,8 @@ class TestTacBaseBusObj:
         tac_base_bus_obj.insert_user_id = test_uuid
         assert tac_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_invalid_value(self, tac_base_bus_obj):
+    def test_insert_user_id_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_user_id property.
@@ -481,21 +528,24 @@ class TestTacBaseBusObj:
             tac_base_bus_obj.insert_user_id = "not-a-uuid"
     # description
 
-    def test_description(self, tac_base_bus_obj, tac):
+    def test_description(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the description property.
         """
         tac.description = "Vanilla"
         assert tac_base_bus_obj.description == "Vanilla"
 
-    def test_description_setter(self, tac_base_bus_obj):
+    def test_description_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the description setter.
         """
         tac_base_bus_obj.description = "Vanilla"
         assert tac_base_bus_obj.description == "Vanilla"
 
-    def test_description_invalid_value(self, tac_base_bus_obj):
+    def test_description_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         description property.
@@ -504,14 +554,16 @@ class TestTacBaseBusObj:
             tac_base_bus_obj.description = 123
     # displayOrder
 
-    def test_display_order(self, tac_base_bus_obj, tac):
+    def test_display_order(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the display_order property.
         """
         tac.display_order = 1
         assert tac_base_bus_obj.display_order == 1
 
-    def test_display_order_setter(self, tac_base_bus_obj):
+    def test_display_order_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the display_order setter.
         """
@@ -527,21 +579,24 @@ class TestTacBaseBusObj:
             tac_base_bus_obj.display_order = "not-an-int"
     # isActive
 
-    def test_is_active(self, tac_base_bus_obj, tac):
+    def test_is_active(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the is_active property.
         """
         tac.is_active = True
         assert tac_base_bus_obj.is_active is True
 
-    def test_is_active_setter(self, tac_base_bus_obj):
+    def test_is_active_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the is_active setter.
         """
         tac_base_bus_obj.is_active = True
         assert tac_base_bus_obj.is_active is True
 
-    def test_is_active_invalid_value(self, tac_base_bus_obj):
+    def test_is_active_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         is_active property.
@@ -550,21 +605,24 @@ class TestTacBaseBusObj:
             tac_base_bus_obj.is_active = "not-a-boolean"
     # lookupEnumName
 
-    def test_lookup_enum_name(self, tac_base_bus_obj, tac):
+    def test_lookup_enum_name(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the lookup_enum_name property.
         """
         tac.lookup_enum_name = "Vanilla"
         assert tac_base_bus_obj.lookup_enum_name == "Vanilla"
 
-    def test_lookup_enum_name_setter(self, tac_base_bus_obj):
+    def test_lookup_enum_name_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the lookup_enum_name setter.
         """
         tac_base_bus_obj.lookup_enum_name = "Vanilla"
         assert tac_base_bus_obj.lookup_enum_name == "Vanilla"
 
-    def test_lookup_enum_name_invalid_value(self, tac_base_bus_obj):
+    def test_lookup_enum_name_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         lookup_enum_name property.
@@ -573,21 +631,24 @@ class TestTacBaseBusObj:
             tac_base_bus_obj.lookup_enum_name = 123
     # name
 
-    def test_name(self, tac_base_bus_obj, tac):
+    def test_name(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the name property.
         """
         tac.name = "Vanilla"
         assert tac_base_bus_obj.name == "Vanilla"
 
-    def test_name_setter(self, tac_base_bus_obj):
+    def test_name_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the name setter.
         """
         tac_base_bus_obj.name = "Vanilla"
         assert tac_base_bus_obj.name == "Vanilla"
 
-    def test_name_invalid_value(self, tac_base_bus_obj):
+    def test_name_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         name property.
@@ -602,21 +663,24 @@ class TestTacBaseBusObj:
     # name,
     # PacID
 
-    def test_pac_id(self, tac_base_bus_obj, tac):
+    def test_pac_id(
+            self, tac_base_bus_obj, tac):
         """
         Test case for the pac_id property.
         """
         tac.pac_id = 1
         assert tac_base_bus_obj.pac_id == 1
 
-    def test_pac_id_setter(self, tac_base_bus_obj):
+    def test_pac_id_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the pac_id setter.
         """
         tac_base_bus_obj.pac_id = 1
         assert tac_base_bus_obj.pac_id == 1
 
-    def test_pac_id_invalid_value(self, tac_base_bus_obj):
+    def test_pac_id_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         pac_id property.
@@ -624,7 +688,10 @@ class TestTacBaseBusObj:
         with pytest.raises(AssertionError):
             tac_base_bus_obj.pac_id = "not-an-int"
 
-    def test_insert_utc_date_time(self, tac_base_bus_obj, tac):
+    def test_insert_utc_date_time(
+            self,
+            tac_base_bus_obj,
+            tac):
         """
         Test case for the insert_utc_date_time property.
         """
@@ -632,7 +699,8 @@ class TestTacBaseBusObj:
         tac.insert_utc_date_time = test_datetime
         assert tac_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_setter(self, tac_base_bus_obj):
+    def test_insert_utc_date_time_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the insert_utc_date_time setter.
         """
@@ -640,7 +708,8 @@ class TestTacBaseBusObj:
         tac_base_bus_obj.insert_utc_date_time = test_datetime
         assert tac_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_invalid_value(self, tac_base_bus_obj):
+    def test_insert_utc_date_time_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_utc_date_time property.
@@ -648,7 +717,10 @@ class TestTacBaseBusObj:
         with pytest.raises(AssertionError):
             tac_base_bus_obj.insert_utc_date_time = "not-a-datetime"
 
-    def test_last_update_utc_date_time(self, tac_base_bus_obj, tac):
+    def test_last_update_utc_date_time(
+            self,
+            tac_base_bus_obj,
+            tac):
         """
         Test case for the last_update_utc_date_time property.
         """
@@ -656,7 +728,8 @@ class TestTacBaseBusObj:
         tac.last_update_utc_date_time = test_datetime
         assert tac_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_setter(self, tac_base_bus_obj):
+    def test_last_update_utc_date_time_setter(
+            self, tac_base_bus_obj):
         """
         Test case for the last_update_utc_date_time setter.
         """
@@ -664,7 +737,8 @@ class TestTacBaseBusObj:
         tac_base_bus_obj.last_update_utc_date_time = test_datetime
         assert tac_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_invalid_value(self, tac_base_bus_obj):
+    def test_last_update_utc_date_time_invalid_value(
+            self, tac_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_update_utc_date_time property.

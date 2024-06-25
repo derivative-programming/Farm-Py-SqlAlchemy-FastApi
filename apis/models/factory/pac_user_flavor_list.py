@@ -5,11 +5,11 @@ This module contains the factory class for creating
 instances of the PacUserFlavorListGetModelRequest model.
 """
 
-import uuid
-from datetime import datetime
+import uuid  # noqa: F401
+from datetime import datetime  # noqa: F401
 
 import factory
-from factory import Faker
+from factory import Faker  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..pac_user_flavor_list import (
@@ -72,7 +72,9 @@ class PacUserFlavorListGetModelRequestFactory(
         **kwargs
     ) -> PacUserFlavorListGetModelRequest:
         """
-        Create a PacUserFlavorListGetModelRequest instance.
+        Create a
+        PacUserFlavorListGetModelRequest
+        instance.
 
         Args:
             model_class: The model class to create an instance of.
@@ -88,7 +90,6 @@ class PacUserFlavorListGetModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -98,7 +99,8 @@ class PacUserFlavorListGetModelRequestFactory(
         *args, **kwargs
     ) -> PacUserFlavorListGetModelRequest:
         """
-        Asynchronously create a PacUserFlavorListGetModelRequest instance.
+        Asynchronously create a
+        PacUserFlavorListGetModelRequest instance.
 
         Args:
             session: The session to use for creating related objects.
@@ -115,7 +117,6 @@ class PacUserFlavorListGetModelRequestFactory(
             session=None,
             *args, **kwargs
         )
-
 
         return obj
 

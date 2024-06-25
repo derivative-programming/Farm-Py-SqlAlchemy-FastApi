@@ -1,5 +1,6 @@
 # models/factory/tests/customer_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the CustomerFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the customer ID
                 is None after creation.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         assert customer.customer_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         assert isinstance(customer.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestCustomerFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        customer: Customer = await CustomerFactory.build_async(
-            session=session)
+        customer: Customer = await \
+            CustomerFactory.build_async(
+                session=session)
         assert customer.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestCustomerFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        customer: Customer = await CustomerFactory.create_async(
-            session=session)
+        customer: Customer = await \
+            CustomerFactory.create_async(
+                session=session)
         assert customer.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestCustomerFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         initial_code = customer.last_change_code
         customer.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        customer = await CustomerFactory.build_async(
-            session=session)
+        customer = await \
+            CustomerFactory.build_async(
+                session=session)
         assert customer.insert_utc_date_time is not None
         assert isinstance(
             customer.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        customer = await CustomerFactory.build_async(
-            session=session)
+        customer = await \
+            CustomerFactory.build_async(
+                session=session)
         assert customer.insert_utc_date_time is not None
         assert isinstance(
             customer.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestCustomerFactoryAsync:
         customer.code = uuid.uuid4()
         session.add(customer)
         await session.commit()
-        assert customer.insert_utc_date_time > initial_time
+        assert customer.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         assert customer.insert_utc_date_time is not None
         assert isinstance(
             customer.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestCustomerFactoryAsync:
         customer.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert customer.insert_utc_date_time == initial_time
+        assert customer.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        customer = await CustomerFactory.build_async(
-            session=session)
+        customer = await \
+            CustomerFactory.build_async(
+                session=session)
         assert customer.last_update_utc_date_time is not None
         assert isinstance(
             customer.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        customer = await CustomerFactory.build_async(
-            session=session)
+        customer = await \
+            CustomerFactory.build_async(
+                session=session)
         assert customer.last_update_utc_date_time is not None
         assert isinstance(
             customer.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestCustomerFactoryAsync:
         customer.code = uuid.uuid4()
         session.add(customer)
         await session.commit()
-        assert customer.last_update_utc_date_time > initial_time
+        assert customer.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestCustomerFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         assert customer.last_update_utc_date_time is not None
         assert isinstance(
             customer.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestCustomerFactoryAsync:
         customer.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert customer.last_update_utc_date_time > initial_time
+        assert customer.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestCustomerFactoryAsync:
             customer is still
             found in the database.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         await session.delete(customer)
         await session.commit()
 
         # Construct the select statement
         stmt = select(Customer).where(
-            Customer._customer_id == customer.customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Customer._customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                customer.customer_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,8 +405,9 @@ class TestCustomerFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         assert isinstance(customer.customer_id, int)
         assert isinstance(customer.code, uuid.UUID)
         assert isinstance(customer.last_change_code, int)
@@ -398,9 +417,11 @@ class TestCustomerFactoryAsync:
         assert customer.email == "" or isinstance(
             customer.email, str)
         assert isinstance(customer.email_confirmed_utc_date_time, datetime)
-        assert customer.first_name == "" or isinstance(customer.first_name, str)
+        assert customer.first_name == "" or isinstance(
+            customer.first_name, str)
         assert isinstance(customer.forgot_password_key_expiration_utc_date_time, datetime)
-        assert customer.forgot_password_key_value == "" or isinstance(customer.forgot_password_key_value, str)
+        assert customer.forgot_password_key_value == "" or isinstance(
+            customer.forgot_password_key_value, str)
         assert isinstance(customer.fs_user_code_value, uuid.UUID)
         assert isinstance(customer.is_active, bool)
         assert isinstance(customer.is_email_allowed, bool)
@@ -410,15 +431,19 @@ class TestCustomerFactoryAsync:
         assert isinstance(customer.is_multiple_organizations_allowed, bool)
         assert isinstance(customer.is_verbose_logging_forced, bool)
         assert isinstance(customer.last_login_utc_date_time, datetime)
-        assert customer.last_name == "" or isinstance(customer.last_name, str)
-        assert customer.password == "" or isinstance(customer.password, str)
+        assert customer.last_name == "" or isinstance(
+            customer.last_name, str)
+        assert customer.password == "" or isinstance(
+            customer.password, str)
         assert customer.phone == "" or isinstance(
             customer.phone, str)
-        assert customer.province == "" or isinstance(customer.province, str)
+        assert customer.province == "" or isinstance(
+            customer.province, str)
         assert isinstance(customer.registration_utc_date_time, datetime)
         assert isinstance(customer.tac_id, int)
         assert isinstance(customer.utc_offset_in_minutes, int)
-        assert customer.zip == "" or isinstance(customer.zip, str)
+        assert customer.zip == "" or isinstance(
+            customer.zip, str)
         # Check for the peek values
         # activeOrganizationID,
         # email,
@@ -452,7 +477,8 @@ class TestCustomerFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for customers.
+        Test case to check the unique code constraint
+        for customers.
 
         This test creates two customer
         instances using
@@ -466,7 +492,9 @@ class TestCustomerFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        CustomerFactory.create_async() method creates unique codes for each customer.
+        CustomerFactory.create_async()
+        method creates unique codes for
+        each customer.
         """
 
         customer_1 = await CustomerFactory.create_async(
@@ -562,16 +590,20 @@ class TestCustomerFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new Customer object using
+        1. Create a new
+            Customer object using
             the CustomerFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the Customer
-            object using the customer_id.
+            object using the
+            customer_id.
         4. Modify the code attribute of the
             retrieved Customer object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            Customer object using the customer_id.
+            Customer object using the
+            customer_id.
         7. Get the modified Customer object.
         8. Verify that the last_change_code attribute
             of the modified Customer object
@@ -582,12 +614,14 @@ class TestCustomerFactoryAsync:
                             of the modified Customer
                             object is the same as the original value.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         original_last_change_code = customer.last_change_code
 
         stmt = select(Customer).where(
-            Customer._customer_id == customer.customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Customer._customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                customer.customer_id))
         result = await session.execute(stmt)
         customer_1 = result.scalars().first()
 
@@ -597,7 +631,8 @@ class TestCustomerFactoryAsync:
         await session.commit()
 
         stmt = select(Customer).where(
-            Customer._customer_id == customer.customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Customer._customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                customer.customer_id))
         result = await session.execute(stmt)
         customer_2 = result.scalars().first()
 
@@ -645,8 +680,9 @@ class TestCustomerFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        customer = await CustomerFactory.create_async(
-            session=session)
+        customer = await \
+            CustomerFactory.create_async(
+                session=session)
         customer.tac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

@@ -10,7 +10,7 @@ organizations in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -280,7 +280,8 @@ class OrganizationManager:
         logging.info("OrganizationManager.update")
         property_list = Organization.property_list()
         if organization:
-            organization.last_update_user_id = self._session_context.customer_code
+            organization.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -484,7 +485,8 @@ class OrganizationManager:
         logging.info(
             "OrganizationManager.add_bulk")
         for organization in organizations:
-            organization_id = organization.organization_id
+            organization_id = \
+                organization.organization_id
             code = organization.code
             if organization.organization_id is not None and organization.organization_id > 0:
                 raise ValueError(
@@ -551,7 +553,8 @@ class OrganizationManager:
                 if key != "organization_id":
                     setattr(organization, key, value)
 
-            organization.last_update_user_id = self._session_context.customer_code
+            organization.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_organizations.append(organization)
 
@@ -668,11 +671,13 @@ class OrganizationManager:
         if not organization2:
             raise TypeError("Organization2 required.")
 
-        if not isinstance(organization1, Organization):
+        if not isinstance(organization1,
+                          Organization):
             raise TypeError("The organization1 must be an "
                             "Organization instance.")
 
-        if not isinstance(organization2, Organization):
+        if not isinstance(organization2,
+                          Organization):
             raise TypeError("The organization2 must be an "
                             "Organization instance.")
 
@@ -680,7 +685,8 @@ class OrganizationManager:
         dict2 = self.to_dict(organization2)
 
         return dict1 == dict2
-    async def get_by_tac_id(  # TacID
+    # TacID
+    async def get_by_tac_id(
             self,
             tac_id: int) -> List[Organization]:
         """

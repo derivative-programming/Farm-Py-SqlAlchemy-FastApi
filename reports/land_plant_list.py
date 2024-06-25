@@ -1,4 +1,5 @@
 # land_plant_list.py
+# pylint: disable=unused-import
 
 """
 This module is the manager for report
@@ -7,10 +8,10 @@ This module is the manager for report
 
 import json
 import csv
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 from helpers import SessionContext, TypeConversion
 from reports.providers.land_plant_list import (

@@ -1,21 +1,25 @@
 # business/tests/flavor_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the FlavorFluentBusObj class.
+Unit tests for the
+FlavorFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.flavor_fluent import FlavorFluentBusObj
+from business.flavor_fluent import (
+    FlavorFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockFlavorBaseBusObj:
     """
-    A mock base class for the FlavorFluentBusObj class.
+    A mock base class for the
+    FlavorFluentBusObj class.
     """
     def __init__(self):
         self.description = None
@@ -26,12 +30,14 @@ class MockFlavorBaseBusObj:
         self.pac_id = None
 class TestFlavorFluentBusObj:
     """
-    Unit tests for the FlavorFluentBusObj class.
+    Unit tests for the
+    FlavorFluentBusObj class.
     """
     @pytest.fixture
     def flavor(self, session):
         """
-        Return a FlavorFluentBusObj object.
+        Return a FlavorFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return FlavorFluentBusObj(session_context)

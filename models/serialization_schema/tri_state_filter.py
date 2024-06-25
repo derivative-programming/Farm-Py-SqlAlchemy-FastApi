@@ -1,7 +1,9 @@
 # models/serialization_schema/tri_state_filter.py
+# pylint: disable=unused-import
 
 """
-This module contains the TriStateFilterSchema
+This module contains the
+TriStateFilterSchema
 class, which is responsible
 for serializing and deserializing
 TriStateFilter objects.

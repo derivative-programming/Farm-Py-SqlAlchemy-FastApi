@@ -1,13 +1,14 @@
 # models/managers/tests/plant_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `PlantManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestPlantManager:
         }
 
         # Call the build function of the manager
-        plant = await plant_manager.build(
-            **mock_data)
+        plant = await \
+            plant_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of Plant
         assert isinstance(
-            plant, Plant)
+            plant,
+            Plant)
 
         # Assert that the attributes of the
         # plant match our mock data
@@ -96,17 +99,20 @@ class TestPlantManager:
         `PlantManager` that checks if a
         plant is correctly added to the database.
         """
-        test_plant = await PlantFactory.build_async(
-            session)
+        test_plant = await \
+            PlantFactory.build_async(
+                session)
 
         assert test_plant.plant_id == 0
 
         # Add the plant using the
         # manager's add method
-        added_plant = await plant_manager.add(
-            plant=test_plant)
+        added_plant = await \
+            plant_manager.add(
+                plant=test_plant)
 
-        assert isinstance(added_plant, Plant)
+        assert isinstance(added_plant,
+                          Plant)
 
         assert str(added_plant.insert_user_id) == (
             str(plant_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestPlantManager:
         # is not None and matches the
         # added plant
         assert fetched_plant is not None
-        assert isinstance(fetched_plant, Plant)
+        assert isinstance(fetched_plant,
+                          Plant)
         assert fetched_plant.plant_id == added_plant.plant_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestPlantManager:
         # Create a test plant
         # using the PlantFactory
         # without persisting it to the database
-        test_plant = await PlantFactory.build_async(
-            session)
+        test_plant = await \
+            PlantFactory.build_async(
+                session)
 
         assert test_plant.plant_id == 0
 
@@ -154,10 +162,12 @@ class TestPlantManager:
 
         # Add the plant using
         # the manager's add method
-        added_plant = await plant_manager.add(
-            plant=test_plant)
+        added_plant = await \
+            plant_manager.add(
+                plant=test_plant)
 
-        assert isinstance(added_plant, Plant)
+        assert isinstance(added_plant,
+                          Plant)
 
         assert str(added_plant.insert_user_id) == (
             str(plant_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestPlantManager:
         that checks if a plant
         is correctly updated.
         """
-        test_plant = await PlantFactory.create_async(
-            session)
+        test_plant = await \
+            PlantFactory.create_async(
+                session)
 
         test_plant.code = uuid.uuid4()
 
-        updated_plant = await plant_manager.update(
-            plant=test_plant)
+        updated_plant = await \
+            plant_manager.update(
+                plant=test_plant)
 
-        assert isinstance(updated_plant, Plant)
+        assert isinstance(updated_plant,
+                          Plant)
 
         assert str(updated_plant.last_update_user_id) == str(
             plant_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestPlantManager:
         that checks if a plant is
         correctly updated using a dictionary.
         """
-        test_plant = await PlantFactory.create_async(
-            session)
+        test_plant = await \
+            PlantFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_plant = await plant_manager.update(
-            plant=test_plant,
-            code=new_code
-        )
+        updated_plant = await \
+            plant_manager.update(
+                plant=test_plant,
+                code=new_code
+            )
 
-        assert isinstance(updated_plant, Plant)
+        assert isinstance(updated_plant,
+                          Plant)
 
         assert str(updated_plant.last_update_user_id) == str(
             plant_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestPlantManager:
         plant_manager: PlantManager
     ):
         """
-        Test case for the `update` method of `PlantManager`
+        Test case for the `update` method of
+        `PlantManager`
         with an invalid plant.
         """
 
@@ -299,11 +316,13 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `PlantManager`
+        Test case for the `update` method of
+        `PlantManager`
         with a nonexistent attribute.
         """
-        test_plant = await PlantFactory.create_async(
-            session)
+        test_plant = await \
+            PlantFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestPlantManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `PlantManager`.
+        Test case for the `delete` method of
+        `PlantManager`.
         """
         plant_data = await PlantFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestPlantManager:
         )
         fetched_plant = result.scalars().first()
 
-        assert isinstance(fetched_plant, Plant)
+        assert isinstance(fetched_plant,
+                          Plant)
 
         assert fetched_plant.plant_id == \
             plant_data.plant_id
@@ -363,7 +384,8 @@ class TestPlantManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param plant_manager: The instance of the PlantManager class.
+        :param plant_manager: The instance of the
+            PlantManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestPlantManager:
         the test case will fail.
 
         Args:
-            plant_manager (PlantManager): An
+            plant_manager
+            (PlantManager): An
                 instance of the
                 `PlantManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestPlantManager:
         Test the 'to_json' method of the PlantManager class.
 
         Args:
-            plant_manager (PlantManager): An
+            plant_manager
+            (PlantManager): An
                 instance of the
                 PlantManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestPlantManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        plant = await PlantFactory.build_async(
-            session)
+        plant = await \
+            PlantFactory.build_async(
+                session)
 
         json_data = plant_manager.to_json(
             plant)
@@ -486,7 +511,8 @@ class TestPlantManager:
         Test the to_dict method of the PlantManager class.
 
         Args:
-            plant_manager (PlantManager): An
+            plant_manager
+            (PlantManager): An
                 instance of the
                 PlantManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestPlantManager:
         Returns:
             None
         """
-        plant = await PlantFactory.build_async(
-            session)
+        plant = await \
+            PlantFactory.build_async(
+                session)
 
-        dict_data = plant_manager.to_dict(
-            plant)
+        dict_data = \
+            plant_manager.to_dict(
+                plant)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestPlantManager:
         the same code as the original plant.
 
         Args:
-            plant_manager (PlantManager): An
-            instance of the
+            plant_manager
+            (PlantManager): An
+                instance of the
                 `PlantManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        plant = await PlantFactory.create_async(
-            session)
+        plant = await \
+            PlantFactory.create_async(
+                session)
 
         json_data = plant_manager.to_json(
             plant)
 
-        deserialized_plant = await plant_manager.from_json(json_data)
+        deserialized_plant = await \
+                plant_manager.from_json(json_data)
 
-        assert isinstance(deserialized_plant, Plant)
+        assert isinstance(deserialized_plant,
+                          Plant)
         assert deserialized_plant.code == \
             plant.code
 
@@ -559,7 +591,8 @@ class TestPlantManager:
         plant object.
 
         Args:
-            plant_manager (PlantManager): An instance
+            plant_manager
+            (PlantManager): An instance
                 of the `PlantManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestPlantManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        plant = await PlantFactory.create_async(
-            session)
+        plant = await \
+            PlantFactory.create_async(
+                session)
 
         schema = PlantSchema()
 
@@ -578,10 +612,12 @@ class TestPlantManager:
 
         assert isinstance(plant_data, dict)
 
-        deserialized_plant = await plant_manager.from_dict(
-            plant_data)
+        deserialized_plant = await \
+            plant_manager.from_dict(
+                plant_data)
 
-        assert isinstance(deserialized_plant, Plant)
+        assert isinstance(deserialized_plant,
+                          Plant)
 
         assert deserialized_plant.code == \
             plant.code
@@ -630,7 +666,8 @@ class TestPlantManager:
         PlantManager class returns 0 when the database is empty.
 
         Args:
-            plant_manager (PlantManager): An
+            plant_manager
+            (PlantManager): An
                 instance of the
                 PlantManager class.
 
@@ -664,7 +701,8 @@ class TestPlantManager:
             it reflects the updated code.
 
         Args:
-            plant_manager (PlantManager): The
+            plant_manager
+            (PlantManager): The
                 manager responsible
                 for plant operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestPlantManager:
         # Verify that the updated plant
         # is of type Plant
         # and has the updated code
-        assert isinstance(updated_plant1, Plant)
+        assert isinstance(updated_plant1,
+                          Plant)
 
         assert updated_plant1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestPlantManager:
         Test case to verify the behavior of refreshing a nonexistent plant.
 
         Args:
-            plant_manager (PlantManager): The
+            plant_manager
+            (PlantManager): The
                 instance of the
                 PlantManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestPlantManager:
         exists using the manager function.
 
         Args:
-            plant_manager (PlantManager): The
+            plant_manager
+            (PlantManager): The
                 plant manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestPlantManager:
         PlantManager class correctly compares two plants.
 
         Args:
-            plant_manager (PlantManager): An
+            plant_manager
+            (PlantManager): An
                 instance of the
                 PlantManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestPlantManager:
         assert plant_manager.is_equal(
             plant1, plant2) is True
 
-        plant1_dict = plant_manager.to_dict(
-            plant1)
+        plant1_dict = \
+            plant_manager.to_dict(
+                plant1)
 
         plant3 = await \
             plant_manager.from_dict(
@@ -815,7 +858,8 @@ class TestPlantManager:
         non-existent ID exists in the database.
 
         Args:
-            plant_manager (PlantManager): The
+            plant_manager
+            (PlantManager): The
                 instance of the PlantManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestPlantManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            plant_manager (PlantManager): The instance
+            plant_manager
+            (PlantManager): The instance
                 of the PlantManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

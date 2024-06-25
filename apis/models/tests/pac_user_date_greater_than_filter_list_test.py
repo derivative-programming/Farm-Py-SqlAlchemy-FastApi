@@ -1,16 +1,18 @@
 # apis/models/tests/pac_user_date_greater_than_filter_list_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
-PacUserDateGreaterThanFilterListGetModelRequestFactoryAsync class.
+PacUserDateGreaterThanFilterListGetModelRequestFactoryAsync
+class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
@@ -126,7 +128,8 @@ class PacUserDateGreaterThanFilterListGetModelRequestFactoryAsync:
             PacUserDateGreaterThanFilterListGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance, PacUserDateGreaterThanFilterListGetModelRequest)
+        assert isinstance(model_instance,
+                          PacUserDateGreaterThanFilterListGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
@@ -143,11 +146,14 @@ class MockReportItemPacUserDateGreaterThanFilterList:
         """
         self.date_greater_than_filter_code = uuid.uuid4()
         self.date_greater_than_filter_day_count = 1
-        self.date_greater_than_filter_description = "Some N Var Char"
+        self.date_greater_than_filter_description = \
+            "Some N Var Char"
         self.date_greater_than_filter_display_order = 1
         self.date_greater_than_filter_is_active = True
-        self.date_greater_than_filter_lookup_enum_name = "Some N Var Char"
-        self.date_greater_than_filter_name = "Some N Var Char"
+        self.date_greater_than_filter_lookup_enum_name = \
+            "Some N Var Char"
+        self.date_greater_than_filter_name = \
+            "Some N Var Char"
 @pytest.fixture
 def session_context():
     """
@@ -182,7 +188,8 @@ async def test_process_request(session_context, report_request, report_items):
         'apis.models.pac_user_date_greater_than_filter_list.ReportManagerPacUserDateGreaterThanFilterList',
         autospec=True
     ) as mock_report_manager:
-        mock_report_manager_instance = mock_report_manager.return_value
+        mock_report_manager_instance = \
+            mock_report_manager.return_value
         mock_report_manager_instance.generate = AsyncMock(
             return_value=report_items)
 
@@ -197,7 +204,8 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item, PacUserDateGreaterThanFilterListGetModelResponseItem)
+            assert isinstance(response_item,
+                              PacUserDateGreaterThanFilterListGetModelResponseItem)
             assert response_item.date_greater_than_filter_code == \
                 report_item.date_greater_than_filter_code
             assert response_item.date_greater_than_filter_day_count == \

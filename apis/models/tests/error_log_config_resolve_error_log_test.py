@@ -1,14 +1,15 @@
 # apis/models/tests/error_log_config_resolve_error_log_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
 This module contains unit tests for the
 ErrorLogConfigResolveErrorLogPostModelResponse class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -86,7 +87,8 @@ class TestErrorLogConfigResolveErrorLogPostModelRequest:
         This method tests the to_dict_snake_serialized method of the
         ErrorLogConfigResolveErrorLogPostModelRequest class.
         """
-        # Create an instance of the ErrorLogConfigResolveErrorLogPostModelRequest class
+        # Create an instance of the
+        # ErrorLogConfigResolveErrorLogPostModelRequest class
         request = ErrorLogConfigResolveErrorLogPostModelRequest(
             force_error_message="Test Error Message",
 # endset  # noqa: E122
@@ -140,7 +142,8 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
         """
         This method tests the flow process request
         for adding a  to a error_log.
-        It mocks the process method of FlowErrorLogConfigResolveErrorLog
+        It mocks the process method of
+        FlowErrorLogConfigResolveErrorLog
         and asserts that the response is successful.
         """
 
@@ -162,7 +165,8 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
                     session=session
                 )
             )
-            response_instance = ErrorLogConfigResolveErrorLogPostModelResponse()
+            response_instance = \
+                ErrorLogConfigResolveErrorLogPostModelResponse()
             session_context = SessionContext(dict(), session)
 
             error_log = await ErrorLogFactory.create_async(session)

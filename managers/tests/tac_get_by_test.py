@@ -1,12 +1,13 @@
 # models/managers/tests/tac_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `TacManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestTacGetByManager:
         }
 
         # Call the build function of the manager
-        tac = await tac_manager.build(
-            **mock_data)
+        tac = await \
+            tac_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Tac
+        # Assert that the returned object is an instance of
+        # Tac
         assert isinstance(
-            tac, Tac)
+            tac,
+            Tac)
 
         # Assert that the attributes of the
         # tac match our mock data
@@ -72,15 +76,17 @@ class TestTacGetByManager:
         Test case for the `get_by_id` method of
         `TacManager`.
         """
-        test_tac = await TacFactory.create_async(
-            session)
+        test_tac = await \
+            TacFactory.create_async(
+                session)
 
         tac = await \
             tac_manager.get_by_id(
                 test_tac.tac_id)
 
         assert isinstance(
-            tac, Tac)
+            tac,
+            Tac)
 
         assert test_tac.tac_id == \
             tac.tac_id
@@ -119,15 +125,17 @@ class TestTacGetByManager:
         returned by its code.
         """
 
-        test_tac = await TacFactory.create_async(
-            session)
+        test_tac = await \
+            TacFactory.create_async(
+                session)
 
         tac = await \
             tac_manager.get_by_code(
                 test_tac.code)
 
         assert isinstance(
-            tac, Tac)
+            tac,
+            Tac)
 
         assert test_tac.tac_id == \
             tac.tac_id
@@ -205,7 +213,8 @@ class TestTacGetByManager:
             tac_manager.get_by_pac_id(
                 tac1.pac_id)
         assert len(fetched_tacs) == 1
-        assert isinstance(fetched_tacs[0], Tac)
+        assert isinstance(fetched_tacs[0],
+                          Tac)
         assert fetched_tacs[0].code == \
             tac1.code
 

@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `customer_build_temp_api_key` endpoint.
+This module contains unit tests for the
+`customer_build_temp_api_key` endpoint.
 """
 
 import logging

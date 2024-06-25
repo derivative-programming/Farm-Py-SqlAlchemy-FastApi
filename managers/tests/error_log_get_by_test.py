@@ -1,12 +1,13 @@
 # models/managers/tests/error_log_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `ErrorLogManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestErrorLogGetByManager:
         }
 
         # Call the build function of the manager
-        error_log = await error_log_manager.build(
-            **mock_data)
+        error_log = await \
+            error_log_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of ErrorLog
+        # Assert that the returned object is an instance of
+        # ErrorLog
         assert isinstance(
-            error_log, ErrorLog)
+            error_log,
+            ErrorLog)
 
         # Assert that the attributes of the
         # error_log match our mock data
@@ -72,15 +76,17 @@ class TestErrorLogGetByManager:
         Test case for the `get_by_id` method of
         `ErrorLogManager`.
         """
-        test_error_log = await ErrorLogFactory.create_async(
-            session)
+        test_error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         error_log = await \
             error_log_manager.get_by_id(
                 test_error_log.error_log_id)
 
         assert isinstance(
-            error_log, ErrorLog)
+            error_log,
+            ErrorLog)
 
         assert test_error_log.error_log_id == \
             error_log.error_log_id
@@ -119,15 +125,17 @@ class TestErrorLogGetByManager:
         returned by its code.
         """
 
-        test_error_log = await ErrorLogFactory.create_async(
-            session)
+        test_error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         error_log = await \
             error_log_manager.get_by_code(
                 test_error_log.code)
 
         assert isinstance(
-            error_log, ErrorLog)
+            error_log,
+            ErrorLog)
 
         assert test_error_log.error_log_id == \
             error_log.error_log_id
@@ -206,7 +214,8 @@ class TestErrorLogGetByManager:
             error_log_manager.get_by_pac_id(
                 error_log1.pac_id)
         assert len(fetched_error_logs) == 1
-        assert isinstance(fetched_error_logs[0], ErrorLog)
+        assert isinstance(fetched_error_logs[0],
+                          ErrorLog)
         assert fetched_error_logs[0].code == \
             error_log1.code
 

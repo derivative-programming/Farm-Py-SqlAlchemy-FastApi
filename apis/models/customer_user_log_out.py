@@ -7,9 +7,9 @@ Customer User Log Out API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 from pydantic import UUID4, Field
 
@@ -39,7 +39,8 @@ class CustomerUserLogOutPostModelRequest(CamelModel):
 
     class Config:
         """
-        Configuration class for the CustomerUserLogOutPostModelRequest.
+        Configuration class for the
+        CustomerUserLogOutPostModelRequest.
         """
 
         json_encoders = {
@@ -88,7 +89,8 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
     """
 
 
-    def load_flow_response(self, data: FlowCustomerUserLogOutResult):
+    def load_flow_response(
+            self, data: FlowCustomerUserLogOutResult):
         """
         Loads the flow response data into the response model.
         """
@@ -105,14 +107,16 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
         """
 
         try:
-            logging.info("loading model...CustomerUserLogOutPostModelResponse")
+            logging.info("loading model..."
+                         "CustomerUserLogOutPostModelResponse")
             customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load_from_code(code=customer_code)
             if customer_bus_obj.get_customer_obj() is None:
                 logging.info("Invalid customer_code")
                 raise ValueError("Invalid customer_code")
             flow = FlowCustomerUserLogOut(session_context)
-            logging.info("process flow...CustomerUserLogOutPostModelResponse")
+            logging.info("process flow..."
+                         "CustomerUserLogOutPostModelResponse")
             flow_response = await flow.process(
                 customer_bus_obj,
 

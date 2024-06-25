@@ -1,5 +1,6 @@
 # models/factory/tests/plant_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the PlantFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the plant ID
                 is None after creation.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         assert plant.plant_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         assert isinstance(plant.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestPlantFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        plant: Plant = await PlantFactory.build_async(
-            session=session)
+        plant: Plant = await \
+            PlantFactory.build_async(
+                session=session)
         assert plant.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestPlantFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        plant: Plant = await PlantFactory.create_async(
-            session=session)
+        plant: Plant = await \
+            PlantFactory.create_async(
+                session=session)
         assert plant.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestPlantFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         initial_code = plant.last_change_code
         plant.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        plant = await PlantFactory.build_async(
-            session=session)
+        plant = await \
+            PlantFactory.build_async(
+                session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(
             plant.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        plant = await PlantFactory.build_async(
-            session=session)
+        plant = await \
+            PlantFactory.build_async(
+                session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(
             plant.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestPlantFactoryAsync:
         plant.code = uuid.uuid4()
         session.add(plant)
         await session.commit()
-        assert plant.insert_utc_date_time > initial_time
+        assert plant.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         assert plant.insert_utc_date_time is not None
         assert isinstance(
             plant.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestPlantFactoryAsync:
         plant.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert plant.insert_utc_date_time == initial_time
+        assert plant.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        plant = await PlantFactory.build_async(
-            session=session)
+        plant = await \
+            PlantFactory.build_async(
+                session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(
             plant.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        plant = await PlantFactory.build_async(
-            session=session)
+        plant = await \
+            PlantFactory.build_async(
+                session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(
             plant.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestPlantFactoryAsync:
         plant.code = uuid.uuid4()
         session.add(plant)
         await session.commit()
-        assert plant.last_update_utc_date_time > initial_time
+        assert plant.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestPlantFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         assert plant.last_update_utc_date_time is not None
         assert isinstance(
             plant.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestPlantFactoryAsync:
         plant.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert plant.last_update_utc_date_time > initial_time
+        assert plant.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestPlantFactoryAsync:
             plant is still
             found in the database.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         await session.delete(plant)
         await session.commit()
 
         # Construct the select statement
         stmt = select(Plant).where(
-            Plant._plant_id == plant.plant_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Plant._plant_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                plant.plant_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,8 +405,9 @@ class TestPlantFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         assert isinstance(plant.plant_id, int)
         assert isinstance(plant.code, uuid.UUID)
         assert isinstance(plant.last_change_code, int)
@@ -398,7 +417,8 @@ class TestPlantFactoryAsync:
         assert isinstance(plant.is_delete_allowed, bool)
         assert isinstance(plant.is_edit_allowed, bool)
         assert isinstance(plant.land_id, int)
-        assert plant.other_flavor == "" or isinstance(plant.other_flavor, str)
+        assert plant.other_flavor == "" or isinstance(
+            plant.other_flavor, str)
         assert isinstance(plant.some_big_int_val, int)
         assert isinstance(plant.some_bit_val, bool)
         assert isinstance(plant.some_date_val, date)
@@ -451,7 +471,8 @@ class TestPlantFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for plants.
+        Test case to check the unique code constraint
+        for plants.
 
         This test creates two plant
         instances using
@@ -465,7 +486,9 @@ class TestPlantFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        PlantFactory.create_async() method creates unique codes for each plant.
+        PlantFactory.create_async()
+        method creates unique codes for
+        each plant.
         """
 
         plant_1 = await PlantFactory.create_async(
@@ -560,16 +583,20 @@ class TestPlantFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new Plant object using
+        1. Create a new
+            Plant object using
             the PlantFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the Plant
-            object using the plant_id.
+            object using the
+            plant_id.
         4. Modify the code attribute of the
             retrieved Plant object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            Plant object using the plant_id.
+            Plant object using the
+            plant_id.
         7. Get the modified Plant object.
         8. Verify that the last_change_code attribute
             of the modified Plant object
@@ -580,12 +607,14 @@ class TestPlantFactoryAsync:
                             of the modified Plant
                             object is the same as the original value.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         original_last_change_code = plant.last_change_code
 
         stmt = select(Plant).where(
-            Plant._plant_id == plant.plant_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Plant._plant_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                plant.plant_id))
         result = await session.execute(stmt)
         plant_1 = result.scalars().first()
 
@@ -595,7 +624,8 @@ class TestPlantFactoryAsync:
         await session.commit()
 
         stmt = select(Plant).where(
-            Plant._plant_id == plant.plant_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Plant._plant_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                plant.plant_id))
         result = await session.execute(stmt)
         plant_2 = result.scalars().first()
 
@@ -638,8 +668,9 @@ class TestPlantFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         plant.land_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()
@@ -664,8 +695,9 @@ class TestPlantFactoryAsync:
             None
         """
 
-        plant = await PlantFactory.create_async(
-            session=session)
+        plant = await \
+            PlantFactory.create_async(
+                session=session)
         plant.flvr_foreign_key_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

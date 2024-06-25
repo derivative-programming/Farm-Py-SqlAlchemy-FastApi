@@ -1,13 +1,14 @@
 # models/managers/tests/tri_state_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `TriStateFilterManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestTriStateFilterManager:
         }
 
         # Call the build function of the manager
-        tri_state_filter = await tri_state_filter_manager.build(
-            **mock_data)
+        tri_state_filter = await \
+            tri_state_filter_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of TriStateFilter
         assert isinstance(
-            tri_state_filter, TriStateFilter)
+            tri_state_filter,
+            TriStateFilter)
 
         # Assert that the attributes of the
         # tri_state_filter match our mock data
@@ -96,17 +99,20 @@ class TestTriStateFilterManager:
         `TriStateFilterManager` that checks if a
         tri_state_filter is correctly added to the database.
         """
-        test_tri_state_filter = await TriStateFilterFactory.build_async(
-            session)
+        test_tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session)
 
         assert test_tri_state_filter.tri_state_filter_id == 0
 
         # Add the tri_state_filter using the
         # manager's add method
-        added_tri_state_filter = await tri_state_filter_manager.add(
-            tri_state_filter=test_tri_state_filter)
+        added_tri_state_filter = await \
+            tri_state_filter_manager.add(
+                tri_state_filter=test_tri_state_filter)
 
-        assert isinstance(added_tri_state_filter, TriStateFilter)
+        assert isinstance(added_tri_state_filter,
+                          TriStateFilter)
 
         assert str(added_tri_state_filter.insert_user_id) == (
             str(tri_state_filter_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestTriStateFilterManager:
         # is not None and matches the
         # added tri_state_filter
         assert fetched_tri_state_filter is not None
-        assert isinstance(fetched_tri_state_filter, TriStateFilter)
+        assert isinstance(fetched_tri_state_filter,
+                          TriStateFilter)
         assert fetched_tri_state_filter.tri_state_filter_id == added_tri_state_filter.tri_state_filter_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestTriStateFilterManager:
         # Create a test tri_state_filter
         # using the TriStateFilterFactory
         # without persisting it to the database
-        test_tri_state_filter = await TriStateFilterFactory.build_async(
-            session)
+        test_tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session)
 
         assert test_tri_state_filter.tri_state_filter_id == 0
 
@@ -154,10 +162,12 @@ class TestTriStateFilterManager:
 
         # Add the tri_state_filter using
         # the manager's add method
-        added_tri_state_filter = await tri_state_filter_manager.add(
-            tri_state_filter=test_tri_state_filter)
+        added_tri_state_filter = await \
+            tri_state_filter_manager.add(
+                tri_state_filter=test_tri_state_filter)
 
-        assert isinstance(added_tri_state_filter, TriStateFilter)
+        assert isinstance(added_tri_state_filter,
+                          TriStateFilter)
 
         assert str(added_tri_state_filter.insert_user_id) == (
             str(tri_state_filter_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestTriStateFilterManager:
         that checks if a tri_state_filter
         is correctly updated.
         """
-        test_tri_state_filter = await TriStateFilterFactory.create_async(
-            session)
+        test_tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session)
 
         test_tri_state_filter.code = uuid.uuid4()
 
-        updated_tri_state_filter = await tri_state_filter_manager.update(
-            tri_state_filter=test_tri_state_filter)
+        updated_tri_state_filter = await \
+            tri_state_filter_manager.update(
+                tri_state_filter=test_tri_state_filter)
 
-        assert isinstance(updated_tri_state_filter, TriStateFilter)
+        assert isinstance(updated_tri_state_filter,
+                          TriStateFilter)
 
         assert str(updated_tri_state_filter.last_update_user_id) == str(
             tri_state_filter_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestTriStateFilterManager:
         that checks if a tri_state_filter is
         correctly updated using a dictionary.
         """
-        test_tri_state_filter = await TriStateFilterFactory.create_async(
-            session)
+        test_tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_tri_state_filter = await tri_state_filter_manager.update(
-            tri_state_filter=test_tri_state_filter,
-            code=new_code
-        )
+        updated_tri_state_filter = await \
+            tri_state_filter_manager.update(
+                tri_state_filter=test_tri_state_filter,
+                code=new_code
+            )
 
-        assert isinstance(updated_tri_state_filter, TriStateFilter)
+        assert isinstance(updated_tri_state_filter,
+                          TriStateFilter)
 
         assert str(updated_tri_state_filter.last_update_user_id) == str(
             tri_state_filter_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestTriStateFilterManager:
         tri_state_filter_manager: TriStateFilterManager
     ):
         """
-        Test case for the `update` method of `TriStateFilterManager`
+        Test case for the `update` method of
+        `TriStateFilterManager`
         with an invalid tri_state_filter.
         """
 
@@ -299,11 +316,13 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `TriStateFilterManager`
+        Test case for the `update` method of
+        `TriStateFilterManager`
         with a nonexistent attribute.
         """
-        test_tri_state_filter = await TriStateFilterFactory.create_async(
-            session)
+        test_tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestTriStateFilterManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `TriStateFilterManager`.
+        Test case for the `delete` method of
+        `TriStateFilterManager`.
         """
         tri_state_filter_data = await TriStateFilterFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestTriStateFilterManager:
         )
         fetched_tri_state_filter = result.scalars().first()
 
-        assert isinstance(fetched_tri_state_filter, TriStateFilter)
+        assert isinstance(fetched_tri_state_filter,
+                          TriStateFilter)
 
         assert fetched_tri_state_filter.tri_state_filter_id == \
             tri_state_filter_data.tri_state_filter_id
@@ -363,7 +384,8 @@ class TestTriStateFilterManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param tri_state_filter_manager: The instance of the TriStateFilterManager class.
+        :param tri_state_filter_manager: The instance of the
+            TriStateFilterManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestTriStateFilterManager:
         the test case will fail.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An
+            tri_state_filter_manager
+            (TriStateFilterManager): An
                 instance of the
                 `TriStateFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestTriStateFilterManager:
         Test the 'to_json' method of the TriStateFilterManager class.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An
+            tri_state_filter_manager
+            (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestTriStateFilterManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        tri_state_filter = await TriStateFilterFactory.build_async(
-            session)
+        tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session)
 
         json_data = tri_state_filter_manager.to_json(
             tri_state_filter)
@@ -486,7 +511,8 @@ class TestTriStateFilterManager:
         Test the to_dict method of the TriStateFilterManager class.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An
+            tri_state_filter_manager
+            (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestTriStateFilterManager:
         Returns:
             None
         """
-        tri_state_filter = await TriStateFilterFactory.build_async(
-            session)
+        tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session)
 
-        dict_data = tri_state_filter_manager.to_dict(
-            tri_state_filter)
+        dict_data = \
+            tri_state_filter_manager.to_dict(
+                tri_state_filter)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestTriStateFilterManager:
         the same code as the original tri_state_filter.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An
-            instance of the
+            tri_state_filter_manager
+            (TriStateFilterManager): An
+                instance of the
                 `TriStateFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session)
 
         json_data = tri_state_filter_manager.to_json(
             tri_state_filter)
 
-        deserialized_tri_state_filter = await tri_state_filter_manager.from_json(json_data)
+        deserialized_tri_state_filter = await \
+                tri_state_filter_manager.from_json(json_data)
 
-        assert isinstance(deserialized_tri_state_filter, TriStateFilter)
+        assert isinstance(deserialized_tri_state_filter,
+                          TriStateFilter)
         assert deserialized_tri_state_filter.code == \
             tri_state_filter.code
 
@@ -559,7 +591,8 @@ class TestTriStateFilterManager:
         tri_state_filter object.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An instance
+            tri_state_filter_manager
+            (TriStateFilterManager): An instance
                 of the `TriStateFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestTriStateFilterManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session)
 
         schema = TriStateFilterSchema()
 
@@ -578,10 +612,12 @@ class TestTriStateFilterManager:
 
         assert isinstance(tri_state_filter_data, dict)
 
-        deserialized_tri_state_filter = await tri_state_filter_manager.from_dict(
-            tri_state_filter_data)
+        deserialized_tri_state_filter = await \
+            tri_state_filter_manager.from_dict(
+                tri_state_filter_data)
 
-        assert isinstance(deserialized_tri_state_filter, TriStateFilter)
+        assert isinstance(deserialized_tri_state_filter,
+                          TriStateFilter)
 
         assert deserialized_tri_state_filter.code == \
             tri_state_filter.code
@@ -630,7 +666,8 @@ class TestTriStateFilterManager:
         TriStateFilterManager class returns 0 when the database is empty.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An
+            tri_state_filter_manager
+            (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
 
@@ -664,7 +701,8 @@ class TestTriStateFilterManager:
             it reflects the updated code.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The
+            tri_state_filter_manager
+            (TriStateFilterManager): The
                 manager responsible
                 for tri_state_filter operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestTriStateFilterManager:
         # Verify that the updated tri_state_filter
         # is of type TriStateFilter
         # and has the updated code
-        assert isinstance(updated_tri_state_filter1, TriStateFilter)
+        assert isinstance(updated_tri_state_filter1,
+                          TriStateFilter)
 
         assert updated_tri_state_filter1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestTriStateFilterManager:
         Test case to verify the behavior of refreshing a nonexistent tri_state_filter.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The
+            tri_state_filter_manager
+            (TriStateFilterManager): The
                 instance of the
                 TriStateFilterManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestTriStateFilterManager:
         exists using the manager function.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The
+            tri_state_filter_manager
+            (TriStateFilterManager): The
                 tri_state_filter manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestTriStateFilterManager:
         TriStateFilterManager class correctly compares two tri_state_filters.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An
+            tri_state_filter_manager
+            (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestTriStateFilterManager:
         assert tri_state_filter_manager.is_equal(
             tri_state_filter1, tri_state_filter2) is True
 
-        tri_state_filter1_dict = tri_state_filter_manager.to_dict(
-            tri_state_filter1)
+        tri_state_filter1_dict = \
+            tri_state_filter_manager.to_dict(
+                tri_state_filter1)
 
         tri_state_filter3 = await \
             tri_state_filter_manager.from_dict(
@@ -815,7 +858,8 @@ class TestTriStateFilterManager:
         non-existent ID exists in the database.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The
+            tri_state_filter_manager
+            (TriStateFilterManager): The
                 instance of the TriStateFilterManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestTriStateFilterManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The instance
+            tri_state_filter_manager
+            (TriStateFilterManager): The instance
                 of the TriStateFilterManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

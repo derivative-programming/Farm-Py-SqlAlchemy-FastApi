@@ -1,12 +1,13 @@
 # models/managers/tests/land_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `LandManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestLandGetByManager:
         }
 
         # Call the build function of the manager
-        land = await land_manager.build(
-            **mock_data)
+        land = await \
+            land_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Land
+        # Assert that the returned object is an instance of
+        # Land
         assert isinstance(
-            land, Land)
+            land,
+            Land)
 
         # Assert that the attributes of the
         # land match our mock data
@@ -72,15 +76,17 @@ class TestLandGetByManager:
         Test case for the `get_by_id` method of
         `LandManager`.
         """
-        test_land = await LandFactory.create_async(
-            session)
+        test_land = await \
+            LandFactory.create_async(
+                session)
 
         land = await \
             land_manager.get_by_id(
                 test_land.land_id)
 
         assert isinstance(
-            land, Land)
+            land,
+            Land)
 
         assert test_land.land_id == \
             land.land_id
@@ -119,15 +125,17 @@ class TestLandGetByManager:
         returned by its code.
         """
 
-        test_land = await LandFactory.create_async(
-            session)
+        test_land = await \
+            LandFactory.create_async(
+                session)
 
         land = await \
             land_manager.get_by_code(
                 test_land.code)
 
         assert isinstance(
-            land, Land)
+            land,
+            Land)
 
         assert test_land.land_id == \
             land.land_id
@@ -205,7 +213,8 @@ class TestLandGetByManager:
             land_manager.get_by_pac_id(
                 land1.pac_id)
         assert len(fetched_lands) == 1
-        assert isinstance(fetched_lands[0], Land)
+        assert isinstance(fetched_lands[0],
+                          Land)
         assert fetched_lands[0].code == \
             land1.code
 

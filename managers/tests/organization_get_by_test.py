@@ -1,12 +1,13 @@
 # models/managers/tests/organization_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrganizationManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestOrganizationGetByManager:
         }
 
         # Call the build function of the manager
-        organization = await organization_manager.build(
-            **mock_data)
+        organization = await \
+            organization_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Organization
+        # Assert that the returned object is an instance of
+        # Organization
         assert isinstance(
-            organization, Organization)
+            organization,
+            Organization)
 
         # Assert that the attributes of the
         # organization match our mock data
@@ -72,15 +76,17 @@ class TestOrganizationGetByManager:
         Test case for the `get_by_id` method of
         `OrganizationManager`.
         """
-        test_organization = await OrganizationFactory.create_async(
-            session)
+        test_organization = await \
+            OrganizationFactory.create_async(
+                session)
 
         organization = await \
             organization_manager.get_by_id(
                 test_organization.organization_id)
 
         assert isinstance(
-            organization, Organization)
+            organization,
+            Organization)
 
         assert test_organization.organization_id == \
             organization.organization_id
@@ -119,15 +125,17 @@ class TestOrganizationGetByManager:
         returned by its code.
         """
 
-        test_organization = await OrganizationFactory.create_async(
-            session)
+        test_organization = await \
+            OrganizationFactory.create_async(
+                session)
 
         organization = await \
             organization_manager.get_by_code(
                 test_organization.code)
 
         assert isinstance(
-            organization, Organization)
+            organization,
+            Organization)
 
         assert test_organization.organization_id == \
             organization.organization_id
@@ -201,7 +209,8 @@ class TestOrganizationGetByManager:
             organization_manager.get_by_tac_id(
                 organization1.tac_id)
         assert len(fetched_organizations) == 1
-        assert isinstance(fetched_organizations[0], Organization)
+        assert isinstance(fetched_organizations[0],
+                          Organization)
         assert fetched_organizations[0].code == \
             organization1.code
 

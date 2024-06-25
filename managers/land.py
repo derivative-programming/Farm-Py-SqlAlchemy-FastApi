@@ -10,7 +10,7 @@ lands in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -344,7 +344,8 @@ class LandManager:
         logging.info("LandManager.update")
         property_list = Land.property_list()
         if land:
-            land.last_update_user_id = self._session_context.customer_code
+            land.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -548,7 +549,8 @@ class LandManager:
         logging.info(
             "LandManager.add_bulk")
         for land in lands:
-            land_id = land.land_id
+            land_id = \
+                land.land_id
             code = land.code
             if land.land_id is not None and land.land_id > 0:
                 raise ValueError(
@@ -615,7 +617,8 @@ class LandManager:
                 if key != "land_id":
                     setattr(land, key, value)
 
-            land.last_update_user_id = self._session_context.customer_code
+            land.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_lands.append(land)
 
@@ -732,11 +735,13 @@ class LandManager:
         if not land2:
             raise TypeError("Land2 required.")
 
-        if not isinstance(land1, Land):
+        if not isinstance(land1,
+                          Land):
             raise TypeError("The land1 must be an "
                             "Land instance.")
 
-        if not isinstance(land2, Land):
+        if not isinstance(land2,
+                          Land):
             raise TypeError("The land2 must be an "
                             "Land instance.")
 
@@ -744,7 +749,8 @@ class LandManager:
         dict2 = self.to_dict(land2)
 
         return dict1 == dict2
-    async def get_by_pac_id(  # PacID
+    # PacID
+    async def get_by_pac_id(
             self,
             pac_id: int) -> List[Land]:
         """

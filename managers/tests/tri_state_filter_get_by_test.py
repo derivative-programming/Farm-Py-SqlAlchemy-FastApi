@@ -1,12 +1,13 @@
 # models/managers/tests/tri_state_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `TriStateFilterManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestTriStateFilterGetByManager:
         }
 
         # Call the build function of the manager
-        tri_state_filter = await tri_state_filter_manager.build(
-            **mock_data)
+        tri_state_filter = await \
+            tri_state_filter_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of TriStateFilter
+        # Assert that the returned object is an instance of
+        # TriStateFilter
         assert isinstance(
-            tri_state_filter, TriStateFilter)
+            tri_state_filter,
+            TriStateFilter)
 
         # Assert that the attributes of the
         # tri_state_filter match our mock data
@@ -72,15 +76,17 @@ class TestTriStateFilterGetByManager:
         Test case for the `get_by_id` method of
         `TriStateFilterManager`.
         """
-        test_tri_state_filter = await TriStateFilterFactory.create_async(
-            session)
+        test_tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session)
 
         tri_state_filter = await \
             tri_state_filter_manager.get_by_id(
                 test_tri_state_filter.tri_state_filter_id)
 
         assert isinstance(
-            tri_state_filter, TriStateFilter)
+            tri_state_filter,
+            TriStateFilter)
 
         assert test_tri_state_filter.tri_state_filter_id == \
             tri_state_filter.tri_state_filter_id
@@ -119,15 +125,17 @@ class TestTriStateFilterGetByManager:
         returned by its code.
         """
 
-        test_tri_state_filter = await TriStateFilterFactory.create_async(
-            session)
+        test_tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session)
 
         tri_state_filter = await \
             tri_state_filter_manager.get_by_code(
                 test_tri_state_filter.code)
 
         assert isinstance(
-            tri_state_filter, TriStateFilter)
+            tri_state_filter,
+            TriStateFilter)
 
         assert test_tri_state_filter.tri_state_filter_id == \
             tri_state_filter.tri_state_filter_id
@@ -205,7 +213,8 @@ class TestTriStateFilterGetByManager:
             tri_state_filter_manager.get_by_pac_id(
                 tri_state_filter1.pac_id)
         assert len(fetched_tri_state_filters) == 1
-        assert isinstance(fetched_tri_state_filters[0], TriStateFilter)
+        assert isinstance(fetched_tri_state_filters[0],
+                          TriStateFilter)
         assert fetched_tri_state_filters[0].code == \
             tri_state_filter1.code
 

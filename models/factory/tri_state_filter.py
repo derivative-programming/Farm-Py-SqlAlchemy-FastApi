@@ -1,13 +1,16 @@
 # models/factory/tri_state_filter.py
+# pylint: disable=unused-import
 """
-This module contains the TriStateFilterFactory
+This module contains the
+TriStateFilterFactory
 class, which is responsible
-for creating instances of the TriStateFilter
+for creating instances of the
+TriStateFilter
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import TriStateFilter
@@ -89,7 +92,8 @@ class TriStateFilterFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> TriStateFilter:
         """
-        Create a new TriStateFilter object
+        Create a new
+        TriStateFilter object
         and save it to the database.
 
         Args:
@@ -130,7 +134,8 @@ class TriStateFilterFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> TriStateFilter:
         """
-        Create a new TriStateFilter object
+        Create a new
+        TriStateFilter object
         asynchronously.
 
         Args:

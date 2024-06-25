@@ -1,7 +1,9 @@
 # models/serialization_schema/customer.py
+# pylint: disable=unused-import
 
 """
-This module contains the CustomerSchema
+This module contains the
+CustomerSchema
 class, which is responsible
 for serializing and deserializing
 Customer objects.

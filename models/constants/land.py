@@ -1,6 +1,8 @@
 # models/constants/land.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to lands.
+This module contains boolean constants related to
+lands.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

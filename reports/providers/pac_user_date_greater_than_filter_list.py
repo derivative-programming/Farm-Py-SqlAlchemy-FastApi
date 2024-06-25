@@ -1,4 +1,5 @@
 # reports/providers/pac_user_date_greater_than_filter_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of
@@ -8,11 +9,11 @@ of pac date_greater_than_filters based on the provided parameters.
 """
 
 import json
-from datetime import date, datetime
+from datetime import date, datetime  # noqa: F401
 import os
 from typing import Any
-import uuid
-from decimal import Decimal
+import uuid  # noqa: F401
+from decimal import Decimal  # noqa: F401
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
@@ -74,8 +75,10 @@ class ReportProviderPacUserDateGreaterThanFilterList():
             list[dict[str, Any]]: The list of
             pac date_greater_than_filters as dictionaries.
         """
-        flow_name = "ReportProviderPacUserDateGreaterThanFilterList"
-        ".generate_list"
+        flow_name = (
+            "ReportProviderPacUserDateGreaterThanFilterList"
+            ".generate_list"
+        )
 
         logging.info("%s Start", flow_name)
         logging.info("%s context_code: %s", flow_name, str(context_code))

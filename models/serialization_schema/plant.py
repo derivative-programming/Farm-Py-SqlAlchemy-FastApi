@@ -1,7 +1,9 @@
 # models/serialization_schema/plant.py
+# pylint: disable=unused-import
 
 """
-This module contains the PlantSchema
+This module contains the
+PlantSchema
 class, which is responsible
 for serializing and deserializing
 Plant objects.

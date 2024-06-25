@@ -8,11 +8,12 @@ that handle the addition of a
 plant in the flow process.
 """
 
-import uuid
+import uuid  # noqa: F401
 import json
-from datetime import date, datetime
-from decimal import Decimal
-from flows.base.plant_user_details_init_report import BaseFlowPlantUserDetailsInitReport
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from flows.base.plant_user_details_init_report import (
+    BaseFlowPlantUserDetailsInitReport)
 from flows.base import LogSeverity
 from business.plant import PlantBusObj
 from helpers import SessionContext  # noqa: F401

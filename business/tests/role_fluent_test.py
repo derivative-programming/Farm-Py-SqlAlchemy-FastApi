@@ -1,21 +1,25 @@
 # business/tests/role_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the RoleFluentBusObj class.
+Unit tests for the
+RoleFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.role_fluent import RoleFluentBusObj
+from business.role_fluent import (
+    RoleFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockRoleBaseBusObj:
     """
-    A mock base class for the RoleFluentBusObj class.
+    A mock base class for the
+    RoleFluentBusObj class.
     """
     def __init__(self):
         self.description = None
@@ -26,12 +30,14 @@ class MockRoleBaseBusObj:
         self.pac_id = None
 class TestRoleFluentBusObj:
     """
-    Unit tests for the RoleFluentBusObj class.
+    Unit tests for the
+    RoleFluentBusObj class.
     """
     @pytest.fixture
     def role(self, session):
         """
-        Return a RoleFluentBusObj object.
+        Return a RoleFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return RoleFluentBusObj(session_context)

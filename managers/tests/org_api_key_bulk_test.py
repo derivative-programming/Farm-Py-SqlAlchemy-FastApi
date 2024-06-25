@@ -1,13 +1,14 @@
 # models/managers/tests/org_api_key_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrgApiKeyManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestOrgApiKeyBulkManager:
             fetched_org_api_key = result.scalars().first()
 
             assert isinstance(
-                fetched_org_api_key, OrgApiKey)
+                fetched_org_api_key,
+                OrgApiKey)
 
             assert str(fetched_org_api_key.insert_user_id) == (
                 str(org_api_key_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestOrgApiKeyBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_org_api_keys) == 2
-        logging.info(updated_org_api_keys[0].__dict__)
-        logging.info(updated_org_api_keys[1].__dict__)
+        logging.info(updated_org_api_keys[0]
+                     .__dict__)
+        logging.info(updated_org_api_keys[1]
+                     .__dict__)
 
         logging.info('getall')
         org_api_keys = await org_api_key_manager.get_list()
-        logging.info(org_api_keys[0].__dict__)
-        logging.info(org_api_keys[1].__dict__)
+        logging.info(org_api_keys[0]
+                     .__dict__)
+        logging.info(org_api_keys[1]
+                     .__dict__)
 
-        assert updated_org_api_keys[0].code == code_updated1
-        assert updated_org_api_keys[1].code == code_updated2
+        assert updated_org_api_keys[0].code == \
+            code_updated1
+        assert updated_org_api_keys[1].code == \
+            code_updated2
 
-        assert str(updated_org_api_keys[0].last_update_user_id) == (
-            str(org_api_key_manager._session_context.customer_code))
+        assert str(updated_org_api_keys[0]
+                   .last_update_user_id) == (
+            str(org_api_key_manager
+                ._session_context.customer_code))
 
-        assert str(updated_org_api_keys[1].last_update_user_id) == (
-            str(org_api_key_manager._session_context.customer_code))
+        assert str(updated_org_api_keys[1]
+                   .last_update_user_id) == (
+            str(org_api_key_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(OrgApiKey).filter(
@@ -194,7 +206,8 @@ class TestOrgApiKeyBulkManager:
         )
         fetched_org_api_key = result.scalars().first()
 
-        assert isinstance(fetched_org_api_key, OrgApiKey)
+        assert isinstance(fetched_org_api_key,
+                          OrgApiKey)
 
         assert fetched_org_api_key.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestOrgApiKeyBulkManager:
         )
         fetched_org_api_key = result.scalars().first()
 
-        assert isinstance(fetched_org_api_key, OrgApiKey)
+        assert isinstance(fetched_org_api_key,
+                          OrgApiKey)
 
         assert fetched_org_api_key.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestOrgApiKeyBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param org_api_key_manager: An instance of the OrgApiKeyManager class.
+        :param org_api_key_manager: An instance of the
+            OrgApiKeyManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestOrgApiKeyBulkManager:
             session=session)
 
         # Delete org_api_keys
-        org_api_key_ids = [org_api_key1.org_api_key_id, org_api_key2.org_api_key_id]
+        org_api_key_ids = [org_api_key1.org_api_key_id,
+                     org_api_key2.org_api_key_id]
         result = await org_api_key_manager.delete_bulk(
             org_api_key_ids)
 
@@ -379,7 +395,8 @@ class TestOrgApiKeyBulkManager:
         org_api_key1 = await OrgApiKeyFactory.create_async(
             session=session)
 
-        assert isinstance(org_api_key1, OrgApiKey)
+        assert isinstance(org_api_key1,
+                          OrgApiKey)
 
         # Delete org_api_keys
         org_api_key_ids = [1, 2]

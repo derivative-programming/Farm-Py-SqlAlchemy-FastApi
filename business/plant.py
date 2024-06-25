@@ -1,8 +1,11 @@
 # business/plant.py
 # pylint: disable=unused-import
 """
-This module contains the PlantBusObj class,
-which represents the business object for a Plant.
+This module contains the
+PlantBusObj class,
+which represents the
+business object for a
+Plant.
 """
 
 from typing import List

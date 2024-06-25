@@ -1,8 +1,11 @@
 # business/org_api_key.py
 # pylint: disable=unused-import
 """
-This module contains the OrgApiKeyBusObj class,
-which represents the business object for a OrgApiKey.
+This module contains the
+OrgApiKeyBusObj class,
+which represents the
+business object for a
+OrgApiKey.
 """
 
 from typing import List

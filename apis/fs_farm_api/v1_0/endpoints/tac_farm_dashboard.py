@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_farm_dashboard.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Tac Farm Dashboard.
 
 The TacFarmDashboardRouter provides
 the following endpoints:
-- GET /api/v1_0/tac-farm-dashboard/{tac_code}/init:
+- GET /api/v1_0/tac-farm-dashboard/...
+    {tac_code}/init:
     Get the initialization data for the
     Tac Farm Dashboard page.
-- GET /api/v1_0/tac-farm-dashboard/{tac_code}:
+- GET /api/v1_0/tac-farm-dashboard/...
+    {tac_code}:
     Get the Tac Farm Dashboard Report
     for a specific tac code.
-- GET /api/v1_0/tac-farm-dashboard/{tac_code}/to-csv:
+- GET /api/v1_0/tac-farm-dashboard/...
+        {tac_code}/to-csv:
     Retrieve the Tac Farm Dashboard
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class TacFarmDashboardRouterConfig():
     """
-    Configuration class for the TacFarmDashboardRouter.
+    Configuration class for the
+    TacFarmDashboardRouter.
     """
 
     # constants
@@ -185,7 +190,8 @@ class TacFarmDashboardRouter(BaseRouter):
             api_key (str): The API key for authorization.
 
         Returns:
-            api_models.TacFarmDashboardGetModelResponse: The response
+            api_models.TacFarmDashboardGetModelResponse:
+                The response
                 model containing the
                 Tac Farm Dashboard Report.
 

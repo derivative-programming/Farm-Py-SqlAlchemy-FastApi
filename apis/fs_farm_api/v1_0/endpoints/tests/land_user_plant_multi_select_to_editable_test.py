@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `land_user_plant_multi_select_to_editable` endpoint.
+This module contains unit tests for the
+`land_user_plant_multi_select_to_editable` endpoint.
 """
 
 import logging

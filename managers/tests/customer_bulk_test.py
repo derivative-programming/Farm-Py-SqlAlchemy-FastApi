@@ -1,13 +1,14 @@
 # models/managers/tests/customer_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `CustomerManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestCustomerBulkManager:
             fetched_customer = result.scalars().first()
 
             assert isinstance(
-                fetched_customer, Customer)
+                fetched_customer,
+                Customer)
 
             assert str(fetched_customer.insert_user_id) == (
                 str(customer_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestCustomerBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_customers) == 2
-        logging.info(updated_customers[0].__dict__)
-        logging.info(updated_customers[1].__dict__)
+        logging.info(updated_customers[0]
+                     .__dict__)
+        logging.info(updated_customers[1]
+                     .__dict__)
 
         logging.info('getall')
         customers = await customer_manager.get_list()
-        logging.info(customers[0].__dict__)
-        logging.info(customers[1].__dict__)
+        logging.info(customers[0]
+                     .__dict__)
+        logging.info(customers[1]
+                     .__dict__)
 
-        assert updated_customers[0].code == code_updated1
-        assert updated_customers[1].code == code_updated2
+        assert updated_customers[0].code == \
+            code_updated1
+        assert updated_customers[1].code == \
+            code_updated2
 
-        assert str(updated_customers[0].last_update_user_id) == (
-            str(customer_manager._session_context.customer_code))
+        assert str(updated_customers[0]
+                   .last_update_user_id) == (
+            str(customer_manager
+                ._session_context.customer_code))
 
-        assert str(updated_customers[1].last_update_user_id) == (
-            str(customer_manager._session_context.customer_code))
+        assert str(updated_customers[1]
+                   .last_update_user_id) == (
+            str(customer_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Customer).filter(
@@ -194,7 +206,8 @@ class TestCustomerBulkManager:
         )
         fetched_customer = result.scalars().first()
 
-        assert isinstance(fetched_customer, Customer)
+        assert isinstance(fetched_customer,
+                          Customer)
 
         assert fetched_customer.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestCustomerBulkManager:
         )
         fetched_customer = result.scalars().first()
 
-        assert isinstance(fetched_customer, Customer)
+        assert isinstance(fetched_customer,
+                          Customer)
 
         assert fetched_customer.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestCustomerBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param customer_manager: An instance of the CustomerManager class.
+        :param customer_manager: An instance of the
+            CustomerManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestCustomerBulkManager:
             session=session)
 
         # Delete customers
-        customer_ids = [customer1.customer_id, customer2.customer_id]
+        customer_ids = [customer1.customer_id,
+                     customer2.customer_id]
         result = await customer_manager.delete_bulk(
             customer_ids)
 
@@ -379,7 +395,8 @@ class TestCustomerBulkManager:
         customer1 = await CustomerFactory.create_async(
             session=session)
 
-        assert isinstance(customer1, Customer)
+        assert isinstance(customer1,
+                          Customer)
 
         # Delete customers
         customer_ids = [1, 2]

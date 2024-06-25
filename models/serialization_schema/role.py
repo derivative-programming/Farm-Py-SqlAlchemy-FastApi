@@ -1,7 +1,9 @@
 # models/serialization_schema/role.py
+# pylint: disable=unused-import
 
 """
-This module contains the RoleSchema
+This module contains the
+RoleSchema
 class, which is responsible
 for serializing and deserializing
 Role objects.

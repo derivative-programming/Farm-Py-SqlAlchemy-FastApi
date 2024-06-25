@@ -6,9 +6,9 @@ The Tac model inherits from
 the Base model and is mapped to the
 'farm_Tac' table in the database.
 """
-from decimal import Decimal
-import uuid
-from datetime import date, datetime
+from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,

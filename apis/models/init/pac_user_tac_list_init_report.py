@@ -1,4 +1,5 @@
 # apis/models/init/pac_user_tac_list_init_report.py
+# pylint: disable=unused-import
 
 """
 This module contains the models and request/response classes
@@ -6,9 +7,9 @@ for the PacUserTacListInitReport workflow.
 """
 
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import Field
@@ -58,7 +59,9 @@ class PacUserTacListInitReportGetInitModelResponse(
         return self.model_dump_json()
 
 
-class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
+class PacUserTacListInitReportGetInitModelRequest(
+    SnakeModel
+):
     """
     Represents the request model for the
     PacUserTacListInitReportGetInitModelRequest.
@@ -68,7 +71,8 @@ class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
             self,
             session_context: SessionContext,
             pac_code: uuid.UUID,
-            response: PacUserTacListInitReportGetInitModelResponse
+            response:
+            PacUserTacListInitReportGetInitModelResponse
     ) -> PacUserTacListInitReportGetInitModelResponse:
         """
         Processes the request and returns the response.
@@ -76,7 +80,9 @@ class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
 
         try:
             logging.info(
-                "loading model...PacUserTacListInitReportGetInitModelRequest")
+                "loading model..."
+                "PacUserTacListInitReport"
+                "GetInitModelRequest")
             pac_bus_obj = PacBusObj(session_context)
             await pac_bus_obj.load_from_code(pac_code)
             if pac_bus_obj.get_pac_obj() is None:
@@ -84,7 +90,9 @@ class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
                 raise ValueError("Invalid pac_code")
             flow = FlowPacUserTacListInitReport(session_context)
             logging.info(
-                "process request...PacUserTacListInitReportGetInitModelRequest")
+                "process request..."
+                "PacUserTacListInitReport"
+                "GetInitModelRequest")
             flow_response = await flow.process(
                 pac_bus_obj
             )
@@ -92,7 +100,9 @@ class PacUserTacListInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...PacUserTacListInitReportGetInitModelRequest")
+            logging.info("error..."
+                         "PacUserTacListInitReport"
+                         "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

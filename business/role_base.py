@@ -1,15 +1,19 @@
 # business/role_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the RoleBaseBusObj class,
-which represents the base business object for a Role.
+This module contains the
+RoleBaseBusObj class,
+which represents the base
+business object for a
+Role.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import RoleManager
 from models import Role
@@ -76,8 +80,8 @@ class RoleBaseBusObj(BaseBusObj):
             )
 
         return self.role.role_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class RoleBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.role.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class RoleBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.role.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class RoleBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.role.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -659,7 +663,8 @@ class RoleBaseBusObj(BaseBusObj):
 
         role_manager = RoleManager(
             self._session_context)
-        self.role = await role_manager.from_json(json_data)
+        self.role = await \
+            role_manager.from_json(json_data)
 
         return self
 
@@ -734,14 +739,8 @@ class RoleBaseBusObj(BaseBusObj):
         if not isinstance(role_obj_instance,
                           Role):
             raise ValueError(
-                "role_obj_instance must be an instance of Role")
-
-        # role_manager = RoleManager(
-        #     self._session_context)
-
-        # role_dict = role_manager.to_dict(role_obj_instance)
-
-        # self.role = role_manager.from_dict(role_dict)
+                "role_obj_instance must be an "
+                "instance of Role")
 
         self.role = role_obj_instance
 
@@ -769,8 +768,9 @@ class RoleBaseBusObj(BaseBusObj):
         role_manager = RoleManager(
             self._session_context)
 
-        self.role = await role_manager.from_dict(
-            role_dict)
+        self.role = await \
+            role_manager.from_dict(
+                role_dict)
 
         return self
 
@@ -796,8 +796,9 @@ class RoleBaseBusObj(BaseBusObj):
         """
         role_manager = RoleManager(
             self._session_context)
-        self.role = await role_manager.refresh(
-            self.role)
+        self.role = await \
+            role_manager.refresh(
+                self.role)
 
         return self
 
@@ -871,14 +872,16 @@ class RoleBaseBusObj(BaseBusObj):
         if role_id > 0:
             role_manager = RoleManager(
                 self._session_context)
-            self.role = await role_manager.update(
-                self.role)
+            self.role = await \
+                role_manager.update(
+                    self.role)
 
         if role_id == 0:
             role_manager = RoleManager(
                 self._session_context)
-            self.role = await role_manager.add(
-                self.role)
+            self.role = await \
+                role_manager.add(
+                    self.role)
 
         return self
 
@@ -996,8 +999,10 @@ class RoleBaseBusObj(BaseBusObj):
             representing the related pac.
 
         """
-        pac_manager = managers_and_enums.PacManager(self._session_context)
-        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
         return pac_obj
 
     def get_obj(self) -> Role:

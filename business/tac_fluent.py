@@ -1,13 +1,17 @@
 # business/tac_fluent.py
+# pylint: disable=unused-import
 
 """
-This module contains the TacFluentBusObj class,
-which adds fluent properties to the business object for a Tac.
+This module contains the
+TacFluentBusObj class,
+which adds fluent properties
+to the business object for a
+Tac.
 """
 
-from decimal import Decimal
-import uuid
-from datetime import datetime, date
+from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from .tac_base import TacBaseBusObj
 
 

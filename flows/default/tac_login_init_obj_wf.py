@@ -8,11 +8,12 @@ that handle the addition of a
 tac in the flow process.
 """
 
-import uuid
+import uuid  # noqa: F401
 import json
-from datetime import date, datetime
-from decimal import Decimal
-from flows.base.tac_login_init_obj_wf import BaseFlowTacLoginInitObjWF
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from flows.base.tac_login_init_obj_wf import (
+    BaseFlowTacLoginInitObjWF)
 from flows.base import LogSeverity
 from business.tac import TacBusObj
 from helpers import SessionContext  # noqa: F401

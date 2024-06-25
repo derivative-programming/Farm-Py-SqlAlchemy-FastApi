@@ -1,6 +1,8 @@
 # models/constants/role.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to roles.
+This module contains boolean constants related to
+roles.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

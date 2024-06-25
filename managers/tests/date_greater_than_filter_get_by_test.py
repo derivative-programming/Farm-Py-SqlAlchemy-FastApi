@@ -1,12 +1,13 @@
 # models/managers/tests/date_greater_than_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `DateGreaterThanFilterManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestDateGreaterThanFilterGetByManager:
         }
 
         # Call the build function of the manager
-        date_greater_than_filter = await date_greater_than_filter_manager.build(
-            **mock_data)
+        date_greater_than_filter = await \
+            date_greater_than_filter_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of DateGreaterThanFilter
+        # Assert that the returned object is an instance of
+        # DateGreaterThanFilter
         assert isinstance(
-            date_greater_than_filter, DateGreaterThanFilter)
+            date_greater_than_filter,
+            DateGreaterThanFilter)
 
         # Assert that the attributes of the
         # date_greater_than_filter match our mock data
@@ -72,15 +76,17 @@ class TestDateGreaterThanFilterGetByManager:
         Test case for the `get_by_id` method of
         `DateGreaterThanFilterManager`.
         """
-        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session)
+        test_date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session)
 
         date_greater_than_filter = await \
             date_greater_than_filter_manager.get_by_id(
                 test_date_greater_than_filter.date_greater_than_filter_id)
 
         assert isinstance(
-            date_greater_than_filter, DateGreaterThanFilter)
+            date_greater_than_filter,
+            DateGreaterThanFilter)
 
         assert test_date_greater_than_filter.date_greater_than_filter_id == \
             date_greater_than_filter.date_greater_than_filter_id
@@ -119,15 +125,17 @@ class TestDateGreaterThanFilterGetByManager:
         returned by its code.
         """
 
-        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session)
+        test_date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session)
 
         date_greater_than_filter = await \
             date_greater_than_filter_manager.get_by_code(
                 test_date_greater_than_filter.code)
 
         assert isinstance(
-            date_greater_than_filter, DateGreaterThanFilter)
+            date_greater_than_filter,
+            DateGreaterThanFilter)
 
         assert test_date_greater_than_filter.date_greater_than_filter_id == \
             date_greater_than_filter.date_greater_than_filter_id
@@ -206,7 +214,8 @@ class TestDateGreaterThanFilterGetByManager:
             date_greater_than_filter_manager.get_by_pac_id(
                 date_greater_than_filter1.pac_id)
         assert len(fetched_date_greater_than_filters) == 1
-        assert isinstance(fetched_date_greater_than_filters[0], DateGreaterThanFilter)
+        assert isinstance(fetched_date_greater_than_filters[0],
+                          DateGreaterThanFilter)
         assert fetched_date_greater_than_filters[0].code == \
             date_greater_than_filter1.code
 

@@ -1,8 +1,11 @@
 # business/role.py
 # pylint: disable=unused-import
 """
-This module contains the RoleBusObj class,
-which represents the business object for a Role.
+This module contains the
+RoleBusObj class,
+which represents the
+business object for a
+Role.
 """
 
 from typing import List

@@ -1,13 +1,14 @@
 # models/managers/tests/plant_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `PlantManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestPlantBulkManager:
             fetched_plant = result.scalars().first()
 
             assert isinstance(
-                fetched_plant, Plant)
+                fetched_plant,
+                Plant)
 
             assert str(fetched_plant.insert_user_id) == (
                 str(plant_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestPlantBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_plants) == 2
-        logging.info(updated_plants[0].__dict__)
-        logging.info(updated_plants[1].__dict__)
+        logging.info(updated_plants[0]
+                     .__dict__)
+        logging.info(updated_plants[1]
+                     .__dict__)
 
         logging.info('getall')
         plants = await plant_manager.get_list()
-        logging.info(plants[0].__dict__)
-        logging.info(plants[1].__dict__)
+        logging.info(plants[0]
+                     .__dict__)
+        logging.info(plants[1]
+                     .__dict__)
 
-        assert updated_plants[0].code == code_updated1
-        assert updated_plants[1].code == code_updated2
+        assert updated_plants[0].code == \
+            code_updated1
+        assert updated_plants[1].code == \
+            code_updated2
 
-        assert str(updated_plants[0].last_update_user_id) == (
-            str(plant_manager._session_context.customer_code))
+        assert str(updated_plants[0]
+                   .last_update_user_id) == (
+            str(plant_manager
+                ._session_context.customer_code))
 
-        assert str(updated_plants[1].last_update_user_id) == (
-            str(plant_manager._session_context.customer_code))
+        assert str(updated_plants[1]
+                   .last_update_user_id) == (
+            str(plant_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Plant).filter(
@@ -194,7 +206,8 @@ class TestPlantBulkManager:
         )
         fetched_plant = result.scalars().first()
 
-        assert isinstance(fetched_plant, Plant)
+        assert isinstance(fetched_plant,
+                          Plant)
 
         assert fetched_plant.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestPlantBulkManager:
         )
         fetched_plant = result.scalars().first()
 
-        assert isinstance(fetched_plant, Plant)
+        assert isinstance(fetched_plant,
+                          Plant)
 
         assert fetched_plant.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestPlantBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param plant_manager: An instance of the PlantManager class.
+        :param plant_manager: An instance of the
+            PlantManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestPlantBulkManager:
             session=session)
 
         # Delete plants
-        plant_ids = [plant1.plant_id, plant2.plant_id]
+        plant_ids = [plant1.plant_id,
+                     plant2.plant_id]
         result = await plant_manager.delete_bulk(
             plant_ids)
 
@@ -379,7 +395,8 @@ class TestPlantBulkManager:
         plant1 = await PlantFactory.create_async(
             session=session)
 
-        assert isinstance(plant1, Plant)
+        assert isinstance(plant1,
+                          Plant)
 
         # Delete plants
         plant_ids = [1, 2]

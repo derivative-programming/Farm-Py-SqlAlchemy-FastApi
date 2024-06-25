@@ -1,16 +1,18 @@
 # apis/models/tests/plant_user_details_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
-PlantUserDetailsGetModelRequestFactoryAsync class.
+PlantUserDetailsGetModelRequestFactoryAsync
+class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
@@ -126,7 +128,8 @@ class PlantUserDetailsGetModelRequestFactoryAsync:
             PlantUserDetailsGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance, PlantUserDetailsGetModelRequest)
+        assert isinstance(model_instance,
+                          PlantUserDetailsGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
@@ -141,10 +144,12 @@ class MockReportItemPlantUserDetails:
         """
         Initialize the mock object with default values.
         """
-        self.flavor_name = "Some N Var Char"
+        self.flavor_name = \
+            "Some N Var Char"
         self.is_delete_allowed = True
         self.is_edit_allowed = True
-        self.other_flavor = "Some N Var Char"
+        self.other_flavor = \
+            "Some N Var Char"
         self.some_big_int_val = 1000000
         self.some_bit_val = True
         self.some_date_val = date.today()
@@ -153,14 +158,19 @@ class MockReportItemPlantUserDetails:
         self.some_float_val = 1.23
         self.some_int_val = 1
         self.some_money_val = Decimal('100.00')
-        self.some_n_var_char_val = "Some N Var Char"
+        self.some_n_var_char_val = \
+            "Some N Var Char"
         self.some_phone_number = TEST_PHONE
-        self.some_text_val = "Some Text"
+        self.some_text_val = \
+            "Some Text"
         self.some_uniqueidentifier_val = uuid.uuid4()
         self.some_utc_date_time_val = datetime.utcnow()
-        self.some_var_char_val = "Some Var Char"
-        self.phone_num_conditional_on_is_editable = "Some Var Char"
-        self.n_var_char_as_url = "http://example.com"
+        self.some_var_char_val = \
+            "Some Var Char"
+        self.phone_num_conditional_on_is_editable = \
+            "Some Var Char"
+        self.n_var_char_as_url = \
+            "http://example.com"
         self.update_button_text_link_plant_code = uuid.uuid4()
         self.random_property_updates_link_plant_code = uuid.uuid4()
         self.back_to_dashboard_link_tac_code = uuid.uuid4()
@@ -198,7 +208,8 @@ async def test_process_request(session_context, report_request, report_items):
         'apis.models.plant_user_details.ReportManagerPlantUserDetails',
         autospec=True
     ) as mock_report_manager:
-        mock_report_manager_instance = mock_report_manager.return_value
+        mock_report_manager_instance = \
+            mock_report_manager.return_value
         mock_report_manager_instance.generate = AsyncMock(
             return_value=report_items)
 
@@ -213,7 +224,8 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item, PlantUserDetailsGetModelResponseItem)
+            assert isinstance(response_item,
+                              PlantUserDetailsGetModelResponseItem)
             assert response_item.flavor_name == \
                 report_item.flavor_name
             assert response_item.is_delete_allowed == \

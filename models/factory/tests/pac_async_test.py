@@ -1,5 +1,6 @@
 # models/factory/tests/pac_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the PacFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestPacFactoryAsync:
             AssertionError: If the pac ID
                 is None after creation.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         assert pac.pac_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestPacFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         assert isinstance(pac.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestPacFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        pac: Pac = await PacFactory.build_async(
-            session=session)
+        pac: Pac = await \
+            PacFactory.build_async(
+                session=session)
         assert pac.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestPacFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        pac: Pac = await PacFactory.create_async(
-            session=session)
+        pac: Pac = await \
+            PacFactory.create_async(
+                session=session)
         assert pac.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestPacFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         initial_code = pac.last_change_code
         pac.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestPacFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        pac = await PacFactory.build_async(
-            session=session)
+        pac = await \
+            PacFactory.build_async(
+                session=session)
         assert pac.insert_utc_date_time is not None
         assert isinstance(
             pac.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestPacFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        pac = await PacFactory.build_async(
-            session=session)
+        pac = await \
+            PacFactory.build_async(
+                session=session)
         assert pac.insert_utc_date_time is not None
         assert isinstance(
             pac.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestPacFactoryAsync:
         pac.code = uuid.uuid4()
         session.add(pac)
         await session.commit()
-        assert pac.insert_utc_date_time > initial_time
+        assert pac.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestPacFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         assert pac.insert_utc_date_time is not None
         assert isinstance(
             pac.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestPacFactoryAsync:
         pac.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert pac.insert_utc_date_time == initial_time
+        assert pac.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestPacFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        pac = await PacFactory.build_async(
-            session=session)
+        pac = await \
+            PacFactory.build_async(
+                session=session)
         assert pac.last_update_utc_date_time is not None
         assert isinstance(
             pac.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestPacFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        pac = await PacFactory.build_async(
-            session=session)
+        pac = await \
+            PacFactory.build_async(
+                session=session)
         assert pac.last_update_utc_date_time is not None
         assert isinstance(
             pac.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestPacFactoryAsync:
         pac.code = uuid.uuid4()
         session.add(pac)
         await session.commit()
-        assert pac.last_update_utc_date_time > initial_time
+        assert pac.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestPacFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         assert pac.last_update_utc_date_time is not None
         assert isinstance(
             pac.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestPacFactoryAsync:
         pac.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert pac.last_update_utc_date_time > initial_time
+        assert pac.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestPacFactoryAsync:
             pac is still
             found in the database.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         await session.delete(pac)
         await session.commit()
 
         # Construct the select statement
         stmt = select(Pac).where(
-            Pac._pac_id == pac.pac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Pac._pac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                pac.pac_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,18 +405,22 @@ class TestPacFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         assert isinstance(pac.pac_id, int)
         assert isinstance(pac.code, uuid.UUID)
         assert isinstance(pac.last_change_code, int)
         assert isinstance(pac.insert_user_id, uuid.UUID)
         assert isinstance(pac.last_update_user_id, uuid.UUID)
-        assert pac.description == "" or isinstance(pac.description, str)
+        assert pac.description == "" or isinstance(
+            pac.description, str)
         assert isinstance(pac.display_order, int)
         assert isinstance(pac.is_active, bool)
-        assert pac.lookup_enum_name == "" or isinstance(pac.lookup_enum_name, str)
-        assert pac.name == "" or isinstance(pac.name, str)
+        assert pac.lookup_enum_name == "" or isinstance(
+            pac.lookup_enum_name, str)
+        assert pac.name == "" or isinstance(
+            pac.name, str)
         # Check for the peek values
         # description,
         # displayOrder,
@@ -412,7 +434,8 @@ class TestPacFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for pacs.
+        Test case to check the unique code constraint
+        for pacs.
 
         This test creates two pac
         instances using
@@ -426,7 +449,9 @@ class TestPacFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        PacFactory.create_async() method creates unique codes for each pac.
+        PacFactory.create_async()
+        method creates unique codes for
+        each pac.
         """
 
         pac_1 = await PacFactory.create_async(
@@ -484,16 +509,20 @@ class TestPacFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new Pac object using
+        1. Create a new
+            Pac object using
             the PacFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the Pac
-            object using the pac_id.
+            object using the
+            pac_id.
         4. Modify the code attribute of the
             retrieved Pac object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            Pac object using the pac_id.
+            Pac object using the
+            pac_id.
         7. Get the modified Pac object.
         8. Verify that the last_change_code attribute
             of the modified Pac object
@@ -504,12 +533,14 @@ class TestPacFactoryAsync:
                             of the modified Pac
                             object is the same as the original value.
         """
-        pac = await PacFactory.create_async(
-            session=session)
+        pac = await \
+            PacFactory.create_async(
+                session=session)
         original_last_change_code = pac.last_change_code
 
         stmt = select(Pac).where(
-            Pac._pac_id == pac.pac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Pac._pac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                pac.pac_id))
         result = await session.execute(stmt)
         pac_1 = result.scalars().first()
 
@@ -519,7 +550,8 @@ class TestPacFactoryAsync:
         await session.commit()
 
         stmt = select(Pac).where(
-            Pac._pac_id == pac.pac_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Pac._pac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                pac.pac_id))
         result = await session.execute(stmt)
         pac_2 = result.scalars().first()
 

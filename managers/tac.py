@@ -10,7 +10,7 @@ tacs in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -344,7 +344,8 @@ class TacManager:
         logging.info("TacManager.update")
         property_list = Tac.property_list()
         if tac:
-            tac.last_update_user_id = self._session_context.customer_code
+            tac.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -548,7 +549,8 @@ class TacManager:
         logging.info(
             "TacManager.add_bulk")
         for tac in tacs:
-            tac_id = tac.tac_id
+            tac_id = \
+                tac.tac_id
             code = tac.code
             if tac.tac_id is not None and tac.tac_id > 0:
                 raise ValueError(
@@ -615,7 +617,8 @@ class TacManager:
                 if key != "tac_id":
                     setattr(tac, key, value)
 
-            tac.last_update_user_id = self._session_context.customer_code
+            tac.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_tacs.append(tac)
 
@@ -732,11 +735,13 @@ class TacManager:
         if not tac2:
             raise TypeError("Tac2 required.")
 
-        if not isinstance(tac1, Tac):
+        if not isinstance(tac1,
+                          Tac):
             raise TypeError("The tac1 must be an "
                             "Tac instance.")
 
-        if not isinstance(tac2, Tac):
+        if not isinstance(tac2,
+                          Tac):
             raise TypeError("The tac2 must be an "
                             "Tac instance.")
 
@@ -744,7 +749,8 @@ class TacManager:
         dict2 = self.to_dict(tac2)
 
         return dict1 == dict2
-    async def get_by_pac_id(  # PacID
+    # PacID
+    async def get_by_pac_id(
             self,
             pac_id: int) -> List[Tac]:
         """

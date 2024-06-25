@@ -1,13 +1,17 @@
 # business/customer_role_fluent.py
+# pylint: disable=unused-import
 
 """
-This module contains the CustomerRoleFluentBusObj class,
-which adds fluent properties to the business object for a CustomerRole.
+This module contains the
+CustomerRoleFluentBusObj class,
+which adds fluent properties
+to the business object for a
+CustomerRole.
 """
 
-from decimal import Decimal
-import uuid
-from datetime import datetime, date
+from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from .customer_role_base import CustomerRoleBaseBusObj
 
 

@@ -1,8 +1,11 @@
 # business/tri_state_filter.py
 # pylint: disable=unused-import
 """
-This module contains the TriStateFilterBusObj class,
-which represents the business object for a TriStateFilter.
+This module contains the
+TriStateFilterBusObj class,
+which represents the
+business object for a
+TriStateFilter.
 """
 
 from typing import List

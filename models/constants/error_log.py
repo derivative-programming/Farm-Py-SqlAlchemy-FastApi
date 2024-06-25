@@ -1,6 +1,8 @@
 # models/constants/error_log.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to error_logs.
+This module contains boolean constants related to
+error_logs.
 """
 browser_code_calculatedIsDBColumnIndexed: bool = False
 context_code_calculatedIsDBColumnIndexed: bool = False

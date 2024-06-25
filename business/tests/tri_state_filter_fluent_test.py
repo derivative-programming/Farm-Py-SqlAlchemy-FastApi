@@ -1,21 +1,25 @@
 # business/tests/tri_state_filter_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the TriStateFilterFluentBusObj class.
+Unit tests for the
+TriStateFilterFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.tri_state_filter_fluent import TriStateFilterFluentBusObj
+from business.tri_state_filter_fluent import (
+    TriStateFilterFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockTriStateFilterBaseBusObj:
     """
-    A mock base class for the TriStateFilterFluentBusObj class.
+    A mock base class for the
+    TriStateFilterFluentBusObj class.
     """
     def __init__(self):
         self.description = None
@@ -27,12 +31,14 @@ class MockTriStateFilterBaseBusObj:
         self.state_int_value = None
 class TestTriStateFilterFluentBusObj:
     """
-    Unit tests for the TriStateFilterFluentBusObj class.
+    Unit tests for the
+    TriStateFilterFluentBusObj class.
     """
     @pytest.fixture
     def tri_state_filter(self, session):
         """
-        Return a TriStateFilterFluentBusObj object.
+        Return a TriStateFilterFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return TriStateFilterFluentBusObj(session_context)

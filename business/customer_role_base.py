@@ -1,15 +1,19 @@
 # business/customer_role_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the CustomerRoleBaseBusObj class,
-which represents the base business object for a CustomerRole.
+This module contains the
+CustomerRoleBaseBusObj class,
+which represents the base
+business object for a
+CustomerRole.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import CustomerRoleManager
 from models import CustomerRole
@@ -76,8 +80,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         return self.customer_role.customer_role_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.customer_role.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.customer_role.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.customer_role.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -598,7 +602,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
 
         customer_role_manager = CustomerRoleManager(
             self._session_context)
-        self.customer_role = await customer_role_manager.from_json(json_data)
+        self.customer_role = await \
+            customer_role_manager.from_json(json_data)
 
         return self
 
@@ -673,14 +678,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         if not isinstance(customer_role_obj_instance,
                           CustomerRole):
             raise ValueError(
-                "customer_role_obj_instance must be an instance of CustomerRole")
-
-        # customer_role_manager = CustomerRoleManager(
-        #     self._session_context)
-
-        # customer_role_dict = customer_role_manager.to_dict(customer_role_obj_instance)
-
-        # self.customer_role = customer_role_manager.from_dict(customer_role_dict)
+                "customer_role_obj_instance must be an "
+                "instance of CustomerRole")
 
         self.customer_role = customer_role_obj_instance
 
@@ -708,8 +707,9 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         customer_role_manager = CustomerRoleManager(
             self._session_context)
 
-        self.customer_role = await customer_role_manager.from_dict(
-            customer_role_dict)
+        self.customer_role = await \
+            customer_role_manager.from_dict(
+                customer_role_dict)
 
         return self
 
@@ -735,8 +735,9 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         """
         customer_role_manager = CustomerRoleManager(
             self._session_context)
-        self.customer_role = await customer_role_manager.refresh(
-            self.customer_role)
+        self.customer_role = await \
+            customer_role_manager.refresh(
+                self.customer_role)
 
         return self
 
@@ -810,14 +811,16 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         if customer_role_id > 0:
             customer_role_manager = CustomerRoleManager(
                 self._session_context)
-            self.customer_role = await customer_role_manager.update(
-                self.customer_role)
+            self.customer_role = await \
+                customer_role_manager.update(
+                    self.customer_role)
 
         if customer_role_id == 0:
             customer_role_manager = CustomerRoleManager(
                 self._session_context)
-            self.customer_role = await customer_role_manager.add(
-                self.customer_role)
+            self.customer_role = await \
+                customer_role_manager.add(
+                    self.customer_role)
 
         return self
 
@@ -927,8 +930,10 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             representing the related customer.
 
         """
-        customer_manager = managers_and_enums.CustomerManager(self._session_context)
-        customer_obj = await customer_manager.get_by_id(self.customer_id)
+        customer_manager = managers_and_enums.CustomerManager(
+            self._session_context)
+        customer_obj = await customer_manager.get_by_id(
+            self.customer_id)
         return customer_obj
     # isPlaceholder,
     # placeholder,

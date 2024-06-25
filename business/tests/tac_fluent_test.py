@@ -1,21 +1,25 @@
 # business/tests/tac_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the TacFluentBusObj class.
+Unit tests for the
+TacFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.tac_fluent import TacFluentBusObj
+from business.tac_fluent import (
+    TacFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockTacBaseBusObj:
     """
-    A mock base class for the TacFluentBusObj class.
+    A mock base class for the
+    TacFluentBusObj class.
     """
     def __init__(self):
         self.description = None
@@ -26,12 +30,14 @@ class MockTacBaseBusObj:
         self.pac_id = None
 class TestTacFluentBusObj:
     """
-    Unit tests for the TacFluentBusObj class.
+    Unit tests for the
+    TacFluentBusObj class.
     """
     @pytest.fixture
     def tac(self, session):
         """
-        Return a TacFluentBusObj object.
+        Return a TacFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return TacFluentBusObj(session_context)

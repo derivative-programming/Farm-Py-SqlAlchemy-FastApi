@@ -1,13 +1,14 @@
 # models/managers/tests/pac_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `PacManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestPacManager:
         }
 
         # Call the build function of the manager
-        pac = await pac_manager.build(
-            **mock_data)
+        pac = await \
+            pac_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of Pac
         assert isinstance(
-            pac, Pac)
+            pac,
+            Pac)
 
         # Assert that the attributes of the
         # pac match our mock data
@@ -96,17 +99,20 @@ class TestPacManager:
         `PacManager` that checks if a
         pac is correctly added to the database.
         """
-        test_pac = await PacFactory.build_async(
-            session)
+        test_pac = await \
+            PacFactory.build_async(
+                session)
 
         assert test_pac.pac_id == 0
 
         # Add the pac using the
         # manager's add method
-        added_pac = await pac_manager.add(
-            pac=test_pac)
+        added_pac = await \
+            pac_manager.add(
+                pac=test_pac)
 
-        assert isinstance(added_pac, Pac)
+        assert isinstance(added_pac,
+                          Pac)
 
         assert str(added_pac.insert_user_id) == (
             str(pac_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestPacManager:
         # is not None and matches the
         # added pac
         assert fetched_pac is not None
-        assert isinstance(fetched_pac, Pac)
+        assert isinstance(fetched_pac,
+                          Pac)
         assert fetched_pac.pac_id == added_pac.pac_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestPacManager:
         # Create a test pac
         # using the PacFactory
         # without persisting it to the database
-        test_pac = await PacFactory.build_async(
-            session)
+        test_pac = await \
+            PacFactory.build_async(
+                session)
 
         assert test_pac.pac_id == 0
 
@@ -154,10 +162,12 @@ class TestPacManager:
 
         # Add the pac using
         # the manager's add method
-        added_pac = await pac_manager.add(
-            pac=test_pac)
+        added_pac = await \
+            pac_manager.add(
+                pac=test_pac)
 
-        assert isinstance(added_pac, Pac)
+        assert isinstance(added_pac,
+                          Pac)
 
         assert str(added_pac.insert_user_id) == (
             str(pac_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestPacManager:
         that checks if a pac
         is correctly updated.
         """
-        test_pac = await PacFactory.create_async(
-            session)
+        test_pac = await \
+            PacFactory.create_async(
+                session)
 
         test_pac.code = uuid.uuid4()
 
-        updated_pac = await pac_manager.update(
-            pac=test_pac)
+        updated_pac = await \
+            pac_manager.update(
+                pac=test_pac)
 
-        assert isinstance(updated_pac, Pac)
+        assert isinstance(updated_pac,
+                          Pac)
 
         assert str(updated_pac.last_update_user_id) == str(
             pac_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestPacManager:
         that checks if a pac is
         correctly updated using a dictionary.
         """
-        test_pac = await PacFactory.create_async(
-            session)
+        test_pac = await \
+            PacFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_pac = await pac_manager.update(
-            pac=test_pac,
-            code=new_code
-        )
+        updated_pac = await \
+            pac_manager.update(
+                pac=test_pac,
+                code=new_code
+            )
 
-        assert isinstance(updated_pac, Pac)
+        assert isinstance(updated_pac,
+                          Pac)
 
         assert str(updated_pac.last_update_user_id) == str(
             pac_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestPacManager:
         pac_manager: PacManager
     ):
         """
-        Test case for the `update` method of `PacManager`
+        Test case for the `update` method of
+        `PacManager`
         with an invalid pac.
         """
 
@@ -299,11 +316,13 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `PacManager`
+        Test case for the `update` method of
+        `PacManager`
         with a nonexistent attribute.
         """
-        test_pac = await PacFactory.create_async(
-            session)
+        test_pac = await \
+            PacFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestPacManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `PacManager`.
+        Test case for the `delete` method of
+        `PacManager`.
         """
         pac_data = await PacFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestPacManager:
         )
         fetched_pac = result.scalars().first()
 
-        assert isinstance(fetched_pac, Pac)
+        assert isinstance(fetched_pac,
+                          Pac)
 
         assert fetched_pac.pac_id == \
             pac_data.pac_id
@@ -363,7 +384,8 @@ class TestPacManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param pac_manager: The instance of the PacManager class.
+        :param pac_manager: The instance of the
+            PacManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestPacManager:
         the test case will fail.
 
         Args:
-            pac_manager (PacManager): An
+            pac_manager
+            (PacManager): An
                 instance of the
                 `PacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestPacManager:
         Test the 'to_json' method of the PacManager class.
 
         Args:
-            pac_manager (PacManager): An
+            pac_manager
+            (PacManager): An
                 instance of the
                 PacManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestPacManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        pac = await PacFactory.build_async(
-            session)
+        pac = await \
+            PacFactory.build_async(
+                session)
 
         json_data = pac_manager.to_json(
             pac)
@@ -486,7 +511,8 @@ class TestPacManager:
         Test the to_dict method of the PacManager class.
 
         Args:
-            pac_manager (PacManager): An
+            pac_manager
+            (PacManager): An
                 instance of the
                 PacManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestPacManager:
         Returns:
             None
         """
-        pac = await PacFactory.build_async(
-            session)
+        pac = await \
+            PacFactory.build_async(
+                session)
 
-        dict_data = pac_manager.to_dict(
-            pac)
+        dict_data = \
+            pac_manager.to_dict(
+                pac)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestPacManager:
         the same code as the original pac.
 
         Args:
-            pac_manager (PacManager): An
-            instance of the
+            pac_manager
+            (PacManager): An
+                instance of the
                 `PacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        pac = await PacFactory.create_async(
-            session)
+        pac = await \
+            PacFactory.create_async(
+                session)
 
         json_data = pac_manager.to_json(
             pac)
 
-        deserialized_pac = await pac_manager.from_json(json_data)
+        deserialized_pac = await \
+                pac_manager.from_json(json_data)
 
-        assert isinstance(deserialized_pac, Pac)
+        assert isinstance(deserialized_pac,
+                          Pac)
         assert deserialized_pac.code == \
             pac.code
 
@@ -559,7 +591,8 @@ class TestPacManager:
         pac object.
 
         Args:
-            pac_manager (PacManager): An instance
+            pac_manager
+            (PacManager): An instance
                 of the `PacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestPacManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        pac = await PacFactory.create_async(
-            session)
+        pac = await \
+            PacFactory.create_async(
+                session)
 
         schema = PacSchema()
 
@@ -578,10 +612,12 @@ class TestPacManager:
 
         assert isinstance(pac_data, dict)
 
-        deserialized_pac = await pac_manager.from_dict(
-            pac_data)
+        deserialized_pac = await \
+            pac_manager.from_dict(
+                pac_data)
 
-        assert isinstance(deserialized_pac, Pac)
+        assert isinstance(deserialized_pac,
+                          Pac)
 
         assert deserialized_pac.code == \
             pac.code
@@ -630,7 +666,8 @@ class TestPacManager:
         PacManager class returns 0 when the database is empty.
 
         Args:
-            pac_manager (PacManager): An
+            pac_manager
+            (PacManager): An
                 instance of the
                 PacManager class.
 
@@ -664,7 +701,8 @@ class TestPacManager:
             it reflects the updated code.
 
         Args:
-            pac_manager (PacManager): The
+            pac_manager
+            (PacManager): The
                 manager responsible
                 for pac operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestPacManager:
         # Verify that the updated pac
         # is of type Pac
         # and has the updated code
-        assert isinstance(updated_pac1, Pac)
+        assert isinstance(updated_pac1,
+                          Pac)
 
         assert updated_pac1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestPacManager:
         Test case to verify the behavior of refreshing a nonexistent pac.
 
         Args:
-            pac_manager (PacManager): The
+            pac_manager
+            (PacManager): The
                 instance of the
                 PacManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestPacManager:
         exists using the manager function.
 
         Args:
-            pac_manager (PacManager): The
+            pac_manager
+            (PacManager): The
                 pac manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestPacManager:
         PacManager class correctly compares two pacs.
 
         Args:
-            pac_manager (PacManager): An
+            pac_manager
+            (PacManager): An
                 instance of the
                 PacManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestPacManager:
         assert pac_manager.is_equal(
             pac1, pac2) is True
 
-        pac1_dict = pac_manager.to_dict(
-            pac1)
+        pac1_dict = \
+            pac_manager.to_dict(
+                pac1)
 
         pac3 = await \
             pac_manager.from_dict(
@@ -815,7 +858,8 @@ class TestPacManager:
         non-existent ID exists in the database.
 
         Args:
-            pac_manager (PacManager): The
+            pac_manager
+            (PacManager): The
                 instance of the PacManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestPacManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            pac_manager (PacManager): The instance
+            pac_manager
+            (PacManager): The instance
                 of the PacManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

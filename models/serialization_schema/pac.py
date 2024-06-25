@@ -1,7 +1,9 @@
 # models/serialization_schema/pac.py
+# pylint: disable=unused-import
 
 """
-This module contains the PacSchema
+This module contains the
+PacSchema
 class, which is responsible
 for serializing and deserializing
 Pac objects.

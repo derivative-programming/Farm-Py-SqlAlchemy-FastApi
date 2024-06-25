@@ -1,15 +1,19 @@
 # business/org_api_key_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the OrgApiKeyBaseBusObj class,
-which represents the base business object for a OrgApiKey.
+This module contains the
+OrgApiKeyBaseBusObj class,
+which represents the base
+business object for a
+OrgApiKey.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import OrgApiKeyManager
 from models import OrgApiKey
@@ -76,8 +80,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         return self.org_api_key.org_api_key_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.org_api_key.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.org_api_key.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.org_api_key.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -822,7 +826,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
 
         org_api_key_manager = OrgApiKeyManager(
             self._session_context)
-        self.org_api_key = await org_api_key_manager.from_json(json_data)
+        self.org_api_key = await \
+            org_api_key_manager.from_json(json_data)
 
         return self
 
@@ -897,14 +902,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         if not isinstance(org_api_key_obj_instance,
                           OrgApiKey):
             raise ValueError(
-                "org_api_key_obj_instance must be an instance of OrgApiKey")
-
-        # org_api_key_manager = OrgApiKeyManager(
-        #     self._session_context)
-
-        # org_api_key_dict = org_api_key_manager.to_dict(org_api_key_obj_instance)
-
-        # self.org_api_key = org_api_key_manager.from_dict(org_api_key_dict)
+                "org_api_key_obj_instance must be an "
+                "instance of OrgApiKey")
 
         self.org_api_key = org_api_key_obj_instance
 
@@ -932,8 +931,9 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         org_api_key_manager = OrgApiKeyManager(
             self._session_context)
 
-        self.org_api_key = await org_api_key_manager.from_dict(
-            org_api_key_dict)
+        self.org_api_key = await \
+            org_api_key_manager.from_dict(
+                org_api_key_dict)
 
         return self
 
@@ -959,8 +959,9 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         """
         org_api_key_manager = OrgApiKeyManager(
             self._session_context)
-        self.org_api_key = await org_api_key_manager.refresh(
-            self.org_api_key)
+        self.org_api_key = await \
+            org_api_key_manager.refresh(
+                self.org_api_key)
 
         return self
 
@@ -1034,14 +1035,16 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         if org_api_key_id > 0:
             org_api_key_manager = OrgApiKeyManager(
                 self._session_context)
-            self.org_api_key = await org_api_key_manager.update(
-                self.org_api_key)
+            self.org_api_key = await \
+                org_api_key_manager.update(
+                    self.org_api_key)
 
         if org_api_key_id == 0:
             org_api_key_manager = OrgApiKeyManager(
                 self._session_context)
-            self.org_api_key = await org_api_key_manager.add(
-                self.org_api_key)
+            self.org_api_key = await \
+                org_api_key_manager.add(
+                    self.org_api_key)
 
         return self
 
@@ -1172,8 +1175,10 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             representing the related organization.
 
         """
-        organization_manager = managers_and_enums.OrganizationManager(self._session_context)
-        organization_obj = await organization_manager.get_by_id(self.organization_id)
+        organization_manager = managers_and_enums.OrganizationManager(
+            self._session_context)
+        organization_obj = await organization_manager.get_by_id(
+            self.organization_id)
         return organization_obj
     # OrgCustomerID
 

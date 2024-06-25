@@ -1,15 +1,16 @@
 # models/factory/tests/date_greater_than_filter_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the DateGreaterThanFilterFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestDateGreaterThanFilterFactory:
         date_greater_than_filter.code = uuid.uuid4()
         session.add(date_greater_than_filter)
         session.commit()
-        assert date_greater_than_filter.insert_utc_date_time > initial_time
+        assert date_greater_than_filter.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestDateGreaterThanFilterFactory:
         date_greater_than_filter.code = uuid.uuid4()
         session.add(date_greater_than_filter)
         session.commit()
-        assert date_greater_than_filter.last_update_utc_date_time > initial_time
+        assert date_greater_than_filter.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestDateGreaterThanFilterFactory:
         date_greater_than_filter.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert date_greater_than_filter.last_update_utc_date_time > initial_time
+        assert date_greater_than_filter.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -213,14 +217,15 @@ class TestDateGreaterThanFilterFactory:
         assert isinstance(date_greater_than_filter.insert_user_id, uuid.UUID)
         assert isinstance(date_greater_than_filter.last_update_user_id, uuid.UUID)
         assert isinstance(date_greater_than_filter.day_count, int)
-        assert date_greater_than_filter.description == "" or isinstance(date_greater_than_filter.description, str)
+        assert date_greater_than_filter.description == "" or isinstance(
+            date_greater_than_filter.description, str)
         assert isinstance(date_greater_than_filter.display_order, int)
         assert isinstance(date_greater_than_filter.is_active, bool)
-        assert date_greater_than_filter.lookup_enum_name == "" or isinstance(date_greater_than_filter.lookup_enum_name, str)
-        assert date_greater_than_filter.name == "" or isinstance(date_greater_than_filter.name, str)
+        assert date_greater_than_filter.lookup_enum_name == "" or isinstance(
+            date_greater_than_filter.lookup_enum_name, str)
+        assert date_greater_than_filter.name == "" or isinstance(
+            date_greater_than_filter.name, str)
         assert isinstance(date_greater_than_filter.pac_id, int)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
         # dayCount,
         # description,
         # displayOrder,
@@ -307,13 +312,15 @@ class TestDateGreaterThanFilterFactory:
         date_greater_than_filter = DateGreaterThanFilterFactory.create(
             session=session)
         original_last_change_code = date_greater_than_filter.last_change_code
-        date_greater_than_filter_1 = session.query(DateGreaterThanFilter).filter_by(
+        date_greater_than_filter_1 = session.query(
+            DateGreaterThanFilter).filter_by(
             _date_greater_than_filter_id=(
                 date_greater_than_filter.date_greater_than_filter_id)
         ).first()
         date_greater_than_filter_1.code = uuid.uuid4()
         session.commit()
-        date_greater_than_filter_2 = session.query(DateGreaterThanFilter).filter_by(
+        date_greater_than_filter_2 = session.query(
+            DateGreaterThanFilter).filter_by(
             _date_greater_than_filter_id=(
                 date_greater_than_filter.date_greater_than_filter_id)
         ).first()

@@ -1,4 +1,5 @@
 # apis/models/init/tac_farm_dashboard_init_report.py
+# pylint: disable=unused-import
 
 """
 This module contains the models and request/response classes
@@ -6,9 +7,9 @@ for the TacFarmDashboardInitReport workflow.
 """
 
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import Field
@@ -63,7 +64,9 @@ class TacFarmDashboardInitReportGetInitModelResponse(
         return self.model_dump_json()
 
 
-class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
+class TacFarmDashboardInitReportGetInitModelRequest(
+    SnakeModel
+):
     """
     Represents the request model for the
     TacFarmDashboardInitReportGetInitModelRequest.
@@ -73,7 +76,8 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
             self,
             session_context: SessionContext,
             tac_code: uuid.UUID,
-            response: TacFarmDashboardInitReportGetInitModelResponse
+            response:
+            TacFarmDashboardInitReportGetInitModelResponse
     ) -> TacFarmDashboardInitReportGetInitModelResponse:
         """
         Processes the request and returns the response.
@@ -81,7 +85,9 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
 
         try:
             logging.info(
-                "loading model...TacFarmDashboardInitReportGetInitModelRequest")
+                "loading model..."
+                "TacFarmDashboardInitReport"
+                "GetInitModelRequest")
             tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load_from_code(tac_code)
             if tac_bus_obj.get_tac_obj() is None:
@@ -89,7 +95,9 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
                 raise ValueError("Invalid tac_code")
             flow = FlowTacFarmDashboardInitReport(session_context)
             logging.info(
-                "process request...TacFarmDashboardInitReportGetInitModelRequest")
+                "process request..."
+                "TacFarmDashboardInitReport"
+                "GetInitModelRequest")
             flow_response = await flow.process(
                 tac_bus_obj
             )
@@ -97,7 +105,9 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...TacFarmDashboardInitReportGetInitModelRequest")
+            logging.info("error..."
+                         "TacFarmDashboardInitReport"
+                         "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

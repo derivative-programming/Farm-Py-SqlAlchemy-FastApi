@@ -1,15 +1,16 @@
 # models/factory/tests/customer_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the CustomerFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestCustomerFactory:
         customer.code = uuid.uuid4()
         session.add(customer)
         session.commit()
-        assert customer.insert_utc_date_time > initial_time
+        assert customer.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestCustomerFactory:
         customer.code = uuid.uuid4()
         session.add(customer)
         session.commit()
-        assert customer.last_update_utc_date_time > initial_time
+        assert customer.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestCustomerFactory:
         customer.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert customer.last_update_utc_date_time > initial_time
+        assert customer.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -215,10 +219,14 @@ class TestCustomerFactory:
         assert isinstance(customer.active_organization_id, int)
         assert customer.email == "" or isinstance(
             customer.email, str)
-        assert isinstance(customer.email_confirmed_utc_date_time, datetime)
-        assert customer.first_name == "" or isinstance(customer.first_name, str)
-        assert isinstance(customer.forgot_password_key_expiration_utc_date_time, datetime)
-        assert customer.forgot_password_key_value == "" or isinstance(customer.forgot_password_key_value, str)
+        assert isinstance(customer.email_confirmed_utc_date_time,
+                          datetime)
+        assert customer.first_name == "" or isinstance(
+            customer.first_name, str)
+        assert isinstance(customer.forgot_password_key_expiration_utc_date_time,
+                          datetime)
+        assert customer.forgot_password_key_value == "" or isinstance(
+            customer.forgot_password_key_value, str)
         # fSUserCodeValue
         assert isinstance(
             customer.fs_user_code_value, uuid.UUID)
@@ -229,18 +237,22 @@ class TestCustomerFactory:
         assert isinstance(customer.is_locked, bool)
         assert isinstance(customer.is_multiple_organizations_allowed, bool)
         assert isinstance(customer.is_verbose_logging_forced, bool)
-        assert isinstance(customer.last_login_utc_date_time, datetime)
-        assert customer.last_name == "" or isinstance(customer.last_name, str)
-        assert customer.password == "" or isinstance(customer.password, str)
+        assert isinstance(customer.last_login_utc_date_time,
+                          datetime)
+        assert customer.last_name == "" or isinstance(
+            customer.last_name, str)
+        assert customer.password == "" or isinstance(
+            customer.password, str)
         assert customer.phone == "" or isinstance(
             customer.phone, str)
-        assert customer.province == "" or isinstance(customer.province, str)
-        assert isinstance(customer.registration_utc_date_time, datetime)
+        assert customer.province == "" or isinstance(
+            customer.province, str)
+        assert isinstance(customer.registration_utc_date_time,
+                          datetime)
         assert isinstance(customer.tac_id, int)
         assert isinstance(customer.utc_offset_in_minutes, int)
-        assert customer.zip == "" or isinstance(customer.zip, str)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
+        assert customer.zip == "" or isinstance(
+            customer.zip, str)
         # activeOrganizationID,
         # email,
         # emailConfirmedUTCDateTime

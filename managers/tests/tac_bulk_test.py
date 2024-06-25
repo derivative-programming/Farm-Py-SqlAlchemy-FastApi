@@ -1,13 +1,14 @@
 # models/managers/tests/tac_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `TacManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestTacBulkManager:
             fetched_tac = result.scalars().first()
 
             assert isinstance(
-                fetched_tac, Tac)
+                fetched_tac,
+                Tac)
 
             assert str(fetched_tac.insert_user_id) == (
                 str(tac_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestTacBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_tacs) == 2
-        logging.info(updated_tacs[0].__dict__)
-        logging.info(updated_tacs[1].__dict__)
+        logging.info(updated_tacs[0]
+                     .__dict__)
+        logging.info(updated_tacs[1]
+                     .__dict__)
 
         logging.info('getall')
         tacs = await tac_manager.get_list()
-        logging.info(tacs[0].__dict__)
-        logging.info(tacs[1].__dict__)
+        logging.info(tacs[0]
+                     .__dict__)
+        logging.info(tacs[1]
+                     .__dict__)
 
-        assert updated_tacs[0].code == code_updated1
-        assert updated_tacs[1].code == code_updated2
+        assert updated_tacs[0].code == \
+            code_updated1
+        assert updated_tacs[1].code == \
+            code_updated2
 
-        assert str(updated_tacs[0].last_update_user_id) == (
-            str(tac_manager._session_context.customer_code))
+        assert str(updated_tacs[0]
+                   .last_update_user_id) == (
+            str(tac_manager
+                ._session_context.customer_code))
 
-        assert str(updated_tacs[1].last_update_user_id) == (
-            str(tac_manager._session_context.customer_code))
+        assert str(updated_tacs[1]
+                   .last_update_user_id) == (
+            str(tac_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Tac).filter(
@@ -194,7 +206,8 @@ class TestTacBulkManager:
         )
         fetched_tac = result.scalars().first()
 
-        assert isinstance(fetched_tac, Tac)
+        assert isinstance(fetched_tac,
+                          Tac)
 
         assert fetched_tac.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestTacBulkManager:
         )
         fetched_tac = result.scalars().first()
 
-        assert isinstance(fetched_tac, Tac)
+        assert isinstance(fetched_tac,
+                          Tac)
 
         assert fetched_tac.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestTacBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param tac_manager: An instance of the TacManager class.
+        :param tac_manager: An instance of the
+            TacManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestTacBulkManager:
             session=session)
 
         # Delete tacs
-        tac_ids = [tac1.tac_id, tac2.tac_id]
+        tac_ids = [tac1.tac_id,
+                     tac2.tac_id]
         result = await tac_manager.delete_bulk(
             tac_ids)
 
@@ -379,7 +395,8 @@ class TestTacBulkManager:
         tac1 = await TacFactory.create_async(
             session=session)
 
-        assert isinstance(tac1, Tac)
+        assert isinstance(tac1,
+                          Tac)
 
         # Delete tacs
         tac_ids = [1, 2]

@@ -1,15 +1,19 @@
 # business/plant_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the PlantBaseBusObj class,
-which represents the base business object for a Plant.
+This module contains the
+PlantBaseBusObj class,
+which represents the base
+business object for a
+Plant.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import PlantManager
 from models import Plant
@@ -76,8 +80,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         return self.plant.plant_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class PlantBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.plant.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class PlantBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.plant.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class PlantBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.plant.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -1301,7 +1305,8 @@ class PlantBaseBusObj(BaseBusObj):
 
         plant_manager = PlantManager(
             self._session_context)
-        self.plant = await plant_manager.from_json(json_data)
+        self.plant = await \
+            plant_manager.from_json(json_data)
 
         return self
 
@@ -1376,14 +1381,8 @@ class PlantBaseBusObj(BaseBusObj):
         if not isinstance(plant_obj_instance,
                           Plant):
             raise ValueError(
-                "plant_obj_instance must be an instance of Plant")
-
-        # plant_manager = PlantManager(
-        #     self._session_context)
-
-        # plant_dict = plant_manager.to_dict(plant_obj_instance)
-
-        # self.plant = plant_manager.from_dict(plant_dict)
+                "plant_obj_instance must be an "
+                "instance of Plant")
 
         self.plant = plant_obj_instance
 
@@ -1411,8 +1410,9 @@ class PlantBaseBusObj(BaseBusObj):
         plant_manager = PlantManager(
             self._session_context)
 
-        self.plant = await plant_manager.from_dict(
-            plant_dict)
+        self.plant = await \
+            plant_manager.from_dict(
+                plant_dict)
 
         return self
 ##GENTrainingBlock[caseLookupEnums]Start
@@ -1441,8 +1441,9 @@ class PlantBaseBusObj(BaseBusObj):
         """
         plant_manager = PlantManager(
             self._session_context)
-        self.plant = await plant_manager.refresh(
-            self.plant)
+        self.plant = await \
+            plant_manager.refresh(
+                self.plant)
 
         return self
 
@@ -1516,14 +1517,16 @@ class PlantBaseBusObj(BaseBusObj):
         if plant_id > 0:
             plant_manager = PlantManager(
                 self._session_context)
-            self.plant = await plant_manager.update(
-                self.plant)
+            self.plant = await \
+                plant_manager.update(
+                    self.plant)
 
         if plant_id == 0:
             plant_manager = PlantManager(
                 self._session_context)
-            self.plant = await plant_manager.add(
-                self.plant)
+            self.plant = await \
+                plant_manager.add(
+                    self.plant)
 
         return self
 
@@ -1681,8 +1684,10 @@ class PlantBaseBusObj(BaseBusObj):
             representing the related land.
 
         """
-        land_manager = managers_and_enums.LandManager(self._session_context)
-        land_obj = await land_manager.get_by_id(self.land_id)
+        land_manager = managers_and_enums.LandManager(
+            self._session_context)
+        land_obj = await land_manager.get_by_id(
+            self.land_id)
         return land_obj
     # FlvrForeignKeyID
 

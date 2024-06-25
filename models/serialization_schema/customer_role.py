@@ -1,7 +1,9 @@
 # models/serialization_schema/customer_role.py
+# pylint: disable=unused-import
 
 """
-This module contains the CustomerRoleSchema
+This module contains the
+CustomerRoleSchema
 class, which is responsible
 for serializing and deserializing
 CustomerRole objects.

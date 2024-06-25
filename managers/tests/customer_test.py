@@ -1,13 +1,14 @@
 # models/managers/tests/customer_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `CustomerManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestCustomerManager:
         }
 
         # Call the build function of the manager
-        customer = await customer_manager.build(
-            **mock_data)
+        customer = await \
+            customer_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of Customer
         assert isinstance(
-            customer, Customer)
+            customer,
+            Customer)
 
         # Assert that the attributes of the
         # customer match our mock data
@@ -96,17 +99,20 @@ class TestCustomerManager:
         `CustomerManager` that checks if a
         customer is correctly added to the database.
         """
-        test_customer = await CustomerFactory.build_async(
-            session)
+        test_customer = await \
+            CustomerFactory.build_async(
+                session)
 
         assert test_customer.customer_id == 0
 
         # Add the customer using the
         # manager's add method
-        added_customer = await customer_manager.add(
-            customer=test_customer)
+        added_customer = await \
+            customer_manager.add(
+                customer=test_customer)
 
-        assert isinstance(added_customer, Customer)
+        assert isinstance(added_customer,
+                          Customer)
 
         assert str(added_customer.insert_user_id) == (
             str(customer_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestCustomerManager:
         # is not None and matches the
         # added customer
         assert fetched_customer is not None
-        assert isinstance(fetched_customer, Customer)
+        assert isinstance(fetched_customer,
+                          Customer)
         assert fetched_customer.customer_id == added_customer.customer_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestCustomerManager:
         # Create a test customer
         # using the CustomerFactory
         # without persisting it to the database
-        test_customer = await CustomerFactory.build_async(
-            session)
+        test_customer = await \
+            CustomerFactory.build_async(
+                session)
 
         assert test_customer.customer_id == 0
 
@@ -154,10 +162,12 @@ class TestCustomerManager:
 
         # Add the customer using
         # the manager's add method
-        added_customer = await customer_manager.add(
-            customer=test_customer)
+        added_customer = await \
+            customer_manager.add(
+                customer=test_customer)
 
-        assert isinstance(added_customer, Customer)
+        assert isinstance(added_customer,
+                          Customer)
 
         assert str(added_customer.insert_user_id) == (
             str(customer_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestCustomerManager:
         that checks if a customer
         is correctly updated.
         """
-        test_customer = await CustomerFactory.create_async(
-            session)
+        test_customer = await \
+            CustomerFactory.create_async(
+                session)
 
         test_customer.code = uuid.uuid4()
 
-        updated_customer = await customer_manager.update(
-            customer=test_customer)
+        updated_customer = await \
+            customer_manager.update(
+                customer=test_customer)
 
-        assert isinstance(updated_customer, Customer)
+        assert isinstance(updated_customer,
+                          Customer)
 
         assert str(updated_customer.last_update_user_id) == str(
             customer_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestCustomerManager:
         that checks if a customer is
         correctly updated using a dictionary.
         """
-        test_customer = await CustomerFactory.create_async(
-            session)
+        test_customer = await \
+            CustomerFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_customer = await customer_manager.update(
-            customer=test_customer,
-            code=new_code
-        )
+        updated_customer = await \
+            customer_manager.update(
+                customer=test_customer,
+                code=new_code
+            )
 
-        assert isinstance(updated_customer, Customer)
+        assert isinstance(updated_customer,
+                          Customer)
 
         assert str(updated_customer.last_update_user_id) == str(
             customer_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestCustomerManager:
         customer_manager: CustomerManager
     ):
         """
-        Test case for the `update` method of `CustomerManager`
+        Test case for the `update` method of
+        `CustomerManager`
         with an invalid customer.
         """
 
@@ -299,11 +316,13 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `CustomerManager`
+        Test case for the `update` method of
+        `CustomerManager`
         with a nonexistent attribute.
         """
-        test_customer = await CustomerFactory.create_async(
-            session)
+        test_customer = await \
+            CustomerFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestCustomerManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `CustomerManager`.
+        Test case for the `delete` method of
+        `CustomerManager`.
         """
         customer_data = await CustomerFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestCustomerManager:
         )
         fetched_customer = result.scalars().first()
 
-        assert isinstance(fetched_customer, Customer)
+        assert isinstance(fetched_customer,
+                          Customer)
 
         assert fetched_customer.customer_id == \
             customer_data.customer_id
@@ -363,7 +384,8 @@ class TestCustomerManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param customer_manager: The instance of the CustomerManager class.
+        :param customer_manager: The instance of the
+            CustomerManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestCustomerManager:
         the test case will fail.
 
         Args:
-            customer_manager (CustomerManager): An
+            customer_manager
+            (CustomerManager): An
                 instance of the
                 `CustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestCustomerManager:
         Test the 'to_json' method of the CustomerManager class.
 
         Args:
-            customer_manager (CustomerManager): An
+            customer_manager
+            (CustomerManager): An
                 instance of the
                 CustomerManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestCustomerManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        customer = await CustomerFactory.build_async(
-            session)
+        customer = await \
+            CustomerFactory.build_async(
+                session)
 
         json_data = customer_manager.to_json(
             customer)
@@ -486,7 +511,8 @@ class TestCustomerManager:
         Test the to_dict method of the CustomerManager class.
 
         Args:
-            customer_manager (CustomerManager): An
+            customer_manager
+            (CustomerManager): An
                 instance of the
                 CustomerManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestCustomerManager:
         Returns:
             None
         """
-        customer = await CustomerFactory.build_async(
-            session)
+        customer = await \
+            CustomerFactory.build_async(
+                session)
 
-        dict_data = customer_manager.to_dict(
-            customer)
+        dict_data = \
+            customer_manager.to_dict(
+                customer)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestCustomerManager:
         the same code as the original customer.
 
         Args:
-            customer_manager (CustomerManager): An
-            instance of the
+            customer_manager
+            (CustomerManager): An
+                instance of the
                 `CustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        customer = await CustomerFactory.create_async(
-            session)
+        customer = await \
+            CustomerFactory.create_async(
+                session)
 
         json_data = customer_manager.to_json(
             customer)
 
-        deserialized_customer = await customer_manager.from_json(json_data)
+        deserialized_customer = await \
+                customer_manager.from_json(json_data)
 
-        assert isinstance(deserialized_customer, Customer)
+        assert isinstance(deserialized_customer,
+                          Customer)
         assert deserialized_customer.code == \
             customer.code
 
@@ -559,7 +591,8 @@ class TestCustomerManager:
         customer object.
 
         Args:
-            customer_manager (CustomerManager): An instance
+            customer_manager
+            (CustomerManager): An instance
                 of the `CustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestCustomerManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        customer = await CustomerFactory.create_async(
-            session)
+        customer = await \
+            CustomerFactory.create_async(
+                session)
 
         schema = CustomerSchema()
 
@@ -578,10 +612,12 @@ class TestCustomerManager:
 
         assert isinstance(customer_data, dict)
 
-        deserialized_customer = await customer_manager.from_dict(
-            customer_data)
+        deserialized_customer = await \
+            customer_manager.from_dict(
+                customer_data)
 
-        assert isinstance(deserialized_customer, Customer)
+        assert isinstance(deserialized_customer,
+                          Customer)
 
         assert deserialized_customer.code == \
             customer.code
@@ -630,7 +666,8 @@ class TestCustomerManager:
         CustomerManager class returns 0 when the database is empty.
 
         Args:
-            customer_manager (CustomerManager): An
+            customer_manager
+            (CustomerManager): An
                 instance of the
                 CustomerManager class.
 
@@ -664,7 +701,8 @@ class TestCustomerManager:
             it reflects the updated code.
 
         Args:
-            customer_manager (CustomerManager): The
+            customer_manager
+            (CustomerManager): The
                 manager responsible
                 for customer operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestCustomerManager:
         # Verify that the updated customer
         # is of type Customer
         # and has the updated code
-        assert isinstance(updated_customer1, Customer)
+        assert isinstance(updated_customer1,
+                          Customer)
 
         assert updated_customer1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestCustomerManager:
         Test case to verify the behavior of refreshing a nonexistent customer.
 
         Args:
-            customer_manager (CustomerManager): The
+            customer_manager
+            (CustomerManager): The
                 instance of the
                 CustomerManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestCustomerManager:
         exists using the manager function.
 
         Args:
-            customer_manager (CustomerManager): The
+            customer_manager
+            (CustomerManager): The
                 customer manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestCustomerManager:
         CustomerManager class correctly compares two customers.
 
         Args:
-            customer_manager (CustomerManager): An
+            customer_manager
+            (CustomerManager): An
                 instance of the
                 CustomerManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestCustomerManager:
         assert customer_manager.is_equal(
             customer1, customer2) is True
 
-        customer1_dict = customer_manager.to_dict(
-            customer1)
+        customer1_dict = \
+            customer_manager.to_dict(
+                customer1)
 
         customer3 = await \
             customer_manager.from_dict(
@@ -815,7 +858,8 @@ class TestCustomerManager:
         non-existent ID exists in the database.
 
         Args:
-            customer_manager (CustomerManager): The
+            customer_manager
+            (CustomerManager): The
                 instance of the CustomerManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestCustomerManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            customer_manager (CustomerManager): The instance
+            customer_manager
+            (CustomerManager): The instance
                 of the CustomerManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

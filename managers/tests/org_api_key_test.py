@@ -1,13 +1,14 @@
 # models/managers/tests/org_api_key_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrgApiKeyManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestOrgApiKeyManager:
         }
 
         # Call the build function of the manager
-        org_api_key = await org_api_key_manager.build(
-            **mock_data)
+        org_api_key = await \
+            org_api_key_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of OrgApiKey
         assert isinstance(
-            org_api_key, OrgApiKey)
+            org_api_key,
+            OrgApiKey)
 
         # Assert that the attributes of the
         # org_api_key match our mock data
@@ -96,17 +99,20 @@ class TestOrgApiKeyManager:
         `OrgApiKeyManager` that checks if a
         org_api_key is correctly added to the database.
         """
-        test_org_api_key = await OrgApiKeyFactory.build_async(
-            session)
+        test_org_api_key = await \
+            OrgApiKeyFactory.build_async(
+                session)
 
         assert test_org_api_key.org_api_key_id == 0
 
         # Add the org_api_key using the
         # manager's add method
-        added_org_api_key = await org_api_key_manager.add(
-            org_api_key=test_org_api_key)
+        added_org_api_key = await \
+            org_api_key_manager.add(
+                org_api_key=test_org_api_key)
 
-        assert isinstance(added_org_api_key, OrgApiKey)
+        assert isinstance(added_org_api_key,
+                          OrgApiKey)
 
         assert str(added_org_api_key.insert_user_id) == (
             str(org_api_key_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestOrgApiKeyManager:
         # is not None and matches the
         # added org_api_key
         assert fetched_org_api_key is not None
-        assert isinstance(fetched_org_api_key, OrgApiKey)
+        assert isinstance(fetched_org_api_key,
+                          OrgApiKey)
         assert fetched_org_api_key.org_api_key_id == added_org_api_key.org_api_key_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestOrgApiKeyManager:
         # Create a test org_api_key
         # using the OrgApiKeyFactory
         # without persisting it to the database
-        test_org_api_key = await OrgApiKeyFactory.build_async(
-            session)
+        test_org_api_key = await \
+            OrgApiKeyFactory.build_async(
+                session)
 
         assert test_org_api_key.org_api_key_id == 0
 
@@ -154,10 +162,12 @@ class TestOrgApiKeyManager:
 
         # Add the org_api_key using
         # the manager's add method
-        added_org_api_key = await org_api_key_manager.add(
-            org_api_key=test_org_api_key)
+        added_org_api_key = await \
+            org_api_key_manager.add(
+                org_api_key=test_org_api_key)
 
-        assert isinstance(added_org_api_key, OrgApiKey)
+        assert isinstance(added_org_api_key,
+                          OrgApiKey)
 
         assert str(added_org_api_key.insert_user_id) == (
             str(org_api_key_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestOrgApiKeyManager:
         that checks if a org_api_key
         is correctly updated.
         """
-        test_org_api_key = await OrgApiKeyFactory.create_async(
-            session)
+        test_org_api_key = await \
+            OrgApiKeyFactory.create_async(
+                session)
 
         test_org_api_key.code = uuid.uuid4()
 
-        updated_org_api_key = await org_api_key_manager.update(
-            org_api_key=test_org_api_key)
+        updated_org_api_key = await \
+            org_api_key_manager.update(
+                org_api_key=test_org_api_key)
 
-        assert isinstance(updated_org_api_key, OrgApiKey)
+        assert isinstance(updated_org_api_key,
+                          OrgApiKey)
 
         assert str(updated_org_api_key.last_update_user_id) == str(
             org_api_key_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestOrgApiKeyManager:
         that checks if a org_api_key is
         correctly updated using a dictionary.
         """
-        test_org_api_key = await OrgApiKeyFactory.create_async(
-            session)
+        test_org_api_key = await \
+            OrgApiKeyFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_org_api_key = await org_api_key_manager.update(
-            org_api_key=test_org_api_key,
-            code=new_code
-        )
+        updated_org_api_key = await \
+            org_api_key_manager.update(
+                org_api_key=test_org_api_key,
+                code=new_code
+            )
 
-        assert isinstance(updated_org_api_key, OrgApiKey)
+        assert isinstance(updated_org_api_key,
+                          OrgApiKey)
 
         assert str(updated_org_api_key.last_update_user_id) == str(
             org_api_key_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestOrgApiKeyManager:
         org_api_key_manager: OrgApiKeyManager
     ):
         """
-        Test case for the `update` method of `OrgApiKeyManager`
+        Test case for the `update` method of
+        `OrgApiKeyManager`
         with an invalid org_api_key.
         """
 
@@ -299,11 +316,13 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `OrgApiKeyManager`
+        Test case for the `update` method of
+        `OrgApiKeyManager`
         with a nonexistent attribute.
         """
-        test_org_api_key = await OrgApiKeyFactory.create_async(
-            session)
+        test_org_api_key = await \
+            OrgApiKeyFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestOrgApiKeyManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `OrgApiKeyManager`.
+        Test case for the `delete` method of
+        `OrgApiKeyManager`.
         """
         org_api_key_data = await OrgApiKeyFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestOrgApiKeyManager:
         )
         fetched_org_api_key = result.scalars().first()
 
-        assert isinstance(fetched_org_api_key, OrgApiKey)
+        assert isinstance(fetched_org_api_key,
+                          OrgApiKey)
 
         assert fetched_org_api_key.org_api_key_id == \
             org_api_key_data.org_api_key_id
@@ -363,7 +384,8 @@ class TestOrgApiKeyManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param org_api_key_manager: The instance of the OrgApiKeyManager class.
+        :param org_api_key_manager: The instance of the
+            OrgApiKeyManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestOrgApiKeyManager:
         the test case will fail.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An
+            org_api_key_manager
+            (OrgApiKeyManager): An
                 instance of the
                 `OrgApiKeyManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestOrgApiKeyManager:
         Test the 'to_json' method of the OrgApiKeyManager class.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An
+            org_api_key_manager
+            (OrgApiKeyManager): An
                 instance of the
                 OrgApiKeyManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestOrgApiKeyManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        org_api_key = await OrgApiKeyFactory.build_async(
-            session)
+        org_api_key = await \
+            OrgApiKeyFactory.build_async(
+                session)
 
         json_data = org_api_key_manager.to_json(
             org_api_key)
@@ -486,7 +511,8 @@ class TestOrgApiKeyManager:
         Test the to_dict method of the OrgApiKeyManager class.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An
+            org_api_key_manager
+            (OrgApiKeyManager): An
                 instance of the
                 OrgApiKeyManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestOrgApiKeyManager:
         Returns:
             None
         """
-        org_api_key = await OrgApiKeyFactory.build_async(
-            session)
+        org_api_key = await \
+            OrgApiKeyFactory.build_async(
+                session)
 
-        dict_data = org_api_key_manager.to_dict(
-            org_api_key)
+        dict_data = \
+            org_api_key_manager.to_dict(
+                org_api_key)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestOrgApiKeyManager:
         the same code as the original org_api_key.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An
-            instance of the
+            org_api_key_manager
+            (OrgApiKeyManager): An
+                instance of the
                 `OrgApiKeyManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        org_api_key = await OrgApiKeyFactory.create_async(
-            session)
+        org_api_key = await \
+            OrgApiKeyFactory.create_async(
+                session)
 
         json_data = org_api_key_manager.to_json(
             org_api_key)
 
-        deserialized_org_api_key = await org_api_key_manager.from_json(json_data)
+        deserialized_org_api_key = await \
+                org_api_key_manager.from_json(json_data)
 
-        assert isinstance(deserialized_org_api_key, OrgApiKey)
+        assert isinstance(deserialized_org_api_key,
+                          OrgApiKey)
         assert deserialized_org_api_key.code == \
             org_api_key.code
 
@@ -559,7 +591,8 @@ class TestOrgApiKeyManager:
         org_api_key object.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An instance
+            org_api_key_manager
+            (OrgApiKeyManager): An instance
                 of the `OrgApiKeyManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestOrgApiKeyManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        org_api_key = await OrgApiKeyFactory.create_async(
-            session)
+        org_api_key = await \
+            OrgApiKeyFactory.create_async(
+                session)
 
         schema = OrgApiKeySchema()
 
@@ -578,10 +612,12 @@ class TestOrgApiKeyManager:
 
         assert isinstance(org_api_key_data, dict)
 
-        deserialized_org_api_key = await org_api_key_manager.from_dict(
-            org_api_key_data)
+        deserialized_org_api_key = await \
+            org_api_key_manager.from_dict(
+                org_api_key_data)
 
-        assert isinstance(deserialized_org_api_key, OrgApiKey)
+        assert isinstance(deserialized_org_api_key,
+                          OrgApiKey)
 
         assert deserialized_org_api_key.code == \
             org_api_key.code
@@ -630,7 +666,8 @@ class TestOrgApiKeyManager:
         OrgApiKeyManager class returns 0 when the database is empty.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An
+            org_api_key_manager
+            (OrgApiKeyManager): An
                 instance of the
                 OrgApiKeyManager class.
 
@@ -664,7 +701,8 @@ class TestOrgApiKeyManager:
             it reflects the updated code.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The
+            org_api_key_manager
+            (OrgApiKeyManager): The
                 manager responsible
                 for org_api_key operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestOrgApiKeyManager:
         # Verify that the updated org_api_key
         # is of type OrgApiKey
         # and has the updated code
-        assert isinstance(updated_org_api_key1, OrgApiKey)
+        assert isinstance(updated_org_api_key1,
+                          OrgApiKey)
 
         assert updated_org_api_key1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestOrgApiKeyManager:
         Test case to verify the behavior of refreshing a nonexistent org_api_key.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The
+            org_api_key_manager
+            (OrgApiKeyManager): The
                 instance of the
                 OrgApiKeyManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestOrgApiKeyManager:
         exists using the manager function.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The
+            org_api_key_manager
+            (OrgApiKeyManager): The
                 org_api_key manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestOrgApiKeyManager:
         OrgApiKeyManager class correctly compares two org_api_keys.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An
+            org_api_key_manager
+            (OrgApiKeyManager): An
                 instance of the
                 OrgApiKeyManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestOrgApiKeyManager:
         assert org_api_key_manager.is_equal(
             org_api_key1, org_api_key2) is True
 
-        org_api_key1_dict = org_api_key_manager.to_dict(
-            org_api_key1)
+        org_api_key1_dict = \
+            org_api_key_manager.to_dict(
+                org_api_key1)
 
         org_api_key3 = await \
             org_api_key_manager.from_dict(
@@ -815,7 +858,8 @@ class TestOrgApiKeyManager:
         non-existent ID exists in the database.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The
+            org_api_key_manager
+            (OrgApiKeyManager): The
                 instance of the OrgApiKeyManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestOrgApiKeyManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The instance
+            org_api_key_manager
+            (OrgApiKeyManager): The instance
                 of the OrgApiKeyManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

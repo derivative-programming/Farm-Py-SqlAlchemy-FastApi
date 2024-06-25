@@ -1,5 +1,6 @@
 # flows/base/tests/land_add_plant_init_obj_wf_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowLandAddPlantInitObjWF` class.
@@ -66,7 +67,8 @@ class TestBaseFlowLandAddPlantInitObjWF():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a land
-        object, and a BaseFlowLandAddPlantInitObjWF object.
+        object, and a
+        BaseFlowLandAddPlantInitObjWF object.
         Then, it sets the role_required
         variable to "" and calls the
         _process_security_rules method. Finally,

@@ -10,7 +10,7 @@ tri_state_filters in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -355,7 +355,8 @@ class TriStateFilterManager:
         logging.info("TriStateFilterManager.update")
         property_list = TriStateFilter.property_list()
         if tri_state_filter:
-            tri_state_filter.last_update_user_id = self._session_context.customer_code
+            tri_state_filter.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -559,7 +560,8 @@ class TriStateFilterManager:
         logging.info(
             "TriStateFilterManager.add_bulk")
         for tri_state_filter in tri_state_filters:
-            tri_state_filter_id = tri_state_filter.tri_state_filter_id
+            tri_state_filter_id = \
+                tri_state_filter.tri_state_filter_id
             code = tri_state_filter.code
             if tri_state_filter.tri_state_filter_id is not None and tri_state_filter.tri_state_filter_id > 0:
                 raise ValueError(
@@ -626,7 +628,8 @@ class TriStateFilterManager:
                 if key != "tri_state_filter_id":
                     setattr(tri_state_filter, key, value)
 
-            tri_state_filter.last_update_user_id = self._session_context.customer_code
+            tri_state_filter.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_tri_state_filters.append(tri_state_filter)
 
@@ -743,11 +746,13 @@ class TriStateFilterManager:
         if not tri_state_filter2:
             raise TypeError("TriStateFilter2 required.")
 
-        if not isinstance(tri_state_filter1, TriStateFilter):
+        if not isinstance(tri_state_filter1,
+                          TriStateFilter):
             raise TypeError("The tri_state_filter1 must be an "
                             "TriStateFilter instance.")
 
-        if not isinstance(tri_state_filter2, TriStateFilter):
+        if not isinstance(tri_state_filter2,
+                          TriStateFilter):
             raise TypeError("The tri_state_filter2 must be an "
                             "TriStateFilter instance.")
 
@@ -755,7 +760,8 @@ class TriStateFilterManager:
         dict2 = self.to_dict(tri_state_filter2)
 
         return dict1 == dict2
-    async def get_by_pac_id(  # PacID
+    # PacID
+    async def get_by_pac_id(
             self,
             pac_id: int) -> List[TriStateFilter]:
         """

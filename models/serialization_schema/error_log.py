@@ -1,7 +1,9 @@
 # models/serialization_schema/error_log.py
+# pylint: disable=unused-import
 
 """
-This module contains the ErrorLogSchema
+This module contains the
+ErrorLogSchema
 class, which is responsible
 for serializing and deserializing
 ErrorLog objects.

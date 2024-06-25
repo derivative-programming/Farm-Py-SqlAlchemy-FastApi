@@ -1,4 +1,5 @@
 # apis/models/pac_user_land_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -14,9 +15,9 @@ Pac User Land List API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import UUID4, Field
@@ -130,7 +131,8 @@ class PacUserLandListGetModelResponseItem(CamelModel):
         default="",
         description="Pac Name")
 
-    def load_report_item(self, data: ReportItemPacUserLandList):
+    def load_report_item(
+            self, data: ReportItemPacUserLandList):
         """
         Loads the data from a
         ReportItemPacUserLandList
@@ -224,9 +226,11 @@ class PacUserLandListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model...PacUserLandListGetModelResponse")
+            logging.info("loading model..."
+                         "PacUserLandListGetModelResponse")
             generator = ReportManagerPacUserLandList(session_context)
-            logging.info("processing...PacUserLandListGetModelResponse")
+            logging.info("processing..."
+                         "PacUserLandListGetModelResponse")
             items = await generator.generate(
                 pac_code,
 

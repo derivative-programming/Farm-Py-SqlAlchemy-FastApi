@@ -1,5 +1,6 @@
 # flows/base/tests/error_log_config_resolve_error_log_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowErrorLogConfigResolveErrorLog` class.
@@ -66,7 +67,8 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a error_log
-        object, and a BaseFlowErrorLogConfigResolveErrorLog object.
+        object, and a
+        BaseFlowErrorLogConfigResolveErrorLog object.
         Then, it sets the role_required
         variable to "Config" and calls the
         _process_security_rules method. Finally,

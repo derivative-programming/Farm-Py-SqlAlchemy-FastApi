@@ -1,12 +1,13 @@
 # models/managers/tests/customer_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `CustomerManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestCustomerGetByManager:
         }
 
         # Call the build function of the manager
-        customer = await customer_manager.build(
-            **mock_data)
+        customer = await \
+            customer_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Customer
+        # Assert that the returned object is an instance of
+        # Customer
         assert isinstance(
-            customer, Customer)
+            customer,
+            Customer)
 
         # Assert that the attributes of the
         # customer match our mock data
@@ -72,15 +76,17 @@ class TestCustomerGetByManager:
         Test case for the `get_by_id` method of
         `CustomerManager`.
         """
-        test_customer = await CustomerFactory.create_async(
-            session)
+        test_customer = await \
+            CustomerFactory.create_async(
+                session)
 
         customer = await \
             customer_manager.get_by_id(
                 test_customer.customer_id)
 
         assert isinstance(
-            customer, Customer)
+            customer,
+            Customer)
 
         assert test_customer.customer_id == \
             customer.customer_id
@@ -119,15 +125,17 @@ class TestCustomerGetByManager:
         returned by its code.
         """
 
-        test_customer = await CustomerFactory.create_async(
-            session)
+        test_customer = await \
+            CustomerFactory.create_async(
+                session)
 
         customer = await \
             customer_manager.get_by_code(
                 test_customer.code)
 
         assert isinstance(
-            customer, Customer)
+            customer,
+            Customer)
 
         assert test_customer.customer_id == \
             customer.customer_id
@@ -220,7 +228,8 @@ class TestCustomerGetByManager:
             customer_manager.get_by_tac_id(
                 customer1.tac_id)
         assert len(fetched_customers) == 1
-        assert isinstance(fetched_customers[0], Customer)
+        assert isinstance(fetched_customers[0],
+                          Customer)
         assert fetched_customers[0].code == \
             customer1.code
 

@@ -1,13 +1,14 @@
 # models/managers/tests/error_log_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `ErrorLogManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestErrorLogBulkManager:
             fetched_error_log = result.scalars().first()
 
             assert isinstance(
-                fetched_error_log, ErrorLog)
+                fetched_error_log,
+                ErrorLog)
 
             assert str(fetched_error_log.insert_user_id) == (
                 str(error_log_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestErrorLogBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_error_logs) == 2
-        logging.info(updated_error_logs[0].__dict__)
-        logging.info(updated_error_logs[1].__dict__)
+        logging.info(updated_error_logs[0]
+                     .__dict__)
+        logging.info(updated_error_logs[1]
+                     .__dict__)
 
         logging.info('getall')
         error_logs = await error_log_manager.get_list()
-        logging.info(error_logs[0].__dict__)
-        logging.info(error_logs[1].__dict__)
+        logging.info(error_logs[0]
+                     .__dict__)
+        logging.info(error_logs[1]
+                     .__dict__)
 
-        assert updated_error_logs[0].code == code_updated1
-        assert updated_error_logs[1].code == code_updated2
+        assert updated_error_logs[0].code == \
+            code_updated1
+        assert updated_error_logs[1].code == \
+            code_updated2
 
-        assert str(updated_error_logs[0].last_update_user_id) == (
-            str(error_log_manager._session_context.customer_code))
+        assert str(updated_error_logs[0]
+                   .last_update_user_id) == (
+            str(error_log_manager
+                ._session_context.customer_code))
 
-        assert str(updated_error_logs[1].last_update_user_id) == (
-            str(error_log_manager._session_context.customer_code))
+        assert str(updated_error_logs[1]
+                   .last_update_user_id) == (
+            str(error_log_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(ErrorLog).filter(
@@ -194,7 +206,8 @@ class TestErrorLogBulkManager:
         )
         fetched_error_log = result.scalars().first()
 
-        assert isinstance(fetched_error_log, ErrorLog)
+        assert isinstance(fetched_error_log,
+                          ErrorLog)
 
         assert fetched_error_log.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestErrorLogBulkManager:
         )
         fetched_error_log = result.scalars().first()
 
-        assert isinstance(fetched_error_log, ErrorLog)
+        assert isinstance(fetched_error_log,
+                          ErrorLog)
 
         assert fetched_error_log.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestErrorLogBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param error_log_manager: An instance of the ErrorLogManager class.
+        :param error_log_manager: An instance of the
+            ErrorLogManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestErrorLogBulkManager:
             session=session)
 
         # Delete error_logs
-        error_log_ids = [error_log1.error_log_id, error_log2.error_log_id]
+        error_log_ids = [error_log1.error_log_id,
+                     error_log2.error_log_id]
         result = await error_log_manager.delete_bulk(
             error_log_ids)
 
@@ -379,7 +395,8 @@ class TestErrorLogBulkManager:
         error_log1 = await ErrorLogFactory.create_async(
             session=session)
 
-        assert isinstance(error_log1, ErrorLog)
+        assert isinstance(error_log1,
+                          ErrorLog)
 
         # Delete error_logs
         error_log_ids = [1, 2]

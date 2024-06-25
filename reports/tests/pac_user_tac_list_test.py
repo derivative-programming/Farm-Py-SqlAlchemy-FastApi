@@ -1,16 +1,18 @@
 # pac_user_tac_list_test.py
 # pylint: disable=unused-argument
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains unit tests for the
 `ReportManagerPacUserTacList`
-class in the `pac_user_tac_list` module.
+class in the
+`pac_user_tac_list` module.
 """
 
 import os
-import uuid
-from decimal import Decimal
-from datetime import datetime, date
+import uuid  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 import sqlite3
 from unittest.mock import patch, AsyncMock
 import pytest
@@ -86,7 +88,6 @@ class TestReportManagerPacUserTacList:
 
             session_context.role_name_csv = role_required
 
-
             page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
@@ -147,7 +148,6 @@ class TestReportManagerPacUserTacList:
             role_required = ""
 
             session_context.role_name_csv = role_required
-
 
             page_number = 1
             # item_count_per_page = 10

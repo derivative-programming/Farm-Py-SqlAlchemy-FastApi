@@ -1,8 +1,11 @@
 # business/flavor.py
 # pylint: disable=unused-import
 """
-This module contains the FlavorBusObj class,
-which represents the business object for a Flavor.
+This module contains the
+FlavorBusObj class,
+which represents the
+business object for a
+Flavor.
 """
 
 from typing import List

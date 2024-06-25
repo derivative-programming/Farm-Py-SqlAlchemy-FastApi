@@ -1,24 +1,29 @@
 # apis/models/factory/tac_register.py
 # pylint: disable=unused-import
 """
-Factory module for creating instances of TacRegisterPostModelRequest with
+Factory module for creating instances of
+TacRegisterPostModelRequest with
 various field values for testing.
 """
 
-import uuid
-from datetime import datetime
+import uuid  # noqa: F401
+from datetime import datetime  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
-from factory import Faker
+from factory import Faker  # noqa: F401
 
 from ..tac_register import (
     TacRegisterPostModelRequest)
 
 
-class TacRegisterPostModelRequestFactory(factory.base.Factory):
+class TacRegisterPostModelRequestFactory(
+    factory.base.Factory
+):
     """
-    Factory class for TacRegisterPostModelRequest. Generates
-    instances with randomized field values for testing.
+    Factory class for
+    TacRegisterPostModelRequest.
+    Generates instances with randomized
+    field values for testing.
     """
 
     class Meta:

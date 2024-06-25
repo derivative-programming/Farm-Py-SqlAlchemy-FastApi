@@ -1,13 +1,16 @@
 # models/factory/organization.py
+# pylint: disable=unused-import
 """
-This module contains the OrganizationFactory
+This module contains the
+OrganizationFactory
 class, which is responsible
-for creating instances of the Organization
+for creating instances of the
+Organization
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import Organization
@@ -84,7 +87,8 @@ class OrganizationFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> Organization:
         """
-        Create a new Organization object
+        Create a new
+        Organization object
         and save it to the database.
 
         Args:
@@ -125,7 +129,8 @@ class OrganizationFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> Organization:
         """
-        Create a new Organization object
+        Create a new
+        Organization object
         asynchronously.
 
         Args:

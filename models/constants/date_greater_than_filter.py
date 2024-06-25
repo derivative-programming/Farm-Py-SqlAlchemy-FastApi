@@ -1,6 +1,8 @@
 # models/constants/date_greater_than_filter.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to date_greater_than_filters.
+This module contains boolean constants related to
+date_greater_than_filters.
 """
 day_count_calculatedIsDBColumnIndexed: bool = False
 description_calculatedIsDBColumnIndexed: bool = False

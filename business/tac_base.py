@@ -1,15 +1,19 @@
 # business/tac_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the TacBaseBusObj class,
-which represents the base business object for a Tac.
+This module contains the
+TacBaseBusObj class,
+which represents the base
+business object for a
+Tac.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import TacManager
 from models import Tac
@@ -76,8 +80,8 @@ class TacBaseBusObj(BaseBusObj):
             )
 
         return self.tac.tac_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class TacBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.tac.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class TacBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.tac.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class TacBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.tac.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -659,7 +663,8 @@ class TacBaseBusObj(BaseBusObj):
 
         tac_manager = TacManager(
             self._session_context)
-        self.tac = await tac_manager.from_json(json_data)
+        self.tac = await \
+            tac_manager.from_json(json_data)
 
         return self
 
@@ -734,14 +739,8 @@ class TacBaseBusObj(BaseBusObj):
         if not isinstance(tac_obj_instance,
                           Tac):
             raise ValueError(
-                "tac_obj_instance must be an instance of Tac")
-
-        # tac_manager = TacManager(
-        #     self._session_context)
-
-        # tac_dict = tac_manager.to_dict(tac_obj_instance)
-
-        # self.tac = tac_manager.from_dict(tac_dict)
+                "tac_obj_instance must be an "
+                "instance of Tac")
 
         self.tac = tac_obj_instance
 
@@ -769,8 +768,9 @@ class TacBaseBusObj(BaseBusObj):
         tac_manager = TacManager(
             self._session_context)
 
-        self.tac = await tac_manager.from_dict(
-            tac_dict)
+        self.tac = await \
+            tac_manager.from_dict(
+                tac_dict)
 
         return self
 
@@ -796,8 +796,9 @@ class TacBaseBusObj(BaseBusObj):
         """
         tac_manager = TacManager(
             self._session_context)
-        self.tac = await tac_manager.refresh(
-            self.tac)
+        self.tac = await \
+            tac_manager.refresh(
+                self.tac)
 
         return self
 
@@ -871,14 +872,16 @@ class TacBaseBusObj(BaseBusObj):
         if tac_id > 0:
             tac_manager = TacManager(
                 self._session_context)
-            self.tac = await tac_manager.update(
-                self.tac)
+            self.tac = await \
+                tac_manager.update(
+                    self.tac)
 
         if tac_id == 0:
             tac_manager = TacManager(
                 self._session_context)
-            self.tac = await tac_manager.add(
-                self.tac)
+            self.tac = await \
+                tac_manager.add(
+                    self.tac)
 
         return self
 
@@ -996,8 +999,10 @@ class TacBaseBusObj(BaseBusObj):
             representing the related pac.
 
         """
-        pac_manager = managers_and_enums.PacManager(self._session_context)
-        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
         return pac_obj
 
     def get_obj(self) -> Tac:

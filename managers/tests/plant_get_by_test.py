@@ -1,12 +1,13 @@
 # models/managers/tests/plant_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `PlantManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestPlantGetByManager:
         }
 
         # Call the build function of the manager
-        plant = await plant_manager.build(
-            **mock_data)
+        plant = await \
+            plant_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Plant
+        # Assert that the returned object is an instance of
+        # Plant
         assert isinstance(
-            plant, Plant)
+            plant,
+            Plant)
 
         # Assert that the attributes of the
         # plant match our mock data
@@ -72,15 +76,17 @@ class TestPlantGetByManager:
         Test case for the `get_by_id` method of
         `PlantManager`.
         """
-        test_plant = await PlantFactory.create_async(
-            session)
+        test_plant = await \
+            PlantFactory.create_async(
+                session)
 
         plant = await \
             plant_manager.get_by_id(
                 test_plant.plant_id)
 
         assert isinstance(
-            plant, Plant)
+            plant,
+            Plant)
 
         assert test_plant.plant_id == \
             plant.plant_id
@@ -119,15 +125,17 @@ class TestPlantGetByManager:
         returned by its code.
         """
 
-        test_plant = await PlantFactory.create_async(
-            session)
+        test_plant = await \
+            PlantFactory.create_async(
+                session)
 
         plant = await \
             plant_manager.get_by_code(
                 test_plant.code)
 
         assert isinstance(
-            plant, Plant)
+            plant,
+            Plant)
 
         assert test_plant.plant_id == \
             plant.plant_id
@@ -216,7 +224,8 @@ class TestPlantGetByManager:
             plant_manager.get_by_flvr_foreign_key_id(
                 plant1.flvr_foreign_key_id)
         assert len(fetched_plants) == 1
-        assert isinstance(fetched_plants[0], Plant)
+        assert isinstance(fetched_plants[0],
+                          Plant)
         assert fetched_plants[0].code == \
             plant1.code
 
@@ -337,7 +346,8 @@ class TestPlantGetByManager:
             plant_manager.get_by_land_id(
                 plant1.land_id)
         assert len(fetched_plants) == 1
-        assert isinstance(fetched_plants[0], Plant)
+        assert isinstance(fetched_plants[0],
+                          Plant)
         assert fetched_plants[0].code == \
             plant1.code
 

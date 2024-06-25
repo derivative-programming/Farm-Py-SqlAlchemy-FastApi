@@ -1,13 +1,14 @@
 # models/managers/tests/pac_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `PacManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestPacBulkManager:
             fetched_pac = result.scalars().first()
 
             assert isinstance(
-                fetched_pac, Pac)
+                fetched_pac,
+                Pac)
 
             assert str(fetched_pac.insert_user_id) == (
                 str(pac_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestPacBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_pacs) == 2
-        logging.info(updated_pacs[0].__dict__)
-        logging.info(updated_pacs[1].__dict__)
+        logging.info(updated_pacs[0]
+                     .__dict__)
+        logging.info(updated_pacs[1]
+                     .__dict__)
 
         logging.info('getall')
         pacs = await pac_manager.get_list()
-        logging.info(pacs[0].__dict__)
-        logging.info(pacs[1].__dict__)
+        logging.info(pacs[0]
+                     .__dict__)
+        logging.info(pacs[1]
+                     .__dict__)
 
-        assert updated_pacs[0].code == code_updated1
-        assert updated_pacs[1].code == code_updated2
+        assert updated_pacs[0].code == \
+            code_updated1
+        assert updated_pacs[1].code == \
+            code_updated2
 
-        assert str(updated_pacs[0].last_update_user_id) == (
-            str(pac_manager._session_context.customer_code))
+        assert str(updated_pacs[0]
+                   .last_update_user_id) == (
+            str(pac_manager
+                ._session_context.customer_code))
 
-        assert str(updated_pacs[1].last_update_user_id) == (
-            str(pac_manager._session_context.customer_code))
+        assert str(updated_pacs[1]
+                   .last_update_user_id) == (
+            str(pac_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Pac).filter(
@@ -194,7 +206,8 @@ class TestPacBulkManager:
         )
         fetched_pac = result.scalars().first()
 
-        assert isinstance(fetched_pac, Pac)
+        assert isinstance(fetched_pac,
+                          Pac)
 
         assert fetched_pac.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestPacBulkManager:
         )
         fetched_pac = result.scalars().first()
 
-        assert isinstance(fetched_pac, Pac)
+        assert isinstance(fetched_pac,
+                          Pac)
 
         assert fetched_pac.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestPacBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param pac_manager: An instance of the PacManager class.
+        :param pac_manager: An instance of the
+            PacManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestPacBulkManager:
             session=session)
 
         # Delete pacs
-        pac_ids = [pac1.pac_id, pac2.pac_id]
+        pac_ids = [pac1.pac_id,
+                     pac2.pac_id]
         result = await pac_manager.delete_bulk(
             pac_ids)
 
@@ -379,7 +395,8 @@ class TestPacBulkManager:
         pac1 = await PacFactory.create_async(
             session=session)
 
-        assert isinstance(pac1, Pac)
+        assert isinstance(pac1,
+                          Pac)
 
         # Delete pacs
         pac_ids = [1, 2]

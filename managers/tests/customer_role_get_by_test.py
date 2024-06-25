@@ -1,12 +1,13 @@
 # models/managers/tests/customer_role_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `CustomerRoleManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestCustomerRoleGetByManager:
         }
 
         # Call the build function of the manager
-        customer_role = await customer_role_manager.build(
-            **mock_data)
+        customer_role = await \
+            customer_role_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of CustomerRole
+        # Assert that the returned object is an instance of
+        # CustomerRole
         assert isinstance(
-            customer_role, CustomerRole)
+            customer_role,
+            CustomerRole)
 
         # Assert that the attributes of the
         # customer_role match our mock data
@@ -72,15 +76,17 @@ class TestCustomerRoleGetByManager:
         Test case for the `get_by_id` method of
         `CustomerRoleManager`.
         """
-        test_customer_role = await CustomerRoleFactory.create_async(
-            session)
+        test_customer_role = await \
+            CustomerRoleFactory.create_async(
+                session)
 
         customer_role = await \
             customer_role_manager.get_by_id(
                 test_customer_role.customer_role_id)
 
         assert isinstance(
-            customer_role, CustomerRole)
+            customer_role,
+            CustomerRole)
 
         assert test_customer_role.customer_role_id == \
             customer_role.customer_role_id
@@ -119,15 +125,17 @@ class TestCustomerRoleGetByManager:
         returned by its code.
         """
 
-        test_customer_role = await CustomerRoleFactory.create_async(
-            session)
+        test_customer_role = await \
+            CustomerRoleFactory.create_async(
+                session)
 
         customer_role = await \
             customer_role_manager.get_by_code(
                 test_customer_role.code)
 
         assert isinstance(
-            customer_role, CustomerRole)
+            customer_role,
+            CustomerRole)
 
         assert test_customer_role.customer_role_id == \
             customer_role.customer_role_id
@@ -200,7 +208,8 @@ class TestCustomerRoleGetByManager:
             customer_role_manager.get_by_customer_id(
                 customer_role1.customer_id)
         assert len(fetched_customer_roles) == 1
-        assert isinstance(fetched_customer_roles[0], CustomerRole)
+        assert isinstance(fetched_customer_roles[0],
+                          CustomerRole)
         assert fetched_customer_roles[0].code == \
             customer_role1.code
 
@@ -315,7 +324,8 @@ class TestCustomerRoleGetByManager:
             customer_role_manager.get_by_role_id(
                 customer_role1.role_id)
         assert len(fetched_customer_roles) == 1
-        assert isinstance(fetched_customer_roles[0], CustomerRole)
+        assert isinstance(fetched_customer_roles[0],
+                          CustomerRole)
         assert fetched_customer_roles[0].code == \
             customer_role1.code
 

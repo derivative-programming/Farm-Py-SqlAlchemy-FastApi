@@ -1,24 +1,29 @@
 # flows/default/tests/error_log_config_resolve_error_log_test.py
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
-`FlowErrorLogConfigResolveErrorLogResult` and `FlowErrorLogConfigResolveErrorLog` classes.
+`FlowErrorLogConfigResolveErrorLogResult` and
+`FlowErrorLogConfigResolveErrorLog` classes.
 """
 
 import json
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import pytest
 
 import flows.constants.error_log_config_resolve_error_log as FlowConstants
 from business.error_log import ErrorLogBusObj
 from flows.base.flow_validation_error import FlowValidationError
-from flows.error_log_config_resolve_error_log import FlowErrorLogConfigResolveErrorLog, FlowErrorLogConfigResolveErrorLogResult
+from flows.error_log_config_resolve_error_log import (
+    FlowErrorLogConfigResolveErrorLog,
+    FlowErrorLogConfigResolveErrorLogResult)
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion
-from models.factory.error_log import ErrorLogFactory
+from models.factory.error_log import (
+    ErrorLogFactory)
 
 
 class TestErrorLogConfigResolveErrorLogPostModelResponse:
@@ -52,7 +57,8 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
         """
-        Test the `process` method of the `FlowErrorLogConfigResolveErrorLog` class.
+        Test the `process` method of the
+        `FlowErrorLogConfigResolveErrorLog` class.
         """
 
         session_context = SessionContext(dict(), session)

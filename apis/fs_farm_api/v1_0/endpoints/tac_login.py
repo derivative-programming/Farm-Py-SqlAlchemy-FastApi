@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_login.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Tac Login.
 
 The TacLoginRouter provides
 the following endpoints:
-- GET /api/v1_0/tac-login/{tac_code}/init:
+- GET /api/v1_0/tac-login/...
+    {tac_code}/init:
     Get the initialization data for the
     Tac Login page.
-- GET /api/v1_0/tac-login/{tac_code}:
+- GET /api/v1_0/tac-login/...
+    {tac_code}:
     Get the Tac Login Report
     for a specific tac code.
-- GET /api/v1_0/tac-login/{tac_code}/to-csv:
+- GET /api/v1_0/tac-login/...
+        {tac_code}/to-csv:
     Retrieve the Tac Login
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class TacLoginRouterConfig():
     """
-    Configuration class for the TacLoginRouter.
+    Configuration class for the
+    TacLoginRouter.
     """
 
     # constants

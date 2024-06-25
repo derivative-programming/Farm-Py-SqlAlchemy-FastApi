@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/customer_user_log_out.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Customer User Log Out.
 
 The CustomerUserLogOutRouter provides
 the following endpoints:
-- GET /api/v1_0/customer-user-log-out/{customer_code}/init:
+- GET /api/v1_0/customer-user-log-out/...
+    {customer_code}/init:
     Get the initialization data for the
     Customer User Log Out page.
-- GET /api/v1_0/customer-user-log-out/{customer_code}:
+- GET /api/v1_0/customer-user-log-out/...
+    {customer_code}:
     Get the Customer User Log Out Report
     for a specific customer code.
-- GET /api/v1_0/customer-user-log-out/{customer_code}/to-csv:
+- GET /api/v1_0/customer-user-log-out/...
+        {customer_code}/to-csv:
     Retrieve the Customer User Log Out
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class CustomerUserLogOutRouterConfig():
     """
-    Configuration class for the CustomerUserLogOutRouter.
+    Configuration class for the
+    CustomerUserLogOutRouter.
     """
 
     # constants

@@ -1,7 +1,9 @@
 # models/serialization_schema/org_api_key.py
+# pylint: disable=unused-import
 
 """
-This module contains the OrgApiKeySchema
+This module contains the
+OrgApiKeySchema
 class, which is responsible
 for serializing and deserializing
 OrgApiKey objects.

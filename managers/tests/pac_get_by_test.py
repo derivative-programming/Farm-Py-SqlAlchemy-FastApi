@@ -1,12 +1,13 @@
 # models/managers/tests/pac_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `PacManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestPacGetByManager:
         }
 
         # Call the build function of the manager
-        pac = await pac_manager.build(
-            **mock_data)
+        pac = await \
+            pac_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Pac
+        # Assert that the returned object is an instance of
+        # Pac
         assert isinstance(
-            pac, Pac)
+            pac,
+            Pac)
 
         # Assert that the attributes of the
         # pac match our mock data
@@ -72,15 +76,17 @@ class TestPacGetByManager:
         Test case for the `get_by_id` method of
         `PacManager`.
         """
-        test_pac = await PacFactory.create_async(
-            session)
+        test_pac = await \
+            PacFactory.create_async(
+                session)
 
         pac = await \
             pac_manager.get_by_id(
                 test_pac.pac_id)
 
         assert isinstance(
-            pac, Pac)
+            pac,
+            Pac)
 
         assert test_pac.pac_id == \
             pac.pac_id
@@ -119,15 +125,17 @@ class TestPacGetByManager:
         returned by its code.
         """
 
-        test_pac = await PacFactory.create_async(
-            session)
+        test_pac = await \
+            PacFactory.create_async(
+                session)
 
         pac = await \
             pac_manager.get_by_code(
                 test_pac.code)
 
         assert isinstance(
-            pac, Pac)
+            pac,
+            Pac)
 
         assert test_pac.pac_id == \
             pac.pac_id

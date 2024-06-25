@@ -6,9 +6,9 @@ The ErrorLog model inherits from
 the Base model and is mapped to the
 'farm_ErrorLog' table in the database.
 """
-from decimal import Decimal
-import uuid
-from datetime import date, datetime
+from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -339,7 +339,8 @@ class ErrorLog(Base):
             uuid.UUID: The unique identifier value.
         """
 
-        return uuid.UUID(str(self._browser_code))
+        return uuid.UUID(
+            str(self._browser_code))
 
     @browser_code.setter
     def browser_code(self, value):
@@ -378,7 +379,8 @@ class ErrorLog(Base):
             uuid.UUID: The unique identifier value.
         """
 
-        return uuid.UUID(str(self._context_code))
+        return uuid.UUID(
+            str(self._context_code))
 
     @context_code.setter
     def context_code(self, value):

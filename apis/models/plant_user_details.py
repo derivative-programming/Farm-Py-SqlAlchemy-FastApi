@@ -1,4 +1,5 @@
 # apis/models/plant_user_details.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -14,9 +15,9 @@ Plant User Details API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import UUID4, Field
@@ -184,7 +185,8 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
         ),
         description="Back To Dashboard Link Tac Code")
 
-    def load_report_item(self, data: ReportItemPlantUserDetails):
+    def load_report_item(
+            self, data: ReportItemPlantUserDetails):
         """
         Loads the data from a
         ReportItemPlantUserDetails
@@ -342,9 +344,11 @@ class PlantUserDetailsGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model...PlantUserDetailsGetModelResponse")
+            logging.info("loading model..."
+                         "PlantUserDetailsGetModelResponse")
             generator = ReportManagerPlantUserDetails(session_context)
-            logging.info("processing...PlantUserDetailsGetModelResponse")
+            logging.info("processing..."
+                         "PlantUserDetailsGetModelResponse")
             items = await generator.generate(
                 plant_code,
 

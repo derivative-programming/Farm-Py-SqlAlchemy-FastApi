@@ -1,15 +1,16 @@
 # models/factory/tests/plant_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the PlantFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestPlantFactory:
         plant.code = uuid.uuid4()
         session.add(plant)
         session.commit()
-        assert plant.insert_utc_date_time > initial_time
+        assert plant.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestPlantFactory:
         plant.code = uuid.uuid4()
         session.add(plant)
         session.commit()
-        assert plant.last_update_utc_date_time > initial_time
+        assert plant.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestPlantFactory:
         plant.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert plant.last_update_utc_date_time > initial_time
+        assert plant.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -216,7 +220,8 @@ class TestPlantFactory:
         assert isinstance(plant.is_delete_allowed, bool)
         assert isinstance(plant.is_edit_allowed, bool)
         assert isinstance(plant.land_id, int)
-        assert plant.other_flavor == "" or isinstance(plant.other_flavor, str)
+        assert plant.other_flavor == "" or isinstance(
+            plant.other_flavor, str)
         assert isinstance(plant.some_big_int_val, int)
         assert isinstance(plant.some_bit_val, bool)
         assert isinstance(plant.some_date_val, date)
@@ -235,7 +240,8 @@ class TestPlantFactory:
         # someUniqueidentifierVal
         assert isinstance(
             plant.some_uniqueidentifier_val, uuid.UUID)
-        assert isinstance(plant.some_utc_date_time_val, datetime)
+        assert isinstance(plant.some_utc_date_time_val,
+                          datetime)
         assert plant.some_var_char_val == "" or isinstance(
             plant.some_var_char_val, str)
         # Check for the peek values,
@@ -379,13 +385,15 @@ class TestPlantFactory:
         plant = PlantFactory.create(
             session=session)
         original_last_change_code = plant.last_change_code
-        plant_1 = session.query(Plant).filter_by(
+        plant_1 = session.query(
+            Plant).filter_by(
             _plant_id=(
                 plant.plant_id)
         ).first()
         plant_1.code = uuid.uuid4()
         session.commit()
-        plant_2 = session.query(Plant).filter_by(
+        plant_2 = session.query(
+            Plant).filter_by(
             _plant_id=(
                 plant.plant_id)
         ).first()

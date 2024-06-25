@@ -1,6 +1,8 @@
 # models/constants/organization.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to organizations.
+This module contains boolean constants related to
+organizations.
 """
 name_calculatedIsDBColumnIndexed: bool = False
 tac_id_calculatedIsDBColumnIndexed: bool = True

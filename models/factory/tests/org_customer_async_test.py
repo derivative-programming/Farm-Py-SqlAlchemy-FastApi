@@ -1,5 +1,6 @@
 # models/factory/tests/org_customer_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the OrgCustomerFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the org_customer ID
                 is None after creation.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         assert org_customer.org_customer_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         assert isinstance(org_customer.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestOrgCustomerFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        org_customer: OrgCustomer = await OrgCustomerFactory.build_async(
-            session=session)
+        org_customer: OrgCustomer = await \
+            OrgCustomerFactory.build_async(
+                session=session)
         assert org_customer.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestOrgCustomerFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        org_customer: OrgCustomer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer: OrgCustomer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         assert org_customer.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestOrgCustomerFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         initial_code = org_customer.last_change_code
         org_customer.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        org_customer = await OrgCustomerFactory.build_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.build_async(
+                session=session)
         assert org_customer.insert_utc_date_time is not None
         assert isinstance(
             org_customer.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        org_customer = await OrgCustomerFactory.build_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.build_async(
+                session=session)
         assert org_customer.insert_utc_date_time is not None
         assert isinstance(
             org_customer.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestOrgCustomerFactoryAsync:
         org_customer.code = uuid.uuid4()
         session.add(org_customer)
         await session.commit()
-        assert org_customer.insert_utc_date_time > initial_time
+        assert org_customer.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         assert org_customer.insert_utc_date_time is not None
         assert isinstance(
             org_customer.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestOrgCustomerFactoryAsync:
         org_customer.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert org_customer.insert_utc_date_time == initial_time
+        assert org_customer.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        org_customer = await OrgCustomerFactory.build_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.build_async(
+                session=session)
         assert org_customer.last_update_utc_date_time is not None
         assert isinstance(
             org_customer.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        org_customer = await OrgCustomerFactory.build_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.build_async(
+                session=session)
         assert org_customer.last_update_utc_date_time is not None
         assert isinstance(
             org_customer.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestOrgCustomerFactoryAsync:
         org_customer.code = uuid.uuid4()
         session.add(org_customer)
         await session.commit()
-        assert org_customer.last_update_utc_date_time > initial_time
+        assert org_customer.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestOrgCustomerFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         assert org_customer.last_update_utc_date_time is not None
         assert isinstance(
             org_customer.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestOrgCustomerFactoryAsync:
         org_customer.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert org_customer.last_update_utc_date_time > initial_time
+        assert org_customer.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestOrgCustomerFactoryAsync:
             org_customer is still
             found in the database.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         await session.delete(org_customer)
         await session.commit()
 
         # Construct the select statement
         stmt = select(OrgCustomer).where(
-            OrgCustomer._org_customer_id == org_customer.org_customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            OrgCustomer._org_customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                org_customer.org_customer_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,8 +405,9 @@ class TestOrgCustomerFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         assert isinstance(org_customer.org_customer_id, int)
         assert isinstance(org_customer.code, uuid.UUID)
         assert isinstance(org_customer.last_change_code, int)
@@ -413,7 +432,8 @@ class TestOrgCustomerFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for org_customers.
+        Test case to check the unique code constraint
+        for org_customers.
 
         This test creates two org_customer
         instances using
@@ -427,7 +447,9 @@ class TestOrgCustomerFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        OrgCustomerFactory.create_async() method creates unique codes for each org_customer.
+        OrgCustomerFactory.create_async()
+        method creates unique codes for
+        each org_customer.
         """
 
         org_customer_1 = await OrgCustomerFactory.create_async(
@@ -485,16 +507,20 @@ class TestOrgCustomerFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new OrgCustomer object using
+        1. Create a new
+            OrgCustomer object using
             the OrgCustomerFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the OrgCustomer
-            object using the org_customer_id.
+            object using the
+            org_customer_id.
         4. Modify the code attribute of the
             retrieved OrgCustomer object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            OrgCustomer object using the org_customer_id.
+            OrgCustomer object using the
+            org_customer_id.
         7. Get the modified OrgCustomer object.
         8. Verify that the last_change_code attribute
             of the modified OrgCustomer object
@@ -505,12 +531,14 @@ class TestOrgCustomerFactoryAsync:
                             of the modified OrgCustomer
                             object is the same as the original value.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         original_last_change_code = org_customer.last_change_code
 
         stmt = select(OrgCustomer).where(
-            OrgCustomer._org_customer_id == org_customer.org_customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            OrgCustomer._org_customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                org_customer.org_customer_id))
         result = await session.execute(stmt)
         org_customer_1 = result.scalars().first()
 
@@ -520,7 +548,8 @@ class TestOrgCustomerFactoryAsync:
         await session.commit()
 
         stmt = select(OrgCustomer).where(
-            OrgCustomer._org_customer_id == org_customer.org_customer_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            OrgCustomer._org_customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                org_customer.org_customer_id))
         result = await session.execute(stmt)
         org_customer_2 = result.scalars().first()
 
@@ -548,8 +577,9 @@ class TestOrgCustomerFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         org_customer.customer_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()
@@ -574,8 +604,9 @@ class TestOrgCustomerFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session=session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session=session)
         org_customer.organization_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

@@ -1,5 +1,6 @@
 # models/factory/tests/tri_state_filter_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the TriStateFilterFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the tri_state_filter ID
                 is None after creation.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         assert tri_state_filter.tri_state_filter_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         assert isinstance(tri_state_filter.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestTriStateFilterFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        tri_state_filter: TriStateFilter = await TriStateFilterFactory.build_async(
-            session=session)
+        tri_state_filter: TriStateFilter = await \
+            TriStateFilterFactory.build_async(
+                session=session)
         assert tri_state_filter.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestTriStateFilterFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        tri_state_filter: TriStateFilter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter: TriStateFilter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         assert tri_state_filter.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestTriStateFilterFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         initial_code = tri_state_filter.last_change_code
         tri_state_filter.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        tri_state_filter = await TriStateFilterFactory.build_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session=session)
         assert tri_state_filter.insert_utc_date_time is not None
         assert isinstance(
             tri_state_filter.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        tri_state_filter = await TriStateFilterFactory.build_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session=session)
         assert tri_state_filter.insert_utc_date_time is not None
         assert isinstance(
             tri_state_filter.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestTriStateFilterFactoryAsync:
         tri_state_filter.code = uuid.uuid4()
         session.add(tri_state_filter)
         await session.commit()
-        assert tri_state_filter.insert_utc_date_time > initial_time
+        assert tri_state_filter.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         assert tri_state_filter.insert_utc_date_time is not None
         assert isinstance(
             tri_state_filter.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestTriStateFilterFactoryAsync:
         tri_state_filter.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert tri_state_filter.insert_utc_date_time == initial_time
+        assert tri_state_filter.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        tri_state_filter = await TriStateFilterFactory.build_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session=session)
         assert tri_state_filter.last_update_utc_date_time is not None
         assert isinstance(
             tri_state_filter.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        tri_state_filter = await TriStateFilterFactory.build_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.build_async(
+                session=session)
         assert tri_state_filter.last_update_utc_date_time is not None
         assert isinstance(
             tri_state_filter.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestTriStateFilterFactoryAsync:
         tri_state_filter.code = uuid.uuid4()
         session.add(tri_state_filter)
         await session.commit()
-        assert tri_state_filter.last_update_utc_date_time > initial_time
+        assert tri_state_filter.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestTriStateFilterFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         assert tri_state_filter.last_update_utc_date_time is not None
         assert isinstance(
             tri_state_filter.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestTriStateFilterFactoryAsync:
         tri_state_filter.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert tri_state_filter.last_update_utc_date_time > initial_time
+        assert tri_state_filter.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestTriStateFilterFactoryAsync:
             tri_state_filter is still
             found in the database.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         await session.delete(tri_state_filter)
         await session.commit()
 
         # Construct the select statement
         stmt = select(TriStateFilter).where(
-            TriStateFilter._tri_state_filter_id == tri_state_filter.tri_state_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            TriStateFilter._tri_state_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                tri_state_filter.tri_state_filter_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,18 +405,22 @@ class TestTriStateFilterFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         assert isinstance(tri_state_filter.tri_state_filter_id, int)
         assert isinstance(tri_state_filter.code, uuid.UUID)
         assert isinstance(tri_state_filter.last_change_code, int)
         assert isinstance(tri_state_filter.insert_user_id, uuid.UUID)
         assert isinstance(tri_state_filter.last_update_user_id, uuid.UUID)
-        assert tri_state_filter.description == "" or isinstance(tri_state_filter.description, str)
+        assert tri_state_filter.description == "" or isinstance(
+            tri_state_filter.description, str)
         assert isinstance(tri_state_filter.display_order, int)
         assert isinstance(tri_state_filter.is_active, bool)
-        assert tri_state_filter.lookup_enum_name == "" or isinstance(tri_state_filter.lookup_enum_name, str)
-        assert tri_state_filter.name == "" or isinstance(tri_state_filter.name, str)
+        assert tri_state_filter.lookup_enum_name == "" or isinstance(
+            tri_state_filter.lookup_enum_name, str)
+        assert tri_state_filter.name == "" or isinstance(
+            tri_state_filter.name, str)
         assert isinstance(tri_state_filter.pac_id, int)
         assert isinstance(tri_state_filter.state_int_value, int)
         # Check for the peek values
@@ -418,7 +440,8 @@ class TestTriStateFilterFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for tri_state_filters.
+        Test case to check the unique code constraint
+        for tri_state_filters.
 
         This test creates two tri_state_filter
         instances using
@@ -432,7 +455,9 @@ class TestTriStateFilterFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        TriStateFilterFactory.create_async() method creates unique codes for each tri_state_filter.
+        TriStateFilterFactory.create_async()
+        method creates unique codes for
+        each tri_state_filter.
         """
 
         tri_state_filter_1 = await TriStateFilterFactory.create_async(
@@ -496,16 +521,20 @@ class TestTriStateFilterFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new TriStateFilter object using
+        1. Create a new
+            TriStateFilter object using
             the TriStateFilterFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the TriStateFilter
-            object using the tri_state_filter_id.
+            object using the
+            tri_state_filter_id.
         4. Modify the code attribute of the
             retrieved TriStateFilter object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            TriStateFilter object using the tri_state_filter_id.
+            TriStateFilter object using the
+            tri_state_filter_id.
         7. Get the modified TriStateFilter object.
         8. Verify that the last_change_code attribute
             of the modified TriStateFilter object
@@ -516,12 +545,14 @@ class TestTriStateFilterFactoryAsync:
                             of the modified TriStateFilter
                             object is the same as the original value.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         original_last_change_code = tri_state_filter.last_change_code
 
         stmt = select(TriStateFilter).where(
-            TriStateFilter._tri_state_filter_id == tri_state_filter.tri_state_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            TriStateFilter._tri_state_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                tri_state_filter.tri_state_filter_id))
         result = await session.execute(stmt)
         tri_state_filter_1 = result.scalars().first()
 
@@ -531,7 +562,8 @@ class TestTriStateFilterFactoryAsync:
         await session.commit()
 
         stmt = select(TriStateFilter).where(
-            TriStateFilter._tri_state_filter_id == tri_state_filter.tri_state_filter_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            TriStateFilter._tri_state_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                tri_state_filter.tri_state_filter_id))
         result = await session.execute(stmt)
         tri_state_filter_2 = result.scalars().first()
 
@@ -564,8 +596,9 @@ class TestTriStateFilterFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        tri_state_filter = await TriStateFilterFactory.create_async(
-            session=session)
+        tri_state_filter = await \
+            TriStateFilterFactory.create_async(
+                session=session)
         tri_state_filter.pac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

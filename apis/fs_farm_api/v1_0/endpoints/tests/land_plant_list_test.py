@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `land_plant_list` endpoint.
+This module contains unit tests for the
+`land_plant_list` endpoint.
 """
 
 import logging
@@ -229,7 +230,8 @@ async def test_get_success(
     api_key_fixture: str
 ):
     """
-    Test the successful retrieval of the `land_plant_list` get endpoint.
+    Test the successful retrieval of the
+    `land_plant_list` get endpoint.
     """
 
     async def mock_process_request(
@@ -658,7 +660,8 @@ async def test_get_csv_authorization_failure_empty_header_key(
 
     Steps:
     1. Create a test land using the LandFactory.
-    2. Create a LandPlantListGetModelRequest using the request_factory.
+    2. Create a LandPlantListGetModelRequest
+        using the request_factory.
     3. Convert the request to a dictionary in camel case format.
     4. Send a GET request to the endpoint with the land code
         and request parameters.
@@ -818,7 +821,8 @@ async def test_get_csv_endpoint_invalid_code_failure(
 
     Steps:
     1. Create a UUID representing an invalid land code.
-    2. Create a request object using the LandPlantListGetModelRequestFactory.
+    2. Create a request object using the
+        LandPlantListGetModelRequestFactory.
     3. Convert the request object to a dictionary
         in camel case serialization format.
     4. Set the test API key.

@@ -1,7 +1,9 @@
 # models/serialization_schema/org_customer.py
+# pylint: disable=unused-import
 
 """
-This module contains the OrgCustomerSchema
+This module contains the
+OrgCustomerSchema
 class, which is responsible
 for serializing and deserializing
 OrgCustomer objects.

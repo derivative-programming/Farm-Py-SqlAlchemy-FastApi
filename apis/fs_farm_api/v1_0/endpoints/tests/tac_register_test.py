@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `tac_register` endpoint.
+This module contains unit tests for the
+`tac_register` endpoint.
 """
 
 import logging

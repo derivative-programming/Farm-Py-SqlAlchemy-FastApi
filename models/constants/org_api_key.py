@@ -1,6 +1,8 @@
 # models/constants/org_api_key.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to org_api_keys.
+This module contains boolean constants related to
+org_api_keys.
 """
 api_key_value_calculatedIsDBColumnIndexed: bool = False
 created_by_calculatedIsDBColumnIndexed: bool = False

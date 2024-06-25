@@ -1,12 +1,13 @@
 # models/managers/tests/org_api_key_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrgApiKeyManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestOrgApiKeyGetByManager:
         }
 
         # Call the build function of the manager
-        org_api_key = await org_api_key_manager.build(
-            **mock_data)
+        org_api_key = await \
+            org_api_key_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of OrgApiKey
+        # Assert that the returned object is an instance of
+        # OrgApiKey
         assert isinstance(
-            org_api_key, OrgApiKey)
+            org_api_key,
+            OrgApiKey)
 
         # Assert that the attributes of the
         # org_api_key match our mock data
@@ -72,15 +76,17 @@ class TestOrgApiKeyGetByManager:
         Test case for the `get_by_id` method of
         `OrgApiKeyManager`.
         """
-        test_org_api_key = await OrgApiKeyFactory.create_async(
-            session)
+        test_org_api_key = await \
+            OrgApiKeyFactory.create_async(
+                session)
 
         org_api_key = await \
             org_api_key_manager.get_by_id(
                 test_org_api_key.org_api_key_id)
 
         assert isinstance(
-            org_api_key, OrgApiKey)
+            org_api_key,
+            OrgApiKey)
 
         assert test_org_api_key.org_api_key_id == \
             org_api_key.org_api_key_id
@@ -119,15 +125,17 @@ class TestOrgApiKeyGetByManager:
         returned by its code.
         """
 
-        test_org_api_key = await OrgApiKeyFactory.create_async(
-            session)
+        test_org_api_key = await \
+            OrgApiKeyFactory.create_async(
+                session)
 
         org_api_key = await \
             org_api_key_manager.get_by_code(
                 test_org_api_key.code)
 
         assert isinstance(
-            org_api_key, OrgApiKey)
+            org_api_key,
+            OrgApiKey)
 
         assert test_org_api_key.org_api_key_id == \
             org_api_key.org_api_key_id
@@ -207,7 +215,8 @@ class TestOrgApiKeyGetByManager:
             org_api_key_manager.get_by_organization_id(
                 org_api_key1.organization_id)
         assert len(fetched_org_api_keys) == 1
-        assert isinstance(fetched_org_api_keys[0], OrgApiKey)
+        assert isinstance(fetched_org_api_keys[0],
+                          OrgApiKey)
         assert fetched_org_api_keys[0].code == \
             org_api_key1.code
 
@@ -320,7 +329,8 @@ class TestOrgApiKeyGetByManager:
             org_api_key_manager.get_by_org_customer_id(
                 org_api_key1.org_customer_id)
         assert len(fetched_org_api_keys) == 1
-        assert isinstance(fetched_org_api_keys[0], OrgApiKey)
+        assert isinstance(fetched_org_api_keys[0],
+                          OrgApiKey)
         assert fetched_org_api_keys[0].code == \
             org_api_key1.code
 

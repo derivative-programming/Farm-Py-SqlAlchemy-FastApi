@@ -1,13 +1,14 @@
 # models/managers/tests/land_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `LandManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestLandManager:
         }
 
         # Call the build function of the manager
-        land = await land_manager.build(
-            **mock_data)
+        land = await \
+            land_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of Land
         assert isinstance(
-            land, Land)
+            land,
+            Land)
 
         # Assert that the attributes of the
         # land match our mock data
@@ -96,17 +99,20 @@ class TestLandManager:
         `LandManager` that checks if a
         land is correctly added to the database.
         """
-        test_land = await LandFactory.build_async(
-            session)
+        test_land = await \
+            LandFactory.build_async(
+                session)
 
         assert test_land.land_id == 0
 
         # Add the land using the
         # manager's add method
-        added_land = await land_manager.add(
-            land=test_land)
+        added_land = await \
+            land_manager.add(
+                land=test_land)
 
-        assert isinstance(added_land, Land)
+        assert isinstance(added_land,
+                          Land)
 
         assert str(added_land.insert_user_id) == (
             str(land_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestLandManager:
         # is not None and matches the
         # added land
         assert fetched_land is not None
-        assert isinstance(fetched_land, Land)
+        assert isinstance(fetched_land,
+                          Land)
         assert fetched_land.land_id == added_land.land_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestLandManager:
         # Create a test land
         # using the LandFactory
         # without persisting it to the database
-        test_land = await LandFactory.build_async(
-            session)
+        test_land = await \
+            LandFactory.build_async(
+                session)
 
         assert test_land.land_id == 0
 
@@ -154,10 +162,12 @@ class TestLandManager:
 
         # Add the land using
         # the manager's add method
-        added_land = await land_manager.add(
-            land=test_land)
+        added_land = await \
+            land_manager.add(
+                land=test_land)
 
-        assert isinstance(added_land, Land)
+        assert isinstance(added_land,
+                          Land)
 
         assert str(added_land.insert_user_id) == (
             str(land_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestLandManager:
         that checks if a land
         is correctly updated.
         """
-        test_land = await LandFactory.create_async(
-            session)
+        test_land = await \
+            LandFactory.create_async(
+                session)
 
         test_land.code = uuid.uuid4()
 
-        updated_land = await land_manager.update(
-            land=test_land)
+        updated_land = await \
+            land_manager.update(
+                land=test_land)
 
-        assert isinstance(updated_land, Land)
+        assert isinstance(updated_land,
+                          Land)
 
         assert str(updated_land.last_update_user_id) == str(
             land_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestLandManager:
         that checks if a land is
         correctly updated using a dictionary.
         """
-        test_land = await LandFactory.create_async(
-            session)
+        test_land = await \
+            LandFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_land = await land_manager.update(
-            land=test_land,
-            code=new_code
-        )
+        updated_land = await \
+            land_manager.update(
+                land=test_land,
+                code=new_code
+            )
 
-        assert isinstance(updated_land, Land)
+        assert isinstance(updated_land,
+                          Land)
 
         assert str(updated_land.last_update_user_id) == str(
             land_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestLandManager:
         land_manager: LandManager
     ):
         """
-        Test case for the `update` method of `LandManager`
+        Test case for the `update` method of
+        `LandManager`
         with an invalid land.
         """
 
@@ -299,11 +316,13 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `LandManager`
+        Test case for the `update` method of
+        `LandManager`
         with a nonexistent attribute.
         """
-        test_land = await LandFactory.create_async(
-            session)
+        test_land = await \
+            LandFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestLandManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `LandManager`.
+        Test case for the `delete` method of
+        `LandManager`.
         """
         land_data = await LandFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestLandManager:
         )
         fetched_land = result.scalars().first()
 
-        assert isinstance(fetched_land, Land)
+        assert isinstance(fetched_land,
+                          Land)
 
         assert fetched_land.land_id == \
             land_data.land_id
@@ -363,7 +384,8 @@ class TestLandManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param land_manager: The instance of the LandManager class.
+        :param land_manager: The instance of the
+            LandManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestLandManager:
         the test case will fail.
 
         Args:
-            land_manager (LandManager): An
+            land_manager
+            (LandManager): An
                 instance of the
                 `LandManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestLandManager:
         Test the 'to_json' method of the LandManager class.
 
         Args:
-            land_manager (LandManager): An
+            land_manager
+            (LandManager): An
                 instance of the
                 LandManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestLandManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        land = await LandFactory.build_async(
-            session)
+        land = await \
+            LandFactory.build_async(
+                session)
 
         json_data = land_manager.to_json(
             land)
@@ -486,7 +511,8 @@ class TestLandManager:
         Test the to_dict method of the LandManager class.
 
         Args:
-            land_manager (LandManager): An
+            land_manager
+            (LandManager): An
                 instance of the
                 LandManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestLandManager:
         Returns:
             None
         """
-        land = await LandFactory.build_async(
-            session)
+        land = await \
+            LandFactory.build_async(
+                session)
 
-        dict_data = land_manager.to_dict(
-            land)
+        dict_data = \
+            land_manager.to_dict(
+                land)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestLandManager:
         the same code as the original land.
 
         Args:
-            land_manager (LandManager): An
-            instance of the
+            land_manager
+            (LandManager): An
+                instance of the
                 `LandManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        land = await LandFactory.create_async(
-            session)
+        land = await \
+            LandFactory.create_async(
+                session)
 
         json_data = land_manager.to_json(
             land)
 
-        deserialized_land = await land_manager.from_json(json_data)
+        deserialized_land = await \
+                land_manager.from_json(json_data)
 
-        assert isinstance(deserialized_land, Land)
+        assert isinstance(deserialized_land,
+                          Land)
         assert deserialized_land.code == \
             land.code
 
@@ -559,7 +591,8 @@ class TestLandManager:
         land object.
 
         Args:
-            land_manager (LandManager): An instance
+            land_manager
+            (LandManager): An instance
                 of the `LandManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestLandManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        land = await LandFactory.create_async(
-            session)
+        land = await \
+            LandFactory.create_async(
+                session)
 
         schema = LandSchema()
 
@@ -578,10 +612,12 @@ class TestLandManager:
 
         assert isinstance(land_data, dict)
 
-        deserialized_land = await land_manager.from_dict(
-            land_data)
+        deserialized_land = await \
+            land_manager.from_dict(
+                land_data)
 
-        assert isinstance(deserialized_land, Land)
+        assert isinstance(deserialized_land,
+                          Land)
 
         assert deserialized_land.code == \
             land.code
@@ -630,7 +666,8 @@ class TestLandManager:
         LandManager class returns 0 when the database is empty.
 
         Args:
-            land_manager (LandManager): An
+            land_manager
+            (LandManager): An
                 instance of the
                 LandManager class.
 
@@ -664,7 +701,8 @@ class TestLandManager:
             it reflects the updated code.
 
         Args:
-            land_manager (LandManager): The
+            land_manager
+            (LandManager): The
                 manager responsible
                 for land operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestLandManager:
         # Verify that the updated land
         # is of type Land
         # and has the updated code
-        assert isinstance(updated_land1, Land)
+        assert isinstance(updated_land1,
+                          Land)
 
         assert updated_land1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestLandManager:
         Test case to verify the behavior of refreshing a nonexistent land.
 
         Args:
-            land_manager (LandManager): The
+            land_manager
+            (LandManager): The
                 instance of the
                 LandManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestLandManager:
         exists using the manager function.
 
         Args:
-            land_manager (LandManager): The
+            land_manager
+            (LandManager): The
                 land manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestLandManager:
         LandManager class correctly compares two lands.
 
         Args:
-            land_manager (LandManager): An
+            land_manager
+            (LandManager): An
                 instance of the
                 LandManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestLandManager:
         assert land_manager.is_equal(
             land1, land2) is True
 
-        land1_dict = land_manager.to_dict(
-            land1)
+        land1_dict = \
+            land_manager.to_dict(
+                land1)
 
         land3 = await \
             land_manager.from_dict(
@@ -815,7 +858,8 @@ class TestLandManager:
         non-existent ID exists in the database.
 
         Args:
-            land_manager (LandManager): The
+            land_manager
+            (LandManager): The
                 instance of the LandManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestLandManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            land_manager (LandManager): The instance
+            land_manager
+            (LandManager): The instance
                 of the LandManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

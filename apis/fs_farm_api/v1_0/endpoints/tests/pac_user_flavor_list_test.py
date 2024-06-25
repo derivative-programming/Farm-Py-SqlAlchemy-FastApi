@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `pac_user_flavor_list` endpoint.
+This module contains unit tests for the
+`pac_user_flavor_list` endpoint.
 """
 
 import logging
@@ -216,7 +217,8 @@ async def test_get_success(
     api_key_fixture: str
 ):
     """
-    Test the successful retrieval of the `pac_user_flavor_list` get endpoint.
+    Test the successful retrieval of the
+    `pac_user_flavor_list` get endpoint.
     """
 
     async def mock_process_request(
@@ -801,7 +803,8 @@ async def test_get_csv_endpoint_invalid_code_failure(
 
     Steps:
     1. Create a UUID representing an invalid pac code.
-    2. Create a request object using the PacUserFlavorListGetModelRequestFactory.
+    2. Create a request object using the
+        PacUserFlavorListGetModelRequestFactory.
     3. Convert the request object to a dictionary
         in camel case serialization format.
     4. Set the test API key.

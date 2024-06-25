@@ -1,16 +1,20 @@
 # business/tests/tac_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
-Unit tests for the TacBusObj class.
+Unit tests for the
+TacBusObj class.
 """
 
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from business.tac import TacBusObj
+from business.tac import (
+    TacBusObj)
 from helpers.session_context import SessionContext
-from models import Tac
+from models import (
+    Tac)
 
 
 @pytest.fixture
@@ -34,14 +38,16 @@ def tac_list():
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list(session_context, tac_list):
+async def test_to_bus_obj_list(
+        session_context, tac_list):
     """
     Test the to_bus_obj_list method.
     """
     with patch('business.tac.TacBusObj.load_from_obj_instance',
                new_callable=AsyncMock) as mock_load:
-        bus_obj_list = await TacBusObj.to_bus_obj_list(
-            session_context, tac_list)
+        bus_obj_list = await \
+            TacBusObj.to_bus_obj_list(
+                session_context, tac_list)
 
         assert len(bus_obj_list) == len(tac_list)
         assert all(
@@ -54,12 +60,17 @@ async def test_to_bus_obj_list(session_context, tac_list):
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list_empty(session_context):
+async def test_to_bus_obj_list_empty(
+        session_context):
     """
-    Test the to_bus_obj_list method with an empty list.
+    Test the to_bus_obj_list
+    method with an empty list.
     """
     empty_tac_list = []
-    bus_obj_list = await TacBusObj.to_bus_obj_list(session_context, empty_tac_list)
+    bus_obj_list = await \
+        TacBusObj.to_bus_obj_list(
+            session_context,
+            empty_tac_list)
 
     assert len(bus_obj_list) == 0
 

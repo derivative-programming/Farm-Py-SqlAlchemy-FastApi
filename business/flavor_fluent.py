@@ -1,13 +1,17 @@
 # business/flavor_fluent.py
+# pylint: disable=unused-import
 
 """
-This module contains the FlavorFluentBusObj class,
-which adds fluent properties to the business object for a Flavor.
+This module contains the
+FlavorFluentBusObj class,
+which adds fluent properties
+to the business object for a
+Flavor.
 """
 
-from decimal import Decimal
-import uuid
-from datetime import datetime, date
+from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from .flavor_base import FlavorBaseBusObj
 
 

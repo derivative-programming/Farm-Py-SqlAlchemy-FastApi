@@ -1,6 +1,8 @@
 # models/constants/flavor.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to flavors.
+This module contains boolean constants related to
+flavors.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

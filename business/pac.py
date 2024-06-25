@@ -1,8 +1,11 @@
 # business/pac.py
 # pylint: disable=unused-import
 """
-This module contains the PacBusObj class,
-which represents the business object for a Pac.
+This module contains the
+PacBusObj class,
+which represents the
+business object for a
+Pac.
 """
 
 from typing import List

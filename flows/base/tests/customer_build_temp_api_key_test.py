@@ -1,5 +1,6 @@
 # flows/base/tests/customer_build_temp_api_key_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowCustomerBuildTempApiKey` class.
@@ -66,7 +67,8 @@ class TestBaseFlowCustomerBuildTempApiKey():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a customer
-        object, and a BaseFlowCustomerBuildTempApiKey object.
+        object, and a
+        BaseFlowCustomerBuildTempApiKey object.
         Then, it sets the role_required
         variable to "" and calls the
         _process_security_rules method. Finally,

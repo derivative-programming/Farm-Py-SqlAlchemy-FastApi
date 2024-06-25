@@ -1,15 +1,19 @@
 # business/land_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the LandBaseBusObj class,
-which represents the base business object for a Land.
+This module contains the
+LandBaseBusObj class,
+which represents the base
+business object for a
+Land.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import LandManager
 from models import Land
@@ -76,8 +80,8 @@ class LandBaseBusObj(BaseBusObj):
             )
 
         return self.land.land_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class LandBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.land.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class LandBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.land.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class LandBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.land.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -659,7 +663,8 @@ class LandBaseBusObj(BaseBusObj):
 
         land_manager = LandManager(
             self._session_context)
-        self.land = await land_manager.from_json(json_data)
+        self.land = await \
+            land_manager.from_json(json_data)
 
         return self
 
@@ -734,14 +739,8 @@ class LandBaseBusObj(BaseBusObj):
         if not isinstance(land_obj_instance,
                           Land):
             raise ValueError(
-                "land_obj_instance must be an instance of Land")
-
-        # land_manager = LandManager(
-        #     self._session_context)
-
-        # land_dict = land_manager.to_dict(land_obj_instance)
-
-        # self.land = land_manager.from_dict(land_dict)
+                "land_obj_instance must be an "
+                "instance of Land")
 
         self.land = land_obj_instance
 
@@ -769,8 +768,9 @@ class LandBaseBusObj(BaseBusObj):
         land_manager = LandManager(
             self._session_context)
 
-        self.land = await land_manager.from_dict(
-            land_dict)
+        self.land = await \
+            land_manager.from_dict(
+                land_dict)
 
         return self
 
@@ -796,8 +796,9 @@ class LandBaseBusObj(BaseBusObj):
         """
         land_manager = LandManager(
             self._session_context)
-        self.land = await land_manager.refresh(
-            self.land)
+        self.land = await \
+            land_manager.refresh(
+                self.land)
 
         return self
 
@@ -871,14 +872,16 @@ class LandBaseBusObj(BaseBusObj):
         if land_id > 0:
             land_manager = LandManager(
                 self._session_context)
-            self.land = await land_manager.update(
-                self.land)
+            self.land = await \
+                land_manager.update(
+                    self.land)
 
         if land_id == 0:
             land_manager = LandManager(
                 self._session_context)
-            self.land = await land_manager.add(
-                self.land)
+            self.land = await \
+                land_manager.add(
+                    self.land)
 
         return self
 
@@ -996,8 +999,10 @@ class LandBaseBusObj(BaseBusObj):
             representing the related pac.
 
         """
-        pac_manager = managers_and_enums.PacManager(self._session_context)
-        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
         return pac_obj
 
     def get_obj(self) -> Land:

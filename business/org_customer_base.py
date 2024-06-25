@@ -1,15 +1,19 @@
 # business/org_customer_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the OrgCustomerBaseBusObj class,
-which represents the base business object for a OrgCustomer.
+This module contains the
+OrgCustomerBaseBusObj class,
+which represents the base
+business object for a
+OrgCustomer.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import OrgCustomerManager
 from models import OrgCustomer
@@ -76,8 +80,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         return self.org_customer.org_customer_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.org_customer.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.org_customer.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.org_customer.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -562,7 +566,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
 
         org_customer_manager = OrgCustomerManager(
             self._session_context)
-        self.org_customer = await org_customer_manager.from_json(json_data)
+        self.org_customer = await \
+            org_customer_manager.from_json(json_data)
 
         return self
 
@@ -637,14 +642,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         if not isinstance(org_customer_obj_instance,
                           OrgCustomer):
             raise ValueError(
-                "org_customer_obj_instance must be an instance of OrgCustomer")
-
-        # org_customer_manager = OrgCustomerManager(
-        #     self._session_context)
-
-        # org_customer_dict = org_customer_manager.to_dict(org_customer_obj_instance)
-
-        # self.org_customer = org_customer_manager.from_dict(org_customer_dict)
+                "org_customer_obj_instance must be an "
+                "instance of OrgCustomer")
 
         self.org_customer = org_customer_obj_instance
 
@@ -672,8 +671,9 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         org_customer_manager = OrgCustomerManager(
             self._session_context)
 
-        self.org_customer = await org_customer_manager.from_dict(
-            org_customer_dict)
+        self.org_customer = await \
+            org_customer_manager.from_dict(
+                org_customer_dict)
 
         return self
 
@@ -699,8 +699,9 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         """
         org_customer_manager = OrgCustomerManager(
             self._session_context)
-        self.org_customer = await org_customer_manager.refresh(
-            self.org_customer)
+        self.org_customer = await \
+            org_customer_manager.refresh(
+                self.org_customer)
 
         return self
 
@@ -774,14 +775,16 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         if org_customer_id > 0:
             org_customer_manager = OrgCustomerManager(
                 self._session_context)
-            self.org_customer = await org_customer_manager.update(
-                self.org_customer)
+            self.org_customer = await \
+                org_customer_manager.update(
+                    self.org_customer)
 
         if org_customer_id == 0:
             org_customer_manager = OrgCustomerManager(
                 self._session_context)
-            self.org_customer = await org_customer_manager.add(
-                self.org_customer)
+            self.org_customer = await \
+                org_customer_manager.add(
+                    self.org_customer)
 
         return self
 
@@ -907,8 +910,10 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             representing the related organization.
 
         """
-        organization_manager = managers_and_enums.OrganizationManager(self._session_context)
-        organization_obj = await organization_manager.get_by_id(self.organization_id)
+        organization_manager = managers_and_enums.OrganizationManager(
+            self._session_context)
+        organization_obj = await organization_manager.get_by_id(
+            self.organization_id)
         return organization_obj
 
     def get_obj(self) -> OrgCustomer:

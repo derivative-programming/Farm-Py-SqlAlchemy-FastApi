@@ -1,15 +1,19 @@
 # business/error_log_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the ErrorLogBaseBusObj class,
-which represents the base business object for a ErrorLog.
+This module contains the
+ErrorLogBaseBusObj class,
+which represents the base
+business object for a
+ErrorLog.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import ErrorLogManager
 from models import ErrorLog
@@ -76,8 +80,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         return self.error_log.error_log_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.error_log.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.error_log.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.error_log.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -758,7 +762,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
 
         error_log_manager = ErrorLogManager(
             self._session_context)
-        self.error_log = await error_log_manager.from_json(json_data)
+        self.error_log = await \
+            error_log_manager.from_json(json_data)
 
         return self
 
@@ -833,14 +838,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
         if not isinstance(error_log_obj_instance,
                           ErrorLog):
             raise ValueError(
-                "error_log_obj_instance must be an instance of ErrorLog")
-
-        # error_log_manager = ErrorLogManager(
-        #     self._session_context)
-
-        # error_log_dict = error_log_manager.to_dict(error_log_obj_instance)
-
-        # self.error_log = error_log_manager.from_dict(error_log_dict)
+                "error_log_obj_instance must be an "
+                "instance of ErrorLog")
 
         self.error_log = error_log_obj_instance
 
@@ -868,8 +867,9 @@ class ErrorLogBaseBusObj(BaseBusObj):
         error_log_manager = ErrorLogManager(
             self._session_context)
 
-        self.error_log = await error_log_manager.from_dict(
-            error_log_dict)
+        self.error_log = await \
+            error_log_manager.from_dict(
+                error_log_dict)
 
         return self
 
@@ -895,8 +895,9 @@ class ErrorLogBaseBusObj(BaseBusObj):
         """
         error_log_manager = ErrorLogManager(
             self._session_context)
-        self.error_log = await error_log_manager.refresh(
-            self.error_log)
+        self.error_log = await \
+            error_log_manager.refresh(
+                self.error_log)
 
         return self
 
@@ -970,14 +971,16 @@ class ErrorLogBaseBusObj(BaseBusObj):
         if error_log_id > 0:
             error_log_manager = ErrorLogManager(
                 self._session_context)
-            self.error_log = await error_log_manager.update(
-                self.error_log)
+            self.error_log = await \
+                error_log_manager.update(
+                    self.error_log)
 
         if error_log_id == 0:
             error_log_manager = ErrorLogManager(
                 self._session_context)
-            self.error_log = await error_log_manager.add(
-                self.error_log)
+            self.error_log = await \
+                error_log_manager.add(
+                    self.error_log)
 
         return self
 
@@ -1100,8 +1103,10 @@ class ErrorLogBaseBusObj(BaseBusObj):
             representing the related pac.
 
         """
-        pac_manager = managers_and_enums.PacManager(self._session_context)
-        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
         return pac_obj
     # url,
 

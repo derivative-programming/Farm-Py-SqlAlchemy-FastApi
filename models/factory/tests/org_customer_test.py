@@ -1,15 +1,16 @@
 # models/factory/tests/org_customer_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the OrgCustomerFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestOrgCustomerFactory:
         org_customer.code = uuid.uuid4()
         session.add(org_customer)
         session.commit()
-        assert org_customer.insert_utc_date_time > initial_time
+        assert org_customer.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestOrgCustomerFactory:
         org_customer.code = uuid.uuid4()
         session.add(org_customer)
         session.commit()
-        assert org_customer.last_update_utc_date_time > initial_time
+        assert org_customer.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestOrgCustomerFactory:
         org_customer.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert org_customer.last_update_utc_date_time > initial_time
+        assert org_customer.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -216,8 +220,6 @@ class TestOrgCustomerFactory:
         assert org_customer.email == "" or isinstance(
             org_customer.email, str)
         assert isinstance(org_customer.organization_id, int)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
         # customerID
 
         assert isinstance(

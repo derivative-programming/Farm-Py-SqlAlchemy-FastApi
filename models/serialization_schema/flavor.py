@@ -1,7 +1,9 @@
 # models/serialization_schema/flavor.py
+# pylint: disable=unused-import
 
 """
-This module contains the FlavorSchema
+This module contains the
+FlavorSchema
 class, which is responsible
 for serializing and deserializing
 Flavor objects.

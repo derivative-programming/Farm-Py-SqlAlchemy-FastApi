@@ -1,33 +1,39 @@
 # business/tests/organization_fluent_test.py
+# pylint: disable=unused-import
 """
-Unit tests for the OrganizationFluentBusObj class.
+Unit tests for the
+OrganizationFluentBusObj class.
 """
 import math
-from datetime import date, datetime
-from decimal import Decimal
-from uuid import uuid4
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from uuid import uuid4  # noqa: F401
 
 import pytest
 
-from business.organization_fluent import OrganizationFluentBusObj
+from business.organization_fluent import (
+    OrganizationFluentBusObj)
 from helpers.session_context import SessionContext
 
 
 class MockOrganizationBaseBusObj:
     """
-    A mock base class for the OrganizationFluentBusObj class.
+    A mock base class for the
+    OrganizationFluentBusObj class.
     """
     def __init__(self):
         self.name = None
         self.tac_id = None
 class TestOrganizationFluentBusObj:
     """
-    Unit tests for the OrganizationFluentBusObj class.
+    Unit tests for the
+    OrganizationFluentBusObj class.
     """
     @pytest.fixture
     def organization(self, session):
         """
-        Return a OrganizationFluentBusObj object.
+        Return a OrganizationFluentBusObj
+        object.
         """
         session_context = SessionContext(dict(), session=session)
         return OrganizationFluentBusObj(session_context)

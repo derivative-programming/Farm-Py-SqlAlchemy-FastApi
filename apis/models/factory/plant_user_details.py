@@ -5,11 +5,11 @@ This module contains the factory class for creating
 instances of the PlantUserDetailsGetModelRequest model.
 """
 
-import uuid
-from datetime import datetime
+import uuid  # noqa: F401
+from datetime import datetime  # noqa: F401
 
 import factory
-from factory import Faker
+from factory import Faker  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..plant_user_details import (
@@ -72,7 +72,9 @@ class PlantUserDetailsGetModelRequestFactory(
         **kwargs
     ) -> PlantUserDetailsGetModelRequest:
         """
-        Create a PlantUserDetailsGetModelRequest instance.
+        Create a
+        PlantUserDetailsGetModelRequest
+        instance.
 
         Args:
             model_class: The model class to create an instance of.
@@ -88,7 +90,6 @@ class PlantUserDetailsGetModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -98,7 +99,8 @@ class PlantUserDetailsGetModelRequestFactory(
         *args, **kwargs
     ) -> PlantUserDetailsGetModelRequest:
         """
-        Asynchronously create a PlantUserDetailsGetModelRequest instance.
+        Asynchronously create a
+        PlantUserDetailsGetModelRequest instance.
 
         Args:
             session: The session to use for creating related objects.
@@ -115,7 +117,6 @@ class PlantUserDetailsGetModelRequestFactory(
             session=None,
             *args, **kwargs
         )
-
 
         return obj
 

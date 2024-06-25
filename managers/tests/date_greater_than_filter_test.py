@@ -1,13 +1,14 @@
 # models/managers/tests/date_greater_than_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `DateGreaterThanFilterManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestDateGreaterThanFilterManager:
         }
 
         # Call the build function of the manager
-        date_greater_than_filter = await date_greater_than_filter_manager.build(
-            **mock_data)
+        date_greater_than_filter = await \
+            date_greater_than_filter_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of DateGreaterThanFilter
         assert isinstance(
-            date_greater_than_filter, DateGreaterThanFilter)
+            date_greater_than_filter,
+            DateGreaterThanFilter)
 
         # Assert that the attributes of the
         # date_greater_than_filter match our mock data
@@ -96,17 +99,20 @@ class TestDateGreaterThanFilterManager:
         `DateGreaterThanFilterManager` that checks if a
         date_greater_than_filter is correctly added to the database.
         """
-        test_date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session)
+        test_date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session)
 
         assert test_date_greater_than_filter.date_greater_than_filter_id == 0
 
         # Add the date_greater_than_filter using the
         # manager's add method
-        added_date_greater_than_filter = await date_greater_than_filter_manager.add(
-            date_greater_than_filter=test_date_greater_than_filter)
+        added_date_greater_than_filter = await \
+            date_greater_than_filter_manager.add(
+                date_greater_than_filter=test_date_greater_than_filter)
 
-        assert isinstance(added_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(added_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert str(added_date_greater_than_filter.insert_user_id) == (
             str(date_greater_than_filter_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestDateGreaterThanFilterManager:
         # is not None and matches the
         # added date_greater_than_filter
         assert fetched_date_greater_than_filter is not None
-        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(fetched_date_greater_than_filter,
+                          DateGreaterThanFilter)
         assert fetched_date_greater_than_filter.date_greater_than_filter_id == added_date_greater_than_filter.date_greater_than_filter_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestDateGreaterThanFilterManager:
         # Create a test date_greater_than_filter
         # using the DateGreaterThanFilterFactory
         # without persisting it to the database
-        test_date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session)
+        test_date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session)
 
         assert test_date_greater_than_filter.date_greater_than_filter_id == 0
 
@@ -154,10 +162,12 @@ class TestDateGreaterThanFilterManager:
 
         # Add the date_greater_than_filter using
         # the manager's add method
-        added_date_greater_than_filter = await date_greater_than_filter_manager.add(
-            date_greater_than_filter=test_date_greater_than_filter)
+        added_date_greater_than_filter = await \
+            date_greater_than_filter_manager.add(
+                date_greater_than_filter=test_date_greater_than_filter)
 
-        assert isinstance(added_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(added_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert str(added_date_greater_than_filter.insert_user_id) == (
             str(date_greater_than_filter_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestDateGreaterThanFilterManager:
         that checks if a date_greater_than_filter
         is correctly updated.
         """
-        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session)
+        test_date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session)
 
         test_date_greater_than_filter.code = uuid.uuid4()
 
-        updated_date_greater_than_filter = await date_greater_than_filter_manager.update(
-            date_greater_than_filter=test_date_greater_than_filter)
+        updated_date_greater_than_filter = await \
+            date_greater_than_filter_manager.update(
+                date_greater_than_filter=test_date_greater_than_filter)
 
-        assert isinstance(updated_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(updated_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert str(updated_date_greater_than_filter.last_update_user_id) == str(
             date_greater_than_filter_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestDateGreaterThanFilterManager:
         that checks if a date_greater_than_filter is
         correctly updated using a dictionary.
         """
-        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session)
+        test_date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_date_greater_than_filter = await date_greater_than_filter_manager.update(
-            date_greater_than_filter=test_date_greater_than_filter,
-            code=new_code
-        )
+        updated_date_greater_than_filter = await \
+            date_greater_than_filter_manager.update(
+                date_greater_than_filter=test_date_greater_than_filter,
+                code=new_code
+            )
 
-        assert isinstance(updated_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(updated_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert str(updated_date_greater_than_filter.last_update_user_id) == str(
             date_greater_than_filter_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter_manager: DateGreaterThanFilterManager
     ):
         """
-        Test case for the `update` method of `DateGreaterThanFilterManager`
+        Test case for the `update` method of
+        `DateGreaterThanFilterManager`
         with an invalid date_greater_than_filter.
         """
 
@@ -299,11 +316,13 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `DateGreaterThanFilterManager`
+        Test case for the `update` method of
+        `DateGreaterThanFilterManager`
         with a nonexistent attribute.
         """
-        test_date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session)
+        test_date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestDateGreaterThanFilterManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `DateGreaterThanFilterManager`.
+        Test case for the `delete` method of
+        `DateGreaterThanFilterManager`.
         """
         date_greater_than_filter_data = await DateGreaterThanFilterFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestDateGreaterThanFilterManager:
         )
         fetched_date_greater_than_filter = result.scalars().first()
 
-        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(fetched_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert fetched_date_greater_than_filter.date_greater_than_filter_id == \
             date_greater_than_filter_data.date_greater_than_filter_id
@@ -363,7 +384,8 @@ class TestDateGreaterThanFilterManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param date_greater_than_filter_manager: The instance of the DateGreaterThanFilterManager class.
+        :param date_greater_than_filter_manager: The instance of the
+            DateGreaterThanFilterManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestDateGreaterThanFilterManager:
         the test case will fail.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): An
                 instance of the
                 `DateGreaterThanFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestDateGreaterThanFilterManager:
         Test the 'to_json' method of the DateGreaterThanFilterManager class.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestDateGreaterThanFilterManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session)
 
         json_data = date_greater_than_filter_manager.to_json(
             date_greater_than_filter)
@@ -486,7 +511,8 @@ class TestDateGreaterThanFilterManager:
         Test the to_dict method of the DateGreaterThanFilterManager class.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestDateGreaterThanFilterManager:
         Returns:
             None
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.build_async(
-            session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.build_async(
+                session)
 
-        dict_data = date_greater_than_filter_manager.to_dict(
-            date_greater_than_filter)
+        dict_data = \
+            date_greater_than_filter_manager.to_dict(
+                date_greater_than_filter)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestDateGreaterThanFilterManager:
         the same code as the original date_greater_than_filter.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An
-            instance of the
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): An
+                instance of the
                 `DateGreaterThanFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session)
 
         json_data = date_greater_than_filter_manager.to_json(
             date_greater_than_filter)
 
-        deserialized_date_greater_than_filter = await date_greater_than_filter_manager.from_json(json_data)
+        deserialized_date_greater_than_filter = await \
+                date_greater_than_filter_manager.from_json(json_data)
 
-        assert isinstance(deserialized_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(deserialized_date_greater_than_filter,
+                          DateGreaterThanFilter)
         assert deserialized_date_greater_than_filter.code == \
             date_greater_than_filter.code
 
@@ -559,7 +591,8 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter object.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An instance
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): An instance
                 of the `DateGreaterThanFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestDateGreaterThanFilterManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        date_greater_than_filter = await DateGreaterThanFilterFactory.create_async(
-            session)
+        date_greater_than_filter = await \
+            DateGreaterThanFilterFactory.create_async(
+                session)
 
         schema = DateGreaterThanFilterSchema()
 
@@ -578,10 +612,12 @@ class TestDateGreaterThanFilterManager:
 
         assert isinstance(date_greater_than_filter_data, dict)
 
-        deserialized_date_greater_than_filter = await date_greater_than_filter_manager.from_dict(
-            date_greater_than_filter_data)
+        deserialized_date_greater_than_filter = await \
+            date_greater_than_filter_manager.from_dict(
+                date_greater_than_filter_data)
 
-        assert isinstance(deserialized_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(deserialized_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert deserialized_date_greater_than_filter.code == \
             date_greater_than_filter.code
@@ -630,7 +666,8 @@ class TestDateGreaterThanFilterManager:
         DateGreaterThanFilterManager class returns 0 when the database is empty.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
 
@@ -664,7 +701,8 @@ class TestDateGreaterThanFilterManager:
             it reflects the updated code.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): The
                 manager responsible
                 for date_greater_than_filter operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestDateGreaterThanFilterManager:
         # Verify that the updated date_greater_than_filter
         # is of type DateGreaterThanFilter
         # and has the updated code
-        assert isinstance(updated_date_greater_than_filter1, DateGreaterThanFilter)
+        assert isinstance(updated_date_greater_than_filter1,
+                          DateGreaterThanFilter)
 
         assert updated_date_greater_than_filter1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestDateGreaterThanFilterManager:
         Test case to verify the behavior of refreshing a nonexistent date_greater_than_filter.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): The
                 instance of the
                 DateGreaterThanFilterManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestDateGreaterThanFilterManager:
         exists using the manager function.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): The
                 date_greater_than_filter manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestDateGreaterThanFilterManager:
         DateGreaterThanFilterManager class correctly compares two date_greater_than_filters.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): An
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestDateGreaterThanFilterManager:
         assert date_greater_than_filter_manager.is_equal(
             date_greater_than_filter1, date_greater_than_filter2) is True
 
-        date_greater_than_filter1_dict = date_greater_than_filter_manager.to_dict(
-            date_greater_than_filter1)
+        date_greater_than_filter1_dict = \
+            date_greater_than_filter_manager.to_dict(
+                date_greater_than_filter1)
 
         date_greater_than_filter3 = await \
             date_greater_than_filter_manager.from_dict(
@@ -815,7 +858,8 @@ class TestDateGreaterThanFilterManager:
         non-existent ID exists in the database.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): The
                 instance of the DateGreaterThanFilterManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestDateGreaterThanFilterManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The instance
+            date_greater_than_filter_manager
+            (DateGreaterThanFilterManager): The instance
                 of the DateGreaterThanFilterManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

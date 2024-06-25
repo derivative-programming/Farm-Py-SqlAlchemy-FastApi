@@ -1,12 +1,13 @@
 # models/managers/tests/flavor_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `FlavorManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestFlavorGetByManager:
         }
 
         # Call the build function of the manager
-        flavor = await flavor_manager.build(
-            **mock_data)
+        flavor = await \
+            flavor_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Flavor
+        # Assert that the returned object is an instance of
+        # Flavor
         assert isinstance(
-            flavor, Flavor)
+            flavor,
+            Flavor)
 
         # Assert that the attributes of the
         # flavor match our mock data
@@ -72,15 +76,17 @@ class TestFlavorGetByManager:
         Test case for the `get_by_id` method of
         `FlavorManager`.
         """
-        test_flavor = await FlavorFactory.create_async(
-            session)
+        test_flavor = await \
+            FlavorFactory.create_async(
+                session)
 
         flavor = await \
             flavor_manager.get_by_id(
                 test_flavor.flavor_id)
 
         assert isinstance(
-            flavor, Flavor)
+            flavor,
+            Flavor)
 
         assert test_flavor.flavor_id == \
             flavor.flavor_id
@@ -119,15 +125,17 @@ class TestFlavorGetByManager:
         returned by its code.
         """
 
-        test_flavor = await FlavorFactory.create_async(
-            session)
+        test_flavor = await \
+            FlavorFactory.create_async(
+                session)
 
         flavor = await \
             flavor_manager.get_by_code(
                 test_flavor.code)
 
         assert isinstance(
-            flavor, Flavor)
+            flavor,
+            Flavor)
 
         assert test_flavor.flavor_id == \
             flavor.flavor_id
@@ -205,7 +213,8 @@ class TestFlavorGetByManager:
             flavor_manager.get_by_pac_id(
                 flavor1.pac_id)
         assert len(fetched_flavors) == 1
-        assert isinstance(fetched_flavors[0], Flavor)
+        assert isinstance(fetched_flavors[0],
+                          Flavor)
         assert fetched_flavors[0].code == \
             flavor1.code
 

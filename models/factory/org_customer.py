@@ -1,13 +1,16 @@
 # models/factory/org_customer.py
+# pylint: disable=unused-import
 """
-This module contains the OrgCustomerFactory
+This module contains the
+OrgCustomerFactory
 class, which is responsible
-for creating instances of the OrgCustomer
+for creating instances of the
+OrgCustomer
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import OrgCustomer
@@ -99,7 +102,8 @@ class OrgCustomerFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> OrgCustomer:
         """
-        Create a new OrgCustomer object
+        Create a new
+        OrgCustomer object
         and save it to the database.
 
         Args:
@@ -150,7 +154,8 @@ class OrgCustomerFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> OrgCustomer:
         """
-        Create a new OrgCustomer object
+        Create a new
+        OrgCustomer object
         asynchronously.
 
         Args:

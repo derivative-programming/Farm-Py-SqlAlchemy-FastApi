@@ -1,5 +1,6 @@
 # flows/base/tests/plant_user_delete_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowPlantUserDelete` class.
@@ -66,7 +67,8 @@ class TestBaseFlowPlantUserDelete():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a plant
-        object, and a BaseFlowPlantUserDelete object.
+        object, and a
+        BaseFlowPlantUserDelete object.
         Then, it sets the role_required
         variable to "User" and calls the
         _process_security_rules method. Finally,

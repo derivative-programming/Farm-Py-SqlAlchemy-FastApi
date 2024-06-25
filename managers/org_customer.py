@@ -10,7 +10,7 @@ org_customers in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -291,7 +291,8 @@ class OrgCustomerManager:
         logging.info("OrgCustomerManager.update")
         property_list = OrgCustomer.property_list()
         if org_customer:
-            org_customer.last_update_user_id = self._session_context.customer_code
+            org_customer.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -495,7 +496,8 @@ class OrgCustomerManager:
         logging.info(
             "OrgCustomerManager.add_bulk")
         for org_customer in org_customers:
-            org_customer_id = org_customer.org_customer_id
+            org_customer_id = \
+                org_customer.org_customer_id
             code = org_customer.code
             if org_customer.org_customer_id is not None and org_customer.org_customer_id > 0:
                 raise ValueError(
@@ -562,7 +564,8 @@ class OrgCustomerManager:
                 if key != "org_customer_id":
                     setattr(org_customer, key, value)
 
-            org_customer.last_update_user_id = self._session_context.customer_code
+            org_customer.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_org_customers.append(org_customer)
 
@@ -679,11 +682,13 @@ class OrgCustomerManager:
         if not org_customer2:
             raise TypeError("OrgCustomer2 required.")
 
-        if not isinstance(org_customer1, OrgCustomer):
+        if not isinstance(org_customer1,
+                          OrgCustomer):
             raise TypeError("The org_customer1 must be an "
                             "OrgCustomer instance.")
 
-        if not isinstance(org_customer2, OrgCustomer):
+        if not isinstance(org_customer2,
+                          OrgCustomer):
             raise TypeError("The org_customer2 must be an "
                             "OrgCustomer instance.")
 
@@ -691,7 +696,9 @@ class OrgCustomerManager:
         dict2 = self.to_dict(org_customer2)
 
         return dict1 == dict2
-    async def get_by_customer_id(  # CustomerID
+    # CustomerID
+
+    async def get_by_customer_id(
             self,
             customer_id: int) -> List[OrgCustomer]:
         """
@@ -725,7 +732,8 @@ class OrgCustomerManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-    async def get_by_organization_id(  # OrganizationID
+    # OrganizationID
+    async def get_by_organization_id(
             self,
             organization_id: int) -> List[OrgCustomer]:
         """

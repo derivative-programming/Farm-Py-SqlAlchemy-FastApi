@@ -1,5 +1,6 @@
 # models/factory/tests/land_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the LandFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestLandFactoryAsync:
             AssertionError: If the land ID
                 is None after creation.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         assert land.land_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestLandFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         assert isinstance(land.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestLandFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        land: Land = await LandFactory.build_async(
-            session=session)
+        land: Land = await \
+            LandFactory.build_async(
+                session=session)
         assert land.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestLandFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        land: Land = await LandFactory.create_async(
-            session=session)
+        land: Land = await \
+            LandFactory.create_async(
+                session=session)
         assert land.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestLandFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         initial_code = land.last_change_code
         land.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestLandFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        land = await LandFactory.build_async(
-            session=session)
+        land = await \
+            LandFactory.build_async(
+                session=session)
         assert land.insert_utc_date_time is not None
         assert isinstance(
             land.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestLandFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        land = await LandFactory.build_async(
-            session=session)
+        land = await \
+            LandFactory.build_async(
+                session=session)
         assert land.insert_utc_date_time is not None
         assert isinstance(
             land.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestLandFactoryAsync:
         land.code = uuid.uuid4()
         session.add(land)
         await session.commit()
-        assert land.insert_utc_date_time > initial_time
+        assert land.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestLandFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         assert land.insert_utc_date_time is not None
         assert isinstance(
             land.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestLandFactoryAsync:
         land.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert land.insert_utc_date_time == initial_time
+        assert land.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestLandFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        land = await LandFactory.build_async(
-            session=session)
+        land = await \
+            LandFactory.build_async(
+                session=session)
         assert land.last_update_utc_date_time is not None
         assert isinstance(
             land.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestLandFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        land = await LandFactory.build_async(
-            session=session)
+        land = await \
+            LandFactory.build_async(
+                session=session)
         assert land.last_update_utc_date_time is not None
         assert isinstance(
             land.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestLandFactoryAsync:
         land.code = uuid.uuid4()
         session.add(land)
         await session.commit()
-        assert land.last_update_utc_date_time > initial_time
+        assert land.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestLandFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         assert land.last_update_utc_date_time is not None
         assert isinstance(
             land.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestLandFactoryAsync:
         land.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert land.last_update_utc_date_time > initial_time
+        assert land.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestLandFactoryAsync:
             land is still
             found in the database.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         await session.delete(land)
         await session.commit()
 
         # Construct the select statement
         stmt = select(Land).where(
-            Land._land_id == land.land_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Land._land_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                land.land_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,18 +405,22 @@ class TestLandFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         assert isinstance(land.land_id, int)
         assert isinstance(land.code, uuid.UUID)
         assert isinstance(land.last_change_code, int)
         assert isinstance(land.insert_user_id, uuid.UUID)
         assert isinstance(land.last_update_user_id, uuid.UUID)
-        assert land.description == "" or isinstance(land.description, str)
+        assert land.description == "" or isinstance(
+            land.description, str)
         assert isinstance(land.display_order, int)
         assert isinstance(land.is_active, bool)
-        assert land.lookup_enum_name == "" or isinstance(land.lookup_enum_name, str)
-        assert land.name == "" or isinstance(land.name, str)
+        assert land.lookup_enum_name == "" or isinstance(
+            land.lookup_enum_name, str)
+        assert land.name == "" or isinstance(
+            land.name, str)
         assert isinstance(land.pac_id, int)
         # Check for the peek values
         # description,
@@ -416,7 +438,8 @@ class TestLandFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for lands.
+        Test case to check the unique code constraint
+        for lands.
 
         This test creates two land
         instances using
@@ -430,7 +453,9 @@ class TestLandFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        LandFactory.create_async() method creates unique codes for each land.
+        LandFactory.create_async()
+        method creates unique codes for
+        each land.
         """
 
         land_1 = await LandFactory.create_async(
@@ -492,16 +517,20 @@ class TestLandFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new Land object using
+        1. Create a new
+            Land object using
             the LandFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the Land
-            object using the land_id.
+            object using the
+            land_id.
         4. Modify the code attribute of the
             retrieved Land object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            Land object using the land_id.
+            Land object using the
+            land_id.
         7. Get the modified Land object.
         8. Verify that the last_change_code attribute
             of the modified Land object
@@ -512,12 +541,14 @@ class TestLandFactoryAsync:
                             of the modified Land
                             object is the same as the original value.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         original_last_change_code = land.last_change_code
 
         stmt = select(Land).where(
-            Land._land_id == land.land_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Land._land_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                land.land_id))
         result = await session.execute(stmt)
         land_1 = result.scalars().first()
 
@@ -527,7 +558,8 @@ class TestLandFactoryAsync:
         await session.commit()
 
         stmt = select(Land).where(
-            Land._land_id == land.land_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Land._land_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                land.land_id))
         result = await session.execute(stmt)
         land_2 = result.scalars().first()
 
@@ -560,8 +592,9 @@ class TestLandFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        land = await LandFactory.create_async(
-            session=session)
+        land = await \
+            LandFactory.create_async(
+                session=session)
         land.pac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `error_log_config_resolve_error_log` endpoint.
+This module contains unit tests for the
+`error_log_config_resolve_error_log` endpoint.
 """
 
 import logging

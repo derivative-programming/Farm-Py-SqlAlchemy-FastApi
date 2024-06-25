@@ -1,14 +1,15 @@
 # pac_user_flavor_list_test.py
+# pylint: disable=unused-import
 
 """
 This module contains a test case for the
 ReportProviderPacUserFlavorList class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import sqlite3
-from decimal import Decimal
-from datetime import datetime, date
+from decimal import Decimal  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion

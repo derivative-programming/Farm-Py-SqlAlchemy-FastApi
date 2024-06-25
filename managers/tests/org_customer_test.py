@@ -1,13 +1,14 @@
 # models/managers/tests/org_customer_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrgCustomerManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestOrgCustomerManager:
         }
 
         # Call the build function of the manager
-        org_customer = await org_customer_manager.build(
-            **mock_data)
+        org_customer = await \
+            org_customer_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of OrgCustomer
         assert isinstance(
-            org_customer, OrgCustomer)
+            org_customer,
+            OrgCustomer)
 
         # Assert that the attributes of the
         # org_customer match our mock data
@@ -96,17 +99,20 @@ class TestOrgCustomerManager:
         `OrgCustomerManager` that checks if a
         org_customer is correctly added to the database.
         """
-        test_org_customer = await OrgCustomerFactory.build_async(
-            session)
+        test_org_customer = await \
+            OrgCustomerFactory.build_async(
+                session)
 
         assert test_org_customer.org_customer_id == 0
 
         # Add the org_customer using the
         # manager's add method
-        added_org_customer = await org_customer_manager.add(
-            org_customer=test_org_customer)
+        added_org_customer = await \
+            org_customer_manager.add(
+                org_customer=test_org_customer)
 
-        assert isinstance(added_org_customer, OrgCustomer)
+        assert isinstance(added_org_customer,
+                          OrgCustomer)
 
         assert str(added_org_customer.insert_user_id) == (
             str(org_customer_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestOrgCustomerManager:
         # is not None and matches the
         # added org_customer
         assert fetched_org_customer is not None
-        assert isinstance(fetched_org_customer, OrgCustomer)
+        assert isinstance(fetched_org_customer,
+                          OrgCustomer)
         assert fetched_org_customer.org_customer_id == added_org_customer.org_customer_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestOrgCustomerManager:
         # Create a test org_customer
         # using the OrgCustomerFactory
         # without persisting it to the database
-        test_org_customer = await OrgCustomerFactory.build_async(
-            session)
+        test_org_customer = await \
+            OrgCustomerFactory.build_async(
+                session)
 
         assert test_org_customer.org_customer_id == 0
 
@@ -154,10 +162,12 @@ class TestOrgCustomerManager:
 
         # Add the org_customer using
         # the manager's add method
-        added_org_customer = await org_customer_manager.add(
-            org_customer=test_org_customer)
+        added_org_customer = await \
+            org_customer_manager.add(
+                org_customer=test_org_customer)
 
-        assert isinstance(added_org_customer, OrgCustomer)
+        assert isinstance(added_org_customer,
+                          OrgCustomer)
 
         assert str(added_org_customer.insert_user_id) == (
             str(org_customer_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestOrgCustomerManager:
         that checks if a org_customer
         is correctly updated.
         """
-        test_org_customer = await OrgCustomerFactory.create_async(
-            session)
+        test_org_customer = await \
+            OrgCustomerFactory.create_async(
+                session)
 
         test_org_customer.code = uuid.uuid4()
 
-        updated_org_customer = await org_customer_manager.update(
-            org_customer=test_org_customer)
+        updated_org_customer = await \
+            org_customer_manager.update(
+                org_customer=test_org_customer)
 
-        assert isinstance(updated_org_customer, OrgCustomer)
+        assert isinstance(updated_org_customer,
+                          OrgCustomer)
 
         assert str(updated_org_customer.last_update_user_id) == str(
             org_customer_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestOrgCustomerManager:
         that checks if a org_customer is
         correctly updated using a dictionary.
         """
-        test_org_customer = await OrgCustomerFactory.create_async(
-            session)
+        test_org_customer = await \
+            OrgCustomerFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_org_customer = await org_customer_manager.update(
-            org_customer=test_org_customer,
-            code=new_code
-        )
+        updated_org_customer = await \
+            org_customer_manager.update(
+                org_customer=test_org_customer,
+                code=new_code
+            )
 
-        assert isinstance(updated_org_customer, OrgCustomer)
+        assert isinstance(updated_org_customer,
+                          OrgCustomer)
 
         assert str(updated_org_customer.last_update_user_id) == str(
             org_customer_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestOrgCustomerManager:
         org_customer_manager: OrgCustomerManager
     ):
         """
-        Test case for the `update` method of `OrgCustomerManager`
+        Test case for the `update` method of
+        `OrgCustomerManager`
         with an invalid org_customer.
         """
 
@@ -299,11 +316,13 @@ class TestOrgCustomerManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `OrgCustomerManager`
+        Test case for the `update` method of
+        `OrgCustomerManager`
         with a nonexistent attribute.
         """
-        test_org_customer = await OrgCustomerFactory.create_async(
-            session)
+        test_org_customer = await \
+            OrgCustomerFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestOrgCustomerManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `OrgCustomerManager`.
+        Test case for the `delete` method of
+        `OrgCustomerManager`.
         """
         org_customer_data = await OrgCustomerFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestOrgCustomerManager:
         )
         fetched_org_customer = result.scalars().first()
 
-        assert isinstance(fetched_org_customer, OrgCustomer)
+        assert isinstance(fetched_org_customer,
+                          OrgCustomer)
 
         assert fetched_org_customer.org_customer_id == \
             org_customer_data.org_customer_id
@@ -363,7 +384,8 @@ class TestOrgCustomerManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param org_customer_manager: The instance of the OrgCustomerManager class.
+        :param org_customer_manager: The instance of the
+            OrgCustomerManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestOrgCustomerManager:
         the test case will fail.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An
+            org_customer_manager
+            (OrgCustomerManager): An
                 instance of the
                 `OrgCustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestOrgCustomerManager:
         Test the 'to_json' method of the OrgCustomerManager class.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An
+            org_customer_manager
+            (OrgCustomerManager): An
                 instance of the
                 OrgCustomerManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestOrgCustomerManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        org_customer = await OrgCustomerFactory.build_async(
-            session)
+        org_customer = await \
+            OrgCustomerFactory.build_async(
+                session)
 
         json_data = org_customer_manager.to_json(
             org_customer)
@@ -486,7 +511,8 @@ class TestOrgCustomerManager:
         Test the to_dict method of the OrgCustomerManager class.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An
+            org_customer_manager
+            (OrgCustomerManager): An
                 instance of the
                 OrgCustomerManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestOrgCustomerManager:
         Returns:
             None
         """
-        org_customer = await OrgCustomerFactory.build_async(
-            session)
+        org_customer = await \
+            OrgCustomerFactory.build_async(
+                session)
 
-        dict_data = org_customer_manager.to_dict(
-            org_customer)
+        dict_data = \
+            org_customer_manager.to_dict(
+                org_customer)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestOrgCustomerManager:
         the same code as the original org_customer.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An
-            instance of the
+            org_customer_manager
+            (OrgCustomerManager): An
+                instance of the
                 `OrgCustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session)
 
         json_data = org_customer_manager.to_json(
             org_customer)
 
-        deserialized_org_customer = await org_customer_manager.from_json(json_data)
+        deserialized_org_customer = await \
+                org_customer_manager.from_json(json_data)
 
-        assert isinstance(deserialized_org_customer, OrgCustomer)
+        assert isinstance(deserialized_org_customer,
+                          OrgCustomer)
         assert deserialized_org_customer.code == \
             org_customer.code
 
@@ -559,7 +591,8 @@ class TestOrgCustomerManager:
         org_customer object.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An instance
+            org_customer_manager
+            (OrgCustomerManager): An instance
                 of the `OrgCustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestOrgCustomerManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        org_customer = await OrgCustomerFactory.create_async(
-            session)
+        org_customer = await \
+            OrgCustomerFactory.create_async(
+                session)
 
         schema = OrgCustomerSchema()
 
@@ -578,10 +612,12 @@ class TestOrgCustomerManager:
 
         assert isinstance(org_customer_data, dict)
 
-        deserialized_org_customer = await org_customer_manager.from_dict(
-            org_customer_data)
+        deserialized_org_customer = await \
+            org_customer_manager.from_dict(
+                org_customer_data)
 
-        assert isinstance(deserialized_org_customer, OrgCustomer)
+        assert isinstance(deserialized_org_customer,
+                          OrgCustomer)
 
         assert deserialized_org_customer.code == \
             org_customer.code
@@ -630,7 +666,8 @@ class TestOrgCustomerManager:
         OrgCustomerManager class returns 0 when the database is empty.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An
+            org_customer_manager
+            (OrgCustomerManager): An
                 instance of the
                 OrgCustomerManager class.
 
@@ -664,7 +701,8 @@ class TestOrgCustomerManager:
             it reflects the updated code.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The
+            org_customer_manager
+            (OrgCustomerManager): The
                 manager responsible
                 for org_customer operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestOrgCustomerManager:
         # Verify that the updated org_customer
         # is of type OrgCustomer
         # and has the updated code
-        assert isinstance(updated_org_customer1, OrgCustomer)
+        assert isinstance(updated_org_customer1,
+                          OrgCustomer)
 
         assert updated_org_customer1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestOrgCustomerManager:
         Test case to verify the behavior of refreshing a nonexistent org_customer.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The
+            org_customer_manager
+            (OrgCustomerManager): The
                 instance of the
                 OrgCustomerManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestOrgCustomerManager:
         exists using the manager function.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The
+            org_customer_manager
+            (OrgCustomerManager): The
                 org_customer manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestOrgCustomerManager:
         OrgCustomerManager class correctly compares two org_customers.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An
+            org_customer_manager
+            (OrgCustomerManager): An
                 instance of the
                 OrgCustomerManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestOrgCustomerManager:
         assert org_customer_manager.is_equal(
             org_customer1, org_customer2) is True
 
-        org_customer1_dict = org_customer_manager.to_dict(
-            org_customer1)
+        org_customer1_dict = \
+            org_customer_manager.to_dict(
+                org_customer1)
 
         org_customer3 = await \
             org_customer_manager.from_dict(
@@ -815,7 +858,8 @@ class TestOrgCustomerManager:
         non-existent ID exists in the database.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The
+            org_customer_manager
+            (OrgCustomerManager): The
                 instance of the OrgCustomerManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestOrgCustomerManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The instance
+            org_customer_manager
+            (OrgCustomerManager): The instance
                 of the OrgCustomerManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

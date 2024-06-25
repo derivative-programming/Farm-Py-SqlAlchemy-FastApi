@@ -10,7 +10,7 @@ flavors in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -355,7 +355,8 @@ class FlavorManager:
         logging.info("FlavorManager.update")
         property_list = Flavor.property_list()
         if flavor:
-            flavor.last_update_user_id = self._session_context.customer_code
+            flavor.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -559,7 +560,8 @@ class FlavorManager:
         logging.info(
             "FlavorManager.add_bulk")
         for flavor in flavors:
-            flavor_id = flavor.flavor_id
+            flavor_id = \
+                flavor.flavor_id
             code = flavor.code
             if flavor.flavor_id is not None and flavor.flavor_id > 0:
                 raise ValueError(
@@ -626,7 +628,8 @@ class FlavorManager:
                 if key != "flavor_id":
                     setattr(flavor, key, value)
 
-            flavor.last_update_user_id = self._session_context.customer_code
+            flavor.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_flavors.append(flavor)
 
@@ -743,11 +746,13 @@ class FlavorManager:
         if not flavor2:
             raise TypeError("Flavor2 required.")
 
-        if not isinstance(flavor1, Flavor):
+        if not isinstance(flavor1,
+                          Flavor):
             raise TypeError("The flavor1 must be an "
                             "Flavor instance.")
 
-        if not isinstance(flavor2, Flavor):
+        if not isinstance(flavor2,
+                          Flavor):
             raise TypeError("The flavor2 must be an "
                             "Flavor instance.")
 
@@ -755,7 +760,8 @@ class FlavorManager:
         dict2 = self.to_dict(flavor2)
 
         return dict1 == dict2
-    async def get_by_pac_id(  # PacID
+    # PacID
+    async def get_by_pac_id(
             self,
             pac_id: int) -> List[Flavor]:
         """

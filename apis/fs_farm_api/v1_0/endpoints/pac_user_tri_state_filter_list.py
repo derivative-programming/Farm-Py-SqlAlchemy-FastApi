@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/pac_user_tri_state_filter_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Pac User Tri State Filter List.
 
 The PacUserTriStateFilterListRouter provides
 the following endpoints:
-- GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/init:
+- GET /api/v1_0/pac-user-tri-state-filter-list/...
+    {pac_code}/init:
     Get the initialization data for the
     Pac User Tri State Filter List page.
-- GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}:
+- GET /api/v1_0/pac-user-tri-state-filter-list/...
+    {pac_code}:
     Get the Pac User Tri State Filter List Report
     for a specific pac code.
-- GET /api/v1_0/pac-user-tri-state-filter-list/{pac_code}/to-csv:
+- GET /api/v1_0/pac-user-tri-state-filter-list/...
+        {pac_code}/to-csv:
     Retrieve the Pac User Tri State Filter List
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class PacUserTriStateFilterListRouterConfig():
     """
-    Configuration class for the PacUserTriStateFilterListRouter.
+    Configuration class for the
+    PacUserTriStateFilterListRouter.
     """
 
     # constants
@@ -185,7 +190,8 @@ class PacUserTriStateFilterListRouter(BaseRouter):
             api_key (str): The API key for authorization.
 
         Returns:
-            api_models.PacUserTriStateFilterListGetModelResponse: The response
+            api_models.PacUserTriStateFilterListGetModelResponse:
+                The response
                 model containing the
                 Pac User Tri State Filter List Report.
 

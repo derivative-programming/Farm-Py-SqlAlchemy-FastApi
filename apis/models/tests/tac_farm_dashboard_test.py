@@ -1,16 +1,18 @@
 # apis/models/tests/tac_farm_dashboard_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
-TacFarmDashboardGetModelRequestFactoryAsync class.
+TacFarmDashboardGetModelRequestFactoryAsync
+class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
@@ -126,7 +128,8 @@ class TacFarmDashboardGetModelRequestFactoryAsync:
             TacFarmDashboardGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance, TacFarmDashboardGetModelRequest)
+        assert isinstance(model_instance,
+                          TacFarmDashboardGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
@@ -178,7 +181,8 @@ async def test_process_request(session_context, report_request, report_items):
         'apis.models.tac_farm_dashboard.ReportManagerTacFarmDashboard',
         autospec=True
     ) as mock_report_manager:
-        mock_report_manager_instance = mock_report_manager.return_value
+        mock_report_manager_instance = \
+            mock_report_manager.return_value
         mock_report_manager_instance.generate = AsyncMock(
             return_value=report_items)
 
@@ -193,7 +197,8 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item, TacFarmDashboardGetModelResponseItem)
+            assert isinstance(response_item,
+                              TacFarmDashboardGetModelResponseItem)
             assert response_item.field_one_plant_list_link_land_code == \
                 report_item.field_one_plant_list_link_land_code
             assert response_item.conditional_btn_example_link_land_code == \

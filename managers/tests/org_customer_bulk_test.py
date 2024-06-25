@@ -1,13 +1,14 @@
 # models/managers/tests/org_customer_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrgCustomerManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestOrgCustomerBulkManager:
             fetched_org_customer = result.scalars().first()
 
             assert isinstance(
-                fetched_org_customer, OrgCustomer)
+                fetched_org_customer,
+                OrgCustomer)
 
             assert str(fetched_org_customer.insert_user_id) == (
                 str(org_customer_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestOrgCustomerBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_org_customers) == 2
-        logging.info(updated_org_customers[0].__dict__)
-        logging.info(updated_org_customers[1].__dict__)
+        logging.info(updated_org_customers[0]
+                     .__dict__)
+        logging.info(updated_org_customers[1]
+                     .__dict__)
 
         logging.info('getall')
         org_customers = await org_customer_manager.get_list()
-        logging.info(org_customers[0].__dict__)
-        logging.info(org_customers[1].__dict__)
+        logging.info(org_customers[0]
+                     .__dict__)
+        logging.info(org_customers[1]
+                     .__dict__)
 
-        assert updated_org_customers[0].code == code_updated1
-        assert updated_org_customers[1].code == code_updated2
+        assert updated_org_customers[0].code == \
+            code_updated1
+        assert updated_org_customers[1].code == \
+            code_updated2
 
-        assert str(updated_org_customers[0].last_update_user_id) == (
-            str(org_customer_manager._session_context.customer_code))
+        assert str(updated_org_customers[0]
+                   .last_update_user_id) == (
+            str(org_customer_manager
+                ._session_context.customer_code))
 
-        assert str(updated_org_customers[1].last_update_user_id) == (
-            str(org_customer_manager._session_context.customer_code))
+        assert str(updated_org_customers[1]
+                   .last_update_user_id) == (
+            str(org_customer_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(OrgCustomer).filter(
@@ -194,7 +206,8 @@ class TestOrgCustomerBulkManager:
         )
         fetched_org_customer = result.scalars().first()
 
-        assert isinstance(fetched_org_customer, OrgCustomer)
+        assert isinstance(fetched_org_customer,
+                          OrgCustomer)
 
         assert fetched_org_customer.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestOrgCustomerBulkManager:
         )
         fetched_org_customer = result.scalars().first()
 
-        assert isinstance(fetched_org_customer, OrgCustomer)
+        assert isinstance(fetched_org_customer,
+                          OrgCustomer)
 
         assert fetched_org_customer.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestOrgCustomerBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param org_customer_manager: An instance of the OrgCustomerManager class.
+        :param org_customer_manager: An instance of the
+            OrgCustomerManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestOrgCustomerBulkManager:
             session=session)
 
         # Delete org_customers
-        org_customer_ids = [org_customer1.org_customer_id, org_customer2.org_customer_id]
+        org_customer_ids = [org_customer1.org_customer_id,
+                     org_customer2.org_customer_id]
         result = await org_customer_manager.delete_bulk(
             org_customer_ids)
 
@@ -379,7 +395,8 @@ class TestOrgCustomerBulkManager:
         org_customer1 = await OrgCustomerFactory.create_async(
             session=session)
 
-        assert isinstance(org_customer1, OrgCustomer)
+        assert isinstance(org_customer1,
+                          OrgCustomer)
 
         # Delete org_customers
         org_customer_ids = [1, 2]

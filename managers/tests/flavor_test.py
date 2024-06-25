@@ -1,13 +1,14 @@
 # models/managers/tests/flavor_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `FlavorManager` class.
 """
 
 from typing import List
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -52,12 +53,14 @@ class TestFlavorManager:
         }
 
         # Call the build function of the manager
-        flavor = await flavor_manager.build(
-            **mock_data)
+        flavor = await \
+            flavor_manager.build(
+                **mock_data)
 
         # Assert that the returned object is an instance of Flavor
         assert isinstance(
-            flavor, Flavor)
+            flavor,
+            Flavor)
 
         # Assert that the attributes of the
         # flavor match our mock data
@@ -96,17 +99,20 @@ class TestFlavorManager:
         `FlavorManager` that checks if a
         flavor is correctly added to the database.
         """
-        test_flavor = await FlavorFactory.build_async(
-            session)
+        test_flavor = await \
+            FlavorFactory.build_async(
+                session)
 
         assert test_flavor.flavor_id == 0
 
         # Add the flavor using the
         # manager's add method
-        added_flavor = await flavor_manager.add(
-            flavor=test_flavor)
+        added_flavor = await \
+            flavor_manager.add(
+                flavor=test_flavor)
 
-        assert isinstance(added_flavor, Flavor)
+        assert isinstance(added_flavor,
+                          Flavor)
 
         assert str(added_flavor.insert_user_id) == (
             str(flavor_manager._session_context.customer_code))
@@ -128,7 +134,8 @@ class TestFlavorManager:
         # is not None and matches the
         # added flavor
         assert fetched_flavor is not None
-        assert isinstance(fetched_flavor, Flavor)
+        assert isinstance(fetched_flavor,
+                          Flavor)
         assert fetched_flavor.flavor_id == added_flavor.flavor_id
 
     @pytest.mark.asyncio
@@ -145,8 +152,9 @@ class TestFlavorManager:
         # Create a test flavor
         # using the FlavorFactory
         # without persisting it to the database
-        test_flavor = await FlavorFactory.build_async(
-            session)
+        test_flavor = await \
+            FlavorFactory.build_async(
+                session)
 
         assert test_flavor.flavor_id == 0
 
@@ -154,10 +162,12 @@ class TestFlavorManager:
 
         # Add the flavor using
         # the manager's add method
-        added_flavor = await flavor_manager.add(
-            flavor=test_flavor)
+        added_flavor = await \
+            flavor_manager.add(
+                flavor=test_flavor)
 
-        assert isinstance(added_flavor, Flavor)
+        assert isinstance(added_flavor,
+                          Flavor)
 
         assert str(added_flavor.insert_user_id) == (
             str(flavor_manager._session_context.customer_code))
@@ -186,15 +196,18 @@ class TestFlavorManager:
         that checks if a flavor
         is correctly updated.
         """
-        test_flavor = await FlavorFactory.create_async(
-            session)
+        test_flavor = await \
+            FlavorFactory.create_async(
+                session)
 
         test_flavor.code = uuid.uuid4()
 
-        updated_flavor = await flavor_manager.update(
-            flavor=test_flavor)
+        updated_flavor = await \
+            flavor_manager.update(
+                flavor=test_flavor)
 
-        assert isinstance(updated_flavor, Flavor)
+        assert isinstance(updated_flavor,
+                          Flavor)
 
         assert str(updated_flavor.last_update_user_id) == str(
             flavor_manager._session_context.customer_code)
@@ -233,17 +246,20 @@ class TestFlavorManager:
         that checks if a flavor is
         correctly updated using a dictionary.
         """
-        test_flavor = await FlavorFactory.create_async(
-            session)
+        test_flavor = await \
+            FlavorFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
-        updated_flavor = await flavor_manager.update(
-            flavor=test_flavor,
-            code=new_code
-        )
+        updated_flavor = await \
+            flavor_manager.update(
+                flavor=test_flavor,
+                code=new_code
+            )
 
-        assert isinstance(updated_flavor, Flavor)
+        assert isinstance(updated_flavor,
+                          Flavor)
 
         assert str(updated_flavor.last_update_user_id) == str(
             flavor_manager._session_context.customer_code
@@ -276,7 +292,8 @@ class TestFlavorManager:
         flavor_manager: FlavorManager
     ):
         """
-        Test case for the `update` method of `FlavorManager`
+        Test case for the `update` method of
+        `FlavorManager`
         with an invalid flavor.
         """
 
@@ -299,11 +316,13 @@ class TestFlavorManager:
         session: AsyncSession
     ):
         """
-        Test case for the `update` method of `FlavorManager`
+        Test case for the `update` method of
+        `FlavorManager`
         with a nonexistent attribute.
         """
-        test_flavor = await FlavorFactory.create_async(
-            session)
+        test_flavor = await \
+            FlavorFactory.create_async(
+                session)
 
         new_code = uuid.uuid4()
 
@@ -322,7 +341,8 @@ class TestFlavorManager:
         session: AsyncSession
     ):
         """
-        Test case for the `delete` method of `FlavorManager`.
+        Test case for the `delete` method of
+        `FlavorManager`.
         """
         flavor_data = await FlavorFactory.create_async(
             session)
@@ -333,7 +353,8 @@ class TestFlavorManager:
         )
         fetched_flavor = result.scalars().first()
 
-        assert isinstance(fetched_flavor, Flavor)
+        assert isinstance(fetched_flavor,
+                          Flavor)
 
         assert fetched_flavor.flavor_id == \
             flavor_data.flavor_id
@@ -363,7 +384,8 @@ class TestFlavorManager:
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param flavor_manager: The instance of the FlavorManager class.
+        :param flavor_manager: The instance of the
+            FlavorManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
@@ -388,7 +410,8 @@ class TestFlavorManager:
         the test case will fail.
 
         Args:
-            flavor_manager (FlavorManager): An
+            flavor_manager
+            (FlavorManager): An
                 instance of the
                 `FlavorManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -457,7 +480,8 @@ class TestFlavorManager:
         Test the 'to_json' method of the FlavorManager class.
 
         Args:
-            flavor_manager (FlavorManager): An
+            flavor_manager
+            (FlavorManager): An
                 instance of the
                 FlavorManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -468,8 +492,9 @@ class TestFlavorManager:
         Raises:
             AssertionError: If the json_data is None.
         """
-        flavor = await FlavorFactory.build_async(
-            session)
+        flavor = await \
+            FlavorFactory.build_async(
+                session)
 
         json_data = flavor_manager.to_json(
             flavor)
@@ -486,7 +511,8 @@ class TestFlavorManager:
         Test the to_dict method of the FlavorManager class.
 
         Args:
-            flavor_manager (FlavorManager): An
+            flavor_manager
+            (FlavorManager): An
                 instance of the
                 FlavorManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -494,11 +520,13 @@ class TestFlavorManager:
         Returns:
             None
         """
-        flavor = await FlavorFactory.build_async(
-            session)
+        flavor = await \
+            FlavorFactory.build_async(
+                session)
 
-        dict_data = flavor_manager.to_dict(
-            flavor)
+        dict_data = \
+            flavor_manager.to_dict(
+                flavor)
 
         assert dict_data is not None
 
@@ -523,23 +551,27 @@ class TestFlavorManager:
         the same code as the original flavor.
 
         Args:
-            flavor_manager (FlavorManager): An
-            instance of the
+            flavor_manager
+            (FlavorManager): An
+                instance of the
                 `FlavorManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
         Returns:
             None
         """
-        flavor = await FlavorFactory.create_async(
-            session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session)
 
         json_data = flavor_manager.to_json(
             flavor)
 
-        deserialized_flavor = await flavor_manager.from_json(json_data)
+        deserialized_flavor = await \
+                flavor_manager.from_json(json_data)
 
-        assert isinstance(deserialized_flavor, Flavor)
+        assert isinstance(deserialized_flavor,
+                          Flavor)
         assert deserialized_flavor.code == \
             flavor.code
 
@@ -559,7 +591,8 @@ class TestFlavorManager:
         flavor object.
 
         Args:
-            flavor_manager (FlavorManager): An instance
+            flavor_manager
+            (FlavorManager): An instance
                 of the `FlavorManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
 
@@ -569,8 +602,9 @@ class TestFlavorManager:
         Raises:
             AssertionError: If any of the assertions fail.
         """
-        flavor = await FlavorFactory.create_async(
-            session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session)
 
         schema = FlavorSchema()
 
@@ -578,10 +612,12 @@ class TestFlavorManager:
 
         assert isinstance(flavor_data, dict)
 
-        deserialized_flavor = await flavor_manager.from_dict(
-            flavor_data)
+        deserialized_flavor = await \
+            flavor_manager.from_dict(
+                flavor_data)
 
-        assert isinstance(deserialized_flavor, Flavor)
+        assert isinstance(deserialized_flavor,
+                          Flavor)
 
         assert deserialized_flavor.code == \
             flavor.code
@@ -630,7 +666,8 @@ class TestFlavorManager:
         FlavorManager class returns 0 when the database is empty.
 
         Args:
-            flavor_manager (FlavorManager): An
+            flavor_manager
+            (FlavorManager): An
                 instance of the
                 FlavorManager class.
 
@@ -664,7 +701,8 @@ class TestFlavorManager:
             it reflects the updated code.
 
         Args:
-            flavor_manager (FlavorManager): The
+            flavor_manager
+            (FlavorManager): The
                 manager responsible
                 for flavor operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
@@ -694,7 +732,8 @@ class TestFlavorManager:
         # Verify that the updated flavor
         # is of type Flavor
         # and has the updated code
-        assert isinstance(updated_flavor1, Flavor)
+        assert isinstance(updated_flavor1,
+                          Flavor)
 
         assert updated_flavor1.code == updated_code1
 
@@ -716,7 +755,8 @@ class TestFlavorManager:
         Test case to verify the behavior of refreshing a nonexistent flavor.
 
         Args:
-            flavor_manager (FlavorManager): The
+            flavor_manager
+            (FlavorManager): The
                 instance of the
                 FlavorManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -748,7 +788,8 @@ class TestFlavorManager:
         exists using the manager function.
 
         Args:
-            flavor_manager (FlavorManager): The
+            flavor_manager
+            (FlavorManager): The
                 flavor manager instance.
             session (AsyncSession): The async session object.
 
@@ -775,7 +816,8 @@ class TestFlavorManager:
         FlavorManager class correctly compares two flavors.
 
         Args:
-            flavor_manager (FlavorManager): An
+            flavor_manager
+            (FlavorManager): An
                 instance of the
                 FlavorManager class.
             session (AsyncSession): An instance of the AsyncSession class.
@@ -795,8 +837,9 @@ class TestFlavorManager:
         assert flavor_manager.is_equal(
             flavor1, flavor2) is True
 
-        flavor1_dict = flavor_manager.to_dict(
-            flavor1)
+        flavor1_dict = \
+            flavor_manager.to_dict(
+                flavor1)
 
         flavor3 = await \
             flavor_manager.from_dict(
@@ -815,7 +858,8 @@ class TestFlavorManager:
         non-existent ID exists in the database.
 
         Args:
-            flavor_manager (FlavorManager): The
+            flavor_manager
+            (FlavorManager): The
                 instance of the FlavorManager class.
 
         Returns:
@@ -837,7 +881,8 @@ class TestFlavorManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            flavor_manager (FlavorManager): The instance
+            flavor_manager
+            (FlavorManager): The instance
                 of the FlavorManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 

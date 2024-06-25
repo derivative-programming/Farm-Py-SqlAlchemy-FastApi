@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/tests/plant_user_delete_test.py
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the `plant_user_delete` endpoint.
@@ -7,7 +8,7 @@ Note: This module requires the `pytest` library to run the tests.
 """
 
 import json
-import uuid
+import uuid  # noqa: F401
 from unittest.mock import AsyncMock, patch
 
 import pytest

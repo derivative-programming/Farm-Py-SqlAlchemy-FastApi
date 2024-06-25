@@ -1,4 +1,5 @@
 # apis/models/tac_farm_dashboard.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -14,9 +15,9 @@ Tac Farm Dashboard API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import UUID4, Field
@@ -120,7 +121,8 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         default=False,
         description="Is Conditional Btn Available")
 
-    def load_report_item(self, data: ReportItemTacFarmDashboard):
+    def load_report_item(
+            self, data: ReportItemTacFarmDashboard):
         """
         Loads the data from a
         ReportItemTacFarmDashboard
@@ -198,9 +200,11 @@ class TacFarmDashboardGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model...TacFarmDashboardGetModelResponse")
+            logging.info("loading model..."
+                         "TacFarmDashboardGetModelResponse")
             generator = ReportManagerTacFarmDashboard(session_context)
-            logging.info("processing...TacFarmDashboardGetModelResponse")
+            logging.info("processing..."
+                         "TacFarmDashboardGetModelResponse")
             items = await generator.generate(
                 tac_code,
 

@@ -1,5 +1,6 @@
 # flows/base/tests/land_add_plant_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowLandAddPlant` class.
@@ -214,7 +215,8 @@ class TestBaseFlowLandAddPlant():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a land
-        object, and a BaseFlowLandAddPlant object.
+        object, and a
+        BaseFlowLandAddPlant object.
         Then, it sets the role_required
         variable to "User" and calls the
         _process_security_rules method. Finally,

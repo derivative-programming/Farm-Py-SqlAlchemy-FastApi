@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_property_random_update.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Plant User Property Random Update.
 
 The PlantUserPropertyRandomUpdateRouter provides
 the following endpoints:
-- GET /api/v1_0/plant-user-property-random-update/{plant_code}/init:
+- GET /api/v1_0/plant-user-property-random-update/...
+    {plant_code}/init:
     Get the initialization data for the
     Plant User Property Random Update page.
-- GET /api/v1_0/plant-user-property-random-update/{plant_code}:
+- GET /api/v1_0/plant-user-property-random-update/...
+    {plant_code}:
     Get the Plant User Property Random Update Report
     for a specific  code.
-- GET /api/v1_0/plant-user-property-random-update/{plant_code}/to-csv:
+- GET /api/v1_0/plant-user-property-random-update/...
+        {plant_code}/to-csv:
     Retrieve the Plant User Property Random Update
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class PlantUserPropertyRandomUpdateRouterConfig():
     """
-    Configuration class for the PlantUserPropertyRandomUpdateRouter.
+    Configuration class for the
+    PlantUserPropertyRandomUpdateRouter.
     """
 
     # constants

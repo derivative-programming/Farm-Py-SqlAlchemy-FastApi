@@ -1,7 +1,9 @@
 # models/serialization_schema/land.py
+# pylint: disable=unused-import
 
 """
-This module contains the LandSchema
+This module contains the
+LandSchema
 class, which is responsible
 for serializing and deserializing
 Land objects.

@@ -1,15 +1,16 @@
 # models/factory/tests/land_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the LandFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestLandFactory:
         land.code = uuid.uuid4()
         session.add(land)
         session.commit()
-        assert land.insert_utc_date_time > initial_time
+        assert land.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestLandFactory:
         land.code = uuid.uuid4()
         session.add(land)
         session.commit()
-        assert land.last_update_utc_date_time > initial_time
+        assert land.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestLandFactory:
         land.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert land.last_update_utc_date_time > initial_time
+        assert land.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -212,14 +216,15 @@ class TestLandFactory:
         assert isinstance(land.last_change_code, int)
         assert isinstance(land.insert_user_id, uuid.UUID)
         assert isinstance(land.last_update_user_id, uuid.UUID)
-        assert land.description == "" or isinstance(land.description, str)
+        assert land.description == "" or isinstance(
+            land.description, str)
         assert isinstance(land.display_order, int)
         assert isinstance(land.is_active, bool)
-        assert land.lookup_enum_name == "" or isinstance(land.lookup_enum_name, str)
-        assert land.name == "" or isinstance(land.name, str)
+        assert land.lookup_enum_name == "" or isinstance(
+            land.lookup_enum_name, str)
+        assert land.name == "" or isinstance(
+            land.name, str)
         assert isinstance(land.pac_id, int)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
         # description,
         # displayOrder,
         # isActive,

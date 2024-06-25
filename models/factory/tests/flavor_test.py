@@ -1,15 +1,16 @@
 # models/factory/tests/flavor_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the FlavorFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestFlavorFactory:
         flavor.code = uuid.uuid4()
         session.add(flavor)
         session.commit()
-        assert flavor.insert_utc_date_time > initial_time
+        assert flavor.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestFlavorFactory:
         flavor.code = uuid.uuid4()
         session.add(flavor)
         session.commit()
-        assert flavor.last_update_utc_date_time > initial_time
+        assert flavor.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestFlavorFactory:
         flavor.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert flavor.last_update_utc_date_time > initial_time
+        assert flavor.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -212,14 +216,15 @@ class TestFlavorFactory:
         assert isinstance(flavor.last_change_code, int)
         assert isinstance(flavor.insert_user_id, uuid.UUID)
         assert isinstance(flavor.last_update_user_id, uuid.UUID)
-        assert flavor.description == "" or isinstance(flavor.description, str)
+        assert flavor.description == "" or isinstance(
+            flavor.description, str)
         assert isinstance(flavor.display_order, int)
         assert isinstance(flavor.is_active, bool)
-        assert flavor.lookup_enum_name == "" or isinstance(flavor.lookup_enum_name, str)
-        assert flavor.name == "" or isinstance(flavor.name, str)
+        assert flavor.lookup_enum_name == "" or isinstance(
+            flavor.lookup_enum_name, str)
+        assert flavor.name == "" or isinstance(
+            flavor.name, str)
         assert isinstance(flavor.pac_id, int)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
         # description,
         # displayOrder,
         # isActive,

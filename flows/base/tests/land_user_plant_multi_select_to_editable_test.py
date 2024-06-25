@@ -1,5 +1,6 @@
 # flows/base/tests/land_user_plant_multi_select_to_editable_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowLandUserPlantMultiSelectToEditable` class.
@@ -71,7 +72,8 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a land
-        object, and a BaseFlowLandUserPlantMultiSelectToEditable object.
+        object, and a
+        BaseFlowLandUserPlantMultiSelectToEditable object.
         Then, it sets the role_required
         variable to "User" and calls the
         _process_security_rules method. Finally,

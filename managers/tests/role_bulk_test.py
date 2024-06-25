@@ -1,13 +1,14 @@
 # models/managers/tests/role_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `RoleManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestRoleBulkManager:
             fetched_role = result.scalars().first()
 
             assert isinstance(
-                fetched_role, Role)
+                fetched_role,
+                Role)
 
             assert str(fetched_role.insert_user_id) == (
                 str(role_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestRoleBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_roles) == 2
-        logging.info(updated_roles[0].__dict__)
-        logging.info(updated_roles[1].__dict__)
+        logging.info(updated_roles[0]
+                     .__dict__)
+        logging.info(updated_roles[1]
+                     .__dict__)
 
         logging.info('getall')
         roles = await role_manager.get_list()
-        logging.info(roles[0].__dict__)
-        logging.info(roles[1].__dict__)
+        logging.info(roles[0]
+                     .__dict__)
+        logging.info(roles[1]
+                     .__dict__)
 
-        assert updated_roles[0].code == code_updated1
-        assert updated_roles[1].code == code_updated2
+        assert updated_roles[0].code == \
+            code_updated1
+        assert updated_roles[1].code == \
+            code_updated2
 
-        assert str(updated_roles[0].last_update_user_id) == (
-            str(role_manager._session_context.customer_code))
+        assert str(updated_roles[0]
+                   .last_update_user_id) == (
+            str(role_manager
+                ._session_context.customer_code))
 
-        assert str(updated_roles[1].last_update_user_id) == (
-            str(role_manager._session_context.customer_code))
+        assert str(updated_roles[1]
+                   .last_update_user_id) == (
+            str(role_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Role).filter(
@@ -194,7 +206,8 @@ class TestRoleBulkManager:
         )
         fetched_role = result.scalars().first()
 
-        assert isinstance(fetched_role, Role)
+        assert isinstance(fetched_role,
+                          Role)
 
         assert fetched_role.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestRoleBulkManager:
         )
         fetched_role = result.scalars().first()
 
-        assert isinstance(fetched_role, Role)
+        assert isinstance(fetched_role,
+                          Role)
 
         assert fetched_role.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestRoleBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param role_manager: An instance of the RoleManager class.
+        :param role_manager: An instance of the
+            RoleManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestRoleBulkManager:
             session=session)
 
         # Delete roles
-        role_ids = [role1.role_id, role2.role_id]
+        role_ids = [role1.role_id,
+                     role2.role_id]
         result = await role_manager.delete_bulk(
             role_ids)
 
@@ -379,7 +395,8 @@ class TestRoleBulkManager:
         role1 = await RoleFactory.create_async(
             session=session)
 
-        assert isinstance(role1, Role)
+        assert isinstance(role1,
+                          Role)
 
         # Delete roles
         role_ids = [1, 2]

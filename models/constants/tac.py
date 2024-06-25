@@ -1,6 +1,8 @@
 # models/constants/tac.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to tacs.
+This module contains boolean constants related to
+tacs.
 """
 description_calculatedIsDBColumnIndexed: bool = False
 display_order_calculatedIsDBColumnIndexed: bool = False

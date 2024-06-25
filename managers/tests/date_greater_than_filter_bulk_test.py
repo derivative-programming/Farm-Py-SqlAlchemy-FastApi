@@ -1,13 +1,14 @@
 # models/managers/tests/date_greater_than_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `DateGreaterThanFilterManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestDateGreaterThanFilterBulkManager:
             fetched_date_greater_than_filter = result.scalars().first()
 
             assert isinstance(
-                fetched_date_greater_than_filter, DateGreaterThanFilter)
+                fetched_date_greater_than_filter,
+                DateGreaterThanFilter)
 
             assert str(fetched_date_greater_than_filter.insert_user_id) == (
                 str(date_greater_than_filter_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestDateGreaterThanFilterBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_date_greater_than_filters) == 2
-        logging.info(updated_date_greater_than_filters[0].__dict__)
-        logging.info(updated_date_greater_than_filters[1].__dict__)
+        logging.info(updated_date_greater_than_filters[0]
+                     .__dict__)
+        logging.info(updated_date_greater_than_filters[1]
+                     .__dict__)
 
         logging.info('getall')
         date_greater_than_filters = await date_greater_than_filter_manager.get_list()
-        logging.info(date_greater_than_filters[0].__dict__)
-        logging.info(date_greater_than_filters[1].__dict__)
+        logging.info(date_greater_than_filters[0]
+                     .__dict__)
+        logging.info(date_greater_than_filters[1]
+                     .__dict__)
 
-        assert updated_date_greater_than_filters[0].code == code_updated1
-        assert updated_date_greater_than_filters[1].code == code_updated2
+        assert updated_date_greater_than_filters[0].code == \
+            code_updated1
+        assert updated_date_greater_than_filters[1].code == \
+            code_updated2
 
-        assert str(updated_date_greater_than_filters[0].last_update_user_id) == (
-            str(date_greater_than_filter_manager._session_context.customer_code))
+        assert str(updated_date_greater_than_filters[0]
+                   .last_update_user_id) == (
+            str(date_greater_than_filter_manager
+                ._session_context.customer_code))
 
-        assert str(updated_date_greater_than_filters[1].last_update_user_id) == (
-            str(date_greater_than_filter_manager._session_context.customer_code))
+        assert str(updated_date_greater_than_filters[1]
+                   .last_update_user_id) == (
+            str(date_greater_than_filter_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
@@ -194,7 +206,8 @@ class TestDateGreaterThanFilterBulkManager:
         )
         fetched_date_greater_than_filter = result.scalars().first()
 
-        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(fetched_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert fetched_date_greater_than_filter.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestDateGreaterThanFilterBulkManager:
         )
         fetched_date_greater_than_filter = result.scalars().first()
 
-        assert isinstance(fetched_date_greater_than_filter, DateGreaterThanFilter)
+        assert isinstance(fetched_date_greater_than_filter,
+                          DateGreaterThanFilter)
 
         assert fetched_date_greater_than_filter.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestDateGreaterThanFilterBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param date_greater_than_filter_manager: An instance of the DateGreaterThanFilterManager class.
+        :param date_greater_than_filter_manager: An instance of the
+            DateGreaterThanFilterManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestDateGreaterThanFilterBulkManager:
             session=session)
 
         # Delete date_greater_than_filters
-        date_greater_than_filter_ids = [date_greater_than_filter1.date_greater_than_filter_id, date_greater_than_filter2.date_greater_than_filter_id]
+        date_greater_than_filter_ids = [date_greater_than_filter1.date_greater_than_filter_id,
+                     date_greater_than_filter2.date_greater_than_filter_id]
         result = await date_greater_than_filter_manager.delete_bulk(
             date_greater_than_filter_ids)
 
@@ -379,7 +395,8 @@ class TestDateGreaterThanFilterBulkManager:
         date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(
             session=session)
 
-        assert isinstance(date_greater_than_filter1, DateGreaterThanFilter)
+        assert isinstance(date_greater_than_filter1,
+                          DateGreaterThanFilter)
 
         # Delete date_greater_than_filters
         date_greater_than_filter_ids = [1, 2]

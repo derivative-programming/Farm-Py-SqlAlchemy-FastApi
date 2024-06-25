@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/customer_build_temp_api_key.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -8,13 +9,16 @@ Customer Build Temp Api Key.
 
 The CustomerBuildTempApiKeyRouter provides
 the following endpoints:
-- GET /api/v1_0/customer-build-temp-api-key/{customer_code}/init:
+- GET /api/v1_0/customer-build-temp-api-key/...
+    {customer_code}/init:
     Get the initialization data for the
     Customer Build Temp Api Key page.
-- GET /api/v1_0/customer-build-temp-api-key/{customer_code}:
+- GET /api/v1_0/customer-build-temp-api-key/...
+    {customer_code}:
     Get the Customer Build Temp Api Key Report
     for a specific  code.
-- GET /api/v1_0/customer-build-temp-api-key/{customer_code}/to-csv:
+- GET /api/v1_0/customer-build-temp-api-key/...
+        {customer_code}/to-csv:
     Retrieve the Customer Build Temp Api Key
     Report as a CSV file.
 """
@@ -47,7 +51,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class CustomerBuildTempApiKeyRouterConfig():
     """
-    Configuration class for the CustomerBuildTempApiKeyRouter.
+    Configuration class for the
+    CustomerBuildTempApiKeyRouter.
     """
 
     # constants

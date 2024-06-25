@@ -1,4 +1,5 @@
 # apis/models/land_plant_list.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -14,9 +15,9 @@ Land Plant List API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import UUID4, Field
@@ -238,7 +239,8 @@ class LandPlantListGetModelResponseItem(CamelModel):
         description="Details Link Plant Code")
 # endset
 
-    def load_report_item(self, data: ReportItemLandPlantList):
+    def load_report_item(
+            self, data: ReportItemLandPlantList):
         """
         Loads the data from a
         ReportItemLandPlantList
@@ -400,9 +402,11 @@ class LandPlantListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model...LandPlantListGetModelResponse")
+            logging.info("loading model..."
+                         "LandPlantListGetModelResponse")
             generator = ReportManagerLandPlantList(session_context)
-            logging.info("processing...LandPlantListGetModelResponse")
+            logging.info("processing..."
+                         "LandPlantListGetModelResponse")
             items = await generator.generate(
                 land_code,
                 request.flavor_code,

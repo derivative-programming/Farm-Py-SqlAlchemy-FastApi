@@ -1,4 +1,5 @@
 # flows/base/land_add_plant.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation
@@ -6,9 +7,9 @@ of the BaseFlow
 Land Add Plant class
 """
 
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import flows.constants.land_add_plant as FlowConstants
 from business.customer import CustomerBusObj
@@ -24,7 +25,8 @@ from .base_flow import BaseFlow
 
 class BaseFlowLandAddPlant(BaseFlow):
     """
-    Base class for LandAddPlant flow. Contains
+    Base class for LandAddPlant
+    flow. Contains
     some validaiton and security check logic
     """
 

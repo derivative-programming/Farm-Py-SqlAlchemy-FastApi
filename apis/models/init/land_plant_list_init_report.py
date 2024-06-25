@@ -1,4 +1,5 @@
 # apis/models/init/land_plant_list_init_report.py
+# pylint: disable=unused-import
 
 """
 This module contains the models and request/response classes
@@ -6,9 +7,9 @@ for the LandPlantListInitReport workflow.
 """
 
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
 
 from pydantic import Field
@@ -150,7 +151,9 @@ class LandPlantListInitReportGetInitModelResponse(
         return self.model_dump_json()
 
 
-class LandPlantListInitReportGetInitModelRequest(SnakeModel):
+class LandPlantListInitReportGetInitModelRequest(
+    SnakeModel
+):
     """
     Represents the request model for the
     LandPlantListInitReportGetInitModelRequest.
@@ -160,7 +163,8 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
             self,
             session_context: SessionContext,
             land_code: uuid.UUID,
-            response: LandPlantListInitReportGetInitModelResponse
+            response:
+            LandPlantListInitReportGetInitModelResponse
     ) -> LandPlantListInitReportGetInitModelResponse:
         """
         Processes the request and returns the response.
@@ -168,7 +172,9 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
 
         try:
             logging.info(
-                "loading model...LandPlantListInitReportGetInitModelRequest")
+                "loading model..."
+                "LandPlantListInitReport"
+                "GetInitModelRequest")
             land_bus_obj = LandBusObj(session_context)
             await land_bus_obj.load_from_code(land_code)
             if land_bus_obj.get_land_obj() is None:
@@ -176,7 +182,9 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
                 raise ValueError("Invalid land_code")
             flow = FlowLandPlantListInitReport(session_context)
             logging.info(
-                "process request...LandPlantListInitReportGetInitModelRequest")
+                "process request..."
+                "LandPlantListInitReport"
+                "GetInitModelRequest")
             flow_response = await flow.process(
                 land_bus_obj
             )
@@ -184,7 +192,9 @@ class LandPlantListInitReportGetInitModelRequest(SnakeModel):
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...LandPlantListInitReportGetInitModelRequest")
+            logging.info("error..."
+                         "LandPlantListInitReport"
+                         "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:

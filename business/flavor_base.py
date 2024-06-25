@@ -1,15 +1,19 @@
 # business/flavor_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the FlavorBaseBusObj class,
-which represents the base business object for a Flavor.
+This module contains the
+FlavorBaseBusObj class,
+which represents the base
+business object for a
+Flavor.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import FlavorManager
 from models import Flavor
@@ -76,8 +80,8 @@ class FlavorBaseBusObj(BaseBusObj):
             )
 
         return self.flavor.flavor_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class FlavorBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.flavor.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class FlavorBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.flavor.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class FlavorBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.flavor.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -659,7 +663,8 @@ class FlavorBaseBusObj(BaseBusObj):
 
         flavor_manager = FlavorManager(
             self._session_context)
-        self.flavor = await flavor_manager.from_json(json_data)
+        self.flavor = await \
+            flavor_manager.from_json(json_data)
 
         return self
 
@@ -734,14 +739,8 @@ class FlavorBaseBusObj(BaseBusObj):
         if not isinstance(flavor_obj_instance,
                           Flavor):
             raise ValueError(
-                "flavor_obj_instance must be an instance of Flavor")
-
-        # flavor_manager = FlavorManager(
-        #     self._session_context)
-
-        # flavor_dict = flavor_manager.to_dict(flavor_obj_instance)
-
-        # self.flavor = flavor_manager.from_dict(flavor_dict)
+                "flavor_obj_instance must be an "
+                "instance of Flavor")
 
         self.flavor = flavor_obj_instance
 
@@ -769,8 +768,9 @@ class FlavorBaseBusObj(BaseBusObj):
         flavor_manager = FlavorManager(
             self._session_context)
 
-        self.flavor = await flavor_manager.from_dict(
-            flavor_dict)
+        self.flavor = await \
+            flavor_manager.from_dict(
+                flavor_dict)
 
         return self
 
@@ -796,8 +796,9 @@ class FlavorBaseBusObj(BaseBusObj):
         """
         flavor_manager = FlavorManager(
             self._session_context)
-        self.flavor = await flavor_manager.refresh(
-            self.flavor)
+        self.flavor = await \
+            flavor_manager.refresh(
+                self.flavor)
 
         return self
 
@@ -871,14 +872,16 @@ class FlavorBaseBusObj(BaseBusObj):
         if flavor_id > 0:
             flavor_manager = FlavorManager(
                 self._session_context)
-            self.flavor = await flavor_manager.update(
-                self.flavor)
+            self.flavor = await \
+                flavor_manager.update(
+                    self.flavor)
 
         if flavor_id == 0:
             flavor_manager = FlavorManager(
                 self._session_context)
-            self.flavor = await flavor_manager.add(
-                self.flavor)
+            self.flavor = await \
+                flavor_manager.add(
+                    self.flavor)
 
         return self
 
@@ -996,8 +999,10 @@ class FlavorBaseBusObj(BaseBusObj):
             representing the related pac.
 
         """
-        pac_manager = managers_and_enums.PacManager(self._session_context)
-        pac_obj = await pac_manager.get_by_id(self.pac_id)
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
         return pac_obj
 
     def get_obj(self) -> Flavor:

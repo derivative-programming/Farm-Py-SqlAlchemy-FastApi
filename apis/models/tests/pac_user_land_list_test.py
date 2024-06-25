@@ -1,16 +1,18 @@
 # apis/models/tests/pac_user_land_list_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the
-PacUserLandListGetModelRequestFactoryAsync class.
+PacUserLandListGetModelRequestFactoryAsync
+class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
@@ -126,7 +128,8 @@ class PacUserLandListGetModelRequestFactoryAsync:
             PacUserLandListGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance, PacUserLandListGetModelRequest)
+        assert isinstance(model_instance,
+                          PacUserLandListGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
@@ -142,12 +145,16 @@ class MockReportItemPacUserLandList:
         Initialize the mock object with default values.
         """
         self.land_code = uuid.uuid4()
-        self.land_description = "Some N Var Char"
+        self.land_description = \
+            "Some N Var Char"
         self.land_display_order = 1
         self.land_is_active = True
-        self.land_lookup_enum_name = "Some N Var Char"
-        self.land_name = "Some N Var Char"
-        self.pac_name = "Some N Var Char"
+        self.land_lookup_enum_name = \
+            "Some N Var Char"
+        self.land_name = \
+            "Some N Var Char"
+        self.pac_name = \
+            "Some N Var Char"
 @pytest.fixture
 def session_context():
     """
@@ -182,7 +189,8 @@ async def test_process_request(session_context, report_request, report_items):
         'apis.models.pac_user_land_list.ReportManagerPacUserLandList',
         autospec=True
     ) as mock_report_manager:
-        mock_report_manager_instance = mock_report_manager.return_value
+        mock_report_manager_instance = \
+            mock_report_manager.return_value
         mock_report_manager_instance.generate = AsyncMock(
             return_value=report_items)
 
@@ -197,7 +205,8 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item, PacUserLandListGetModelResponseItem)
+            assert isinstance(response_item,
+                              PacUserLandListGetModelResponseItem)
             assert response_item.land_code == \
                 report_item.land_code
             assert response_item.land_description == \

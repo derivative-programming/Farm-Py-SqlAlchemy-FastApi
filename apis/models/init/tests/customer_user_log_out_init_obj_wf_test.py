@@ -1,13 +1,14 @@
 # apis/models/init/tests/customer_user_log_out_init_obj_wf_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 customer_user_log_out_init_obj_wf module.
 """
 import json
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -88,7 +89,8 @@ async def test_process_request(flow_response):
         "apis.models.init.customer_user_log_out_init_obj_wf."
         "FlowCustomerUserLogOutInitObjWF",
         autospec=True).start()
-    mock_flow_instance = mock_flow.return_value
+    mock_flow_instance = \
+        mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)
 
     request = CustomerUserLogOutInitObjWFGetInitModelRequest()
@@ -102,7 +104,8 @@ async def test_process_request(flow_response):
 
     assert result.success is True
     assert result.message == "Success."
-    mock_customer_bus_obj.assert_called_once_with(mock_session_context)
+    mock_customer_bus_obj.assert_called_once_with(
+        mock_session_context)
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()

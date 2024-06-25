@@ -1,5 +1,6 @@
 # models/factory/tests/flavor_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the FlavorFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the flavor ID
                 is None after creation.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         assert flavor.flavor_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         assert isinstance(flavor.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestFlavorFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        flavor: Flavor = await FlavorFactory.build_async(
-            session=session)
+        flavor: Flavor = await \
+            FlavorFactory.build_async(
+                session=session)
         assert flavor.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestFlavorFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        flavor: Flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor: Flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         assert flavor.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestFlavorFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         initial_code = flavor.last_change_code
         flavor.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        flavor = await FlavorFactory.build_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.build_async(
+                session=session)
         assert flavor.insert_utc_date_time is not None
         assert isinstance(
             flavor.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        flavor = await FlavorFactory.build_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.build_async(
+                session=session)
         assert flavor.insert_utc_date_time is not None
         assert isinstance(
             flavor.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestFlavorFactoryAsync:
         flavor.code = uuid.uuid4()
         session.add(flavor)
         await session.commit()
-        assert flavor.insert_utc_date_time > initial_time
+        assert flavor.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         assert flavor.insert_utc_date_time is not None
         assert isinstance(
             flavor.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestFlavorFactoryAsync:
         flavor.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert flavor.insert_utc_date_time == initial_time
+        assert flavor.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        flavor = await FlavorFactory.build_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.build_async(
+                session=session)
         assert flavor.last_update_utc_date_time is not None
         assert isinstance(
             flavor.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        flavor = await FlavorFactory.build_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.build_async(
+                session=session)
         assert flavor.last_update_utc_date_time is not None
         assert isinstance(
             flavor.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestFlavorFactoryAsync:
         flavor.code = uuid.uuid4()
         session.add(flavor)
         await session.commit()
-        assert flavor.last_update_utc_date_time > initial_time
+        assert flavor.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestFlavorFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         assert flavor.last_update_utc_date_time is not None
         assert isinstance(
             flavor.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestFlavorFactoryAsync:
         flavor.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert flavor.last_update_utc_date_time > initial_time
+        assert flavor.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestFlavorFactoryAsync:
             flavor is still
             found in the database.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         await session.delete(flavor)
         await session.commit()
 
         # Construct the select statement
         stmt = select(Flavor).where(
-            Flavor._flavor_id == flavor.flavor_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Flavor._flavor_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                flavor.flavor_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,18 +405,22 @@ class TestFlavorFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         assert isinstance(flavor.flavor_id, int)
         assert isinstance(flavor.code, uuid.UUID)
         assert isinstance(flavor.last_change_code, int)
         assert isinstance(flavor.insert_user_id, uuid.UUID)
         assert isinstance(flavor.last_update_user_id, uuid.UUID)
-        assert flavor.description == "" or isinstance(flavor.description, str)
+        assert flavor.description == "" or isinstance(
+            flavor.description, str)
         assert isinstance(flavor.display_order, int)
         assert isinstance(flavor.is_active, bool)
-        assert flavor.lookup_enum_name == "" or isinstance(flavor.lookup_enum_name, str)
-        assert flavor.name == "" or isinstance(flavor.name, str)
+        assert flavor.lookup_enum_name == "" or isinstance(
+            flavor.lookup_enum_name, str)
+        assert flavor.name == "" or isinstance(
+            flavor.name, str)
         assert isinstance(flavor.pac_id, int)
         # Check for the peek values
         # description,
@@ -416,7 +438,8 @@ class TestFlavorFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for flavors.
+        Test case to check the unique code constraint
+        for flavors.
 
         This test creates two flavor
         instances using
@@ -430,7 +453,9 @@ class TestFlavorFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        FlavorFactory.create_async() method creates unique codes for each flavor.
+        FlavorFactory.create_async()
+        method creates unique codes for
+        each flavor.
         """
 
         flavor_1 = await FlavorFactory.create_async(
@@ -492,16 +517,20 @@ class TestFlavorFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new Flavor object using
+        1. Create a new
+            Flavor object using
             the FlavorFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the Flavor
-            object using the flavor_id.
+            object using the
+            flavor_id.
         4. Modify the code attribute of the
             retrieved Flavor object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            Flavor object using the flavor_id.
+            Flavor object using the
+            flavor_id.
         7. Get the modified Flavor object.
         8. Verify that the last_change_code attribute
             of the modified Flavor object
@@ -512,12 +541,14 @@ class TestFlavorFactoryAsync:
                             of the modified Flavor
                             object is the same as the original value.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         original_last_change_code = flavor.last_change_code
 
         stmt = select(Flavor).where(
-            Flavor._flavor_id == flavor.flavor_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Flavor._flavor_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                flavor.flavor_id))
         result = await session.execute(stmt)
         flavor_1 = result.scalars().first()
 
@@ -527,7 +558,8 @@ class TestFlavorFactoryAsync:
         await session.commit()
 
         stmt = select(Flavor).where(
-            Flavor._flavor_id == flavor.flavor_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Flavor._flavor_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                flavor.flavor_id))
         result = await session.execute(stmt)
         flavor_2 = result.scalars().first()
 
@@ -560,8 +592,9 @@ class TestFlavorFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        flavor = await FlavorFactory.create_async(
-            session=session)
+        flavor = await \
+            FlavorFactory.create_async(
+                session=session)
         flavor.pac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

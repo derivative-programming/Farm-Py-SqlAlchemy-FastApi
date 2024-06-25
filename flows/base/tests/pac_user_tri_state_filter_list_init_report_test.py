@@ -1,5 +1,6 @@
 # flows/base/tests/pac_user_tri_state_filter_list_init_report_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowPacUserTriStateFilterListInitReport` class.
@@ -66,7 +67,8 @@ class TestBaseFlowPacUserTriStateFilterListInitReport():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a pac
-        object, and a BaseFlowPacUserTriStateFilterListInitReport object.
+        object, and a
+        BaseFlowPacUserTriStateFilterListInitReport object.
         Then, it sets the role_required
         variable to "" and calls the
         _process_security_rules method. Finally,

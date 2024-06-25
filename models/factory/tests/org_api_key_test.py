@@ -1,15 +1,16 @@
 # models/factory/tests/org_api_key_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the OrgApiKeyFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestOrgApiKeyFactory:
         org_api_key.code = uuid.uuid4()
         session.add(org_api_key)
         session.commit()
-        assert org_api_key.insert_utc_date_time > initial_time
+        assert org_api_key.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestOrgApiKeyFactory:
         org_api_key.code = uuid.uuid4()
         session.add(org_api_key)
         session.commit()
-        assert org_api_key.last_update_utc_date_time > initial_time
+        assert org_api_key.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestOrgApiKeyFactory:
         org_api_key.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert org_api_key.last_update_utc_date_time > initial_time
+        assert org_api_key.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -212,17 +216,20 @@ class TestOrgApiKeyFactory:
         assert isinstance(org_api_key.last_change_code, int)
         assert isinstance(org_api_key.insert_user_id, uuid.UUID)
         assert isinstance(org_api_key.last_update_user_id, uuid.UUID)
-        assert org_api_key.api_key_value == "" or isinstance(org_api_key.api_key_value, str)
-        assert org_api_key.created_by == "" or isinstance(org_api_key.created_by, str)
-        assert isinstance(org_api_key.created_utc_date_time, datetime)
-        assert isinstance(org_api_key.expiration_utc_date_time, datetime)
+        assert org_api_key.api_key_value == "" or isinstance(
+            org_api_key.api_key_value, str)
+        assert org_api_key.created_by == "" or isinstance(
+            org_api_key.created_by, str)
+        assert isinstance(org_api_key.created_utc_date_time,
+                          datetime)
+        assert isinstance(org_api_key.expiration_utc_date_time,
+                          datetime)
         assert isinstance(org_api_key.is_active, bool)
         assert isinstance(org_api_key.is_temp_user_key, bool)
-        assert org_api_key.name == "" or isinstance(org_api_key.name, str)
+        assert org_api_key.name == "" or isinstance(
+            org_api_key.name, str)
         assert isinstance(org_api_key.organization_id, int)
         assert isinstance(org_api_key.org_customer_id, int)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
         # apiKeyValue,
         # createdBy,
         # createdUTCDateTime

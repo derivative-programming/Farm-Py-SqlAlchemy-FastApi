@@ -1,15 +1,16 @@
 # models/factory/tests/tri_state_filter_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the TriStateFilterFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestTriStateFilterFactory:
         tri_state_filter.code = uuid.uuid4()
         session.add(tri_state_filter)
         session.commit()
-        assert tri_state_filter.insert_utc_date_time > initial_time
+        assert tri_state_filter.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestTriStateFilterFactory:
         tri_state_filter.code = uuid.uuid4()
         session.add(tri_state_filter)
         session.commit()
-        assert tri_state_filter.last_update_utc_date_time > initial_time
+        assert tri_state_filter.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestTriStateFilterFactory:
         tri_state_filter.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert tri_state_filter.last_update_utc_date_time > initial_time
+        assert tri_state_filter.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -212,15 +216,16 @@ class TestTriStateFilterFactory:
         assert isinstance(tri_state_filter.last_change_code, int)
         assert isinstance(tri_state_filter.insert_user_id, uuid.UUID)
         assert isinstance(tri_state_filter.last_update_user_id, uuid.UUID)
-        assert tri_state_filter.description == "" or isinstance(tri_state_filter.description, str)
+        assert tri_state_filter.description == "" or isinstance(
+            tri_state_filter.description, str)
         assert isinstance(tri_state_filter.display_order, int)
         assert isinstance(tri_state_filter.is_active, bool)
-        assert tri_state_filter.lookup_enum_name == "" or isinstance(tri_state_filter.lookup_enum_name, str)
-        assert tri_state_filter.name == "" or isinstance(tri_state_filter.name, str)
+        assert tri_state_filter.lookup_enum_name == "" or isinstance(
+            tri_state_filter.lookup_enum_name, str)
+        assert tri_state_filter.name == "" or isinstance(
+            tri_state_filter.name, str)
         assert isinstance(tri_state_filter.pac_id, int)
         assert isinstance(tri_state_filter.state_int_value, int)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
         # description,
         # displayOrder,
         # isActive,

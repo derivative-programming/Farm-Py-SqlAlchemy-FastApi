@@ -3,13 +3,14 @@
 # pylint: disable=redefined-outer-name
 
 """
-This module contains unit tests for the CustomerRoleBusObj class.
+This module contains unit tests for the
+CustomerRoleBusObj class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
 from datetime import date, datetime  # noqa: F401
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -17,11 +18,14 @@ import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.customer_role_base import CustomerRoleBaseBusObj
+from business.customer_role_base import (
+    CustomerRoleBaseBusObj)
 from helpers.session_context import SessionContext
-from managers.customer_role import CustomerRoleManager
+from managers.customer_role import (
+    CustomerRoleManager)
 from models import CustomerRole
-from models.factory import CustomerRoleFactory
+from models.factory import (
+    CustomerRoleFactory)
 from services.logging_config import get_logger
 
 from ..customer_role import CustomerRoleBusObj
@@ -50,24 +54,29 @@ def customer_role():
 
 
 @pytest.fixture
-def customer_role_base_bus_obj(fake_session_context, customer_role):
+def customer_role_base_bus_obj(
+    fake_session_context, customer_role
+):
     """
     Fixture that returns a CustomerRoleBaseBusObj instance.
     """
-    customer_role_base = CustomerRoleBaseBusObj(fake_session_context)
+    customer_role_base = CustomerRoleBaseBusObj(
+        fake_session_context)
     customer_role_base.customer_role = customer_role
     return customer_role_base
 
 
 class TestCustomerRoleBaseBusObj:
     """
-    Unit tests for the CustomerRoleBusObj class.
+    Unit tests for the
+    CustomerRoleBusObj class.
     """
 
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_manager(self, session: AsyncSession):
         """
-        Fixture that returns an instance of the CustomerRoleManager class.
+        Fixture that returns an instance of the
+        CustomerRoleManager class.
         """
         session_context = SessionContext(dict(), session)
         return CustomerRoleManager(session_context)
@@ -75,7 +84,8 @@ class TestCustomerRoleBaseBusObj:
     @pytest_asyncio.fixture(scope="function")
     async def customer_role_bus_obj(self, session):
         """
-        Fixture that returns an instance of the CustomerRoleBusObj class.
+        Fixture that returns an instance of the
+        CustomerRoleBusObj class.
         """
         session_context = SessionContext(dict(), session)
         return CustomerRoleBusObj(session_context)
@@ -113,10 +123,14 @@ class TestCustomerRoleBaseBusObj:
 
         assert customer_role_bus_obj.last_update_user_id == uuid.UUID(int=0)
 
-        assert isinstance(customer_role_bus_obj.customer_id, int)
-        assert isinstance(customer_role_bus_obj.is_placeholder, bool)
-        assert isinstance(customer_role_bus_obj.placeholder, bool)
-        assert isinstance(customer_role_bus_obj.role_id, int)
+        assert isinstance(customer_role_bus_obj.customer_id,
+                          int)
+        assert isinstance(customer_role_bus_obj.is_placeholder,
+                          bool)
+        assert isinstance(customer_role_bus_obj.placeholder,
+                          bool)
+        assert isinstance(customer_role_bus_obj.role_id,
+                          int)
 
     @pytest.mark.asyncio
     async def test_load_with_customer_role_obj(
@@ -148,7 +162,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role ID.
         """
 
-        new_customer_role_customer_role_id = new_customer_role.customer_role_id
+        new_customer_role_customer_role_id = \
+            new_customer_role.customer_role_id
 
         await customer_role_bus_obj.load_from_id(
             new_customer_role_customer_role_id)
@@ -186,7 +201,9 @@ class TestCustomerRoleBaseBusObj:
         customer_role JSON.
         """
 
-        customer_role_json = customer_role_manager.to_json(new_customer_role)
+        customer_role_json = \
+            customer_role_manager.to_json(
+                new_customer_role)
 
         await customer_role_bus_obj.load_from_json(
             customer_role_json)
@@ -208,7 +225,9 @@ class TestCustomerRoleBaseBusObj:
 
         logger.info("test_load_with_customer_role_dict 1")
 
-        customer_role_dict = customer_role_manager.to_dict(new_customer_role)
+        customer_role_dict = \
+            customer_role_manager.to_dict(
+                new_customer_role)
 
         logger.info(customer_role_dict)
 
@@ -248,10 +267,12 @@ class TestCustomerRoleBaseBusObj:
 
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
 
-        new_customer_role = await customer_role_manager.get_by_id(
-            new_customer_role_customer_role_id_value)
+        new_customer_role = await \
+            customer_role_manager.get_by_id(
+                new_customer_role_customer_role_id_value)
 
-        assert isinstance(new_customer_role, CustomerRole)
+        assert isinstance(new_customer_role,
+                          CustomerRole)
 
         new_code = uuid.uuid4()
 
@@ -268,8 +289,9 @@ class TestCustomerRoleBaseBusObj:
 
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
 
-        new_customer_role = await customer_role_manager.get_by_id(
-            new_customer_role_customer_role_id_value)
+        new_customer_role = await \
+            customer_role_manager.get_by_id(
+                new_customer_role_customer_role_id_value)
 
         assert customer_role_manager.is_equal(
             customer_role_bus_obj.customer_role,
@@ -299,8 +321,9 @@ class TestCustomerRoleBaseBusObj:
 
         new_customer_role_customer_role_id_value = new_customer_role.customer_role_id
 
-        new_customer_role = await customer_role_manager.get_by_id(
-            new_customer_role_customer_role_id_value)
+        new_customer_role = await \
+            customer_role_manager.get_by_id(
+                new_customer_role_customer_role_id_value)
 
         assert new_customer_role is None
 
@@ -315,7 +338,8 @@ class TestCustomerRoleBaseBusObj:
         assert customer_role_base_bus_obj.get_session_context() == fake_session_context
 
     @pytest.mark.asyncio
-    async def test_refresh(self, customer_role_base_bus_obj, customer_role):
+    async def test_refresh(
+        self, customer_role_base_bus_obj, customer_role):
         """
         Test case for refreshing the customer_role data.
         """
@@ -323,14 +347,17 @@ class TestCustomerRoleBaseBusObj:
             'business.customer_role_base.CustomerRoleManager',
             autospec=True
         ) as mock_customer_role_manager:
-            mock_customer_role_manager_instance = mock_customer_role_manager.return_value
-            mock_customer_role_manager_instance.refresh = AsyncMock(return_value=customer_role)
+            mock_customer_role_manager_instance = \
+                mock_customer_role_manager.return_value
+            mock_customer_role_manager_instance.refresh =\
+                AsyncMock(return_value=customer_role)
 
             refreshed_customer_role_base = await customer_role_base_bus_obj.refresh()
             assert refreshed_customer_role_base.customer_role == customer_role
             mock_customer_role_manager_instance.refresh.assert_called_once_with(customer_role)
 
-    def test_is_valid(self, customer_role_base_bus_obj):
+    def test_is_valid(
+            self, customer_role_base_bus_obj):
         """
         Test case for checking if the customer_role data is valid.
         """
@@ -339,7 +366,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role_base_bus_obj.customer_role = None
         assert customer_role_base_bus_obj.is_valid() is False
 
-    def test_to_dict(self, customer_role_base_bus_obj):
+    def test_to_dict(
+            self, customer_role_base_bus_obj):
         """
         Test case for converting the customer_role data to a dictionary.
         """
@@ -347,7 +375,8 @@ class TestCustomerRoleBaseBusObj:
             'business.customer_role_base.CustomerRoleManager',
             autospec=True
         ) as mock_customer_role_manager:
-            mock_customer_role_manager_instance = mock_customer_role_manager.return_value
+            mock_customer_role_manager_instance = \
+                mock_customer_role_manager.return_value
             mock_customer_role_manager_instance.to_dict = Mock(
                 return_value={"key": "value"})
 
@@ -356,7 +385,8 @@ class TestCustomerRoleBaseBusObj:
             mock_customer_role_manager_instance.to_dict.assert_called_once_with(
                 customer_role_base_bus_obj.customer_role)
 
-    def test_to_json(self, customer_role_base_bus_obj):
+    def test_to_json(
+            self, customer_role_base_bus_obj):
         """
         Test case for converting the customer_role data to JSON.
         """
@@ -364,7 +394,8 @@ class TestCustomerRoleBaseBusObj:
             'business.customer_role_base.CustomerRoleManager',
             autospec=True
         ) as mock_customer_role_manager:
-            mock_customer_role_manager_instance = mock_customer_role_manager.return_value
+            mock_customer_role_manager_instance = \
+                mock_customer_role_manager.return_value
             mock_customer_role_manager_instance.to_json = Mock(
                 return_value='{"key": "value"}')
 
@@ -373,33 +404,38 @@ class TestCustomerRoleBaseBusObj:
             mock_customer_role_manager_instance.to_json.assert_called_once_with(
                 customer_role_base_bus_obj.customer_role)
 
-    def test_get_obj(self, customer_role_base_bus_obj, customer_role):
+    def test_get_obj(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for getting the customer_role object.
         """
         assert customer_role_base_bus_obj.get_obj() == customer_role
 
-    def test_get_object_name(self, customer_role_base_bus_obj):
+    def test_get_object_name(
+            self, customer_role_base_bus_obj):
         """
         Test case for getting the object name.
         """
         assert customer_role_base_bus_obj.get_object_name() == "customer_role"
 
-    def test_get_id(self, customer_role_base_bus_obj, customer_role):
+    def test_get_id(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for getting the customer_role ID.
         """
         customer_role.customer_role_id = 1
         assert customer_role_base_bus_obj.get_id() == 1
 
-    def test_customer_role_id(self, customer_role_base_bus_obj, customer_role):
+    def test_customer_role_id(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for the customer_role_id property.
         """
         customer_role.customer_role_id = 1
         assert customer_role_base_bus_obj.customer_role_id == 1
 
-    def test_code(self, customer_role_base_bus_obj, customer_role):
+    def test_code(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for the code property.
         """
@@ -407,7 +443,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role.code = test_uuid
         assert customer_role_base_bus_obj.code == test_uuid
 
-    def test_code_setter(self, customer_role_base_bus_obj):
+    def test_code_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the code setter.
         """
@@ -415,14 +452,16 @@ class TestCustomerRoleBaseBusObj:
         customer_role_base_bus_obj.code = test_uuid
         assert customer_role_base_bus_obj.code == test_uuid
 
-    def test_code_invalid_value(self, customer_role_base_bus_obj):
+    def test_code_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the code property.
         """
         with pytest.raises(ValueError):
             customer_role_base_bus_obj.code = "not-a-uuid"
 
-    def test_last_change_code(self, customer_role_base_bus_obj, customer_role):
+    def test_last_change_code(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case to verify the behavior of the last_change_code
         attribute in the CustomerRoleBaseBusiness class.
@@ -431,7 +470,8 @@ class TestCustomerRoleBaseBusObj:
             customer_role_base_bus_obj (CustomerRoleBaseBusiness):
                 An instance of the
                 CustomerRoleBaseBusiness class.
-            customer_role (CustomerRole): An instance of the CustomerRole class.
+            customer_role (CustomerRole): An instance of the
+                CustomerRole class.
 
         Returns:
             None
@@ -439,14 +479,16 @@ class TestCustomerRoleBaseBusObj:
         customer_role.last_change_code = 123
         assert customer_role_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_setter(self, customer_role_base_bus_obj):
+    def test_last_change_code_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the last_change_code setter.
         """
         customer_role_base_bus_obj.last_change_code = 123
         assert customer_role_base_bus_obj.last_change_code == 123
 
-    def test_last_change_code_invalid_value(self, customer_role_base_bus_obj):
+    def test_last_change_code_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_change_code property.
@@ -454,7 +496,8 @@ class TestCustomerRoleBaseBusObj:
         with pytest.raises(ValueError):
             customer_role_base_bus_obj.last_change_code = "not-an-int"
 
-    def test_insert_user_id(self, customer_role_base_bus_obj, customer_role):
+    def test_insert_user_id(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for the insert_user_id property.
         """
@@ -462,7 +505,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role.insert_user_id = test_uuid
         assert customer_role_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_setter(self, customer_role_base_bus_obj):
+    def test_insert_user_id_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the insert_user_id setter.
         """
@@ -470,7 +514,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role_base_bus_obj.insert_user_id = test_uuid
         assert customer_role_base_bus_obj.insert_user_id == test_uuid
 
-    def test_insert_user_id_invalid_value(self, customer_role_base_bus_obj):
+    def test_insert_user_id_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_user_id property.
@@ -480,21 +525,24 @@ class TestCustomerRoleBaseBusObj:
     # CustomerID
     # isPlaceholder
 
-    def test_is_placeholder(self, customer_role_base_bus_obj, customer_role):
+    def test_is_placeholder(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for the is_placeholder property.
         """
         customer_role.is_placeholder = True
         assert customer_role_base_bus_obj.is_placeholder is True
 
-    def test_is_placeholder_setter(self, customer_role_base_bus_obj):
+    def test_is_placeholder_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the is_placeholder setter.
         """
         customer_role_base_bus_obj.is_placeholder = True
         assert customer_role_base_bus_obj.is_placeholder is True
 
-    def test_is_placeholder_invalid_value(self, customer_role_base_bus_obj):
+    def test_is_placeholder_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         is_placeholder property.
@@ -503,21 +551,24 @@ class TestCustomerRoleBaseBusObj:
             customer_role_base_bus_obj.is_placeholder = "not-a-boolean"
     # placeholder
 
-    def test_placeholder(self, customer_role_base_bus_obj, customer_role):
+    def test_placeholder(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for the placeholder property.
         """
         customer_role.placeholder = True
         assert customer_role_base_bus_obj.placeholder is True
 
-    def test_placeholder_setter(self, customer_role_base_bus_obj):
+    def test_placeholder_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the placeholder setter.
         """
         customer_role_base_bus_obj.placeholder = True
         assert customer_role_base_bus_obj.placeholder is True
 
-    def test_placeholder_invalid_value(self, customer_role_base_bus_obj):
+    def test_placeholder_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         placeholder property.
@@ -527,21 +578,24 @@ class TestCustomerRoleBaseBusObj:
     # RoleID
     # CustomerID
 
-    def test_customer_id(self, customer_role_base_bus_obj, customer_role):
+    def test_customer_id(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for the customer_id property.
         """
         customer_role.customer_id = 1
         assert customer_role_base_bus_obj.customer_id == 1
 
-    def test_customer_id_setter(self, customer_role_base_bus_obj):
+    def test_customer_id_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the customer_id setter.
         """
         customer_role_base_bus_obj.customer_id = 1
         assert customer_role_base_bus_obj.customer_id == 1
 
-    def test_customer_id_invalid_value(self, customer_role_base_bus_obj):
+    def test_customer_id_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         customer_id property.
@@ -552,21 +606,24 @@ class TestCustomerRoleBaseBusObj:
     # placeholder,
     # RoleID
 
-    def test_role_id(self, customer_role_base_bus_obj, customer_role):
+    def test_role_id(
+            self, customer_role_base_bus_obj, customer_role):
         """
         Test case for the role_id property.
         """
         customer_role.role_id = 1
         assert customer_role_base_bus_obj.role_id == 1
 
-    def test_role_id_setter(self, customer_role_base_bus_obj):
+    def test_role_id_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the role_id setter.
         """
         customer_role_base_bus_obj.role_id = 1
         assert customer_role_base_bus_obj.role_id == 1
 
-    def test_role_id_invalid_value(self, customer_role_base_bus_obj):
+    def test_role_id_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         role_id property.
@@ -574,7 +631,10 @@ class TestCustomerRoleBaseBusObj:
         with pytest.raises(ValueError):
             customer_role_base_bus_obj.role_id = "not-an-int"
 
-    def test_insert_utc_date_time(self, customer_role_base_bus_obj, customer_role):
+    def test_insert_utc_date_time(
+            self,
+            customer_role_base_bus_obj,
+            customer_role):
         """
         Test case for the insert_utc_date_time property.
         """
@@ -582,7 +642,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role.insert_utc_date_time = test_datetime
         assert customer_role_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_setter(self, customer_role_base_bus_obj):
+    def test_insert_utc_date_time_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the insert_utc_date_time setter.
         """
@@ -590,7 +651,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role_base_bus_obj.insert_utc_date_time = test_datetime
         assert customer_role_base_bus_obj.insert_utc_date_time == test_datetime
 
-    def test_insert_utc_date_time_invalid_value(self, customer_role_base_bus_obj):
+    def test_insert_utc_date_time_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         insert_utc_date_time property.
@@ -598,7 +660,10 @@ class TestCustomerRoleBaseBusObj:
         with pytest.raises(AssertionError):
             customer_role_base_bus_obj.insert_utc_date_time = "not-a-datetime"
 
-    def test_last_update_utc_date_time(self, customer_role_base_bus_obj, customer_role):
+    def test_last_update_utc_date_time(
+            self,
+            customer_role_base_bus_obj,
+            customer_role):
         """
         Test case for the last_update_utc_date_time property.
         """
@@ -606,7 +671,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role.last_update_utc_date_time = test_datetime
         assert customer_role_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_setter(self, customer_role_base_bus_obj):
+    def test_last_update_utc_date_time_setter(
+            self, customer_role_base_bus_obj):
         """
         Test case for the last_update_utc_date_time setter.
         """
@@ -614,7 +680,8 @@ class TestCustomerRoleBaseBusObj:
         customer_role_base_bus_obj.last_update_utc_date_time = test_datetime
         assert customer_role_base_bus_obj.last_update_utc_date_time == test_datetime
 
-    def test_last_update_utc_date_time_invalid_value(self, customer_role_base_bus_obj):
+    def test_last_update_utc_date_time_invalid_value(
+            self, customer_role_base_bus_obj):
         """
         Test case for setting an invalid value for the
         last_update_utc_date_time property.

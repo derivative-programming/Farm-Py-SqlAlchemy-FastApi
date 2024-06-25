@@ -6,9 +6,9 @@ The Customer model inherits from
 the Base model and is mapped to the
 'farm_Customer' table in the database.
 """
-from decimal import Decimal
-import uuid
-from datetime import date, datetime
+from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -642,7 +642,8 @@ class Customer(Base):
             uuid.UUID: The unique identifier value.
         """
 
-        return uuid.UUID(str(self._fs_user_code_value))
+        return uuid.UUID(
+            str(self._fs_user_code_value))
 
     @fs_user_code_value.setter
     def fs_user_code_value(self, value):

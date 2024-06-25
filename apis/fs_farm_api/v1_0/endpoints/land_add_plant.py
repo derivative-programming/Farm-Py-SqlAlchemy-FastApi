@@ -1,4 +1,5 @@
 # apis/fs_farm_api/v1_0/endpoints/land_add_plant.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation of the
@@ -25,7 +26,8 @@ API_LOG_ERROR_FORMAT = "response.message: %s"
 
 class LandAddPlantRouterConfig():
     """
-    Configuration class for the LandAddPlantRouter.
+    Configuration class for the
+    LandAddPlantRouter.
     """
 
     # constants
@@ -42,7 +44,9 @@ class LandAddPlantRouterConfig():
 
 class LandAddPlantRouter(BaseRouter):
     """
-    Router class for the LandAddPlant API endpoints.
+    Router class for the
+    LandAddPlant
+    API endpoints.
     """
 
     router = APIRouter(tags=["LandAddPlant"])

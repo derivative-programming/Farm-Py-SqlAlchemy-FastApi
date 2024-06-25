@@ -10,7 +10,7 @@ org_api_keys in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -291,7 +291,8 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.update")
         property_list = OrgApiKey.property_list()
         if org_api_key:
-            org_api_key.last_update_user_id = self._session_context.customer_code
+            org_api_key.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -495,7 +496,8 @@ class OrgApiKeyManager:
         logging.info(
             "OrgApiKeyManager.add_bulk")
         for org_api_key in org_api_keys:
-            org_api_key_id = org_api_key.org_api_key_id
+            org_api_key_id = \
+                org_api_key.org_api_key_id
             code = org_api_key.code
             if org_api_key.org_api_key_id is not None and org_api_key.org_api_key_id > 0:
                 raise ValueError(
@@ -562,7 +564,8 @@ class OrgApiKeyManager:
                 if key != "org_api_key_id":
                     setattr(org_api_key, key, value)
 
-            org_api_key.last_update_user_id = self._session_context.customer_code
+            org_api_key.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_org_api_keys.append(org_api_key)
 
@@ -679,11 +682,13 @@ class OrgApiKeyManager:
         if not org_api_key2:
             raise TypeError("OrgApiKey2 required.")
 
-        if not isinstance(org_api_key1, OrgApiKey):
+        if not isinstance(org_api_key1,
+                          OrgApiKey):
             raise TypeError("The org_api_key1 must be an "
                             "OrgApiKey instance.")
 
-        if not isinstance(org_api_key2, OrgApiKey):
+        if not isinstance(org_api_key2,
+                          OrgApiKey):
             raise TypeError("The org_api_key2 must be an "
                             "OrgApiKey instance.")
 
@@ -691,36 +696,10 @@ class OrgApiKeyManager:
         dict2 = self.to_dict(org_api_key2)
 
         return dict1 == dict2
-    async def get_by_organization_id(  # OrganizationID
-            self,
-            organization_id: int) -> List[OrgApiKey]:
-        """
-        Retrieve a list of org_api_keys by
-        organization ID.
+    # OrganizationID
+    # OrgCustomerID
 
-        Args:
-            organization_id (int): The ID of the organization.
-
-        Returns:
-            List[OrgApiKey]: A list of
-                org_api_keys associated
-                with the specified organization ID.
-        """
-
-        logging.info(
-            "OrgApiKeyManager.get_by_organization_id")
-        if not isinstance(organization_id, int):
-            raise TypeError(
-                f"The org_api_key_id must be an integer, "
-                f"got {type(organization_id)} instead."
-            )
-
-        query_filter = OrgApiKey._organization_id == organization_id  # pylint: disable=protected-access  # noqa: E501
-
-        query_results = await self._run_query(query_filter)
-
-        return query_results
-    async def get_by_org_customer_id(  # OrgCustomerID
+    async def get_by_org_customer_id(
             self,
             org_customer_id: int) -> List[OrgApiKey]:
         """
@@ -750,6 +729,35 @@ class OrgApiKeyManager:
             )
 
         query_filter = OrgApiKey._org_customer_id == org_customer_id  # pylint: disable=protected-access  # noqa: E501
+
+        query_results = await self._run_query(query_filter)
+
+        return query_results
+    async def get_by_organization_id(
+            self,
+            organization_id: int) -> List[OrgApiKey]:
+        """
+        Retrieve a list of org_api_keys by
+        organization ID.
+
+        Args:
+            organization_id (int): The ID of the organization.
+
+        Returns:
+            List[OrgApiKey]: A list of
+                org_api_keys associated
+                with the specified organization ID.
+        """
+
+        logging.info(
+            "OrgApiKeyManager.get_by_organization_id")
+        if not isinstance(organization_id, int):
+            raise TypeError(
+                f"The org_api_key_id must be an integer, "
+                f"got {type(organization_id)} instead."
+            )
+
+        query_filter = OrgApiKey._organization_id == organization_id  # pylint: disable=protected-access  # noqa: E501
 
         query_results = await self._run_query(query_filter)
 

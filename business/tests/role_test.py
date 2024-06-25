@@ -1,16 +1,20 @@
 # business/tests/role_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
-Unit tests for the RoleBusObj class.
+Unit tests for the
+RoleBusObj class.
 """
 
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from business.role import RoleBusObj
+from business.role import (
+    RoleBusObj)
 from helpers.session_context import SessionContext
-from models import Role
+from models import (
+    Role)
 
 
 @pytest.fixture
@@ -34,14 +38,16 @@ def role_list():
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list(session_context, role_list):
+async def test_to_bus_obj_list(
+        session_context, role_list):
     """
     Test the to_bus_obj_list method.
     """
     with patch('business.role.RoleBusObj.load_from_obj_instance',
                new_callable=AsyncMock) as mock_load:
-        bus_obj_list = await RoleBusObj.to_bus_obj_list(
-            session_context, role_list)
+        bus_obj_list = await \
+            RoleBusObj.to_bus_obj_list(
+                session_context, role_list)
 
         assert len(bus_obj_list) == len(role_list)
         assert all(
@@ -54,12 +60,17 @@ async def test_to_bus_obj_list(session_context, role_list):
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list_empty(session_context):
+async def test_to_bus_obj_list_empty(
+        session_context):
     """
-    Test the to_bus_obj_list method with an empty list.
+    Test the to_bus_obj_list
+    method with an empty list.
     """
     empty_role_list = []
-    bus_obj_list = await RoleBusObj.to_bus_obj_list(session_context, empty_role_list)
+    bus_obj_list = await \
+        RoleBusObj.to_bus_obj_list(
+            session_context,
+            empty_role_list)
 
     assert len(bus_obj_list) == 0
 

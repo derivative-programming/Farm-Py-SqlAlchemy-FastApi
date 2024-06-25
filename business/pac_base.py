@@ -1,15 +1,19 @@
 # business/pac_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the PacBaseBusObj class,
-which represents the base business object for a Pac.
+This module contains the
+PacBaseBusObj class,
+which represents the base
+business object for a
+Pac.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import PacManager
 from models import Pac
@@ -76,8 +80,8 @@ class PacBaseBusObj(BaseBusObj):
             )
 
         return self.pac.pac_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class PacBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.pac.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class PacBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.pac.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class PacBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.pac.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -658,7 +662,8 @@ class PacBaseBusObj(BaseBusObj):
 
         pac_manager = PacManager(
             self._session_context)
-        self.pac = await pac_manager.from_json(json_data)
+        self.pac = await \
+            pac_manager.from_json(json_data)
 
         return self
 
@@ -733,14 +738,8 @@ class PacBaseBusObj(BaseBusObj):
         if not isinstance(pac_obj_instance,
                           Pac):
             raise ValueError(
-                "pac_obj_instance must be an instance of Pac")
-
-        # pac_manager = PacManager(
-        #     self._session_context)
-
-        # pac_dict = pac_manager.to_dict(pac_obj_instance)
-
-        # self.pac = pac_manager.from_dict(pac_dict)
+                "pac_obj_instance must be an "
+                "instance of Pac")
 
         self.pac = pac_obj_instance
 
@@ -768,8 +767,9 @@ class PacBaseBusObj(BaseBusObj):
         pac_manager = PacManager(
             self._session_context)
 
-        self.pac = await pac_manager.from_dict(
-            pac_dict)
+        self.pac = await \
+            pac_manager.from_dict(
+                pac_dict)
 
         return self
 
@@ -795,8 +795,9 @@ class PacBaseBusObj(BaseBusObj):
         """
         pac_manager = PacManager(
             self._session_context)
-        self.pac = await pac_manager.refresh(
-            self.pac)
+        self.pac = await \
+            pac_manager.refresh(
+                self.pac)
 
         return self
 
@@ -870,14 +871,16 @@ class PacBaseBusObj(BaseBusObj):
         if pac_id > 0:
             pac_manager = PacManager(
                 self._session_context)
-            self.pac = await pac_manager.update(
-                self.pac)
+            self.pac = await \
+                pac_manager.update(
+                    self.pac)
 
         if pac_id == 0:
             pac_manager = PacManager(
                 self._session_context)
-            self.pac = await pac_manager.add(
-                self.pac)
+            self.pac = await \
+                pac_manager.add(
+                    self.pac)
 
         return self
 

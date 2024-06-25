@@ -1,5 +1,6 @@
 # models/factory/tests/role_async_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 
 """
 This module contains unit tests for the asynchronous
@@ -9,9 +10,9 @@ operations of the RoleFactory class.
 import asyncio
 import math
 import time
-import uuid
-from datetime import date, datetime, timedelta
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
 import pytest
@@ -102,8 +103,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the role ID
                 is None after creation.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         assert role.role_id is not None
 
     @pytest.mark.asyncio
@@ -121,8 +123,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the code attribute is not
                 an instance of uuid.UUID.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         assert isinstance(role.code, uuid.UUID)
 
     @pytest.mark.asyncio
@@ -140,8 +143,9 @@ class TestRoleFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 0.
         """
-        role: Role = await RoleFactory.build_async(
-            session=session)
+        role: Role = await \
+            RoleFactory.build_async(
+                session=session)
         assert role.last_change_code == 0
 
     @pytest.mark.asyncio
@@ -159,8 +163,9 @@ class TestRoleFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not 1.
         """
-        role: Role = await RoleFactory.create_async(
-            session=session)
+        role: Role = await \
+            RoleFactory.create_async(
+                session=session)
         assert role.last_change_code == 1
 
     @pytest.mark.asyncio
@@ -178,8 +183,9 @@ class TestRoleFactoryAsync:
         Raises:
             AssertionError: If the last_change_code attribute is not updated.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         initial_code = role.last_change_code
         role.code = uuid.uuid4()
         await session.commit()
@@ -201,8 +207,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the insert_utc_date_time attribute
             is None or not an instance of datetime.
         """
-        role = await RoleFactory.build_async(
-            session=session)
+        role = await \
+            RoleFactory.build_async(
+                session=session)
         assert role.insert_utc_date_time is not None
         assert isinstance(
             role.insert_utc_date_time, datetime)
@@ -223,8 +230,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        role = await RoleFactory.build_async(
-            session=session)
+        role = await \
+            RoleFactory.build_async(
+                session=session)
         assert role.insert_utc_date_time is not None
         assert isinstance(
             role.insert_utc_date_time, datetime)
@@ -232,7 +240,8 @@ class TestRoleFactoryAsync:
         role.code = uuid.uuid4()
         session.add(role)
         await session.commit()
-        assert role.insert_utc_date_time > initial_time
+        assert role.insert_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_inserted_on_second_save(self, session):
@@ -250,8 +259,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the insert_utc_date_time
             attribute is not the same as the initial time.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         assert role.insert_utc_date_time is not None
         assert isinstance(
             role.insert_utc_date_time, datetime)
@@ -259,7 +269,8 @@ class TestRoleFactoryAsync:
         role.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert role.insert_utc_date_time == initial_time
+        assert role.insert_utc_date_time == \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_build(self, session):
@@ -278,8 +289,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        role = await RoleFactory.build_async(
-            session=session)
+        role = await \
+            RoleFactory.build_async(
+                session=session)
         assert role.last_update_utc_date_time is not None
         assert isinstance(
             role.last_update_utc_date_time, datetime)
@@ -300,8 +312,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is None or not an instance of datetime.
         """
-        role = await RoleFactory.build_async(
-            session=session)
+        role = await \
+            RoleFactory.build_async(
+                session=session)
         assert role.last_update_utc_date_time is not None
         assert isinstance(
             role.last_update_utc_date_time, datetime)
@@ -309,7 +322,8 @@ class TestRoleFactoryAsync:
         role.code = uuid.uuid4()
         session.add(role)
         await session.commit()
-        assert role.last_update_utc_date_time > initial_time
+        assert role.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_date_updated_on_second_save(self, session):
@@ -327,8 +341,9 @@ class TestRoleFactoryAsync:
             AssertionError: If the last_update_utc_date_time
             attribute is not greater than the initial time.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         assert role.last_update_utc_date_time is not None
         assert isinstance(
             role.last_update_utc_date_time, datetime)
@@ -336,7 +351,8 @@ class TestRoleFactoryAsync:
         role.code = uuid.uuid4()
         time.sleep(1)
         await session.commit()
-        assert role.last_update_utc_date_time > initial_time
+        assert role.last_update_utc_date_time > \
+            initial_time
 
     @pytest.mark.asyncio
     async def test_model_deletion(self, session):
@@ -355,14 +371,16 @@ class TestRoleFactoryAsync:
             role is still
             found in the database.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         await session.delete(role)
         await session.commit()
 
         # Construct the select statement
         stmt = select(Role).where(
-            Role._role_id == role.role_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Role._role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                role.role_id))
 
         # Execute the statement asynchronously
         result = await session.execute(stmt)
@@ -387,18 +405,22 @@ class TestRoleFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         assert isinstance(role.role_id, int)
         assert isinstance(role.code, uuid.UUID)
         assert isinstance(role.last_change_code, int)
         assert isinstance(role.insert_user_id, uuid.UUID)
         assert isinstance(role.last_update_user_id, uuid.UUID)
-        assert role.description == "" or isinstance(role.description, str)
+        assert role.description == "" or isinstance(
+            role.description, str)
         assert isinstance(role.display_order, int)
         assert isinstance(role.is_active, bool)
-        assert role.lookup_enum_name == "" or isinstance(role.lookup_enum_name, str)
-        assert role.name == "" or isinstance(role.name, str)
+        assert role.lookup_enum_name == "" or isinstance(
+            role.lookup_enum_name, str)
+        assert role.name == "" or isinstance(
+            role.name, str)
         assert isinstance(role.pac_id, int)
         # Check for the peek values
         # description,
@@ -416,7 +438,8 @@ class TestRoleFactoryAsync:
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
         """
-        Test case to check the unique code constraint for roles.
+        Test case to check the unique code constraint
+        for roles.
 
         This test creates two role
         instances using
@@ -430,7 +453,9 @@ class TestRoleFactoryAsync:
         ensure no changes are persisted.
 
         Note: This test assumes that the
-        RoleFactory.create_async() method creates unique codes for each role.
+        RoleFactory.create_async()
+        method creates unique codes for
+        each role.
         """
 
         role_1 = await RoleFactory.create_async(
@@ -492,16 +517,20 @@ class TestRoleFactoryAsync:
         concurrently.
 
         Steps:
-        1. Create a new Role object using
+        1. Create a new
+            Role object using
             the RoleFactory.
-        2. Get the original value of the last_change_code attribute.
+        2. Get the original value of the
+            last_change_code attribute.
         3. Query the database for the Role
-            object using the role_id.
+            object using the
+            role_id.
         4. Modify the code attribute of the
             retrieved Role object.
         5. Commit the changes to the database.
         6. Query the database again for the
-            Role object using the role_id.
+            Role object using the
+            role_id.
         7. Get the modified Role object.
         8. Verify that the last_change_code attribute
             of the modified Role object
@@ -512,12 +541,14 @@ class TestRoleFactoryAsync:
                             of the modified Role
                             object is the same as the original value.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         original_last_change_code = role.last_change_code
 
         stmt = select(Role).where(
-            Role._role_id == role.role_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Role._role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                role.role_id))
         result = await session.execute(stmt)
         role_1 = result.scalars().first()
 
@@ -527,7 +558,8 @@ class TestRoleFactoryAsync:
         await session.commit()
 
         stmt = select(Role).where(
-            Role._role_id == role.role_id)  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+            Role._role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
+                role.role_id))
         result = await session.execute(stmt)
         role_2 = result.scalars().first()
 
@@ -560,8 +592,9 @@ class TestRoleFactoryAsync:
             IntegrityError: If committing the session
             fails due to an integrity constraint violation.
         """
-        role = await RoleFactory.create_async(
-            session=session)
+        role = await \
+            RoleFactory.create_async(
+                session=session)
         role.pac_id = 99999
         with pytest.raises(IntegrityError):
             await session.commit()

@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 
 """
-This module contains unit tests for the `plant_user_property_random_update` endpoint.
+This module contains unit tests for the
+`plant_user_property_random_update` endpoint.
 """
 
 import logging

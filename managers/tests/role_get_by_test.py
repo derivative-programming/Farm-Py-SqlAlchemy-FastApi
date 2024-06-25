@@ -1,12 +1,13 @@
 # models/managers/tests/role_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `RoleManager` class.
 """
 
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -51,12 +52,15 @@ class TestRoleGetByManager:
         }
 
         # Call the build function of the manager
-        role = await role_manager.build(
-            **mock_data)
+        role = await \
+            role_manager.build(
+                **mock_data)
 
-        # Assert that the returned object is an instance of Role
+        # Assert that the returned object is an instance of
+        # Role
         assert isinstance(
-            role, Role)
+            role,
+            Role)
 
         # Assert that the attributes of the
         # role match our mock data
@@ -72,15 +76,17 @@ class TestRoleGetByManager:
         Test case for the `get_by_id` method of
         `RoleManager`.
         """
-        test_role = await RoleFactory.create_async(
-            session)
+        test_role = await \
+            RoleFactory.create_async(
+                session)
 
         role = await \
             role_manager.get_by_id(
                 test_role.role_id)
 
         assert isinstance(
-            role, Role)
+            role,
+            Role)
 
         assert test_role.role_id == \
             role.role_id
@@ -119,15 +125,17 @@ class TestRoleGetByManager:
         returned by its code.
         """
 
-        test_role = await RoleFactory.create_async(
-            session)
+        test_role = await \
+            RoleFactory.create_async(
+                session)
 
         role = await \
             role_manager.get_by_code(
                 test_role.code)
 
         assert isinstance(
-            role, Role)
+            role,
+            Role)
 
         assert test_role.role_id == \
             role.role_id
@@ -205,7 +213,8 @@ class TestRoleGetByManager:
             role_manager.get_by_pac_id(
                 role1.pac_id)
         assert len(fetched_roles) == 1
-        assert isinstance(fetched_roles[0], Role)
+        assert isinstance(fetched_roles[0],
+                          Role)
         assert fetched_roles[0].code == \
             role1.code
 

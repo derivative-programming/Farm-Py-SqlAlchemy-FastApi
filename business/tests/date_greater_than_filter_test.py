@@ -1,16 +1,20 @@
 # business/tests/date_greater_than_filter_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
-Unit tests for the DateGreaterThanFilterBusObj class.
+Unit tests for the
+DateGreaterThanFilterBusObj class.
 """
 
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from business.date_greater_than_filter import DateGreaterThanFilterBusObj
+from business.date_greater_than_filter import (
+    DateGreaterThanFilterBusObj)
 from helpers.session_context import SessionContext
-from models import DateGreaterThanFilter
+from models import (
+    DateGreaterThanFilter)
 
 
 @pytest.fixture
@@ -34,14 +38,16 @@ def date_greater_than_filter_list():
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list(session_context, date_greater_than_filter_list):
+async def test_to_bus_obj_list(
+        session_context, date_greater_than_filter_list):
     """
     Test the to_bus_obj_list method.
     """
     with patch('business.date_greater_than_filter.DateGreaterThanFilterBusObj.load_from_obj_instance',
                new_callable=AsyncMock) as mock_load:
-        bus_obj_list = await DateGreaterThanFilterBusObj.to_bus_obj_list(
-            session_context, date_greater_than_filter_list)
+        bus_obj_list = await \
+            DateGreaterThanFilterBusObj.to_bus_obj_list(
+                session_context, date_greater_than_filter_list)
 
         assert len(bus_obj_list) == len(date_greater_than_filter_list)
         assert all(
@@ -54,12 +60,17 @@ async def test_to_bus_obj_list(session_context, date_greater_than_filter_list):
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list_empty(session_context):
+async def test_to_bus_obj_list_empty(
+        session_context):
     """
-    Test the to_bus_obj_list method with an empty list.
+    Test the to_bus_obj_list
+    method with an empty list.
     """
     empty_date_greater_than_filter_list = []
-    bus_obj_list = await DateGreaterThanFilterBusObj.to_bus_obj_list(session_context, empty_date_greater_than_filter_list)
+    bus_obj_list = await \
+        DateGreaterThanFilterBusObj.to_bus_obj_list(
+            session_context,
+            empty_date_greater_than_filter_list)
 
     assert len(bus_obj_list) == 0
 

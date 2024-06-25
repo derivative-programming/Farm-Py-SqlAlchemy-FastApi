@@ -10,7 +10,7 @@ plants in the system.
 
 import json
 import logging
-import uuid
+import uuid  # noqa: F401
 from enum import Enum  # noqa: F401
 from typing import Any, List, Optional, Dict
 from sqlalchemy import and_
@@ -303,7 +303,8 @@ class PlantManager:
         logging.info("PlantManager.update")
         property_list = Plant.property_list()
         if plant:
-            plant.last_update_user_id = self._session_context.customer_code
+            plant.last_update_user_id = \
+                self._session_context.customer_code
             for key, value in kwargs.items():
                 if key not in property_list:
                     raise ValueError(f"Invalid property: {key}")
@@ -507,7 +508,8 @@ class PlantManager:
         logging.info(
             "PlantManager.add_bulk")
         for plant in plants:
-            plant_id = plant.plant_id
+            plant_id = \
+                plant.plant_id
             code = plant.code
             if plant.plant_id is not None and plant.plant_id > 0:
                 raise ValueError(
@@ -574,7 +576,8 @@ class PlantManager:
                 if key != "plant_id":
                     setattr(plant, key, value)
 
-            plant.last_update_user_id = self._session_context.customer_code
+            plant.last_update_user_id =\
+                self._session_context.customer_code
 
             updated_plants.append(plant)
 
@@ -691,11 +694,13 @@ class PlantManager:
         if not plant2:
             raise TypeError("Plant2 required.")
 
-        if not isinstance(plant1, Plant):
+        if not isinstance(plant1,
+                          Plant):
             raise TypeError("The plant1 must be an "
                             "Plant instance.")
 
-        if not isinstance(plant2, Plant):
+        if not isinstance(plant2,
+                          Plant):
             raise TypeError("The plant2 must be an "
                             "Plant instance.")
 
@@ -704,8 +709,9 @@ class PlantManager:
 
         return dict1 == dict2
 # endset
+    # FlvrForeignKeyID
 
-    async def get_by_flvr_foreign_key_id(  # FlvrForeignKeyID
+    async def get_by_flvr_foreign_key_id(
             self,
             flvr_foreign_key_id: int) -> List[Plant]:
         """
@@ -739,8 +745,9 @@ class PlantManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
+    # LandID
 
-    async def get_by_land_id(  # LandID
+    async def get_by_land_id(
             self,
             land_id: int) -> List[Plant]:
         """

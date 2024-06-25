@@ -1,15 +1,16 @@
 # models/factory/tests/error_log_test.py
+# pylint: disable=unused-import
 """
 This module contains unit tests for the ErrorLogFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import time
 import math
-import uuid
+import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -124,7 +125,8 @@ class TestErrorLogFactory:
         error_log.code = uuid.uuid4()
         session.add(error_log)
         session.commit()
-        assert error_log.insert_utc_date_time > initial_time
+        assert error_log.insert_utc_date_time > \
+            initial_time
 
     def test_date_inserted_on_second_save(self, session):
         """
@@ -167,7 +169,8 @@ class TestErrorLogFactory:
         error_log.code = uuid.uuid4()
         session.add(error_log)
         session.commit()
-        assert error_log.last_update_utc_date_time > initial_time
+        assert error_log.last_update_utc_date_time > \
+            initial_time
 
     def test_date_updated_on_second_save(self, session):
         """
@@ -183,7 +186,8 @@ class TestErrorLogFactory:
         error_log.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert error_log.last_update_utc_date_time > initial_time
+        assert error_log.last_update_utc_date_time > \
+            initial_time
 
     def test_model_deletion(self, session):
         """
@@ -218,14 +222,15 @@ class TestErrorLogFactory:
         # contextCode
         assert isinstance(
             error_log.context_code, uuid.UUID)
-        assert isinstance(error_log.created_utc_date_time, datetime)
-        assert error_log.description == "" or isinstance(error_log.description, str)
+        assert isinstance(error_log.created_utc_date_time,
+                          datetime)
+        assert error_log.description == "" or isinstance(
+            error_log.description, str)
         assert isinstance(error_log.is_client_side_error, bool)
         assert isinstance(error_log.is_resolved, bool)
         assert isinstance(error_log.pac_id, int)
-        assert error_log.url == "" or isinstance(error_log.url, str)
-        # Check for the peek values,
-        # assuming they are UUIDs based on your model
+        assert error_log.url == "" or isinstance(
+            error_log.url, str)
         # browserCode,
         # contextCode,
         # createdUTCDateTime

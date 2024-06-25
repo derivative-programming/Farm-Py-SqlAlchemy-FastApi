@@ -1,13 +1,16 @@
 # models/factory/customer_role.py
+# pylint: disable=unused-import
 """
-This module contains the CustomerRoleFactory
+This module contains the
+CustomerRoleFactory
 class, which is responsible
-for creating instances of the CustomerRole
+for creating instances of the
+CustomerRole
 model using the Factory pattern.
 """
 
-from datetime import datetime
-import uuid
+from datetime import datetime  # noqa: F401
+import uuid  # noqa: F401
 import factory
 from factory import Faker
 from models import CustomerRole
@@ -100,7 +103,8 @@ class CustomerRoleFactory(factory.Factory):
         cls, model_class, *args, session=None, **kwargs
     ) -> CustomerRole:
         """
-        Create a new CustomerRole object
+        Create a new
+        CustomerRole object
         and save it to the database.
 
         Args:
@@ -151,7 +155,8 @@ class CustomerRoleFactory(factory.Factory):
         cls, session, *args, **kwargs
     ) -> CustomerRole:
         """
-        Create a new CustomerRole object
+        Create a new
+        CustomerRole object
         asynchronously.
 
         Args:

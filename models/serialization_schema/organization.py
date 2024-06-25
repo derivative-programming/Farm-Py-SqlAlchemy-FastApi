@@ -1,7 +1,9 @@
 # models/serialization_schema/organization.py
+# pylint: disable=unused-import
 
 """
-This module contains the OrganizationSchema
+This module contains the
+OrganizationSchema
 class, which is responsible
 for serializing and deserializing
 Organization objects.

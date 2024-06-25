@@ -7,9 +7,9 @@ Tac Login API.
 
 import json
 import logging
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 from pydantic import UUID4, Field
 
@@ -44,7 +44,8 @@ class TacLoginPostModelRequest(CamelModel):
 
     class Config:
         """
-        Configuration class for the TacLoginPostModelRequest.
+        Configuration class for the
+        TacLoginPostModelRequest.
         """
 
         json_encoders = {
@@ -110,7 +111,8 @@ class TacLoginPostModelResponse(PostResponse):
         default="",
         description="Api Key")
 
-    def load_flow_response(self, data: FlowTacLoginResult):
+    def load_flow_response(
+            self, data: FlowTacLoginResult):
         """
         Loads the flow response data into the response model.
         """
@@ -132,14 +134,16 @@ class TacLoginPostModelResponse(PostResponse):
         """
 
         try:
-            logging.info("loading model...TacLoginPostModelResponse")
+            logging.info("loading model..."
+                         "TacLoginPostModelResponse")
             tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load_from_code(code=tac_code)
             if tac_bus_obj.get_tac_obj() is None:
                 logging.info("Invalid tac_code")
                 raise ValueError("Invalid tac_code")
             flow = FlowTacLogin(session_context)
-            logging.info("process flow...TacLoginPostModelResponse")
+            logging.info("process flow..."
+                         "TacLoginPostModelResponse")
             flow_response = await flow.process(
                 tac_bus_obj,
                 request.email,

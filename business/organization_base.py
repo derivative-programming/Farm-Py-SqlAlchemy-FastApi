@@ -1,15 +1,19 @@
 # business/organization_base.py
+# pylint: disable=unused-import
 
 """
-This module contains the OrganizationBaseBusObj class,
-which represents the base business object for a Organization.
+This module contains the
+OrganizationBaseBusObj class,
+which represents the base
+business object for a
+Organization.
 """
 
-from decimal import Decimal
+from decimal import Decimal  # noqa: F401
 import random
 from typing import Optional
-import uuid
-from datetime import datetime, date
+import uuid  # noqa: F401
+from datetime import datetime, date  # noqa: F401
 from helpers.session_context import SessionContext
 from managers import OrganizationManager
 from models import Organization
@@ -76,8 +80,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
 
         return self.organization.organization_id
-
     # code
+
     @property
     def code(self):
         """
@@ -116,8 +120,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             raise ValueError("code must be a UUID.")
 
         self.organization.code = value
-
     # last_change_code
+
     @property
     def last_change_code(self):
         """
@@ -157,8 +161,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             raise ValueError("last_change_code must be an integer.")
 
         self.organization.last_change_code = value
-
     # insert_user_id
+
     @property
     def insert_user_id(self):
         """
@@ -199,8 +203,8 @@ class OrganizationBaseBusObj(BaseBusObj):
                 "insert_user_id must be a UUID.")
 
         self.organization.insert_user_id = value
-
     # last_update_user_id
+
     @property
     def last_update_user_id(self):
         """
@@ -485,7 +489,8 @@ class OrganizationBaseBusObj(BaseBusObj):
 
         organization_manager = OrganizationManager(
             self._session_context)
-        self.organization = await organization_manager.from_json(json_data)
+        self.organization = await \
+            organization_manager.from_json(json_data)
 
         return self
 
@@ -560,14 +565,8 @@ class OrganizationBaseBusObj(BaseBusObj):
         if not isinstance(organization_obj_instance,
                           Organization):
             raise ValueError(
-                "organization_obj_instance must be an instance of Organization")
-
-        # organization_manager = OrganizationManager(
-        #     self._session_context)
-
-        # organization_dict = organization_manager.to_dict(organization_obj_instance)
-
-        # self.organization = organization_manager.from_dict(organization_dict)
+                "organization_obj_instance must be an "
+                "instance of Organization")
 
         self.organization = organization_obj_instance
 
@@ -595,8 +594,9 @@ class OrganizationBaseBusObj(BaseBusObj):
         organization_manager = OrganizationManager(
             self._session_context)
 
-        self.organization = await organization_manager.from_dict(
-            organization_dict)
+        self.organization = await \
+            organization_manager.from_dict(
+                organization_dict)
 
         return self
 
@@ -622,8 +622,9 @@ class OrganizationBaseBusObj(BaseBusObj):
         """
         organization_manager = OrganizationManager(
             self._session_context)
-        self.organization = await organization_manager.refresh(
-            self.organization)
+        self.organization = await \
+            organization_manager.refresh(
+                self.organization)
 
         return self
 
@@ -697,14 +698,16 @@ class OrganizationBaseBusObj(BaseBusObj):
         if organization_id > 0:
             organization_manager = OrganizationManager(
                 self._session_context)
-            self.organization = await organization_manager.update(
-                self.organization)
+            self.organization = await \
+                organization_manager.update(
+                    self.organization)
 
         if organization_id == 0:
             organization_manager = OrganizationManager(
                 self._session_context)
-            self.organization = await organization_manager.add(
-                self.organization)
+            self.organization = await \
+                organization_manager.add(
+                    self.organization)
 
         return self
 
@@ -810,8 +813,10 @@ class OrganizationBaseBusObj(BaseBusObj):
             representing the related tac.
 
         """
-        tac_manager = managers_and_enums.TacManager(self._session_context)
-        tac_obj = await tac_manager.get_by_id(self.tac_id)
+        tac_manager = managers_and_enums.TacManager(
+            self._session_context)
+        tac_obj = await tac_manager.get_by_id(
+            self.tac_id)
         return tac_obj
 
     def get_obj(self) -> Organization:

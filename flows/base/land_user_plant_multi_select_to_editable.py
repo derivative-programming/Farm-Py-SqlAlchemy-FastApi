@@ -1,4 +1,5 @@
 # flows/base/land_user_plant_multi_select_to_editable.py
+# pylint: disable=unused-import
 
 """
 This module contains the implementation
@@ -6,9 +7,9 @@ of the BaseFlow
 Land User Plant Multi Select To Editable class
 """
 
-import uuid
-from datetime import date, datetime
-from decimal import Decimal
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import flows.constants.land_user_plant_multi_select_to_editable as FlowConstants
 from business.customer import CustomerBusObj
@@ -24,7 +25,8 @@ from .base_flow import BaseFlow
 
 class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
     """
-    Base class for LandUserPlantMultiSelectToEditable flow. Contains
+    Base class for LandUserPlantMultiSelectToEditable
+    flow. Contains
     some validaiton and security check logic
     """
 

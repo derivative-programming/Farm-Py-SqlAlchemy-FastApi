@@ -1,8 +1,11 @@
 # business/organization.py
 # pylint: disable=unused-import
 """
-This module contains the OrganizationBusObj class,
-which represents the business object for a Organization.
+This module contains the
+OrganizationBusObj class,
+which represents the
+business object for a
+Organization.
 """
 
 from typing import List

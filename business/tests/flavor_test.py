@@ -1,16 +1,20 @@
 # business/tests/flavor_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 """
-Unit tests for the FlavorBusObj class.
+Unit tests for the
+FlavorBusObj class.
 """
 
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from business.flavor import FlavorBusObj
+from business.flavor import (
+    FlavorBusObj)
 from helpers.session_context import SessionContext
-from models import Flavor
+from models import (
+    Flavor)
 
 
 @pytest.fixture
@@ -34,14 +38,16 @@ def flavor_list():
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list(session_context, flavor_list):
+async def test_to_bus_obj_list(
+        session_context, flavor_list):
     """
     Test the to_bus_obj_list method.
     """
     with patch('business.flavor.FlavorBusObj.load_from_obj_instance',
                new_callable=AsyncMock) as mock_load:
-        bus_obj_list = await FlavorBusObj.to_bus_obj_list(
-            session_context, flavor_list)
+        bus_obj_list = await \
+            FlavorBusObj.to_bus_obj_list(
+                session_context, flavor_list)
 
         assert len(bus_obj_list) == len(flavor_list)
         assert all(
@@ -54,12 +60,17 @@ async def test_to_bus_obj_list(session_context, flavor_list):
 
 
 @pytest.mark.asyncio
-async def test_to_bus_obj_list_empty(session_context):
+async def test_to_bus_obj_list_empty(
+        session_context):
     """
-    Test the to_bus_obj_list method with an empty list.
+    Test the to_bus_obj_list
+    method with an empty list.
     """
     empty_flavor_list = []
-    bus_obj_list = await FlavorBusObj.to_bus_obj_list(session_context, empty_flavor_list)
+    bus_obj_list = await \
+        FlavorBusObj.to_bus_obj_list(
+            session_context,
+            empty_flavor_list)
 
     assert len(bus_obj_list) == 0
 

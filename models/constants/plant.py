@@ -1,6 +1,8 @@
 # models/constants/plant.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to plants.
+This module contains boolean constants related to
+plants.
 """
 flvr_foreign_key_id_calculatedIsDBColumnIndexed: bool = True
 is_delete_allowed_calculatedIsDBColumnIndexed: bool = False

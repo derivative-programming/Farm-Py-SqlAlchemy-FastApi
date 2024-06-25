@@ -1,5 +1,6 @@
 # flows/base/tests/customer_user_log_out_init_obj_wf_test.py
 # pylint: disable=protected-access
+# pylint: disable=unused-import
 """
 This module contains the unit tests for the
 `BaseFlowCustomerUserLogOutInitObjWF` class.
@@ -66,7 +67,8 @@ class TestBaseFlowCustomerUserLogOutInitObjWF():
         _process_security_rules method
         when a specific role is required. It
         creates a session context, a customer
-        object, and a BaseFlowCustomerUserLogOutInitObjWF object.
+        object, and a
+        BaseFlowCustomerUserLogOutInitObjWF object.
         Then, it sets the role_required
         variable to "" and calls the
         _process_security_rules method. Finally,

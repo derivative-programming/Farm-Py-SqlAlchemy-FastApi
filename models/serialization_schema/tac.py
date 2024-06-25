@@ -1,7 +1,9 @@
 # models/serialization_schema/tac.py
+# pylint: disable=unused-import
 
 """
-This module contains the TacSchema
+This module contains the
+TacSchema
 class, which is responsible
 for serializing and deserializing
 Tac objects.

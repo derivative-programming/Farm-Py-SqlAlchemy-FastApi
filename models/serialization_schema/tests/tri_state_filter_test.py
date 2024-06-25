@@ -1,5 +1,6 @@
 # tri_state_filter_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains tests for the
@@ -40,8 +41,8 @@ works correctly and produces the expected results.
 
 import json
 import logging
-from datetime import datetime
-from decimal import Decimal
+from datetime import datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import pytest
 import pytz
@@ -218,7 +219,8 @@ class TestTriStateFilterSchema:
         new_tri_state_filter = TriStateFilter(
             **deserialized_data)
 
-        assert isinstance(new_tri_state_filter, TriStateFilter)
+        assert isinstance(new_tri_state_filter,
+                          TriStateFilter)
 
         # Now compare the new_tri_state_filter attributes with
         # the tri_state_filter attributes
@@ -317,7 +319,8 @@ class TestTriStateFilterSchema:
         new_tri_state_filter = TriStateFilter(
             **deserialized_data)
 
-        assert isinstance(new_tri_state_filter, TriStateFilter)
+        assert isinstance(new_tri_state_filter,
+                          TriStateFilter)
 
     def test_to_json(
         self,

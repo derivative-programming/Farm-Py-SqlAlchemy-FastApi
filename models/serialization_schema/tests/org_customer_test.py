@@ -1,5 +1,6 @@
 # org_customer_test.py
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-import
 
 """
 This module contains tests for the
@@ -40,8 +41,8 @@ works correctly and produces the expected results.
 
 import json
 import logging
-from datetime import datetime
-from decimal import Decimal
+from datetime import datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 
 import pytest
 import pytz
@@ -205,7 +206,8 @@ class TestOrgCustomerSchema:
         new_org_customer = OrgCustomer(
             **deserialized_data)
 
-        assert isinstance(new_org_customer, OrgCustomer)
+        assert isinstance(new_org_customer,
+                          OrgCustomer)
 
         # Now compare the new_org_customer attributes with
         # the org_customer attributes
@@ -293,7 +295,8 @@ class TestOrgCustomerSchema:
         new_org_customer = OrgCustomer(
             **deserialized_data)
 
-        assert isinstance(new_org_customer, OrgCustomer)
+        assert isinstance(new_org_customer,
+                          OrgCustomer)
 
     def test_to_json(
         self,

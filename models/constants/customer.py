@@ -1,6 +1,8 @@
 # models/constants/customer.py
+# pylint: disable=unused-import
 """
-This module contains boolean constants related to customers.
+This module contains boolean constants related to
+customers.
 """
 active_organization_id_calculatedIsDBColumnIndexed: bool = False
 email_calculatedIsDBColumnIndexed: bool = True

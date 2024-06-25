@@ -1,13 +1,14 @@
 # models/managers/tests/tri_state_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `TriStateFilterManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestTriStateFilterBulkManager:
             fetched_tri_state_filter = result.scalars().first()
 
             assert isinstance(
-                fetched_tri_state_filter, TriStateFilter)
+                fetched_tri_state_filter,
+                TriStateFilter)
 
             assert str(fetched_tri_state_filter.insert_user_id) == (
                 str(tri_state_filter_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestTriStateFilterBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_tri_state_filters) == 2
-        logging.info(updated_tri_state_filters[0].__dict__)
-        logging.info(updated_tri_state_filters[1].__dict__)
+        logging.info(updated_tri_state_filters[0]
+                     .__dict__)
+        logging.info(updated_tri_state_filters[1]
+                     .__dict__)
 
         logging.info('getall')
         tri_state_filters = await tri_state_filter_manager.get_list()
-        logging.info(tri_state_filters[0].__dict__)
-        logging.info(tri_state_filters[1].__dict__)
+        logging.info(tri_state_filters[0]
+                     .__dict__)
+        logging.info(tri_state_filters[1]
+                     .__dict__)
 
-        assert updated_tri_state_filters[0].code == code_updated1
-        assert updated_tri_state_filters[1].code == code_updated2
+        assert updated_tri_state_filters[0].code == \
+            code_updated1
+        assert updated_tri_state_filters[1].code == \
+            code_updated2
 
-        assert str(updated_tri_state_filters[0].last_update_user_id) == (
-            str(tri_state_filter_manager._session_context.customer_code))
+        assert str(updated_tri_state_filters[0]
+                   .last_update_user_id) == (
+            str(tri_state_filter_manager
+                ._session_context.customer_code))
 
-        assert str(updated_tri_state_filters[1].last_update_user_id) == (
-            str(tri_state_filter_manager._session_context.customer_code))
+        assert str(updated_tri_state_filters[1]
+                   .last_update_user_id) == (
+            str(tri_state_filter_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(TriStateFilter).filter(
@@ -194,7 +206,8 @@ class TestTriStateFilterBulkManager:
         )
         fetched_tri_state_filter = result.scalars().first()
 
-        assert isinstance(fetched_tri_state_filter, TriStateFilter)
+        assert isinstance(fetched_tri_state_filter,
+                          TriStateFilter)
 
         assert fetched_tri_state_filter.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestTriStateFilterBulkManager:
         )
         fetched_tri_state_filter = result.scalars().first()
 
-        assert isinstance(fetched_tri_state_filter, TriStateFilter)
+        assert isinstance(fetched_tri_state_filter,
+                          TriStateFilter)
 
         assert fetched_tri_state_filter.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestTriStateFilterBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param tri_state_filter_manager: An instance of the TriStateFilterManager class.
+        :param tri_state_filter_manager: An instance of the
+            TriStateFilterManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestTriStateFilterBulkManager:
             session=session)
 
         # Delete tri_state_filters
-        tri_state_filter_ids = [tri_state_filter1.tri_state_filter_id, tri_state_filter2.tri_state_filter_id]
+        tri_state_filter_ids = [tri_state_filter1.tri_state_filter_id,
+                     tri_state_filter2.tri_state_filter_id]
         result = await tri_state_filter_manager.delete_bulk(
             tri_state_filter_ids)
 
@@ -379,7 +395,8 @@ class TestTriStateFilterBulkManager:
         tri_state_filter1 = await TriStateFilterFactory.create_async(
             session=session)
 
-        assert isinstance(tri_state_filter1, TriStateFilter)
+        assert isinstance(tri_state_filter1,
+                          TriStateFilter)
 
         # Delete tri_state_filters
         tri_state_filter_ids = [1, 2]

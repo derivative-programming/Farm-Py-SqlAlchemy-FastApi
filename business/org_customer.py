@@ -1,8 +1,11 @@
 # business/org_customer.py
 # pylint: disable=unused-import
 """
-This module contains the OrgCustomerBusObj class,
-which represents the business object for a OrgCustomer.
+This module contains the
+OrgCustomerBusObj class,
+which represents the
+business object for a
+OrgCustomer.
 """
 
 from typing import List

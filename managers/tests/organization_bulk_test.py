@@ -1,13 +1,14 @@
 # models/managers/tests/organization_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
     This class contains unit tests for the
     `OrganizationManager` class.
 """
 
 import logging
-import uuid
+import uuid  # noqa: F401
 
 import pytest
 import pytest_asyncio
@@ -92,7 +93,8 @@ class TestOrganizationBulkManager:
             fetched_organization = result.scalars().first()
 
             assert isinstance(
-                fetched_organization, Organization)
+                fetched_organization,
+                Organization)
 
             assert str(fetched_organization.insert_user_id) == (
                 str(organization_manager._session_context.customer_code))
@@ -171,22 +173,32 @@ class TestOrganizationBulkManager:
         logging.info('bulk update results')
         # Assertions
         assert len(updated_organizations) == 2
-        logging.info(updated_organizations[0].__dict__)
-        logging.info(updated_organizations[1].__dict__)
+        logging.info(updated_organizations[0]
+                     .__dict__)
+        logging.info(updated_organizations[1]
+                     .__dict__)
 
         logging.info('getall')
         organizations = await organization_manager.get_list()
-        logging.info(organizations[0].__dict__)
-        logging.info(organizations[1].__dict__)
+        logging.info(organizations[0]
+                     .__dict__)
+        logging.info(organizations[1]
+                     .__dict__)
 
-        assert updated_organizations[0].code == code_updated1
-        assert updated_organizations[1].code == code_updated2
+        assert updated_organizations[0].code == \
+            code_updated1
+        assert updated_organizations[1].code == \
+            code_updated2
 
-        assert str(updated_organizations[0].last_update_user_id) == (
-            str(organization_manager._session_context.customer_code))
+        assert str(updated_organizations[0]
+                   .last_update_user_id) == (
+            str(organization_manager
+                ._session_context.customer_code))
 
-        assert str(updated_organizations[1].last_update_user_id) == (
-            str(organization_manager._session_context.customer_code))
+        assert str(updated_organizations[1]
+                   .last_update_user_id) == (
+            str(organization_manager
+                ._session_context.customer_code))
 
         result = await session.execute(
             select(Organization).filter(
@@ -194,7 +206,8 @@ class TestOrganizationBulkManager:
         )
         fetched_organization = result.scalars().first()
 
-        assert isinstance(fetched_organization, Organization)
+        assert isinstance(fetched_organization,
+                          Organization)
 
         assert fetched_organization.code == code_updated1
 
@@ -204,7 +217,8 @@ class TestOrganizationBulkManager:
         )
         fetched_organization = result.scalars().first()
 
-        assert isinstance(fetched_organization, Organization)
+        assert isinstance(fetched_organization,
+                          Organization)
 
         assert fetched_organization.code == code_updated2
 
@@ -287,7 +301,8 @@ class TestOrganizationBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param organization_manager: An instance of the OrganizationManager class.
+        :param organization_manager: An instance of the
+            OrganizationManager class.
         :param session: An instance of the AsyncSession class.
         """
 
@@ -335,7 +350,8 @@ class TestOrganizationBulkManager:
             session=session)
 
         # Delete organizations
-        organization_ids = [organization1.organization_id, organization2.organization_id]
+        organization_ids = [organization1.organization_id,
+                     organization2.organization_id]
         result = await organization_manager.delete_bulk(
             organization_ids)
 
@@ -379,7 +395,8 @@ class TestOrganizationBulkManager:
         organization1 = await OrganizationFactory.create_async(
             session=session)
 
-        assert isinstance(organization1, Organization)
+        assert isinstance(organization1,
+                          Organization)
 
         # Delete organizations
         organization_ids = [1, 2]

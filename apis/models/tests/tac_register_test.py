@@ -1,14 +1,15 @@
 # apis/models/tests/tac_register_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
 This module contains unit tests for the
 TacRegisterPostModelResponse class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -116,7 +117,8 @@ class TestTacRegisterPostModelRequest:
         This method tests the to_dict_snake_serialized method of the
         TacRegisterPostModelRequest class.
         """
-        # Create an instance of the TacRegisterPostModelRequest class
+        # Create an instance of the
+        # TacRegisterPostModelRequest class
         request = TacRegisterPostModelRequest(
             force_error_message="Test Error Message",
 # endset  # noqa: E122
@@ -186,7 +188,8 @@ class TestTacRegisterPostModelResponse:
         """
         This method tests the flow process request
         for adding a customer to a tac.
-        It mocks the process method of FlowTacRegister
+        It mocks the process method of
+        FlowTacRegister
         and asserts that the response is successful.
         """
 
@@ -212,7 +215,8 @@ class TestTacRegisterPostModelResponse:
                     session=session
                 )
             )
-            response_instance = TacRegisterPostModelResponse()
+            response_instance = \
+                TacRegisterPostModelResponse()
             session_context = SessionContext(dict(), session)
 
             tac = await TacFactory.create_async(session)

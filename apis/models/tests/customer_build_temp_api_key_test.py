@@ -1,14 +1,15 @@
 # apis/models/tests/customer_build_temp_api_key_test.py
 # pylint: disable=unused-argument
+# pylint: disable=unused-import
 """
 This module contains unit tests for the
 CustomerBuildTempApiKeyPostModelResponse class.
 """
 
-import uuid
+import uuid  # noqa: F401
 import math
-from datetime import date, datetime
-from decimal import Decimal
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -86,7 +87,8 @@ class TestCustomerBuildTempApiKeyPostModelRequest:
         This method tests the to_dict_snake_serialized method of the
         CustomerBuildTempApiKeyPostModelRequest class.
         """
-        # Create an instance of the CustomerBuildTempApiKeyPostModelRequest class
+        # Create an instance of the
+        # CustomerBuildTempApiKeyPostModelRequest class
         request = CustomerBuildTempApiKeyPostModelRequest(
             force_error_message="Test Error Message",
 # endset  # noqa: E122
@@ -140,7 +142,8 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         """
         This method tests the flow process request
         for adding a  to a customer.
-        It mocks the process method of FlowCustomerBuildTempApiKey
+        It mocks the process method of
+        FlowCustomerBuildTempApiKey
         and asserts that the response is successful.
         """
 
@@ -162,7 +165,8 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
                     session=session
                 )
             )
-            response_instance = CustomerBuildTempApiKeyPostModelResponse()
+            response_instance = \
+                CustomerBuildTempApiKeyPostModelResponse()
             session_context = SessionContext(dict(), session)
 
             customer = await CustomerFactory.create_async(session)
