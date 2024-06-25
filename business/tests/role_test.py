@@ -12,12 +12,14 @@ from business.role import RoleBusObj
 from helpers.session_context import SessionContext
 from models import Role
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def role_list():
@@ -29,6 +31,7 @@ def role_list():
         role = Mock(spec=Role)
         roles.append(role)
     return roles
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, role_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, role_list):
         for bus_obj, role in zip(bus_obj_list, role_list):
             mock_load.assert_any_call(role)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await RoleBusObj.to_bus_obj_list(session_context, empty_role_list)
 
     assert len(bus_obj_list) == 0
+

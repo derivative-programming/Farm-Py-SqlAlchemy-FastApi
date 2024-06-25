@@ -1,22 +1,28 @@
 # models/serialization_schema/customer_role.py
+
 """
 This module contains the CustomerRoleSchema
 class, which is responsible
 for serializing and deserializing
 CustomerRole objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import CustomerRole
+
+
 class CustomerRoleSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     CustomerRole objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = CustomerRole
         exclude = (
             "_customer_role_id",
@@ -32,6 +38,7 @@ class CustomerRoleSchema(SQLAlchemyAutoSchema):
             "_role_id",  # roleID
 # endset  # noqa E122
         )
+
     customer_role_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -45,4 +52,4 @@ class CustomerRoleSchema(SQLAlchemyAutoSchema):
     last_update_utc_date_time = fields.DateTime()
     customer_code_peek = fields.UUID()  # CustomerID
     role_code_peek = fields.UUID()   # RoleID
-# endset
+

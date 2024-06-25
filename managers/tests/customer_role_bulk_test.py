@@ -19,6 +19,7 @@ from managers.customer_role import CustomerRoleManager
 from models import CustomerRole
 from models.factory import CustomerRoleFactory
 
+
 class TestCustomerRoleBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestCustomerRoleBulkManager:
                 customer_role_ids)
 
         await session.rollback()
+

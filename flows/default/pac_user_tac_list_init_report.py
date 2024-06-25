@@ -7,6 +7,7 @@ that handle the addition of a
  to a specific
 pac in the flow process.
 """
+
 import uuid
 import json
 from datetime import date, datetime
@@ -16,23 +17,28 @@ from flows.base import LogSeverity
 from business.pac import PacBusObj
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
+
+
 class FlowPacUserTacListInitReportResult():
     """
     Represents the result of the
     FlowPacUserTacListInitReport process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
-# endset
+
     def __init__(self):
         """
         Initializes a new instance of the
         FlowPacUserTacListInitReportResult class.
         """
+
     def to_json(self):
         """
         Converts the FlowPacUserTacListInitReportResult
         instance to a JSON string.
+
         Returns:
             str: The JSON representation of the instance.
         """
@@ -45,6 +51,8 @@ class FlowPacUserTacListInitReportResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
+
+
 class FlowPacUserTacListInitReport(
     BaseFlowPacUserTacListInitReport
 ):
@@ -52,9 +60,11 @@ class FlowPacUserTacListInitReport(
     FlowPacUserTacListInitReport handles the addition of
     a  to
     a specific pac in the flow process.
+
     This class extends the BaseFlowPacUserTacListInitReport class and
     initializes it with the provided session context.
     """
+
     async def process(
         self,
         pac_bus_obj: PacBusObj,
@@ -64,6 +74,7 @@ class FlowPacUserTacListInitReport(
         """
         Processes the addition of a
          to a specific pac.
+
         Returns:
             FlowPacUserTacListInitReportResult: The result of the
                 FlowPacUserTacListInitReport process.
@@ -76,27 +87,34 @@ class FlowPacUserTacListInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(pac_bus_obj.code)
         )
+
         await super()._process_validation_rules(
             pac_bus_obj,
 
 # endset  # noqa: E122
         )
+
         super()._throw_queued_validation_errors()
 
-# endset
+
         # TODO: add flow logic
+
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowPacUserTacListInitReportResult()
+
         result.context_object_code = pac_bus_obj.code
 
-# endset
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
+
         return result
+

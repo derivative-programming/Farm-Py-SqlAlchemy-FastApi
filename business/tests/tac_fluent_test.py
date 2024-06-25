@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.tac_fluent import TacFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockTacBaseBusObj:
     """
     A mock base class for the TacFluentBusObj class.
@@ -73,3 +77,4 @@ class TestTacFluentBusObj:
         result = tac.set_prop_pac_id(1)
         assert tac.pac_id == 1
         assert result is tac
+

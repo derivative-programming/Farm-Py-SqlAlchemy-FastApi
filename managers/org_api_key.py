@@ -1,11 +1,13 @@
 # models/managers/org_api_key.py
 # pylint: disable=unused-import
+
 """
 This module contains the
 OrgApiKeyManager class, which is
 responsible for managing
 org_api_keys in the system.
 """
+
 import json
 import logging
 import uuid
@@ -19,17 +21,22 @@ from models.org_customer import OrgCustomer  # OrgCustomerID
 from models.org_api_key import OrgApiKey
 from models.serialization_schema.org_api_key import OrgApiKeySchema
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
+
+
 class OrgApiKeyNotFoundError(Exception):
     """
     Exception raised when a specified
     org_api_key is not found.
+
     Attributes:
         message (str): Explanation of the error.
     """
     def __init__(self, message="OrgApiKey not found"):
         self.message = message
         super().__init__(self.message)
+
 
 class OrgApiKeyManager:
     """
@@ -39,13 +46,16 @@ class OrgApiKeyManager:
     It provides methods for adding, updating, deleting,
     and retrieving org_api_keys.
     """
+
     def __init__(self, session_context: SessionContext):
         """
         Initializes a new instance of the
         OrgApiKeyManager class.
+
         Args:
             session_context (SessionContext): The session context object.
                 Must contain a valid session.
+
         Raises:
             ValueError: If the session is not provided.
         """
@@ -53,34 +63,41 @@ class OrgApiKeyManager:
             raise ValueError("session required")
         self._session_context = session_context
 
+
     async def initialize(self):
         """
         Initializes the OrgApiKeyManager.
         """
         logging.info("OrgApiKeyManager.Initialize")
 
+
     async def build(self, **kwargs) -> OrgApiKey:
         """
         Builds a new OrgApiKey
         object with the specified attributes.
+
         Args:
             **kwargs: The attributes of the
                 org_api_key.
+
         Returns:
             OrgApiKey: The newly created
                 OrgApiKey object.
         """
         logging.info("OrgApiKeyManager.build")
         return OrgApiKey(**kwargs)
+
     async def add(
         self,
         org_api_key: OrgApiKey
     ) -> OrgApiKey:
         """
         Adds a new org_api_key to the system.
+
         Args:
             org_api_key (OrgApiKey): The
                 org_api_key to add.
+
         Returns:
             OrgApiKey: The added
                 org_api_key.
@@ -92,21 +109,23 @@ class OrgApiKeyManager:
             org_api_key)
         await self._session_context.session.flush()
         return org_api_key
+
     def _build_query(self):
         """
         Builds the base query for retrieving
         org_api_keys.
+
         Returns:
             The base query for retrieving
             org_api_keys.
         """
         logging.info("OrgApiKeyManager._build_query")
+
         query = select(
             OrgApiKey,
             Organization,  # organization_id
             OrgCustomer,  # org_customer_id
         )
-# endset
         query = query.outerjoin(  # organization_id
             Organization,
             and_(OrgApiKey._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
@@ -117,8 +136,9 @@ class OrgApiKeyManager:
             and_(OrgApiKey._org_customer_id == OrgCustomer._org_customer_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
                  OrgApiKey._org_customer_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
         )
-# endset
+
         return query
+
     async def _run_query(
         self,
         query_filter
@@ -126,38 +146,44 @@ class OrgApiKeyManager:
         """
         Runs the query to retrieve
         org_api_keys from the database.
+
         Args:
             query_filter: The filter to apply to the query.
+
         Returns:
             List[OrgApiKey]: The list of
                 org_api_keys that match the query.
         """
         logging.info("OrgApiKeyManager._run_query")
         org_api_key_query_all = self._build_query()
+
         if query_filter is not None:
             query = org_api_key_query_all.filter(query_filter)
         else:
             query = org_api_key_query_all
+
         result_proxy = await self._session_context.session.execute(query)
+
         query_results = result_proxy.all()
+
         result = list()
+
         for query_result_row in query_results:
             i = 0
             org_api_key = query_result_row[i]
             i = i + 1
-# endset
             organization = query_result_row[i]  # organization_id
             i = i + 1
             org_customer = query_result_row[i]  # org_customer_id
             i = i + 1
-# endset
             org_api_key.organization_code_peek = (  # organization_id
                 organization.code if organization else uuid.UUID(int=0))
             org_api_key.org_customer_code_peek = (  # org_customer_id
                 org_customer.code if org_customer else uuid.UUID(int=0))
-# endset
             result.append(org_api_key)
+
         return result
+
     def _first_or_none(
         self,
         org_api_key_list: List['OrgApiKey']
@@ -165,10 +191,12 @@ class OrgApiKeyManager:
         """
         Returns the first element of the list if it exists,
         otherwise returns None.
+
         Args:
             org_api_key_list (List[OrgApiKey]):
                 The list to retrieve
                 the first element from.
+
         Returns:
             Optional[OrgApiKey]: The
                 first element of the list
@@ -179,12 +207,15 @@ class OrgApiKeyManager:
             if org_api_key_list
             else None
         )
+
     async def get_by_id(self, org_api_key_id: int) -> Optional[OrgApiKey]:
         """
         Retrieves a org_api_key by its ID.
+
         Args:
             org_api_key_id (int): The ID of the
                 org_api_key to retrieve.
+
         Returns:
             Optional[OrgApiKey]: The retrieved
                 org_api_key, or None if not found.
@@ -196,25 +227,35 @@ class OrgApiKeyManager:
             raise TypeError(
                 "The org_api_key_id must be an integer, "
                 f"got {type(org_api_key_id)} instead.")
+
         query_filter = (
             OrgApiKey._org_api_key_id == org_api_key_id)  # pylint: disable=protected-access
+
         query_results = await self._run_query(query_filter)
+
         return self._first_or_none(query_results)
+
     async def get_by_code(self, code: uuid.UUID) -> Optional[OrgApiKey]:
         """
         Retrieves a org_api_key
         by its code.
+
         Args:
             code (uuid.UUID): The code of the
                 org_api_key to retrieve.
+
         Returns:
             Optional[OrgApiKey]: The retrieved
                 org_api_key, or None if not found.
         """
         logging.info("OrgApiKeyManager.get_by_code %s", code)
+
         query_filter = OrgApiKey._code == str(code)  # pylint: disable=protected-access  # noqa: E501
+
         query_results = await self._run_query(query_filter)
+
         return self._first_or_none(query_results)
+
     async def update(
         self,
         org_api_key: OrgApiKey, **kwargs
@@ -222,13 +263,16 @@ class OrgApiKeyManager:
         """
         Updates a org_api_key with
         the specified attributes.
+
         Args:
             org_api_key (OrgApiKey): The
                 org_api_key to update.
             **kwargs: The attributes to update.
+
         Returns:
             Optional[OrgApiKey]: The updated
                 org_api_key, or None if not found.
+
         Raises:
             ValueError: If an invalid property is provided.
         """
@@ -242,12 +286,15 @@ class OrgApiKeyManager:
                 setattr(org_api_key, key, value)
             await self._session_context.session.flush()
         return org_api_key
+
     async def delete(self, org_api_key_id: int):
         """
         Deletes a org_api_key by its ID.
+
         Args:
             org_api_key_id (int): The ID of the
                 org_api_key to delete.
+
         Raises:
             TypeError: If the org_api_key_id
                 is not an integer.
@@ -265,30 +312,39 @@ class OrgApiKeyManager:
             org_api_key_id)
         if not org_api_key:
             raise OrgApiKeyNotFoundError(f"OrgApiKey with ID {org_api_key_id} not found!")
+
         await self._session_context.session.delete(
             org_api_key)
+
         await self._session_context.session.flush()
+
     async def get_list(
         self
     ) -> List[OrgApiKey]:
         """
         Retrieves a list of all org_api_keys.
+
         Returns:
             List[OrgApiKey]: The list of
                 org_api_keys.
         """
         logging.info("OrgApiKeyManager.get_list")
+
         query_results = await self._run_query(None)
+
         return query_results
+
     def to_json(
             self,
             org_api_key: OrgApiKey) -> str:
         """
         Serializes a OrgApiKey object
         to a JSON string.
+
         Args:
             org_api_key (OrgApiKey): The
                 org_api_key to serialize.
+
         Returns:
             str: The JSON string representation of the
                 org_api_key.
@@ -297,6 +353,7 @@ class OrgApiKeyManager:
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
         return json.dumps(org_api_key_data)
+
     def to_dict(
         self,
         org_api_key: OrgApiKey
@@ -304,9 +361,11 @@ class OrgApiKeyManager:
         """
         Serializes a OrgApiKey
         object to a dictionary.
+
         Args:
             org_api_key (OrgApiKey): The
                 org_api_key to serialize.
+
         Returns:
             Dict[str, Any]: The dictionary representation of the
                 org_api_key.
@@ -314,14 +373,19 @@ class OrgApiKeyManager:
         logging.info("OrgApiKeyManager.to_dict")
         schema = OrgApiKeySchema()
         org_api_key_data = schema.dump(org_api_key)
+
         assert isinstance(org_api_key_data, dict)
+
         return org_api_key_data
+
     def from_json(self, json_str: str) -> OrgApiKey:
         """
         Deserializes a JSON string into a
         OrgApiKey object.
+
         Args:
             json_str (str): The JSON string to deserialize.
+
         Returns:
             OrgApiKey: The deserialized
                 OrgApiKey object.
@@ -330,16 +394,24 @@ class OrgApiKeyManager:
         schema = OrgApiKeySchema()
         data = json.loads(json_str)
         org_api_key_dict = schema.load(data)
+
+        #TODO: we need to load the obj form db and into session first.
+        # If not found, then no chagnes can be saved
+
         new_org_api_key = OrgApiKey(**org_api_key_dict)
+
         return new_org_api_key
+
     def from_dict(self, org_api_key_dict: Dict[str, Any]) -> OrgApiKey:
         """
         Creates a OrgApiKey
         instance from a dictionary of attributes.
+
         Args:
             org_api_key_dict (Dict[str, Any]): A dictionary
                 containing org_api_key
                 attributes.
+
         Returns:
             OrgApiKey: A new
                 OrgApiKey instance
@@ -347,14 +419,20 @@ class OrgApiKeyManager:
                 dictionary.
         """
         logging.info("OrgApiKeyManager.from_dict")
+
         # Deserialize the dictionary into a validated schema object
         schema = OrgApiKeySchema()
         org_api_key_dict_converted = schema.load(
             org_api_key_dict)
+
+        #TODO: we need to load the obj form db and into session first.
+        # If not found, then no chagnes can be saved
+
         # Create a new OrgApiKey instance
         # using the validated data
         new_org_api_key = OrgApiKey(**org_api_key_dict_converted)
         return new_org_api_key
+
     async def add_bulk(
         self,
         org_api_keys: List[OrgApiKey]
@@ -362,9 +440,11 @@ class OrgApiKeyManager:
         """
         Adds multiple org_api_keys
         to the system.
+
         Args:
             org_api_keys (List[OrgApiKey]): The list of
                 org_api_keys to add.
+
         Returns:
             List[OrgApiKey]: The added
                 org_api_keys.
@@ -383,6 +463,7 @@ class OrgApiKeyManager:
         self._session_context.session.add_all(org_api_keys)
         await self._session_context.session.flush()
         return org_api_keys
+
     async def update_bulk(
         self,
         org_api_key_updates: List[Dict[str, Any]]
@@ -390,19 +471,23 @@ class OrgApiKeyManager:
         """
         Update multiple org_api_keys
         with the provided updates.
+
         Args:
             org_api_key_updates (List[Dict[str, Any]]): A list of
             dictionaries containing the updates for each
             org_api_key.
+
         Returns:
             List[OrgApiKey]: A list of updated
                 OrgApiKey objects.
+
         Raises:
             TypeError: If the org_api_key_id is not an integer.
             OrgApiKeyNotFoundError: If a
                 org_api_key with the
                 provided org_api_key_id is not found.
         """
+
         logging.info("OrgApiKeyManager.update_bulk start")
         updated_org_api_keys = []
         for update in org_api_key_updates:
@@ -414,43 +499,59 @@ class OrgApiKeyManager:
                 )
             if not org_api_key_id:
                 continue
+
             logging.info("OrgApiKeyManager.update_bulk org_api_key_id:%s", org_api_key_id)
+
             org_api_key = await self.get_by_id(
                 org_api_key_id)
+
             if not org_api_key:
                 raise OrgApiKeyNotFoundError(
                     f"OrgApiKey with ID {org_api_key_id} not found!")
+
             for key, value in update.items():
                 if key != "org_api_key_id":
                     setattr(org_api_key, key, value)
+
             org_api_key.last_update_user_id = self._session_context.customer_code
+
             updated_org_api_keys.append(org_api_key)
+
         await self._session_context.session.flush()
+
         logging.info("OrgApiKeyManager.update_bulk end")
+
         return updated_org_api_keys
+
     async def delete_bulk(self, org_api_key_ids: List[int]) -> bool:
         """
         Delete multiple org_api_keys
         by their IDs.
         """
         logging.info("OrgApiKeyManager.delete_bulk")
+
         for org_api_key_id in org_api_key_ids:
             if not isinstance(org_api_key_id, int):
                 raise TypeError(
                     f"The org_api_key_id must be an integer, "
                     f"got {type(org_api_key_id)} instead."
                 )
+
             org_api_key = await self.get_by_id(
                 org_api_key_id)
             if not org_api_key:
                 raise OrgApiKeyNotFoundError(
                     f"OrgApiKey with ID {org_api_key_id} not found!"
                 )
+
             if org_api_key:
                 await self._session_context.session.delete(
                     org_api_key)
+
         await self._session_context.session.flush()
+
         return True
+
     async def count(self) -> int:
         """
         return the total number of
@@ -460,6 +561,7 @@ class OrgApiKeyManager:
         result = await self._session_context.session.execute(
             select(OrgApiKey))
         return len(list(result.scalars().all()))
+
     async def refresh(
         self,
         org_api_key: OrgApiKey
@@ -469,9 +571,13 @@ class OrgApiKeyManager:
         org_api_key instance
         from the database.
         """
+
         logging.info("OrgApiKeyManager.refresh")
+
         await self._session_context.session.refresh(org_api_key)
+
         return org_api_key
+
     async def exists(self, org_api_key_id: int) -> bool:
         """
         Check if a org_api_key
@@ -486,6 +592,7 @@ class OrgApiKeyManager:
         org_api_key = await self.get_by_id(
             org_api_key_id)
         return bool(org_api_key)
+
     def is_equal(
         self,
         org_api_key1: OrgApiKey,
@@ -494,14 +601,17 @@ class OrgApiKeyManager:
         """
         Check if two OrgApiKey
         objects are equal.
+
         Args:
             org_api_key1 (OrgApiKey): The first
                 OrgApiKey object.
             org_api_key2 (OrgApiKey): The second
                 OrgApiKey object.
+
         Returns:
             bool: True if the two OrgApiKey
                 objects are equal, False otherwise.
+
         Raises:
             TypeError: If either org_api_key1
                 or org_api_key2
@@ -510,37 +620,47 @@ class OrgApiKeyManager:
         """
         if not org_api_key1:
             raise TypeError("OrgApiKey1 required.")
+
         if not org_api_key2:
             raise TypeError("OrgApiKey2 required.")
+
         if not isinstance(org_api_key1, OrgApiKey):
             raise TypeError("The org_api_key1 must be an "
                             "OrgApiKey instance.")
+
         if not isinstance(org_api_key2, OrgApiKey):
             raise TypeError("The org_api_key2 must be an "
                             "OrgApiKey instance.")
+
         dict1 = self.to_dict(org_api_key1)
         dict2 = self.to_dict(org_api_key2)
+
         return dict1 == dict2
-# endset
     async def get_by_organization_id(self, organization_id: int) -> List[OrgApiKey]:  # OrganizationID
         """
         Retrieve a list of org_api_keys by
         organization ID.
+
         Args:
             organization_id (int): The ID of the organization.
+
         Returns:
             List[OrgApiKey]: A list of
                 org_api_keys associated
                 with the specified organization ID.
         """
+
         logging.info("OrgApiKeyManager.get_by_organization_id")
         if not isinstance(organization_id, int):
             raise TypeError(
                 f"The org_api_key_id must be an integer, "
                 f"got {type(organization_id)} instead."
             )
+
         query_filter = OrgApiKey._organization_id == organization_id  # pylint: disable=protected-access  # noqa: E501
+
         query_results = await self._run_query(query_filter)
+
         return query_results
     async def get_by_org_customer_id(
         self,
@@ -550,25 +670,30 @@ class OrgApiKeyManager:
         Retrieve a list of org_api_keys
             based on the
             given org_customer_id.
+
         Args:
             org_customer_id (int): The
                 org_customer_id
                 to filter the
                 org_api_keys.
+
         Returns:
             List[OrgApiKey]: A list of OrgApiKey
                 objects
                 matching the given
                 org_customer_id.
         """
+
         logging.info("OrgApiKeyManager.get_by_org_customer_id")
         if not isinstance(org_customer_id, int):
             raise TypeError(
                 f"The org_api_key_id must be an integer, "
                 f"got {type(org_customer_id)} instead."
             )
+
         query_filter = OrgApiKey._org_customer_id == org_customer_id  # pylint: disable=protected-access  # noqa: E501
+
         query_results = await self._run_query(query_filter)
+
         return query_results
-# endset
 

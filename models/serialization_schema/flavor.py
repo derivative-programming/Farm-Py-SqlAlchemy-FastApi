@@ -1,22 +1,28 @@
 # models/serialization_schema/flavor.py
+
 """
 This module contains the FlavorSchema
 class, which is responsible
 for serializing and deserializing
 Flavor objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Flavor
+
+
 class FlavorSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     Flavor objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = Flavor
         exclude = (
             "_flavor_id",
@@ -34,6 +40,7 @@ class FlavorSchema(SQLAlchemyAutoSchema):
             "_pac_id",  # PacID
 # endset  # noqa E122
         )
+
     flavor_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -48,4 +55,4 @@ class FlavorSchema(SQLAlchemyAutoSchema):
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
     pac_code_peek = fields.UUID()  # PacID
-# endset
+

@@ -1,22 +1,28 @@
 # models/serialization_schema/pac.py
+
 """
 This module contains the PacSchema
 class, which is responsible
 for serializing and deserializing
 Pac objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Pac
+
+
 class PacSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     Pac objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = Pac
         exclude = (
             "_pac_id",
@@ -33,6 +39,7 @@ class PacSchema(SQLAlchemyAutoSchema):
             "_name",  # name
 # endset  # noqa E122
         )
+
     pac_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -46,4 +53,3 @@ class PacSchema(SQLAlchemyAutoSchema):
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
 
-# endset

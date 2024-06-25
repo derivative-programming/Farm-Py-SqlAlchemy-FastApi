@@ -1,14 +1,17 @@
 # role_test.py
 # pylint: disable=redefined-outer-name
+
 """
 This module contains tests for the
 Role serialization schema.
+
 The Role serialization schema
 is responsible for serializing and deserializing
 Role instances. It ensures that the
 data is properly formatted and can be
 stored or retrieved from a database or
 transmitted over a network.
+
 The tests in this module cover the serialization
 and deserialization of Role
 instances using the RoleSchema class. They verify
@@ -16,6 +19,7 @@ that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Role instance.
+
 The RoleSchema class is used to define
 the serialization and deserialization
 rules for Role instances. It
@@ -25,23 +29,31 @@ should be converted to a serialized
 format and how the serialized data should
 be converted back to a Role
 instance.
+
 The tests in this module use the pytest
 framework to define test cases and
 assertions. They ensure that the serialization
 and deserialization process
 works correctly and produces the expected results.
+
 """
+
 import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+
 import pytest
 import pytz
+
 from models import Role
 from models.factory import RoleFactory
 from models.serialization_schema import RoleSchema
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
+
+
 @pytest.fixture(scope="function")
 def role(
     session
@@ -50,18 +62,24 @@ def role(
     Fixture to create and return a Role
     instance using the
     RoleFactory.
+
     Args:
         session: The database session.
+
     Returns:
         Role: A newly created
             Role instance.
     """
+
     return RoleFactory.create(session=session)
+
+
 class TestRoleSchema:
     """
     Tests for the Role
     serialization schema.
     """
+
     # Sample data for a Role
     # instance
     sample_data = {
@@ -91,6 +109,7 @@ class TestRoleSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
+
     def test_role_serialization(
         self,
         role: Role
@@ -99,14 +118,19 @@ class TestRoleSchema:
         Test the serialization of a
         Role instance using
         RoleSchema.
+
         Args:
             role (Role):
                 A Role instance to serialize.
         """
+
         schema = RoleSchema()
         role_data = schema.dump(role)
+
         assert isinstance(role_data, dict)
+
         result = role_data
+
         assert result['code'] == str(role.code)
         assert result['last_change_code'] == (
             role.last_change_code)
@@ -114,7 +138,7 @@ class TestRoleSchema:
             str(role.insert_user_id))
         assert result['last_update_user_id'] == (
             str(role.last_update_user_id))
-# endset
+
         assert result['description'] == (
             role.description)
         assert result['display_order'] == (
@@ -127,31 +151,34 @@ class TestRoleSchema:
             role.name)
         assert result['pac_id'] == (
             role.pac_id)
-# endset
         assert result['insert_utc_date_time'] == (
             role.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
             role.last_update_utc_date_time.isoformat())
-# endset
         assert result['pac_code_peek'] == (  # PacID
             str(role.pac_code_peek))
-# endset
+
     def test_role_deserialization(self, role):
         """
         Test the deserialization of a
         Role object using the
         RoleSchema.
+
         Args:
             role (Role): The
                 Role object to be deserialized.
+
         Raises:
             AssertionError: If any of the assertions fail.
+
         Returns:
             None
         """
+
         schema = RoleSchema()
         serialized_data = schema.dump(role)
         deserialized_data = schema.load(serialized_data)
+
         assert deserialized_data['code'] == \
             role.code
         assert deserialized_data['last_change_code'] == (
@@ -160,7 +187,6 @@ class TestRoleSchema:
             role.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
             role.last_update_user_id)
-# endset
         assert deserialized_data['description'] == (
             role.description)
         assert deserialized_data['display_order'] == (
@@ -173,18 +199,18 @@ class TestRoleSchema:
             role.name)
         assert deserialized_data['pac_id'] == (
             role.pac_id)
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             role.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             role.last_update_utc_date_time.isoformat())
-# endset
         assert deserialized_data[(  # PacID
             'pac_code_peek')] == (
             role.pac_code_peek)
-# endset
+
         new_role = Role(**deserialized_data)
+
         assert isinstance(new_role, Role)
+
         # Now compare the new_role attributes with
         # the role attributes
         assert new_role.code == \
@@ -195,7 +221,6 @@ class TestRoleSchema:
             role.insert_user_id
         assert new_role.last_update_user_id == \
             role.last_update_user_id
-# endset
         assert new_role.description == (
             role.description)
         assert new_role.display_order == (
@@ -208,18 +233,18 @@ class TestRoleSchema:
             role.name)
         assert new_role.pac_id == (
             role.pac_id)
-# endset
+
         assert new_role.insert_utc_date_time.isoformat() == (
             role.insert_utc_date_time.isoformat())
         assert new_role.last_update_utc_date_time.isoformat() == (
             role.last_update_utc_date_time.isoformat())
-# endset
         assert new_role.pac_code_peek == (  # PacID
             role.pac_code_peek)
-# endset
+
     def test_from_json(self):
         """
         Test the `from_json` method of the RoleSchema class.
+
         This method tests the deserialization of
         a JSON string to a
         Role object.
@@ -230,16 +255,22 @@ class TestRoleSchema:
         equality of the deserialized
         Role object
         with the sample data.
+
         Returns:
             None
         """
+
         role_schema = RoleSchema()
+
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
+
         # Deserialize the JSON string to a dictionary
         json_data = json.loads(json_str)
+
         # Load the dictionary to an object
         deserialized_data = role_schema.load(json_data)
+
         assert str(deserialized_data['role_id']) == (
             str(self.sample_data['role_id']))
         assert str(deserialized_data['code']) == (
@@ -250,7 +281,6 @@ class TestRoleSchema:
             str(self.sample_data['insert_user_id']))
         assert str(deserialized_data['last_update_user_id']) == (
             str(self.sample_data['last_update_user_id']))
-# endset
         assert str(deserialized_data['description']) == (
             str(self.sample_data['description']))
         assert str(deserialized_data['display_order']) == (
@@ -263,17 +293,18 @@ class TestRoleSchema:
             str(self.sample_data['name']))
         assert str(deserialized_data['pac_id']) == (
             str(self.sample_data['pac_id']))
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
         assert str(deserialized_data[(  # PacID
             'pac_code_peek')]) == (
             str(self.sample_data['pac_code_peek']))
-# endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
+
         new_role = Role(**deserialized_data)
+
         assert isinstance(new_role, Role)
+
     def test_to_json(
         self,
         role: Role
@@ -281,35 +312,44 @@ class TestRoleSchema:
         """
         Test the conversion of a
         Role instance to JSON.
+
         Args:
             role (Role): The
             Role instance to convert.
+
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
+
         # Convert the Role instance
         # to JSON using the schema
         role_schema = RoleSchema()
         role_dict = role_schema.dump(
             role)
+
         # Convert the role_dict to JSON string
         role_json = json.dumps(
             role_dict)
+
         # Convert the JSON strings back to dictionaries
         role_dict_from_json = json.loads(
             role_json)
         # sample_dict_from_json = json.loads(self.sample_data)
+
         logging.info(
             "role_dict_from_json.keys() %s",
             role_dict_from_json.keys())
+
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+
         # Verify the keys in both dictionaries match
         assert set(role_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(role_dict_from_json.keys())}"
         )
+
         assert role_dict_from_json['code'] == \
             str(role.code), (
             "failed on code"
@@ -326,7 +366,6 @@ class TestRoleSchema:
             str(role.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-# endset
         assert role_dict_from_json['description'] == (
             role.description), (
             "failed on description"
@@ -351,7 +390,6 @@ class TestRoleSchema:
             role.pac_id), (
             "failed on pac_id"
         )
-# endset
         assert role_dict_from_json['insert_utc_date_time'] == (
             role.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
@@ -360,10 +398,9 @@ class TestRoleSchema:
             role.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-# endset
         assert role_dict_from_json[(  # PacID
             'pac_code_peek')] == (
             str(role.pac_code_peek)), (
             "failed on pac_code_peek"
         )
-# endset
+

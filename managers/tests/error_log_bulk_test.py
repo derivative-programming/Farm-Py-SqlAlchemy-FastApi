@@ -19,6 +19,7 @@ from managers.error_log import ErrorLogManager
 from models import ErrorLog
 from models.factory import ErrorLogFactory
 
+
 class TestErrorLogBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestErrorLogBulkManager:
                 error_log_ids)
 
         await session.rollback()
+

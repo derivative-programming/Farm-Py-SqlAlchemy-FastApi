@@ -1,14 +1,18 @@
 # apis/models/init/plant_user_details_init_report.py
+
 """
 This module contains the models and request/response classes
 for the PlantUserDetailsInitReport workflow.
 """
+
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import Field
+
 from apis.models.validation_error import ValidationErrorItem
 from business.plant import PlantBusObj
 from flows.base.flow_validation_error import FlowValidationError
@@ -18,11 +22,14 @@ from flows.plant_user_details_init_report import (
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
+
+
 class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
     """
     Represents the response model for the
     PlantUserDetailsInitReportGetInitModelRequest.
     """
+
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
@@ -36,7 +43,7 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
             '00000000-0000-0000-0000-000000000000'
         ),
         description="Tac Code")
-# endset
+
     def load_flow_response(
         self,
         data: FlowPlantUserDetailsInitReportResult
@@ -45,6 +52,7 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
         Loads the response data from the
         FlowPlantUserDetailsInitReportResult object.
         """
+
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -56,12 +64,16 @@ class PlantUserDetailsInitReportGetInitModelResponse(CamelModel):
         """
         Serializes the response model to JSON.
         """
+
         return self.model_dump_json()
+
+
 class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
     """
     Represents the request model for the
     PlantUserDetailsInitReportGetInitModelRequest.
     """
+
     async def process_request(
             self,
             session_context: SessionContext,
@@ -71,6 +83,7 @@ class PlantUserDetailsInitReportGetInitModelRequest(SnakeModel):
         """
         Processes the request and returns the response.
         """
+
         try:
             logging.info(
                 "loading model...PlantUserDetailsInitReportGetInitModelRequest")

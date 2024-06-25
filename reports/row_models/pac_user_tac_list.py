@@ -1,12 +1,17 @@
 # pac_user_tac_list.py
+
 """
 This module contains the definition of the
 ReportItemPacUserTacList class.
 """
+
 import uuid
 from decimal import Decimal
 from datetime import datetime, date
+
 from helpers.type_conversion import TypeConversion
+
+
 class ReportItemPacUserTacList():
     """
     Represents a report item for a pac Pac User Tac List Report.
@@ -19,12 +24,14 @@ class ReportItemPacUserTacList():
     tac_lookup_enum_name: str = ""
     tac_name: str = ""
     pac_name: str = ""
-# endset
+
     def load_data_provider_dict(self, data: dict):
         """
         Loads data from a dictionary into the report item.
+
         Args:
             data (dict): The dictionary containing the data.
+
         Returns:
             None
         """
@@ -42,5 +49,4 @@ class ReportItemPacUserTacList():
             str(data["tac_name"]))
         self.pac_name = (
             str(data["pac_name"]))
-# endset
 

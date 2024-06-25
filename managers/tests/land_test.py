@@ -20,6 +20,7 @@ from models import Land
 from models.factory import LandFactory
 from models.serialization_schema.land import LandSchema
 
+
 class TestLandManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestLandManager:
             await land_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

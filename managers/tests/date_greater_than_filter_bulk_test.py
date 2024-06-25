@@ -19,6 +19,7 @@ from managers.date_greater_than_filter import DateGreaterThanFilterManager
 from models import DateGreaterThanFilter
 from models.factory import DateGreaterThanFilterFactory
 
+
 class TestDateGreaterThanFilterBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestDateGreaterThanFilterBulkManager:
                 date_greater_than_filter_ids)
 
         await session.rollback()
+

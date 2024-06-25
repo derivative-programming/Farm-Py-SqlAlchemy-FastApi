@@ -20,6 +20,7 @@ from models import Flavor
 from models.factory import FlavorFactory
 from models.serialization_schema.flavor import FlavorSchema
 
+
 class TestFlavorManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestFlavorManager:
             await flavor_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

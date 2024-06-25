@@ -14,21 +14,27 @@ from flows.base.pac_user_tri_state_filter_list_init_report import (
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
+
+
 class TestBaseFlowPacUserTriStateFilterListInitReport():
     """
     This class contains unit tests for the
     `BaseFlowPacUserTriStateFilterListInitReport` class.
     """
+
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
         """
         Test case for the _process_validation_rules method
         of the BaseFlowPacUserTriStateFilterListInitReport class.
+
         This method tests the validation rules for the request
         parameters of the
         pac  flow.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
@@ -36,7 +42,6 @@ class TestBaseFlowPacUserTriStateFilterListInitReport():
         flow = BaseFlowPacUserTriStateFilterListInitReport(session_context)
         pac = await PacFactory.create_async(session)
 
-# endset
         # Call the method being tested
         await flow._process_validation_rules(
             pac,
@@ -50,12 +55,13 @@ class TestBaseFlowPacUserTriStateFilterListInitReport():
         # - calculatedIsRowLevelOrgCustomerSecurityUsed
         # - calculatedIsRowLevelOrganizationSecurityUsed
 
-# endset
+
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
         Test the process_security_rules method of
         BaseFlowPacUserTriStateFilterListInitReport.
+
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It
@@ -67,8 +73,10 @@ class TestBaseFlowPacUserTriStateFilterListInitReport():
         it asserts that the expected validation
         errors are present in the flow's
         queued_validation_errors dictionary.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
@@ -82,3 +90,4 @@ class TestBaseFlowPacUserTriStateFilterListInitReport():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
+

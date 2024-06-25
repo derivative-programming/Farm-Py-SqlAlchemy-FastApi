@@ -3,6 +3,7 @@
 This module contains unit tests for the OrganizationFactory
 class in the models.factory package.
 """
+
 from decimal import Decimal
 import time
 import math
@@ -17,11 +18,15 @@ from models import Base, Organization
 from models.factory import OrganizationFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+
 DATABASE_URL = "sqlite:///:memory:"
+
+
 class TestOrganizationFactory:
     """
     This class contains unit tests for the OrganizationFactory class.
     """
+
     @pytest.fixture(scope="module")
     def engine(self):
         """
@@ -33,6 +38,7 @@ class TestOrganizationFactory:
             conn.execute(text("PRAGMA foreign_keys=ON"))
         yield engine
         engine.dispose()
+
     @pytest.fixture
     def session(self, engine):
         """
@@ -44,6 +50,7 @@ class TestOrganizationFactory:
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
+
     def test_organization_creation(self, session):
         """
         Test case for creating a organization.
@@ -51,6 +58,7 @@ class TestOrganizationFactory:
         organization = OrganizationFactory.create(
             session=session)
         assert organization.organization_id is not None
+
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
@@ -59,6 +67,7 @@ class TestOrganizationFactory:
         organization = OrganizationFactory.create(
             session=session)
         assert isinstance(organization.code, uuid.UUID)
+
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
@@ -67,6 +76,7 @@ class TestOrganizationFactory:
         organization: Organization = OrganizationFactory.build(
             session=session)
         assert organization.last_change_code == 0
+
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
@@ -75,6 +85,7 @@ class TestOrganizationFactory:
         organization: Organization = OrganizationFactory.create(
             session=session)
         assert organization.last_change_code == 1
+
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
@@ -86,6 +97,7 @@ class TestOrganizationFactory:
         organization.code = uuid.uuid4()
         session.commit()
         assert organization.last_change_code != initial_code
+
     def test_date_inserted_on_build(self, session):
         """
         Test case for checking the value of the
@@ -96,6 +108,7 @@ class TestOrganizationFactory:
         assert organization.insert_utc_date_time is not None
         assert isinstance(
             organization.insert_utc_date_time, datetime)
+
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -111,6 +124,7 @@ class TestOrganizationFactory:
         session.add(organization)
         session.commit()
         assert organization.insert_utc_date_time > initial_time
+
     def test_date_inserted_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -126,6 +140,7 @@ class TestOrganizationFactory:
         time.sleep(1)
         session.commit()
         assert organization.insert_utc_date_time == initial_time
+
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
@@ -136,6 +151,7 @@ class TestOrganizationFactory:
         assert organization.last_update_utc_date_time is not None
         assert isinstance(
             organization.last_update_utc_date_time, datetime)
+
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -151,6 +167,7 @@ class TestOrganizationFactory:
         session.add(organization)
         session.commit()
         assert organization.last_update_utc_date_time > initial_time
+
     def test_date_updated_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -166,6 +183,7 @@ class TestOrganizationFactory:
         time.sleep(1)
         session.commit()
         assert organization.last_update_utc_date_time > initial_time
+
     def test_model_deletion(self, session):
         """
         Test case for deleting a
@@ -178,6 +196,7 @@ class TestOrganizationFactory:
         deleted_organization = session.query(Organization).filter_by(
             organization_id=organization.organization_id).first()
         assert deleted_organization is None
+
     def test_data_types(self, session):
         """
         Test case for checking the data types of
@@ -194,14 +213,14 @@ class TestOrganizationFactory:
         assert isinstance(organization.tac_id, int)
         # Check for the peek values,
         # assuming they are UUIDs based on your model
-# endset
         # name,
         # tacID
+
         assert isinstance(
             organization.tac_code_peek, uuid.UUID)
-# endset
         assert isinstance(organization.insert_utc_date_time, datetime)
         assert isinstance(organization.last_update_utc_date_time, datetime)
+
     def test_unique_code_constraint(self, session):
         """
         Test case for checking the unique code constraint.
@@ -213,6 +232,7 @@ class TestOrganizationFactory:
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
+
     def test_fields_default(self):
         """
         Test case for checking the default values of
@@ -225,21 +245,21 @@ class TestOrganizationFactory:
         assert organization.last_update_user_id == uuid.UUID(int=0)
         assert organization.insert_utc_date_time is not None
         assert organization.last_update_utc_date_time is not None
-# endset
         # name,
         # TacID
+
         assert isinstance(
             organization.tac_code_peek, uuid.UUID)
-# endset
         assert organization is not None
         assert organization.name == ""
         assert organization.tac_id == 0
-# endset
+
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
         last_change_code in the Organization
         model.
+
         This test case checks if the last_change_code
         of a Organization object is
         updated correctly
@@ -250,11 +270,14 @@ class TestOrganizationFactory:
         Finally, it asserts that the last_change_code
         of the second retrieved Organization object
         is different from the original last_change_code.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Returns:
             None
         """
+
         organization = OrganizationFactory.create(
             session=session)
         original_last_change_code = organization.last_change_code
@@ -267,23 +290,27 @@ class TestOrganizationFactory:
         organization_2.code = uuid.uuid4()
         session.commit()
         assert organization_2.last_change_code != original_last_change_code
-# endset
     # name,
     # TacID
+
     def test_invalid_tac_id(self, session):
         """
         Test case to check if an invalid tac ID raises an IntegrityError.
+
         This test case creates a organization object using
         the OrganizationFactory and assigns an invalid tac ID to it.
         It then tries to commit the changes to the
         session and expects an IntegrityError to be raised.
         Finally, it rolls back the session to ensure
         no changes are persisted.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Raises:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
+
         """
         organization = OrganizationFactory.create(
             session=session)
@@ -291,4 +318,4 @@ class TestOrganizationFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-# endset
+

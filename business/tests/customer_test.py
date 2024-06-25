@@ -12,12 +12,14 @@ from business.customer import CustomerBusObj
 from helpers.session_context import SessionContext
 from models import Customer
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def customer_list():
@@ -29,6 +31,7 @@ def customer_list():
         customer = Mock(spec=Customer)
         customers.append(customer)
     return customers
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, customer_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, customer_list):
         for bus_obj, customer in zip(bus_obj_list, customer_list):
             mock_load.assert_any_call(customer)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await CustomerBusObj.to_bus_obj_list(session_context, empty_customer_list)
 
     assert len(bus_obj_list) == 0
+

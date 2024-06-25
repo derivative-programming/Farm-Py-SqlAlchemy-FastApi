@@ -237,9 +237,7 @@ class TestPlantFactory:
             plant.some_var_char_val, str)
         # Check for the peek values,
         # assuming they are UUIDs based on your model
-
 # endset
-
         # isDeleteAllowed,
         # isEditAllowed,
         # otherFlavor,
@@ -254,16 +252,17 @@ class TestPlantFactory:
         # someDateVal
         # someUTCDateTimeVal
         # flvrForeignKeyID
+
         assert isinstance(
             plant.flvr_foreign_key_code_peek, uuid.UUID)
         # landID
+
         assert isinstance(
             plant.land_code_peek, uuid.UUID)
         # someNVarCharVal,
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
-
 # endset
         assert isinstance(plant.insert_utc_date_time, datetime)
         assert isinstance(plant.last_update_utc_date_time, datetime)
@@ -307,14 +306,14 @@ class TestPlantFactory:
         # someDateVal
         # someUTCDateTimeVal
         # LandID
+
         assert isinstance(
             plant.land_code_peek, uuid.UUID)
-
         # FlvrForeignKeyID
+
         assert isinstance(
             plant.flvr_foreign_key_code_peek,
             uuid.UUID)
-
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
@@ -384,7 +383,6 @@ class TestPlantFactory:
         session.commit()
         assert plant_2.last_change_code != original_last_change_code
 # endset
-
     # isDeleteAllowed,
     # isEditAllowed,
     # otherFlavor,
@@ -399,6 +397,7 @@ class TestPlantFactory:
     # someDateVal
     # someUTCDateTimeVal
     # LandID
+
     def test_invalid_land_id(self, session):
         """
         Test case to check if an invalid land ID raises an IntegrityError.
@@ -424,8 +423,8 @@ class TestPlantFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-
     # FlvrForeignKeyID
+
     def test_invalid_flvr_foreign_key_id(self, session):
         """
         Test case to check if an invalid foreign key ID

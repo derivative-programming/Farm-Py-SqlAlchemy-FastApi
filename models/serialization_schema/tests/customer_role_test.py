@@ -1,14 +1,17 @@
 # customer_role_test.py
 # pylint: disable=redefined-outer-name
+
 """
 This module contains tests for the
 CustomerRole serialization schema.
+
 The CustomerRole serialization schema
 is responsible for serializing and deserializing
 CustomerRole instances. It ensures that the
 data is properly formatted and can be
 stored or retrieved from a database or
 transmitted over a network.
+
 The tests in this module cover the serialization
 and deserialization of CustomerRole
 instances using the CustomerRoleSchema class. They verify
@@ -16,6 +19,7 @@ that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a CustomerRole instance.
+
 The CustomerRoleSchema class is used to define
 the serialization and deserialization
 rules for CustomerRole instances. It
@@ -25,23 +29,31 @@ should be converted to a serialized
 format and how the serialized data should
 be converted back to a CustomerRole
 instance.
+
 The tests in this module use the pytest
 framework to define test cases and
 assertions. They ensure that the serialization
 and deserialization process
 works correctly and produces the expected results.
+
 """
+
 import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+
 import pytest
 import pytz
+
 from models import CustomerRole
 from models.factory import CustomerRoleFactory
 from models.serialization_schema import CustomerRoleSchema
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
+
+
 @pytest.fixture(scope="function")
 def customer_role(
     session
@@ -50,18 +62,24 @@ def customer_role(
     Fixture to create and return a CustomerRole
     instance using the
     CustomerRoleFactory.
+
     Args:
         session: The database session.
+
     Returns:
         CustomerRole: A newly created
             CustomerRole instance.
     """
+
     return CustomerRoleFactory.create(session=session)
+
+
 class TestCustomerRoleSchema:
     """
     Tests for the CustomerRole
     serialization schema.
     """
+
     # Sample data for a CustomerRole
     # instance
     sample_data = {
@@ -91,6 +109,7 @@ class TestCustomerRoleSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
+
     def test_customer_role_serialization(
         self,
         customer_role: CustomerRole
@@ -99,14 +118,19 @@ class TestCustomerRoleSchema:
         Test the serialization of a
         CustomerRole instance using
         CustomerRoleSchema.
+
         Args:
             customer_role (CustomerRole):
                 A CustomerRole instance to serialize.
         """
+
         schema = CustomerRoleSchema()
         customer_role_data = schema.dump(customer_role)
+
         assert isinstance(customer_role_data, dict)
+
         result = customer_role_data
+
         assert result['code'] == str(customer_role.code)
         assert result['last_change_code'] == (
             customer_role.last_change_code)
@@ -114,7 +138,7 @@ class TestCustomerRoleSchema:
             str(customer_role.insert_user_id))
         assert result['last_update_user_id'] == (
             str(customer_role.last_update_user_id))
-# endset
+
         assert result['customer_id'] == (
             customer_role.customer_id)
         assert result['is_placeholder'] == (
@@ -123,33 +147,36 @@ class TestCustomerRoleSchema:
             customer_role.placeholder)
         assert result['role_id'] == (
             customer_role.role_id)
-# endset
         assert result['insert_utc_date_time'] == (
             customer_role.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
             customer_role.last_update_utc_date_time.isoformat())
-# endset
         assert result['customer_code_peek'] == (  # CustomerID
             str(customer_role.customer_code_peek))
         assert result['role_code_peek'] == (  # RoleID
             str(customer_role.role_code_peek))
-# endset
+
     def test_customer_role_deserialization(self, customer_role):
         """
         Test the deserialization of a
         CustomerRole object using the
         CustomerRoleSchema.
+
         Args:
             customer_role (CustomerRole): The
                 CustomerRole object to be deserialized.
+
         Raises:
             AssertionError: If any of the assertions fail.
+
         Returns:
             None
         """
+
         schema = CustomerRoleSchema()
         serialized_data = schema.dump(customer_role)
         deserialized_data = schema.load(serialized_data)
+
         assert deserialized_data['code'] == \
             customer_role.code
         assert deserialized_data['last_change_code'] == (
@@ -158,7 +185,6 @@ class TestCustomerRoleSchema:
             customer_role.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
             customer_role.last_update_user_id)
-# endset
         assert deserialized_data['customer_id'] == (
             customer_role.customer_id)
         assert deserialized_data['is_placeholder'] == (
@@ -167,21 +193,21 @@ class TestCustomerRoleSchema:
             customer_role.placeholder)
         assert deserialized_data['role_id'] == (
             customer_role.role_id)
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             customer_role.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             customer_role.last_update_utc_date_time.isoformat())
-# endset
         assert deserialized_data[(  # CustomerID
             'customer_code_peek')] == (
             customer_role.customer_code_peek)
         assert deserialized_data[(  # RoleID
             'role_code_peek')] == (
             customer_role.role_code_peek)
-# endset
+
         new_customer_role = CustomerRole(**deserialized_data)
+
         assert isinstance(new_customer_role, CustomerRole)
+
         # Now compare the new_customer_role attributes with
         # the customer_role attributes
         assert new_customer_role.code == \
@@ -192,7 +218,6 @@ class TestCustomerRoleSchema:
             customer_role.insert_user_id
         assert new_customer_role.last_update_user_id == \
             customer_role.last_update_user_id
-# endset
         assert new_customer_role.customer_id == (
             customer_role.customer_id)
         assert new_customer_role.is_placeholder == (
@@ -201,20 +226,20 @@ class TestCustomerRoleSchema:
             customer_role.placeholder)
         assert new_customer_role.role_id == (
             customer_role.role_id)
-# endset
+
         assert new_customer_role.insert_utc_date_time.isoformat() == (
             customer_role.insert_utc_date_time.isoformat())
         assert new_customer_role.last_update_utc_date_time.isoformat() == (
             customer_role.last_update_utc_date_time.isoformat())
-# endset
         assert new_customer_role.customer_code_peek == (  # CustomerID
             customer_role.customer_code_peek)
         assert new_customer_role.role_code_peek == (  # RoleID
             customer_role.role_code_peek)
-# endset
+
     def test_from_json(self):
         """
         Test the `from_json` method of the CustomerRoleSchema class.
+
         This method tests the deserialization of
         a JSON string to a
         CustomerRole object.
@@ -225,16 +250,22 @@ class TestCustomerRoleSchema:
         equality of the deserialized
         CustomerRole object
         with the sample data.
+
         Returns:
             None
         """
+
         customer_role_schema = CustomerRoleSchema()
+
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
+
         # Deserialize the JSON string to a dictionary
         json_data = json.loads(json_str)
+
         # Load the dictionary to an object
         deserialized_data = customer_role_schema.load(json_data)
+
         assert str(deserialized_data['customer_role_id']) == (
             str(self.sample_data['customer_role_id']))
         assert str(deserialized_data['code']) == (
@@ -245,7 +276,6 @@ class TestCustomerRoleSchema:
             str(self.sample_data['insert_user_id']))
         assert str(deserialized_data['last_update_user_id']) == (
             str(self.sample_data['last_update_user_id']))
-# endset
         assert str(deserialized_data['customer_id']) == (
             str(self.sample_data['customer_id']))
         assert str(deserialized_data['is_placeholder']) == (
@@ -254,7 +284,6 @@ class TestCustomerRoleSchema:
             str(self.sample_data['placeholder']))
         assert str(deserialized_data['role_id']) == (
             str(self.sample_data['role_id']))
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
         assert str(deserialized_data[(  # CustomerID
@@ -263,11 +292,13 @@ class TestCustomerRoleSchema:
         assert str(deserialized_data[(  # RoleID
             'role_code_peek')]) == (
             str(self.sample_data['role_code_peek']))
-# endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
+
         new_customer_role = CustomerRole(**deserialized_data)
+
         assert isinstance(new_customer_role, CustomerRole)
+
     def test_to_json(
         self,
         customer_role: CustomerRole
@@ -275,35 +306,44 @@ class TestCustomerRoleSchema:
         """
         Test the conversion of a
         CustomerRole instance to JSON.
+
         Args:
             customer_role (CustomerRole): The
             CustomerRole instance to convert.
+
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
+
         # Convert the CustomerRole instance
         # to JSON using the schema
         customer_role_schema = CustomerRoleSchema()
         customer_role_dict = customer_role_schema.dump(
             customer_role)
+
         # Convert the customer_role_dict to JSON string
         customer_role_json = json.dumps(
             customer_role_dict)
+
         # Convert the JSON strings back to dictionaries
         customer_role_dict_from_json = json.loads(
             customer_role_json)
         # sample_dict_from_json = json.loads(self.sample_data)
+
         logging.info(
             "customer_role_dict_from_json.keys() %s",
             customer_role_dict_from_json.keys())
+
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+
         # Verify the keys in both dictionaries match
         assert set(customer_role_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(customer_role_dict_from_json.keys())}"
         )
+
         assert customer_role_dict_from_json['code'] == \
             str(customer_role.code), (
             "failed on code"
@@ -320,7 +360,6 @@ class TestCustomerRoleSchema:
             str(customer_role.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-# endset
         assert customer_role_dict_from_json['customer_id'] == (
             customer_role.customer_id), (
             "failed on customer_id"
@@ -337,7 +376,6 @@ class TestCustomerRoleSchema:
             customer_role.role_id), (
             "failed on role_id"
         )
-# endset
         assert customer_role_dict_from_json['insert_utc_date_time'] == (
             customer_role.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
@@ -346,7 +384,6 @@ class TestCustomerRoleSchema:
             customer_role.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-# endset
         assert customer_role_dict_from_json[(  # CustomerID
             'customer_code_peek')] == (
             str(customer_role.customer_code_peek)), (
@@ -357,4 +394,4 @@ class TestCustomerRoleSchema:
             str(customer_role.role_code_peek)), (
             "failed on role_code_peek"
         )
-# endset
+

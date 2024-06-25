@@ -11,7 +11,13 @@ from models import Customer
 import managers as managers_and_enums  # noqa: F401
 from .customer_fluent import CustomerFluentBusObj
 
+
 from business.customer_role import CustomerRoleBusObj
+
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Customer object is not initialized")
+
 
 class CustomerBusObj(CustomerFluentBusObj):
     """
@@ -44,12 +50,13 @@ class CustomerBusObj(CustomerFluentBusObj):
         for customer in obj_list:
             customer_bus_obj = CustomerBusObj(session_context)
 
-            await customer_bus_obj.load_from_obj_instance(
+            customer_bus_obj.load_from_obj_instance(
                 customer)
 
             result.append(customer_bus_obj)
 
         return result
+
 
     async def build_customer_role(self) -> CustomerRoleBusObj:
         """
@@ -57,6 +64,8 @@ class CustomerBusObj(CustomerFluentBusObj):
         instance (not saved yet)
         """
         item = CustomerRoleBusObj(self._session_context)
+
+        assert item.customer_role is not None
         role_manager = managers_and_enums.RoleManager(self._session_context)
         role_id_role = await role_manager.from_enum(
             managers_and_enums.RoleEnum.UNKNOWN)
@@ -77,7 +86,7 @@ class CustomerBusObj(CustomerFluentBusObj):
         obj_list = await customer_role_manager.get_by_customer_id(self.customer_id)
         for obj_item in obj_list:
             bus_obj_item = CustomerRoleBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

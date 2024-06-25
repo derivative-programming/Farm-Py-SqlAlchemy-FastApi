@@ -22,7 +22,7 @@ The following manager classes are defined in this module:
 - TacManager: Manages Tac records.
 - TriStateFilterManager: Manages Tri State Filter records.
 Note: The `noqa` comments are used to disable linting warnings for
-    unused imports.
+unused imports.
 """
 from .customer import (CustomerManager)  # noqa: F401,E501
 from .customer_role import (CustomerRoleManager)  # noqa: F401,E501
@@ -38,3 +38,4 @@ from .plant import (PlantManager)  # noqa: F401,E501
 from .role import (RoleManager, RoleEnum)  # noqa: F401,E501
 from .tac import (TacManager, TacEnum)  # noqa: F401,E501
 from .tri_state_filter import (TriStateFilterManager, TriStateFilterEnum)  # noqa: F401,E501
+

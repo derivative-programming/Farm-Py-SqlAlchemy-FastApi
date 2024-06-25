@@ -11,6 +11,11 @@ from models import CustomerRole
 import managers as managers_and_enums  # noqa: F401
 from .customer_role_fluent import CustomerRoleFluentBusObj
 
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "CustomerRole object is not initialized")
+
+
 class CustomerRoleBusObj(CustomerRoleFluentBusObj):
     """
     This class represents the business object for a CustomerRole.
@@ -42,7 +47,7 @@ class CustomerRoleBusObj(CustomerRoleFluentBusObj):
         for customer_role in obj_list:
             customer_role_bus_obj = CustomerRoleBusObj(session_context)
 
-            await customer_role_bus_obj.load_from_obj_instance(
+            customer_role_bus_obj.load_from_obj_instance(
                 customer_role)
 
             result.append(customer_role_bus_obj)

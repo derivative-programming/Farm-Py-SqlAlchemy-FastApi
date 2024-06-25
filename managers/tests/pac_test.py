@@ -20,6 +20,7 @@ from models import Pac
 from models.factory import PacFactory
 from models.serialization_schema.pac import PacSchema
 
+
 class TestPacManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestPacManager:
             await pac_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

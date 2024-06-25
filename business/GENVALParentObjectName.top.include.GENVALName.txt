@@ -3,4 +3,3 @@
 //GENDELETETHISFILE
 ##GENIF[calculatedIsParentObjectAvailable=false]End
 from business.GENVALSnakeName import GENVALPascalNameBusObj
-

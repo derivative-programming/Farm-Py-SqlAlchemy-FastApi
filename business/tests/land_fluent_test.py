@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.land_fluent import LandFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockLandBaseBusObj:
     """
     A mock base class for the LandFluentBusObj class.
@@ -73,3 +77,4 @@ class TestLandFluentBusObj:
         result = land.set_prop_pac_id(1)
         assert land.pac_id == 1
         assert result is land
+

@@ -19,6 +19,7 @@ from managers.organization import OrganizationManager
 from models import Organization
 from models.factory import OrganizationFactory
 
+
 class TestOrganizationBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestOrganizationBulkManager:
                 organization_ids)
 
         await session.rollback()
+

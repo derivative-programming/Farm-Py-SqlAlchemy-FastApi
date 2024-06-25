@@ -12,12 +12,14 @@ from business.tri_state_filter import TriStateFilterBusObj
 from helpers.session_context import SessionContext
 from models import TriStateFilter
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def tri_state_filter_list():
@@ -29,6 +31,7 @@ def tri_state_filter_list():
         tri_state_filter = Mock(spec=TriStateFilter)
         tri_state_filters.append(tri_state_filter)
     return tri_state_filters
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, tri_state_filter_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, tri_state_filter_list):
         for bus_obj, tri_state_filter in zip(bus_obj_list, tri_state_filter_list):
             mock_load.assert_any_call(tri_state_filter)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await TriStateFilterBusObj.to_bus_obj_list(session_context, empty_tri_state_filter_list)
 
     assert len(bus_obj_list) == 0
+

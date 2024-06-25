@@ -7,6 +7,7 @@ that handle the addition of a
  to a specific
 land in the flow process.
 """
+
 import uuid
 import json
 from datetime import date, datetime
@@ -16,11 +17,14 @@ from flows.base import LogSeverity
 from business.land import LandBusObj
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
+
+
 class FlowLandPlantListInitReportResult():
     """
     Represents the result of the
     FlowLandPlantListInitReport process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     some_int_val: int = 0
     some_big_int_val: int = 0
@@ -43,16 +47,18 @@ class FlowLandPlantListInitReportResult():
     land_code: uuid.UUID = uuid.UUID(int=0)
     tac_code: uuid.UUID = uuid.UUID(int=0)
     land_name: str = ""
-# endset
+
     def __init__(self):
         """
         Initializes a new instance of the
         FlowLandPlantListInitReportResult class.
         """
+
     def to_json(self):
         """
         Converts the FlowLandPlantListInitReportResult
         instance to a JSON string.
+
         Returns:
             str: The JSON representation of the instance.
         """
@@ -102,6 +108,8 @@ class FlowLandPlantListInitReportResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
+
+
 class FlowLandPlantListInitReport(
     BaseFlowLandPlantListInitReport
 ):
@@ -109,9 +117,11 @@ class FlowLandPlantListInitReport(
     FlowLandPlantListInitReport handles the addition of
     a  to
     a specific land in the flow process.
+
     This class extends the BaseFlowLandPlantListInitReport class and
     initializes it with the provided session context.
     """
+
     async def process(
         self,
         land_bus_obj: LandBusObj,
@@ -121,6 +131,7 @@ class FlowLandPlantListInitReport(
         """
         Processes the addition of a
          to a specific land.
+
         Returns:
             FlowLandPlantListInitReportResult: The result of the
                 FlowLandPlantListInitReport process.
@@ -133,11 +144,13 @@ class FlowLandPlantListInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(land_bus_obj.code)
         )
+
         await super()._process_validation_rules(
             land_bus_obj,
 
 # endset  # noqa: E122
         )
+
         super()._throw_queued_validation_errors()
         some_int_val_output: int = 0
         some_big_int_val_output: int = 0
@@ -160,13 +173,15 @@ class FlowLandPlantListInitReport(
         land_code_output: uuid.UUID = uuid.UUID(int=0)
         tac_code_output: uuid.UUID = uuid.UUID(int=0)
         land_name_output: str = ""
-# endset
+
         # TODO: add flow logic
+
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowLandPlantListInitReportResult()
+
         result.context_object_code = land_bus_obj.code
         result.some_int_val = (
             some_int_val_output)
@@ -206,11 +221,14 @@ class FlowLandPlantListInitReport(
             tac_code_output)
         result.land_name = (
             land_name_output)
-# endset
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
+
         return result
+

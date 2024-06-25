@@ -6,6 +6,7 @@ This module contains unit tests for the
 `ReportManagerPacUserLandList`
 class in the `pac_user_land_list` module.
 """
+
 import os
 import uuid
 from decimal import Decimal
@@ -25,28 +26,36 @@ from reports.providers.pac_user_land_list import (
     ReportProviderPacUserLandList)
 from reports.row_models.pac_user_land_list import (
     ReportItemPacUserLandList)
+
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
+
+
 class TestReportManagerPacUserLandList:
     """
     This class contains unit tests for the
     `ReportManagerPacUserLandList` class.
     """
+
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
         Test case for generating a report.
+
         This test case verifies the functionality of generating
         a report using the
         `ReportManagerPacUserLandList` class.
         It mocks the `generate_list` method and asserts that the
         results returned are of type list.
         The test also ensures that the `generate_list` method is awaited.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
+
         async def mock_generate_list(
             context_code: uuid.UUID,
 
@@ -58,22 +67,26 @@ class TestReportManagerPacUserLandList:
         ):
             result = list()
             return result
+
         with patch.object(
             ReportProviderPacUserLandList,
             'generate_list',
             new_callable=AsyncMock
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
+
             session_context = SessionContext(dict(), session)
             report_generator = ReportManagerPacUserLandList(
                 session_context)
             pac = await PacFactory.create_async(
                 session=session)
             pac_code = pac.code
+
             role_required = ""
+
             session_context.role_name_csv = role_required
 
-# endset
+
             page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
@@ -87,19 +100,24 @@ class TestReportManagerPacUserLandList:
                 order_by_column_name,
                 order_by_descending
             )
+
             assert isinstance(results, list), "Results should be a list"
             mock_method.assert_awaited()
+
     @pytest.mark.asyncio
     async def test_generate_invalid_item_count_per_page(self, session):
         """
         Test case to verify that an exception is raised when an
         invalid item count per page is provided.
+
         Args:
             session: The session object.
+
         Raises:
             ReportRequestValidationError: If an invalid item
                 count per page is provided.
         """
+
         async def mock_generate_list(
             context_code: uuid.UUID,
 
@@ -111,26 +129,31 @@ class TestReportManagerPacUserLandList:
         ):
             result = list()
             return result
+
         with patch.object(
             ReportProviderPacUserLandList,
             'generate_list',
             new_callable=AsyncMock
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
+
             session_context = SessionContext(dict(), session)
             report_generator = ReportManagerPacUserLandList(
                 session_context)
             pac = await PacFactory.create_async(
                 session=session)
             pac_code = pac.code
+
             role_required = ""
+
             session_context.role_name_csv = role_required
 
-# endset
+
             page_number = 1
             # item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
+
             with pytest.raises(ReportRequestValidationError):
                 await report_generator.generate(
                     pac_code,
@@ -141,16 +164,20 @@ class TestReportManagerPacUserLandList:
                     order_by_column_name,
                     order_by_descending
                 )
+
     @pytest.mark.asyncio
     async def test_generate_invalid_page_number(self, session):
         """
         Test case for generating a report with an invalid page number.
+
         Args:
             session: The session object.
+
         Raises:
             ReportRequestValidationError: If the report request
                 validation fails.
         """
+
         async def mock_generate_list(
             context_code: uuid.UUID,
 
@@ -162,26 +189,30 @@ class TestReportManagerPacUserLandList:
         ):
             result = list()
             return result
+
         with patch.object(
             ReportProviderPacUserLandList,
             'generate_list',
             new_callable=AsyncMock
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
+
             session_context = SessionContext(dict(), session)
             report_generator = ReportManagerPacUserLandList(
                 session_context)
             pac = await PacFactory.create_async(
                 session=session)
             pac_code = pac.code
+
             role_required = ""
+
             session_context.role_name_csv = role_required
 
-# endset
             # page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
+
             with pytest.raises(ReportRequestValidationError):
                 await report_generator.generate(
                     pac_code,
@@ -192,21 +223,26 @@ class TestReportManagerPacUserLandList:
                     order_by_column_name,
                     order_by_descending
                 )
+
     @pytest.mark.asyncio
     async def test_build_csv(self, session):
         """
         Test case for the build_csv method of
         ReportManagerPacUserLandList.
+
             This method tests the functionality of the build_csv
             method by creating a test CSV file
             using the provided session and test data. It then
             verifies that the file is created
             and removes it after the test is complete.
+
             Args:
                 session: The session object used for testing.
+
             Returns:
                 None
         """
+
         session_context = SessionContext(
             dict(), session)
         test_obj = ReportManagerPacUserLandList(
@@ -215,60 +251,79 @@ class TestReportManagerPacUserLandList:
                      ReportItemPacUserLandList()]
         file_name = 'test_output.csv'
         await test_obj.build_csv(file_name, test_data)
+
         # Verify the file is created
         assert os.path.exists(file_name)
+
         os.remove(file_name)
+
     @pytest.mark.asyncio
     async def test_read_csv(self, session):
         """
             Test case for reading a CSV file and verifying the data.
+
             Args:
                 session: The session object for database operations.
+
             Returns:
                 None
+
             Raises:
                 AssertionError: If the data read from the CSV
                     file is not as expected.
         """
+
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserLandList(
             session_context)
+
         test_data = [ReportItemPacUserLandList(),
                      ReportItemPacUserLandList()]
         file_name = 'test_input.csv'
         await test_obj.build_csv(file_name, test_data)
+
         # Ensure 'test_input.csv' exists and contains valid data for testing
+
         result = await test_obj.read_csv(file_name)
         assert isinstance(result, list)
         assert all(
             isinstance(item, ReportItemPacUserLandList) for item in result
         )
+
         os.remove(file_name)
         # Further checks can be added to verify the data in the objects
+
     def test_parse_bool(self, session):
         """
         Test the _parse_bool method of
         ReportManagerPacUserLandList.
+
         This method tests the behavior of the _parse_bool method
         in the ReportManagerPacUserLandList class.
         It verifies that the method correctly parses boolean
         values and returns the expected results.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
+
         session_context = SessionContext(dict(), session)
         test_obj = ReportManagerPacUserLandList(
             session_context)
+
         # True values
         assert test_obj._parse_bool('true')
         assert test_obj._parse_bool('1')
         assert test_obj._parse_bool('yes')
+
         # False values
         assert not test_obj._parse_bool('false')
         assert not test_obj._parse_bool('0')
         assert not test_obj._parse_bool('no')
+
         # Case insensitivity
         assert test_obj._parse_bool('True')
         assert test_obj._parse_bool('YeS')

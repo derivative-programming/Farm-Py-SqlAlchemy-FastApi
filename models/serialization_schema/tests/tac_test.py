@@ -1,14 +1,17 @@
 # tac_test.py
 # pylint: disable=redefined-outer-name
+
 """
 This module contains tests for the
 Tac serialization schema.
+
 The Tac serialization schema
 is responsible for serializing and deserializing
 Tac instances. It ensures that the
 data is properly formatted and can be
 stored or retrieved from a database or
 transmitted over a network.
+
 The tests in this module cover the serialization
 and deserialization of Tac
 instances using the TacSchema class. They verify
@@ -16,6 +19,7 @@ that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Tac instance.
+
 The TacSchema class is used to define
 the serialization and deserialization
 rules for Tac instances. It
@@ -25,23 +29,31 @@ should be converted to a serialized
 format and how the serialized data should
 be converted back to a Tac
 instance.
+
 The tests in this module use the pytest
 framework to define test cases and
 assertions. They ensure that the serialization
 and deserialization process
 works correctly and produces the expected results.
+
 """
+
 import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+
 import pytest
 import pytz
+
 from models import Tac
 from models.factory import TacFactory
 from models.serialization_schema import TacSchema
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
+
+
 @pytest.fixture(scope="function")
 def tac(
     session
@@ -50,18 +62,24 @@ def tac(
     Fixture to create and return a Tac
     instance using the
     TacFactory.
+
     Args:
         session: The database session.
+
     Returns:
         Tac: A newly created
             Tac instance.
     """
+
     return TacFactory.create(session=session)
+
+
 class TestTacSchema:
     """
     Tests for the Tac
     serialization schema.
     """
+
     # Sample data for a Tac
     # instance
     sample_data = {
@@ -91,6 +109,7 @@ class TestTacSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
+
     def test_tac_serialization(
         self,
         tac: Tac
@@ -99,14 +118,19 @@ class TestTacSchema:
         Test the serialization of a
         Tac instance using
         TacSchema.
+
         Args:
             tac (Tac):
                 A Tac instance to serialize.
         """
+
         schema = TacSchema()
         tac_data = schema.dump(tac)
+
         assert isinstance(tac_data, dict)
+
         result = tac_data
+
         assert result['code'] == str(tac.code)
         assert result['last_change_code'] == (
             tac.last_change_code)
@@ -114,7 +138,7 @@ class TestTacSchema:
             str(tac.insert_user_id))
         assert result['last_update_user_id'] == (
             str(tac.last_update_user_id))
-# endset
+
         assert result['description'] == (
             tac.description)
         assert result['display_order'] == (
@@ -127,31 +151,34 @@ class TestTacSchema:
             tac.name)
         assert result['pac_id'] == (
             tac.pac_id)
-# endset
         assert result['insert_utc_date_time'] == (
             tac.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
             tac.last_update_utc_date_time.isoformat())
-# endset
         assert result['pac_code_peek'] == (  # PacID
             str(tac.pac_code_peek))
-# endset
+
     def test_tac_deserialization(self, tac):
         """
         Test the deserialization of a
         Tac object using the
         TacSchema.
+
         Args:
             tac (Tac): The
                 Tac object to be deserialized.
+
         Raises:
             AssertionError: If any of the assertions fail.
+
         Returns:
             None
         """
+
         schema = TacSchema()
         serialized_data = schema.dump(tac)
         deserialized_data = schema.load(serialized_data)
+
         assert deserialized_data['code'] == \
             tac.code
         assert deserialized_data['last_change_code'] == (
@@ -160,7 +187,6 @@ class TestTacSchema:
             tac.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
             tac.last_update_user_id)
-# endset
         assert deserialized_data['description'] == (
             tac.description)
         assert deserialized_data['display_order'] == (
@@ -173,18 +199,18 @@ class TestTacSchema:
             tac.name)
         assert deserialized_data['pac_id'] == (
             tac.pac_id)
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             tac.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             tac.last_update_utc_date_time.isoformat())
-# endset
         assert deserialized_data[(  # PacID
             'pac_code_peek')] == (
             tac.pac_code_peek)
-# endset
+
         new_tac = Tac(**deserialized_data)
+
         assert isinstance(new_tac, Tac)
+
         # Now compare the new_tac attributes with
         # the tac attributes
         assert new_tac.code == \
@@ -195,7 +221,6 @@ class TestTacSchema:
             tac.insert_user_id
         assert new_tac.last_update_user_id == \
             tac.last_update_user_id
-# endset
         assert new_tac.description == (
             tac.description)
         assert new_tac.display_order == (
@@ -208,18 +233,18 @@ class TestTacSchema:
             tac.name)
         assert new_tac.pac_id == (
             tac.pac_id)
-# endset
+
         assert new_tac.insert_utc_date_time.isoformat() == (
             tac.insert_utc_date_time.isoformat())
         assert new_tac.last_update_utc_date_time.isoformat() == (
             tac.last_update_utc_date_time.isoformat())
-# endset
         assert new_tac.pac_code_peek == (  # PacID
             tac.pac_code_peek)
-# endset
+
     def test_from_json(self):
         """
         Test the `from_json` method of the TacSchema class.
+
         This method tests the deserialization of
         a JSON string to a
         Tac object.
@@ -230,16 +255,22 @@ class TestTacSchema:
         equality of the deserialized
         Tac object
         with the sample data.
+
         Returns:
             None
         """
+
         tac_schema = TacSchema()
+
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
+
         # Deserialize the JSON string to a dictionary
         json_data = json.loads(json_str)
+
         # Load the dictionary to an object
         deserialized_data = tac_schema.load(json_data)
+
         assert str(deserialized_data['tac_id']) == (
             str(self.sample_data['tac_id']))
         assert str(deserialized_data['code']) == (
@@ -250,7 +281,6 @@ class TestTacSchema:
             str(self.sample_data['insert_user_id']))
         assert str(deserialized_data['last_update_user_id']) == (
             str(self.sample_data['last_update_user_id']))
-# endset
         assert str(deserialized_data['description']) == (
             str(self.sample_data['description']))
         assert str(deserialized_data['display_order']) == (
@@ -263,17 +293,18 @@ class TestTacSchema:
             str(self.sample_data['name']))
         assert str(deserialized_data['pac_id']) == (
             str(self.sample_data['pac_id']))
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
         assert str(deserialized_data[(  # PacID
             'pac_code_peek')]) == (
             str(self.sample_data['pac_code_peek']))
-# endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
+
         new_tac = Tac(**deserialized_data)
+
         assert isinstance(new_tac, Tac)
+
     def test_to_json(
         self,
         tac: Tac
@@ -281,35 +312,44 @@ class TestTacSchema:
         """
         Test the conversion of a
         Tac instance to JSON.
+
         Args:
             tac (Tac): The
             Tac instance to convert.
+
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
+
         # Convert the Tac instance
         # to JSON using the schema
         tac_schema = TacSchema()
         tac_dict = tac_schema.dump(
             tac)
+
         # Convert the tac_dict to JSON string
         tac_json = json.dumps(
             tac_dict)
+
         # Convert the JSON strings back to dictionaries
         tac_dict_from_json = json.loads(
             tac_json)
         # sample_dict_from_json = json.loads(self.sample_data)
+
         logging.info(
             "tac_dict_from_json.keys() %s",
             tac_dict_from_json.keys())
+
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+
         # Verify the keys in both dictionaries match
         assert set(tac_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(tac_dict_from_json.keys())}"
         )
+
         assert tac_dict_from_json['code'] == \
             str(tac.code), (
             "failed on code"
@@ -326,7 +366,6 @@ class TestTacSchema:
             str(tac.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-# endset
         assert tac_dict_from_json['description'] == (
             tac.description), (
             "failed on description"
@@ -351,7 +390,6 @@ class TestTacSchema:
             tac.pac_id), (
             "failed on pac_id"
         )
-# endset
         assert tac_dict_from_json['insert_utc_date_time'] == (
             tac.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
@@ -360,10 +398,9 @@ class TestTacSchema:
             tac.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-# endset
         assert tac_dict_from_json[(  # PacID
             'pac_code_peek')] == (
             str(tac.pac_code_peek)), (
             "failed on pac_code_peek"
         )
-# endset
+

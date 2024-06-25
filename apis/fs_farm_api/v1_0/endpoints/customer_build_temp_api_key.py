@@ -1,9 +1,11 @@
 # apis/fs_farm_api/v1_0/endpoints/customer_build_temp_api_key.py
+
 """
 This module contains the implementation of the
 CustomerBuildTempApiKeyRouter,
 which handles the API endpoints related to the
 Customer Build Temp Api Key.
+
 The CustomerBuildTempApiKeyRouter provides the following endpoints:
     - GET /api/v1_0/customer-build-temp-api-key/{customer_code}/init:
         Get the initialization data for the
@@ -15,27 +17,38 @@ The CustomerBuildTempApiKeyRouter provides the following endpoints:
         Retrieve the Customer Build Temp Api Key
         Report as a CSV file.
 """
+
 import logging
 import tempfile
 import traceback
 import uuid
+
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+
 import apis.models as api_models
 import apis.models.init as api_init_models
 import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
+
 from .base_router import BaseRouter
+
 CUSTOMER_CODE = "Customer Code"
+
 TRACEBACK = " traceback:"
+
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+
 API_LOG_ERROR_FORMAT = "response.message: %s"
+
+
 class CustomerBuildTempApiKeyRouterConfig():
     """
     Configuration class for the CustomerBuildTempApiKeyRouter.
     """
+
     # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = False
@@ -46,6 +59,8 @@ class CustomerBuildTempApiKeyRouterConfig():
     is_put_available: bool = False
     is_delete_available: bool = False
     is_public: bool = False
+
+
 class CustomerBuildTempApiKeyRouter(BaseRouter):
     """
     Router class for the
@@ -53,6 +68,7 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
     API endpoints.
     """
     router = APIRouter(tags=["CustomerBuildTempApiKey"])
+
 
     @staticmethod
     @router.post(
@@ -67,12 +83,14 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
     ):
         """
         Customer Build Temp Api Key api post endpoint
+
         Parameters:
         - customer_code: The code of the  object.
         - request_model: The request model containing
             the details of the item to be added.
         - session: Database session dependency.
         - api_key: API key for authorization.
+
         Returns:
         - response: JSON response with the result of the operation.
         """
@@ -83,10 +101,13 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
         )
         auth_dict = BaseRouter.implementation_check(
             CustomerBuildTempApiKeyRouterConfig.is_post_with_id_available)
+
         response = api_models.CustomerBuildTempApiKeyPostModelResponse()
+
         auth_dict = BaseRouter.authorization_check(
             CustomerBuildTempApiKeyRouterConfig.is_public,
             api_key)
+
         # Start a transaction
         async with session:
             try:
@@ -95,6 +116,7 @@ class CustomerBuildTempApiKeyRouter(BaseRouter):
                 customer_code = session_context.check_context_code(
                     "CustomerCode",
                     customer_code)
+
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(

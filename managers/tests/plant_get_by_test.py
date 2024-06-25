@@ -165,6 +165,7 @@ class TestPlantGetByManager:
     # someDateVal
     # someUTCDateTimeVal
     # FlvrForeignKeyID
+
     @pytest.mark.asyncio
     async def test_get_by_flvr_foreign_key_id_existing(
         self,
@@ -284,8 +285,8 @@ class TestPlantGetByManager:
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-
     # LandID
+
     @pytest.mark.asyncio
     async def test_get_by_land_id_existing(
         self,

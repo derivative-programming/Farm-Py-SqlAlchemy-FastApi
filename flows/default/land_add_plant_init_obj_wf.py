@@ -7,6 +7,7 @@ that handle the addition of a
 plant to a specific
 land in the flow process.
 """
+
 import uuid
 import json
 from datetime import date, datetime
@@ -16,11 +17,14 @@ from flows.base import LogSeverity
 from business.land import LandBusObj
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
+
+
 class FlowLandAddPlantInitObjWFResult():
     """
     Represents the result of the
     FlowLandAddPlantInitObjWF process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
     request_flavor_code: uuid.UUID = uuid.UUID(int=0)
     request_other_flavor: str = ""
@@ -43,16 +47,18 @@ class FlowLandAddPlantInitObjWFResult():
     request_some_email_address: str = ""
     land_name: str = ""
     tac_code: uuid.UUID = uuid.UUID(int=0)
-# endset
+
     def __init__(self):
         """
         Initializes a new instance of the
         FlowLandAddPlantInitObjWFResult class.
         """
+
     def to_json(self):
         """
         Converts the FlowLandAddPlantInitObjWFResult
         instance to a JSON string.
+
         Returns:
             str: The JSON representation of the instance.
         """
@@ -102,6 +108,8 @@ class FlowLandAddPlantInitObjWFResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
+
+
 class FlowLandAddPlantInitObjWF(
     BaseFlowLandAddPlantInitObjWF
 ):
@@ -109,9 +117,11 @@ class FlowLandAddPlantInitObjWF(
     FlowLandAddPlantInitObjWF handles the addition of
     a plant to
     a specific land in the flow process.
+
     This class extends the BaseFlowLandAddPlantInitObjWF class and
     initializes it with the provided session context.
     """
+
     async def process(
         self,
         land_bus_obj: LandBusObj,
@@ -121,6 +131,7 @@ class FlowLandAddPlantInitObjWF(
         """
         Processes the addition of a
         plant to a specific land.
+
         Returns:
             FlowLandAddPlantInitObjWFResult: The result of the
                 FlowLandAddPlantInitObjWF process.
@@ -133,11 +144,13 @@ class FlowLandAddPlantInitObjWF(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(land_bus_obj.code)
         )
+
         await super()._process_validation_rules(
             land_bus_obj,
 
 # endset  # noqa: E122
         )
+
         super()._throw_queued_validation_errors()
         request_flavor_code_output: uuid.UUID = uuid.UUID(int=0)
         request_other_flavor_output: str = ""
@@ -160,13 +173,15 @@ class FlowLandAddPlantInitObjWF(
         request_some_email_address_output: str = ""
         land_name_output: str = ""
         tac_code_output: uuid.UUID = uuid.UUID(int=0)
-# endset
+
         # TODO: add flow logic
+
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowLandAddPlantInitObjWFResult()
+
         result.context_object_code = land_bus_obj.code
         result.request_flavor_code = (
             request_flavor_code_output)
@@ -206,11 +221,14 @@ class FlowLandAddPlantInitObjWF(
             land_name_output)
         result.tac_code = (
             tac_code_output)
-# endset
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
+
         return result
+

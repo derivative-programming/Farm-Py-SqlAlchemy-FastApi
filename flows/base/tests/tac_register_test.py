@@ -14,21 +14,27 @@ from flows.base.tac_register import (
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.tac import TacFactory
+
+
 class TestBaseFlowTacRegister():
     """
     This class contains unit tests for the
     `BaseFlowTacRegister` class.
     """
+
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
         """
         Test case for the _process_validation_rules method
         of the BaseFlowTacRegister class.
+
         This method tests the validation rules for the request
         parameters of the
         tac Create your account flow.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
@@ -40,7 +46,6 @@ class TestBaseFlowTacRegister():
         confirm_password: str = ""
         first_name: str = ""
         last_name: str = ""
-# endset
         # Call the method being tested
         await flow._process_validation_rules(
             tac,
@@ -87,12 +92,13 @@ class TestBaseFlowTacRegister():
             assert flow.queued_validation_errors[
                 'lastName'] == (
                 'Please enter a Last Name')
-# endset
+
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
         Test the process_security_rules method of
         BaseFlowTacRegister.
+
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It
@@ -104,8 +110,10 @@ class TestBaseFlowTacRegister():
         it asserts that the expected validation
         errors are present in the flow's
         queued_validation_errors dictionary.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
@@ -119,3 +127,4 @@ class TestBaseFlowTacRegister():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
+

@@ -409,6 +409,9 @@ class PlantManager:
         data = json.loads(json_str)
         plant_dict = schema.load(data)
 
+        #TODO: we need to load the obj form db and into session first.
+        # If not found, then no chagnes can be saved
+
         new_plant = Plant(**plant_dict)
 
         return new_plant
@@ -435,6 +438,9 @@ class PlantManager:
         schema = PlantSchema()
         plant_dict_converted = schema.load(
             plant_dict)
+
+        #TODO: we need to load the obj form db and into session first.
+        # If not found, then no chagnes can be saved
 
         # Create a new Plant instance
         # using the validated data

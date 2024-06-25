@@ -419,9 +419,7 @@ class TestPlantFactoryAsync:
         assert plant.some_var_char_val == "" or isinstance(
             plant.some_var_char_val, str)
         # Check for the peek values
-
 # endset
-
         # isDeleteAllowed,
         # isEditAllowed,
         # otherFlavor,
@@ -436,14 +434,15 @@ class TestPlantFactoryAsync:
         # someDateVal
         # someUTCDateTimeVal
         # flvrForeignKeyID
+
         assert isinstance(plant.flvr_foreign_key_code_peek, uuid.UUID)
         # landID
+
         assert isinstance(plant.land_code_peek, uuid.UUID)
         # someNVarCharVal,
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
-
 # endset
 
         assert isinstance(plant.insert_utc_date_time, datetime)
@@ -515,11 +514,11 @@ class TestPlantFactoryAsync:
         # someDateVal
         # someUTCDateTimeVal
         # LandID
+
         assert isinstance(plant.land_code_peek, uuid.UUID)
-
         # FlvrForeignKeyID
-        assert isinstance(plant.flvr_foreign_key_code_peek, uuid.UUID)
 
+        assert isinstance(plant.flvr_foreign_key_code_peek, uuid.UUID)
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
@@ -645,8 +644,8 @@ class TestPlantFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-
     # FlvrForeignKeyID
+
     @pytest.mark.asyncio
     async def test_invalid_flvr_foreign_key_id(self, session):
         """

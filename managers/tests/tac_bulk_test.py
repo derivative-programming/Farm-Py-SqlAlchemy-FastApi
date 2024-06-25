@@ -19,6 +19,7 @@ from managers.tac import TacManager
 from models import Tac
 from models.factory import TacFactory
 
+
 class TestTacBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestTacBulkManager:
                 tac_ids)
 
         await session.rollback()
+

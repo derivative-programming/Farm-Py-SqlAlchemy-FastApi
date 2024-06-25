@@ -1,14 +1,18 @@
 # apis/models/init/tac_login_init_obj_wf.py
+
 """
 This module contains the models and request/response classes
 for the TacLoginInitObjWF workflow.
 """
+
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import Field
+
 from apis.models.validation_error import ValidationErrorItem
 from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
@@ -18,11 +22,14 @@ from flows.tac_login_init_obj_wf import (
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
+
+
 class TacLoginInitObjWFGetInitModelResponse(CamelModel):
     """
     Represents the response model for the
     TacLoginInitObjWFGetInitModelRequest.
     """
+
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
@@ -32,7 +39,7 @@ class TacLoginInitObjWFGetInitModelResponse(CamelModel):
     password: str = Field(
         default="",
         description="Password")
-# endset
+
     def load_flow_response(
         self,
         data: FlowTacLoginInitObjWFResult
@@ -41,6 +48,7 @@ class TacLoginInitObjWFGetInitModelResponse(CamelModel):
         Loads the response data from the
         FlowTacLoginInitObjWFResult object.
         """
+
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -52,12 +60,16 @@ class TacLoginInitObjWFGetInitModelResponse(CamelModel):
         """
         Serializes the response model to JSON.
         """
+
         return self.model_dump_json()
+
+
 class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
     """
     Represents the request model for the
     TacLoginInitObjWFGetInitModelRequest.
     """
+
     async def process_request(
             self,
             session_context: SessionContext,
@@ -67,6 +79,7 @@ class TacLoginInitObjWFGetInitModelRequest(SnakeModel):
         """
         Processes the request and returns the response.
         """
+
         try:
             logging.info(
                 "loading model...TacLoginInitObjWFGetInitModelRequest")

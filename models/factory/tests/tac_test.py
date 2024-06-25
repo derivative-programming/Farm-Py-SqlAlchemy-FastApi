@@ -3,6 +3,7 @@
 This module contains unit tests for the TacFactory
 class in the models.factory package.
 """
+
 from decimal import Decimal
 import time
 import math
@@ -17,11 +18,15 @@ from models import Base, Tac
 from models.factory import TacFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+
 DATABASE_URL = "sqlite:///:memory:"
+
+
 class TestTacFactory:
     """
     This class contains unit tests for the TacFactory class.
     """
+
     @pytest.fixture(scope="module")
     def engine(self):
         """
@@ -33,6 +38,7 @@ class TestTacFactory:
             conn.execute(text("PRAGMA foreign_keys=ON"))
         yield engine
         engine.dispose()
+
     @pytest.fixture
     def session(self, engine):
         """
@@ -44,6 +50,7 @@ class TestTacFactory:
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
+
     def test_tac_creation(self, session):
         """
         Test case for creating a tac.
@@ -51,6 +58,7 @@ class TestTacFactory:
         tac = TacFactory.create(
             session=session)
         assert tac.tac_id is not None
+
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
@@ -59,6 +67,7 @@ class TestTacFactory:
         tac = TacFactory.create(
             session=session)
         assert isinstance(tac.code, uuid.UUID)
+
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
@@ -67,6 +76,7 @@ class TestTacFactory:
         tac: Tac = TacFactory.build(
             session=session)
         assert tac.last_change_code == 0
+
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
@@ -75,6 +85,7 @@ class TestTacFactory:
         tac: Tac = TacFactory.create(
             session=session)
         assert tac.last_change_code == 1
+
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
@@ -86,6 +97,7 @@ class TestTacFactory:
         tac.code = uuid.uuid4()
         session.commit()
         assert tac.last_change_code != initial_code
+
     def test_date_inserted_on_build(self, session):
         """
         Test case for checking the value of the
@@ -96,6 +108,7 @@ class TestTacFactory:
         assert tac.insert_utc_date_time is not None
         assert isinstance(
             tac.insert_utc_date_time, datetime)
+
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -111,6 +124,7 @@ class TestTacFactory:
         session.add(tac)
         session.commit()
         assert tac.insert_utc_date_time > initial_time
+
     def test_date_inserted_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -126,6 +140,7 @@ class TestTacFactory:
         time.sleep(1)
         session.commit()
         assert tac.insert_utc_date_time == initial_time
+
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
@@ -136,6 +151,7 @@ class TestTacFactory:
         assert tac.last_update_utc_date_time is not None
         assert isinstance(
             tac.last_update_utc_date_time, datetime)
+
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -151,6 +167,7 @@ class TestTacFactory:
         session.add(tac)
         session.commit()
         assert tac.last_update_utc_date_time > initial_time
+
     def test_date_updated_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -166,6 +183,7 @@ class TestTacFactory:
         time.sleep(1)
         session.commit()
         assert tac.last_update_utc_date_time > initial_time
+
     def test_model_deletion(self, session):
         """
         Test case for deleting a
@@ -178,6 +196,7 @@ class TestTacFactory:
         deleted_tac = session.query(Tac).filter_by(
             tac_id=tac.tac_id).first()
         assert deleted_tac is None
+
     def test_data_types(self, session):
         """
         Test case for checking the data types of
@@ -198,18 +217,18 @@ class TestTacFactory:
         assert isinstance(tac.pac_id, int)
         # Check for the peek values,
         # assuming they are UUIDs based on your model
-# endset
         # description,
         # displayOrder,
         # isActive,
         # lookupEnumName,
         # name,
         # pacID
+
         assert isinstance(
             tac.pac_code_peek, uuid.UUID)
-# endset
         assert isinstance(tac.insert_utc_date_time, datetime)
         assert isinstance(tac.last_update_utc_date_time, datetime)
+
     def test_unique_code_constraint(self, session):
         """
         Test case for checking the unique code constraint.
@@ -221,6 +240,7 @@ class TestTacFactory:
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
+
     def test_fields_default(self):
         """
         Test case for checking the default values of
@@ -233,16 +253,15 @@ class TestTacFactory:
         assert tac.last_update_user_id == uuid.UUID(int=0)
         assert tac.insert_utc_date_time is not None
         assert tac.last_update_utc_date_time is not None
-# endset
         # description,
         # displayOrder,
         # isActive,
         # lookupEnumName,
         # name,
         # PacID
+
         assert isinstance(
             tac.pac_code_peek, uuid.UUID)
-# endset
         assert tac is not None
         assert tac.description == ""
         assert tac.display_order == 0
@@ -250,12 +269,13 @@ class TestTacFactory:
         assert tac.lookup_enum_name == ""
         assert tac.name == ""
         assert tac.pac_id == 0
-# endset
+
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
         last_change_code in the Tac
         model.
+
         This test case checks if the last_change_code
         of a Tac object is
         updated correctly
@@ -266,11 +286,14 @@ class TestTacFactory:
         Finally, it asserts that the last_change_code
         of the second retrieved Tac object
         is different from the original last_change_code.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Returns:
             None
         """
+
         tac = TacFactory.create(
             session=session)
         original_last_change_code = tac.last_change_code
@@ -283,27 +306,31 @@ class TestTacFactory:
         tac_2.code = uuid.uuid4()
         session.commit()
         assert tac_2.last_change_code != original_last_change_code
-# endset
     # description,
     # displayOrder,
     # isActive,
     # lookupEnumName,
     # name,
     # PacID
+
     def test_invalid_pac_id(self, session):
         """
         Test case to check if an invalid pac ID raises an IntegrityError.
+
         This test case creates a tac object using
         the TacFactory and assigns an invalid pac ID to it.
         It then tries to commit the changes to the
         session and expects an IntegrityError to be raised.
         Finally, it rolls back the session to ensure
         no changes are persisted.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Raises:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
+
         """
         tac = TacFactory.create(
             session=session)
@@ -311,4 +338,4 @@ class TestTacFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-# endset
+

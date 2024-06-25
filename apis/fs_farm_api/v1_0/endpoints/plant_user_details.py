@@ -1,9 +1,11 @@
 # apis/fs_farm_api/v1_0/endpoints/plant_user_details.py
+
 """
 This module contains the implementation of the
 PlantUserDetailsRouter,
 which handles the API endpoints related to the
 Plant User Details.
+
 The PlantUserDetailsRouter provides the following endpoints:
     - GET /api/v1_0/plant-user-details/{plant_code}/init:
         Get the initialization data for the
@@ -15,27 +17,38 @@ The PlantUserDetailsRouter provides the following endpoints:
         Retrieve the Plant User Details
         Report as a CSV file.
 """
+
 import logging
 import tempfile
 import traceback
 import uuid
+
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+
 import apis.models as api_models
 import apis.models.init as api_init_models
 import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
+
 from .base_router import BaseRouter
+
 PLANT_CODE = "Plant Code"
+
 TRACEBACK = " traceback:"
+
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+
 API_LOG_ERROR_FORMAT = "response.message: %s"
+
+
 class PlantUserDetailsRouterConfig():
     """
     Configuration class for the PlantUserDetailsRouter.
     """
+
     # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = True
@@ -46,6 +59,8 @@ class PlantUserDetailsRouterConfig():
     is_put_available: bool = False
     is_delete_available: bool = False
     is_public: bool = False
+
+
 class PlantUserDetailsRouter(BaseRouter):
     """
     Router class for the
@@ -53,6 +68,7 @@ class PlantUserDetailsRouter(BaseRouter):
     API endpoints.
     """
     router = APIRouter(tags=["PlantUserDetails"])
+
 
     @staticmethod
     @router.get(
@@ -69,26 +85,32 @@ class PlantUserDetailsRouter(BaseRouter):
         """
         Get the initialization data for the
         Plant User Details page.
+
         Args:
             plant_code (uuid.UUID): The UUID of the plant.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
+
         Returns:
             PlantUserDetailsInitReportGetInitModelResponse:
                 The initialization data for the
                 Plant User Details page.
         """
+
         logging.info(
             'PlantUserDetailsRouter.request_get_init start. plantCode:%s',
             plant_code)
         auth_dict = BaseRouter.implementation_check(
             PlantUserDetailsRouterConfig.is_get_init_available)
+
         response = (
             api_init_models.
             PlantUserDetailsInitReportGetInitModelResponse()
         )
+
         auth_dict = BaseRouter.authorization_check(
             PlantUserDetailsRouterConfig.is_public, api_key)
+
         # Start a transaction
         async with session:
             try:
@@ -132,6 +154,7 @@ class PlantUserDetailsRouter(BaseRouter):
                      response_data)
         return response
 
+
     @staticmethod
     @router.get(
         "/api/v1_0/plant-user-details/{plant_code}",
@@ -146,27 +169,34 @@ class PlantUserDetailsRouter(BaseRouter):
         """
         Get the Plant User Details
         Report for a specific plant code.
+
         Args:
             plant_code (uuid.UUID): The unique identifier for the plant.
             request_model (api_models.PlantUserDetailsGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
+
         Returns:
             api_models.PlantUserDetailsGetModelResponse: The response
                 model containing the
                 Plant User Details Report.
+
         Raises:
             Exception: If an error occurs during the processing of the request.
         """
+
         logging.info(
             'PlantUserDetailsRouter.request_get_with_id start. plantCode:%s',
             plant_code)
         auth_dict = BaseRouter.implementation_check(
             PlantUserDetailsRouterConfig.is_get_with_id_available)
+
         response = api_models.PlantUserDetailsGetModelResponse()
+
         auth_dict = BaseRouter.authorization_check(
             PlantUserDetailsRouterConfig.is_public, api_key)
+
         # Start a transaction
         async with session:
             try:
@@ -208,6 +238,7 @@ class PlantUserDetailsRouter(BaseRouter):
         )
         return response
 
+
     @staticmethod
     @router.get(
         "/api/v1_0/plant-user-details/{plant_code}/to-csv",
@@ -222,16 +253,19 @@ class PlantUserDetailsRouter(BaseRouter):
         """
         Retrieve the Plant User Details
         Report as a CSV file.
+
         Args:
             plant_code (uuid.UUID): The unique identifier for the plant.
             request_model (api_models.PlantUserDetailsGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
+
         Returns:
             FileResponse: The CSV file containing the
             Plant User Details Report.
         """
+
         logging.info(
             "PlantUserDetailsRouter.request_get_with_id_to_csv"
             " start. plantCode:%s",
@@ -239,10 +273,14 @@ class PlantUserDetailsRouter(BaseRouter):
         )
         auth_dict = BaseRouter.implementation_check(
             PlantUserDetailsRouterConfig.is_get_to_csv_available)
+
         response = api_models.PlantUserDetailsGetModelResponse()
+
         auth_dict = BaseRouter.authorization_check(
             PlantUserDetailsRouterConfig.is_public, api_key)
+
         tmp_file_path = ""
+
         with tempfile.NamedTemporaryFile(
             delete=False,
             mode='w',
@@ -250,6 +288,7 @@ class PlantUserDetailsRouter(BaseRouter):
             encoding='utf-8'
         ) as tmp_file:
             tmp_file_path = tmp_file.name
+
         # Start a transaction
         async with session:
             try:
@@ -269,9 +308,12 @@ class PlantUserDetailsRouter(BaseRouter):
                 )
                 report_manager = reports.ReportManagerPlantUserDetails(
                     session_context)
+
                 report_items = [response_item.build_report_item() for
                                 response_item in response.items]
+
                 await report_manager.build_csv(tmp_file_path, report_items)
+
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info(
                     EXCEPTION_OCCURRED,
@@ -292,7 +334,9 @@ class PlantUserDetailsRouter(BaseRouter):
         logging.info(
             'PlantUserDetailsRouter.submit get result:%s', response_data
         )
+
         uuid_value = uuid.uuid4()
+
         output_file_name = (
             f'plant_user_details_{str(plant_code)}_{str(uuid_value)}.csv'
         )

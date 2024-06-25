@@ -1,22 +1,28 @@
 # models/serialization_schema/error_log.py
+
 """
 This module contains the ErrorLogSchema
 class, which is responsible
 for serializing and deserializing
 ErrorLog objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import ErrorLog
+
+
 class ErrorLogSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     ErrorLog objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = ErrorLog
         exclude = (
             "_error_log_id",
@@ -36,6 +42,7 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
             "_url",  # url
 # endset  # noqa E122
         )
+
     error_log_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -52,4 +59,4 @@ class ErrorLogSchema(SQLAlchemyAutoSchema):
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
     pac_code_peek = fields.UUID()  # PacID
-# endset
+

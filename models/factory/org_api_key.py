@@ -5,6 +5,7 @@ class, which is responsible
 for creating instances of the OrgApiKey
 model using the Factory pattern.
 """
+
 from datetime import datetime
 import uuid
 import factory
@@ -14,16 +15,21 @@ from services.logging_config import get_logger
 from .organization import OrganizationFactory  # organization_id
 from .org_customer import OrgCustomerFactory  # org_customer_id
 logger = get_logger(__name__)
+
+
 class OrgApiKeyFactory(factory.Factory):
     """
     Factory class for creating instances of
     the OrgApiKey model.
     """
+
     class Meta:
         """
         Meta class for the OrgApiKeyFactory.
         """
+
         model = OrgApiKey
+
     # org_api_key_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
@@ -38,29 +44,32 @@ class OrgApiKeyFactory(factory.Factory):
     name = Faker('sentence', nb_words=4)
     # organization_id = 0
     # org_customer_id = 0
-# endset
     organization_code_peek = factory.LazyFunction(  # OrganizationID
         uuid.uuid4
     )
     org_customer_code_peek = factory.LazyFunction(  # OrgCustomerID
         uuid.uuid4
     )
-# endset
+
     @classmethod
     def _build(cls, model_class, *args, session=None, **kwargs) -> OrgApiKey:
         """
             Builds and returns an instance
             of the OrgApiKey model.
+
             Args:
                 model_class (class): The class of the model to be built.
                 session (Session, optional): The SQLAlchemy
                 session to be used. Defaults to None.
                 *args: Variable length argument list.
                 **kwargs: Arbitrary keyword arguments.
+
             Returns:
                 OrgApiKey: An instance of the
                     OrgApiKey model.
+
         """
+
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -68,44 +77,47 @@ class OrgApiKeyFactory(factory.Factory):
             OrganizationFactory.create(session=session))
         org_customer_id_org_customer_instance = (  # OrgCustomerID
             OrgCustomerFactory.create(session=session))
-# endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         obj = model_class(*args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         # session.add(obj)
         # session.commit()
         return obj
+
     @classmethod
     def _create(cls, model_class, *args, session=None, **kwargs) -> OrgApiKey:
         """
         Create a new OrgApiKey object
         and save it to the database.
+
         Args:
             model_class (class): The class of the model to create.
             session (Session): The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
+
         Returns:
             OrgApiKey: The created
                 OrgApiKey object.
+
         """
+
         logger.info("factory create")
+
         if not session:
             raise AttributeError(
                 "Session not available"
@@ -114,104 +126,104 @@ class OrgApiKeyFactory(factory.Factory):
             OrganizationFactory.create(session=session))
         org_customer_id_org_customer_instance = (  # OrgCustomerID
             OrgCustomerFactory.create(session=session))
-# endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         obj = model_class(*args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         session.add(obj)
         session.commit()
         return obj
+
     @classmethod
     async def create_async(cls, session, *args, **kwargs) -> OrgApiKey:
         """
         Create a new OrgApiKey object
         asynchronously.
+
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
+
         Returns:
             The newly created OrgApiKey object.
+
         """
         organization_id_organization_instance = await (  # OrganizationID
             OrganizationFactory.create_async(session=session))
         org_customer_id_org_customer_instance = await (  # OrgCustomerID
             OrgCustomerFactory.create_async(session=session))
-# endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         session.add(obj)
         await session.flush()
         return obj
+
     @classmethod
     async def build_async(cls, session, *args, **kwargs) -> OrgApiKey:
         """
         Build a new OrgApiKey object
         asynchronously.
+
         Args:
             session: The SQLAlchemy session object.
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
+
         Returns:
             The newly created OrgApiKey object.
+
         """
         organization_id_organization_instance = await (  # OrganizationID
             OrganizationFactory.create_async(session=session))
         org_customer_id_org_customer_instance = await (  # OrgCustomerID
             OrgCustomerFactory.create_async(session=session))
-# endset
         kwargs["organization_id"] = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-# endset
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-# endset
+
         # session.add(obj)
         # await session.flush()
         return obj
+

@@ -20,6 +20,7 @@ from models import CustomerRole
 from models.factory import CustomerRoleFactory
 from models.serialization_schema.customer_role import CustomerRoleSchema
 
+
 class TestCustomerRoleManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestCustomerRoleManager:
             await customer_role_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

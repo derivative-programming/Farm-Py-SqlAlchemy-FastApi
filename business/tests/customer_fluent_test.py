@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.customer_fluent import CustomerFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockCustomerBaseBusObj:
     """
     A mock base class for the CustomerFluentBusObj class.
@@ -214,3 +218,4 @@ class TestCustomerFluentBusObj:
         result = customer.set_prop_zip("Vanilla")
         assert customer.zip == "Vanilla"
         assert result is customer
+

@@ -1,7 +1,9 @@
 # apis/models/tac_farm_dashboard.py
+
 """
 This module contains the models for the
 Tac Farm Dashboard API.
+
 - TacFarmDashboardGetModelRequest: Represents the
     request model for getting the
     tac Farm Dashboard.
@@ -9,13 +11,16 @@ Tac Farm Dashboard API.
     response model item for the
     tac Farm Dashboard.
 """
+
 import json
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import UUID4, Field
+
 from apis.models.list_model import ListModel
 from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
@@ -25,11 +30,15 @@ from reports.tac_farm_dashboard import ReportManagerTacFarmDashboard
 from reports.report_request_validation_error import \
     ReportRequestValidationError
 from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
+
+
 class TacFarmDashboardGetModelRequest(CamelModel):
     """
     Represents the request model for getting the
     tac Farm Dashboard.
+
     """
+
     page_number: int = Field(
         default=0,
         description="Page Number")
@@ -46,11 +55,12 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         default="",
         description="Force Error Message")
 
-# endset
+
     class Config:
         """
         Configuration class for the
         TacFarmDashboard model.
+
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -58,12 +68,14 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
+
     def to_dict_snake(self):
         """
         Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
+
     def to_dict_snake_serialized(self):
         """
         Convert the model to a dictionary with snake_case
@@ -71,12 +83,14 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         """
         data = json.loads(self.model_dump_json())
         return data
+
     def to_dict_camel(self):
         """
         Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
+
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
@@ -84,10 +98,13 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
+
+
 class TacFarmDashboardGetModelResponseItem(CamelModel):
     """
     Represents the response model item for the
     tac Farm Dashboard.
+
     """
     field_one_plant_list_link_land_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -102,11 +119,12 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
     is_conditional_btn_available: bool = Field(
         default=False,
         description="Is Conditional Btn Available")
-# endset
+
     def load_report_item(self, data: ReportItemTacFarmDashboard):
         """
         Loads the data from a ReportItemTacFarmDashboard
         object into the response model item.
+
         Args:
             data (ReportItemTacFarmDashboard): The
                 ReportItemTacFarmDashboard object
@@ -118,17 +136,19 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
             data.conditional_btn_example_link_land_code)
         self.is_conditional_btn_available = (
             data.is_conditional_btn_available)
-# endset
+
     def build_report_item(
         self
     ) -> ReportItemTacFarmDashboard:
         """
         Builds a ReportItemTacFarmDashboard object
         from the response model item.
+
         Returns:
             ReportItemTacFarmDashboard: The built
             ReportItemTacFarmDashboard object.
         """
+
         data = ReportItemTacFarmDashboard()
         data.field_one_plant_list_link_land_code = (
             self.field_one_plant_list_link_land_code)
@@ -137,20 +157,24 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         data.is_conditional_btn_available = (
             self.is_conditional_btn_available)
         return data
-# endset
+
+
 class TacFarmDashboardGetModelResponse(ListModel):
     """
     Represents the response model for the
     TacFarmDashboardGetModel API.
+
     Attributes:
         request (TacFarmDashboardGetModelRequest):
             The request model for the API.
         items (List[TacFarmDashboardGetModelResponseItem]):
             The list of response items.
     """
+
     request: TacFarmDashboardGetModelRequest = TacFarmDashboardGetModelRequest()
     items: List[TacFarmDashboardGetModelResponseItem] = Field(
         default_factory=list)
+
     async def process_request(
         self,
         session_context: SessionContext,
@@ -159,13 +183,16 @@ class TacFarmDashboardGetModelResponse(ListModel):
     ):
         """
         Processes the API request and generates the response items.
+
         Args:
             session_context (SessionContext): The session context.
             tac_code (uuid.UUID): The tac code.
             request (TacFarmDashboardGetModelRequest): The request model.
+
         Raises:
             ReportRequestValidationError: If there is
                 a validation error in the request.
+
         Returns:
             None
         """
@@ -193,18 +220,24 @@ class TacFarmDashboardGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
+
             error_messages = []
+
             for key, value in ve.error_dict.items():
                 error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
                 validation_error.message = value
                 self.validation_errors.append(validation_error)
+
             self.message = ','.join(error_messages)
+
     def to_json(self):
         """
         Converts the response model to JSON.
+
         Returns:
             str: The JSON representation of the response model.
         """
         return self.model_dump_json()
+

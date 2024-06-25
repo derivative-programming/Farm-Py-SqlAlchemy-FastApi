@@ -1,9 +1,11 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_register.py
+
 """
 This module contains the implementation of the
 TacRegisterRouter,
 which handles the API endpoints related to the
 Tac Register.
+
 The TacRegisterRouter provides the following endpoints:
     - GET /api/v1_0/tac-register/{tac_code}/init:
         Get the initialization data for the
@@ -15,27 +17,38 @@ The TacRegisterRouter provides the following endpoints:
         Retrieve the Tac Register
         Report as a CSV file.
 """
+
 import logging
 import tempfile
 import traceback
 import uuid
+
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+
 import apis.models as api_models
 import apis.models.init as api_init_models
 import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
+
 from .base_router import BaseRouter
+
 TAC_CODE = "Tac Code"
+
 TRACEBACK = " traceback:"
+
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+
 API_LOG_ERROR_FORMAT = "response.message: %s"
+
+
 class TacRegisterRouterConfig():
     """
     Configuration class for the TacRegisterRouter.
     """
+
     # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = False
@@ -46,6 +59,8 @@ class TacRegisterRouterConfig():
     is_put_available: bool = False
     is_delete_available: bool = False
     is_public: bool = True
+
+
 class TacRegisterRouter(BaseRouter):
     """
     Router class for the
@@ -53,6 +68,7 @@ class TacRegisterRouter(BaseRouter):
     API endpoints.
     """
     router = APIRouter(tags=["TacRegister"])
+
 
     @staticmethod
     @router.get(
@@ -69,26 +85,32 @@ class TacRegisterRouter(BaseRouter):
         """
         Get the initialization data for the
         Tac Register page.
+
         Args:
             tac_code (uuid.UUID): The UUID of the tac.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
+
         Returns:
             TacRegisterInitObjWFGetInitModelResponse:
                 The initialization data for the
                 Tac Register page.
         """
+
         logging.info(
             'TacRegisterRouter.request_get_init start. tacCode:%s',
             tac_code)
         auth_dict = BaseRouter.implementation_check(
             TacRegisterRouterConfig.is_get_init_available)
+
         response = (
             api_init_models.
             TacRegisterInitObjWFGetInitModelResponse()
         )
+
         auth_dict = BaseRouter.authorization_check(
             TacRegisterRouterConfig.is_public, api_key)
+
         # Start a transaction
         async with session:
             try:
@@ -132,6 +154,7 @@ class TacRegisterRouter(BaseRouter):
                      response_data)
         return response
 
+
     @staticmethod
     @router.post(
         "/api/v1_0/tac-register/{tac_code}",
@@ -145,12 +168,14 @@ class TacRegisterRouter(BaseRouter):
     ):
         """
         Tac Register api post endpoint
+
         Parameters:
         - tac_code: The code of the tac object.
         - request_model: The request model containing
             the details of the item to be added.
         - session: Database session dependency.
         - api_key: API key for authorization.
+
         Returns:
         - response: JSON response with the result of the operation.
         """
@@ -161,10 +186,13 @@ class TacRegisterRouter(BaseRouter):
         )
         auth_dict = BaseRouter.implementation_check(
             TacRegisterRouterConfig.is_post_with_id_available)
+
         response = api_models.TacRegisterPostModelResponse()
+
         auth_dict = BaseRouter.authorization_check(
             TacRegisterRouterConfig.is_public,
             api_key)
+
         # Start a transaction
         async with session:
             try:
@@ -173,6 +201,7 @@ class TacRegisterRouter(BaseRouter):
                 tac_code = session_context.check_context_code(
                     "TacCode",
                     tac_code)
+
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(

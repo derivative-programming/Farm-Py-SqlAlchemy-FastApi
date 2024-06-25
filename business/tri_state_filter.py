@@ -11,6 +11,11 @@ from models import TriStateFilter
 import managers as managers_and_enums  # noqa: F401
 from .tri_state_filter_fluent import TriStateFilterFluentBusObj
 
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "TriStateFilter object is not initialized")
+
+
 class TriStateFilterBusObj(TriStateFilterFluentBusObj):
     """
     This class represents the business object for a TriStateFilter.
@@ -42,7 +47,7 @@ class TriStateFilterBusObj(TriStateFilterFluentBusObj):
         for tri_state_filter in obj_list:
             tri_state_filter_bus_obj = TriStateFilterBusObj(session_context)
 
-            await tri_state_filter_bus_obj.load_from_obj_instance(
+            tri_state_filter_bus_obj.load_from_obj_instance(
                 tri_state_filter)
 
             result.append(tri_state_filter_bus_obj)

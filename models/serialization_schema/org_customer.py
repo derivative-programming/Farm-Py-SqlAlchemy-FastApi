@@ -1,22 +1,28 @@
 # models/serialization_schema/org_customer.py
+
 """
 This module contains the OrgCustomerSchema
 class, which is responsible
 for serializing and deserializing
 OrgCustomer objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import OrgCustomer
+
+
 class OrgCustomerSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     OrgCustomer objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = OrgCustomer
         exclude = (
             "_org_customer_id",
@@ -31,6 +37,7 @@ class OrgCustomerSchema(SQLAlchemyAutoSchema):
             "_organization_id",  # OrganizationID
 # endset  # noqa E122
         )
+
     org_customer_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -43,4 +50,4 @@ class OrgCustomerSchema(SQLAlchemyAutoSchema):
     last_update_utc_date_time = fields.DateTime()
     customer_code_peek = fields.UUID()   # CustomerID
     organization_code_peek = fields.UUID()  # OrganizationID
-# endset
+

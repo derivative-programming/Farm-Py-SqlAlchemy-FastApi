@@ -1,14 +1,18 @@
 # apis/models/init/tac_register_init_obj_wf.py
+
 """
 This module contains the models and request/response classes
 for the TacRegisterInitObjWF workflow.
 """
+
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import Field
+
 from apis.models.validation_error import ValidationErrorItem
 from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
@@ -18,11 +22,14 @@ from flows.tac_register_init_obj_wf import (
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
+
+
 class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
     """
     Represents the response model for the
     TacRegisterInitObjWFGetInitModelRequest.
     """
+
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
@@ -41,7 +48,7 @@ class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
     last_name: str = Field(
         default="",
         description="Last Name")
-# endset
+
     def load_flow_response(
         self,
         data: FlowTacRegisterInitObjWFResult
@@ -50,6 +57,7 @@ class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
         Loads the response data from the
         FlowTacRegisterInitObjWFResult object.
         """
+
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -67,12 +75,16 @@ class TacRegisterInitObjWFGetInitModelResponse(CamelModel):
         """
         Serializes the response model to JSON.
         """
+
         return self.model_dump_json()
+
+
 class TacRegisterInitObjWFGetInitModelRequest(SnakeModel):
     """
     Represents the request model for the
     TacRegisterInitObjWFGetInitModelRequest.
     """
+
     async def process_request(
             self,
             session_context: SessionContext,
@@ -82,6 +94,7 @@ class TacRegisterInitObjWFGetInitModelRequest(SnakeModel):
         """
         Processes the request and returns the response.
         """
+
         try:
             logging.info(
                 "loading model...TacRegisterInitObjWFGetInitModelRequest")

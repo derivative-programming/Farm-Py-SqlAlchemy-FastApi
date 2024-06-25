@@ -1,14 +1,18 @@
 # apis/models/customer_user_log_out.py
+
 """
 This module contains the models for the
 Customer User Log Out API.
 """
+
 import json
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
+
 from pydantic import UUID4, Field
+
 from apis.models.validation_error import ValidationErrorItem
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
@@ -16,64 +20,77 @@ from flows.customer_user_log_out import FlowCustomerUserLogOut, FlowCustomerUser
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
+
 from .post_reponse import PostResponse
+
+
 class CustomerUserLogOutPostModelRequest(CamelModel):
     """
     Represents the request model for the
     Customer User Log Out API.
     """
+
     force_error_message: str = Field(
         default="",
         description="Force Error Message")
 
-# endset
+
     class Config:
         """
         Configuration class for the CustomerUserLogOutPostModelRequest.
         """
+
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
+
     def to_dict_snake(self):
         """
         Convert the model to a dictionary with snake_case keys.
         """
+
         data = self.model_dump()
         return data
+
     def to_dict_snake_serialized(self):
         """
         Convert the model to a dictionary with snake_case
         keys and serialized values.
         """
+
         data = json.loads(self.model_dump_json())
         return data
+
     def to_dict_camel(self):
         """
         Convert the model to a dictionary with camelCase keys.
         """
+
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
+
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
         keys and serialized values.
         """
+
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
+
+
 class CustomerUserLogOutPostModelResponse(PostResponse):
     """
     Represents the response model for the
     Customer User Log Out API.
     """
 
-# endset
-# endset
     def load_flow_response(self, data: FlowCustomerUserLogOutResult):
         """
         Loads the flow response data into the response model.
         """
 
-# endset
+
     async def process_request(
         self,
         session_context: SessionContext,
@@ -83,6 +100,7 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
         """
         Processes the request and generates the response.
         """
+
         try:
             logging.info("loading model...CustomerUserLogOutPostModelResponse")
             customer_bus_obj = CustomerBusObj(session_context)
@@ -109,9 +127,11 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
                 validation_error.property = snake_to_camel(key)
                 validation_error.message = ve.error_dict[key]
                 self.validation_errors.append(validation_error)
+
     def to_json(self):
         """
         Converts the object to a JSON representation.
+
         Returns:
             str: The JSON representation of the object.
         """

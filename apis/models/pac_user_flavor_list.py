@@ -1,7 +1,9 @@
 # apis/models/pac_user_flavor_list.py
+
 """
 This module contains the models for the
 Pac User Flavor List API.
+
 - PacUserFlavorListGetModelRequest: Represents the
     request model for getting the
     pac Pac User Flavor List Report.
@@ -9,13 +11,16 @@ Pac User Flavor List API.
     response model item for the
     pac Pac User Flavor List Report.
 """
+
 import json
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import UUID4, Field
+
 from apis.models.list_model import ListModel
 from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
@@ -25,11 +30,15 @@ from reports.pac_user_flavor_list import ReportManagerPacUserFlavorList
 from reports.report_request_validation_error import \
     ReportRequestValidationError
 from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
+
+
 class PacUserFlavorListGetModelRequest(CamelModel):
     """
     Represents the request model for getting the
     pac Pac User Flavor List Report.
+
     """
+
     page_number: int = Field(
         default=0,
         description="Page Number")
@@ -46,11 +55,12 @@ class PacUserFlavorListGetModelRequest(CamelModel):
         default="",
         description="Force Error Message")
 
-# endset
+
     class Config:
         """
         Configuration class for the
         PacUserFlavorList model.
+
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -58,12 +68,14 @@ class PacUserFlavorListGetModelRequest(CamelModel):
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
+
     def to_dict_snake(self):
         """
         Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
+
     def to_dict_snake_serialized(self):
         """
         Convert the model to a dictionary with snake_case
@@ -71,12 +83,14 @@ class PacUserFlavorListGetModelRequest(CamelModel):
         """
         data = json.loads(self.model_dump_json())
         return data
+
     def to_dict_camel(self):
         """
         Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
+
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
@@ -84,10 +98,13 @@ class PacUserFlavorListGetModelRequest(CamelModel):
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
+
+
 class PacUserFlavorListGetModelResponseItem(CamelModel):
     """
     Represents the response model item for the
     pac Pac User Flavor List Report.
+
     """
     flavor_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
@@ -112,11 +129,12 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
     pac_name: str = Field(
         default="",
         description="Pac Name")
-# endset
+
     def load_report_item(self, data: ReportItemPacUserFlavorList):
         """
         Loads the data from a ReportItemPacUserFlavorList
         object into the response model item.
+
         Args:
             data (ReportItemPacUserFlavorList): The
                 ReportItemPacUserFlavorList object
@@ -136,17 +154,19 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
             data.flavor_name)
         self.pac_name = (
             data.pac_name)
-# endset
+
     def build_report_item(
         self
     ) -> ReportItemPacUserFlavorList:
         """
         Builds a ReportItemPacUserFlavorList object
         from the response model item.
+
         Returns:
             ReportItemPacUserFlavorList: The built
             ReportItemPacUserFlavorList object.
         """
+
         data = ReportItemPacUserFlavorList()
         data.flavor_code = (
             self.flavor_code)
@@ -163,20 +183,24 @@ class PacUserFlavorListGetModelResponseItem(CamelModel):
         data.pac_name = (
             self.pac_name)
         return data
-# endset
+
+
 class PacUserFlavorListGetModelResponse(ListModel):
     """
     Represents the response model for the
     PacUserFlavorListGetModel API.
+
     Attributes:
         request (PacUserFlavorListGetModelRequest):
             The request model for the API.
         items (List[PacUserFlavorListGetModelResponseItem]):
             The list of response items.
     """
+
     request: PacUserFlavorListGetModelRequest = PacUserFlavorListGetModelRequest()
     items: List[PacUserFlavorListGetModelResponseItem] = Field(
         default_factory=list)
+
     async def process_request(
         self,
         session_context: SessionContext,
@@ -185,13 +209,16 @@ class PacUserFlavorListGetModelResponse(ListModel):
     ):
         """
         Processes the API request and generates the response items.
+
         Args:
             session_context (SessionContext): The session context.
             pac_code (uuid.UUID): The pac code.
             request (PacUserFlavorListGetModelRequest): The request model.
+
         Raises:
             ReportRequestValidationError: If there is
                 a validation error in the request.
+
         Returns:
             None
         """
@@ -219,18 +246,24 @@ class PacUserFlavorListGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
+
             error_messages = []
+
             for key, value in ve.error_dict.items():
                 error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
                 validation_error.message = value
                 self.validation_errors.append(validation_error)
+
             self.message = ','.join(error_messages)
+
     def to_json(self):
         """
         Converts the response model to JSON.
+
         Returns:
             str: The JSON representation of the response model.
         """
         return self.model_dump_json()
+

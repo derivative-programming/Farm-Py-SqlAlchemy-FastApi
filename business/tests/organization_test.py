@@ -12,12 +12,14 @@ from business.organization import OrganizationBusObj
 from helpers.session_context import SessionContext
 from models import Organization
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def organization_list():
@@ -29,6 +31,7 @@ def organization_list():
         organization = Mock(spec=Organization)
         organizations.append(organization)
     return organizations
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, organization_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, organization_list):
         for bus_obj, organization in zip(bus_obj_list, organization_list):
             mock_load.assert_any_call(organization)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await OrganizationBusObj.to_bus_obj_list(session_context, empty_organization_list)
 
     assert len(bus_obj_list) == 0
+

@@ -20,6 +20,7 @@ from models import OrgCustomer
 from models.factory import OrgCustomerFactory
 from models.serialization_schema.org_customer import OrgCustomerSchema
 
+
 class TestOrgCustomerManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestOrgCustomerManager:
             await org_customer_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

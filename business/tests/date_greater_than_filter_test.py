@@ -12,12 +12,14 @@ from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 from helpers.session_context import SessionContext
 from models import DateGreaterThanFilter
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def date_greater_than_filter_list():
@@ -29,6 +31,7 @@ def date_greater_than_filter_list():
         date_greater_than_filter = Mock(spec=DateGreaterThanFilter)
         date_greater_than_filters.append(date_greater_than_filter)
     return date_greater_than_filters
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, date_greater_than_filter_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, date_greater_than_filter_list):
         for bus_obj, date_greater_than_filter in zip(bus_obj_list, date_greater_than_filter_list):
             mock_load.assert_any_call(date_greater_than_filter)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await DateGreaterThanFilterBusObj.to_bus_obj_list(session_context, empty_date_greater_than_filter_list)
 
     assert len(bus_obj_list) == 0
+

@@ -12,6 +12,9 @@ import managers as managers_and_enums  # noqa: F401
 from .plant_fluent import PlantFluentBusObj
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Plant object is not initialized")
+
 
 class PlantBusObj(PlantFluentBusObj):
     """
@@ -44,11 +47,10 @@ class PlantBusObj(PlantFluentBusObj):
         for plant in obj_list:
             plant_bus_obj = PlantBusObj(session_context)
 
-            await plant_bus_obj.load_from_obj_instance(
+            plant_bus_obj.load_from_obj_instance(
                 plant)
 
             result.append(plant_bus_obj)
 
         return result
-
     ##GENINCLUDEFILE[GENVALPascalName.bottom.include.*]

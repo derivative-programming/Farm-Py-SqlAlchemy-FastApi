@@ -1,5 +1,6 @@
 # models/org_customer.py
 # pylint: disable=unused-import
+
 """
 The OrgCustomer model inherits from
 the Base model and is mapped to the
@@ -16,6 +17,8 @@ from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
 import models.constants.org_customer as org_customer_constants
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType  # noqa: F401
+
+
 class OrgCustomer(Base):
     """
     The OrgCustomer model represents a
@@ -23,7 +26,9 @@ class OrgCustomer(Base):
     It inherits from the Base model and is mapped to the
     'farm_OrgCustomer' table in the database.
     """
+
     __tablename__ = 'farm_' + snake_case('OrgCustomer')
+
     _org_customer_id = Column(
         'org_customer_id',
         Integer,
@@ -88,11 +93,14 @@ class OrgCustomer(Base):
         'last_update_utc_date_time',
         DateTime,
         nullable=True)
+
     __mapper_args__ = {
         'version_id_col': _last_change_code
     }
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
         self.code = kwargs.get('code', uuid.uuid4())
         self.last_change_code = kwargs.get(
             'last_change_code', 0)
@@ -110,71 +118,86 @@ class OrgCustomer(Base):
             'insert_utc_date_time', datetime(1753, 1, 1))
         self.last_update_utc_date_time = kwargs.get(
             'last_update_utc_date_time', datetime(1753, 1, 1))
-# endset
         self.customer_code_peek = kwargs.get(  # CustomerID
             'customer_code_peek', uuid.UUID(int=0))
         self.organization_code_peek = kwargs.get(  # OrganizationID
             'organization_code_peek', uuid.UUID(int=0))
-# endset
+
     @property
     def code(self):
         """
         Get the code of the org_customer.
+
         Returns:
             UUID: The code of the org_customer.
         """
         return uuid.UUID(str(self._code))
+
     @code.setter
     def code(self, value: uuid.UUID):
         """
         Set the code of the org_customer.
+
         Args:
             value (uuid.UUID): The code to set for the org_customer.
+
         Raises:
             TypeError: If the value is not of type uuid.UUID.
+
         """
         if isinstance(value, uuid.UUID):
             self._code = value
         else:
             self._code = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+
     @property
     def org_customer_id(self) -> int:
         """
         Get the ID of the org_customer.
+
         Returns:
             int: The ID of the org_customer.
         """
         return getattr(self, '_org_customer_id', 0) or 0
+
     @org_customer_id.setter
     def org_customer_id(self, value: int) -> None:
         """
         Set the org_customer_id.
         """
+
         self._org_customer_id = value
+
     @property
     def last_change_code(self) -> int:
         """
         Returns the last change code of the org_customer.
+
         :return: The last change code of the org_customer.
         :rtype: int
         """
         return getattr(self, '_last_change_code', 0) or 0
+
     @last_change_code.setter
     def last_change_code(self, value: int) -> None:
         """
         Set the last_change_code.
         """
+
         self._last_change_code = value
+
     @property
     def insert_user_id(self):
         """
         Inserts the user ID into the
         org_customer object.
+
         Returns:
             UUID: The UUID of the inserted user ID.
         """
         return uuid.UUID(str(self._insert_user_id))
+
     @insert_user_id.setter
     def insert_user_id(self, value):
         if isinstance(value, uuid.UUID):
@@ -182,14 +205,17 @@ class OrgCustomer(Base):
         else:
             self._insert_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+
     @property
     def last_update_user_id(self):
         """
         Returns the UUID of the last user who updated the org_customer.
+
         :return: The UUID of the last update user.
         :rtype: UUID
         """
         return uuid.UUID(str(self._last_update_user_id))
+
     @last_update_user_id.setter
     def last_update_user_id(self, value):
         if isinstance(value, uuid.UUID):
@@ -197,10 +223,12 @@ class OrgCustomer(Base):
         else:
             self._last_update_user_id = uuid.UUID(value)
         self.last_update_utc_date_time = datetime.utcnow()
+
     @property
     def insert_utc_date_time(self) -> datetime:
         """
         Inserts the UTC date and time for the org_customer.
+
         Returns:
             datetime: The UTC date and time for the org_customer.
         """
@@ -209,16 +237,20 @@ class OrgCustomer(Base):
             '_insert_utc_date_time',
             datetime(1753, 1, 1)
         ) or datetime(1753, 1, 1)
+
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value: datetime) -> None:
         """
         Set the insert_utc_date_time.
         """
+
         self._insert_utc_date_time = value
+
     @property
     def last_update_utc_date_time(self) -> datetime:
         """
         Returns the last update UTC date and time of the org_customer.
+
         :return: A datetime object representing the
             last update UTC date and time.
         """
@@ -227,68 +259,83 @@ class OrgCustomer(Base):
             '_last_update_utc_date_time',
             datetime(1753, 1, 1)
         ) or datetime(1753, 1, 1)
+
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_update_utc_date_time.
         """
+
         self._last_update_utc_date_time = value
     # customerID
     # email,
+
     @property
     def email(self) -> str:
         """
         Returns the email address associated with the org_customer.
+
         :return: The email address as a string.
         """
         return getattr(self, '_email', "") or ""
+
     @email.setter
     def email(self, value: str) -> None:
         """
         Set the email.
         """
+
         self._email = value
     # OrganizationID
-# endset
     # customerID
+
     @property
     def customer_id(self) -> int:
         """
         Get the foreign key ID for the customer of the org_customer.
+
         Returns:
             int: The foreign key ID for the customer of the org_customer.
         """
         return getattr(self, '_customer_id', 0) or 0
+
     @customer_id.setter
     def customer_id(self, value: int) -> None:
         """
         Set the customer_id.
         """
+
         self._customer_id = value
     # OrganizationID
     @property
     def organization_id(self) -> int:
         """
         Get the ID of the organization associated with this org_customer.
+
         Returns:
             int: The ID of the organization.
         """
         return getattr(self, '_organization_id', 0) or 0
+
     @organization_id.setter
     def organization_id(self, value: int) -> None:
         """
         Set the organization_id.
         """
+
         self._organization_id = value
-# endset
+
+
     @staticmethod
     def property_list():
         """
         Returns a list of property names for
         the OrgCustomer model.
+
         Returns:
             list: A list of property names.
         """
+
         result = [
             "customer_id",
             "email",
@@ -297,6 +344,8 @@ class OrgCustomer(Base):
             "code"
         ]
         return result
+
+
 @event.listens_for(OrgCustomer, 'before_insert')
 def set_created_on(
     mapper,
@@ -306,16 +355,20 @@ def set_created_on(
     """
     Set the created on and last update timestamps
     for a OrgCustomer object.
+
     Args:
         mapper: The SQLAlchemy mapper.
         connection: The SQLAlchemy connection.
         target: The OrgCustomer object
         being inserted.
+
     Returns:
         None
     """
     target.insert_utc_date_time = datetime.utcnow()
     target.last_update_utc_date_time = datetime.utcnow()
+
+
 @event.listens_for(OrgCustomer, 'before_update')
 def set_updated_on(
     mapper,
@@ -325,8 +378,10 @@ def set_updated_on(
     """
     Sets the 'last_update_utc_date_time' attribute of
     the target object to the current UTC date and time.
+
     :param mapper: The SQLAlchemy mapper object.
     :param connection: The SQLAlchemy connection object.
     :param target: The target object to update.
     """
     target.last_update_utc_date_time = datetime.utcnow()
+

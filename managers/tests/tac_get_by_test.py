@@ -5,21 +5,27 @@
     This class contains unit tests for the
     `TacManager` class.
 """
+
 import uuid
+
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+
 import models
 from helpers.session_context import SessionContext
 from managers.tac import TacManager
 from models import Tac
 from models.factory import TacFactory
+
+
 class TestTacGetByManager:
     """
     This class contains unit tests for the
     `TacManager` class.
     """
+
     @pytest_asyncio.fixture(scope="function")
     async def tac_manager(self, session: AsyncSession):
         """
@@ -29,6 +35,7 @@ class TestTacGetByManager:
         session_context = SessionContext(dict(), session)
         session_context.customer_code = uuid.uuid4()
         return TacManager(session_context)
+
     @pytest.mark.asyncio
     async def test_build(
         self,
@@ -42,15 +49,19 @@ class TestTacGetByManager:
         mock_data = {
             "code": uuid.uuid4()
         }
+
         # Call the build function of the manager
         tac = await tac_manager.build(
             **mock_data)
+
         # Assert that the returned object is an instance of Tac
         assert isinstance(
             tac, Tac)
+
         # Assert that the attributes of the
         # tac match our mock data
         assert tac.code == mock_data["code"]
+
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
@@ -63,14 +74,18 @@ class TestTacGetByManager:
         """
         test_tac = await TacFactory.create_async(
             session)
+
         tac = await tac_manager.get_by_id(
             test_tac.tac_id)
+
         assert isinstance(
             tac, Tac)
+
         assert test_tac.tac_id == \
             tac.tac_id
         assert test_tac.code == \
             tac.code
+
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
@@ -81,10 +96,14 @@ class TestTacGetByManager:
         `TacManager` when the
         tac is not found.
         """
+
         non_existent_id = 9999  # An ID that's not in the database
+
         retrieved_tac = await tac_manager.get_by_id(
             non_existent_id)
+
         assert retrieved_tac is None
+
     @pytest.mark.asyncio
     async def test_get_by_code_returns_tac(
         self,
@@ -97,16 +116,21 @@ class TestTacGetByManager:
         a tac is
         returned by its code.
         """
+
         test_tac = await TacFactory.create_async(
             session)
+
         tac = await tac_manager.get_by_code(
             test_tac.code)
+
         assert isinstance(
             tac, Tac)
+
         assert test_tac.tac_id == \
             tac.tac_id
         assert test_tac.code == \
             tac.code
+
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
@@ -119,16 +143,19 @@ class TestTacGetByManager:
         # Generate a random UUID that doesn't correspond to
         # any Tac in the database
         random_code = uuid.uuid4()
+
         tac = await tac_manager.get_by_code(
             random_code)
+
         assert tac is None
-# endset
+
     # description,
     # displayOrder,
     # isActive,
     # lookupEnumName,
     # name,
     # PacID
+
     @pytest.mark.asyncio
     async def test_get_by_pac_id_existing(
         self,
@@ -140,6 +167,7 @@ class TestTacGetByManager:
         `get_by_pac_id` method when
         a tac with
         a specific pac_id exists.
+
         Steps:
         1. Create a tac using the
             TacFactory.
@@ -159,25 +187,32 @@ class TestTacGetByManager:
         8. Assert that the pac_code_peek of the fetched
             tac matches the
             code of the fetched pac.
+
         """
         # Add a tac with a specific
         # pac_id
         tac1 = await TacFactory.create_async(
             session=session)
+
         # Fetch the tac using
         # the manager function
+
         fetched_tacs = await tac_manager.get_by_pac_id(
             tac1.pac_id)
         assert len(fetched_tacs) == 1
         assert isinstance(fetched_tacs[0], Tac)
         assert fetched_tacs[0].code == \
             tac1.code
+
         stmt = select(models.Pac).where(
             models.Pac._pac_id == tac1.pac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         pac = result.scalars().first()
+
         assert isinstance(pac, models.Pac)
+
         assert fetched_tacs[0].pac_code_peek == pac.code
+
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
@@ -186,14 +221,18 @@ class TestTacGetByManager:
         """
         Test case to verify the behavior of the
         get_by_pac_id method when the pac ID does not exist.
+
         This test case ensures that when a non-existent
         pac ID is provided to the get_by_pac_id method,
         an empty list is returned.
         """
+
         non_existent_id = 999
+
         fetched_tacs = await tac_manager.get_by_pac_id(
             non_existent_id)
         assert len(fetched_tacs) == 0
+
     @pytest.mark.asyncio
     async def test_get_by_pac_id_invalid_type(
         self,
@@ -203,20 +242,26 @@ class TestTacGetByManager:
         """
         Test case to verify the behavior of the
         `get_by_pac_id` method when an invalid pac ID is provided.
+
         Args:
             tac_manager (TacManager): An
                 instance of the TacManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
+
         Raises:
             Exception: If an exception is raised during
             the execution of the `get_by_pac_id` method.
+
         Returns:
             None
         """
+
         invalid_id = "invalid_id"
+
         with pytest.raises(Exception):
             await tac_manager.get_by_pac_id(
                 invalid_id)  # type: ignore
+
         await session.rollback()
-# endset
+

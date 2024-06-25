@@ -20,6 +20,7 @@ from models import Customer
 from models.factory import CustomerFactory
 from models.serialization_schema.customer import CustomerSchema
 
+
 class TestCustomerManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestCustomerManager:
             await customer_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

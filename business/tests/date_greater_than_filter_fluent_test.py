@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.date_greater_than_filter_fluent import DateGreaterThanFilterFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockDateGreaterThanFilterBaseBusObj:
     """
     A mock base class for the DateGreaterThanFilterFluentBusObj class.
@@ -81,3 +85,4 @@ class TestDateGreaterThanFilterFluentBusObj:
         result = date_greater_than_filter.set_prop_pac_id(1)
         assert date_greater_than_filter.pac_id == 1
         assert result is date_greater_than_filter
+

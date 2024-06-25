@@ -11,6 +11,11 @@ from models import OrgApiKey
 import managers as managers_and_enums  # noqa: F401
 from .org_api_key_fluent import OrgApiKeyFluentBusObj
 
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "OrgApiKey object is not initialized")
+
+
 class OrgApiKeyBusObj(OrgApiKeyFluentBusObj):
     """
     This class represents the business object for a OrgApiKey.
@@ -42,7 +47,7 @@ class OrgApiKeyBusObj(OrgApiKeyFluentBusObj):
         for org_api_key in obj_list:
             org_api_key_bus_obj = OrgApiKeyBusObj(session_context)
 
-            await org_api_key_bus_obj.load_from_obj_instance(
+            org_api_key_bus_obj.load_from_obj_instance(
                 org_api_key)
 
             result.append(org_api_key_bus_obj)

@@ -18,9 +18,7 @@ class PlantFluentBusObj(PlantBaseBusObj):
     """
 
 # endset
-
     # FlvrForeignKeyID
-
     # isDeleteAllowed
 
     def set_prop_is_delete_allowed(self, value: bool):
@@ -35,7 +33,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.is_delete_allowed = value
         return self
-
     # isEditAllowed
 
     def set_prop_is_edit_allowed(self, value: bool):
@@ -50,7 +47,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.is_edit_allowed = value
         return self
-
     # otherFlavor
 
     def set_prop_other_flavor(self, value: str):
@@ -65,7 +61,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.other_flavor = value
         return self
-
     # someBigIntVal
 
     def set_prop_some_big_int_val(self, value: int):
@@ -80,7 +75,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.some_big_int_val = value
         return self
-
     # someBitVal
 
     def set_prop_some_bit_val(self, value: bool):
@@ -95,7 +89,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.some_bit_val = value
         return self
-
     # someDateVal
 
     def set_prop_some_date_val(self, value: date):
@@ -110,7 +103,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.some_date_val = value
         return self
-
     # someDecimalVal
 
     def set_prop_some_decimal_val(self, value: Decimal):
@@ -128,7 +120,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_decimal_val = value
         return self
-
     # someEmailAddress
 
     def set_prop_some_email_address(self, value: str):
@@ -145,7 +136,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_email_address = value
         return self
-
     # someFloatVal
 
     def set_prop_some_float_val(self, value):
@@ -163,7 +153,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_float_val = value
         return self
-
     # someIntVal
 
     def set_prop_some_int_val(self, value: int):
@@ -181,7 +170,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_int_val = value
         return self
-
     # someMoneyVal
 
     def set_prop_some_money_val(self, value: Decimal):
@@ -199,7 +187,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_money_val = value
         return self
-
     # someNVarCharVal
 
     def set_prop_some_n_var_char_val(self, value: str):
@@ -215,7 +202,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_n_var_char_val = value
         return self
-
     # somePhoneNumber
 
     def set_prop_some_phone_number(self, value: str):
@@ -235,7 +221,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.some_phone_number = value
         return self
-
     # someTextVal
 
     def set_prop_some_text_val(self, value: str):
@@ -252,7 +237,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_text_val = value
         return self
-
     # someUniqueidentifierVal
 
     def set_prop_some_uniqueidentifier_val(self, value: uuid.UUID):
@@ -268,7 +252,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_uniqueidentifier_val = value
         return self
-
     # someUTCDateTimeVal
 
     def set_prop_some_utc_date_time_val(self, value: datetime):
@@ -284,7 +267,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_utc_date_time_val = value
         return self
-
     # someVarCharVal
 
     def set_prop_some_var_char_val(self, value: str):
@@ -302,11 +284,8 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.some_var_char_val = value
         return self
-
     # LandID
-
 # endset
-
     # isDeleteAllowed,
     # isEditAllowed,
     # otherFlavor,
@@ -337,7 +316,6 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.flvr_foreign_key_id = value
         return self
-
     # LandID
 
     def set_prop_land_id(self, value: int):
@@ -355,10 +333,8 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.land_id = value
         return self
-
     # somePhoneNumber,
     # someTextVal,
     # someUniqueidentifierVal,
     # someVarCharVal,
-
 # endset

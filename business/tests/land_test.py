@@ -12,12 +12,14 @@ from business.land import LandBusObj
 from helpers.session_context import SessionContext
 from models import Land
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def land_list():
@@ -29,6 +31,7 @@ def land_list():
         land = Mock(spec=Land)
         lands.append(land)
     return lands
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, land_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, land_list):
         for bus_obj, land in zip(bus_obj_list, land_list):
             mock_load.assert_any_call(land)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await LandBusObj.to_bus_obj_list(session_context, empty_land_list)
 
     assert len(bus_obj_list) == 0
+

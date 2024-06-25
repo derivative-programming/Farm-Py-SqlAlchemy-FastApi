@@ -1,7 +1,9 @@
 # apis/models/plant_user_details.py
+
 """
 This module contains the models for the
 Plant User Details API.
+
 - PlantUserDetailsGetModelRequest: Represents the
     request model for getting the
     plant Plant Details.
@@ -9,13 +11,16 @@ Plant User Details API.
     response model item for the
     plant Plant Details.
 """
+
 import json
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import UUID4, Field
+
 from apis.models.list_model import ListModel
 from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
@@ -25,11 +30,15 @@ from reports.plant_user_details import ReportManagerPlantUserDetails
 from reports.report_request_validation_error import \
     ReportRequestValidationError
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+
+
 class PlantUserDetailsGetModelRequest(CamelModel):
     """
     Represents the request model for getting the
     plant Plant Details.
+
     """
+
     page_number: int = Field(
         default=0,
         description="Page Number")
@@ -46,11 +55,12 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         default="",
         description="Force Error Message")
 
-# endset
+
     class Config:
         """
         Configuration class for the
         PlantUserDetails model.
+
         Attributes:
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
@@ -58,12 +68,14 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
+
     def to_dict_snake(self):
         """
         Convert the model to a dictionary with snake_case keys.
         """
         data = self.model_dump()
         return data
+
     def to_dict_snake_serialized(self):
         """
         Convert the model to a dictionary with snake_case
@@ -71,12 +83,14 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         """
         data = json.loads(self.model_dump_json())
         return data
+
     def to_dict_camel(self):
         """
         Convert the model to a dictionary with camelCase keys.
         """
         data = self.model_dump()
         return {snake_to_camel(k): v for k, v in data.items()}
+
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
@@ -84,10 +98,13 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         """
         data = json.loads(self.model_dump_json())
         return {snake_to_camel(k): v for k, v in data.items()}
+
+
 class PlantUserDetailsGetModelResponseItem(CamelModel):
     """
     Represents the response model item for the
     plant Plant Details.
+
     """
     flavor_name: str = Field(
         default="",
@@ -166,11 +183,12 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
             '00000000-0000-0000-0000-000000000000'
         ),
         description="Back To Dashboard Link Tac Code")
-# endset
+
     def load_report_item(self, data: ReportItemPlantUserDetails):
         """
         Loads the data from a ReportItemPlantUserDetails
         object into the response model item.
+
         Args:
             data (ReportItemPlantUserDetails): The
                 ReportItemPlantUserDetails object
@@ -222,17 +240,19 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
             data.random_property_updates_link_plant_code)
         self.back_to_dashboard_link_tac_code = (
             data.back_to_dashboard_link_tac_code)
-# endset
+
     def build_report_item(
         self
     ) -> ReportItemPlantUserDetails:
         """
         Builds a ReportItemPlantUserDetails object
         from the response model item.
+
         Returns:
             ReportItemPlantUserDetails: The built
             ReportItemPlantUserDetails object.
         """
+
         data = ReportItemPlantUserDetails()
         data.flavor_name = (
             self.flavor_name)
@@ -281,20 +301,24 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
         data.back_to_dashboard_link_tac_code = (
             self.back_to_dashboard_link_tac_code)
         return data
-# endset
+
+
 class PlantUserDetailsGetModelResponse(ListModel):
     """
     Represents the response model for the
     PlantUserDetailsGetModel API.
+
     Attributes:
         request (PlantUserDetailsGetModelRequest):
             The request model for the API.
         items (List[PlantUserDetailsGetModelResponseItem]):
             The list of response items.
     """
+
     request: PlantUserDetailsGetModelRequest = PlantUserDetailsGetModelRequest()
     items: List[PlantUserDetailsGetModelResponseItem] = Field(
         default_factory=list)
+
     async def process_request(
         self,
         session_context: SessionContext,
@@ -303,13 +327,16 @@ class PlantUserDetailsGetModelResponse(ListModel):
     ):
         """
         Processes the API request and generates the response items.
+
         Args:
             session_context (SessionContext): The session context.
             plant_code (uuid.UUID): The plant code.
             request (PlantUserDetailsGetModelRequest): The request model.
+
         Raises:
             ReportRequestValidationError: If there is
                 a validation error in the request.
+
         Returns:
             None
         """
@@ -337,18 +364,24 @@ class PlantUserDetailsGetModelResponse(ListModel):
             self.success = False
             self.message = "Validation Error..."
             self.validation_errors = list()
+
             error_messages = []
+
             for key, value in ve.error_dict.items():
                 error_messages.append(value)
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)
                 validation_error.message = value
                 self.validation_errors.append(validation_error)
+
             self.message = ','.join(error_messages)
+
     def to_json(self):
         """
         Converts the response model to JSON.
+
         Returns:
             str: The JSON representation of the response model.
         """
         return self.model_dump_json()
+

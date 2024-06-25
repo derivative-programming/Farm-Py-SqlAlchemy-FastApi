@@ -19,6 +19,7 @@ from managers.land import LandManager
 from models import Land
 from models.factory import LandFactory
 
+
 class TestLandBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestLandBulkManager:
                 land_ids)
 
         await session.rollback()
+

@@ -11,6 +11,11 @@ from models import Role
 import managers as managers_and_enums  # noqa: F401
 from .role_fluent import RoleFluentBusObj
 
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Role object is not initialized")
+
+
 class RoleBusObj(RoleFluentBusObj):
     """
     This class represents the business object for a Role.
@@ -42,7 +47,7 @@ class RoleBusObj(RoleFluentBusObj):
         for role in obj_list:
             role_bus_obj = RoleBusObj(session_context)
 
-            await role_bus_obj.load_from_obj_instance(
+            role_bus_obj.load_from_obj_instance(
                 role)
 
             result.append(role_bus_obj)

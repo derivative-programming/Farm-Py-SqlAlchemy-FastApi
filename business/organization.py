@@ -11,9 +11,16 @@ from models import Organization
 import managers as managers_and_enums  # noqa: F401
 from .organization_fluent import OrganizationFluentBusObj
 
+
 from business.org_customer import OrgCustomerBusObj
 
+
 from business.org_api_key import OrgApiKeyBusObj
+
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Organization object is not initialized")
+
 
 class OrganizationBusObj(OrganizationFluentBusObj):
     """
@@ -46,12 +53,13 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         for organization in obj_list:
             organization_bus_obj = OrganizationBusObj(session_context)
 
-            await organization_bus_obj.load_from_obj_instance(
+            organization_bus_obj.load_from_obj_instance(
                 organization)
 
             result.append(organization_bus_obj)
 
         return result
+
 
     async def build_org_customer(self) -> OrgCustomerBusObj:
         """
@@ -59,6 +67,9 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         instance (not saved yet)
         """
         item = OrgCustomerBusObj(self._session_context)
+
+        assert item.org_customer is not None
+
 
         item.organization_id = self.organization_id
         item.org_customer.organization_code_peek = self.code
@@ -74,9 +85,10 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         obj_list = await org_customer_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
             bus_obj_item = OrgCustomerBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_org_api_key(self) -> OrgApiKeyBusObj:
         """
@@ -84,6 +96,9 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         instance (not saved yet)
         """
         item = OrgApiKeyBusObj(self._session_context)
+
+        assert item.org_api_key is not None
+
 
         item.organization_id = self.organization_id
         item.org_api_key.organization_code_peek = self.code
@@ -99,7 +114,7 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         obj_list = await org_api_key_manager.get_by_organization_id(self.organization_id)
         for obj_item in obj_list:
             bus_obj_item = OrgApiKeyBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

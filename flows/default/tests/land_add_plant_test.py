@@ -104,7 +104,7 @@ class TestLandAddPlantPostModelResponse:
             result.output_some_phone_number)
         assert data["output_some_email_address"] == (
             result.output_some_email_address)
-# endsets
+# endset
 
     @pytest.mark.asyncio
     async def test_flow_process_request(self, session):
@@ -118,7 +118,7 @@ class TestLandAddPlantPostModelResponse:
         land = await LandFactory.create_async(session)
 
         land_bus_obj = LandBusObj(session_context)
-        await land_bus_obj.load_from_obj_instance(land)
+        land_bus_obj.load_from_obj_instance(land)
 
         role_required = "User"
 

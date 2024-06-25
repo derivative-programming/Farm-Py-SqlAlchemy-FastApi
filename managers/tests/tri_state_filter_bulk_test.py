@@ -19,6 +19,7 @@ from managers.tri_state_filter import TriStateFilterManager
 from models import TriStateFilter
 from models.factory import TriStateFilterFactory
 
+
 class TestTriStateFilterBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestTriStateFilterBulkManager:
                 tri_state_filter_ids)
 
         await session.rollback()
+

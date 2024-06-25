@@ -11,19 +11,31 @@ from models import Pac
 import managers as managers_and_enums  # noqa: F401
 from .pac_fluent import PacFluentBusObj
 
+
 from business.tri_state_filter import TriStateFilterBusObj
+
 
 from business.tac import TacBusObj
 
+
 from business.role import RoleBusObj
+
 
 from business.land import LandBusObj
 
+
 from business.flavor import FlavorBusObj
+
 
 from business.error_log import ErrorLogBusObj
 
+
 from business.date_greater_than_filter import DateGreaterThanFilterBusObj
+
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Pac object is not initialized")
+
 
 class PacBusObj(PacFluentBusObj):
     """
@@ -56,12 +68,13 @@ class PacBusObj(PacFluentBusObj):
         for pac in obj_list:
             pac_bus_obj = PacBusObj(session_context)
 
-            await pac_bus_obj.load_from_obj_instance(
+            pac_bus_obj.load_from_obj_instance(
                 pac)
 
             result.append(pac_bus_obj)
 
         return result
+
 
     async def build_tri_state_filter(self) -> TriStateFilterBusObj:
         """
@@ -69,6 +82,9 @@ class PacBusObj(PacFluentBusObj):
         instance (not saved yet)
         """
         item = TriStateFilterBusObj(self._session_context)
+
+        assert item.tri_state_filter is not None
+
 
         item.pac_id = self.pac_id
         item.tri_state_filter.pac_code_peek = self.code
@@ -84,9 +100,10 @@ class PacBusObj(PacFluentBusObj):
         obj_list = await tri_state_filter_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = TriStateFilterBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_tac(self) -> TacBusObj:
         """
@@ -94,6 +111,9 @@ class PacBusObj(PacFluentBusObj):
         instance (not saved yet)
         """
         item = TacBusObj(self._session_context)
+
+        assert item.tac is not None
+
 
         item.pac_id = self.pac_id
         item.tac.pac_code_peek = self.code
@@ -109,9 +129,10 @@ class PacBusObj(PacFluentBusObj):
         obj_list = await tac_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = TacBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_role(self) -> RoleBusObj:
         """
@@ -119,6 +140,9 @@ class PacBusObj(PacFluentBusObj):
         instance (not saved yet)
         """
         item = RoleBusObj(self._session_context)
+
+        assert item.role is not None
+
 
         item.pac_id = self.pac_id
         item.role.pac_code_peek = self.code
@@ -134,9 +158,10 @@ class PacBusObj(PacFluentBusObj):
         obj_list = await role_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = RoleBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_land(self) -> LandBusObj:
         """
@@ -144,6 +169,9 @@ class PacBusObj(PacFluentBusObj):
         instance (not saved yet)
         """
         item = LandBusObj(self._session_context)
+
+        assert item.land is not None
+
 
         item.pac_id = self.pac_id
         item.land.pac_code_peek = self.code
@@ -159,9 +187,10 @@ class PacBusObj(PacFluentBusObj):
         obj_list = await land_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = LandBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_flavor(self) -> FlavorBusObj:
         """
@@ -169,6 +198,9 @@ class PacBusObj(PacFluentBusObj):
         instance (not saved yet)
         """
         item = FlavorBusObj(self._session_context)
+
+        assert item.flavor is not None
+
 
         item.pac_id = self.pac_id
         item.flavor.pac_code_peek = self.code
@@ -184,9 +216,10 @@ class PacBusObj(PacFluentBusObj):
         obj_list = await flavor_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = FlavorBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_error_log(self) -> ErrorLogBusObj:
         """
@@ -194,6 +227,9 @@ class PacBusObj(PacFluentBusObj):
         instance (not saved yet)
         """
         item = ErrorLogBusObj(self._session_context)
+
+        assert item.error_log is not None
+
 
         item.pac_id = self.pac_id
         item.error_log.pac_code_peek = self.code
@@ -209,9 +245,10 @@ class PacBusObj(PacFluentBusObj):
         obj_list = await error_log_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = ErrorLogBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_date_greater_than_filter(self) -> DateGreaterThanFilterBusObj:
         """
@@ -219,6 +256,9 @@ class PacBusObj(PacFluentBusObj):
         instance (not saved yet)
         """
         item = DateGreaterThanFilterBusObj(self._session_context)
+
+        assert item.date_greater_than_filter is not None
+
 
         item.pac_id = self.pac_id
         item.date_greater_than_filter.pac_code_peek = self.code
@@ -234,7 +274,7 @@ class PacBusObj(PacFluentBusObj):
         obj_list = await date_greater_than_filter_manager.get_by_pac_id(self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = DateGreaterThanFilterBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

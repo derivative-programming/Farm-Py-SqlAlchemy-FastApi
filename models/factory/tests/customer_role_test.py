@@ -3,6 +3,7 @@
 This module contains unit tests for the CustomerRoleFactory
 class in the models.factory package.
 """
+
 from decimal import Decimal
 import time
 import math
@@ -17,11 +18,15 @@ from models import Base, CustomerRole
 from models.factory import CustomerRoleFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+
 DATABASE_URL = "sqlite:///:memory:"
+
+
 class TestCustomerRoleFactory:
     """
     This class contains unit tests for the CustomerRoleFactory class.
     """
+
     @pytest.fixture(scope="module")
     def engine(self):
         """
@@ -33,6 +38,7 @@ class TestCustomerRoleFactory:
             conn.execute(text("PRAGMA foreign_keys=ON"))
         yield engine
         engine.dispose()
+
     @pytest.fixture
     def session(self, engine):
         """
@@ -44,6 +50,7 @@ class TestCustomerRoleFactory:
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
+
     def test_customer_role_creation(self, session):
         """
         Test case for creating a customer_role.
@@ -51,6 +58,7 @@ class TestCustomerRoleFactory:
         customer_role = CustomerRoleFactory.create(
             session=session)
         assert customer_role.customer_role_id is not None
+
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
@@ -59,6 +67,7 @@ class TestCustomerRoleFactory:
         customer_role = CustomerRoleFactory.create(
             session=session)
         assert isinstance(customer_role.code, uuid.UUID)
+
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
@@ -67,6 +76,7 @@ class TestCustomerRoleFactory:
         customer_role: CustomerRole = CustomerRoleFactory.build(
             session=session)
         assert customer_role.last_change_code == 0
+
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
@@ -75,6 +85,7 @@ class TestCustomerRoleFactory:
         customer_role: CustomerRole = CustomerRoleFactory.create(
             session=session)
         assert customer_role.last_change_code == 1
+
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
@@ -86,6 +97,7 @@ class TestCustomerRoleFactory:
         customer_role.code = uuid.uuid4()
         session.commit()
         assert customer_role.last_change_code != initial_code
+
     def test_date_inserted_on_build(self, session):
         """
         Test case for checking the value of the
@@ -96,6 +108,7 @@ class TestCustomerRoleFactory:
         assert customer_role.insert_utc_date_time is not None
         assert isinstance(
             customer_role.insert_utc_date_time, datetime)
+
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -111,6 +124,7 @@ class TestCustomerRoleFactory:
         session.add(customer_role)
         session.commit()
         assert customer_role.insert_utc_date_time > initial_time
+
     def test_date_inserted_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -126,6 +140,7 @@ class TestCustomerRoleFactory:
         time.sleep(1)
         session.commit()
         assert customer_role.insert_utc_date_time == initial_time
+
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
@@ -136,6 +151,7 @@ class TestCustomerRoleFactory:
         assert customer_role.last_update_utc_date_time is not None
         assert isinstance(
             customer_role.last_update_utc_date_time, datetime)
+
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -151,6 +167,7 @@ class TestCustomerRoleFactory:
         session.add(customer_role)
         session.commit()
         assert customer_role.last_update_utc_date_time > initial_time
+
     def test_date_updated_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -166,6 +183,7 @@ class TestCustomerRoleFactory:
         time.sleep(1)
         session.commit()
         assert customer_role.last_update_utc_date_time > initial_time
+
     def test_model_deletion(self, session):
         """
         Test case for deleting a
@@ -178,6 +196,7 @@ class TestCustomerRoleFactory:
         deleted_customer_role = session.query(CustomerRole).filter_by(
             customer_role_id=customer_role.customer_role_id).first()
         assert deleted_customer_role is None
+
     def test_data_types(self, session):
         """
         Test case for checking the data types of
@@ -196,18 +215,19 @@ class TestCustomerRoleFactory:
         assert isinstance(customer_role.role_id, int)
         # Check for the peek values,
         # assuming they are UUIDs based on your model
-# endset
         # customerID
+
         assert isinstance(
             customer_role.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # roleID
+
         assert isinstance(
             customer_role.role_code_peek, uuid.UUID)
-# endset
         assert isinstance(customer_role.insert_utc_date_time, datetime)
         assert isinstance(customer_role.last_update_utc_date_time, datetime)
+
     def test_unique_code_constraint(self, session):
         """
         Test case for checking the unique code constraint.
@@ -219,6 +239,7 @@ class TestCustomerRoleFactory:
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
+
     def test_fields_default(self):
         """
         Test case for checking the default values of
@@ -231,27 +252,28 @@ class TestCustomerRoleFactory:
         assert customer_role.last_update_user_id == uuid.UUID(int=0)
         assert customer_role.insert_utc_date_time is not None
         assert customer_role.last_update_utc_date_time is not None
-# endset
         # CustomerID
+
         assert isinstance(
             customer_role.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # RoleID
+
         assert isinstance(
             customer_role.role_code_peek, uuid.UUID)
-# endset
         assert customer_role is not None
         assert customer_role.customer_id == 0
         assert customer_role.is_placeholder is False
         assert customer_role.placeholder is False
         assert customer_role.role_id == 0
-# endset
+
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
         last_change_code in the CustomerRole
         model.
+
         This test case checks if the last_change_code
         of a CustomerRole object is
         updated correctly
@@ -262,11 +284,14 @@ class TestCustomerRoleFactory:
         Finally, it asserts that the last_change_code
         of the second retrieved CustomerRole object
         is different from the original last_change_code.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Returns:
             None
         """
+
         customer_role = CustomerRoleFactory.create(
             session=session)
         original_last_change_code = customer_role.last_change_code
@@ -279,22 +304,26 @@ class TestCustomerRoleFactory:
         customer_role_2.code = uuid.uuid4()
         session.commit()
         assert customer_role_2.last_change_code != original_last_change_code
-# endset
     # CustomerID
+
     def test_invalid_customer_id(self, session):
         """
         Test case to check if an invalid customer ID raises an IntegrityError.
+
         This test case creates a customer_role object using
         the CustomerRoleFactory and assigns an invalid customer ID to it.
         It then tries to commit the changes to the
         session and expects an IntegrityError to be raised.
         Finally, it rolls back the session to ensure
         no changes are persisted.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Raises:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
+
         """
         customer_role = CustomerRoleFactory.create(
             session=session)
@@ -305,20 +334,25 @@ class TestCustomerRoleFactory:
     # isPlaceholder,
     # placeholder,
     # RoleID
+
     def test_invalid_role_id(self, session):
         """
         Test case to check if an invalid role ID raises an IntegrityError.
+
         This test case creates a customer_role object using
         the CustomerRoleFactory and assigns an invalid role ID to it.
         It then tries to commit the changes to the
         session and expects an IntegrityError to be raised.
         Finally, it rolls back the session to ensure
         no changes are persisted.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Raises:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
+
         """
         customer_role = CustomerRoleFactory.create(
             session=session)
@@ -326,4 +360,4 @@ class TestCustomerRoleFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-# endset
+

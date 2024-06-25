@@ -1,14 +1,18 @@
 # apis/models/init/tac_farm_dashboard_init_report.py
+
 """
 This module contains the models and request/response classes
 for the TacFarmDashboardInitReport workflow.
 """
+
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import Field
+
 from apis.models.validation_error import ValidationErrorItem
 from business.tac import TacBusObj
 from flows.base.flow_validation_error import FlowValidationError
@@ -18,11 +22,14 @@ from flows.tac_farm_dashboard_init_report import (
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
+
+
 class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
     """
     Represents the response model for the
     TacFarmDashboardInitReportGetInitModelRequest.
     """
+
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
@@ -31,7 +38,7 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
             '00000000-0000-0000-0000-000000000000'
         ),
         description="Customer Code")
-# endset
+
     def load_flow_response(
         self,
         data: FlowTacFarmDashboardInitReportResult
@@ -40,6 +47,7 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
         Loads the response data from the
         FlowTacFarmDashboardInitReportResult object.
         """
+
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -49,12 +57,16 @@ class TacFarmDashboardInitReportGetInitModelResponse(CamelModel):
         """
         Serializes the response model to JSON.
         """
+
         return self.model_dump_json()
+
+
 class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
     """
     Represents the request model for the
     TacFarmDashboardInitReportGetInitModelRequest.
     """
+
     async def process_request(
             self,
             session_context: SessionContext,
@@ -64,6 +76,7 @@ class TacFarmDashboardInitReportGetInitModelRequest(SnakeModel):
         """
         Processes the request and returns the response.
         """
+
         try:
             logging.info(
                 "loading model...TacFarmDashboardInitReportGetInitModelRequest")

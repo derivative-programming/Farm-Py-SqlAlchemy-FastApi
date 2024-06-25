@@ -1,8 +1,10 @@
 # plant_user_details_test.py
+
 """
 This module contains a test case for the
 ReportProviderPlantUserDetails class.
 """
+
 import uuid
 import sqlite3
 from decimal import Decimal
@@ -13,18 +15,24 @@ from helpers.type_conversion import TypeConversion
 from models.factory.plant import PlantFactory
 from reports.providers.plant_user_details import ReportProviderPlantUserDetails
 import current_runtime
+
+
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
+
+
 class TestReportProviderPlantUserDetails:
     """
     This class contains test cases for the
     ReportProviderPlantUserDetails class.
     """
+
     @pytest.mark.asyncio
     async def test_report_creation(self, session):
         """
         This test case verifies the generation of
         a Plant Details report.
+
         It creates a session context, initializes
         the runtime, and generates
         a Plant Details report using
@@ -32,11 +40,13 @@ class TestReportProviderPlantUserDetails:
         The generated report is then
         checked for the expected format.
         """
+
         session_context = SessionContext(dict(), session)
         await current_runtime.initialize(session_context)
         report_provider = ReportProviderPlantUserDetails(session_context)
         plant = await PlantFactory.create_async(session=session)
         plant_code = plant.code
+
         # Set up test data
 
         # Generate the report
@@ -53,7 +63,9 @@ class TestReportProviderPlantUserDetails:
             order_by_column_name,
             order_by_descending
         )
+
         assert isinstance(results, list), "Results should be a list"
+
         for result in results:
             assert isinstance(result, dict), (
                 "Each result should be a dictionary")

@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.error_log_fluent import ErrorLogFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockErrorLogBaseBusObj:
     """
     A mock base class for the ErrorLogFluentBusObj class.
@@ -92,3 +96,4 @@ class TestErrorLogFluentBusObj:
         result = error_log.set_prop_url("Vanilla")
         assert error_log.url == "Vanilla"
         assert result is error_log
+

@@ -1,14 +1,17 @@
 # land_test.py
 # pylint: disable=redefined-outer-name
+
 """
 This module contains tests for the
 Land serialization schema.
+
 The Land serialization schema
 is responsible for serializing and deserializing
 Land instances. It ensures that the
 data is properly formatted and can be
 stored or retrieved from a database or
 transmitted over a network.
+
 The tests in this module cover the serialization
 and deserialization of Land
 instances using the LandSchema class. They verify
@@ -16,6 +19,7 @@ that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Land instance.
+
 The LandSchema class is used to define
 the serialization and deserialization
 rules for Land instances. It
@@ -25,23 +29,31 @@ should be converted to a serialized
 format and how the serialized data should
 be converted back to a Land
 instance.
+
 The tests in this module use the pytest
 framework to define test cases and
 assertions. They ensure that the serialization
 and deserialization process
 works correctly and produces the expected results.
+
 """
+
 import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+
 import pytest
 import pytz
+
 from models import Land
 from models.factory import LandFactory
 from models.serialization_schema import LandSchema
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
+
+
 @pytest.fixture(scope="function")
 def land(
     session
@@ -50,18 +62,24 @@ def land(
     Fixture to create and return a Land
     instance using the
     LandFactory.
+
     Args:
         session: The database session.
+
     Returns:
         Land: A newly created
             Land instance.
     """
+
     return LandFactory.create(session=session)
+
+
 class TestLandSchema:
     """
     Tests for the Land
     serialization schema.
     """
+
     # Sample data for a Land
     # instance
     sample_data = {
@@ -91,6 +109,7 @@ class TestLandSchema:
             "a1b2c3d4-e5f6-7a8b-9c0d-123456789012",
 # endset  # noqa: E122
     }
+
     def test_land_serialization(
         self,
         land: Land
@@ -99,14 +118,19 @@ class TestLandSchema:
         Test the serialization of a
         Land instance using
         LandSchema.
+
         Args:
             land (Land):
                 A Land instance to serialize.
         """
+
         schema = LandSchema()
         land_data = schema.dump(land)
+
         assert isinstance(land_data, dict)
+
         result = land_data
+
         assert result['code'] == str(land.code)
         assert result['last_change_code'] == (
             land.last_change_code)
@@ -114,7 +138,7 @@ class TestLandSchema:
             str(land.insert_user_id))
         assert result['last_update_user_id'] == (
             str(land.last_update_user_id))
-# endset
+
         assert result['description'] == (
             land.description)
         assert result['display_order'] == (
@@ -127,31 +151,34 @@ class TestLandSchema:
             land.name)
         assert result['pac_id'] == (
             land.pac_id)
-# endset
         assert result['insert_utc_date_time'] == (
             land.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
             land.last_update_utc_date_time.isoformat())
-# endset
         assert result['pac_code_peek'] == (  # PacID
             str(land.pac_code_peek))
-# endset
+
     def test_land_deserialization(self, land):
         """
         Test the deserialization of a
         Land object using the
         LandSchema.
+
         Args:
             land (Land): The
                 Land object to be deserialized.
+
         Raises:
             AssertionError: If any of the assertions fail.
+
         Returns:
             None
         """
+
         schema = LandSchema()
         serialized_data = schema.dump(land)
         deserialized_data = schema.load(serialized_data)
+
         assert deserialized_data['code'] == \
             land.code
         assert deserialized_data['last_change_code'] == (
@@ -160,7 +187,6 @@ class TestLandSchema:
             land.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
             land.last_update_user_id)
-# endset
         assert deserialized_data['description'] == (
             land.description)
         assert deserialized_data['display_order'] == (
@@ -173,18 +199,18 @@ class TestLandSchema:
             land.name)
         assert deserialized_data['pac_id'] == (
             land.pac_id)
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             land.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             land.last_update_utc_date_time.isoformat())
-# endset
         assert deserialized_data[(  # PacID
             'pac_code_peek')] == (
             land.pac_code_peek)
-# endset
+
         new_land = Land(**deserialized_data)
+
         assert isinstance(new_land, Land)
+
         # Now compare the new_land attributes with
         # the land attributes
         assert new_land.code == \
@@ -195,7 +221,6 @@ class TestLandSchema:
             land.insert_user_id
         assert new_land.last_update_user_id == \
             land.last_update_user_id
-# endset
         assert new_land.description == (
             land.description)
         assert new_land.display_order == (
@@ -208,18 +233,18 @@ class TestLandSchema:
             land.name)
         assert new_land.pac_id == (
             land.pac_id)
-# endset
+
         assert new_land.insert_utc_date_time.isoformat() == (
             land.insert_utc_date_time.isoformat())
         assert new_land.last_update_utc_date_time.isoformat() == (
             land.last_update_utc_date_time.isoformat())
-# endset
         assert new_land.pac_code_peek == (  # PacID
             land.pac_code_peek)
-# endset
+
     def test_from_json(self):
         """
         Test the `from_json` method of the LandSchema class.
+
         This method tests the deserialization of
         a JSON string to a
         Land object.
@@ -230,16 +255,22 @@ class TestLandSchema:
         equality of the deserialized
         Land object
         with the sample data.
+
         Returns:
             None
         """
+
         land_schema = LandSchema()
+
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
+
         # Deserialize the JSON string to a dictionary
         json_data = json.loads(json_str)
+
         # Load the dictionary to an object
         deserialized_data = land_schema.load(json_data)
+
         assert str(deserialized_data['land_id']) == (
             str(self.sample_data['land_id']))
         assert str(deserialized_data['code']) == (
@@ -250,7 +281,6 @@ class TestLandSchema:
             str(self.sample_data['insert_user_id']))
         assert str(deserialized_data['last_update_user_id']) == (
             str(self.sample_data['last_update_user_id']))
-# endset
         assert str(deserialized_data['description']) == (
             str(self.sample_data['description']))
         assert str(deserialized_data['display_order']) == (
@@ -263,17 +293,18 @@ class TestLandSchema:
             str(self.sample_data['name']))
         assert str(deserialized_data['pac_id']) == (
             str(self.sample_data['pac_id']))
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
         assert str(deserialized_data[(  # PacID
             'pac_code_peek')]) == (
             str(self.sample_data['pac_code_peek']))
-# endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
+
         new_land = Land(**deserialized_data)
+
         assert isinstance(new_land, Land)
+
     def test_to_json(
         self,
         land: Land
@@ -281,35 +312,44 @@ class TestLandSchema:
         """
         Test the conversion of a
         Land instance to JSON.
+
         Args:
             land (Land): The
             Land instance to convert.
+
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
+
         # Convert the Land instance
         # to JSON using the schema
         land_schema = LandSchema()
         land_dict = land_schema.dump(
             land)
+
         # Convert the land_dict to JSON string
         land_json = json.dumps(
             land_dict)
+
         # Convert the JSON strings back to dictionaries
         land_dict_from_json = json.loads(
             land_json)
         # sample_dict_from_json = json.loads(self.sample_data)
+
         logging.info(
             "land_dict_from_json.keys() %s",
             land_dict_from_json.keys())
+
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+
         # Verify the keys in both dictionaries match
         assert set(land_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(land_dict_from_json.keys())}"
         )
+
         assert land_dict_from_json['code'] == \
             str(land.code), (
             "failed on code"
@@ -326,7 +366,6 @@ class TestLandSchema:
             str(land.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-# endset
         assert land_dict_from_json['description'] == (
             land.description), (
             "failed on description"
@@ -351,7 +390,6 @@ class TestLandSchema:
             land.pac_id), (
             "failed on pac_id"
         )
-# endset
         assert land_dict_from_json['insert_utc_date_time'] == (
             land.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
@@ -360,10 +398,9 @@ class TestLandSchema:
             land.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-# endset
         assert land_dict_from_json[(  # PacID
             'pac_code_peek')] == (
             str(land.pac_code_peek)), (
             "failed on pac_code_peek"
         )
-# endset
+

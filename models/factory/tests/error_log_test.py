@@ -3,6 +3,7 @@
 This module contains unit tests for the ErrorLogFactory
 class in the models.factory package.
 """
+
 from decimal import Decimal
 import time
 import math
@@ -17,11 +18,15 @@ from models import Base, ErrorLog
 from models.factory import ErrorLogFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+
 DATABASE_URL = "sqlite:///:memory:"
+
+
 class TestErrorLogFactory:
     """
     This class contains unit tests for the ErrorLogFactory class.
     """
+
     @pytest.fixture(scope="module")
     def engine(self):
         """
@@ -33,6 +38,7 @@ class TestErrorLogFactory:
             conn.execute(text("PRAGMA foreign_keys=ON"))
         yield engine
         engine.dispose()
+
     @pytest.fixture
     def session(self, engine):
         """
@@ -44,6 +50,7 @@ class TestErrorLogFactory:
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
+
     def test_error_log_creation(self, session):
         """
         Test case for creating a error_log.
@@ -51,6 +58,7 @@ class TestErrorLogFactory:
         error_log = ErrorLogFactory.create(
             session=session)
         assert error_log.error_log_id is not None
+
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
@@ -59,6 +67,7 @@ class TestErrorLogFactory:
         error_log = ErrorLogFactory.create(
             session=session)
         assert isinstance(error_log.code, uuid.UUID)
+
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
@@ -67,6 +76,7 @@ class TestErrorLogFactory:
         error_log: ErrorLog = ErrorLogFactory.build(
             session=session)
         assert error_log.last_change_code == 0
+
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
@@ -75,6 +85,7 @@ class TestErrorLogFactory:
         error_log: ErrorLog = ErrorLogFactory.create(
             session=session)
         assert error_log.last_change_code == 1
+
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
@@ -86,6 +97,7 @@ class TestErrorLogFactory:
         error_log.code = uuid.uuid4()
         session.commit()
         assert error_log.last_change_code != initial_code
+
     def test_date_inserted_on_build(self, session):
         """
         Test case for checking the value of the
@@ -96,6 +108,7 @@ class TestErrorLogFactory:
         assert error_log.insert_utc_date_time is not None
         assert isinstance(
             error_log.insert_utc_date_time, datetime)
+
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -111,6 +124,7 @@ class TestErrorLogFactory:
         session.add(error_log)
         session.commit()
         assert error_log.insert_utc_date_time > initial_time
+
     def test_date_inserted_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -126,6 +140,7 @@ class TestErrorLogFactory:
         time.sleep(1)
         session.commit()
         assert error_log.insert_utc_date_time == initial_time
+
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
@@ -136,6 +151,7 @@ class TestErrorLogFactory:
         assert error_log.last_update_utc_date_time is not None
         assert isinstance(
             error_log.last_update_utc_date_time, datetime)
+
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -151,6 +167,7 @@ class TestErrorLogFactory:
         session.add(error_log)
         session.commit()
         assert error_log.last_update_utc_date_time > initial_time
+
     def test_date_updated_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -166,6 +183,7 @@ class TestErrorLogFactory:
         time.sleep(1)
         session.commit()
         assert error_log.last_update_utc_date_time > initial_time
+
     def test_model_deletion(self, session):
         """
         Test case for deleting a
@@ -178,6 +196,7 @@ class TestErrorLogFactory:
         deleted_error_log = session.query(ErrorLog).filter_by(
             error_log_id=error_log.error_log_id).first()
         assert deleted_error_log is None
+
     def test_data_types(self, session):
         """
         Test case for checking the data types of
@@ -204,7 +223,6 @@ class TestErrorLogFactory:
         assert error_log.url == "" or isinstance(error_log.url, str)
         # Check for the peek values,
         # assuming they are UUIDs based on your model
-# endset
         # browserCode,
         # contextCode,
         # createdUTCDateTime
@@ -212,12 +230,13 @@ class TestErrorLogFactory:
         # isClientSideError,
         # isResolved,
         # pacID
+
         assert isinstance(
             error_log.pac_code_peek, uuid.UUID)
         # url,
-# endset
         assert isinstance(error_log.insert_utc_date_time, datetime)
         assert isinstance(error_log.last_update_utc_date_time, datetime)
+
     def test_unique_code_constraint(self, session):
         """
         Test case for checking the unique code constraint.
@@ -229,6 +248,7 @@ class TestErrorLogFactory:
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
+
     def test_fields_default(self):
         """
         Test case for checking the default values of
@@ -241,7 +261,6 @@ class TestErrorLogFactory:
         assert error_log.last_update_user_id == uuid.UUID(int=0)
         assert error_log.insert_utc_date_time is not None
         assert error_log.last_update_utc_date_time is not None
-# endset
         # browserCode,
         # contextCode,
         # createdUTCDateTime
@@ -249,10 +268,10 @@ class TestErrorLogFactory:
         # isClientSideError,
         # isResolved,
         # PacID
+
         assert isinstance(
             error_log.pac_code_peek, uuid.UUID)
         # url,
-# endset
         assert error_log is not None
         # browser_code
         assert isinstance(
@@ -270,12 +289,13 @@ class TestErrorLogFactory:
         assert error_log.is_resolved is False
         assert error_log.pac_id == 0
         assert error_log.url == ""
-# endset
+
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
         last_change_code in the ErrorLog
         model.
+
         This test case checks if the last_change_code
         of a ErrorLog object is
         updated correctly
@@ -286,11 +306,14 @@ class TestErrorLogFactory:
         Finally, it asserts that the last_change_code
         of the second retrieved ErrorLog object
         is different from the original last_change_code.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Returns:
             None
         """
+
         error_log = ErrorLogFactory.create(
             session=session)
         original_last_change_code = error_log.last_change_code
@@ -303,7 +326,6 @@ class TestErrorLogFactory:
         error_log_2.code = uuid.uuid4()
         session.commit()
         assert error_log_2.last_change_code != original_last_change_code
-# endset
     # browserCode,
     # contextCode,
     # createdUTCDateTime
@@ -311,20 +333,25 @@ class TestErrorLogFactory:
     # isClientSideError,
     # isResolved,
     # PacID
+
     def test_invalid_pac_id(self, session):
         """
         Test case to check if an invalid pac ID raises an IntegrityError.
+
         This test case creates a error_log object using
         the ErrorLogFactory and assigns an invalid pac ID to it.
         It then tries to commit the changes to the
         session and expects an IntegrityError to be raised.
         Finally, it rolls back the session to ensure
         no changes are persisted.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Raises:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
+
         """
         error_log = ErrorLogFactory.create(
             session=session)
@@ -333,4 +360,4 @@ class TestErrorLogFactory:
             session.commit()
         session.rollback()
     # url,
-# endset
+

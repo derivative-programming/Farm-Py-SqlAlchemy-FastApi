@@ -20,6 +20,7 @@ from models import TriStateFilter
 from models.factory import TriStateFilterFactory
 from models.serialization_schema.tri_state_filter import TriStateFilterSchema
 
+
 class TestTriStateFilterManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestTriStateFilterManager:
             await tri_state_filter_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

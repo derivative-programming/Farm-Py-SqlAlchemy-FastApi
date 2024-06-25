@@ -48,3 +48,4 @@ registration_utc_date_time_isEncrypted: bool = False
 tac_id_isEncrypted: bool = False
 utc_offset_in_minutes_isEncrypted: bool = False
 zip_isEncrypted: bool = False
+

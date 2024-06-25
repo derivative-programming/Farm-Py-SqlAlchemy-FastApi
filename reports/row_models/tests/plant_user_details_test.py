@@ -1,11 +1,14 @@
 # reports/row_models/tests/plant_user_details_test.py
+
 """
 This module contains unit tests for the
 `ReportItemPlantUserDetails` class.
+
 The `ReportItemPlantUserDetails` class represents a
 report item for a plant Plant Details.
 It contains various fields with default values and
 provides methods to load data from a dictionary.
+
 The unit tests in this module ensure that the default
 values of the fields are set correctly
 and that data can be loaded into the model from a dictionary.
@@ -16,6 +19,8 @@ from datetime import datetime, date
 from uuid import UUID
 from helpers.type_conversion import TypeConversion
 from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+
+
 class TestReportItemPlantUserDetails:
     """
     Test class for the
@@ -49,7 +54,7 @@ class TestReportItemPlantUserDetails:
         assert report_item.update_button_text_link_plant_code.int == 0
         assert report_item.random_property_updates_link_plant_code.int == 0
         assert report_item.back_to_dashboard_link_tac_code.int == 0
-# endset
+
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
         data = {
@@ -79,6 +84,7 @@ class TestReportItemPlantUserDetails:
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
 # endset  # noqa: E122
         }
+
         # report_item = ReportItemPlantUserDetails(**data)
         report_item = ReportItemPlantUserDetails()
         report_item.load_data_provider_dict(data)
@@ -107,5 +113,4 @@ class TestReportItemPlantUserDetails:
         assert report_item.update_button_text_link_plant_code == UUID(int=5)
         assert report_item.random_property_updates_link_plant_code == UUID(int=4)
         assert report_item.back_to_dashboard_link_tac_code == UUID(int=5)
-# endset
 

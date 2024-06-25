@@ -12,12 +12,14 @@ from business.pac import PacBusObj
 from helpers.session_context import SessionContext
 from models import Pac
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def pac_list():
@@ -29,6 +31,7 @@ def pac_list():
         pac = Mock(spec=Pac)
         pacs.append(pac)
     return pacs
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, pac_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, pac_list):
         for bus_obj, pac in zip(bus_obj_list, pac_list):
             mock_load.assert_any_call(pac)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await PacBusObj.to_bus_obj_list(session_context, empty_pac_list)
 
     assert len(bus_obj_list) == 0
+

@@ -1,14 +1,18 @@
 # apis/models/init/pac_user_flavor_list_init_report.py
+
 """
 This module contains the models and request/response classes
 for the PacUserFlavorListInitReport workflow.
 """
+
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import Field
+
 from apis.models.validation_error import ValidationErrorItem
 from business.pac import PacBusObj
 from flows.base.flow_validation_error import FlowValidationError
@@ -18,16 +22,19 @@ from flows.pac_user_flavor_list_init_report import (
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
+
+
 class PacUserFlavorListInitReportGetInitModelResponse(CamelModel):
     """
     Represents the response model for the
     PacUserFlavorListInitReportGetInitModelRequest.
     """
+
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
 
-# endset
+
     def load_flow_response(
         self,
         data: FlowPacUserFlavorListInitReportResult
@@ -36,6 +43,7 @@ class PacUserFlavorListInitReportGetInitModelResponse(CamelModel):
         Loads the response data from the
         FlowPacUserFlavorListInitReportResult object.
         """
+
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -44,12 +52,16 @@ class PacUserFlavorListInitReportGetInitModelResponse(CamelModel):
         """
         Serializes the response model to JSON.
         """
+
         return self.model_dump_json()
+
+
 class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
     """
     Represents the request model for the
     PacUserFlavorListInitReportGetInitModelRequest.
     """
+
     async def process_request(
             self,
             session_context: SessionContext,
@@ -59,6 +71,7 @@ class PacUserFlavorListInitReportGetInitModelRequest(SnakeModel):
         """
         Processes the request and returns the response.
         """
+
         try:
             logging.info(
                 "loading model...PacUserFlavorListInitReportGetInitModelRequest")

@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.pac_fluent import PacFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockPacBaseBusObj:
     """
     A mock base class for the PacFluentBusObj class.
@@ -65,3 +69,4 @@ class TestPacFluentBusObj:
         result = pac.set_prop_name("Vanilla")
         assert pac.name == "Vanilla"
         assert result is pac
+

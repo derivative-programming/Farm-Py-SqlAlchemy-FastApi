@@ -9,11 +9,16 @@ import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, Mock, patch
+
 import pytest
+
 from helpers import SessionContext
+
 from ..plant_user_details_init_report import (
     PlantUserDetailsInitReportGetInitModelRequest,
     PlantUserDetailsInitReportGetInitModelResponse)
+
+
 class MockFlowPlantUserDetailsInitReportResult:
     """
     A mock object for the FlowPlantUserDetailsInitReportResult class.
@@ -22,28 +27,31 @@ class MockFlowPlantUserDetailsInitReportResult:
         """
         Initialize the mock object with default values.
         """
-# endset
         self.land_code = uuid.uuid4()
         self.tac_code = uuid.uuid4()
-# endset
+
+
 @pytest.fixture
 def flow_response():
     """
     Return a mock FlowPlantUserDetailsInitReportResult object.
     """
     return MockFlowPlantUserDetailsInitReportResult()
+
+
 def test_load_flow_response(flow_response):
     """
     Test the load_flow_response method.
     """
     response = PlantUserDetailsInitReportGetInitModelResponse()
     response.load_flow_response(flow_response)
-# endset
+
     assert response.land_code == \
         flow_response.land_code
     assert response.tac_code == \
         flow_response.tac_code
-# endset
+
+
 def test_to_json():
     """
     Test the to_json method.
@@ -59,13 +67,15 @@ def test_to_json():
     )
     json_response = response.to_json()
     assert isinstance(json_response, str)
+
     json_data = json.loads(json_response)
+
     assert json_data["success"] == response.success
     assert json_data["message"] == response.message
-# endset
     assert json_data["land_code"] == str(response.land_code)
     assert json_data["tac_code"] == str(response.tac_code)
-# endset
+
+
 @pytest.mark.asyncio
 async def test_process_request(flow_response):
     """
@@ -81,16 +91,20 @@ async def test_process_request(flow_response):
         autospec=True).start()
     mock_flow_instance = mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)
+
     request = PlantUserDetailsInitReportGetInitModelRequest()
     response = PlantUserDetailsInitReportGetInitModelResponse()
+
     plant_code = uuid.uuid4()
     result = await request.process_request(
         mock_session_context,
         plant_code,
         response)
+
     assert result.success is True
     assert result.message == "Success."
     mock_plant_bus_obj.assert_called_once_with(mock_session_context)
     mock_flow_instance.process.assert_called_once()
+
     patch.stopall()
 

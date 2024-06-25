@@ -19,6 +19,7 @@ from managers.org_api_key import OrgApiKeyManager
 from models import OrgApiKey
 from models.factory import OrgApiKeyFactory
 
+
 class TestOrgApiKeyBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestOrgApiKeyBulkManager:
                 org_api_key_ids)
 
         await session.rollback()
+

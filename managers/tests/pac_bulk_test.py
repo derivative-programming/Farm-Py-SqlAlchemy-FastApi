@@ -19,6 +19,7 @@ from managers.pac import PacManager
 from models import Pac
 from models.factory import PacFactory
 
+
 class TestPacBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestPacBulkManager:
                 pac_ids)
 
         await session.rollback()
+

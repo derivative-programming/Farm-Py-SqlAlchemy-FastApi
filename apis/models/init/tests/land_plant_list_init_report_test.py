@@ -9,11 +9,16 @@ import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from unittest.mock import AsyncMock, Mock, patch
+
 import pytest
+
 from helpers import SessionContext
+
 from ..land_plant_list_init_report import (
     LandPlantListInitReportGetInitModelRequest,
     LandPlantListInitReportGetInitModelResponse)
+
+
 class MockFlowLandPlantListInitReportResult:
     """
     A mock object for the FlowLandPlantListInitReportResult class.
@@ -22,7 +27,6 @@ class MockFlowLandPlantListInitReportResult:
         """
         Initialize the mock object with default values.
         """
-# endset
         self.some_int_val = 1
         self.some_big_int_val = 1000000
         self.some_bit_val = True
@@ -41,20 +45,23 @@ class MockFlowLandPlantListInitReportResult:
         self.land_code = uuid.uuid4()
         self.tac_code = uuid.uuid4()
         self.land_name = "Land Name"
-# endset
+
+
 @pytest.fixture
 def flow_response():
     """
     Return a mock FlowLandPlantListInitReportResult object.
     """
     return MockFlowLandPlantListInitReportResult()
+
+
 def test_load_flow_response(flow_response):
     """
     Test the load_flow_response method.
     """
     response = LandPlantListInitReportGetInitModelResponse()
     response.load_flow_response(flow_response)
-# endset
+
     assert response.some_int_val == \
         flow_response.some_int_val
     assert response.some_big_int_val == \
@@ -91,7 +98,8 @@ def test_load_flow_response(flow_response):
         flow_response.tac_code
     assert response.land_name == \
         flow_response.land_name
-# endset
+
+
 def test_to_json():
     """
     Test the to_json method.
@@ -123,10 +131,11 @@ def test_to_json():
     )
     json_response = response.to_json()
     assert isinstance(json_response, str)
+
     json_data = json.loads(json_response)
+
     assert json_data["success"] == response.success
     assert json_data["message"] == response.message
-# endset
     assert json_data["some_int_val"] == \
         response.some_int_val
     assert json_data["some_big_int_val"] == \
@@ -160,7 +169,8 @@ def test_to_json():
     assert json_data["land_code"] == str(response.land_code)
     assert json_data["tac_code"] == str(response.tac_code)
     assert json_data["land_name"] == response.land_name
-# endset
+
+
 @pytest.mark.asyncio
 async def test_process_request(flow_response):
     """
@@ -176,16 +186,20 @@ async def test_process_request(flow_response):
         autospec=True).start()
     mock_flow_instance = mock_flow.return_value
     mock_flow_instance.process = AsyncMock(return_value=flow_response)
+
     request = LandPlantListInitReportGetInitModelRequest()
     response = LandPlantListInitReportGetInitModelResponse()
+
     land_code = uuid.uuid4()
     result = await request.process_request(
         mock_session_context,
         land_code,
         response)
+
     assert result.success is True
     assert result.message == "Success."
     mock_land_bus_obj.assert_called_once_with(mock_session_context)
     mock_flow_instance.process.assert_called_once()
+
     patch.stopall()
 

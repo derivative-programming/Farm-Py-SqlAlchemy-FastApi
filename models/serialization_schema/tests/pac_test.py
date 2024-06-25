@@ -1,14 +1,17 @@
 # pac_test.py
 # pylint: disable=redefined-outer-name
+
 """
 This module contains tests for the
 Pac serialization schema.
+
 The Pac serialization schema
 is responsible for serializing and deserializing
 Pac instances. It ensures that the
 data is properly formatted and can be
 stored or retrieved from a database or
 transmitted over a network.
+
 The tests in this module cover the serialization
 and deserialization of Pac
 instances using the PacSchema class. They verify
@@ -16,6 +19,7 @@ that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Pac instance.
+
 The PacSchema class is used to define
 the serialization and deserialization
 rules for Pac instances. It
@@ -25,23 +29,31 @@ should be converted to a serialized
 format and how the serialized data should
 be converted back to a Pac
 instance.
+
 The tests in this module use the pytest
 framework to define test cases and
 assertions. They ensure that the serialization
 and deserialization process
 works correctly and produces the expected results.
+
 """
+
 import json
 import logging
 from datetime import datetime
 from decimal import Decimal
+
 import pytest
 import pytz
+
 from models import Pac
 from models.factory import PacFactory
 from models.serialization_schema import PacSchema
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
+
+
 @pytest.fixture(scope="function")
 def pac(
     session
@@ -50,18 +62,24 @@ def pac(
     Fixture to create and return a Pac
     instance using the
     PacFactory.
+
     Args:
         session: The database session.
+
     Returns:
         Pac: A newly created
             Pac instance.
     """
+
     return PacFactory.create(session=session)
+
+
 class TestPacSchema:
     """
     Tests for the Pac
     serialization schema.
     """
+
     # Sample data for a Pac
     # instance
     sample_data = {
@@ -89,6 +107,7 @@ class TestPacSchema:
 
 # endset  # noqa: E122
     }
+
     def test_pac_serialization(
         self,
         pac: Pac
@@ -97,14 +116,19 @@ class TestPacSchema:
         Test the serialization of a
         Pac instance using
         PacSchema.
+
         Args:
             pac (Pac):
                 A Pac instance to serialize.
         """
+
         schema = PacSchema()
         pac_data = schema.dump(pac)
+
         assert isinstance(pac_data, dict)
+
         result = pac_data
+
         assert result['code'] == str(pac.code)
         assert result['last_change_code'] == (
             pac.last_change_code)
@@ -112,7 +136,7 @@ class TestPacSchema:
             str(pac.insert_user_id))
         assert result['last_update_user_id'] == (
             str(pac.last_update_user_id))
-# endset
+
         assert result['description'] == (
             pac.description)
         assert result['display_order'] == (
@@ -123,30 +147,33 @@ class TestPacSchema:
             pac.lookup_enum_name)
         assert result['name'] == (
             pac.name)
-# endset
         assert result['insert_utc_date_time'] == (
             pac.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
             pac.last_update_utc_date_time.isoformat())
-# endset
 
-# endset
+
     def test_pac_deserialization(self, pac):
         """
         Test the deserialization of a
         Pac object using the
         PacSchema.
+
         Args:
             pac (Pac): The
                 Pac object to be deserialized.
+
         Raises:
             AssertionError: If any of the assertions fail.
+
         Returns:
             None
         """
+
         schema = PacSchema()
         serialized_data = schema.dump(pac)
         deserialized_data = schema.load(serialized_data)
+
         assert deserialized_data['code'] == \
             pac.code
         assert deserialized_data['last_change_code'] == (
@@ -155,7 +182,6 @@ class TestPacSchema:
             pac.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
             pac.last_update_user_id)
-# endset
         assert deserialized_data['description'] == (
             pac.description)
         assert deserialized_data['display_order'] == (
@@ -166,16 +192,16 @@ class TestPacSchema:
             pac.lookup_enum_name)
         assert deserialized_data['name'] == (
             pac.name)
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             pac.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             pac.last_update_utc_date_time.isoformat())
-# endset
 
-# endset
+
         new_pac = Pac(**deserialized_data)
+
         assert isinstance(new_pac, Pac)
+
         # Now compare the new_pac attributes with
         # the pac attributes
         assert new_pac.code == \
@@ -186,7 +212,6 @@ class TestPacSchema:
             pac.insert_user_id
         assert new_pac.last_update_user_id == \
             pac.last_update_user_id
-# endset
         assert new_pac.description == (
             pac.description)
         assert new_pac.display_order == (
@@ -197,17 +222,17 @@ class TestPacSchema:
             pac.lookup_enum_name)
         assert new_pac.name == (
             pac.name)
-# endset
+
         assert new_pac.insert_utc_date_time.isoformat() == (
             pac.insert_utc_date_time.isoformat())
         assert new_pac.last_update_utc_date_time.isoformat() == (
             pac.last_update_utc_date_time.isoformat())
-# endset
 
-# endset
+
     def test_from_json(self):
         """
         Test the `from_json` method of the PacSchema class.
+
         This method tests the deserialization of
         a JSON string to a
         Pac object.
@@ -218,16 +243,22 @@ class TestPacSchema:
         equality of the deserialized
         Pac object
         with the sample data.
+
         Returns:
             None
         """
+
         pac_schema = PacSchema()
+
         # Convert sample data to JSON string
         json_str = json.dumps(self.sample_data)
+
         # Deserialize the JSON string to a dictionary
         json_data = json.loads(json_str)
+
         # Load the dictionary to an object
         deserialized_data = pac_schema.load(json_data)
+
         assert str(deserialized_data['pac_id']) == (
             str(self.sample_data['pac_id']))
         assert str(deserialized_data['code']) == (
@@ -238,7 +269,6 @@ class TestPacSchema:
             str(self.sample_data['insert_user_id']))
         assert str(deserialized_data['last_update_user_id']) == (
             str(self.sample_data['last_update_user_id']))
-# endset
         assert str(deserialized_data['description']) == (
             str(self.sample_data['description']))
         assert str(deserialized_data['display_order']) == (
@@ -249,15 +279,16 @@ class TestPacSchema:
             str(self.sample_data['lookup_enum_name']))
         assert str(deserialized_data['name']) == (
             str(self.sample_data['name']))
-# endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
             self.sample_data['insert_utc_date_time'])
 
-# endset
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
             self.sample_data['last_update_utc_date_time'])
+
         new_pac = Pac(**deserialized_data)
+
         assert isinstance(new_pac, Pac)
+
     def test_to_json(
         self,
         pac: Pac
@@ -265,35 +296,44 @@ class TestPacSchema:
         """
         Test the conversion of a
         Pac instance to JSON.
+
         Args:
             pac (Pac): The
             Pac instance to convert.
+
         Raises:
             AssertionError: If the conversion fails or the
             converted JSON does not match the expected values.
         """
+
         # Convert the Pac instance
         # to JSON using the schema
         pac_schema = PacSchema()
         pac_dict = pac_schema.dump(
             pac)
+
         # Convert the pac_dict to JSON string
         pac_json = json.dumps(
             pac_dict)
+
         # Convert the JSON strings back to dictionaries
         pac_dict_from_json = json.loads(
             pac_json)
         # sample_dict_from_json = json.loads(self.sample_data)
+
         logging.info(
             "pac_dict_from_json.keys() %s",
             pac_dict_from_json.keys())
+
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
+
         # Verify the keys in both dictionaries match
         assert set(pac_dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
             f"Got: {set(pac_dict_from_json.keys())}"
         )
+
         assert pac_dict_from_json['code'] == \
             str(pac.code), (
             "failed on code"
@@ -310,7 +350,6 @@ class TestPacSchema:
             str(pac.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-# endset
         assert pac_dict_from_json['description'] == (
             pac.description), (
             "failed on description"
@@ -331,7 +370,6 @@ class TestPacSchema:
             pac.name), (
             "failed on name"
         )
-# endset
         assert pac_dict_from_json['insert_utc_date_time'] == (
             pac.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
@@ -340,6 +378,4 @@ class TestPacSchema:
             pac.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-# endset
 
-# endset

@@ -7,6 +7,7 @@ which represents the base business object for a Plant.
 
 from decimal import Decimal
 import random
+from typing import Optional
 import uuid
 from datetime import datetime, date
 from helpers.session_context import SessionContext
@@ -35,7 +36,11 @@ class PlantBaseBusObj(BaseBusObj):
     It requires a valid session context for initialization.
     """
 
-    def __init__(self, session_context: SessionContext):
+    def __init__(
+        self,
+        session_context: SessionContext,
+        plant: Optional[Plant] = None
+    ):
         """
         Initializes a new instance of the
         PlantBusObj class.
@@ -47,8 +52,12 @@ class PlantBaseBusObj(BaseBusObj):
         if not session_context.session:
             raise ValueError("session required")
 
+        if plant is None:
+            plant = Plant()
+
         self._session_context = session_context
-        self.plant = Plant()
+
+        self.plant = plant
 
     @property
     def plant_id(self) -> int:
@@ -232,10 +241,9 @@ class PlantBaseBusObj(BaseBusObj):
         self.plant.last_update_user_id = value
 
 # endset
-
     # FlvrForeignKeyID
-
     # isDeleteAllowed
+
     @property
     def is_delete_allowed(self):
         """
@@ -275,8 +283,8 @@ class PlantBaseBusObj(BaseBusObj):
             raise ValueError("is_delete_allowed must be a boolean.")
 
         self.plant.is_delete_allowed = value
-
     # isEditAllowed
+
     @property
     def is_edit_allowed(self):
         """
@@ -314,8 +322,8 @@ class PlantBaseBusObj(BaseBusObj):
 
         assert isinstance(value, bool), "is_edit_allowed must be a boolean"
         self.plant.is_edit_allowed = value
-
     # otherFlavor
+
     @property
     def other_flavor(self):
         """
@@ -356,8 +364,8 @@ class PlantBaseBusObj(BaseBusObj):
 
         assert isinstance(value, str), "other_flavor must be a string"
         self.plant.other_flavor = value
-
     # someBigIntVal
+
     @property
     def some_big_int_val(self):
         """
@@ -395,8 +403,8 @@ class PlantBaseBusObj(BaseBusObj):
 
         assert isinstance(value, int), "some_big_int_val must be an integer"
         self.plant.some_big_int_val = value
-
     # someBitVal
+
     @property
     def some_bit_val(self):
         """
@@ -434,8 +442,8 @@ class PlantBaseBusObj(BaseBusObj):
 
         assert isinstance(value, bool), "some_bit_val must be a boolean"
         self.plant.some_bit_val = value
-
     # someDateVal
+
     @property
     def some_date_val(self):
         """
@@ -475,8 +483,8 @@ class PlantBaseBusObj(BaseBusObj):
             "some_date_val must be a date object"
         )
         self.plant.some_date_val = value
-
     # someDecimalVal
+
     @property
     def some_decimal_val(self):
         """
@@ -516,8 +524,8 @@ class PlantBaseBusObj(BaseBusObj):
             "some_decimal_val must be a number"
         )
         self.plant.some_decimal_val = value
-
     # someEmailAddress
+
     @property
     def some_email_address(self):
         """
@@ -564,8 +572,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, str), (
             "some_email_address must be a string")
         self.plant.some_email_address = value
-
     # someFloatVal
+
     @property
     def some_float_val(self):
         """
@@ -611,8 +619,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, float), (
             "some_float_val must be a float")
         self.plant.some_float_val = value
-
     # someIntVal
+
     @property
     def some_int_val(self):
         """
@@ -659,8 +667,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, int), (
             "some_int_val must be an integer")
         self.plant.some_int_val = value
-
     # someMoneyVal
+
     @property
     def some_money_val(self):
         """
@@ -707,8 +715,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, Decimal), (
             "some_money_val must be a number")
         self.plant.some_money_val = value
-
     # someNVarCharVal
+
     @property
     def some_n_var_char_val(self):
         """
@@ -758,8 +766,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, str), (
             "some_n_var_char_val must be a string")
         self.plant.some_n_var_char_val = value
-
     # somePhoneNumber
+
     @property
     def some_phone_number(self):
         """
@@ -817,8 +825,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, str), (
             "some_phone_number must be a string")
         self.plant.some_phone_number = value
-
     # someTextVal
+
     @property
     def some_text_val(self):
         """
@@ -867,8 +875,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, str), (
             "some_text_val must be a string")
         self.plant.some_text_val = value
-
     # someUniqueidentifierVal
+
     @property
     def some_uniqueidentifier_val(self):
         """
@@ -916,8 +924,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, uuid.UUID), (
             "some_uniqueidentifier_val must be a UUID")
         self.plant.some_uniqueidentifier_val = value
-
     # someUTCDateTimeVal
+
     @property
     def some_utc_date_time_val(self):
         """
@@ -964,8 +972,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, datetime), (
             "some_utc_date_time_val must be a datetime object")
         self.plant.some_utc_date_time_val = value
-
     # someVarCharVal
+
     @property
     def some_var_char_val(self):
         """
@@ -1015,11 +1023,8 @@ class PlantBaseBusObj(BaseBusObj):
         assert isinstance(value, str), (
             "some_var_char_val must be a string")
         self.plant.some_var_char_val = value
-
     # LandID
-
 # endset
-
     # isDeleteAllowed,
     # isEditAllowed,
     # otherFlavor,
@@ -1034,6 +1039,7 @@ class PlantBaseBusObj(BaseBusObj):
     # someDateVal
     # someUTCDateTimeVal
     # FlvrForeignKeyID
+
     @property
     def flvr_foreign_key_id(self):
         """
@@ -1102,15 +1108,8 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         return self.plant.flvr_foreign_key_code_peek
-
-    # @flvr_foreign_key_code_peek.setter
-    # def flvr_foreign_key_code_peek(self, value):
-    #     assert isinstance(
-    #       value, uuid.UUID),
-    #       "flvr_foreign_key_code_peek must be a UUID"
-    #     self.plant.flvr_foreign_key_code_peek = value
-
     # LandID
+
     @property
     def land_id(self):
         """
@@ -1178,21 +1177,9 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         return self.plant.land_code_peek
-
-    # @land_code_peek.setter
-    # def land_code_peek(self, value):
-    #     assert isinstance(value, uuid.UUID),
-    #           "land_code_peek must be a UUID"
-    #     self.plant.land_code_peek = value
-
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
-
 # endset
-
     # insert_utc_date_time
+
     @property
     def insert_utc_date_time(self):
         """
@@ -1362,7 +1349,7 @@ class PlantBaseBusObj(BaseBusObj):
 
         return self
 
-    async def load_from_obj_instance(
+    def load_from_obj_instance(
         self,
         plant_obj_instance: Plant
     ):
@@ -1381,15 +1368,14 @@ class PlantBaseBusObj(BaseBusObj):
                           Plant):
             raise ValueError("plant_obj_instance must be an instance of Plant")
 
-        plant_manager = PlantManager(
-            self._session_context)
+        # plant_manager = PlantManager(
+        #     self._session_context)
 
-        plant_obj_instance_plant_id = plant_obj_instance.plant_id
+        # plant_dict = plant_manager.to_dict(plant_obj_instance)
 
-        plant_obj = await plant_manager.get_by_id(
-            plant_obj_instance_plant_id
-        )
-        self.plant = plant_obj
+        # self.plant = plant_manager.from_dict(plant_dict)
+
+        self.plant = plant_obj_instance
 
         return self
 
@@ -1418,7 +1404,6 @@ class PlantBaseBusObj(BaseBusObj):
             plant_dict)
 
         return self
-
 ##GENTrainingBlock[caseLookupEnums]Start
 ##GENLearn[isLookup=false]Start
 ##GENLearn[isLookup=false]End
@@ -1660,7 +1645,6 @@ class PlantBaseBusObj(BaseBusObj):
         return plant_manager.is_equal(
             plant, my_plant)
 # endset
-
     # isDeleteAllowed,
     # isEditAllowed,
     # otherFlavor,
@@ -1675,6 +1659,7 @@ class PlantBaseBusObj(BaseBusObj):
     # someDateVal
     # someUTCDateTimeVal
     # LandID
+
     async def get_land_id_rel_obj(self) -> models.Land:
         """
         Retrieves the related Land object based
@@ -1688,8 +1673,8 @@ class PlantBaseBusObj(BaseBusObj):
         land_manager = managers_and_enums.LandManager(self._session_context)
         land_obj = await land_manager.get_by_id(self.land_id)
         return land_obj
-
     # FlvrForeignKeyID
+
     async def get_flvr_foreign_key_id_rel_obj(self) -> models.Flavor:
         """
         Retrieves the related Flavor object based on the
@@ -1709,7 +1694,6 @@ class PlantBaseBusObj(BaseBusObj):
     # someTextVal,
     # someUniqueidentifierVal,
     # someVarCharVal,
-
 # endset
 
     def get_obj(self) -> Plant:

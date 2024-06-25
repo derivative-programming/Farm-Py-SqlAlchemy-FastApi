@@ -20,6 +20,7 @@ from models import ErrorLog
 from models.factory import ErrorLogFactory
 from models.serialization_schema.error_log import ErrorLogSchema
 
+
 class TestErrorLogManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestErrorLogManager:
             await error_log_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

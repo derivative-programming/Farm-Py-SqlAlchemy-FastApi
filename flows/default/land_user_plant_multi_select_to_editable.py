@@ -7,6 +7,7 @@ that handle the addition of a
  to a specific
 land in the flow process.
 """
+
 import uuid
 import json
 from datetime import date, datetime
@@ -16,23 +17,28 @@ from flows.base import LogSeverity
 from business.land import LandBusObj
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion
+
+
 class FlowLandUserPlantMultiSelectToEditableResult():
     """
     Represents the result of the
     FlowLandUserPlantMultiSelectToEditable process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
-# endset
+
     def __init__(self):
         """
         Initializes a new instance of the
         FlowLandUserPlantMultiSelectToEditableResult class.
         """
+
     def to_json(self):
         """
         Converts the FlowLandUserPlantMultiSelectToEditableResult
         instance to a JSON string.
+
         Returns:
             str: The JSON representation of the instance.
         """
@@ -45,6 +51,8 @@ class FlowLandUserPlantMultiSelectToEditableResult():
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
+
+
 class FlowLandUserPlantMultiSelectToEditable(
     BaseFlowLandUserPlantMultiSelectToEditable
 ):
@@ -52,9 +60,11 @@ class FlowLandUserPlantMultiSelectToEditable(
     FlowLandUserPlantMultiSelectToEditable handles the addition of
     a  to
     a specific land in the flow process.
+
     This class extends the BaseFlowLandUserPlantMultiSelectToEditable class and
     initializes it with the provided session context.
     """
+
     async def process(
         self,
         land_bus_obj: LandBusObj,
@@ -64,6 +74,7 @@ class FlowLandUserPlantMultiSelectToEditable(
         """
         Processes the addition of a
          to a specific land.
+
         Returns:
             FlowLandUserPlantMultiSelectToEditableResult: The result of the
                 FlowLandUserPlantMultiSelectToEditable process.
@@ -76,27 +87,34 @@ class FlowLandUserPlantMultiSelectToEditable(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(land_bus_obj.code)
         )
+
         await super()._process_validation_rules(
             land_bus_obj,
             plant_code_list_csv,
 # endset  # noqa: E122
         )
+
         super()._throw_queued_validation_errors()
 
-# endset
+
         # TODO: add flow logic
+
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowLandUserPlantMultiSelectToEditableResult()
+
         result.context_object_code = land_bus_obj.code
 
-# endset
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
+
         return result
+

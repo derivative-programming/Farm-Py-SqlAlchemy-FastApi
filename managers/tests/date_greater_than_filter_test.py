@@ -20,6 +20,7 @@ from models import DateGreaterThanFilter
 from models.factory import DateGreaterThanFilterFactory
 from models.serialization_schema.date_greater_than_filter import DateGreaterThanFilterSchema
 
+
 class TestDateGreaterThanFilterManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestDateGreaterThanFilterManager:
             await date_greater_than_filter_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

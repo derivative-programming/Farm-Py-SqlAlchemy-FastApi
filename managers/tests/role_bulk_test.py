@@ -19,6 +19,7 @@ from managers.role import RoleManager
 from models import Role
 from models.factory import RoleFactory
 
+
 class TestRoleBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestRoleBulkManager:
                 role_ids)
 
         await session.rollback()
+

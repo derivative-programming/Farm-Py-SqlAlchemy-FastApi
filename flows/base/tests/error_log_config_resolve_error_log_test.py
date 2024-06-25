@@ -14,21 +14,27 @@ from flows.base.error_log_config_resolve_error_log import (
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.error_log import ErrorLogFactory
+
+
 class TestBaseFlowErrorLogConfigResolveErrorLog():
     """
     This class contains unit tests for the
     `BaseFlowErrorLogConfigResolveErrorLog` class.
     """
+
     @pytest.mark.asyncio
     async def test_process_validation_rules(self, session):
         """
         Test case for the _process_validation_rules method
         of the BaseFlowErrorLogConfigResolveErrorLog class.
+
         This method tests the validation rules for the request
         parameters of the
         error_log  flow.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
@@ -36,7 +42,6 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         flow = BaseFlowErrorLogConfigResolveErrorLog(session_context)
         error_log = await ErrorLogFactory.create_async(session)
 
-# endset
         # Call the method being tested
         await flow._process_validation_rules(
             error_log,
@@ -50,12 +55,13 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         # - calculatedIsRowLevelOrgCustomerSecurityUsed
         # - calculatedIsRowLevelOrganizationSecurityUsed
 
-# endset
+
     @pytest.mark.asyncio
     async def test_process_security_rules(self, session):
         """
         Test the process_security_rules method of
         BaseFlowErrorLogConfigResolveErrorLog.
+
         This method tests the behavior of the
         _process_security_rules method
         when a specific role is required. It
@@ -67,8 +73,10 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         it asserts that the expected validation
         errors are present in the flow's
         queued_validation_errors dictionary.
+
         Args:
             session: The session object for the test.
+
         Returns:
             None
         """
@@ -82,3 +90,4 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
+

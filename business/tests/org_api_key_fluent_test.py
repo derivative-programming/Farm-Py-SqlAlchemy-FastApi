@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.org_api_key_fluent import OrgApiKeyFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockOrgApiKeyBaseBusObj:
     """
     A mock base class for the OrgApiKeyFluentBusObj class.
@@ -99,3 +103,4 @@ class TestOrgApiKeyFluentBusObj:
         result = org_api_key.set_prop_org_customer_id(1)
         assert org_api_key.org_customer_id == 1
         assert result is org_api_key
+

@@ -1,22 +1,28 @@
 # models/serialization_schema/customer.py
+
 """
 This module contains the CustomerSchema
 class, which is responsible
 for serializing and deserializing
 Customer objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Customer
+
+
 class CustomerSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     Customer objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = Customer
         exclude = (
             "_customer_id",
@@ -51,6 +57,7 @@ class CustomerSchema(SQLAlchemyAutoSchema):
             "_zip",  # zip
 # endset  # noqa E122
         )
+
     customer_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -82,4 +89,4 @@ class CustomerSchema(SQLAlchemyAutoSchema):
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
     tac_code_peek = fields.UUID()  # TacID
-# endset
+

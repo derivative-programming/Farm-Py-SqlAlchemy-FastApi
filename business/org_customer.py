@@ -11,6 +11,11 @@ from models import OrgCustomer
 import managers as managers_and_enums  # noqa: F401
 from .org_customer_fluent import OrgCustomerFluentBusObj
 
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "OrgCustomer object is not initialized")
+
+
 class OrgCustomerBusObj(OrgCustomerFluentBusObj):
     """
     This class represents the business object for a OrgCustomer.
@@ -42,7 +47,7 @@ class OrgCustomerBusObj(OrgCustomerFluentBusObj):
         for org_customer in obj_list:
             org_customer_bus_obj = OrgCustomerBusObj(session_context)
 
-            await org_customer_bus_obj.load_from_obj_instance(
+            org_customer_bus_obj.load_from_obj_instance(
                 org_customer)
 
             result.append(org_customer_bus_obj)

@@ -149,7 +149,7 @@ class TestPlantBaseBusObj:
         plant object instance.
         """
 
-        await plant_bus_obj.load_from_obj_instance(
+        plant_bus_obj.load_from_obj_instance(
             new_plant)
 
         assert plant_manager.is_equal(
@@ -274,8 +274,12 @@ class TestPlantBaseBusObj:
 
         new_code = uuid.uuid4()
 
-        await plant_bus_obj.load_from_obj_instance(
+        plant_bus_obj.load_from_obj_instance(
             new_plant)
+
+        assert plant_manager.is_equal(
+            plant_bus_obj.plant,
+            new_plant) is True
 
         plant_bus_obj.code = new_code
 
@@ -301,14 +305,12 @@ class TestPlantBaseBusObj:
         Test case for deleting a plant.
         """
 
-        assert new_plant.plant_id is not None
+        assert plant_bus_obj.plant is not None
 
         assert plant_bus_obj.plant_id == 0
 
-        new_plant_plant_id_value = new_plant.plant_id
-
-        await plant_bus_obj.load_from_id(
-            new_plant_plant_id_value)
+        plant_bus_obj.load_from_obj_instance(
+            new_plant)
 
         assert plant_bus_obj.plant_id is not None
 
@@ -495,8 +497,8 @@ class TestPlantBaseBusObj:
         with pytest.raises(ValueError):
             plant_base_bus_obj.insert_user_id = "not-a-uuid"
 # endset
+    # isDeleteAllowed
 
-    # isDeleteAllowed,
     def test_is_delete_allowed(self, plant_base_bus_obj, plant):
         """
         Test case for the is_delete_allowed property.
@@ -518,8 +520,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(ValueError):
             plant_base_bus_obj.is_delete_allowed = "not-a-boolean"
+    # isEditAllowed
 
-    # isEditAllowed,
     def test_is_edit_allowed(self, plant_base_bus_obj, plant):
         """
         Test case for the is_edit_allowed property.
@@ -541,8 +543,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.is_edit_allowed = "not-a-boolean"
+    # otherFlavor
 
-    # otherFlavor,
     def test_other_flavor(self, plant_base_bus_obj, plant):
         """
         Test case for the other_flavor property.
@@ -564,8 +566,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.other_flavor = 123
+    # someBigIntVal
 
-    # someBigIntVal,
     def test_some_big_int_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_big_int_val property.
@@ -587,8 +589,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_big_int_val = "not-an-int"
+    # someBitVal
 
-    # someBitVal,
     def test_some_bit_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_bit_val property.
@@ -610,8 +612,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_bit_val = "not-a-boolean"
-
     # someDateVal
+
     def test_some_date_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_date_val property.
@@ -635,8 +637,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_date_val = "not-a-date"
+    # someDecimalVal
 
-    # someDecimalVal,
     def test_some_decimal_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_decimal_val property.
@@ -660,8 +662,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_decimal_val = "not-a-decimal"
+    # someEmailAddress
 
-    # someEmailAddress,
     def test_some_email_address(self, plant_base_bus_obj, plant):
         """
         Test case for the some_email_address property.
@@ -683,8 +685,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_email_address = 123
+    # someFloatVal
 
-    # someFloatVal,
     def test_some_float_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_float_val property.
@@ -706,8 +708,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_float_val = "not-a-float"
+    # someIntVal
 
-    # someIntVal,
     def test_some_int_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_int_val property.
@@ -729,8 +731,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_int_val = "not-an-int"
+    # someMoneyVal
 
-    # someMoneyVal,
     def test_some_money_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_money_val property.
@@ -754,8 +756,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_money_val = "not-a-decimal"
+    # someNVarCharVal
 
-    # someNVarCharVal,
     def test_some_n_var_char_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_n_var_char_val property.
@@ -777,8 +779,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_n_var_char_val = 123
+    # somePhoneNumber
 
-    # somePhoneNumber,
     def test_some_phone_number(self, plant_base_bus_obj, plant):
         """
         Test case for the some_phone_number property.
@@ -800,8 +802,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_phone_number = 123
+    # someTextVal
 
-    # someTextVal,
     def test_some_text_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_text_val property.
@@ -823,8 +825,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_text_val = 123
+    # someUniqueidentifierVal
 
-    # someUniqueidentifierVal,
     def test_some_uniqueidentifier_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_uniqueidentifier_val property.
@@ -848,8 +850,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_uniqueidentifier_val = "not-a-uuid"
-
     # someUTCDateTimeVal
+
     def test_some_utc_date_time_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_utc_date_time_val property.
@@ -873,8 +875,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.some_utc_date_time_val = "not-a-datetime"
+    # someVarCharVal
 
-    # someVarCharVal,
     def test_some_var_char_val(self, plant_base_bus_obj, plant):
         """
         Test case for the some_var_char_val property.
@@ -899,12 +901,12 @@ class TestPlantBaseBusObj:
     # FlvrForeignKeyID
     # LandID
 # endset
-
     # someNVarCharVal,
     # somePhoneNumber,
     # someTextVal,
     # someUniqueidentifierVal,
     # FlvrForeignKeyID
+
     def test_flvr_foreign_key_id(self, plant_base_bus_obj, plant):
         """
         Test case for the flvr_foreign_key_id property.
@@ -926,8 +928,8 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(ValueError):
             plant_base_bus_obj.flvr_foreign_key_id = "not-an-int"
-
     # LandID
+
     def test_land_id(self, plant_base_bus_obj, plant):
         """
         Test case for the land_id property.
@@ -949,7 +951,6 @@ class TestPlantBaseBusObj:
         """
         with pytest.raises(AssertionError):
             plant_base_bus_obj.land_id = "not-an-int"
-
     # isDeleteAllowed,
     # isEditAllowed,
     # otherFlavor,

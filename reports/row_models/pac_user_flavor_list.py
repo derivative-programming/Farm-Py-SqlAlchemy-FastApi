@@ -1,12 +1,17 @@
 # pac_user_flavor_list.py
+
 """
 This module contains the definition of the
 ReportItemPacUserFlavorList class.
 """
+
 import uuid
 from decimal import Decimal
 from datetime import datetime, date
+
 from helpers.type_conversion import TypeConversion
+
+
 class ReportItemPacUserFlavorList():
     """
     Represents a report item for a pac Pac User Flavor List Report.
@@ -19,12 +24,14 @@ class ReportItemPacUserFlavorList():
     flavor_lookup_enum_name: str = ""
     flavor_name: str = ""
     pac_name: str = ""
-# endset
+
     def load_data_provider_dict(self, data: dict):
         """
         Loads data from a dictionary into the report item.
+
         Args:
             data (dict): The dictionary containing the data.
+
         Returns:
             None
         """
@@ -42,5 +49,4 @@ class ReportItemPacUserFlavorList():
             str(data["flavor_name"]))
         self.pac_name = (
             str(data["pac_name"]))
-# endset
 

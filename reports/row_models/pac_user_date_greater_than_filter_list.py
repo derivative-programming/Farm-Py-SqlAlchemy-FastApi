@@ -1,12 +1,17 @@
 # pac_user_date_greater_than_filter_list.py
+
 """
 This module contains the definition of the
 ReportItemPacUserDateGreaterThanFilterList class.
 """
+
 import uuid
 from decimal import Decimal
 from datetime import datetime, date
+
 from helpers.type_conversion import TypeConversion
+
+
 class ReportItemPacUserDateGreaterThanFilterList():
     """
     Represents a report item for a pac Pac User Date Greater Than Filter List Report.
@@ -19,12 +24,14 @@ class ReportItemPacUserDateGreaterThanFilterList():
     date_greater_than_filter_is_active: bool = False
     date_greater_than_filter_lookup_enum_name: str = ""
     date_greater_than_filter_name: str = ""
-# endset
+
     def load_data_provider_dict(self, data: dict):
         """
         Loads data from a dictionary into the report item.
+
         Args:
             data (dict): The dictionary containing the data.
+
         Returns:
             None
         """
@@ -42,5 +49,4 @@ class ReportItemPacUserDateGreaterThanFilterList():
             str(data["date_greater_than_filter_lookup_enum_name"]))
         self.date_greater_than_filter_name = (
             str(data["date_greater_than_filter_name"]))
-# endset
 

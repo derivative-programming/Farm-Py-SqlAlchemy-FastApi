@@ -12,12 +12,14 @@ from business.flavor import FlavorBusObj
 from helpers.session_context import SessionContext
 from models import Flavor
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def flavor_list():
@@ -29,6 +31,7 @@ def flavor_list():
         flavor = Mock(spec=Flavor)
         flavors.append(flavor)
     return flavors
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, flavor_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, flavor_list):
         for bus_obj, flavor in zip(bus_obj_list, flavor_list):
             mock_load.assert_any_call(flavor)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await FlavorBusObj.to_bus_obj_list(session_context, empty_flavor_list)
 
     assert len(bus_obj_list) == 0
+

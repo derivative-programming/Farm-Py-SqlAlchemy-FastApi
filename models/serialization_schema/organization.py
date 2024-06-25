@@ -1,22 +1,28 @@
 # models/serialization_schema/organization.py
+
 """
 This module contains the OrganizationSchema
 class, which is responsible
 for serializing and deserializing
 Organization objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Organization
+
+
 class OrganizationSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     Organization objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = Organization
         exclude = (
             "_organization_id",
@@ -30,6 +36,7 @@ class OrganizationSchema(SQLAlchemyAutoSchema):
             "_tac_id",  # TacID
 # endset  # noqa E122
         )
+
     organization_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -40,4 +47,4 @@ class OrganizationSchema(SQLAlchemyAutoSchema):
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
     tac_code_peek = fields.UUID()  # TacID
-# endset
+

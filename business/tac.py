@@ -11,9 +11,16 @@ from models import Tac
 import managers as managers_and_enums  # noqa: F401
 from .tac_fluent import TacFluentBusObj
 
+
 from business.organization import OrganizationBusObj
 
+
 from business.customer import CustomerBusObj
+
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Tac object is not initialized")
+
 
 class TacBusObj(TacFluentBusObj):
     """
@@ -46,12 +53,13 @@ class TacBusObj(TacFluentBusObj):
         for tac in obj_list:
             tac_bus_obj = TacBusObj(session_context)
 
-            await tac_bus_obj.load_from_obj_instance(
+            tac_bus_obj.load_from_obj_instance(
                 tac)
 
             result.append(tac_bus_obj)
 
         return result
+
 
     async def build_organization(self) -> OrganizationBusObj:
         """
@@ -59,6 +67,9 @@ class TacBusObj(TacFluentBusObj):
         instance (not saved yet)
         """
         item = OrganizationBusObj(self._session_context)
+
+        assert item.organization is not None
+
 
         item.tac_id = self.tac_id
         item.organization.tac_code_peek = self.code
@@ -74,9 +85,10 @@ class TacBusObj(TacFluentBusObj):
         obj_list = await organization_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
             bus_obj_item = OrganizationBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
+
 
     async def build_customer(self) -> CustomerBusObj:
         """
@@ -84,6 +96,9 @@ class TacBusObj(TacFluentBusObj):
         instance (not saved yet)
         """
         item = CustomerBusObj(self._session_context)
+
+        assert item.customer is not None
+
 
         item.tac_id = self.tac_id
         item.customer.tac_code_peek = self.code
@@ -99,7 +114,7 @@ class TacBusObj(TacFluentBusObj):
         obj_list = await customer_manager.get_by_tac_id(self.tac_id)
         for obj_item in obj_list:
             bus_obj_item = CustomerBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
     async def get_customer_by_email_prop(self, email) -> List[CustomerBusObj]:
@@ -111,7 +126,7 @@ class TacBusObj(TacFluentBusObj):
         obj_list = await customer_manager.get_by_email_prop(email)
         for obj_item in obj_list:
             bus_obj_item = CustomerBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
     async def get_customer_by_fs_user_code_value_prop(self, fs_user_code_value) -> List[CustomerBusObj]:
@@ -123,7 +138,7 @@ class TacBusObj(TacFluentBusObj):
         obj_list = await customer_manager.get_by_fs_user_code_value_prop(fs_user_code_value)
         for obj_item in obj_list:
             bus_obj_item = CustomerBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

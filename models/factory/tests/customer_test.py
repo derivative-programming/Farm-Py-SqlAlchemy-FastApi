@@ -3,6 +3,7 @@
 This module contains unit tests for the CustomerFactory
 class in the models.factory package.
 """
+
 from decimal import Decimal
 import time
 import math
@@ -17,11 +18,15 @@ from models import Base, Customer
 from models.factory import CustomerFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
+
 DATABASE_URL = "sqlite:///:memory:"
+
+
 class TestCustomerFactory:
     """
     This class contains unit tests for the CustomerFactory class.
     """
+
     @pytest.fixture(scope="module")
     def engine(self):
         """
@@ -33,6 +38,7 @@ class TestCustomerFactory:
             conn.execute(text("PRAGMA foreign_keys=ON"))
         yield engine
         engine.dispose()
+
     @pytest.fixture
     def session(self, engine):
         """
@@ -44,6 +50,7 @@ class TestCustomerFactory:
         session_instance = SessionLocal()
         yield session_instance
         session_instance.close()
+
     def test_customer_creation(self, session):
         """
         Test case for creating a customer.
@@ -51,6 +58,7 @@ class TestCustomerFactory:
         customer = CustomerFactory.create(
             session=session)
         assert customer.customer_id is not None
+
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
@@ -59,6 +67,7 @@ class TestCustomerFactory:
         customer = CustomerFactory.create(
             session=session)
         assert isinstance(customer.code, uuid.UUID)
+
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
@@ -67,6 +76,7 @@ class TestCustomerFactory:
         customer: Customer = CustomerFactory.build(
             session=session)
         assert customer.last_change_code == 0
+
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
@@ -75,6 +85,7 @@ class TestCustomerFactory:
         customer: Customer = CustomerFactory.create(
             session=session)
         assert customer.last_change_code == 1
+
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
@@ -86,6 +97,7 @@ class TestCustomerFactory:
         customer.code = uuid.uuid4()
         session.commit()
         assert customer.last_change_code != initial_code
+
     def test_date_inserted_on_build(self, session):
         """
         Test case for checking the value of the
@@ -96,6 +108,7 @@ class TestCustomerFactory:
         assert customer.insert_utc_date_time is not None
         assert isinstance(
             customer.insert_utc_date_time, datetime)
+
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -111,6 +124,7 @@ class TestCustomerFactory:
         session.add(customer)
         session.commit()
         assert customer.insert_utc_date_time > initial_time
+
     def test_date_inserted_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -126,6 +140,7 @@ class TestCustomerFactory:
         time.sleep(1)
         session.commit()
         assert customer.insert_utc_date_time == initial_time
+
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
@@ -136,6 +151,7 @@ class TestCustomerFactory:
         assert customer.last_update_utc_date_time is not None
         assert isinstance(
             customer.last_update_utc_date_time, datetime)
+
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
@@ -151,6 +167,7 @@ class TestCustomerFactory:
         session.add(customer)
         session.commit()
         assert customer.last_update_utc_date_time > initial_time
+
     def test_date_updated_on_second_save(self, session):
         """
         Test case for checking the value of the
@@ -166,6 +183,7 @@ class TestCustomerFactory:
         time.sleep(1)
         session.commit()
         assert customer.last_update_utc_date_time > initial_time
+
     def test_model_deletion(self, session):
         """
         Test case for deleting a
@@ -178,6 +196,7 @@ class TestCustomerFactory:
         deleted_customer = session.query(Customer).filter_by(
             customer_id=customer.customer_id).first()
         assert deleted_customer is None
+
     def test_data_types(self, session):
         """
         Test case for checking the data types of
@@ -219,7 +238,6 @@ class TestCustomerFactory:
         assert customer.zip == "" or isinstance(customer.zip, str)
         # Check for the peek values,
         # assuming they are UUIDs based on your model
-# endset
         # activeOrganizationID,
         # email,
         # emailConfirmedUTCDateTime
@@ -241,13 +259,14 @@ class TestCustomerFactory:
         # province,
         # registrationUTCDateTime
         # tacID
+
         assert isinstance(
             customer.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
-# endset
         assert isinstance(customer.insert_utc_date_time, datetime)
         assert isinstance(customer.last_update_utc_date_time, datetime)
+
     def test_unique_code_constraint(self, session):
         """
         Test case for checking the unique code constraint.
@@ -259,6 +278,7 @@ class TestCustomerFactory:
         with pytest.raises(Exception):
             session.commit()
         session.rollback()
+
     def test_fields_default(self):
         """
         Test case for checking the default values of
@@ -271,7 +291,6 @@ class TestCustomerFactory:
         assert customer.last_update_user_id == uuid.UUID(int=0)
         assert customer.insert_utc_date_time is not None
         assert customer.last_update_utc_date_time is not None
-# endset
         # activeOrganizationID,
         # email,
         # emailConfirmedUTCDateTime
@@ -293,11 +312,11 @@ class TestCustomerFactory:
         # province,
         # registrationUTCDateTime
         # TacID
+
         assert isinstance(
             customer.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
-# endset
         assert customer is not None
         assert customer.active_organization_id == 0
         assert customer.email == ""
@@ -326,12 +345,13 @@ class TestCustomerFactory:
         assert customer.tac_id == 0
         assert customer.utc_offset_in_minutes == 0
         assert customer.zip == ""
-# endset
+
     def test_last_change_code_concurrency(self, session):
         """
         Test case to verify the concurrency of
         last_change_code in the Customer
         model.
+
         This test case checks if the last_change_code
         of a Customer object is
         updated correctly
@@ -342,11 +362,14 @@ class TestCustomerFactory:
         Finally, it asserts that the last_change_code
         of the second retrieved Customer object
         is different from the original last_change_code.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Returns:
             None
         """
+
         customer = CustomerFactory.create(
             session=session)
         original_last_change_code = customer.last_change_code
@@ -359,7 +382,6 @@ class TestCustomerFactory:
         customer_2.code = uuid.uuid4()
         session.commit()
         assert customer_2.last_change_code != original_last_change_code
-# endset
     # activeOrganizationID,
     # email,
     # emailConfirmedUTCDateTime
@@ -381,20 +403,25 @@ class TestCustomerFactory:
     # province,
     # registrationUTCDateTime
     # TacID
+
     def test_invalid_tac_id(self, session):
         """
         Test case to check if an invalid tac ID raises an IntegrityError.
+
         This test case creates a customer object using
         the CustomerFactory and assigns an invalid tac ID to it.
         It then tries to commit the changes to the
         session and expects an IntegrityError to be raised.
         Finally, it rolls back the session to ensure
         no changes are persisted.
+
         Args:
             session (Session): The SQLAlchemy session object.
+
         Raises:
             IntegrityError: If the changes to the
                 session violate any integrity constraints.
+
         """
         customer = CustomerFactory.create(
             session=session)
@@ -404,4 +431,4 @@ class TestCustomerFactory:
         session.rollback()
     # uTCOffsetInMinutes,
     # zip,
-# endset
+

@@ -1,17 +1,21 @@
 # business/tests/org_customer_base_test.py
 # pylint: disable=unused-import
 # pylint: disable=redefined-outer-name
+
 """
 This module contains unit tests for the OrgCustomerBusObj class.
 """
+
 import uuid
 import math
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal
 from unittest.mock import AsyncMock, Mock, patch
+
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
+
 import current_runtime  # noqa: F401
 from business.org_customer_base import OrgCustomerBaseBusObj
 from helpers.session_context import SessionContext
@@ -19,9 +23,13 @@ from managers.org_customer import OrgCustomerManager
 from models import OrgCustomer
 from models.factory import OrgCustomerFactory
 from services.logging_config import get_logger
+
 from ..org_customer import OrgCustomerBusObj
 
+
 logger = get_logger(__name__)
+
+
 @pytest.fixture
 def fake_session_context():
     """
@@ -31,12 +39,16 @@ def fake_session_context():
     session_context = Mock(spec=SessionContext)
     session_context.session = session
     return session_context
+
+
 @pytest.fixture
 def org_customer():
     """
     Fixture that returns a mock org_customer object.
     """
     return Mock(spec=OrgCustomer)
+
+
 @pytest.fixture
 def org_customer_base_bus_obj(fake_session_context, org_customer):
     """
@@ -45,10 +57,13 @@ def org_customer_base_bus_obj(fake_session_context, org_customer):
     org_customer_base = OrgCustomerBaseBusObj(fake_session_context)
     org_customer_base.org_customer = org_customer
     return org_customer_base
+
+
 class TestOrgCustomerBaseBusObj:
     """
     Unit tests for the OrgCustomerBusObj class.
     """
+
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_manager(self, session: AsyncSession):
         """
@@ -56,6 +71,7 @@ class TestOrgCustomerBaseBusObj:
         """
         session_context = SessionContext(dict(), session)
         return OrgCustomerManager(session_context)
+
     @pytest_asyncio.fixture(scope="function")
     async def org_customer_bus_obj(self, session):
         """
@@ -63,14 +79,17 @@ class TestOrgCustomerBaseBusObj:
         """
         session_context = SessionContext(dict(), session)
         return OrgCustomerBusObj(session_context)
+
     @pytest_asyncio.fixture(scope="function")
     async def new_org_customer(self, session):
         """
         Fixture that returns a new instance of
         the OrgCustomer class.
         """
+
         return await OrgCustomerFactory.create_async(
             session)
+
     @pytest.mark.asyncio
     async def test_create_org_customer(
         self,
@@ -80,19 +99,24 @@ class TestOrgCustomerBaseBusObj:
         Test case for creating a new org_customer.
         """
         # Test creating a new org_customer
+
         assert org_customer_bus_obj.org_customer_id == 0
+
         # assert isinstance(org_customer_bus_obj.org_customer_id, int)
         assert isinstance(
             org_customer_bus_obj.code, uuid.UUID)
+
         assert isinstance(
             org_customer_bus_obj.last_change_code, int)
+
         assert org_customer_bus_obj.insert_user_id == uuid.UUID(int=0)
+
         assert org_customer_bus_obj.last_update_user_id == uuid.UUID(int=0)
-# endset
+
         assert isinstance(org_customer_bus_obj.customer_id, int)
         assert isinstance(org_customer_bus_obj.email, str)
         assert isinstance(org_customer_bus_obj.organization_id, int)
-# endset
+
     @pytest.mark.asyncio
     async def test_load_with_org_customer_obj(
         self,
@@ -104,10 +128,13 @@ class TestOrgCustomerBaseBusObj:
         Test case for loading data from a
         org_customer object instance.
         """
-        await org_customer_bus_obj.load_from_obj_instance(
+
+        org_customer_bus_obj.load_from_obj_instance(
             new_org_customer)
+
         assert org_customer_manager.is_equal(
             org_customer_bus_obj.org_customer, new_org_customer) is True
+
     @pytest.mark.asyncio
     async def test_load_with_org_customer_id(
         self,
@@ -119,11 +146,15 @@ class TestOrgCustomerBaseBusObj:
         Test case for loading data from a
         org_customer ID.
         """
+
         new_org_customer_org_customer_id = new_org_customer.org_customer_id
+
         await org_customer_bus_obj.load_from_id(
             new_org_customer_org_customer_id)
+
         assert org_customer_manager.is_equal(
             org_customer_bus_obj.org_customer, new_org_customer) is True
+
     @pytest.mark.asyncio
     async def test_load_with_org_customer_code(
         self,
@@ -135,10 +166,13 @@ class TestOrgCustomerBaseBusObj:
         Test case for loading data from a
         org_customer code.
         """
+
         await org_customer_bus_obj.load_from_code(
             new_org_customer.code)
+
         assert org_customer_manager.is_equal(
             org_customer_bus_obj.org_customer, new_org_customer) is True
+
     @pytest.mark.asyncio
     async def test_load_with_org_customer_json(
         self,
@@ -150,11 +184,15 @@ class TestOrgCustomerBaseBusObj:
         Test case for loading data from a
         org_customer JSON.
         """
+
         org_customer_json = org_customer_manager.to_json(new_org_customer)
+
         await org_customer_bus_obj.load_from_json(
             org_customer_json)
+
         assert org_customer_manager.is_equal(
             org_customer_bus_obj.org_customer, new_org_customer) is True
+
     @pytest.mark.asyncio
     async def test_load_with_org_customer_dict(
         self,
@@ -166,14 +204,20 @@ class TestOrgCustomerBaseBusObj:
         Test case for loading data from a
         org_customer dictionary.
         """
+
         logger.info("test_load_with_org_customer_dict 1")
+
         org_customer_dict = org_customer_manager.to_dict(new_org_customer)
+
         logger.info(org_customer_dict)
+
         await org_customer_bus_obj.load_from_dict(
             org_customer_dict)
+
         assert org_customer_manager.is_equal(
             org_customer_bus_obj.org_customer,
             new_org_customer) is True
+
     @pytest.mark.asyncio
     async def test_get_nonexistent_org_customer(
         self,
@@ -185,8 +229,10 @@ class TestOrgCustomerBaseBusObj:
         # Test retrieving a nonexistent
         # org_customer raises an exception
         await org_customer_bus_obj.load_from_id(-1)
+
         # Assuming -1 is an id that wouldn't exist
         assert org_customer_bus_obj.is_valid() is False
+
     @pytest.mark.asyncio
     async def test_update_org_customer(
         self,
@@ -198,21 +244,36 @@ class TestOrgCustomerBaseBusObj:
         Test case for updating a org_customer's data.
         """
         # Test updating a org_customer's data
+
         new_org_customer_org_customer_id_value = new_org_customer.org_customer_id
+
         new_org_customer = await org_customer_manager.get_by_id(
             new_org_customer_org_customer_id_value)
+
         assert isinstance(new_org_customer, OrgCustomer)
+
         new_code = uuid.uuid4()
-        await org_customer_bus_obj.load_from_obj_instance(
+
+        org_customer_bus_obj.load_from_obj_instance(
             new_org_customer)
-        org_customer_bus_obj.code = new_code
-        await org_customer_bus_obj.save()
-        new_org_customer_org_customer_id_value = new_org_customer.org_customer_id
-        new_org_customer = await org_customer_manager.get_by_id(
-            new_org_customer_org_customer_id_value)
+
         assert org_customer_manager.is_equal(
             org_customer_bus_obj.org_customer,
             new_org_customer) is True
+
+        org_customer_bus_obj.code = new_code
+
+        await org_customer_bus_obj.save()
+
+        new_org_customer_org_customer_id_value = new_org_customer.org_customer_id
+
+        new_org_customer = await org_customer_manager.get_by_id(
+            new_org_customer_org_customer_id_value)
+
+        assert org_customer_manager.is_equal(
+            org_customer_bus_obj.org_customer,
+            new_org_customer) is True
+
     @pytest.mark.asyncio
     async def test_delete_org_customer(
         self,
@@ -223,17 +284,25 @@ class TestOrgCustomerBaseBusObj:
         """
         Test case for deleting a org_customer.
         """
-        assert new_org_customer.org_customer_id is not None
+
+        assert org_customer_bus_obj.org_customer is not None
+
         assert org_customer_bus_obj.org_customer_id == 0
-        new_org_customer_org_customer_id_value = new_org_customer.org_customer_id
-        await org_customer_bus_obj.load_from_id(
-            new_org_customer_org_customer_id_value)
+
+        org_customer_bus_obj.load_from_obj_instance(
+            new_org_customer)
+
         assert org_customer_bus_obj.org_customer_id is not None
+
         await org_customer_bus_obj.delete()
+
         new_org_customer_org_customer_id_value = new_org_customer.org_customer_id
+
         new_org_customer = await org_customer_manager.get_by_id(
             new_org_customer_org_customer_id_value)
+
         assert new_org_customer is None
+
     def test_get_session_context(
         self,
         org_customer_base_bus_obj,
@@ -243,6 +312,7 @@ class TestOrgCustomerBaseBusObj:
         Test case for getting the session context.
         """
         assert org_customer_base_bus_obj.get_session_context() == fake_session_context
+
     @pytest.mark.asyncio
     async def test_refresh(self, org_customer_base_bus_obj, org_customer):
         """
@@ -254,16 +324,20 @@ class TestOrgCustomerBaseBusObj:
         ) as mock_org_customer_manager:
             mock_org_customer_manager_instance = mock_org_customer_manager.return_value
             mock_org_customer_manager_instance.refresh = AsyncMock(return_value=org_customer)
+
             refreshed_org_customer_base = await org_customer_base_bus_obj.refresh()
             assert refreshed_org_customer_base.org_customer == org_customer
             mock_org_customer_manager_instance.refresh.assert_called_once_with(org_customer)
+
     def test_is_valid(self, org_customer_base_bus_obj):
         """
         Test case for checking if the org_customer data is valid.
         """
         assert org_customer_base_bus_obj.is_valid() is True
+
         org_customer_base_bus_obj.org_customer = None
         assert org_customer_base_bus_obj.is_valid() is False
+
     def test_to_dict(self, org_customer_base_bus_obj):
         """
         Test case for converting the org_customer data to a dictionary.
@@ -275,10 +349,12 @@ class TestOrgCustomerBaseBusObj:
             mock_org_customer_manager_instance = mock_org_customer_manager.return_value
             mock_org_customer_manager_instance.to_dict = Mock(
                 return_value={"key": "value"})
+
             org_customer_dict = org_customer_base_bus_obj.to_dict()
             assert org_customer_dict == {"key": "value"}
             mock_org_customer_manager_instance.to_dict.assert_called_once_with(
                 org_customer_base_bus_obj.org_customer)
+
     def test_to_json(self, org_customer_base_bus_obj):
         """
         Test case for converting the org_customer data to JSON.
@@ -290,32 +366,38 @@ class TestOrgCustomerBaseBusObj:
             mock_org_customer_manager_instance = mock_org_customer_manager.return_value
             mock_org_customer_manager_instance.to_json = Mock(
                 return_value='{"key": "value"}')
+
             org_customer_json = org_customer_base_bus_obj.to_json()
             assert org_customer_json == '{"key": "value"}'
             mock_org_customer_manager_instance.to_json.assert_called_once_with(
                 org_customer_base_bus_obj.org_customer)
+
     def test_get_obj(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for getting the org_customer object.
         """
         assert org_customer_base_bus_obj.get_obj() == org_customer
+
     def test_get_object_name(self, org_customer_base_bus_obj):
         """
         Test case for getting the object name.
         """
         assert org_customer_base_bus_obj.get_object_name() == "org_customer"
+
     def test_get_id(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for getting the org_customer ID.
         """
         org_customer.org_customer_id = 1
         assert org_customer_base_bus_obj.get_id() == 1
+
     def test_org_customer_id(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the org_customer_id property.
         """
         org_customer.org_customer_id = 1
         assert org_customer_base_bus_obj.org_customer_id == 1
+
     def test_code(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the code property.
@@ -323,6 +405,7 @@ class TestOrgCustomerBaseBusObj:
         test_uuid = uuid.uuid4()
         org_customer.code = test_uuid
         assert org_customer_base_bus_obj.code == test_uuid
+
     def test_code_setter(self, org_customer_base_bus_obj):
         """
         Test case for the code setter.
@@ -330,32 +413,38 @@ class TestOrgCustomerBaseBusObj:
         test_uuid = uuid.uuid4()
         org_customer_base_bus_obj.code = test_uuid
         assert org_customer_base_bus_obj.code == test_uuid
+
     def test_code_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the code property.
         """
         with pytest.raises(ValueError):
             org_customer_base_bus_obj.code = "not-a-uuid"
+
     def test_last_change_code(self, org_customer_base_bus_obj, org_customer):
         """
         Test case to verify the behavior of the last_change_code
         attribute in the OrgCustomerBaseBusiness class.
+
         Args:
             org_customer_base_bus_obj (OrgCustomerBaseBusiness):
                 An instance of the
                 OrgCustomerBaseBusiness class.
             org_customer (OrgCustomer): An instance of the OrgCustomer class.
+
         Returns:
             None
         """
         org_customer.last_change_code = 123
         assert org_customer_base_bus_obj.last_change_code == 123
+
     def test_last_change_code_setter(self, org_customer_base_bus_obj):
         """
         Test case for the last_change_code setter.
         """
         org_customer_base_bus_obj.last_change_code = 123
         assert org_customer_base_bus_obj.last_change_code == 123
+
     def test_last_change_code_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the
@@ -363,6 +452,7 @@ class TestOrgCustomerBaseBusObj:
         """
         with pytest.raises(ValueError):
             org_customer_base_bus_obj.last_change_code = "not-an-int"
+
     def test_insert_user_id(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the insert_user_id property.
@@ -370,6 +460,7 @@ class TestOrgCustomerBaseBusObj:
         test_uuid = uuid.uuid4()
         org_customer.insert_user_id = test_uuid
         assert org_customer_base_bus_obj.insert_user_id == test_uuid
+
     def test_insert_user_id_setter(self, org_customer_base_bus_obj):
         """
         Test case for the insert_user_id setter.
@@ -377,6 +468,7 @@ class TestOrgCustomerBaseBusObj:
         test_uuid = uuid.uuid4()
         org_customer_base_bus_obj.insert_user_id = test_uuid
         assert org_customer_base_bus_obj.insert_user_id == test_uuid
+
     def test_insert_user_id_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the
@@ -384,21 +476,23 @@ class TestOrgCustomerBaseBusObj:
         """
         with pytest.raises(ValueError):
             org_customer_base_bus_obj.insert_user_id = "not-a-uuid"
-# endset
     # CustomerID
-    # email,
+    # email
+
     def test_email(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the email property.
         """
         org_customer.email = "test@example.com"
         assert org_customer_base_bus_obj.email == "test@example.com"
+
     def test_email_setter(self, org_customer_base_bus_obj):
         """
         Test case for the email setter.
         """
         org_customer_base_bus_obj.email = "test@example.com"
         assert org_customer_base_bus_obj.email == "test@example.com"
+
     def test_email_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the
@@ -407,20 +501,22 @@ class TestOrgCustomerBaseBusObj:
         with pytest.raises(AssertionError):
             org_customer_base_bus_obj.email = 123
     # OrganizationID
-# endset
     # CustomerID
+
     def test_customer_id(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the customer_id property.
         """
         org_customer.customer_id = 1
         assert org_customer_base_bus_obj.customer_id == 1
+
     def test_customer_id_setter(self, org_customer_base_bus_obj):
         """
         Test case for the customer_id setter.
         """
         org_customer_base_bus_obj.customer_id = 1
         assert org_customer_base_bus_obj.customer_id == 1
+
     def test_customer_id_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the
@@ -430,18 +526,21 @@ class TestOrgCustomerBaseBusObj:
             org_customer_base_bus_obj.customer_id = "not-an-int"
     # email,
     # OrganizationID
+
     def test_organization_id(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the organization_id property.
         """
         org_customer.organization_id = 1
         assert org_customer_base_bus_obj.organization_id == 1
+
     def test_organization_id_setter(self, org_customer_base_bus_obj):
         """
         Test case for the organization_id setter.
         """
         org_customer_base_bus_obj.organization_id = 1
         assert org_customer_base_bus_obj.organization_id == 1
+
     def test_organization_id_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the
@@ -449,7 +548,7 @@ class TestOrgCustomerBaseBusObj:
         """
         with pytest.raises(AssertionError):
             org_customer_base_bus_obj.organization_id = "not-an-int"
-# endset
+
     def test_insert_utc_date_time(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the insert_utc_date_time property.
@@ -457,6 +556,7 @@ class TestOrgCustomerBaseBusObj:
         test_datetime = datetime.utcnow()
         org_customer.insert_utc_date_time = test_datetime
         assert org_customer_base_bus_obj.insert_utc_date_time == test_datetime
+
     def test_insert_utc_date_time_setter(self, org_customer_base_bus_obj):
         """
         Test case for the insert_utc_date_time setter.
@@ -464,6 +564,7 @@ class TestOrgCustomerBaseBusObj:
         test_datetime = datetime.utcnow()
         org_customer_base_bus_obj.insert_utc_date_time = test_datetime
         assert org_customer_base_bus_obj.insert_utc_date_time == test_datetime
+
     def test_insert_utc_date_time_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the
@@ -471,6 +572,7 @@ class TestOrgCustomerBaseBusObj:
         """
         with pytest.raises(AssertionError):
             org_customer_base_bus_obj.insert_utc_date_time = "not-a-datetime"
+
     def test_last_update_utc_date_time(self, org_customer_base_bus_obj, org_customer):
         """
         Test case for the last_update_utc_date_time property.
@@ -478,6 +580,7 @@ class TestOrgCustomerBaseBusObj:
         test_datetime = datetime.utcnow()
         org_customer.last_update_utc_date_time = test_datetime
         assert org_customer_base_bus_obj.last_update_utc_date_time == test_datetime
+
     def test_last_update_utc_date_time_setter(self, org_customer_base_bus_obj):
         """
         Test case for the last_update_utc_date_time setter.
@@ -485,6 +588,7 @@ class TestOrgCustomerBaseBusObj:
         test_datetime = datetime.utcnow()
         org_customer_base_bus_obj.last_update_utc_date_time = test_datetime
         assert org_customer_base_bus_obj.last_update_utc_date_time == test_datetime
+
     def test_last_update_utc_date_time_invalid_value(self, org_customer_base_bus_obj):
         """
         Test case for setting an invalid value for the

@@ -19,6 +19,7 @@ from managers.flavor import FlavorManager
 from models import Flavor
 from models.factory import FlavorFactory
 
+
 class TestFlavorBulkManager:
     """
     This class contains unit tests for the
@@ -449,3 +450,4 @@ class TestFlavorBulkManager:
                 flavor_ids)
 
         await session.rollback()
+

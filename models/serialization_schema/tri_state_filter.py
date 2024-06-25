@@ -1,22 +1,28 @@
 # models/serialization_schema/tri_state_filter.py
+
 """
 This module contains the TriStateFilterSchema
 class, which is responsible
 for serializing and deserializing
 TriStateFilter objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import TriStateFilter
+
+
 class TriStateFilterSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     TriStateFilter objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = TriStateFilter
         exclude = (
             "_tri_state_filter_id",
@@ -35,6 +41,7 @@ class TriStateFilterSchema(SQLAlchemyAutoSchema):
             "_state_int_value",  # stateIntValue
 # endset  # noqa E122
         )
+
     tri_state_filter_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -50,4 +57,4 @@ class TriStateFilterSchema(SQLAlchemyAutoSchema):
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
     pac_code_peek = fields.UUID()  # PacID
-# endset
+

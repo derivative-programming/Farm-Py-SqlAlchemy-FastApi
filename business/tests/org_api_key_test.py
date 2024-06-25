@@ -12,12 +12,14 @@ from business.org_api_key import OrgApiKeyBusObj
 from helpers.session_context import SessionContext
 from models import OrgApiKey
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def org_api_key_list():
@@ -29,6 +31,7 @@ def org_api_key_list():
         org_api_key = Mock(spec=OrgApiKey)
         org_api_keys.append(org_api_key)
     return org_api_keys
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, org_api_key_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, org_api_key_list):
         for bus_obj, org_api_key in zip(bus_obj_list, org_api_key_list):
             mock_load.assert_any_call(org_api_key)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await OrgApiKeyBusObj.to_bus_obj_list(session_context, empty_org_api_key_list)
 
     assert len(bus_obj_list) == 0
+

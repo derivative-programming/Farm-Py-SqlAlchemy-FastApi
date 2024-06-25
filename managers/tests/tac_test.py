@@ -20,6 +20,7 @@ from models import Tac
 from models.factory import TacFactory
 from models.serialization_schema.tac import TacSchema
 
+
 class TestTacManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestTacManager:
             await tac_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

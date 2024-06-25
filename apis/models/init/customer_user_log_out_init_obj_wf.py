@@ -1,14 +1,18 @@
 # apis/models/init/customer_user_log_out_init_obj_wf.py
+
 """
 This module contains the models and request/response classes
 for the CustomerUserLogOutInitObjWF workflow.
 """
+
 import logging
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import List
+
 from pydantic import Field
+
 from apis.models.validation_error import ValidationErrorItem
 from business.customer import CustomerBusObj
 from flows.base.flow_validation_error import FlowValidationError
@@ -18,11 +22,14 @@ from flows.customer_user_log_out_init_obj_wf import (
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
+
+
 class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
     """
     Represents the response model for the
     CustomerUserLogOutInitObjWFGetInitModelRequest.
     """
+
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
     validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
@@ -31,7 +38,7 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
             '00000000-0000-0000-0000-000000000000'
         ),
         description="Tac Code")
-# endset
+
     def load_flow_response(
         self,
         data: FlowCustomerUserLogOutInitObjWFResult
@@ -40,6 +47,7 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
         Loads the response data from the
         FlowCustomerUserLogOutInitObjWFResult object.
         """
+
         self.validation_errors = list()
         self.success = False
         self.message = ""
@@ -49,12 +57,16 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(CamelModel):
         """
         Serializes the response model to JSON.
         """
+
         return self.model_dump_json()
+
+
 class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
     """
     Represents the request model for the
     CustomerUserLogOutInitObjWFGetInitModelRequest.
     """
+
     async def process_request(
             self,
             session_context: SessionContext,
@@ -64,6 +76,7 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(SnakeModel):
         """
         Processes the request and returns the response.
         """
+
         try:
             logging.info(
                 "loading model...CustomerUserLogOutInitObjWFGetInitModelRequest")

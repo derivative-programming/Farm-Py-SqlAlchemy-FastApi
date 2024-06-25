@@ -11,6 +11,11 @@ from models import ErrorLog
 import managers as managers_and_enums  # noqa: F401
 from .error_log_fluent import ErrorLogFluentBusObj
 
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "ErrorLog object is not initialized")
+
+
 class ErrorLogBusObj(ErrorLogFluentBusObj):
     """
     This class represents the business object for a ErrorLog.
@@ -42,7 +47,7 @@ class ErrorLogBusObj(ErrorLogFluentBusObj):
         for error_log in obj_list:
             error_log_bus_obj = ErrorLogBusObj(session_context)
 
-            await error_log_bus_obj.load_from_obj_instance(
+            error_log_bus_obj.load_from_obj_instance(
                 error_log)
 
             result.append(error_log_bus_obj)

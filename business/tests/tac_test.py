@@ -12,12 +12,14 @@ from business.tac import TacBusObj
 from helpers.session_context import SessionContext
 from models import Tac
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def tac_list():
@@ -29,6 +31,7 @@ def tac_list():
         tac = Mock(spec=Tac)
         tacs.append(tac)
     return tacs
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, tac_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, tac_list):
         for bus_obj, tac in zip(bus_obj_list, tac_list):
             mock_load.assert_any_call(tac)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await TacBusObj.to_bus_obj_list(session_context, empty_tac_list)
 
     assert len(bus_obj_list) == 0
+

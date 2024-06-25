@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.tri_state_filter_fluent import TriStateFilterFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockTriStateFilterBaseBusObj:
     """
     A mock base class for the TriStateFilterFluentBusObj class.
@@ -81,3 +85,4 @@ class TestTriStateFilterFluentBusObj:
         result = tri_state_filter.set_prop_state_int_value(42)
         assert tri_state_filter.state_int_value == 42
         assert result is tri_state_filter
+

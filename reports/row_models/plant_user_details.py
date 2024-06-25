@@ -1,12 +1,17 @@
 # plant_user_details.py
+
 """
 This module contains the definition of the
 ReportItemPlantUserDetails class.
 """
+
 import uuid
 from decimal import Decimal
 from datetime import datetime, date
+
 from helpers.type_conversion import TypeConversion
+
+
 class ReportItemPlantUserDetails():
     """
     Represents a report item for a plant Plant Details.
@@ -40,12 +45,14 @@ class ReportItemPlantUserDetails():
         uuid.UUID(int=0))
     back_to_dashboard_link_tac_code: uuid.UUID = (
         uuid.UUID(int=0))
-# endset
+
     def load_data_provider_dict(self, data: dict):
         """
         Loads data from a dictionary into the report item.
+
         Args:
             data (dict): The dictionary containing the data.
+
         Returns:
             None
         """
@@ -97,5 +104,4 @@ class ReportItemPlantUserDetails():
         )
         self.back_to_dashboard_link_tac_code = (
             TypeConversion.get_uuid(data["back_to_dashboard_link_tac_code"]))
-# endset
 

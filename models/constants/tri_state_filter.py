@@ -16,3 +16,4 @@ lookup_enum_name_isEncrypted: bool = False
 name_isEncrypted: bool = False
 pac_id_isEncrypted: bool = False
 state_int_value_isEncrypted: bool = False
+

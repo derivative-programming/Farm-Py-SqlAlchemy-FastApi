@@ -20,6 +20,7 @@ from models import Role
 from models.factory import RoleFactory
 from models.serialization_schema.role import RoleSchema
 
+
 class TestRoleManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestRoleManager:
             await role_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

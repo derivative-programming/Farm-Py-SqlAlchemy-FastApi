@@ -1,22 +1,28 @@
 # models/serialization_schema/date_greater_than_filter.py
+
 """
 This module contains the DateGreaterThanFilterSchema
 class, which is responsible
 for serializing and deserializing
 DateGreaterThanFilter objects.
 """
+
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import DateGreaterThanFilter
+
+
 class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
     """
     Schema class for serializing and deserializing
     DateGreaterThanFilter objects.
     """
+
     class Meta:
         """
         Meta class for defining the schema's metadata.
         """
+
         model = DateGreaterThanFilter
         exclude = (
             "_date_greater_than_filter_id",
@@ -35,6 +41,7 @@ class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
             "_pac_id",  # PacID
 # endset  # noqa E122
         )
+
     date_greater_than_filter_id = fields.Int()
     code = fields.UUID()
     last_change_code = fields.Int()
@@ -50,4 +57,4 @@ class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
     pac_code_peek = fields.UUID()  # PacID
-# endset
+

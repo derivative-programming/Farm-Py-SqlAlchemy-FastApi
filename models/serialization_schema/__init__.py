@@ -5,20 +5,20 @@ models in the Farm-Py-SqlAlchemy-FastApi project.
 The serialization schemas define how the data should be
 serialized and deserialized when interacting with the API.
 The following schemas are included in this module:
-    - CustomerSchema
-    - CustomerRoleSchema
-    - DateGreaterThanFilterSchema
-    - ErrorLogSchema
-    - FlavorSchema
-    - LandSchema
-    - OrganizationSchema
-    - OrgApiKeySchema
-    - OrgCustomerSchema
-    - PacSchema
-    - PlantSchema
-    - RoleSchema
-    - TacSchema
-    - TriStateFilterSchema
+- CustomerSchema
+- CustomerRoleSchema
+- DateGreaterThanFilterSchema
+- ErrorLogSchema
+- FlavorSchema
+- LandSchema
+- OrganizationSchema
+- OrgApiKeySchema
+- OrgCustomerSchema
+- PacSchema
+- PlantSchema
+- RoleSchema
+- TacSchema
+- TriStateFilterSchema
 """
 from .customer import CustomerSchema  # noqa: F401
 from .customer_role import CustomerRoleSchema  # noqa: F401
@@ -34,3 +34,4 @@ from .plant import PlantSchema  # noqa: F401
 from .role import RoleSchema  # noqa: F401
 from .tac import TacSchema  # noqa: F401
 from .tri_state_filter import TriStateFilterSchema  # noqa: F401
+

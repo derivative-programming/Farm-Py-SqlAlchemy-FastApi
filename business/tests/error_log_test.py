@@ -12,12 +12,14 @@ from business.error_log import ErrorLogBusObj
 from helpers.session_context import SessionContext
 from models import ErrorLog
 
+
 @pytest.fixture
 def session_context():
     """
     Return a mock SessionContext object.
     """
     return Mock(spec=SessionContext)
+
 
 @pytest.fixture
 def error_log_list():
@@ -29,6 +31,7 @@ def error_log_list():
         error_log = Mock(spec=ErrorLog)
         error_logs.append(error_log)
     return error_logs
+
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(session_context, error_log_list):
@@ -49,6 +52,7 @@ async def test_to_bus_obj_list(session_context, error_log_list):
         for bus_obj, error_log in zip(bus_obj_list, error_log_list):
             mock_load.assert_any_call(error_log)
 
+
 @pytest.mark.asyncio
 async def test_to_bus_obj_list_empty(session_context):
     """
@@ -58,3 +62,4 @@ async def test_to_bus_obj_list_empty(session_context):
     bus_obj_list = await ErrorLogBusObj.to_bus_obj_list(session_context, empty_error_log_list)
 
     assert len(bus_obj_list) == 0
+

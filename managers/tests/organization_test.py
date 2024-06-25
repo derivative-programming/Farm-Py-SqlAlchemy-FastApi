@@ -20,6 +20,7 @@ from models import Organization
 from models.factory import OrganizationFactory
 from models.serialization_schema.organization import OrganizationSchema
 
+
 class TestOrganizationManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestOrganizationManager:
             await organization_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

@@ -11,6 +11,11 @@ from models import Flavor
 import managers as managers_and_enums  # noqa: F401
 from .flavor_fluent import FlavorFluentBusObj
 
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Flavor object is not initialized")
+
+
 class FlavorBusObj(FlavorFluentBusObj):
     """
     This class represents the business object for a Flavor.
@@ -42,7 +47,7 @@ class FlavorBusObj(FlavorFluentBusObj):
         for flavor in obj_list:
             flavor_bus_obj = FlavorBusObj(session_context)
 
-            await flavor_bus_obj.load_from_obj_instance(
+            flavor_bus_obj.load_from_obj_instance(
                 flavor)
 
             result.append(flavor_bus_obj)

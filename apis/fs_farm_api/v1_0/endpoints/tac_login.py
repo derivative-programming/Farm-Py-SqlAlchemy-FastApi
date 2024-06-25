@@ -1,9 +1,11 @@
 # apis/fs_farm_api/v1_0/endpoints/tac_login.py
+
 """
 This module contains the implementation of the
 TacLoginRouter,
 which handles the API endpoints related to the
 Tac Login.
+
 The TacLoginRouter provides the following endpoints:
     - GET /api/v1_0/tac-login/{tac_code}/init:
         Get the initialization data for the
@@ -15,27 +17,38 @@ The TacLoginRouter provides the following endpoints:
         Retrieve the Tac Login
         Report as a CSV file.
 """
+
 import logging
 import tempfile
 import traceback
 import uuid
+
 from fastapi import APIRouter, Depends, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+
 import apis.models as api_models
 import apis.models.init as api_init_models
 import reports
 from database import get_db
 from helpers import SessionContext, api_key_header
+
 from .base_router import BaseRouter
+
 TAC_CODE = "Tac Code"
+
 TRACEBACK = " traceback:"
+
 EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
+
 API_LOG_ERROR_FORMAT = "response.message: %s"
+
+
 class TacLoginRouterConfig():
     """
     Configuration class for the TacLoginRouter.
     """
+
     # constants
     is_get_available: bool = False
     is_get_with_id_available: bool = False
@@ -46,6 +59,8 @@ class TacLoginRouterConfig():
     is_put_available: bool = False
     is_delete_available: bool = False
     is_public: bool = True
+
+
 class TacLoginRouter(BaseRouter):
     """
     Router class for the
@@ -53,6 +68,7 @@ class TacLoginRouter(BaseRouter):
     API endpoints.
     """
     router = APIRouter(tags=["TacLogin"])
+
 
     @staticmethod
     @router.get(
@@ -69,26 +85,32 @@ class TacLoginRouter(BaseRouter):
         """
         Get the initialization data for the
         Tac Login page.
+
         Args:
             tac_code (uuid.UUID): The UUID of the tac.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
+
         Returns:
             TacLoginInitObjWFGetInitModelResponse:
                 The initialization data for the
                 Tac Login page.
         """
+
         logging.info(
             'TacLoginRouter.request_get_init start. tacCode:%s',
             tac_code)
         auth_dict = BaseRouter.implementation_check(
             TacLoginRouterConfig.is_get_init_available)
+
         response = (
             api_init_models.
             TacLoginInitObjWFGetInitModelResponse()
         )
+
         auth_dict = BaseRouter.authorization_check(
             TacLoginRouterConfig.is_public, api_key)
+
         # Start a transaction
         async with session:
             try:
@@ -132,6 +154,7 @@ class TacLoginRouter(BaseRouter):
                      response_data)
         return response
 
+
     @staticmethod
     @router.post(
         "/api/v1_0/tac-login/{tac_code}",
@@ -145,12 +168,14 @@ class TacLoginRouter(BaseRouter):
     ):
         """
         Tac Login api post endpoint
+
         Parameters:
         - tac_code: The code of the tac object.
         - request_model: The request model containing
             the details of the item to be added.
         - session: Database session dependency.
         - api_key: API key for authorization.
+
         Returns:
         - response: JSON response with the result of the operation.
         """
@@ -161,10 +186,13 @@ class TacLoginRouter(BaseRouter):
         )
         auth_dict = BaseRouter.implementation_check(
             TacLoginRouterConfig.is_post_with_id_available)
+
         response = api_models.TacLoginPostModelResponse()
+
         auth_dict = BaseRouter.authorization_check(
             TacLoginRouterConfig.is_public,
             api_key)
+
         # Start a transaction
         async with session:
             try:
@@ -173,6 +201,7 @@ class TacLoginRouter(BaseRouter):
                 tac_code = session_context.check_context_code(
                     "TacCode",
                     tac_code)
+
                 logging.info("Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(

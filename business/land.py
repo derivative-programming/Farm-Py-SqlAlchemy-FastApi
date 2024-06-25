@@ -11,7 +11,13 @@ from models import Land
 import managers as managers_and_enums  # noqa: F401
 from .land_fluent import LandFluentBusObj
 
+
 from business.plant import PlantBusObj
+
+
+NOT_INITIALIZED_ERROR_MESSAGE = (
+    "Land object is not initialized")
+
 
 class LandBusObj(LandFluentBusObj):
     """
@@ -44,12 +50,13 @@ class LandBusObj(LandFluentBusObj):
         for land in obj_list:
             land_bus_obj = LandBusObj(session_context)
 
-            await land_bus_obj.load_from_obj_instance(
+            land_bus_obj.load_from_obj_instance(
                 land)
 
             result.append(land_bus_obj)
 
         return result
+
 
     async def build_plant(self) -> PlantBusObj:
         """
@@ -57,6 +64,8 @@ class LandBusObj(LandFluentBusObj):
         instance (not saved yet)
         """
         item = PlantBusObj(self._session_context)
+
+        assert item.plant is not None
         flavor_manager = managers_and_enums.FlavorManager(self._session_context)
         flvr_foreign_key_id_flavor = await flavor_manager.from_enum(
             managers_and_enums.FlavorEnum.UNKNOWN)
@@ -77,7 +86,7 @@ class LandBusObj(LandFluentBusObj):
         obj_list = await plant_manager.get_by_land_id(self.land_id)
         for obj_item in obj_list:
             bus_obj_item = PlantBusObj(self._session_context)
-            await bus_obj_item.load_from_obj_instance(obj_item)
+            bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
 

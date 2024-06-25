@@ -20,6 +20,7 @@ from models import OrgApiKey
 from models.factory import OrgApiKeyFactory
 from models.serialization_schema.org_api_key import OrgApiKeySchema
 
+
 class TestOrgApiKeyManager:
     """
     This class contains unit tests for the
@@ -849,4 +850,4 @@ class TestOrgApiKeyManager:
             await org_api_key_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-# endset
+

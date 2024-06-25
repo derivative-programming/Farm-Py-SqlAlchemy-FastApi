@@ -6,9 +6,13 @@ import math
 from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
+
 import pytest
+
 from business.org_customer_fluent import OrgCustomerFluentBusObj
 from helpers.session_context import SessionContext
+
+
 class MockOrgCustomerBaseBusObj:
     """
     A mock base class for the OrgCustomerFluentBusObj class.
@@ -49,3 +53,4 @@ class TestOrgCustomerFluentBusObj:
         result = org_customer.set_prop_organization_id(1)
         assert org_customer.organization_id == 1
         assert result is org_customer
+
