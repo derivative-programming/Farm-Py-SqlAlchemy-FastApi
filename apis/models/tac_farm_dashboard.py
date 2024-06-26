@@ -24,7 +24,7 @@ from pydantic import UUID4, Field
 
 from apis.models.list_model import ListModel
 from apis.models.validation_error import ValidationErrorItem
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
 from reports.tac_farm_dashboard import (
@@ -164,7 +164,9 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         return data
 
 
-class TacFarmDashboardGetModelResponse(ListModel):
+class TacFarmDashboardGetModelResponse(
+    ListModel
+):
     """
     Represents the response model for the
     TacFarmDashboardGetModel API.
@@ -176,7 +178,8 @@ class TacFarmDashboardGetModelResponse(ListModel):
             The list of response items.
     """
 
-    request: TacFarmDashboardGetModelRequest = TacFarmDashboardGetModelRequest()
+    request: TacFarmDashboardGetModelRequest = (
+        TacFarmDashboardGetModelRequest())
     items: List[TacFarmDashboardGetModelResponseItem] = Field(
         default_factory=list)
 

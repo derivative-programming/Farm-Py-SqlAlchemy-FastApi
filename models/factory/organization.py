@@ -64,7 +64,6 @@ class OrganizationFactory(factory.Factory):
                     Organization model.
 
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -73,12 +72,10 @@ class OrganizationFactory(factory.Factory):
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
-
         obj = model_class(*args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
-
         # session.add(obj)
         # session.commit()
         return obj
@@ -103,9 +100,7 @@ class OrganizationFactory(factory.Factory):
                 Organization object.
 
         """
-
         logger.info("factory create")
-
         if not session:
             raise AttributeError(
                 "Session not available"
@@ -115,12 +110,10 @@ class OrganizationFactory(factory.Factory):
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
-
         obj = model_class(*args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
-
         session.add(obj)
         session.commit()
         return obj
@@ -148,13 +141,11 @@ class OrganizationFactory(factory.Factory):
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
-
         obj = OrganizationFactory \
             .build(session=None, *args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
-
         session.add(obj)
         await session.flush()
         return obj
@@ -181,13 +172,11 @@ class OrganizationFactory(factory.Factory):
         kwargs["tac_id"] = (  # TacID
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
-
         obj = OrganizationFactory \
             .build(session=None, *args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
-
         # session.add(obj)
         # await session.flush()
         return obj

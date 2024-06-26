@@ -69,7 +69,6 @@ class OrgCustomerFactory(factory.Factory):
                     OrgCustomer model.
 
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -84,7 +83,6 @@ class OrgCustomerFactory(factory.Factory):
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
         obj = model_class(*args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -93,7 +91,6 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
         # session.add(obj)
         # session.commit()
         return obj
@@ -118,9 +115,7 @@ class OrgCustomerFactory(factory.Factory):
                 OrgCustomer object.
 
         """
-
         logger.info("factory create")
-
         if not session:
             raise AttributeError(
                 "Session not available"
@@ -136,7 +131,6 @@ class OrgCustomerFactory(factory.Factory):
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
         obj = model_class(*args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -145,7 +139,6 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
         session.add(obj)
         session.commit()
         return obj
@@ -179,7 +172,6 @@ class OrgCustomerFactory(factory.Factory):
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
         obj = OrgCustomerFactory \
             .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
@@ -189,7 +181,6 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
         session.add(obj)
         await session.flush()
         return obj
@@ -222,7 +213,6 @@ class OrgCustomerFactory(factory.Factory):
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
-
         obj = OrgCustomerFactory \
             .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
@@ -232,7 +222,6 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-
         # session.add(obj)
         # await session.flush()
         return obj

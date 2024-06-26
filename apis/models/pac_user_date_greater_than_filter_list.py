@@ -24,7 +24,7 @@ from pydantic import UUID4, Field
 
 from apis.models.list_model import ListModel
 from apis.models.validation_error import ValidationErrorItem
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
 from reports.pac_user_date_greater_than_filter_list import (
@@ -190,7 +190,9 @@ class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
         return data
 
 
-class PacUserDateGreaterThanFilterListGetModelResponse(ListModel):
+class PacUserDateGreaterThanFilterListGetModelResponse(
+    ListModel
+):
     """
     Represents the response model for the
     PacUserDateGreaterThanFilterListGetModel API.
@@ -202,7 +204,8 @@ class PacUserDateGreaterThanFilterListGetModelResponse(ListModel):
             The list of response items.
     """
 
-    request: PacUserDateGreaterThanFilterListGetModelRequest = PacUserDateGreaterThanFilterListGetModelRequest()
+    request: PacUserDateGreaterThanFilterListGetModelRequest = (
+        PacUserDateGreaterThanFilterListGetModelRequest())
     items: List[PacUserDateGreaterThanFilterListGetModelResponseItem] = Field(
         default_factory=list)
 

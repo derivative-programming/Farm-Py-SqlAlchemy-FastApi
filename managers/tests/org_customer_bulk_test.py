@@ -79,7 +79,8 @@ class TestOrgCustomerBulkManager:
 
         """
         org_customers_data = [
-            await OrgCustomerFactory.build_async(session) for _ in range(5)]
+            await OrgCustomerFactory.build_async(session)
+            for _ in range(5)]
 
         org_customers = await obj_manager.add_bulk(
             org_customers_data)

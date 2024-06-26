@@ -79,7 +79,8 @@ class TestDateGreaterThanFilterBulkManager:
 
         """
         date_greater_than_filters_data = [
-            await DateGreaterThanFilterFactory.build_async(session) for _ in range(5)]
+            await DateGreaterThanFilterFactory.build_async(session)
+            for _ in range(5)]
 
         date_greater_than_filters = await obj_manager.add_bulk(
             date_greater_than_filters_data)

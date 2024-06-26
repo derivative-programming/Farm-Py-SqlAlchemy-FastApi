@@ -79,7 +79,8 @@ class TestOrgApiKeyBulkManager:
 
         """
         org_api_keys_data = [
-            await OrgApiKeyFactory.build_async(session) for _ in range(5)]
+            await OrgApiKeyFactory.build_async(session)
+            for _ in range(5)]
 
         org_api_keys = await obj_manager.add_bulk(
             org_api_keys_data)

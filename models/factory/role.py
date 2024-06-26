@@ -68,7 +68,6 @@ class RoleFactory(factory.Factory):
                     Role model.
 
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -77,12 +76,10 @@ class RoleFactory(factory.Factory):
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
-
         obj = model_class(*args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-
         # session.add(obj)
         # session.commit()
         return obj
@@ -107,9 +104,7 @@ class RoleFactory(factory.Factory):
                 Role object.
 
         """
-
         logger.info("factory create")
-
         if not session:
             raise AttributeError(
                 "Session not available"
@@ -119,12 +114,10 @@ class RoleFactory(factory.Factory):
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
-
         obj = model_class(*args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-
         session.add(obj)
         session.commit()
         return obj
@@ -152,13 +145,11 @@ class RoleFactory(factory.Factory):
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
-
         obj = RoleFactory \
             .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-
         session.add(obj)
         await session.flush()
         return obj
@@ -185,13 +176,11 @@ class RoleFactory(factory.Factory):
         kwargs["pac_id"] = (  # PacID
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
-
         obj = RoleFactory \
             .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-
         # session.add(obj)
         # await session.flush()
         return obj

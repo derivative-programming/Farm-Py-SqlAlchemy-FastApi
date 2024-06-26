@@ -101,32 +101,24 @@ class PlantFactory(factory.Factory):
                     Plant model.
 
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-
         land_id_land_instance = (  # LandID
             LandFactory.create(session=session))
-
         flvr_foreign_key_id_flavor_instance = (  # FlvrForeignKeyID
             FlavorFactory.create(session=session))
-
 # endset
-
         kwargs["land_id"] = (  # LandID
             land_id_land_instance.land_id)
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         obj = model_class(*args, **kwargs)
-
         obj.land_id = (  # LandID
             land_id_land_instance.land_id)
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
@@ -136,7 +128,6 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         # session.add(obj)
         # session.commit()
         return obj
@@ -161,34 +152,26 @@ class PlantFactory(factory.Factory):
                 Plant object.
 
         """
-
         logger.info("factory create")
-
         if not session:
             raise AttributeError(
                 "Session not available"
             )
-
         land_id_land_instance = (  # LandID
             LandFactory.create(session=session))
-
         flvr_foreign_key_id_flavor_instance = (  # FlvrForeignKeyID
             FlavorFactory.create(session=session))
 # endset
-
         kwargs["land_id"] = (  # LandID
             land_id_land_instance.land_id)
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         obj = model_class(*args, **kwargs)
-
         obj.land_id = (  # LandID
             land_id_land_instance.land_id)
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
@@ -198,7 +181,6 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         session.add(obj)
         session.commit()
         return obj
@@ -221,29 +203,22 @@ class PlantFactory(factory.Factory):
             The newly created Plant object.
 
         """
-
         land_id_land_instance = await (  # LandID
             LandFactory.create_async(session=session))
-
         flvr_foreign_key_id_flavor_instance = await (  # FlvrForeignKeyID
             FlavorFactory.create_async(session=session))
-
 # endset
-
         kwargs["land_id"] = (  # LandID
             land_id_land_instance.land_id)
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         obj = PlantFactory \
             .build(session=None, *args, **kwargs)
-
         obj.land_id = (  # LandID
             land_id_land_instance.land_id)
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
@@ -253,7 +228,6 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         session.add(obj)
         await session.flush()
         return obj
@@ -275,28 +249,22 @@ class PlantFactory(factory.Factory):
             The newly created Plant object.
 
         """
-
         land_id_land_instance = await (  # LandID
             LandFactory.create_async(session=session))
-
         flvr_foreign_key_id_flavor_instance = await (  # FlvrForeignKeyID
             FlavorFactory.create_async(session=session))
 # endset
-
         kwargs["land_id"] = (  # LandID
             land_id_land_instance.land_id)
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-
         kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         obj = PlantFactory \
             .build(session=None, *args, **kwargs)
-
         obj.land_id = (  # LandID
             land_id_land_instance.land_id)
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
@@ -306,7 +274,6 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-
         # session.add(obj)
         # await session.flush()
         return obj

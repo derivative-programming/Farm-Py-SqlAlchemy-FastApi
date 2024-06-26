@@ -79,7 +79,8 @@ class TestTacBulkManager:
 
         """
         tacs_data = [
-            await TacFactory.build_async(session) for _ in range(5)]
+            await TacFactory.build_async(session)
+            for _ in range(5)]
 
         tacs = await obj_manager.add_bulk(
             tacs_data)

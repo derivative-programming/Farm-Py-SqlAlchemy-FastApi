@@ -79,7 +79,8 @@ class TestTriStateFilterBulkManager:
 
         """
         tri_state_filters_data = [
-            await TriStateFilterFactory.build_async(session) for _ in range(5)]
+            await TriStateFilterFactory.build_async(session)
+            for _ in range(5)]
 
         tri_state_filters = await obj_manager.add_bulk(
             tri_state_filters_data)

@@ -79,7 +79,8 @@ class TestPlantBulkManager:
 
         """
         plants_data = [
-            await PlantFactory.build_async(session) for _ in range(5)]
+            await PlantFactory.build_async(session)
+            for _ in range(5)]
 
         plants = await obj_manager.add_bulk(
             plants_data)

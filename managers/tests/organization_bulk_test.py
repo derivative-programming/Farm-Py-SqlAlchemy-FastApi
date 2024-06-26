@@ -79,7 +79,8 @@ class TestOrganizationBulkManager:
 
         """
         organizations_data = [
-            await OrganizationFactory.build_async(session) for _ in range(5)]
+            await OrganizationFactory.build_async(session)
+            for _ in range(5)]
 
         organizations = await obj_manager.add_bulk(
             organizations_data)

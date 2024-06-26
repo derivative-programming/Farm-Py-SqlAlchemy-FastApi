@@ -79,7 +79,8 @@ class TestRoleBulkManager:
 
         """
         roles_data = [
-            await RoleFactory.build_async(session) for _ in range(5)]
+            await RoleFactory.build_async(session)
+            for _ in range(5)]
 
         roles = await obj_manager.add_bulk(
             roles_data)

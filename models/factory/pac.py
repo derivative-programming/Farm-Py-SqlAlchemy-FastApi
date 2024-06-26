@@ -65,7 +65,6 @@ class PacFactory(factory.Factory):
                     Pac model.
 
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -98,9 +97,7 @@ class PacFactory(factory.Factory):
                 Pac object.
 
         """
-
         logger.info("factory create")
-
         if not session:
             raise AttributeError(
                 "Session not available"

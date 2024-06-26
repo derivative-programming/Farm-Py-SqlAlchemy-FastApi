@@ -24,7 +24,7 @@ from pydantic import UUID4, Field
 
 from apis.models.list_model import ListModel
 from apis.models.validation_error import ValidationErrorItem
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
 from reports.pac_user_tri_state_filter_list import (
@@ -190,7 +190,9 @@ class PacUserTriStateFilterListGetModelResponseItem(CamelModel):
         return data
 
 
-class PacUserTriStateFilterListGetModelResponse(ListModel):
+class PacUserTriStateFilterListGetModelResponse(
+    ListModel
+):
     """
     Represents the response model for the
     PacUserTriStateFilterListGetModel API.
@@ -202,7 +204,8 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
             The list of response items.
     """
 
-    request: PacUserTriStateFilterListGetModelRequest = PacUserTriStateFilterListGetModelRequest()
+    request: PacUserTriStateFilterListGetModelRequest = (
+        PacUserTriStateFilterListGetModelRequest())
     items: List[PacUserTriStateFilterListGetModelResponseItem] = Field(
         default_factory=list)
 

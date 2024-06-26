@@ -79,7 +79,8 @@ class TestErrorLogBulkManager:
 
         """
         error_logs_data = [
-            await ErrorLogFactory.build_async(session) for _ in range(5)]
+            await ErrorLogFactory.build_async(session)
+            for _ in range(5)]
 
         error_logs = await obj_manager.add_bulk(
             error_logs_data)

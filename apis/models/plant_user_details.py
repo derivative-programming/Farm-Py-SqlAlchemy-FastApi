@@ -24,7 +24,7 @@ from pydantic import UUID4, Field
 
 from apis.models.list_model import ListModel
 from apis.models.validation_error import ValidationErrorItem
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
 from reports.plant_user_details import (
@@ -308,7 +308,9 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
         return data
 
 
-class PlantUserDetailsGetModelResponse(ListModel):
+class PlantUserDetailsGetModelResponse(
+    ListModel
+):
     """
     Represents the response model for the
     PlantUserDetailsGetModel API.
@@ -320,7 +322,8 @@ class PlantUserDetailsGetModelResponse(ListModel):
             The list of response items.
     """
 
-    request: PlantUserDetailsGetModelRequest = PlantUserDetailsGetModelRequest()
+    request: PlantUserDetailsGetModelRequest = (
+        PlantUserDetailsGetModelRequest())
     items: List[PlantUserDetailsGetModelResponseItem] = Field(
         default_factory=list)
 

@@ -79,7 +79,8 @@ class TestPacBulkManager:
 
         """
         pacs_data = [
-            await PacFactory.build_async(session) for _ in range(5)]
+            await PacFactory.build_async(session)
+            for _ in range(5)]
 
         pacs = await obj_manager.add_bulk(
             pacs_data)

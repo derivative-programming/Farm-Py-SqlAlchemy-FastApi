@@ -133,7 +133,6 @@ class ReportProviderLandPlantList():
             some_phone_number)
         query_dict["some_email_address"] = (
             some_email_address)
-
         query_dict["like_flavor_code"] = (
             str(flavor_code))
         query_dict["like_some_int_val"] = (

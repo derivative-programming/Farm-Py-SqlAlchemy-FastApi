@@ -79,7 +79,8 @@ class TestLandBulkManager:
 
         """
         lands_data = [
-            await LandFactory.build_async(session) for _ in range(5)]
+            await LandFactory.build_async(session)
+            for _ in range(5)]
 
         lands = await obj_manager.add_bulk(
             lands_data)

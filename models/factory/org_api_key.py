@@ -75,7 +75,6 @@ class OrgApiKeyFactory(factory.Factory):
                     OrgApiKey model.
 
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -90,7 +89,6 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         obj = model_class(*args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
@@ -99,7 +97,6 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         # session.add(obj)
         # session.commit()
         return obj
@@ -124,9 +121,7 @@ class OrgApiKeyFactory(factory.Factory):
                 OrgApiKey object.
 
         """
-
         logger.info("factory create")
-
         if not session:
             raise AttributeError(
                 "Session not available"
@@ -142,7 +137,6 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         obj = model_class(*args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
@@ -151,7 +145,6 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         session.add(obj)
         session.commit()
         return obj
@@ -185,7 +178,6 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         obj = OrgApiKeyFactory \
             .build(session=None, *args, **kwargs)
         obj.organization_id = (  # OrganizationID
@@ -195,7 +187,6 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         session.add(obj)
         await session.flush()
         return obj
@@ -228,7 +219,6 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         obj = OrgApiKeyFactory \
             .build(session=None, *args, **kwargs)
         obj.organization_id = (  # OrganizationID
@@ -238,7 +228,6 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-
         # session.add(obj)
         # await session.flush()
         return obj

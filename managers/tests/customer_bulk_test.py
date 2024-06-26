@@ -79,7 +79,8 @@ class TestCustomerBulkManager:
 
         """
         customers_data = [
-            await CustomerFactory.build_async(session) for _ in range(5)]
+            await CustomerFactory.build_async(session)
+            for _ in range(5)]
 
         customers = await obj_manager.add_bulk(
             customers_data)

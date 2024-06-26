@@ -70,7 +70,6 @@ class CustomerRoleFactory(factory.Factory):
                     CustomerRole model.
 
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
@@ -85,7 +84,6 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
-
         obj = model_class(*args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -94,7 +92,6 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
-
         # session.add(obj)
         # session.commit()
         return obj
@@ -119,9 +116,7 @@ class CustomerRoleFactory(factory.Factory):
                 CustomerRole object.
 
         """
-
         logger.info("factory create")
-
         if not session:
             raise AttributeError(
                 "Session not available"
@@ -137,7 +132,6 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
-
         obj = model_class(*args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -146,7 +140,6 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
-
         session.add(obj)
         session.commit()
         return obj
@@ -180,7 +173,6 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
-
         obj = CustomerRoleFactory \
             .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
@@ -190,7 +182,6 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
-
         session.add(obj)
         await session.flush()
         return obj
@@ -223,7 +214,6 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
-
         obj = CustomerRoleFactory \
             .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
@@ -233,7 +223,6 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
-
         # session.add(obj)
         # await session.flush()
         return obj

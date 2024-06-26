@@ -79,7 +79,8 @@ class TestFlavorBulkManager:
 
         """
         flavors_data = [
-            await FlavorFactory.build_async(session) for _ in range(5)]
+            await FlavorFactory.build_async(session)
+            for _ in range(5)]
 
         flavors = await obj_manager.add_bulk(
             flavors_data)
